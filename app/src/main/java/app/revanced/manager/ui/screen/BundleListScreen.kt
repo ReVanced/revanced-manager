@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -18,40 +17,38 @@ fun BundleListScreen(
     onUpdate: (PatchBundleSource) -> Unit,
     sources: List<PatchBundleSource>,
     selectedSources: SnapshotStateList<PatchBundleSource>,
-    bundlesSelectable: Boolean = false,
+    bundlesSelectable: Boolean,
 ) {
-    Column {
-        LazyColumnWithScrollbar(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-        ) {
-            items(
-                sources,
-                key = { it.uid }
-            ) { source ->
-                BundleItem(
-                    bundle = source,
-                    onDelete = {
-                        onDelete(source)
-                    },
-                    onUpdate = {
-                        onUpdate(source)
-                    },
-                    selectable = bundlesSelectable,
-                    onSelect = {
+    LazyColumnWithScrollbar(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+    ) {
+        items(
+            sources,
+            key = { it.uid }
+        ) { source ->
+            BundleItem(
+                bundle = source,
+                onDelete = {
+                    onDelete(source)
+                },
+                onUpdate = {
+                    onUpdate(source)
+                },
+                selectable = bundlesSelectable,
+                onSelect = {
+                    selectedSources.add(source)
+                },
+                isBundleSelected = selectedSources.contains(source),
+                toggleSelection = { bundleIsNotSelected ->
+                    if (bundleIsNotSelected) {
                         selectedSources.add(source)
-                    },
-                    isBundleSelected = selectedSources.contains(source),
-                    toggleSelection = { bundleIsNotSelected ->
-                        if (bundleIsNotSelected) {
-                            selectedSources.add(source)
-                        } else {
-                            selectedSources.remove(source)
-                        }
+                    } else {
+                        selectedSources.remove(source)
                     }
-                )
-            }
+                }
+            )
         }
     }
 }
