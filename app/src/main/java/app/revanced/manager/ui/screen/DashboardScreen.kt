@@ -7,6 +7,7 @@ import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +32,7 @@ import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
@@ -264,31 +267,38 @@ fun DashboardScreen(
 
                             val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
 
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                            ) {
-                                sources.forEach {
-                                    BundleItem(
-                                        bundle = it,
-                                        onDelete = {
-                                            vm.delete(it)
-                                        },
-                                        onUpdate = {
-                                            vm.update(it)
-                                        },
-                                        selectable = bundlesSelectable,
-                                        onSelect = {
-                                            vm.selectedSources.add(it)
-                                        },
-                                        isBundleSelected = vm.selectedSources.contains(it),
-                                        toggleSelection = { bundleIsNotSelected ->
-                                            if (bundleIsNotSelected) {
-                                                vm.selectedSources.add(it)
-                                            } else {
-                                                vm.selectedSources.remove(it)
+                            Column {
+                                LazyColumnWithScrollbar(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Top,
+                                ) {
+                                    items(
+                                        sources,
+                                        key = { it.uid }
+                                    ) { source ->
+                                        BundleItem(
+                                            bundle = source,
+                                            onDelete = {
+                                                vm.delete(source)
+                                            },
+                                            onUpdate = {
+                                                vm.update(source)
+                                            },
+                                            selectable = bundlesSelectable,
+                                            onSelect = {
+                                                vm.selectedSources.add(source)
+                                            },
+                                            isBundleSelected = vm.selectedSources.contains(source),
+                                            toggleSelection = { bundleIsNotSelected ->
+                                                if (bundleIsNotSelected) {
+                                                    vm.selectedSources.add(source)
+                                                } else {
+                                                    vm.selectedSources.remove(source)
+                                                }
                                             }
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
                             }
                         }
