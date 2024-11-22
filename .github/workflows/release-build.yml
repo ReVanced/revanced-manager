@@ -9,6 +9,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@v4
       - name: Set env
@@ -40,6 +43,11 @@ jobs:
 
       - name: Add version to APK
         run: mv ${{ steps.sign_apk.outputs.signedFile }} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: revanced-manager-${{ env.RELEASE_VERSION }}.apk
 
       - name: Publish release APK
         uses: "marvinpinto/action-automatic-releases@latest"
