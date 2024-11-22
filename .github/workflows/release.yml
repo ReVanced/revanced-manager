@@ -66,7 +66,7 @@ jobs:
         run: |
           npx semantic-release
           
-      - name: 🛰️ Generate artifact attestation
+      - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
           subject-path: build/app/outputs/apk/release/revanced-manager-*.apk
