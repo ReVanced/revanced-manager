@@ -68,7 +68,7 @@ helping people out in our community, translating or sponsoring our project, etc.
 
 ## 📖 Resources to help you get started
 
-* The [documentation](/docs/README.md) provides steps to build ReVanced Manager from source
+* The [documentation](/docs/developer/README.md) provides steps to build ReVanced Manager from source
 * Our [backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
 * [Issues](https://github.com/ReVanced/revanced-manager/issues) are where we keep track of bugs and feature requests
 
