@@ -1,6 +1,6 @@
 # 💼 Prerequisites
 
-To use ReVanced Manager, an certain requirements had to be met.
+To use ReVanced Manager, certain requirements have to be met.
 
 ## 🤝 Requirements
 
@@ -10,7 +10,7 @@ To use ReVanced Manager, an certain requirements had to be met.
 ### Additional Requirements
 
 > [!NOTE]
-> These requirement(s) are not required to be met.
+> These requirements are optional.
 
 - Rooted Android device with latest version of [KernelSU](https://github.com/tiann/KernelSU) or [Magisk](https://github.com/topjohnwu/Magisk)
 
