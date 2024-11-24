@@ -73,8 +73,11 @@ special contributor role.
 
 ### ⏳ Supported Versions
 
-| Version                                                                                                                                 | Branch      | Supported          |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
-| ![Latest stable release](https://img.shields.io/github/v/release/ReVanced/revanced-manager?style=for-the-badge "Latest stable release") | main        | :white_check_mark: |
-| ![Latest version](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version")                         | dev         | :white_check_mark: |
-| ![Latest version](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version")                         | compose-dev | :white_check_mark: |
+| Version                                  | Branch        | Supported          |
+| ---------------------------------------- | ------------- | ------------------ |
+| ![Latest stable release][LatestRelBadge] | `main`        | :white_check_mark: |
+| ![Latest version][LatestVerBadge]        | `dev`         | :white_check_mark: |
+| ![Latest version][LatestVerBadge]        | `compose-dev` | :white_check_mark: |
+
+[LatestRelBadge]: https://img.shields.io/github/v/release/ReVanced/revanced-manager?style=for-the-badge "Latest stable release"
+[LatestVerBadge]: https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version"

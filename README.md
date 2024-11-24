@@ -89,12 +89,9 @@ Learn how to use ReVanced Manager by following the [documentation](/docs).
 
 ### 📙 Contributing
 
-You can find the contribution guidelines [here](CONTRIBUTING.md).
 Thank you for considering contributing to ReVanced Manager.
 
-### 🛠️ Building
-
-To build a ReVanced Manager, you can follow the [documentation](/docs).
+The [contribution guidelines](CONTRIBUTING.md) provides information you'll need to open an issue, develop for ReVanced Manager and translations.
 
 ### 📄 Documentation
 

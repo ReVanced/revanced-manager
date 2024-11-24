@@ -61,7 +61,10 @@
 # 👋 Contribution guidelines
 
 Welcome to contribution guidelines, this document contains 
-everything you'll need to contribute to ReVanced Manager.
+everything you'll need to contribute to ReVanced Manager (and might even possibly apply to our other project like ReVanced Patches!)
+
+There are many ways to contribute like writing docs and code, opening issues, 
+helping people out in our community, translating or sponsoring our project, etc.
 
 ## 📖 Resources to help you get started
 
@@ -83,24 +86,26 @@ Features can be requested by opening an issue using the
 If you encounter a bug while using the ReVanced Manager app, open an issue using the
 [bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
 
-## 📝 How to contribute
+## 🌐 Submitting translations
+
+You can contribute translations at translate.revanced.app
 
 > [!TIP]
-> We recommend that you discuss your changes with 
-> the maintainers of ReVanced Manager before contributing. 
-> This will help you determine whether your change is acceptable.
+> * Try to keep the translated text roughly the same length as the original.
+> * Consider opting for gender-neutral words for language with variations of words based on gender.
 
-1. Fork the repository and create your branch from `dev`
-2. Commit your changes
-3. Submit a pull request to the `dev` branch of the repository and reference issues that your pull request closes in the description of your pull request
-4. Our team will review your pull request and provide feedback. Once your pull request is approved, it will be merged into the `dev` branch and will be included in 
-   the next release of ReVanced Manager
+## 🧑‍💻 Developing for ReVanced Manager
 
-## 🤚 I want to contribute but don't know how to code
+See the guidelines for developing for ReVanced Manager [here](/docs/developer/README.md)
 
-Even if you don't know how to code, you can still contribute by 
-translating ReVanced Manager on [Crowdin](https://translate.revanced.app/)
-or sponsor us at [GitHub Sponsor](https://github.com/sponsors/ReVanced) and [Open Collective](https://opencollective.com/ReVanced).
+## 🔒 Submitting a vulnerability
+
+See the guideline for reporting security vulnerability [here](/SECURITY.md)
+
+## 🤚 I don't want to do any of that but I want to contribute either way
+
+You can still contribute by spreading positive word about us or if you'd like to sponsor us, checkout https://revanced.app/donate 
+to learn more on how to you can sponsor via GitHub, Open Collective and cryptocurrencies.
 
 ❤️ Thank you for considering contributing to ReVanced Manager,
 ReVanced
