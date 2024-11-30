@@ -570,8 +570,6 @@ class InstallerViewModel extends BaseViewModel {
       _patcherAPI.cleanPatcher();
       if (_app.isFromStorage) {
         // The selected apk was copied to cacheDir by the file picker, so it's not needed anymore.
-        // rename() can't be used here, as Android system also counts the size of files moved out from cacheDir
-        // as part of the app's cache size.
         File(_app.apkFilePath).delete();
       }
       locator<PatcherViewModel>().selectedApp = null;
