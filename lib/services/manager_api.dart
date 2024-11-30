@@ -367,9 +367,7 @@ class ManagerAPI {
     File outFile,
   ) async {
     deleteLastPatchedApp();
-    final Directory appCache = await getApplicationCacheDirectory();
-    app.patchedFilePath =
-        outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
+    app.patchedFilePath = outFile.path;
     app.fileSize = outFile.lengthSync();
     await _prefs.setString(
       'lastPatchedApp',
