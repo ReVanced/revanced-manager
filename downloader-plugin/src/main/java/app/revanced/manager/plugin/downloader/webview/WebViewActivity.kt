@@ -2,20 +2,33 @@ package app.revanced.manager.plugin.downloader.webview
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.MenuItem
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewModelScope
 import app.revanced.manager.plugin.downloader.R
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
-// TODO: use ComponentActivity instead.
-class WebViewActivity : AppCompatActivity() {
+class WebViewActivity : ComponentActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val vm by viewModels<WebViewModel>()
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_webview)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -23,10 +36,16 @@ class WebViewActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val cookieManager = CookieManager.getInstance()
-        findViewById<WebView>(R.id.content).apply {
-            cookieManager.setAcceptCookie(true)
-            // TODO: murder cookies if this is the first time setting it up.
+        actionBar?.apply {
+            title = intent.getStringExtra(TITLE_KEY)
+            setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val events = IWebViewEvents.Stub.asInterface(intent.extras!!.getBinder(BINDER_KEY))!!
+        vm.setup(events)
+
+        val webView = findViewById<WebView>(R.id.content).apply {
             settings.apply {
                 cacheMode = WebSettings.LOAD_NO_CACHE
                 databaseEnabled = false
@@ -34,6 +53,86 @@ class WebViewActivity : AppCompatActivity() {
                 domStorageEnabled = false
                 javaScriptEnabled = true
             }
+
+            webViewClient = vm.webViewClient
+            setDownloadListener { url, userAgent, _, mimetype, _ ->
+                vm.onDownload(url, mimetype, userAgent)
+            }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                vm.commands.collect {
+                    when (it) {
+                        is WebViewModel.Command.Finish -> {
+                            setResult(RESULT_OK)
+                            finish()
+                        }
+
+                        is WebViewModel.Command.Load -> webView.loadUrl(it.url)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == android.R.id.home) {
+        setResult(RESULT_CANCELED)
+        finish()
+        true
+    } else super.onOptionsItemSelected(item)
+
+    internal companion object {
+        const val BINDER_KEY = "EVENTS"
+        const val TITLE_KEY = "TITLE"
+    }
+}
+
+internal class WebViewModel : ViewModel() {
+    init {
+        CookieManager.getInstance().apply {
+            removeAllCookies(null)
+            setAcceptCookie(true)
+        }
+    }
+
+    private val commandChannel = Channel<Command>()
+    val commands = commandChannel.receiveAsFlow()
+
+    private var eventBinder: IWebViewEvents? = null
+    private val ctrlBinder = object : IWebView.Stub() {
+        override fun load(url: String?) {
+            viewModelScope.launch {
+                commandChannel.send(Command.Load(url!!))
+            }
+        }
+
+        override fun finish() {
+            viewModelScope.launch {
+                commandChannel.send(Command.Finish)
+            }
+        }
+    }
+
+    val webViewClient = object : WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+            eventBinder!!.pageLoad(url)
+        }
+    }
+
+    fun onDownload(url: String, mimeType: String, userAgent: String) {
+        eventBinder!!.download(url, mimeType, userAgent)
+    }
+
+    fun setup(binder: IWebViewEvents) {
+        if (eventBinder != null) return
+        eventBinder = binder
+        binder.ready(ctrlBinder)
+    }
+
+    sealed interface Command {
+        data class Load(val url: String) : Command
+        data object Finish : Command
     }
 }

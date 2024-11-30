@@ -3,16 +3,12 @@
 package app.revanced.manager.plugin.downloader.example
 
 import android.app.Application
-import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Parcelable
-import app.revanced.manager.plugin.downloader.download
 import app.revanced.manager.plugin.downloader.downloader
-import app.revanced.manager.plugin.downloader.requestStartActivity
+import app.revanced.manager.plugin.downloader.webview.DownloadUrl
+import app.revanced.manager.plugin.downloader.webview.webView
 import kotlinx.parcelize.Parcelize
-import java.nio.file.Files
-import kotlin.io.path.Path
-import kotlin.io.path.fileSize
-import kotlin.io.path.inputStream
 
 // TODO: document API, update UI error presentation and strings
 
@@ -26,9 +22,10 @@ private val application by lazy {
     clazz.getMethod("getApplication")(activityThread) as Application
 }
 
-val installedAppDownloader = downloader<InstalledApp> {
+val installedAppDownloader = downloader<DownloadUrl> {
     val pm = application.packageManager
 
+    /*
     get { packageName, version ->
         val packageInfo = try {
             pm.getPackageInfo(packageName, 0)
@@ -40,8 +37,37 @@ val installedAppDownloader = downloader<InstalledApp> {
         requestStartActivity<InteractionActivity>()
 
         InstalledApp(packageInfo.applicationInfo.sourceDir) to packageInfo.versionName
+    }*/
+    webView { packageName, version ->
+        val startUrl = with(Uri.Builder()) {
+            scheme("https")
+            authority("www.apkmirror.com")
+            mapOf(
+                "post_type" to "app_release",
+                "searchtype" to "apk",
+                "s" to (version?.let { "$packageName $it" } ?: packageName),
+                "bundles%5B%5D" to "apk_files" // bundles[]
+            ).forEach { (key, value) ->
+                appendQueryParameter(key, value)
+            }
+
+            build().toString()
+        }
+
+        onDownload { url, mimeType, userAgent ->
+            finish(DownloadUrl(url, mimeType, userAgent) to version)
+        }
+
+        onReady {
+            load(startUrl)
+        }
     }
 
+    download { downloadable ->
+        downloadable.toResult()
+    }
+
+    /*
     download { app ->
         with(Path(app.path)) { inputStream() to fileSize() }
     }
@@ -50,5 +76,5 @@ val installedAppDownloader = downloader<InstalledApp> {
         val path = Path(app.path)
         reportSize(path.fileSize())
         Files.copy(path, outputStream)
-    }
+    }*/
 }

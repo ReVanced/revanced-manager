@@ -215,6 +215,8 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
                         ParceledDownloaderData(plugin, data)
                     )
                 } ?: app.toast("App was not found")
+            } catch (e: UserInteractionException.Activity) {
+                app.toast(e.message!!)
             } finally {
                 pluginAction = null
                 dismissSourceSelector()

@@ -48,6 +48,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".plugin.downloader.webview.WebViewActivity" android:exported="false" android:theme="@style/Theme.WebViewActivity" />
+
         <service android:name=".service.InstallService" />
         <service android:name=".service.UninstallService" />
 

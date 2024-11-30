@@ -4,7 +4,8 @@ material3 = "1.3.1"
 ui-tooling = "1.7.5"
 viewmodel-lifecycle = "2.8.7"
 splash-screen = "1.0.1"
-compose-activity = "1.9.3"
+activity = "1.9.3"
+appcompat = "1.7.0"
 preferences-datastore = "1.1.1"
 work-runtime = "2.10.0"
 compose-bom = "2024.11.00"
@@ -37,21 +38,17 @@ compose-icons = "1.2.4"
 kotlin-process = "1.4.1"
 hidden-api-stub = "4.3.3"
 
-# TODO: get rid of these.
-appcompat = "1.7.0"
-material = "1.12.0"
-activity = "1.9.1"
-constraintlayout = "2.1.4"
-
 [libraries]
 # AndroidX Core
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "viewmodel-lifecycle" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -137,12 +134,6 @@ reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reo
 # Compose Icons
 # switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
 compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
-
-
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

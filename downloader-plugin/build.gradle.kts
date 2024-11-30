@@ -31,12 +31,15 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        aidl = true
+    }
 }
 dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.ktx)
+    implementation(libs.activity.ktx)
+    implementation(libs.runtime.ktx)
+    implementation(libs.appcompat)
 }
 
 publishing {
