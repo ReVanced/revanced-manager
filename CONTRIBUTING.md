@@ -58,26 +58,54 @@
    Continuing the legacy of Vanced
 </p>
 
-# 🔒 Security Policy
+# 👋 Contribution guidelines
 
-This document describes how to report security vulnerabilities for ReVanced Manager.
+Welcome to contribution guidelines, this document contains 
+everything you'll need to contribute to ReVanced Manager (and might even possibly apply to our other project like ReVanced Patches!)
 
-## 🚨 Reporting a Vulnerability
+There are many ways to contribute like writing docs and code, opening issues, 
+helping people out in our community, translating or sponsoring our project, etc.
 
-Please open an issue in our [advisory tracker](https://github.com/ReVanced/revanced-manager/security/advisories/new) 
-or reach out privately to us on [Discord](https://discord.gg/revanced).
+## 📖 Resources to help you get started
 
-If a vulnerability is confirmed and accepted, they will be published and 
-you can join our [Discord](https://discord.gg/revanced) server to receive a 
-special contributor role.
+* The [documentation](/docs/developer/README.md) provides steps to build ReVanced Manager from source
+* Our [backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
+* [Issues](https://github.com/ReVanced/revanced-manager/issues) are where we keep track of bugs and feature requests
 
-### ⏳ Supported Versions
+## 🙏 Submitting a feature request
 
-| Version                                  | Branch        | Supported          |
-| ---------------------------------------- | ------------- | ------------------ |
-| ![Latest stable release][LatestRelBadge] | `main`        | :white_check_mark: |
-| ![Latest version][LatestVerBadge]        | `dev`         | :white_check_mark: |
-| ![Latest version][LatestVerBadge]        | `compose-dev` | :white_check_mark: |
+Features can be requested by opening an issue using the
+[feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=feature-request&projects=&template=feature-issue.yml&title=feat%3A+%3Ctitle%3E).
 
-[LatestRelBadge]: https://img.shields.io/github/v/release/ReVanced/revanced-manager?style=for-the-badge "Latest stable release"
-[LatestVerBadge]: https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version"
+> [!NOTE]
+> Requests can be accepted or rejected at the discretion of maintainers of ReVanced Manager. 
+> Good motivation has to be provided for a request to be accepted.
+
+## 🐞 Submitting a bug report
+
+If you encounter a bug while using the ReVanced Manager app, open an issue using the
+[bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
+
+## 🌐 Submitting translations
+
+You can contribute translations at translate.revanced.app
+
+> [!TIP]
+> * Try to keep the translated text roughly the same length as the original.
+> * Consider opting for gender-neutral words for language with variations of words based on gender.
+
+## 🧑‍💻 Developing for ReVanced Manager
+
+See the guidelines for developing for ReVanced Manager [here](/docs/developer/README.md)
+
+## 🔒 Submitting a vulnerability
+
+See the guideline for reporting security vulnerability [here](/SECURITY.md)
+
+## 🤚 I don't want to do any of that but I want to contribute either way
+
+You can still contribute by spreading positive word about us or if you'd like to sponsor us, checkout https://revanced.app/donate 
+to learn more on how to you can sponsor via GitHub, Open Collective and cryptocurrencies.
+
+❤️ Thank you for considering contributing to ReVanced Manager,
+ReVanced
