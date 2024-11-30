@@ -15,7 +15,7 @@ dependencyResolutionManagement {
         maven("https://jitpack.io")
         mavenLocal()
         maven {
-            // A repository must be speficied for some reason. "registry" is a dummy.
+            // A repository must be specified for some reason. "registry" is a dummy.
             url = uri("https://maven.pkg.github.com/revanced/registry")
             credentials {
                 username = System.getenv("GITHUB_ACTOR") ?: extra["gpr.user"] as String?
