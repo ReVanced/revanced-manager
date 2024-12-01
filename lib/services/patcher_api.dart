@@ -182,7 +182,15 @@ class PatcherAPI {
       File(apkFilePath).delete();
     }
 
-    outFile = File('${workDir.path}/out.apk');
+    if (_managerAPI.isLastPatchedAppEnabled()) {
+      // Get a random name from temp dir
+      // This is to avoid overwriting the last patched app
+      final String randomName = workDir.path.split('/')[workDir.path.split('/').length - 1];
+      final Directory cacheDir = await getApplicationSupportDirectory();
+      outFile = File('${cacheDir.path}/$randomName.apk');
+    } else {
+      outFile = File('${workDir.path}/out.apk');
+    }
 
     final Directory tmpDir =
         Directory('${workDir.path}/revanced-temporary-files');
