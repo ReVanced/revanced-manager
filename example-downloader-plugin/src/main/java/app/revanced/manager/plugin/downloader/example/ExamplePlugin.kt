@@ -54,11 +54,15 @@ val installedAppDownloader = downloader<DownloadUrl> {
             build().toString()
         }
 
-        onDownload { url, mimeType, userAgent ->
-            finish(DownloadUrl(url, mimeType, userAgent) to version)
+        download { url, _, userAgent ->
+            finish(DownloadUrl(url, userAgent) to version)
         }
 
-        onReady {
+        pageLoad { url ->
+            println(url)
+        }
+
+        ready {
             load(startUrl)
         }
     }
