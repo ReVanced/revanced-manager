@@ -12,7 +12,7 @@ environment:
 dependencies:
   animations: ^2.0.11
   collection: ^1.18.0
-  connectivity_plus: ^6.0.3
+  connectivity_plus: ^6.1.0
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
@@ -23,18 +23,18 @@ dependencies:
   dynamic_color: ^1.7.0
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker: ^8.0.5
+  file_picker: ^8.1.4
   flutter:
     sdk: flutter
   flutter_background: ^1.3.0+1
   flutter_cache_manager: ^3.3.2
   flutter_file_dialog: ^3.0.2
-  flutter_local_notifications: ^17.1.0
+  flutter_local_notifications: ^18.0.1
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.7.3
+  flutter_markdown: ^0.7.4+3
   fluttertoast: ^8.2.5
-  font_awesome_flutter: ^10.7.0
+  font_awesome_flutter: ^10.8.0
   google_fonts: ^6.2.1
   injectable: ^2.4.0
   intl: 0.19.0
@@ -44,8 +44,8 @@ dependencies:
     git:
       url: https://github.com/BenjaminHalko/logcat
       ref: 4a6d5e0e22292c8eb160cfb9365b9ea29735fd43 # Branch: master
-  package_info_plus: ^8.0.2
-  path_provider: ^2.1.3
+  package_info_plus: ^8.1.1
+  path_provider: ^2.1.5
   permission_handler: ^11.3.1
   root:
     git:
@@ -55,8 +55,8 @@ dependencies:
     git: # remove once https://github.com/flutter-moum/flutter_screenshot_callback/pull/81 is merged
       url: https://github.com/BenjaminHalko/flutter_screenshot_callback
       ref: 1a1616ac91e16cd1f3dd170a81febf27ffce3587 # Branch: master
-  share_plus: ^10.0.2
-  shared_preferences: ^2.2.3
+  share_plus: ^10.1.2
+  shared_preferences: ^2.3.3
   skeletons:
     git: # remove once https://github.com/badjio/skeletons/pull/11 is merged
       url: https://github.com/Ofceab-Studio/skeletons
@@ -65,11 +65,11 @@ dependencies:
   slang_flutter: ^3.30.0
   stacked: ^3.4.2
   stacked_generator: ^1.6.0
-  stacked_services: ^1.5.0
+  stacked_services: ^1.6.0
   synchronized: ^3.1.0+1
   timeago: ^3.6.1
-  timezone: ^0.9.3
-  url_launcher: ^6.2.6
+  timezone: ^0.10.0
+  url_launcher: ^6.3.1
   wakelock_plus: ^1.2.4
 
 dev_dependencies:
@@ -77,7 +77,7 @@ dev_dependencies:
   build_runner: ^2.4.12
   flutter_lints: ^5.0.0
   injectable_generator: ^2.6.1
-  json_serializable: ^6.8.0
+  json_serializable: ^6.9.0
 
 flutter:
   uses-material-design: true
