@@ -16,7 +16,7 @@
   "showUpdateButton": "Pokaż aktualizację",
   "navigationView": {
     "dashboardTab": "Panel główny",
-    "patcherTab": "Program łatający",
+    "patcherTab": "Łataj",
     "settingsTab": "Ustawienia"
   },
   "homeView": {
@@ -27,12 +27,12 @@
     "patchedSubtitle": "Zainstalowane aplikacje",
     "changeLaterSubtitle": "Możesz zmienić to później w ustawieniach.",
     "noSavedAppFound": "Nie znaleziono aplikacji",
-    "noInstallations": "Nie zainstalowano żadnych poprawionych aplikacji",
+    "noInstallations": "Nie zainstalowano żadnych łatanych aplikacji",
     "installUpdate": "Kontynuować instalację aktualizacji?",
     "updateSheetTitle": "Zaktualizuj Menedżera ReVanced",
     "updateDialogTitle": "Dostępna jest nowa aktualizacja",
     "updatePatchesSheetTitle": "Zaktualizuj łatki ReVanced",
-    "updateChangelogTitle": "Dziennik zmian",
+    "updateChangelogTitle": "Lista zmian",
     "updateDialogText": "Nowa aktualizacja jest dostępna dla ${file}.\n\nAktualnie zainstalowana wersja to ${version}.",
     "downloadConsentDialogTitle": "Pobrać potrzebne pliki?",
     "downloadConsentDialogText": "Menedżer ReVanced musi pobrać niezbędne pliki do prawidłowego działania.",
@@ -52,11 +52,11 @@
     "timeagoLabel": "${time} temu"
   },
   "patcherView": {
-    "widgetTitle": "Program łatający",
-    "patchButton": "Popraw",
-    "incompatibleArchWarningDialogText": "Aktualizowanie na tej architekturze nie jest jeszcze obsługiwane i może się nie powieść. Czy chcesz kontynuować mimo to?",
-    "removedPatchesWarningDialogText": "Usunięto plastry od ostatniego wprowadzenia aplikacji:\n\n${patches}\n\n${newPatches}Kontynuować?",
-    "addedPatchesDialogText": "Dodano plastry od ostatniej aktualizacji aplikacji:\n\n${addedPatches}\n\n",
+    "widgetTitle": "Łataj",
+    "patchButton": "Załataj",
+    "incompatibleArchWarningDialogText": "Łatanie na tej architekturze nie jest jeszcze obsługiwane i może się nie powieść. Czy chcesz kontynuować mimo to?",
+    "removedPatchesWarningDialogText": "Łatki usunięte od czasu Twojego ostatniego łatania aplikacji:\n\n${patches}\n\n${newPatches}Kontynuować?",
+    "addedPatchesDialogText": "Łatki dodane od czasu Twojego ostatniego łatania aplikacji:\n\n${addedPatches}\n",
     "requiredOptionDialogText": "Niektóre opcje muszą być ustawione."
   },
   "appSelectorCard": {
@@ -85,7 +85,7 @@
     "downloadToast": "Funkcja pobierania jest jeszcze niedostępna",
     "requireSuggestedAppVersionDialogText": "Wersja aplikacji, która została wybrana nie jest sugerowana, co może prowadzić do nieoczekiwanych problemów. Proszę wybrać sugerowaną wersję aplikacji.\n\nWybrana wersja: ${selected}\nSugerowana wersja: ${suggested}\n\nAby kontynuować, wyłącz \"Wymagaj sugerowanej wersji aplikacji\" w ustawieniach.",
     "featureNotAvailable": "Funkcja nie zaimplementowana",
-    "featureNotAvailableText": "Ta aplikacja jest podzieloną APK i może być zainstalowana tylko korzystając z uprawnień roota. Jednakże możesz załatać i zainstalować pełną APK wybierając ją z pamięci."
+    "featureNotAvailableText": "Ta aplikacja jest podzieloną APK i może być załatana i zainstalowana tylko korzystając z uprawnień roota. Jednakże możesz załatać i zainstalować pełną APK wybierając ją z pamięci."
   },
   "patchesSelectorView": {
     "viewTitle": "Wybierz łatki",
@@ -118,7 +118,7 @@
     "requiredOptionNull": "Należy ustawić następujące opcje:\n\n${options}"
   },
   "patchItem": {
-    "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas modyfikowania.\n\nWersja aplikacji: ${packageVersion}\nAktualnie wspierana wersja:\n${supportedVersions}",
+    "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas łatania.\n\nWersja aplikacji: ${packageVersion}\nAktualnie wspierana wersja:\n${supportedVersions}",
     "unsupportedPatchVersion": "Łatka nie jest wspierana dla tej wersji aplikacji.",
     "unsupportedRequiredOption": "Ta łatka wymaga ustawienia opcji, która nie jest wspierana przez tę aplikację",
     "patchesChangeWarningDialogText": "Zalecane jest użycie domyślnej listy wyboru łatek i opcji. Ich zmiana może spowodować nieoczekiwane problemy.\n\nMusisz włączyć \"Zezwól na zmianę listy wyboru łatek\" w ustawieniach przed zmianą listy wyboru łatek.",
@@ -135,7 +135,7 @@
     "openButton": "Otwórz",
     "notificationTitle": "Menedżer ReVanced jest w trakcie działania",
     "notificationText": "Kliknij, aby powrócić do instalatora",
-    "exportApkButtonTooltip": "Wyeksportuj załatane APK",
+    "exportApkButtonTooltip": "Wyeksportuj załatany plik APK",
     "exportLogButtonTooltip": "Wyeksportuj logi",
     "screenshotDetected": "Wykryto zrzut ekranu. Jeżeli próbujesz udostępnić logi, proszę udostępnić kopię tekstu.\n\nSkopiować logi?",
     "copiedToClipboard": "Logi skopiowane",
@@ -158,13 +158,13 @@
     "languageLabel": "Język",
     "languageUpdated": "Zaktualizowano język",
     "sourcesLabel": "Alternatywne źródło",
-    "sourcesLabelHint": "Skonfiguruj alternatywne źródła dla ulepszonych patchów",
+    "sourcesLabelHint": "Skonfiguruj alternatywne źródła dla łatek ReVanced",
     "useAlternativeSources": "Używaj alternatywnych źródeł",
-    "useAlternativeSourcesHint": "Użyj alternatywnych źródeł dla ulepszonych patchów zamiast API",
+    "useAlternativeSourcesHint": "Użyj alternatywnych źródeł dla łatek ReVanced zamiast API",
     "sourcesResetDialogTitle": "Zresetuj",
-    "sourcesResetDialogText": "Czy na pewno chcesz przywrócić źródła niestandardowe do ich wartości domyślnych?",
+    "sourcesResetDialogText": "Czy na pewno chcesz przywrócić niestandardowe źródła do ich wartości domyślnych?",
     "apiURLResetDialogText": "Czy jesteś pewien, że chcesz przywrócić wszystkie adresy API do domyślnych wartości?",
-    "sourcesUpdateNote": "Uwaga: Spowoduje to automatyczne pobranie ulepszonych Patchów z alternatywnych źródeł.\n\nTo połączy Cię z alternatywnym źródłem.",
+    "sourcesUpdateNote": "Uwaga: Spowoduje to automatyczne pobranie łatek ReVanced z alternatywnych źródeł.\n\nTo połączy Cię z alternatywnym źródłem.",
     "apiURLLabel": "Adres API",
     "apiURLHint": "Skonfiguruj adres API Menedżera ReVanced",
     "selectApiURL": "Adres API",
@@ -252,7 +252,7 @@
     "lastPatchedAppDescription": "To jest kopia zapasowa aplikacji, która została ostatnio zmodyfikowana.",
     "unmountDialogText": "Czy na pewno chcesz odinstalować tę aplikację?",
     "uninstallDialogText": "Czy na pewno chcesz odinstalować tę aplikację?",
-    "rootDialogText": "Aplikacja została zainstalowana z uprawnieniami superużytkownika, ale obecnie Menedżer ReVanced nie ma uprawnień.\nProszę najpierw przyznać uprawnienia superużytkownika.",
+    "rootDialogText": "Aplikacja została zainstalowana z uprawnieniami roota, ale obecnie Menedżer ReVanced nie ma uprawnień.\nProszę najpierw przyznać uprawnienia roota.",
     "removeAppDialogTitle": "Usunąć aplikację?",
     "removeAppDialogText": "Czy na pewno chcesz usunąć tę kopię zapasową?",
     "packageNameLabel": "Nazwa pakietu",
@@ -288,7 +288,7 @@
     "status_failure_timeout_description": "Instalacja trwała zbyt długo.\n\nCzy chcesz spróbować ponownie?",
     "status_failure_storage_description": "Instalacja nie powiodła się z powodu niewystarczającej ilości pamięci.\n\nZwolnij trochę miejsca i spróbuj ponownie.",
     "status_failure_invalid_description": "Instalacja nie powiodła się ze względu na nieprawidłową załataną aplikację.\n\nCzy chcesz odinstalować aplikację i spróbować ponownie?",
-    "status_failure_incompatible_description": "Aplikacja jest niekompatybilna z tym urządzeniem.\n\nUżyj APK, który jest obsługiwany przez to urządzenie i spróbuj ponownie.",
+    "status_failure_incompatible_description": "Aplikacja jest niekompatybilna z tym urządzeniem.\n\nUżyj pliku APK, który jest obsługiwany przez to urządzenie i spróbuj ponownie.",
     "status_failure_conflict_description": "Instalacja została uniemożliwiona przez istniejącą instalację aplikacji.\n\nCzy chcesz odinstalować zainstalowaną aplikację i spróbować ponownie?",
     "status_failure_blocked_description": "Instalacja została zablokowana przez ${packageName}.\n\nDostosuj ustawienia zabezpieczeń i spróbuj ponownie.",
     "install_failed_verification_failure_description": "Instalacja nie powiodła się z powodu problemu weryfikacji.\n\nDostosuj ustawienia zabezpieczeń i spróbuj ponownie.",

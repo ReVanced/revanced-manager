@@ -9,7 +9,7 @@
   "noButton": "Não",
   "warning": "Atenção",
   "notice": "Nota",
-  "noShowAgain": "Não mostrar de novo",
+  "noShowAgain": "Não mostrar isso novamente",
   "add": "Adicionar",
   "remove": "Remover",
   "showChangelogButton": "Mostrar alterações",
@@ -42,7 +42,7 @@
     "installingMessage": "Instalando atualização...",
     "errorDownloadMessage": "Não é possível baixar a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
-    "noConnection": "Sem conexão"
+    "noConnection": "Sem conexão com a internet"
   },
   "applicationItem": {
     "infoButton": "Informações"
@@ -55,6 +55,8 @@
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "A aplicação de patches nesta arquitetura ainda não é suportada e pode falhar. Continuar mesmo assim?",
+    "removedPatchesWarningDialogText": "Patches removidos desde a última vez que você aplicou patches neste app:\n\n${patches}\n\n${newPatches}Continuar mesmo assim?",
+    "addedPatchesDialogText": "Patches adicionados desde a última vez que você aplicou patches neste app:\n\n${addedPatches}\n",
     "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas."
   },
   "appSelectorCard": {
@@ -156,10 +158,13 @@
     "languageLabel": "Idioma",
     "languageUpdated": "Idioma atualizado",
     "sourcesLabel": "Fontes alternativas",
+    "sourcesLabelHint": "Configure as fontes alternativas para os Patches ReVanced",
     "useAlternativeSources": "Usar fontes alternativas",
+    "useAlternativeSourcesHint": "Use fontes alternativas para os Patches ReVanced em vez da API",
     "sourcesResetDialogTitle": "Redefinir",
     "sourcesResetDialogText": "Você tem certeza que quer redefinir as fontes para o padrão?",
     "apiURLResetDialogText": "Tem certeza de que quer redefinir o URL da API para o padrão?",
+    "sourcesUpdateNote": "Nota: Isso vai automaticamente fazer o download dos Patches ReVanced das fontes alternativas.\n\nIsso vai conectar você à fonte alternativa.",
     "apiURLLabel": "URL da API",
     "apiURLHint": "Configure o URL da API do ReVanced Manager",
     "selectApiURL": "URL da API",
@@ -192,6 +197,12 @@
     "deleteTempDirLabel": "Apagar arquivos temporários",
     "deleteTempDirHint": "Apagar arquivos temporários não utilizados",
     "deletedTempDir": "Arquivos temporários apagados",
+    "exportSettingsLabel": "Exportar configurações",
+    "exportSettingsHint": "Exportar opções para arquivo JSON",
+    "exportedSettings": "Configurações exportadas",
+    "importSettingsLabel": "Importar configurações",
+    "importSettingsHint": "Importar opções de arquivo JSON",
+    "importedSettings": "Configurações importadas",
     "exportPatchesLabel": "Exportar a seleção do patch",
     "exportPatchesHint": "Exportar a seleção do patch para um arquivo JSON",
     "exportedPatches": "Seleção do patch exportada",
