@@ -41,13 +41,12 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
-import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstalledAppInfoScreen(
-    onPatchClick: (packageName: String, patchSelection: PatchSelection) -> Unit,
+    onPatchClick: (packageName: String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: InstalledAppInfoViewModel
 ) {
@@ -134,9 +133,7 @@ fun InstalledAppInfoScreen(
                     icon = Icons.Outlined.Update,
                     text = stringResource(R.string.repatch),
                     onClick = {
-                        viewModel.appliedPatches?.let {
-                            onPatchClick(viewModel.installedApp.originalPackageName, it)
-                        }
+                        onPatchClick(viewModel.installedApp.originalPackageName)
                     },
                     enabled = viewModel.installedApp.installType != InstallType.MOUNT || viewModel.rootInstaller.hasRootAccess()
                 )

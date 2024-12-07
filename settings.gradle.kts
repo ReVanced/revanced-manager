@@ -26,3 +26,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ReVanced Manager"
 include(":app")
+include(":downloader-plugin")
+include(":example-downloader-plugin")

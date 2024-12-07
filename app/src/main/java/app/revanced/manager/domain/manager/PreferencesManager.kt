@@ -18,8 +18,6 @@ class PreferencesManager(
     val keystoreCommonName = stringPreference("keystore_cn", KeystoreManager.DEFAULT)
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)
 
-    val preferSplits = booleanPreference("prefer_splits", false)
-
     val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
     val showManagerUpdateDialogOnLaunch = booleanPreference("show_manager_update_dialog_on_launch", true)
@@ -28,4 +26,6 @@ class PreferencesManager(
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
     val disableUniversalPatchWarning = booleanPreference("disable_universal_patch_warning", false)
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
+
+    val acknowledgedDownloaderPlugins = stringSetPreference("acknowledged_downloader_plugins", emptySet())
 }
