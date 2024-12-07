@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
@@ -49,7 +48,7 @@ import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -135,19 +134,18 @@ fun PatchesSelectorScreen(
         }
     }
 
-    // TODO: properly handle appVersion == null
-    if (vm.compatibleVersions.isNotEmpty() && vm.appVersion != null)
+    if (vm.compatibleVersions.isNotEmpty())
         UnsupportedPatchDialog(
-            appVersion = vm.appVersion,
+            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
         )
     var showUnsupportedPatchesDialog by rememberSaveable {
         mutableStateOf(false)
     }
-    if (showUnsupportedPatchesDialog && vm.appVersion != null)
+    if (showUnsupportedPatchesDialog)
         UnsupportedPatchesDialog(
-            appVersion = vm.appVersion,
+            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
             onDismissRequest = { showUnsupportedPatchesDialog = false }
         )
 

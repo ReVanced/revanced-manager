@@ -45,6 +45,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -104,6 +105,12 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
                     ) to installedAppDeferred.await()
                 }
         }
+    }
+
+    val requiredVersion = combine(prefs.suggestedVersionSafeguard.flow, bundleRepository.suggestedVersions) { suggestedVersionSafeguard, suggestedVersions ->
+        if (!suggestedVersionSafeguard) return@combine null
+
+        suggestedVersions[input.app.packageName]
     }
 
     var options: Options by savedStateHandle.saveable {

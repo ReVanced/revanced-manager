@@ -126,6 +126,8 @@ fun SelectedAppInfoScreen(
                 val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
 
                 if (vm.showSourceSelector) {
+                    val requiredVersion by vm.requiredVersion.collectAsStateWithLifecycle(null)
+
                     AppSourceSelectorDialog(
                         plugins = plugins,
                         installedApp = vm.installedAppData,
@@ -137,6 +139,7 @@ fun SelectedAppInfoScreen(
                         hasRoot = vm.hasRoot,
                         onDismissRequest = vm::dismissSourceSelector,
                         onSelectPlugin = vm::searchInPlugin,
+                        requiredVersion = requiredVersion,
                         onSelect = {
                             vm.selectedApp = it
                             vm.dismissSourceSelector()
@@ -256,6 +259,7 @@ private fun AppSourceSelectorDialog(
     searchApp: SelectedApp.Search,
     activeSearchJob: String?,
     hasRoot: Boolean,
+    requiredVersion: String?,
     onDismissRequest: () -> Unit,
     onSelectPlugin: (LoadedDownloaderPlugin) -> Unit,
     onSelect: (SelectedApp) -> Unit,
@@ -292,12 +296,14 @@ private fun AppSourceSelectorDialog(
                             meta?.installType == InstallType.MOUNT && !hasRoot -> false to "Mounted apps cannot be patched again without root access"
                             // Patching already patched apps is not allowed because patches expect unpatched apps.
                             meta?.installType == InstallType.DEFAULT -> false to stringResource(R.string.already_patched)
+                            // Version does not match suggested version.
+                            requiredVersion != null && app.version != requiredVersion -> false to "Version ${app.version} does not match the suggested version"
                             else -> true to app.version
                         }
                         ListItem(
                             modifier = Modifier
                                 .clickable(enabled = canSelect && usable) { onSelect(app) }
-                                .enabled(usable), // TODO: version safeguard
+                                .enabled(usable),
                             headlineContent = { Text(stringResource(R.string.installed)) },
                             supportingContent = { Text(text) },
                             colors = transparentListItemColors

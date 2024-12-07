@@ -4,23 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import app.revanced.manager.plugin.downloader.DownloaderScope
-import app.revanced.manager.plugin.downloader.GetResult
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.Scope
+import app.revanced.manager.plugin.downloader.downloader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import java.net.HttpURLConnection
 import java.net.URI
 import kotlin.properties.Delegates
 
-internal typealias PageLoadCallback<T> = suspend WebViewCallbackScope<T>.(url: String) -> Unit
-internal typealias DownloadCallback<T> = suspend WebViewCallbackScope<T>.(url: String, mimeType: String, userAgent: String) -> Unit
-internal typealias ReadyCallback<T> = suspend WebViewCallbackScope<T>.() -> Unit
+typealias InitialUrl = String
+typealias PageLoadCallback<T> = suspend WebViewCallbackScope<T>.(url: String) -> Unit
+typealias DownloadCallback<T> = suspend WebViewCallbackScope<T>.(url: String, mimeType: String, userAgent: String) -> Unit
 
 @Parcelize
 /**
@@ -61,21 +64,18 @@ class WebViewScope<T> internal constructor(
 ) : Scope by scopeImpl {
     private var onPageLoadCallback: PageLoadCallback<T> = {}
     private var onDownloadCallback: DownloadCallback<T> = { _, _, _ -> }
-    private var onReadyCallback: ReadyCallback<T> =
-        { throw Exception("Ready callback not set") }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = Dispatchers.Default.limitedParallelism(1)
-    private var current: IWebView? = null
-    private val webView: IWebView
-        inline get() = current ?: throw Exception("WebView interface unavailable")
+    private lateinit var webView: IWebView
+    internal lateinit var initialUrl: String
 
     internal val binder = object : IWebViewEvents.Stub() {
         override fun ready(iface: IWebView?) {
             coroutineScope.launch(dispatcher) {
-                val wasNull = current == null
-                current = iface
-                if (wasNull) onReadyCallback(callbackScope)
+                webView = iface!!.also {
+                    it.load(initialUrl)
+                }
             }
         }
 
@@ -121,53 +121,71 @@ class WebViewScope<T> internal constructor(
     fun pageLoad(block: PageLoadCallback<T>) {
         onPageLoadCallback = block
     }
-
-    /**
-     * Called when the WebView is ready. This should always call [WebViewCallbackScope.load].
-     */
-    fun ready(block: ReadyCallback<T>) {
-        onReadyCallback = block
-    }
 }
 
 @JvmInline
 private value class Container<U>(val value: U)
 
-private suspend fun <T> GetScope.runWebView(title: String, block: WebViewScope<T>.() -> Unit) =
-    coroutineScope {
-        var result by Delegates.notNull<Container<T>>()
-
-        val scope = WebViewScope<T>(this@coroutineScope, this@runWebView) { result = Container(it) }
-        scope.block()
-
-        // Start the webview activity and wait until it finishes
-        requestStartActivity(Intent().apply {
-            putExtras(Bundle().apply {
-                putBinder(WebViewActivity.BINDER_KEY, scope.binder)
-                putString(WebViewActivity.TITLE_KEY, title)
-            })
-            setClassName(
-                hostPackageName,
-                WebViewActivity::class.qualifiedName!!
-            )
-        })
-
-        result.value
-    }
-
 /**
- * Implements [DownloaderScope.get] using an [android.webkit.WebView]. Event handlers are defined in the provided [block].
+ * Run a [android.webkit.WebView] Activity controlled by the provided code block.
  * The activity will keep running until it is cancelled or an event handler calls [WebViewCallbackScope.finish].
  *
- * @param title The title that will be shown in the WebView activity. The default value is the plugin application label.
+ * @param title The string displayed in the action bar
+ * @param block Defines event handlers and returns an initial URL
  */
-fun <T : Parcelable> DownloaderScope<T>.webView(
-    title: String = context.applicationInfo.loadLabel(
-        context.packageManager
-    ).toString(),
-    block: WebViewScope<GetResult<T>?>.(packageName: String, version: String?) -> Unit
-) = get { pkgName, version ->
-    runWebView(title) {
-        block(pkgName, version)
-    }
+suspend fun <T> GetScope.runWebView(
+    title: String,
+    block: suspend WebViewScope<T>.() -> InitialUrl
+) = supervisorScope {
+    var result by Delegates.notNull<Container<T>>()
+
+    val scope = WebViewScope<T>(this@supervisorScope, this@runWebView) { result = Container(it) }
+    scope.initialUrl = scope.block()
+
+    // Start the webview activity and wait until it finishes
+    requestStartActivity(Intent().apply {
+        putExtras(Bundle().apply {
+            putBinder(WebViewActivity.BINDER_KEY, scope.binder)
+            putString(WebViewActivity.TITLE_KEY, title)
+        })
+        setClassName(
+            hostPackageName,
+            WebViewActivity::class.qualifiedName!!
+        )
+    })
+
+    // Return the result and cancel any leftover coroutines.
+    coroutineContext.cancelChildren()
+    result.value
 }
+
+/**
+ * Implement a downloader using [runWebView] and [DownloadUrl]. This function will automatically define a handler for download events unlike [runWebView].
+ * Returning null inside the [block] is equivalent to returning null inside [DownloaderScope.get].
+ *
+ * @see runWebView
+ */
+fun webViewDownloader(block: suspend WebViewScope<DownloadUrl>.(packageName: String, version: String?) -> InitialUrl?) =
+    downloader<DownloadUrl> {
+        val label = context.applicationInfo.loadLabel(
+            context.packageManager
+        ).toString()
+
+        get { packageName, version ->
+            class ReturnNull : Exception()
+
+            try {
+                runWebView(label) {
+                    download { url, _, userAgent -> finish(DownloadUrl(url, userAgent)) }
+
+                    block(this@runWebView, packageName, version) ?: throw ReturnNull()
+                } to version
+            } catch (_: ReturnNull) {
+                null
+            }
+        }
+
+        download {
+            it.toResult()
+        }
+    }

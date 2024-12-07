@@ -3,14 +3,16 @@
 package app.revanced.manager.plugin.downloader.example
 
 import android.app.Application
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Parcelable
 import app.revanced.manager.plugin.downloader.downloader
-import app.revanced.manager.plugin.downloader.webview.DownloadUrl
-import app.revanced.manager.plugin.downloader.webview.webView
+import app.revanced.manager.plugin.downloader.requestStartActivity
+import app.revanced.manager.plugin.downloader.webview.webViewDownloader
 import kotlinx.parcelize.Parcelize
+import kotlin.io.path.*
 
-// TODO: document API, update UI error presentation and strings
+// TODO: update UI error presentation and strings
 
 @Parcelize
 class InstalledApp(val path: String) : Parcelable
@@ -22,10 +24,26 @@ private val application by lazy {
     clazz.getMethod("getApplication")(activityThread) as Application
 }
 
-val installedAppDownloader = downloader<DownloadUrl> {
+val apkMirrorDownloader = webViewDownloader { packageName, version ->
+    with(Uri.Builder()) {
+        scheme("https")
+        authority("www.apkmirror.com")
+        mapOf(
+            "post_type" to "app_release",
+            "searchtype" to "apk",
+            "s" to (version?.let { "$packageName $it" } ?: packageName),
+            "bundles%5B%5D" to "apk_files" // bundles[]
+        ).forEach { (key, value) ->
+            appendQueryParameter(key, value)
+        }
+
+        build().toString()
+    }
+}
+
+val installedAppDownloader = downloader<InstalledApp> {
     val pm = application.packageManager
 
-    /*
     get { packageName, version ->
         val packageInfo = try {
             pm.getPackageInfo(packageName, 0)
@@ -36,46 +54,15 @@ val installedAppDownloader = downloader<DownloadUrl> {
 
         requestStartActivity<InteractionActivity>()
 
-        InstalledApp(packageInfo.applicationInfo.sourceDir) to packageInfo.versionName
-    }*/
-    webView { packageName, version ->
-        val startUrl = with(Uri.Builder()) {
-            scheme("https")
-            authority("www.apkmirror.com")
-            mapOf(
-                "post_type" to "app_release",
-                "searchtype" to "apk",
-                "s" to (version?.let { "$packageName $it" } ?: packageName),
-                "bundles%5B%5D" to "apk_files" // bundles[]
-            ).forEach { (key, value) ->
-                appendQueryParameter(key, value)
-            }
-
-            build().toString()
-        }
-
-        download { url, _, userAgent ->
-            finish(DownloadUrl(url, userAgent) to version)
-        }
-
-        pageLoad { url ->
-            println(url)
-        }
-
-        ready {
-            load(startUrl)
-        }
+        InstalledApp(packageInfo.applicationInfo!!.sourceDir) to packageInfo.versionName
     }
 
-    download { downloadable ->
-        downloadable.toResult()
-    }
 
-    /*
     download { app ->
         with(Path(app.path)) { inputStream() to fileSize() }
     }
 
+    /*
     download { app, outputStream ->
         val path = Path(app.path)
         reportSize(path.fileSize())

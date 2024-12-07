@@ -96,7 +96,7 @@ fun PatcherScreen(
         activityLauncher.launch(intent)
     }
 
-    if (vm.activeInteractionRequest)
+    if (vm.showActivityPromptDialog)
         AlertDialog(
             onDismissRequest = vm::rejectInteraction,
             confirmButton = {

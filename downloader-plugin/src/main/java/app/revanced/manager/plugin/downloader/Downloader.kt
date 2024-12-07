@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.app.Activity
 import android.os.Parcelable
+import kotlinx.coroutines.withTimeout
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.coroutines.resume
@@ -98,14 +99,15 @@ class DownloaderScope<T : Parcelable> internal constructor(
         }
 
         return try {
-            // TODO: add a timeout
-            block(suspendCoroutine { continuation ->
-                onBind = continuation::resume
-                context.bindService(intent, serviceConn, Context.BIND_AUTO_CREATE)
-            })
+            val binder = withTimeout(10000L) {
+                suspendCoroutine { continuation ->
+                    onBind = continuation::resume
+                    context.bindService(intent, serviceConn, Context.BIND_AUTO_CREATE)
+                }
+            }
+            block(binder)
         } finally {
             onBind = null
-            // TODO: should we stop it?
             context.unbindService(serviceConn)
         }
     }

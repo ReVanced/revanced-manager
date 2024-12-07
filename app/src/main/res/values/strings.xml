@@ -400,6 +400,7 @@
     <string name="auto_update">Auto update</string>
     <string name="unsupported_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
     <string name="unsupported_patch">Unsupported patch</string>
+    <string name="any_version">Any</string>
     <string name="never_show_again">Never show again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
     <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>

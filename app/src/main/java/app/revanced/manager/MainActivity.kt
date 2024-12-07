@@ -21,6 +21,7 @@ import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
+import app.revanced.manager.util.EventEffect
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
@@ -55,6 +56,10 @@ class MainActivity : ComponentActivity() {
                     rememberNavController<Destination>(startDestination = Destination.Dashboard)
                 NavBackHandler(navController)
 
+                EventEffect(vm.appSelectFlow) { app ->
+                    navController.navigate(Destination.SelectedApplicationInfo(app))
+                }
+
                 AnimatedNavHost(
                     controller = navController
                 ) { destination ->
@@ -78,15 +83,7 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.InstalledApplicationInfo -> InstalledAppInfoScreen(
-                            onPatchClick = { packageName, patchSelection ->
-                                /*
-                                navController.navigate(
-                                    Destination.VersionSelector(
-                                        packageName,
-                                        patchSelection
-                                    )
-                                )*/
-                            },
+                            onPatchClick = vm::selectApp,
                             onBackClick = { navController.pop() },
                             viewModel = getComposeViewModel { parametersOf(destination.installedApp) }
                         )
@@ -97,15 +94,8 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.AppSelector -> AppSelectorScreen(
-                            // onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
-                            // TODO: complete this feature
-                            onSelect = {
-                                navController.navigate(
-                                    Destination.SelectedApplicationInfo(
-                                        it
-                                    )
-                                )
-                            },
+                            onSelect = vm::selectApp,
+                            onStorageSelect = vm::selectApp,
                             onBackClick = { navController.pop() }
                         )
 

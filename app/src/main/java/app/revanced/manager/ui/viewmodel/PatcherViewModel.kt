@@ -97,9 +97,9 @@ class PatcherViewModel(
     var isInstalling by mutableStateOf(false)
         private set
 
-    // TODO: rename these
-    private var currentInteractionRequest: CompletableDeferred<Boolean>? by mutableStateOf(null)
-    val activeInteractionRequest by derivedStateOf { currentInteractionRequest != null }
+    private var currentActivityRequest: CompletableDeferred<Boolean>? by mutableStateOf(null)
+    val showActivityPromptDialog by derivedStateOf { currentActivityRequest != null }
+
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
@@ -147,13 +147,12 @@ class PatcherViewModel(
                 setInputFile = { inputFile = it },
                 handleStartActivityRequest = { intent ->
                     withContext(Dispatchers.Main) {
-                        if (currentInteractionRequest != null) throw Exception("Another request is already pending.")
+                        if (currentActivityRequest != null) throw Exception("Another request is already pending.")
                         try {
                             // Wait for the dialog interaction.
                             val accepted = with(CompletableDeferred<Boolean>()) {
-                                currentInteractionRequest = this
+                                currentActivityRequest = this
 
-                                println(activeInteractionRequest)
                                 await()
                             }
                             if (!accepted) throw UserInteractionException.RequestDenied()
@@ -169,7 +168,7 @@ class PatcherViewModel(
                                 launchedActivity = null
                             }
                         } finally {
-                            currentInteractionRequest = null
+                            currentActivityRequest = null
                         }
                     }
                 },
@@ -291,34 +290,11 @@ class PatcherViewModel(
     fun isDeviceRooted() = rootInstaller.isDeviceRooted()
 
     fun rejectInteraction() {
-        currentInteractionRequest?.complete(false)
+        currentActivityRequest?.complete(false)
     }
 
     fun allowInteraction() {
-        currentInteractionRequest?.complete(true)
-        /*
-        currentInteractionRequest?.complete(ActivityLaunchPermit { intent ->
-            withContext(Dispatchers.Main) {
-                if (launchedActivity != null) throw Exception("An activity has already been launched.")
-                try {
-                    val job = CompletableDeferred<ActivityResult>()
-                    launchActivityChannel.send(intent)
-
-                    launchedActivity = job
-                    val result = job.await()
-                    when (result.resultCode) {
-                        Activity.RESULT_OK -> result.data
-                        Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
-                        else -> throw UserInteractionException.Activity.NotCompleted(
-                            result.resultCode,
-                            result.data
-                        )
-                    }
-                } finally {
-                    launchedActivity = null
-                }
-            }
-        })*/
+        currentActivityRequest?.complete(true)
     }
 
     fun handleActivityResult(result: ActivityResult) {
@@ -412,8 +388,7 @@ class PatcherViewModel(
                         )
 
                         installedAppRepository.addOrUpdate(
-                            packageName,
-                            // TODO: this seems wrong
+                            packageInfo.packageName,
                             packageName,
                             packageInfo.versionName!!,
                             InstallType.MOUNT,

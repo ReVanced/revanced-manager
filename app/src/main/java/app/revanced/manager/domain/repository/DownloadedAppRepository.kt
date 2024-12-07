@@ -20,13 +20,17 @@ import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.io.path.outputStream
 
-class DownloadedAppRepository(private val app: Application, db: AppDatabase, private val pm: PM) {
+class DownloadedAppRepository(
+    private val app: Application,
+    db: AppDatabase,
+    private val pm: PM
+) {
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
     private val dao = db.downloadedAppDao()
 
     fun getAll() = dao.getAllApps().distinctUntilChanged()
 
-    private fun getApkFileForApp(app: DownloadedApp): File =
+    fun getApkFileForApp(app: DownloadedApp): File =
         getApkFileForDir(dir.resolve(app.directory))
 
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
@@ -38,11 +42,6 @@ class DownloadedAppRepository(private val app: Application, db: AppDatabase, pri
         expectedVersion: String?,
         onDownload: suspend (downloadProgress: Pair<Double, Double?>) -> Unit,
     ): File {
-        if (expectedVersion != null) this.get(expectedPackageName, expectedVersion)
-            ?.let { downloaded ->
-                return getApkFileForApp(downloaded)
-            }
-
         // Converted integers cannot contain / or .. unlike the package name or version, so they are safer to use here.
         val relativePath = File(generateUid().toString())
         val saveDir = dir.resolve(relativePath).also { it.mkdirs() }
@@ -99,7 +98,11 @@ class DownloadedAppRepository(private val app: Application, db: AppDatabase, pri
             if (pkgInfo.packageName != expectedPackageName) error("Downloaded APK has the wrong package name. Expected: $expectedPackageName, Actual: ${pkgInfo.packageName}")
             if (expectedVersion != null && pkgInfo.versionName != expectedVersion) error("Downloaded APK has the wrong version. Expected: $expectedVersion, Actual: ${pkgInfo.versionName}")
 
-            dao.insert(
+            // Delete the previous copy (if present).
+            dao.get(pkgInfo.packageName, pkgInfo.versionName!!)?.directory?.let {
+                if (!dir.resolve(it).deleteRecursively()) throw Exception("Failed to delete existing directory")
+            }
+            dao.upsert(
                 DownloadedApp(
                     packageName = pkgInfo.packageName,
                     version = pkgInfo.versionName!!,
@@ -108,6 +111,7 @@ class DownloadedAppRepository(private val app: Application, db: AppDatabase, pri
             )
         } catch (e: Exception) {
             saveDir.deleteRecursively()
+            relativePath.delete()
             throw e
         }
 
@@ -115,7 +119,10 @@ class DownloadedAppRepository(private val app: Application, db: AppDatabase, pri
         return getApkFileForDir(saveDir)
     }
 
-    suspend fun get(packageName: String, version: String) = dao.get(packageName, version)
+    suspend fun get(packageName: String, version: String, markUsed: Boolean = false) =
+        dao.get(packageName, version)?.also {
+            if (markUsed) dao.markUsed(packageName, version)
+        }
 
     suspend fun delete(downloadedApps: Collection<DownloadedApp>) {
         downloadedApps.forEach {
