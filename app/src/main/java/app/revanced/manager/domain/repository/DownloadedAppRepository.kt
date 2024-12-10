@@ -111,7 +111,6 @@ class DownloadedAppRepository(
             )
         } catch (e: Exception) {
             saveDir.deleteRecursively()
-            relativePath.delete()
             throw e
         }
 
