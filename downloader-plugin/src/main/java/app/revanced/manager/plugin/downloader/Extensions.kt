@@ -10,12 +10,14 @@ import java.io.OutputStream
 /**
  * The scope of [DownloaderScope.download].
  */
-interface DownloadScope : Scope {
+interface OutputDownloadScope : BaseDownloadScope {
     suspend fun reportSize(size: Long)
 }
 
-// OutputStream-based version of download
-fun <T : Parcelable> DownloaderScope<T>.download(block: suspend DownloadScope.(T, OutputStream) -> Unit) {
+/**
+ * A replacement for [DownloaderScope.download] that uses [OutputStream].
+ */
+fun <T : Parcelable> DownloaderScope<T>.download(block: suspend OutputDownloadScope.(T, OutputStream) -> Unit) {
     download = block
 }
 
@@ -29,11 +31,11 @@ suspend inline fun <reified ACTIVITY : Activity> GetScope.requestStartActivity()
     )
 
 /**
- * Performs [DownloaderScope.withBoundService] with an [Intent] created using the type information of [SERVICE].
- * @see [DownloaderScope.withBoundService]
+ * Performs [DownloaderScope.useService] with an [Intent] created using the type information of [SERVICE].
+ * @see [DownloaderScope.useService]
  */
-suspend inline fun <reified SERVICE : Service, R : Any?> DownloaderScope<*>.withBoundService(
+suspend inline fun <reified SERVICE : Service, R : Any?> DownloaderScope<*>.useService(
     noinline block: suspend (IBinder) -> R
-) = withBoundService(
+) = useService(
     Intent().apply { setClassName(pluginPackageName, SERVICE::class.qualifiedName!!) }, block
 )

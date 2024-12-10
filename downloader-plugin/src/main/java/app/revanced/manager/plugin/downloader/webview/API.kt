@@ -6,13 +6,11 @@ import android.os.Parcelable
 import app.revanced.manager.plugin.downloader.DownloaderScope
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.Scope
-import app.revanced.manager.plugin.downloader.downloader
+import app.revanced.manager.plugin.downloader.Downloader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
@@ -165,8 +163,8 @@ suspend fun <T> GetScope.runWebView(
  *
  * @see runWebView
  */
-fun webViewDownloader(block: suspend WebViewScope<DownloadUrl>.(packageName: String, version: String?) -> InitialUrl?) =
-    downloader<DownloadUrl> {
+fun WebViewDownloader(block: suspend WebViewScope<DownloadUrl>.(packageName: String, version: String?) -> InitialUrl?) =
+    Downloader<DownloadUrl> {
         val label = context.applicationInfo.loadLabel(
             context.packageManager
         ).toString()

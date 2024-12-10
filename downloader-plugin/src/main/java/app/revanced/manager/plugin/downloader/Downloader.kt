@@ -50,6 +50,13 @@ interface GetScope : Scope {
     suspend fun requestStartActivity(intent: Intent): Intent?
 }
 
+interface BaseDownloadScope : Scope
+
+/**
+ * The scope for [DownloaderScope.download].
+ */
+interface InputDownloadScope : BaseDownloadScope
+
 typealias Size = Long
 typealias DownloadResult = Pair<InputStream, Size?>
 
@@ -62,15 +69,16 @@ class DownloaderScope<T : Parcelable> internal constructor(
 ) : Scope by scopeImpl {
     // Returning an InputStream is the primary way for plugins to implement the download function, but we also want to offer an OutputStream API since using InputStream might not be convenient in all cases.
     // It is much easier to implement the main InputStream API on top of OutputStreams compared to doing it the other way around, which is why we are using OutputStream here. This detail is not visible to plugins.
-    internal var download: (suspend DownloadScope.(T, OutputStream) -> Unit)? = null
+    internal var download: (suspend OutputDownloadScope.(T, OutputStream) -> Unit)? = null
     internal var get: (suspend GetScope.(String, String?) -> GetResult<T>?)? = null
+    private val inputDownloadScopeImpl = object : InputDownloadScope, Scope by scopeImpl {}
 
     /**
      * Define the download function for this plugin.
      */
-    fun download(block: suspend (data: T) -> DownloadResult) {
+    fun download(block: suspend InputDownloadScope.(data: T) -> DownloadResult) {
         download = { app, outputStream ->
-            val (inputStream, size) = block(app)
+            val (inputStream, size) = inputDownloadScopeImpl.block(app)
 
             inputStream.use {
                 if (size != null) reportSize(size)
@@ -89,7 +97,7 @@ class DownloaderScope<T : Parcelable> internal constructor(
     /**
      * Utilize the service specified by the provided [Intent]. The service will be unbound when the scope ends.
      */
-    suspend fun <R : Any?> withBoundService(intent: Intent, block: suspend (IBinder) -> R): R {
+    suspend fun <R : Any?> useService(intent: Intent, block: suspend (IBinder) -> R): R {
         var onBind: ((IBinder) -> Unit)? = null
         val serviceConn = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) =
@@ -120,18 +128,18 @@ class DownloaderBuilder<T : Parcelable> internal constructor(private val block: 
             block()
 
             Downloader(
-                download = download ?: error("download was not declared"),
-                get = get ?: error("get was not declared")
+                download = download!!,
+                get = get!!
             )
         }
 }
 
 class Downloader<T : Parcelable> internal constructor(
     @property:PluginHostApi val get: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?,
-    @property:PluginHostApi val download: suspend DownloadScope.(data: T, outputStream: OutputStream) -> Unit
+    @property:PluginHostApi val download: suspend OutputDownloadScope.(data: T, outputStream: OutputStream) -> Unit
 )
 
-fun <T : Parcelable> downloader(block: DownloaderScope<T>.() -> Unit) = DownloaderBuilder(block)
+fun <T : Parcelable> Downloader(block: DownloaderScope<T>.() -> Unit) = DownloaderBuilder(block)
 
 sealed class UserInteractionException(message: String) : Exception(message) {
     class RequestDenied @PluginHostApi constructor() :

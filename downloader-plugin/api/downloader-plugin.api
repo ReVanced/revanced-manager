@@ -1,9 +1,8 @@
-public final class app/revanced/manager/plugin/downloader/ConstantsKt {
-	public static final field PLUGIN_HOST_PERMISSION Ljava/lang/String;
+public abstract interface class app/revanced/manager/plugin/downloader/BaseDownloadScope : app/revanced/manager/plugin/downloader/Scope {
 }
 
-public abstract interface class app/revanced/manager/plugin/downloader/DownloadScope : app/revanced/manager/plugin/downloader/Scope {
-	public abstract fun reportSize (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+public final class app/revanced/manager/plugin/downloader/ConstantsKt {
+	public static final field PLUGIN_HOST_PERMISSION Ljava/lang/String;
 }
 
 public final class app/revanced/manager/plugin/downloader/Downloader {
@@ -13,15 +12,15 @@ public final class app/revanced/manager/plugin/downloader/DownloaderBuilder {
 }
 
 public final class app/revanced/manager/plugin/downloader/DownloaderKt {
-	public static final fun downloader (Lkotlin/jvm/functions/Function1;)Lapp/revanced/manager/plugin/downloader/DownloaderBuilder;
+	public static final fun Downloader (Lkotlin/jvm/functions/Function1;)Lapp/revanced/manager/plugin/downloader/DownloaderBuilder;
 }
 
 public final class app/revanced/manager/plugin/downloader/DownloaderScope : app/revanced/manager/plugin/downloader/Scope {
-	public final fun download (Lkotlin/jvm/functions/Function2;)V
+	public final fun download (Lkotlin/jvm/functions/Function3;)V
 	public final fun get (Lkotlin/jvm/functions/Function4;)V
 	public fun getHostPackageName ()Ljava/lang/String;
 	public fun getPluginPackageName ()Ljava/lang/String;
-	public final fun withBoundService (Landroid/content/Intent;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun useService (Landroid/content/Intent;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class app/revanced/manager/plugin/downloader/ExtensionsKt {
@@ -30,6 +29,13 @@ public final class app/revanced/manager/plugin/downloader/ExtensionsKt {
 
 public abstract interface class app/revanced/manager/plugin/downloader/GetScope : app/revanced/manager/plugin/downloader/Scope {
 	public abstract fun requestStartActivity (Landroid/content/Intent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class app/revanced/manager/plugin/downloader/InputDownloadScope : app/revanced/manager/plugin/downloader/BaseDownloadScope {
+}
+
+public abstract interface class app/revanced/manager/plugin/downloader/OutputDownloadScope : app/revanced/manager/plugin/downloader/BaseDownloadScope {
+	public abstract fun reportSize (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class app/revanced/manager/plugin/downloader/Package : android/os/Parcelable {
@@ -84,8 +90,8 @@ public final class app/revanced/manager/plugin/downloader/UserInteractionExcepti
 }
 
 public final class app/revanced/manager/plugin/downloader/webview/APIKt {
+	public static final fun WebViewDownloader (Lkotlin/jvm/functions/Function4;)Lapp/revanced/manager/plugin/downloader/DownloaderBuilder;
 	public static final fun runWebView (Lapp/revanced/manager/plugin/downloader/GetScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final fun webViewDownloader (Lkotlin/jvm/functions/Function4;)Lapp/revanced/manager/plugin/downloader/DownloaderBuilder;
 }
 
 public final class app/revanced/manager/plugin/downloader/webview/DownloadUrl : android/os/Parcelable {

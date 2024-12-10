@@ -6,9 +6,9 @@ import android.app.Application
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Parcelable
-import app.revanced.manager.plugin.downloader.downloader
+import app.revanced.manager.plugin.downloader.Downloader
 import app.revanced.manager.plugin.downloader.requestStartActivity
-import app.revanced.manager.plugin.downloader.webview.webViewDownloader
+import app.revanced.manager.plugin.downloader.webview.WebViewDownloader
 import kotlinx.parcelize.Parcelize
 import kotlin.io.path.*
 
@@ -24,7 +24,7 @@ private val application by lazy {
     clazz.getMethod("getApplication")(activityThread) as Application
 }
 
-val apkMirrorDownloader = webViewDownloader { packageName, version ->
+val apkMirrorDownloader = WebViewDownloader { packageName, version ->
     with(Uri.Builder()) {
         scheme("https")
         authority("www.apkmirror.com")
@@ -41,7 +41,7 @@ val apkMirrorDownloader = webViewDownloader { packageName, version ->
     }
 }
 
-val installedAppDownloader = downloader<InstalledApp> {
+val installedAppDownloader = Downloader<InstalledApp> {
     val pm = application.packageManager
 
     get { packageName, version ->
