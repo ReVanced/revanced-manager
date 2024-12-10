@@ -76,19 +76,20 @@ class PatcherViewModel(
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
-    val installerStatusDialogModel : InstallerStatusDialogModel = object : InstallerStatusDialogModel {
-        override var packageInstallerStatus: Int? by mutableStateOf(null)
+    val installerStatusDialogModel: InstallerStatusDialogModel =
+        object : InstallerStatusDialogModel {
+            override var packageInstallerStatus: Int? by mutableStateOf(null)
 
-        override fun reinstall() {
-            this@PatcherViewModel.reinstall()
-        }
+            override fun reinstall() {
+                this@PatcherViewModel.reinstall()
+            }
 
-        override fun install() {
-            // Since this is a package installer status dialog,
-            // InstallType.MOUNT is never used here.
-            install(InstallType.DEFAULT)
+            override fun install() {
+                // Since this is a package installer status dialog,
+                // InstallType.MOUNT is never used here.
+                install(InstallType.DEFAULT)
+            }
         }
-    }
 
     private var installedApp: InstalledApp? = null
     val packageName: String = input.selectedApp.packageName
@@ -341,7 +342,8 @@ class PatcherViewModel(
                 // Check if the app version is less than the installed version
                 if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
                     // Exit if the selected app version is less than the installed version
-                    installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
+                    installerStatusDialogModel.packageInstallerStatus =
+                        PackageInstaller.STATUS_FAILURE_CONFLICT
                     return@launch
                 }
             }
@@ -377,20 +379,23 @@ class PatcherViewModel(
                             }
                         }
 
+                        val inputVersion = input.selectedApp.version
+                            ?: inputFile?.let(pm::getPackageInfo)?.versionName
+                            ?: throw Exception("Failed to determine input APK version")
+
                         // Install as root
                         rootInstaller.install(
                             outputFile,
                             inputFile,
                             packageName,
-                            // input.selectedApp.version?
-                            packageInfo.versionName!!,
+                            inputVersion,
                             label
                         )
 
                         installedAppRepository.addOrUpdate(
                             packageInfo.packageName,
                             packageName,
-                            packageInfo.versionName!!,
+                            inputVersion,
                             InstallType.MOUNT,
                             input.selectedPatches
                         )
@@ -410,7 +415,7 @@ class PatcherViewModel(
                     }
                 }
             }
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Log.e(tag, "Failed to install", e)
             app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
         } finally {
