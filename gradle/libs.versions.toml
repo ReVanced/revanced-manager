@@ -13,6 +13,7 @@ placeholder = "1.1.2"
 reorderable = "1.5.2"
 serialization = "1.7.3"
 collection = "0.3.8"
+datetime = "0.6.0"
 room-version = "2.6.1"
 revanced-patcher = "21.0.0"
 revanced-library = "3.0.2"
@@ -68,6 +69,7 @@ placeholder-material3 = { group = "io.github.fornewid", name = "placeholder-mate
 # Kotlinx
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-collection-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "collection" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-version" }

@@ -2,7 +2,7 @@ package app.revanced.manager.domain.bundles
 
 import androidx.compose.runtime.Stable
 import app.revanced.manager.network.api.ReVancedAPI
-import app.revanced.manager.network.dto.PatchBundleInfo
+import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.getOrThrow
 import io.ktor.client.request.url
@@ -16,17 +16,16 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     PatchBundleSource(name, id, directory) {
     protected val http: HttpService by inject()
 
-    protected abstract suspend fun getLatestInfo(): PatchBundleInfo
+    protected abstract suspend fun getLatestInfo(): ReVancedAsset
 
-    private suspend fun download(info: PatchBundleInfo) = withContext(Dispatchers.IO) {
-        val (version, url) = info
+    private suspend fun download(info: ReVancedAsset) = withContext(Dispatchers.IO) {
         patchBundleOutputStream().use {
             http.streamTo(it) {
-                url(url)
+                url(info.downloadUrl)
             }
         }
 
-        saveVersion(version)
+        saveVersion(info.version)
         reload()
     }
 
@@ -58,7 +57,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
 class JsonPatchBundle(name: String, id: Int, directory: File, endpoint: String) :
     RemotePatchBundle(name, id, directory, endpoint) {
     override suspend fun getLatestInfo() = withContext(Dispatchers.IO) {
-        http.request<PatchBundleInfo> {
+        http.request<ReVancedAsset> {
             url(endpoint)
         }.getOrThrow()
     }
@@ -68,10 +67,5 @@ class APIPatchBundle(name: String, id: Int, directory: File, endpoint: String) :
     RemotePatchBundle(name, id, directory, endpoint) {
     private val api: ReVancedAPI by inject()
 
-    override suspend fun getLatestInfo() = api
-        .getLatestRelease("revanced-patches")
-        .getOrThrow()
-        .let {
-            PatchBundleInfo(it.version, it.assets.first { it.name.endsWith(".rvp") }.downloadUrl)
-        }
+    override suspend fun getLatestInfo() = api.getPatchesUpdate().getOrThrow()
 }

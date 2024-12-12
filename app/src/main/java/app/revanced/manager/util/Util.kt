@@ -3,11 +3,6 @@ package app.revanced.manager.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.icu.number.Notation
-import android.icu.number.NumberFormatter
-import android.icu.number.Precision
-import android.icu.text.CompactDecimalFormat
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -40,11 +35,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import java.time.Duration
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.char
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
 
 typealias PatchSelection = Map<Int, Set<String>>
@@ -134,52 +131,42 @@ suspend fun <T> Flow<Iterable<T>>.collectEach(block: suspend (T) -> Unit) {
     }
 }
 
-fun Int.formatNumber(): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        NumberFormatter.with()
-            .notation(Notation.compactShort())
-            .decimal(NumberFormatter.DecimalSeparatorDisplay.ALWAYS)
-            .precision(Precision.fixedFraction(1))
-            .locale(Locale.getDefault())
-            .format(this)
-            .toString()
-    } else {
-        val compact = CompactDecimalFormat.getInstance(
-            Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT
-        )
-        compact.maximumFractionDigits = 1
-        compact.format(this)
-    }
-}
-
-fun String.relativeTime(context: Context): String {
+fun LocalDateTime.relativeTime(context: Context): String {
     try {
-        val currentTime = ZonedDateTime.now(ZoneId.of("UTC"))
-        val inputDateTime = ZonedDateTime.parse(this)
-        val duration = Duration.between(inputDateTime, currentTime)
+        val now = Clock.System.now()
+        val duration = now - this.toInstant(TimeZone.UTC)
 
         return when {
-            duration.toMinutes() < 1 -> context.getString(R.string.just_now)
-            duration.toMinutes() < 60 -> context.getString(R.string.minutes_ago, duration.toMinutes().toString())
-            duration.toHours() < 24 -> context.getString(R.string.hours_ago, duration.toHours().toString())
-            duration.toDays() < 30 -> context.getString(R.string.days_ago, duration.toDays().toString())
-            else -> {
-                val formatter = DateTimeFormatter.ofPattern("MMM d")
-                val formattedDate = inputDateTime.format(formatter)
-                if (inputDateTime.year != currentTime.year) {
-                    val yearFormatter = DateTimeFormatter.ofPattern(", yyyy")
-                    val formattedYear = inputDateTime.format(yearFormatter)
-                    "$formattedDate$formattedYear"
-                } else {
-                    formattedDate
+            duration.inWholeMinutes < 1 -> context.getString(R.string.just_now)
+            duration.inWholeMinutes < 60 -> context.getString(
+                R.string.minutes_ago,
+                duration.inWholeMinutes.toString()
+            )
+
+            duration.inWholeHours < 24 -> context.getString(
+                R.string.hours_ago,
+                duration.inWholeHours.toString()
+            )
+
+            duration.inWholeHours < 30 -> context.getString(
+                R.string.days_ago,
+                duration.inWholeDays.toString()
+            )
+
+            else -> LocalDateTime.Format {
+                monthName(MonthNames.ENGLISH_ABBREVIATED)
+                char(' ')
+                dayOfMonth()
+                if (now.toLocalDateTime(TimeZone.UTC).year != this@relativeTime.year) {
+                    chars(", ")
+                    year()
                 }
-            }
+            }.format(this)
         }
-    } catch (e: DateTimeParseException) {
+    } catch (e: IllegalArgumentException) {
         return context.getString(R.string.invalid_date)
     }
 }
-
 
 const val isScrollingUpSensitivity = 10
 
