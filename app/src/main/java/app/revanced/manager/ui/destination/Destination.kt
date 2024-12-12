@@ -13,8 +13,8 @@ sealed interface Destination : Parcelable {
     @Parcelize
     data object Dashboard : Destination
 
-    @Parcelize
-    data class InstalledApplicationInfo(val installedApp: InstalledApp) : Destination
+    // @Parcelize
+    // data class InstalledApplicationInfo(val installedApp: InstalledApp) : Destination
 
     @Parcelize
     data object AppSelector : Destination

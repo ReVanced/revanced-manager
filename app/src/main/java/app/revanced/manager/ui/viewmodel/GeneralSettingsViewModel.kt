@@ -6,7 +6,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.theme.Theme
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(
+class GeneralSettingsViewModel(
     val prefs: PreferencesManager
 ) : ViewModel() {
     fun setTheme(theme: Theme) = viewModelScope.launch {

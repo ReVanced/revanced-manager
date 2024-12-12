@@ -1,4 +1,4 @@
-package app.revanced.manager.ui.screen.settings.update
+package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring

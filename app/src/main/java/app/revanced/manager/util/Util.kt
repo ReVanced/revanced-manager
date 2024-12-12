@@ -3,11 +3,6 @@ package app.revanced.manager.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.icu.number.Notation
-import android.icu.number.NumberFormatter
-import android.icu.number.Precision
-import android.icu.text.CompactDecimalFormat
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.MainThread
@@ -54,13 +49,14 @@ import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Contextual
 import java.util.Locale
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 typealias PatchSelection = Map<Int, Set<String>>
-typealias Options = Map<Int, Map<String, Map<String, Any?>>>
+typealias Options = Map<Int, Map<String, Map<String, @Contextual Any?>>>
 
 val Context.isDebuggable get() = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
 

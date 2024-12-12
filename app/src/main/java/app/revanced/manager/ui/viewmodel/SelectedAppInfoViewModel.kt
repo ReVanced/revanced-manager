@@ -33,6 +33,7 @@ import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.ui.model.BundleInfo
+import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
@@ -110,7 +111,10 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         }
     }
 
-    val requiredVersion = combine(prefs.suggestedVersionSafeguard.flow, bundleRepository.suggestedVersions) { suggestedVersionSafeguard, suggestedVersions ->
+    val requiredVersion = combine(
+        prefs.suggestedVersionSafeguard.flow,
+        bundleRepository.suggestedVersions
+    ) { suggestedVersionSafeguard, suggestedVersions ->
         if (!suggestedVersionSafeguard) return@combine null
 
         suggestedVersions[input.app.packageName]
@@ -264,17 +268,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     ): PatchSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
-    fun updateConfiguration(
-        selection: PatchSelection?,
-        options: Options,
-        bundles: List<BundleInfo>
-    ) {
+    fun updateConfiguration(selection: PatchSelection?, options: Options) = viewModelScope.launch {
+        val bundles = bundlesRepo.bundleInfoFlow(packageName, selectedApp.version).first()
+
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
 
         val filteredOptions = options.filtered(bundles)
-        this.options = filteredOptions
+        this@SelectedAppInfoViewModel.options = filteredOptions
 
-        if (!persistConfiguration) return
+        if (!persistConfiguration) return@launch
         viewModelScope.launch(Dispatchers.Default) {
             selection?.let { selectionRepository.updateSelection(packageName, it) }
                 ?: selectionRepository.clearSelection(packageName)

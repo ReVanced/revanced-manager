@@ -126,6 +126,7 @@ dependencies {
     implementation(libs.compose.livedata)
     implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.material3)
+    implementation(libs.navigation.compose)
 
     // Accompanist
     implementation(libs.accompanist.drawablepainter)
@@ -173,6 +174,7 @@ dependencies {
     // Koin
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    implementation(libs.koin.compose.navigation)
     implementation(libs.koin.workmanager)
 
     // Compose Navigation

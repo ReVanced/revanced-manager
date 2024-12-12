@@ -47,6 +47,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.StepProgressProvider
+import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.saveableVar
 import app.revanced.manager.util.saver.snapshotStateListSaver
@@ -69,10 +70,11 @@ import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
+import java.util.UUID
 
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class PatcherViewModel(
-    private val input: Destination.Patcher
+    private val input: Patcher
 ) : ViewModel(), KoinComponent, StepProgressProvider, InstallerModel {
     private val app: Application by inject()
     private val fs: Filesystem by inject()
