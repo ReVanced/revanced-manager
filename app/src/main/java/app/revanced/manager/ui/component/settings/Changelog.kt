@@ -26,7 +26,6 @@ import app.revanced.manager.ui.component.Markdown
 fun Changelog(
     markdown: String,
     version: String,
-    downloadCount: String,
     publishDate: String
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -55,10 +54,6 @@ fun Changelog(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Tag(
-                Icons.Outlined.FileDownload,
-                downloadCount
-            )
             Tag(
                 Icons.Outlined.CalendarToday,
                 publishDate

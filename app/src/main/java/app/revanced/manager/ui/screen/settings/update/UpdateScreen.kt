@@ -33,12 +33,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
+import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.settings.Changelog
 import app.revanced.manager.ui.viewmodel.UpdateViewModel
-import app.revanced.manager.ui.viewmodel.UpdateViewModel.Changelog
 import app.revanced.manager.ui.viewmodel.UpdateViewModel.State
-import app.revanced.manager.util.formatNumber
 import app.revanced.manager.util.relativeTime
 import com.gigamole.composefadingedges.content.FadingEdgesContentType
 import com.gigamole.composefadingedges.content.scrollconfig.FadingEdgesScrollConfig
@@ -77,10 +76,10 @@ fun UpdateScreen(
         ) {
             Header(
                 vm.state,
-                vm.changelog,
+                vm.releaseInfo,
                 DownloadData(vm.downloadProgress, vm.downloadedSize, vm.totalSize)
             )
-            vm.changelog?.let { changelog ->
+            vm.releaseInfo?.let { changelog ->
                 HorizontalDivider()
                 Changelog(changelog)
             } ?: Spacer(modifier = Modifier.weight(1f))
@@ -118,7 +117,7 @@ private fun MeteredDownloadConfirmationDialog(
 }
 
 @Composable
-private fun Header(state: State, changelog: Changelog?, downloadData: DownloadData) {
+private fun Header(state: State, releaseInfo: ReVancedAsset?, downloadData: DownloadData) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
             text = stringResource(state.title),
@@ -134,11 +133,11 @@ private fun Header(state: State, changelog: Changelog?, downloadData: DownloadDa
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                changelog?.let { changelog ->
+                releaseInfo?.version?.let {
                     Text(
                         text = stringResource(
-                            id = R.string.new_version,
-                            changelog.version.replace("v", "")
+                            R.string.new_version,
+                            it.replace("v", "")
                         ),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -170,7 +169,7 @@ private fun Header(state: State, changelog: Changelog?, downloadData: DownloadDa
 }
 
 @Composable
-private fun ColumnScope.Changelog(changelog: Changelog) {
+private fun ColumnScope.Changelog(releaseInfo: ReVancedAsset) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -194,10 +193,9 @@ private fun ColumnScope.Changelog(changelog: Changelog) {
             )
     ) {
         Changelog(
-            markdown = changelog.body.replace("`", ""),
-            version = changelog.version,
-            downloadCount = changelog.downloadCount.formatNumber(),
-            publishDate = changelog.publishDate.relativeTime(LocalContext.current)
+            markdown = releaseInfo.description.replace("`", ""),
+            version = releaseInfo.version,
+            publishDate = releaseInfo.createdAt.relativeTime(LocalContext.current)
         )
     }
 }

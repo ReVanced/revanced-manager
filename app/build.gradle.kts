@@ -143,6 +143,7 @@ dependencies {
     // KotlinX
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.collection.immutable)
+    implementation(libs.kotlinx.datetime)
 
     // Room
     implementation(libs.room.runtime)
