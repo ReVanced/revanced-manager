@@ -41,7 +41,7 @@ class WebViewActivity : ComponentActivity() {
         }
         val params = intent.getParcelableExtra<Parameters>(KEY)!!
         actionBar?.apply {
-            title = intent.getStringExtra(params.title)
+            title = params.title
             setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
             setDisplayHomeAsUpEnabled(true)
         }
@@ -55,7 +55,7 @@ class WebViewActivity : ComponentActivity() {
                 databaseEnabled = false
                 allowContentAccess = false
                 domStorageEnabled = false
-                javaScriptEnabled = params.jsEnabled
+                javaScriptEnabled = true
             }
 
             webViewClient = vm.webViewClient
@@ -88,7 +88,7 @@ class WebViewActivity : ComponentActivity() {
 
     @Parcelize
     internal class Parameters(
-        val title: String, val jsEnabled: Boolean, val events: IBinder
+        val title: String, val events: IBinder
     ) : Parcelable
 
     internal companion object {

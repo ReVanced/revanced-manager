@@ -1,7 +1,6 @@
 package app.revanced.manager.plugin.downloader.webview
 
 import android.content.Intent
-import android.os.Bundle
 import app.revanced.manager.plugin.downloader.DownloadUrl
 import app.revanced.manager.plugin.downloader.DownloaderScope
 import app.revanced.manager.plugin.downloader.GetScope
@@ -44,12 +43,6 @@ class WebViewScope<T> internal constructor(
     private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private lateinit var webView: IWebView
     internal lateinit var initialUrl: String
-
-    /**
-     * Controls whether JavaScript is enabled in the WebView. The default value is false.
-     * Changing this after the WebView has been launched has no effect.
-     */
-    var jsEnabled = false
 
     internal val binder = object : IWebViewEvents.Stub() {
         override fun ready(iface: IWebView?) {
@@ -128,7 +121,7 @@ suspend fun <T> GetScope.runWebView(
     requestStartActivity(Intent().apply {
         putExtra(
             WebViewActivity.KEY,
-            WebViewActivity.Parameters(title, scope.jsEnabled, scope.binder)
+            WebViewActivity.Parameters(title, scope.binder)
         )
         setClassName(
             hostPackageName,

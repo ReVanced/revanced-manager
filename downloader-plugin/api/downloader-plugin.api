@@ -184,9 +184,7 @@ public abstract interface class app/revanced/manager/plugin/downloader/webview/W
 public final class app/revanced/manager/plugin/downloader/webview/WebViewScope : app/revanced/manager/plugin/downloader/Scope {
 	public final fun download (Lkotlin/jvm/functions/Function5;)V
 	public fun getHostPackageName ()Ljava/lang/String;
-	public final fun getJsEnabled ()Z
 	public fun getPluginPackageName ()Ljava/lang/String;
 	public final fun pageLoad (Lkotlin/jvm/functions/Function3;)V
-	public final fun setJsEnabled (Z)V
 }
 
