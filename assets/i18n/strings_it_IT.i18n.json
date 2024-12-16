@@ -23,7 +23,7 @@
     "refreshSuccess": "Ricaricato con successo",
     "widgetTitle": "Dashboard",
     "updatesSubtitle": "Aggiornamenti",
-    "lastPatchedAppSubtitle": "Ultima app patched",
+    "lastPatchedAppSubtitle": "Ultima app patchata",
     "patchedSubtitle": "Applicazioni installate",
     "changeLaterSubtitle": "Questo sarà modificabile nelle impostazioni in un secondo momento.",
     "noSavedAppFound": "Nessuna app trovata",
@@ -54,9 +54,9 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "incompatibleArchWarningDialogText": "La patch su questa architettura non è ancora supportata e potrebbe fallire. Continuare comunque?",
+    "incompatibleArchWarningDialogText": "La patch su questa architettura non è ancora supportata e potrebbe non riuscire. Continuare comunque?",
     "removedPatchesWarningDialogText": "Le patch rimosse dall'ultima volta che hai patchato questa app:\n\n${patches}\n\n${newPatches}Continuare comunque?",
-    "addedPatchesDialogText": "Aggiunte patch dall'ultima volta che hai patchato questa app:\n\n${addedPatches}\n\n",
+    "addedPatchesDialogText": "Patch aggiunte dall'ultima volta che hai patchato questa app:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Alcune opzioni di patch devono essere impostate."
   },
   "appSelectorCard": {
@@ -292,7 +292,7 @@
     "status_failure_conflict_description": "L'installazione è stata impedita da un'esistente installazione dell'app.\n\nDisinstallare l'app installata e riprovare?",
     "status_failure_blocked_description": "L'installazione è stata bloccata da ${packageName}.\n\nModifica le impostazioni di sicurezza e riprova.",
     "install_failed_verification_failure_description": "L'installazione è fallita a causa di un problema di verifica.\n\nModifica le impostazioni di sicurezza e riprova.",
-    "install_failed_version_downgrade_description": "L'installazione è fallita perché l'app patchata ha una versione minore dell'app installata.\n\nDisinstallare l'app e riprovare?",
+    "install_failed_version_downgrade_description": "L'installazione è fallita perché l'app patchata è una versione precedente all'app installata.\n\nDisinstallare l'app e riprovare?",
     "status_unknown_description": "L'installazione è fallita per un motivo sconosciuto. Riprova."
   }
 }
