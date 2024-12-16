@@ -7,7 +7,7 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
-import app.revanced.manager.plugin.downloader.DownloadScope
+import app.revanced.manager.plugin.downloader.OutputDownloadScope
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.channelFlow
@@ -52,7 +52,7 @@ class DownloadedAppRepository(
             val downloadedBytes = AtomicLong(0)
 
             channelFlow {
-                val scope = object : DownloadScope {
+                val scope = object : OutputDownloadScope {
                     override val pluginPackageName = plugin.packageName
                     override val hostPackageName = app.packageName
                     override suspend fun reportSize(size: Long) {

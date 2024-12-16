@@ -40,7 +40,7 @@ interface Scope {
  */
 interface GetScope : Scope {
     /**
-     * Ask the user to perform some required interaction contained in the activity specified by the provided [Intent].
+     * Ask the user to perform some required interaction in the activity specified by the provided [Intent].
      * This function returns normally with the resulting [Intent] when the activity finishes with code [Activity.RESULT_OK].
      *
      * @throws UserInteractionException.RequestDenied User decided to skip this plugin.
@@ -74,7 +74,7 @@ class DownloaderScope<T : Parcelable> internal constructor(
     private val inputDownloadScopeImpl = object : InputDownloadScope, Scope by scopeImpl {}
 
     /**
-     * Define the download function for this plugin.
+     * Define the download block of the plugin.
      */
     fun download(block: suspend InputDownloadScope.(data: T) -> DownloadResult) {
         download = { app, outputStream ->
@@ -88,7 +88,8 @@ class DownloaderScope<T : Parcelable> internal constructor(
     }
 
     /**
-     * Define the get function for this plugin.
+     * Define the get block of the plugin.
+     * The block should return null if the app cannot be found. The version in the result must match the version argument unless it is null.
      */
     fun get(block: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?) {
         get = block
@@ -139,14 +140,25 @@ class Downloader<T : Parcelable> internal constructor(
     @property:PluginHostApi val download: suspend OutputDownloadScope.(data: T, outputStream: OutputStream) -> Unit
 )
 
+/**
+ * Define a downloader plugin.
+ */
 fun <T : Parcelable> Downloader(block: DownloaderScope<T>.() -> Unit) = DownloaderBuilder(block)
 
+/**
+ * @see GetScope.requestStartActivity
+ */
 sealed class UserInteractionException(message: String) : Exception(message) {
     class RequestDenied @PluginHostApi constructor() :
-        UserInteractionException("Request was denied")
+        UserInteractionException("Request denied by user")
 
     sealed class Activity(message: String) : UserInteractionException(message) {
-        class Cancelled @PluginHostApi constructor() : Activity("Interaction was cancelled")
+        class Cancelled @PluginHostApi constructor() : Activity("Interaction cancelled")
+
+        /**
+         * @param resultCode The result code of the activity.
+         * @param intent The [Intent] of the activity.
+         */
         class NotCompleted @PluginHostApi constructor(val resultCode: Int, val intent: Intent?) :
             Activity("Unexpected activity result code: $resultCode")
     }

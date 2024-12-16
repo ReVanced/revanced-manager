@@ -8,7 +8,7 @@ import android.os.Parcelable
 import java.io.OutputStream
 
 /**
- * The scope of [DownloaderScope.download].
+ * The scope of the [OutputStream] version of [DownloaderScope.download].
  */
 interface OutputDownloadScope : BaseDownloadScope {
     suspend fun reportSize(size: Long)
@@ -16,6 +16,7 @@ interface OutputDownloadScope : BaseDownloadScope {
 
 /**
  * A replacement for [DownloaderScope.download] that uses [OutputStream].
+ * The provided [OutputStream] does not need to be closed manually.
  */
 fun <T : Parcelable> DownloaderScope<T>.download(block: suspend OutputDownloadScope.(T, OutputStream) -> Unit) {
     download = block

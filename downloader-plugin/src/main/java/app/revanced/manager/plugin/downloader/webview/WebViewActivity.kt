@@ -2,6 +2,8 @@ package app.revanced.manager.plugin.downloader.webview
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.IBinder
+import android.os.Parcelable
 import android.view.MenuItem
 import android.webkit.CookieManager
 import android.webkit.WebSettings
@@ -21,6 +23,7 @@ import app.revanced.manager.plugin.downloader.R
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 
 class WebViewActivity : ComponentActivity() {
     @SuppressLint("SetJavaScriptEnabled")
@@ -36,22 +39,23 @@ class WebViewActivity : ComponentActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val params = intent.getParcelableExtra<Parameters>(KEY)!!
         actionBar?.apply {
-            title = intent.getStringExtra(TITLE_KEY)
+            title = intent.getStringExtra(params.title)
             setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
             setDisplayHomeAsUpEnabled(true)
         }
 
-        val events = IWebViewEvents.Stub.asInterface(intent.extras!!.getBinder(BINDER_KEY))!!
+        val events = IWebViewEvents.Stub.asInterface(params.events)!!
         vm.setup(events)
 
         val webView = findViewById<WebView>(R.id.content).apply {
             settings.apply {
                 cacheMode = WebSettings.LOAD_NO_CACHE
                 databaseEnabled = false
-                allowContentAccess = true
+                allowContentAccess = false
                 domStorageEnabled = false
-                javaScriptEnabled = true
+                javaScriptEnabled = params.jsEnabled
             }
 
             webViewClient = vm.webViewClient
@@ -82,9 +86,13 @@ class WebViewActivity : ComponentActivity() {
         true
     } else super.onOptionsItemSelected(item)
 
+    @Parcelize
+    internal class Parameters(
+        val title: String, val jsEnabled: Boolean, val events: IBinder
+    ) : Parcelable
+
     internal companion object {
-        const val BINDER_KEY = "EVENTS"
-        const val TITLE_KEY = "TITLE"
+        const val KEY = "params"
     }
 }
 
