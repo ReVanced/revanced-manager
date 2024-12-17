@@ -26,20 +26,21 @@ Learn how to use ReVanced Manager to patch apps.
 5. Tap on the **Done** then **Patch** button
 
    > ⚠️ Warning  
-   > The patching process may take ~5 minutes. Exiting the app may cancel patching or increase the time it takes to patch significantly.
+   > The patching process may take ~5 minutes. Exiting the app may cancel patching or significantly increase the time it takes to patch.
 
 6. Tap on the **Install** button
 
    > ℹ️ Note  
-   > If you are rooted, you can mount the patched app on top of the original app.[^3]
+   > If you are rooted, you can mount[^3] the patched app on top of the original app.[^4]
    > Optionally, you may export the patched app to storage using the option in the bottom left corner.
 
-[^1]: You can select installed apps or select APK files from storage. ReVanced does not provide any APK files, which is why you have to source them yourself.
+[^1]: You can select installed apps from the list of installed apps or APK files from device storage. ReVanced does not provide any APK files, so you must source them yourself.
 [^2]: It is suggested to use the default set of patches by tapping on the **Default** button above the list of patches.
-[^3]: Mounting the patched app on top of the original app will only work if the installed app version matches the version of the app selected in step 3. above.
+[^3]: Mounting refers to using Linux's mounting mechanism to layer the patched app on top of the existing installed app.
+[^4]: Mounting the patched app on top of the original app may only work if the installed app version matches the version of the app selected in step 3. above.
 
 ## ⏭️ What's next
 
-The next page will lead back to the usage page.
+The next page will explain how to view, open and uninstall patched apps.
 
-Continue: [🛠️ Usage](2_usage.md)
+Continue: [🧰 Managing patched apps](2_2_managing.md)

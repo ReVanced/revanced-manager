@@ -10,6 +10,6 @@ Learn how to view, open and uninstall patched apps.
 
 ## ⏭️ What's next
 
-The next page will lead back to the usage page.
+The next page will explain how to update ReVanced Manager.
 
-Continue: [🛠️ Usage](2_usage.md)
+Continue: [🔄 Updating ReVanced Manager](2_3_updating.md)
