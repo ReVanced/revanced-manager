@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.graphics.drawable.Icon
 import android.os.Build
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
@@ -106,9 +107,21 @@ class PatcherWorker(
             Log.d(tag, "Failed to set foreground info:", e)
         }
 
+        val wakeLock: PowerManager.WakeLock =
+            (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
+                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "$tag::Patcher")
+                .apply {
+                    acquire(10 * 60 * 1000L)
+                    Log.d(tag, "Acquired wakelock.")
+                }
+
         val args = workerRepository.claimInput(this)
 
-        return runPatcher(args)
+        return try {
+            runPatcher(args)
+        } finally {
+            wakeLock.release()
+        }
     }
 
     private suspend fun runPatcher(args: Args): Result {
