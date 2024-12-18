@@ -12,4 +12,5 @@ data class DownloadedApp(
     @ColumnInfo(name = "package_name") val packageName: String,
     @ColumnInfo(name = "version") val version: String,
     @ColumnInfo(name = "directory") val directory: File,
+    @ColumnInfo(name = "last_used") val lastUsed: Long = System.currentTimeMillis()
 )

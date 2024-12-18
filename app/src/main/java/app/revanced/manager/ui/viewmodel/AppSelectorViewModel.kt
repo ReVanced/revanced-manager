@@ -14,7 +14,9 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -30,7 +32,8 @@ class AppSelectorViewModel(
     }
     val appList = pm.appList
 
-    var onStorageClick: (SelectedApp.Local) -> Unit = {}
+    private val storageSelectionChannel = Channel<SelectedApp.Local>()
+    val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
 
@@ -54,7 +57,7 @@ class AppSelectorViewModel(
         }
 
         if (patchBundleRepository.isVersionAllowed(selectedApp.packageName, selectedApp.version)) {
-            onStorageClick(selectedApp)
+            storageSelectionChannel.send(selectedApp)
         } else {
             nonSuggestedVersionDialogSubject = selectedApp
         }

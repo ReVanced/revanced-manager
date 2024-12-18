@@ -113,9 +113,10 @@ dependencies {
     implementation(libs.runtime.ktx)
     implementation(libs.runtime.compose)
     implementation(libs.splash.screen)
-    implementation(libs.compose.activity)
+    implementation(libs.activity.compose)
     implementation(libs.work.runtime.ktx)
     implementation(libs.preferences.datastore)
+    implementation(libs.appcompat)
 
     // Compose
     implementation(platform(libs.compose.bom))
@@ -154,6 +155,9 @@ dependencies {
     // ReVanced
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
+
+    // Downloader plugins
+    implementation(project(":downloader-plugin"))
 
     // Native processes
     implementation(libs.kotlin.process)
@@ -196,7 +200,7 @@ dependencies {
     // EnumUtil
     implementation(libs.enumutil)
     ksp(libs.enumutil.ksp)
-    
+
     // Reorderable lists
     implementation(libs.reorderable)
 

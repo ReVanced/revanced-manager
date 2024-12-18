@@ -49,6 +49,10 @@
 -keep class com.android.** {
   *;
 }
+-keep class app.revanced.manager.plugin.** {
+  *;
+}
+
 -dontwarn com.google.auto.value.**
 -dontwarn java.awt.**
 -dontwarn javax.**

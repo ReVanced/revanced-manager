@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -49,17 +49,21 @@ enum class DashboardPage(
 }
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
+    onDownloaderPluginClick: () -> Unit,
     onAppClick: (InstalledApp) -> Unit
 ) {
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
+        false
+    )
     val androidContext = LocalContext.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -234,6 +238,20 @@ fun DashboardScreen(
                                 androidContext.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                                     data = Uri.parse("package:${androidContext.packageName}")
                                 })
+                            }
+                        )
+                    }
+                } else null,
+                if (showNewDownloaderPluginsNotification) {
+                    {
+                        NotificationCard(
+                            text = stringResource(R.string.new_downloader_plugins_notification),
+                            icon = Icons.Outlined.Download,
+                            modifier = Modifier.clickable(onClick = onDownloaderPluginClick),
+                            actions = {
+                                TextButton(onClick = vm::ignoreNewDownloaderPlugins) {
+                                    Text(stringResource(R.string.dismiss))
+                                }
                             }
                         )
                     }
