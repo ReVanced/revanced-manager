@@ -22,13 +22,36 @@ fun SettingsListItem(
     colors: ListItemColors = ListItemDefaults.colors(),
     tonalElevation: Dp = ListItemDefaults.Elevation,
     shadowElevation: Dp = ListItemDefaults.Elevation,
-) = ListItem(
+) = SettingsListItem(
     headlineContent = {
         Text(
             text = headlineContent,
             style = MaterialTheme.typography.titleLarge
         )
     },
+    modifier = modifier,
+    overlineContent = overlineContent,
+    supportingContent = supportingContent,
+    leadingContent = leadingContent,
+    trailingContent = trailingContent,
+    colors = colors,
+    tonalElevation = tonalElevation,
+    shadowElevation = shadowElevation
+)
+
+@Composable
+fun SettingsListItem(
+    headlineContent: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    overlineContent: @Composable (() -> Unit)? = null,
+    supportingContent: String? = null,
+    leadingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
+    colors: ListItemColors = ListItemDefaults.colors(),
+    tonalElevation: Dp = ListItemDefaults.Elevation,
+    shadowElevation: Dp = ListItemDefaults.Elevation,
+) = ListItem(
+    headlineContent = headlineContent,
     modifier = modifier.then(Modifier.padding(horizontal = 8.dp)),
     overlineContent = overlineContent,
     supportingContent = {

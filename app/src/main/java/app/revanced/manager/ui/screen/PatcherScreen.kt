@@ -2,6 +2,7 @@ package app.revanced.manager.ui.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
@@ -38,6 +39,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import app.revanced.manager.util.EventEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,6 +87,38 @@ fun PatcherScreen(
 
     if (vm.installerStatusDialogModel.packageInstallerStatus != null)
         InstallerStatusDialog(vm.installerStatusDialogModel)
+
+    val activityLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = vm::handleActivityResult
+    )
+    EventEffect(flow = vm.launchActivityFlow) { intent ->
+        activityLauncher.launch(intent)
+    }
+
+    vm.activityPromptDialog?.let { title ->
+        AlertDialog(
+            onDismissRequest = vm::rejectInteraction,
+            confirmButton = {
+                TextButton(
+                    onClick = vm::allowInteraction
+                ) {
+                    Text(stringResource(R.string.continue_))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = vm::rejectInteraction
+                ) {
+                    Text(stringResource(R.string.cancel))
+                }
+            },
+            title = { Text(title) },
+            text = {
+                Text(stringResource(R.string.plugin_activity_dialog_body))
+            }
+        )
+    }
 
     AppScaffold(
         topBar = {

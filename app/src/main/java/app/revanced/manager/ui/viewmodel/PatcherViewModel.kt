@@ -8,7 +8,9 @@ import android.content.IntentFilter
 import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.util.Log
+import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,6 +31,8 @@ import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
+import app.revanced.manager.plugin.downloader.PluginHostApi
+import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.ui.component.InstallerStatusDialogModel
@@ -42,11 +46,14 @@ import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
@@ -58,6 +65,7 @@ import java.time.Duration
 import java.util.UUID
 
 @Stable
+@OptIn(PluginHostApi::class)
 class PatcherViewModel(
     private val input: Destination.Patcher
 ) : ViewModel(), KoinComponent {
@@ -68,19 +76,20 @@ class PatcherViewModel(
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
-    val installerStatusDialogModel : InstallerStatusDialogModel = object : InstallerStatusDialogModel {
-        override var packageInstallerStatus: Int? by mutableStateOf(null)
+    val installerStatusDialogModel: InstallerStatusDialogModel =
+        object : InstallerStatusDialogModel {
+            override var packageInstallerStatus: Int? by mutableStateOf(null)
 
-        override fun reinstall() {
-            this@PatcherViewModel.reinstall()
-        }
+            override fun reinstall() {
+                this@PatcherViewModel.reinstall()
+            }
 
-        override fun install() {
-            // Since this is a package installer status dialog,
-            // InstallType.MOUNT is never used here.
-            install(InstallType.DEFAULT)
+            override fun install() {
+                // Since this is a package installer status dialog,
+                // InstallType.MOUNT is never used here.
+                install(InstallType.DEFAULT)
+            }
         }
-    }
 
     private var installedApp: InstalledApp? = null
     val packageName: String = input.selectedApp.packageName
@@ -88,6 +97,13 @@ class PatcherViewModel(
         private set
     var isInstalling by mutableStateOf(false)
         private set
+
+    private var currentActivityRequest: Pair<CompletableDeferred<Boolean>, String>? by mutableStateOf(null)
+    val activityPromptDialog by derivedStateOf { currentActivityRequest?.second }
+
+    private var launchedActivity: CompletableDeferred<ActivityResult>? = null
+    private val launchActivityChannel = Channel<Intent>()
+    val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
     private val tempDir = fs.tempDir.resolve("installer").also {
         it.deleteRecursively()
@@ -109,7 +125,7 @@ class PatcherViewModel(
     }
 
     val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.values.sumOf { it.size }))
-    private val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
+    private val downloadProgress = MutableStateFlow<Pair<Long, Long?>?>(null)
     val steps = generateSteps(
         app,
         input.selectedApp,
@@ -130,6 +146,33 @@ class PatcherViewModel(
                 downloadProgress,
                 patchesProgress,
                 setInputFile = { inputFile = it },
+                handleStartActivityRequest = { plugin, intent ->
+                    withContext(Dispatchers.Main) {
+                        if (currentActivityRequest != null) throw Exception("Another request is already pending.")
+                        try {
+                            // Wait for the dialog interaction.
+                            val accepted = with(CompletableDeferred<Boolean>()) {
+                                currentActivityRequest = this to plugin.name
+
+                                await()
+                            }
+                            if (!accepted) throw UserInteractionException.RequestDenied()
+
+                            // Launch the activity and wait for the result.
+                            try {
+                                with(CompletableDeferred<ActivityResult>()) {
+                                    launchedActivity = this
+                                    launchActivityChannel.send(intent)
+                                    await()
+                                }
+                            } finally {
+                                launchedActivity = null
+                            }
+                        } finally {
+                            currentActivityRequest = null
+                        }
+                    }
+                },
                 onProgress = { name, state, message ->
                     viewModelScope.launch {
                         steps[currentStepIndex] = steps[currentStepIndex].run {
@@ -173,13 +216,15 @@ class PatcherViewModel(
                         ?.let(logger::trace)
 
                     if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
+                        app.toast(app.getString(R.string.install_app_success))
                         installedPackageName =
                             intent.getStringExtra(InstallService.EXTRA_PACKAGE_NAME)
                         viewModelScope.launch {
                             installedAppRepository.addOrUpdate(
                                 installedPackageName!!,
                                 packageName,
-                                input.selectedApp.version,
+                                input.selectedApp.version
+                                    ?: pm.getPackageInfo(outputFile)?.versionName!!,
                                 InstallType.DEFAULT,
                                 input.selectedPatches
                             )
@@ -245,6 +290,18 @@ class PatcherViewModel(
 
     fun isDeviceRooted() = rootInstaller.isDeviceRooted()
 
+    fun rejectInteraction() {
+        currentActivityRequest?.first?.complete(false)
+    }
+
+    fun allowInteraction() {
+        currentActivityRequest?.first?.complete(true)
+    }
+
+    fun handleActivityResult(result: ActivityResult) {
+        launchedActivity?.complete(result)
+    }
+
     fun export(uri: Uri?) = viewModelScope.launch {
         uri?.let {
             withContext(Dispatchers.IO) {
@@ -285,7 +342,8 @@ class PatcherViewModel(
                 // Check if the app version is less than the installed version
                 if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
                     // Exit if the selected app version is less than the installed version
-                    installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
+                    installerStatusDialogModel.packageInstallerStatus =
+                        PackageInstaller.STATUS_FAILURE_CONFLICT
                     return@launch
                 }
             }
@@ -305,6 +363,11 @@ class PatcherViewModel(
 
                 InstallType.MOUNT -> {
                     try {
+                        val packageInfo = pm.getPackageInfo(outputFile)
+                            ?: throw Exception("Failed to load application info")
+                        val label = with(pm) {
+                            packageInfo.label()
+                        }
                         // Check for base APK, first check if the app is already installed
                         if (existingPackageInfo == null) {
                             // If the app is not installed, check if the output file is a base apk
@@ -316,24 +379,23 @@ class PatcherViewModel(
                             }
                         }
 
-                        // Get label
-                        val label = with(pm) {
-                            currentPackageInfo.label()
-                        }
+                        val inputVersion = input.selectedApp.version
+                            ?: inputFile?.let(pm::getPackageInfo)?.versionName
+                            ?: throw Exception("Failed to determine input APK version")
 
                         // Install as root
                         rootInstaller.install(
                             outputFile,
                             inputFile,
                             packageName,
-                            input.selectedApp.version,
+                            inputVersion,
                             label
                         )
 
                         installedAppRepository.addOrUpdate(
+                            packageInfo.packageName,
                             packageName,
-                            packageName,
-                            input.selectedApp.version,
+                            inputVersion,
                             InstallType.MOUNT,
                             input.selectedPatches
                         )
@@ -353,7 +415,7 @@ class PatcherViewModel(
                     }
                 }
             }
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Log.e(tag, "Failed to install", e)
             app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
         } finally {
@@ -385,9 +447,10 @@ class PatcherViewModel(
         fun generateSteps(
             context: Context,
             selectedApp: SelectedApp,
-            downloadProgress: StateFlow<Pair<Float, Float>?>? = null
+            downloadProgress: StateFlow<Pair<Long, Long?>?>? = null
         ): List<Step> {
-            val needsDownload = selectedApp is SelectedApp.Download
+            val needsDownload =
+                selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search
 
             return listOfNotNull(
                 Step(

@@ -33,15 +33,14 @@ data class PatchInfo(
     fun compatibleWith(packageName: String) =
         compatiblePackages?.any { it.packageName == packageName } ?: true
 
-    fun supportsVersion(packageName: String, versionName: String): Boolean {
+    fun supports(packageName: String, versionName: String?): Boolean {
         val packages = compatiblePackages ?: return true // Universal patch
 
         return packages.any { pkg ->
-            if (pkg.packageName != packageName) {
-                return@any false
-            }
+            if (pkg.packageName != packageName) return@any false
+            if (pkg.versions == null) return@any true
 
-            pkg.versions == null || pkg.versions.contains(versionName)
+            versionName != null && versionName in pkg.versions
         }
     }
 

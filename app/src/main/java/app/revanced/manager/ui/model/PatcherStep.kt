@@ -19,5 +19,5 @@ data class Step(
     val category: StepCategory,
     val state: State = State.WAITING,
     val message: String? = null,
-    val downloadProgress: StateFlow<Pair<Float, Float>?>? = null
+    val downloadProgress: StateFlow<Pair<Long, Long?>?>? = null
 )

@@ -22,6 +22,7 @@ val repositoryModule = module {
         // It is best to load patch bundles ASAP
         createdAtStart()
     }
+    singleOf(::DownloaderPluginRepository)
     singleOf(::WorkerRepository)
     singleOf(::DownloadedAppRepository)
     singleOf(::InstalledAppRepository)

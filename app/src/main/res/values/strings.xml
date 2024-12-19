@@ -5,6 +5,9 @@
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
 
+    <string name="plugin_host_permission_label">ReVanced Manager plugin host</string>
+    <string name="plugin_host_permission_description">Used to control access to ReVanced Manager plugins. Only ReVanced Manager has this.</string>
+
     <string name="toast_copied_to_clipboard">Copied!</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
 
@@ -13,6 +16,7 @@
     <string name="select_app">Select an app</string>
     <string name="patches_selected">%1$d/%2$d selected</string>
 
+    <string name="new_downloader_plugins_notification">New downloader plugins available. Click here to configure them.</string>
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
@@ -31,15 +35,24 @@
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
 
-    <string name="selected_app_meta">%1$s</string>
+    <string name="selected_app_meta_any_version">Any available version</string>
+    <string name="app_source_dialog_title">Select source</string>
+    <string name="app_source_dialog_option_auto">Auto</string>
+    <string name="app_source_dialog_option_auto_description">Use all installed downloaders to find a suitable APK file</string>
+    <string name="app_source_dialog_option_auto_unavailable">No plugins available</string>
+    <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
+    <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
 
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Patch selection and options</string>
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="no_patches_selected">No patches selected</string>
 
-    <string name="version_selector_item">Change version</string>
-    <string name="version_selector_item_description">%s selected</string>
+    <string name="apk_source_selector_item">Change source</string>
+    <string name="apk_source_auto">Current: All downloaders</string>
+    <string name="apk_source_downloader">Current: %s</string>
+    <string name="apk_source_installed">Current: Installed</string>
+    <string name="apk_source_local">Current: File</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
@@ -111,10 +124,14 @@
     <string name="patch_options_reset_bundle_description">Resets patch options for all patches in a bundle</string>
     <string name="patch_options_reset_all">Reset patch options</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
-    <string name="prefer_splits">Prefer split APK\'s</string>
-    <string name="prefer_splits_description">Prefer split APK\'s instead of full APK\'s</string>
-    <string name="prefer_universal">Prefer universal APK\'s</string>
-    <string name="prefer_universal_description">Prefer universal instead of arch-specific APK\'s</string>
+    <string name="downloader_plugins">Plugins</string>
+    <string name="downloader_plugin_state_trusted">Trusted</string>
+    <string name="downloader_plugin_state_failed">Failed to load. Click for more details</string>
+    <string name="downloader_plugin_state_untrusted">Untrusted</string>
+    <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
+    <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
+    <string name="downloader_plugin_trust_dialog_body">Package name: %1$s\nSignature (SHA-256): %2$s</string>
+    <string name="downloader_settings_no_apps">No downloaded apps found</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -227,10 +244,11 @@
     <string name="unpatch_app">Unpatch app?</string>
     <string name="unpatch_description">Are you sure you want to unpatch this app?</string>
 
-    <string name="error_occurred">An error occurred</string>
-    <string name="already_downloaded">Already downloaded</string>
-    <string name="select_version">Select version</string>
-    <string name="downloadable_versions">Downloadable versions</string>
+    <string name="downloader_invalid_version">Downloader did not fetch the correct version</string>
+    <string name="downloader_app_not_found">Downloader did not find the app</string>
+    <string name="downloader_error">Downloader error: %s</string>
+    <string name="downloader_no_plugins_installed">No plugins installed.</string>
+    <string name="downloader_no_plugins_available">No trusted plugins available for use. Check your settings.</string>
     <string name="already_patched">Already patched</string>
 
     <string name="patch_selector_sheet_filter_title">Filter</string>
@@ -258,6 +276,7 @@
     <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
+    <string name="plugin_activity_dialog_body">User interaction is required in order to proceed with this plugin.</string>
     <string name="select_install_type">Select installation type</string>
 
     <string name="patcher_step_group_preparing">Preparing</string>
@@ -383,6 +402,7 @@
     <string name="auto_update">Auto update</string>
     <string name="unsupported_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
     <string name="unsupported_patch">Unsupported patch</string>
+    <string name="any_version">Any</string>
     <string name="never_show_again">Never show again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
     <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
