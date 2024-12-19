@@ -55,8 +55,8 @@
     "widgetTitle": "Патчер",
     "patchButton": "Пропатчить",
     "incompatibleArchWarningDialogText": "Патчинг на этой архитектуре еще не поддерживается и может завершиться неудачей. Продолжить?",
-    "removedPatchesWarningDialogText": "Удаленные патчи с момента последнего патчинга приложения:\n\n${patches}\n\n${newPatches}Все равно продолжить?",
-    "addedPatchesDialogText": "Добавленные патчи с момента последнего патчинга приложения:\n\n${addedPatches}\n\n",
+    "removedPatchesWarningDialogText": "Удаленные патчи с момента последнего патчинга данного приложения:\n\n${patches}\n\n${newPatches}Все равно продолжить?",
+    "addedPatchesDialogText": "Добавленные патчи с момента последнего патчинга данного приложения:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Некоторые параметры патчей должны быть обязательно установлены."
   },
   "appSelectorCard": {
@@ -198,7 +198,7 @@
     "deleteTempDirHint": "Удалить неиспользуемые временные файлы",
     "deletedTempDir": "Временные файлы удалены",
     "exportSettingsLabel": "Настройки экспорта",
-    "exportSettingsHint": "Экспорт настроек в JSON файл",
+    "exportSettingsHint": "Экспорт настроек в файл JSON",
     "exportedSettings": "Настройки экспортированы",
     "importSettingsLabel": "Импорт настроек",
     "importSettingsHint": "Импорт настроек из файла JSON",
