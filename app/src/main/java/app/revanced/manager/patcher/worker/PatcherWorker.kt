@@ -1,5 +1,6 @@
 package app.revanced.manager.patcher.worker
 
+import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,9 +10,11 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.graphics.drawable.Icon
 import android.os.Build
+import android.os.Parcelable
 import android.os.PowerManager
 import android.util.Log
 import android.view.WindowManager
+import androidx.activity.result.ActivityResult
 import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
@@ -22,26 +25,35 @@ import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
+import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
+import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.runtime.CoroutineRuntime
 import app.revanced.manager.patcher.runtime.ProcessRuntime
+import app.revanced.manager.plugin.downloader.GetScope
+import app.revanced.manager.plugin.downloader.PluginHostApi
+import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 
 typealias ProgressEventHandler = (name: String?, state: State?, message: String?) -> Unit
 
+@OptIn(PluginHostApi::class)
 class PatcherWorker(
     context: Context,
     parameters: WorkerParameters
@@ -49,20 +61,22 @@ class PatcherWorker(
     private val workerRepository: WorkerRepository by inject()
     private val prefs: PreferencesManager by inject()
     private val keystoreManager: KeystoreManager by inject()
+    private val downloaderPluginRepository: DownloaderPluginRepository by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val pm: PM by inject()
     private val fs: Filesystem by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
-    data class Args(
+    class Args(
         val input: SelectedApp,
         val output: String,
         val selectedPatches: PatchSelection,
         val options: Options,
         val logger: Logger,
-        val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,
+        val downloadProgress: MutableStateFlow<Pair<Long, Long?>?>,
         val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
+        val handleStartActivityRequest: suspend (LoadedDownloaderPlugin, Intent) -> ActivityResult,
         val setInputFile: (File) -> Unit,
         val onProgress: ProgressEventHandler
     ) {
@@ -141,16 +155,57 @@ class PatcherWorker(
                 }
             }
 
+            suspend fun download(plugin: LoadedDownloaderPlugin, data: Parcelable) =
+                downloadedAppRepository.download(
+                    plugin,
+                    data,
+                    args.packageName,
+                    args.input.version,
+                    onDownload = args.downloadProgress::emit
+                ).also {
+                    args.setInputFile(it)
+                    updateProgress(state = State.COMPLETED) // Download APK
+                }
+
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
-                    downloadedAppRepository.download(
-                        selectedApp.app,
-                        prefs.preferSplits.get(),
-                        onDownload = { args.downloadProgress.emit(it) }
-                    ).also {
-                        args.setInputFile(it)
-                        updateProgress(state = State.COMPLETED) // Download APK
-                    }
+                    val (plugin, data) = downloaderPluginRepository.unwrapParceledData(selectedApp.data)
+
+                    download(plugin, data)
+                }
+
+                is SelectedApp.Search -> {
+                    downloaderPluginRepository.loadedPluginsFlow.first()
+                        .firstNotNullOfOrNull { plugin ->
+                            try {
+                                val getScope = object : GetScope {
+                                    override val pluginPackageName = plugin.packageName
+                                    override val hostPackageName = applicationContext.packageName
+                                    override suspend fun requestStartActivity(intent: Intent): Intent? {
+                                        val result = args.handleStartActivityRequest(plugin, intent)
+                                        return when (result.resultCode) {
+                                            Activity.RESULT_OK -> result.data
+                                            Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
+                                            else -> throw UserInteractionException.Activity.NotCompleted(
+                                                result.resultCode,
+                                                result.data
+                                            )
+                                        }
+                                    }
+                                }
+                                withContext(Dispatchers.IO) {
+                                    plugin.get(
+                                        getScope,
+                                        selectedApp.packageName,
+                                        selectedApp.version
+                                    )
+                                }?.takeIf { (_, version) -> selectedApp.version == null || version == selectedApp.version }
+                            } catch (e: UserInteractionException.Activity.NotCompleted) {
+                                throw e
+                            } catch (_: UserInteractionException) {
+                                null
+                            }?.let { (data, _) -> download(plugin, data) }
+                        } ?: throw Exception("App is not available.")
                 }
 
                 is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
@@ -184,7 +239,10 @@ class PatcherWorker(
             Log.i(tag, "Patching succeeded".logFmt())
             Result.success()
         } catch (e: ProcessRuntime.RemoteFailureException) {
-            Log.e(tag, "An exception occurred in the remote process while patching. ${e.originalStackTrace}".logFmt())
+            Log.e(
+                tag,
+                "An exception occurred in the remote process while patching. ${e.originalStackTrace}".logFmt()
+            )
             updateProgress(state = State.FAILED, message = e.originalStackTrace)
             Result.failure()
         } catch (e: Exception) {

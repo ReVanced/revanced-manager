@@ -1,13 +1,14 @@
 [versions]
 ktx = "1.15.0"
 material3 = "1.3.1"
-ui-tooling = "1.7.5"
+ui-tooling = "1.7.6"
 viewmodel-lifecycle = "2.8.7"
 splash-screen = "1.0.1"
-compose-activity = "1.9.3"
+activity = "1.9.3"
+appcompat = "1.7.0"
 preferences-datastore = "1.1.1"
 work-runtime = "2.10.0"
-compose-bom = "2024.10.01"
+compose-bom = "2024.12.01"
 accompanist = "0.34.0"
 placeholder = "1.1.2"
 reorderable = "1.5.2"
@@ -23,10 +24,11 @@ reimagined-navigation = "1.5.0"
 ktor = "2.3.9"
 markdown-renderer = "0.22.0"
 fading-edges = "1.0.4"
-kotlin = "2.0.21"
-android-gradle-plugin = "8.7.2"
-dev-tools-gradle-plugin = "2.0.21-1.0.27"
+kotlin = "2.1.0"
+android-gradle-plugin = "8.7.3"
+dev-tools-gradle-plugin = "2.1.0-1.0.29"
 about-libraries-gradle-plugin = "11.1.1"
+binary-compatibility-validator = "0.17.0"
 coil = "2.6.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
@@ -43,9 +45,11 @@ androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx"
 runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "viewmodel-lifecycle" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -135,9 +139,11 @@ compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }

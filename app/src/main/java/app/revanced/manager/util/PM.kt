@@ -8,9 +8,10 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.MATCH_UNINSTALLED_PACKAGES
+import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
 import androidx.core.content.pm.PackageInfoCompat
+import android.content.pm.Signature
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
@@ -37,7 +38,6 @@ data class AppInfo(
 ) : Parcelable
 
 @SuppressLint("QueryPermissionsNeeded")
-@Suppress("DEPRECATION")
 class PM(
     private val app: Application,
     patchBundleRepository: PatchBundleRepository
@@ -68,7 +68,7 @@ class PM(
         }
 
         val installedApps = scope.async {
-            app.packageManager.getInstalledPackages(MATCH_UNINSTALLED_PACKAGES).map { packageInfo ->
+            getInstalledPackages().map { packageInfo ->
                 AppInfo(
                     packageInfo.packageName,
                     0,
@@ -81,7 +81,7 @@ class PM(
             (compatibleApps.await() + installedApps.await())
                 .distinctBy { it.packageName }
                 .sortedWith(
-                    compareByDescending<AppInfo>{
+                    compareByDescending<AppInfo> {
                         it.packageInfo != null && (it.patches ?: 0) > 0
                     }.thenByDescending {
                         it.patches
@@ -94,9 +94,24 @@ class PM(
         }
     }.flowOn(Dispatchers.IO)
 
-    fun getPackageInfo(packageName: String): PackageInfo? =
+    private fun getInstalledPackages(flags: Int = 0): List<PackageInfo> =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            app.packageManager.getInstalledPackages(PackageInfoFlags.of(flags.toLong()))
+        else
+            app.packageManager.getInstalledPackages(flags)
+
+    fun getPackagesWithFeature(feature: String) =
+        getInstalledPackages(PackageManager.GET_CONFIGURATIONS)
+            .filter { pkg ->
+                pkg.reqFeatures?.any { it.name == feature } ?: false
+            }
+
+    fun getPackageInfo(packageName: String, flags: Int = 0): PackageInfo? =
         try {
-            app.packageManager.getPackageInfo(packageName, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                app.packageManager.getPackageInfo(packageName, PackageInfoFlags.of(flags.toLong()))
+            else
+                app.packageManager.getPackageInfo(packageName, flags)
         } catch (e: NameNotFoundException) {
             null
         }
@@ -117,6 +132,18 @@ class PM(
     fun PackageInfo.label() = this.applicationInfo!!.loadLabel(app.packageManager).toString()
 
     fun getVersionCode(packageInfo: PackageInfo) = PackageInfoCompat.getLongVersionCode(packageInfo)
+
+    fun getSignature(packageName: String): Signature =
+        // Get the last signature from the list because we want the newest one if SigningInfo.getSigningCertificateHistory() was used.
+        PackageInfoCompat.getSignatures(app.packageManager, packageName).last()
+
+    @SuppressLint("InlinedApi")
+    fun hasSignature(packageName: String, signature: ByteArray) = PackageInfoCompat.hasSignatures(
+        app.packageManager,
+        packageName,
+        mapOf(signature to PackageManager.CERT_INPUT_RAW_X509),
+        false
+    )
 
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller

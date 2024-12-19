@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
@@ -49,7 +48,7 @@ import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -137,7 +136,7 @@ fun PatchesSelectorScreen(
 
     if (vm.compatibleVersions.isNotEmpty())
         UnsupportedPatchDialog(
-            appVersion = vm.appVersion,
+            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
         )
@@ -146,7 +145,7 @@ fun PatchesSelectorScreen(
     }
     if (showUnsupportedPatchesDialog)
         UnsupportedPatchesDialog(
-            appVersion = vm.appVersion,
+            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
             onDismissRequest = { showUnsupportedPatchesDialog = false }
         )
 
@@ -204,15 +203,15 @@ fun PatchesSelectorScreen(
                         when {
                             // Open unsupported dialog if the patch is not supported
                             !supported -> vm.openUnsupportedDialog(patch)
-                            
+
                             // Show selection warning if enabled
                             vm.selectionWarningEnabled -> showSelectionWarning = true
-                            
+
                             // Set pending universal patch action if the universal patch warning is enabled and there are no compatible packages
                             vm.universalPatchWarningEnabled && patch.compatiblePackages == null -> {
                                 vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
                             }
-                            
+
                             // Toggle the patch otherwise
                             else -> vm.togglePatch(uid, patch)
                         }
@@ -275,7 +274,11 @@ fun PatchesSelectorScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.patches_selected, selectedPatchCount, availablePatchCount),
+                title = stringResource(
+                    R.string.patches_selected,
+                    selectedPatchCount,
+                    availablePatchCount
+                ),
                 onBackClick = onBackClick,
                 actions = {
                     IconButton(onClick = vm::reset) {
@@ -436,7 +439,7 @@ private fun PatchItem(
     selected: Boolean,
     onToggle: () -> Unit,
     supported: Boolean = true
-) = ListItem (
+) = ListItem(
     modifier = Modifier
         .let { if (!supported) it.alpha(0.5f) else it }
         .clickable(onClick = onToggle)
@@ -457,6 +460,7 @@ private fun PatchItem(
             }
         }
     },
+    colors = transparentListItemColors
 )
 
 @Composable

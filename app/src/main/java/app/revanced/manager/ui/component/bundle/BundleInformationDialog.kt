@@ -1,21 +1,16 @@
 package app.revanced.manager.ui.component.bundle
 
-import android.content.Intent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -26,7 +21,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
-import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ExceptionViewerDialog
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,7 +114,7 @@ fun BundleInformationDialog(
                         var showDialog by rememberSaveable {
                             mutableStateOf(false)
                         }
-                        if (showDialog) BundleErrorViewerDialog(
+                        if (showDialog) ExceptionViewerDialog(
                             onDismiss = { showDialog = false },
                             text = remember(it) { it.stackTraceToString() }
                         )
@@ -146,63 +141,6 @@ fun BundleInformationDialog(
                     }
                 }
             )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun BundleErrorViewerDialog(onDismiss: () -> Unit, text: String) {
-    val context = LocalContext.current
-
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            dismissOnBackPress = true
-        )
-    ) {
-        Scaffold(
-            topBar = {
-                BundleTopBar(
-                    title = stringResource(R.string.bundle_error),
-                    onBackClick = onDismiss,
-                    backIcon = {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                val sendIntent: Intent = Intent().apply {
-                                    action = Intent.ACTION_SEND
-                                    putExtra(
-                                        Intent.EXTRA_TEXT,
-                                        text
-                                    )
-                                    type = "text/plain"
-                                }
-
-                                val shareIntent = Intent.createChooser(sendIntent, null)
-                                context.startActivity(shareIntent)
-                            }
-                        ) {
-                            Icon(
-                                Icons.Outlined.Share,
-                                contentDescription = stringResource(R.string.share)
-                            )
-                        }
-                    }
-                )
-            }
-        ) { paddingValues ->
-            ColumnWithScrollbar(
-                modifier = Modifier.padding(paddingValues)
-            ) {
-                Text(text, modifier = Modifier.horizontalScroll(rememberScrollState()))
-            }
         }
     }
 }

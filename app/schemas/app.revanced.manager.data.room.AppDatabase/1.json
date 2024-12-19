@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c385297c07ea54804dc8526c388f706d",
+    "identityHash": "d0119047505da435972c5247181de675",
     "entities": [
       {
         "tableName": "patch_bundles",
@@ -144,7 +144,7 @@
       },
       {
         "tableName": "downloaded_app",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `directory` TEXT NOT NULL, PRIMARY KEY(`package_name`, `version`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `directory` TEXT NOT NULL, `last_used` INTEGER NOT NULL, PRIMARY KEY(`package_name`, `version`))",
         "fields": [
           {
             "fieldPath": "packageName",
@@ -162,6 +162,12 @@
             "fieldPath": "directory",
             "columnName": "directory",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUsed",
+            "columnName": "last_used",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -386,12 +392,38 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "trusted_downloader_plugins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `signature` BLOB NOT NULL, PRIMARY KEY(`package_name`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "package_name"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c385297c07ea54804dc8526c388f706d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0119047505da435972c5247181de675')"
     ]
   }
 }
