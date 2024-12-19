@@ -135,7 +135,7 @@ fun SubStep(
     name: String,
     state: State,
     message: String? = null,
-    downloadProgress: Pair<Double, Double?>? = null
+    downloadProgress: Pair<Long, Long?>? = null
 ) {
     var messageExpanded by rememberSaveable { mutableStateOf(true) }
 
@@ -181,7 +181,7 @@ fun SubStep(
             } else {
                 downloadProgress?.let { (current, total) ->
                     Text(
-                        if (total != null) "${current.formatted}/${total.formatted} MB" else "${current.formatted} MB",
+                        if (total != null) "${current.megaBytes}/${total.megaBytes} MB" else "${current.megaBytes} MB",
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
@@ -200,7 +200,7 @@ fun SubStep(
 }
 
 @Composable
-fun StepIcon(state: State, progress: Pair<Double, Double?>? = null, size: Dp) {
+fun StepIcon(state: State, progress: Pair<Long, Long?>? = null, size: Dp) {
     val strokeWidth = Dp(floor(size.value / 10) + 1)
 
     when (state) {
@@ -245,4 +245,4 @@ fun StepIcon(state: State, progress: Pair<Double, Double?>? = null, size: Dp) {
     }
 }
 
-private val Double.formatted get() = "%.1f".format(locale = Locale.ROOT, this)
+private val Long.megaBytes get() = "%.1f".format(locale = Locale.ROOT, toDouble() / 1_000_000)

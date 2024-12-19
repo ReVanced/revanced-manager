@@ -40,7 +40,7 @@ class DownloadedAppRepository(
         data: Parcelable,
         expectedPackageName: String,
         expectedVersion: String?,
-        onDownload: suspend (downloadProgress: Pair<Double, Double?>) -> Unit,
+        onDownload: suspend (downloadProgress: Pair<Long, Long?>) -> Unit,
     ): File {
         // Converted integers cannot contain / or .. unlike the package name or version, so they are safer to use here.
         val relativePath = File(generateUid().toString())
@@ -90,7 +90,7 @@ class DownloadedAppRepository(
             }
                 .conflate()
                 .flowOn(Dispatchers.IO)
-                .collect { (downloaded, size) -> onDownload(downloaded.megaBytes to size.megaBytes) }
+                .collect { (downloaded, size) -> onDownload(downloaded to size) }
 
             if (downloadedBytes.get() < 1) error("Downloader did not download anything.")
             val pkgInfo =
@@ -129,9 +129,5 @@ class DownloadedAppRepository(
         }
 
         dao.delete(downloadedApps)
-    }
-
-    private companion object {
-        val Long.megaBytes get() = toDouble() / 1_000_000
     }
 }

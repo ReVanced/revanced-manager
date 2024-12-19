@@ -74,7 +74,7 @@ class PatcherWorker(
         val selectedPatches: PatchSelection,
         val options: Options,
         val logger: Logger,
-        val downloadProgress: MutableStateFlow<Pair<Double, Double?>?>,
+        val downloadProgress: MutableStateFlow<Pair<Long, Long?>?>,
         val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
         val handleStartActivityRequest: suspend (LoadedDownloaderPlugin, Intent) -> ActivityResult,
         val setInputFile: (File) -> Unit,
