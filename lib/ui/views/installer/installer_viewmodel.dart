@@ -1,4 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:io';
+
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -566,6 +568,10 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> cleanPatcher() async {
     try {
       _patcherAPI.cleanPatcher();
+      if (_app.isFromStorage) {
+        // The selected apk was copied to cacheDir by the file picker, so it's not needed anymore.
+        File(_app.apkFilePath).delete();
+      }
       locator<PatcherViewModel>().selectedApp = null;
       locator<PatcherViewModel>().selectedPatches.clear();
       locator<PatcherViewModel>().notifyListeners();
