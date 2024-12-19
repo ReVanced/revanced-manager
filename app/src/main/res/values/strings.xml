@@ -244,14 +244,9 @@
     <string name="unpatch_app">Unpatch app?</string>
     <string name="unpatch_description">Are you sure you want to unpatch this app?</string>
 
-    <string name="error_occurred">An error occurred</string>
-    <string name="already_downloaded">Already downloaded</string>
-    <string name="select_version">Select version</string>
-    <string name="downloadable_versions">Downloadable versions</string>
-    <string name="downloaded_versions">Downloaded versions</string>
-    <string name="downloader_select">Select downloader</string>
-    <string name="downloader_not_selected">No downloader selected</string>
-    <string name="downloader_no_versions">No downloadable versions found</string>
+    <string name="downloader_invalid_version">Downloader did not fetch the correct version</string>
+    <string name="downloader_app_not_found">Downloader did not find the app</string>
+    <string name="downloader_error">Downloader error: %s</string>
     <string name="downloader_no_plugins_installed">No plugins installed.</string>
     <string name="downloader_no_plugins_available">No trusted plugins available for use. Check your settings.</string>
     <string name="already_patched">Already patched</string>

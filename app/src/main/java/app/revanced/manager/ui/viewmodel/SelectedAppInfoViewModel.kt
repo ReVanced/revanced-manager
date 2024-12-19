@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.os.Parcelable
+import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
@@ -37,7 +38,10 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.simpleMessage
+import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -178,7 +182,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         showSourceSelector = false
     }
 
-    fun searchInPlugin(plugin: LoadedDownloaderPlugin) {
+    fun searchUsingPlugin(plugin: LoadedDownloaderPlugin) {
         cancelPluginAction()
         pluginAction = plugin to viewModelScope.launch {
             try {
@@ -212,7 +216,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
                     plugin.get(scope, packageName, desiredVersion)
                 }?.let { (data, version) ->
                     if (desiredVersion != null && version != desiredVersion) {
-                        app.toast("Plugin returned a package with the wrong version")
+                        app.toast(app.getString(R.string.downloader_invalid_version))
                         return@launch
                     }
                     selectedApp = SelectedApp.Download(
@@ -220,9 +224,14 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
                         version,
                         ParceledDownloaderData(plugin, data)
                     )
-                } ?: app.toast("App was not found")
+                } ?: app.toast(app.getString(R.string.downloader_app_not_found))
             } catch (e: UserInteractionException.Activity) {
                 app.toast(e.message!!)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                app.toast(app.getString(R.string.downloader_error, e.simpleMessage()))
+                Log.e(tag, "Downloader.get threw an exception", e)
             } finally {
                 pluginAction = null
                 dismissSourceSelector()

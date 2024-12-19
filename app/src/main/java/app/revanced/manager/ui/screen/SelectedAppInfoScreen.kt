@@ -138,7 +138,7 @@ fun SelectedAppInfoScreen(
                         activeSearchJob = vm.activePluginAction,
                         hasRoot = vm.hasRoot,
                         onDismissRequest = vm::dismissSourceSelector,
-                        onSelectPlugin = vm::searchInPlugin,
+                        onSelectPlugin = vm::searchUsingPlugin,
                         requiredVersion = requiredVersion,
                         onSelect = {
                             vm.selectedApp = it
