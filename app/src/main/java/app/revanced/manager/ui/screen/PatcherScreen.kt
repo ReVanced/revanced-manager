@@ -96,7 +96,7 @@ fun PatcherScreen(
         activityLauncher.launch(intent)
     }
 
-    if (vm.showActivityPromptDialog)
+    vm.activityPromptDialog?.let { title ->
         AlertDialog(
             onDismissRequest = vm::rejectInteraction,
             confirmButton = {
@@ -113,11 +113,12 @@ fun PatcherScreen(
                     Text(stringResource(R.string.cancel))
                 }
             },
-            title = { Text("User interaction required.") },
+            title = { Text(title) },
             text = {
-                Text("User interaction is required to proceed.")
+                Text(stringResource(R.string.plugin_activity_dialog_body))
             }
         )
+    }
 
     AppScaffold(
         topBar = {

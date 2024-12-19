@@ -12,18 +12,6 @@ import app.revanced.manager.plugin.downloader.webview.WebViewDownloader
 import kotlinx.parcelize.Parcelize
 import kotlin.io.path.*
 
-// TODO: update UI error presentation and strings
-
-@Parcelize
-class InstalledApp(val path: String) : Parcelable
-
-private val application by lazy {
-    // Don't do this in a real plugin.
-    val clazz = Class.forName("android.app.ActivityThread")
-    val activityThread = clazz.getMethod("currentActivityThread")(null)
-    clazz.getMethod("getApplication")(activityThread) as Application
-}
-
 val apkMirrorDownloader = WebViewDownloader { packageName, version ->
     with(Uri.Builder()) {
         scheme("https")
@@ -39,6 +27,16 @@ val apkMirrorDownloader = WebViewDownloader { packageName, version ->
 
         build().toString()
     }
+}
+
+@Parcelize
+class InstalledApp(val path: String) : Parcelable
+
+private val application by lazy {
+    // Don't do this in a real plugin.
+    val clazz = Class.forName("android.app.ActivityThread")
+    val activityThread = clazz.getMethod("currentActivityThread")(null)
+    clazz.getMethod("getApplication")(activityThread) as Application
 }
 
 val installedAppDownloader = Downloader<InstalledApp> {

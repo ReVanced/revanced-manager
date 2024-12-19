@@ -98,8 +98,8 @@ class PatcherViewModel(
     var isInstalling by mutableStateOf(false)
         private set
 
-    private var currentActivityRequest: CompletableDeferred<Boolean>? by mutableStateOf(null)
-    val showActivityPromptDialog by derivedStateOf { currentActivityRequest != null }
+    private var currentActivityRequest: Pair<CompletableDeferred<Boolean>, String>? by mutableStateOf(null)
+    val activityPromptDialog by derivedStateOf { currentActivityRequest?.second }
 
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
     private val launchActivityChannel = Channel<Intent>()
@@ -146,13 +146,13 @@ class PatcherViewModel(
                 downloadProgress,
                 patchesProgress,
                 setInputFile = { inputFile = it },
-                handleStartActivityRequest = { intent ->
+                handleStartActivityRequest = { plugin, intent ->
                     withContext(Dispatchers.Main) {
                         if (currentActivityRequest != null) throw Exception("Another request is already pending.")
                         try {
                             // Wait for the dialog interaction.
                             val accepted = with(CompletableDeferred<Boolean>()) {
-                                currentActivityRequest = this
+                                currentActivityRequest = this to plugin.name
 
                                 await()
                             }
@@ -291,11 +291,11 @@ class PatcherViewModel(
     fun isDeviceRooted() = rootInstaller.isDeviceRooted()
 
     fun rejectInteraction() {
-        currentActivityRequest?.complete(false)
+        currentActivityRequest?.first?.complete(false)
     }
 
     fun allowInteraction() {
-        currentActivityRequest?.complete(true)
+        currentActivityRequest?.first?.complete(true)
     }
 
     fun handleActivityResult(result: ActivityResult) {

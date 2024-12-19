@@ -36,6 +36,12 @@
     <string name="bundle_name_fallback">Unnamed</string>
 
     <string name="selected_app_meta_any_version">Any available version</string>
+    <string name="app_source_dialog_title">Select source</string>
+    <string name="app_source_dialog_option_auto">Auto</string>
+    <string name="app_source_dialog_option_auto_description">Use all installed downloaders to find a suitable APK file</string>
+    <string name="app_source_dialog_option_auto_unavailable">No plugins available</string>
+    <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
+    <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
 
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Patch selection and options</string>
@@ -275,6 +281,7 @@
     <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
+    <string name="plugin_activity_dialog_body">User interaction is required in order to proceed with this plugin.</string>
     <string name="select_install_type">Select installation type</string>
 
     <string name="patcher_step_group_preparing">Preparing</string>

@@ -76,7 +76,7 @@ class PatcherWorker(
         val logger: Logger,
         val downloadProgress: MutableStateFlow<Pair<Double, Double?>?>,
         val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
-        val handleStartActivityRequest: suspend (Intent) -> ActivityResult,
+        val handleStartActivityRequest: suspend (LoadedDownloaderPlugin, Intent) -> ActivityResult,
         val setInputFile: (File) -> Unit,
         val onProgress: ProgressEventHandler
     ) {
@@ -182,7 +182,7 @@ class PatcherWorker(
                                     override val pluginPackageName = plugin.packageName
                                     override val hostPackageName = applicationContext.packageName
                                     override suspend fun requestStartActivity(intent: Intent): Intent? {
-                                        val result = args.handleStartActivityRequest(intent)
+                                        val result = args.handleStartActivityRequest(plugin, intent)
                                         return when (result.resultCode) {
                                             Activity.RESULT_OK -> result.data
                                             Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()

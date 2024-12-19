@@ -273,7 +273,7 @@ private fun AppSourceSelectorDialog(
                 Text(stringResource(R.string.cancel))
             }
         },
-        title = { Text("Select source") },
+        title = { Text(stringResource(R.string.app_source_dialog_title)) },
         textHorizontalPadding = PaddingValues(horizontal = 0.dp),
         text = {
             LazyColumn {
@@ -283,8 +283,15 @@ private fun AppSourceSelectorDialog(
                         modifier = Modifier
                             .clickable(enabled = canSelect && hasPlugins) { onSelect(searchApp) }
                             .enabled(hasPlugins),
-                        headlineContent = { Text("Auto") },
-                        supportingContent = { Text(if (hasPlugins) "Use all installed downloaders to find a suitable app." else "No plugins available") },
+                        headlineContent = { Text(stringResource(R.string.app_source_dialog_option_auto)) },
+                        supportingContent = {
+                            Text(
+                                if (hasPlugins)
+                                    stringResource(R.string.app_source_dialog_option_auto_description)
+                                else
+                                    stringResource(R.string.app_source_dialog_option_auto_unavailable)
+                            )
+                        },
                         colors = transparentListItemColors
                     )
                 }
@@ -293,11 +300,17 @@ private fun AppSourceSelectorDialog(
                     item(key = "installed") {
                         val (usable, text) = when {
                             // Mounted apps must be unpatched before patching, which cannot be done without root access.
-                            meta?.installType == InstallType.MOUNT && !hasRoot -> false to "Mounted apps cannot be patched again without root access"
+                            meta?.installType == InstallType.MOUNT && !hasRoot -> false to stringResource(
+                                R.string.app_source_dialog_option_installed_no_root
+                            )
                             // Patching already patched apps is not allowed because patches expect unpatched apps.
                             meta?.installType == InstallType.DEFAULT -> false to stringResource(R.string.already_patched)
                             // Version does not match suggested version.
-                            requiredVersion != null && app.version != requiredVersion -> false to "Version ${app.version} does not match the suggested version"
+                            requiredVersion != null && app.version != requiredVersion -> false to stringResource(
+                                R.string.app_source_dialog_option_installed_version_not_suggested,
+                                app.version
+                            )
+
                             else -> true to app.version
                         }
                         ListItem(
@@ -315,7 +328,6 @@ private fun AppSourceSelectorDialog(
                     ListItem(
                         modifier = Modifier.clickable(enabled = canSelect) { onSelectPlugin(plugin) },
                         headlineContent = { Text(plugin.name) },
-                        supportingContent = { Text("Try to find the app using ${plugin.name}") },
                         trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == plugin.packageName },
                         colors = transparentListItemColors
                     )

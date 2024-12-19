@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -31,14 +33,20 @@ class WebViewActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val vm by viewModels<WebViewModel>()
-
         enableEdgeToEdge()
         setContentView(R.layout.activity_webview)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val webView = findViewById<WebView>(R.id.webview)
+        onBackPressedDispatcher.addCallback {
+            if (webView.canGoBack()) webView.goBack()
+            else cancelActivity()
+        }
+
         val params = intent.getParcelableExtra<Parameters>(KEY)!!
         actionBar?.apply {
             title = params.title
@@ -49,12 +57,11 @@ class WebViewActivity : ComponentActivity() {
         val events = IWebViewEvents.Stub.asInterface(params.events)!!
         vm.setup(events)
 
-        val webView = findViewById<WebView>(R.id.content).apply {
+        webView.apply {
             settings.apply {
                 cacheMode = WebSettings.LOAD_NO_CACHE
-                databaseEnabled = false
                 allowContentAccess = false
-                domStorageEnabled = false
+                domStorageEnabled = true
                 javaScriptEnabled = true
             }
 
@@ -80,9 +87,14 @@ class WebViewActivity : ComponentActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == android.R.id.home) {
+    private fun cancelActivity() {
         setResult(RESULT_CANCELED)
         finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == android.R.id.home) {
+        cancelActivity()
+
         true
     } else super.onOptionsItemSelected(item)
 
