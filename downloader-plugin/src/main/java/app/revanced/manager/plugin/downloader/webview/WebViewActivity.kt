@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -21,12 +20,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.R
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
+@OptIn(PluginHostApi::class)
+@PluginHostApi
 class WebViewActivity : ComponentActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +110,7 @@ class WebViewActivity : ComponentActivity() {
     }
 }
 
+@OptIn(PluginHostApi::class)
 internal class WebViewModel : ViewModel() {
     init {
         CookieManager.getInstance().apply {

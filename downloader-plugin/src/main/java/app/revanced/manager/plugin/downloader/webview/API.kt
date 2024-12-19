@@ -6,6 +6,7 @@ import app.revanced.manager.plugin.downloader.DownloaderScope
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.Scope
 import app.revanced.manager.plugin.downloader.Downloader
+import app.revanced.manager.plugin.downloader.PluginHostApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,6 +32,7 @@ interface WebViewCallbackScope<T> : Scope {
     suspend fun load(url: String)
 }
 
+@OptIn(PluginHostApi::class)
 class WebViewScope<T> internal constructor(
     coroutineScope: CoroutineScope,
     private val scopeImpl: Scope,
@@ -108,6 +110,7 @@ private value class Container<U>(val value: U)
  * @param title The string displayed in the action bar.
  * @param block The control block.
  */
+@OptIn(PluginHostApi::class)
 suspend fun <T> GetScope.runWebView(
     title: String,
     block: suspend WebViewScope<T>.() -> InitialUrl

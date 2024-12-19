@@ -120,12 +120,6 @@ public final class app/revanced/manager/plugin/downloader/webview/APIKt {
 	public static final fun runWebView (Lapp/revanced/manager/plugin/downloader/GetScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public abstract interface class app/revanced/manager/plugin/downloader/webview/IWebView : android/os/IInterface {
-	public static final field DESCRIPTOR Ljava/lang/String;
-	public abstract fun finish ()V
-	public abstract fun load (Ljava/lang/String;)V
-}
-
 public class app/revanced/manager/plugin/downloader/webview/IWebView$Default : app/revanced/manager/plugin/downloader/webview/IWebView {
 	public fun <init> ()V
 	public fun asBinder ()Landroid/os/IBinder;
@@ -138,13 +132,6 @@ public abstract class app/revanced/manager/plugin/downloader/webview/IWebView$St
 	public fun asBinder ()Landroid/os/IBinder;
 	public static fun asInterface (Landroid/os/IBinder;)Lapp/revanced/manager/plugin/downloader/webview/IWebView;
 	public fun onTransact (ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-}
-
-public abstract interface class app/revanced/manager/plugin/downloader/webview/IWebViewEvents : android/os/IInterface {
-	public static final field DESCRIPTOR Ljava/lang/String;
-	public abstract fun download (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public abstract fun pageLoad (Ljava/lang/String;)V
-	public abstract fun ready (Lapp/revanced/manager/plugin/downloader/webview/IWebView;)V
 }
 
 public class app/revanced/manager/plugin/downloader/webview/IWebViewEvents$Default : app/revanced/manager/plugin/downloader/webview/IWebViewEvents {
@@ -160,12 +147,6 @@ public abstract class app/revanced/manager/plugin/downloader/webview/IWebViewEve
 	public fun asBinder ()Landroid/os/IBinder;
 	public static fun asInterface (Landroid/os/IBinder;)Lapp/revanced/manager/plugin/downloader/webview/IWebViewEvents;
 	public fun onTransact (ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-}
-
-public final class app/revanced/manager/plugin/downloader/webview/WebViewActivity : androidx/activity/ComponentActivity {
-	public static final field KEY Ljava/lang/String;
-	public fun <init> ()V
-	public fun onOptionsItemSelected (Landroid/view/MenuItem;)Z
 }
 
 public final class app/revanced/manager/plugin/downloader/webview/WebViewActivity$Parameters$Creator : android/os/Parcelable$Creator {
