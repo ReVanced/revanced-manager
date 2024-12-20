@@ -20,7 +20,7 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        onPatchCompleted: () -> Unit,
+        onPatchCompleted: suspend () -> Unit,
         onProgress: ProgressEventHandler,
     ) {
         val bundles = bundles()

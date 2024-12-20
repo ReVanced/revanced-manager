@@ -163,6 +163,8 @@ class PM(
         app.startActivity(it)
     }
 
+    fun canInstallPackages() = app.packageManager.canRequestPackageInstalls()
+
     private fun PackageInstaller.Session.writeApk(apk: File) {
         apk.inputStream().use { inputStream ->
             openWrite(apk.name, 0, apk.length()).use { outputStream ->

@@ -36,13 +36,14 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.model.ProgressKey
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
+import app.revanced.manager.ui.model.StepProgressProvider
 import java.util.Locale
 import kotlin.math.floor
 
@@ -52,6 +53,7 @@ fun Steps(
     category: StepCategory,
     steps: List<Step>,
     stepCount: Pair<Int, Int>? = null,
+    stepProgressProvider: StepProgressProvider
 ) {
     var expanded by rememberSaveable { mutableStateOf(true) }
 
@@ -116,13 +118,20 @@ fun Steps(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 steps.forEach { step ->
-                    val downloadProgress = step.downloadProgress?.collectAsStateWithLifecycle()
+                    val (progress, progressText) = when (step.progressKey) {
+                        null -> null
+                        ProgressKey.DOWNLOAD -> stepProgressProvider.downloadProgress?.let { (downloaded, total) ->
+                            if (total != null) downloaded.toFloat() / total.toFloat() to "${downloaded.megaBytes}/${total.megaBytes} MB"
+                            else null to "${downloaded.megaBytes} MB"
+                        }
+                    } ?: (null to null)
 
                     SubStep(
                         name = step.name,
                         state = step.state,
                         message = step.message,
-                        downloadProgress = downloadProgress?.value
+                        progress = progress,
+                        progressText = progressText
                     )
                 }
             }
@@ -135,7 +144,8 @@ fun SubStep(
     name: String,
     state: State,
     message: String? = null,
-    downloadProgress: Pair<Long, Long?>? = null
+    progress: Float? = null,
+    progressText: String? = null
 ) {
     var messageExpanded by rememberSaveable { mutableStateOf(true) }
 
@@ -156,7 +166,7 @@ fun SubStep(
                 modifier = Modifier.size(24.dp),
                 contentAlignment = Alignment.Center
             ) {
-                StepIcon(state, downloadProgress, size = 20.dp)
+                StepIcon(state, progress, size = 20.dp)
             }
 
             Text(
@@ -167,8 +177,8 @@ fun SubStep(
                 modifier = Modifier.weight(1f, true),
             )
 
-            if (message != null) {
-                Box(
+            when {
+                message != null -> Box(
                     modifier = Modifier.size(24.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -178,13 +188,11 @@ fun SubStep(
                         onClick = null
                     )
                 }
-            } else {
-                downloadProgress?.let { (current, total) ->
-                    Text(
-                        if (total != null) "${current.megaBytes}/${total.megaBytes} MB" else "${current.megaBytes} MB",
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                }
+
+                progressText != null -> Text(
+                    progressText,
+                    style = MaterialTheme.typography.labelSmall
+                )
             }
         }
 
@@ -200,7 +208,7 @@ fun SubStep(
 }
 
 @Composable
-fun StepIcon(state: State, progress: Pair<Long, Long?>? = null, size: Dp) {
+fun StepIcon(state: State, progress: Float? = null, size: Dp) {
     val strokeWidth = Dp(floor(size.value / 10) + 1)
 
     when (state) {
@@ -234,12 +242,7 @@ fun StepIcon(state: State, progress: Pair<Long, Long?>? = null, size: Dp) {
                             contentDescription = description
                         }
                 },
-                progress = {
-                    progress?.let { (current, total) ->
-                        if (total == null) return@let null
-                        current / total
-                    }?.toFloat()
-                },
+                progress = { progress },
                 strokeWidth = strokeWidth
             )
     }

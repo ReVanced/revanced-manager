@@ -6,7 +6,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -21,35 +20,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.model.InstallerModel
 import com.github.materiiapps.enumutil.FromValue
 
 private typealias InstallerStatusDialogButtonHandler = ((model: InstallerModel) -> Unit)
-private typealias InstallerStatusDialogButton = @Composable (model: InstallerStatusDialogModel) -> Unit
-
-interface InstallerModel {
-    fun reinstall()
-    fun install()
-}
-
-interface InstallerStatusDialogModel : InstallerModel {
-    var packageInstallerStatus: Int?
-}
+private typealias InstallerStatusDialogButton = @Composable (model: InstallerModel, dismiss: () -> Unit) -> Unit
 
 @Composable
-fun InstallerStatusDialog(model: InstallerStatusDialogModel) {
+fun InstallerStatusDialog(installerStatus: Int, model: InstallerModel, onDismiss: () -> Unit) {
     val dialogKind = remember {
-        DialogKind.fromValue(model.packageInstallerStatus!!) ?: DialogKind.FAILURE
+        DialogKind.fromValue(installerStatus) ?: DialogKind.FAILURE
     }
 
     AlertDialog(
-        onDismissRequest = {
-            model.packageInstallerStatus = null
-        },
+        onDismissRequest = onDismiss,
         confirmButton = {
-            dialogKind.confirmButton(model)
+            dialogKind.confirmButton(model, onDismiss)
         },
         dismissButton = {
-            dialogKind.dismissButton?.invoke(model)
+            dialogKind.dismissButton?.invoke(model, onDismiss)
         },
         icon = {
             Icon(dialogKind.icon, null)
@@ -75,10 +64,10 @@ fun InstallerStatusDialog(model: InstallerStatusDialogModel) {
 private fun installerStatusDialogButton(
     @StringRes buttonStringResId: Int,
     buttonHandler: InstallerStatusDialogButtonHandler = { },
-): InstallerStatusDialogButton = { model ->
+): InstallerStatusDialogButton = { model, dismiss ->
     TextButton(
         onClick = {
-            model.packageInstallerStatus = null
+            dismiss()
             buttonHandler(model)
         }
     ) {
@@ -154,6 +143,7 @@ enum class DialogKind(
             model.install()
         },
     );
+
     // Needed due to the @FromValue annotation.
     companion object
 }

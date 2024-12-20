@@ -25,7 +25,7 @@ class Session(
     private val androidContext: Context,
     private val logger: Logger,
     private val input: File,
-    private val onPatchCompleted: () -> Unit,
+    private val onPatchCompleted: suspend () -> Unit,
     private val onProgress: (name: String?, state: State?, message: String?) -> Unit
 ) : Closeable {
     private fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =

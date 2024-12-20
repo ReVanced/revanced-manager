@@ -3,6 +3,7 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
+import android.os.Build
 import android.os.PowerManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -20,6 +21,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.flow.first
@@ -32,7 +34,8 @@ class DashboardViewModel(
     private val downloaderPluginRepository: DownloaderPluginRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
-    val prefs: PreferencesManager
+    val prefs: PreferencesManager,
+    private val pm: PM,
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundles.map { it.values.sumOf { bundle -> bundle.patches.size } }
@@ -42,6 +45,14 @@ class DashboardViewModel(
     val selectedSources = mutableStateListOf<PatchBundleSource>()
 
     val newDownloaderPluginsAvailable = downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
+
+    /**
+     * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
+     * This value is true when the conditions that trigger the bug are met.
+     *
+     * See: https://github.com/ReVanced/revanced-manager/issues/2138
+     */
+    val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
 
     var updatedManagerVersion: String? by mutableStateOf(null)
         private set
