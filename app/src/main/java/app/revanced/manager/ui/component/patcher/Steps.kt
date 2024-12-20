@@ -120,7 +120,10 @@ fun Steps(
                 steps.forEach { step ->
                     val (progress, progressText) = when (step.progressKey) {
                         null -> null
-                        ProgressKey.DOWNLOAD -> stepProgressProvider.downloadProgress?.let { (downloaded, total) -> downloaded / total to "$downloaded/$total MB" }
+                        ProgressKey.DOWNLOAD -> stepProgressProvider.downloadProgress?.let { (downloaded, total) ->
+                            if (total != null) downloaded.toFloat() / total.toFloat() to "${downloaded.megaBytes}/${total.megaBytes} MB"
+                            else null to "${downloaded.megaBytes} MB"
+                        }
                     } ?: (null to null)
 
                     SubStep(
@@ -239,13 +242,6 @@ fun StepIcon(state: State, progress: Float? = null, size: Dp) {
                             contentDescription = description
                         }
                 },
-                /*
-                progress = {
-                    progress?.let { (current, total) ->
-                        if (total == null) return@let null
-                        current / total
-                    }?.toFloat()
-                },*/
                 progress = { progress },
                 strokeWidth = strokeWidth
             )

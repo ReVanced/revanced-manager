@@ -20,7 +20,7 @@ enum class ProgressKey {
 }
 
 interface StepProgressProvider {
-    val downloadProgress: Pair<Float, Float>?
+    val downloadProgress: Pair<Long, Long?>?
 }
 
 @Parcelize

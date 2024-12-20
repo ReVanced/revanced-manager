@@ -147,7 +147,7 @@ class PatcherViewModel(
         key = "downloadProgress",
         stateSaver = autoSaver()
     ) {
-        mutableStateOf<Pair<Float, Float>?>(null)
+        mutableStateOf<Pair<Long, Long?>?>(null)
     }
         private set
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {

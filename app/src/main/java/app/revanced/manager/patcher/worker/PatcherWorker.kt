@@ -223,12 +223,6 @@ class PatcherWorker(
                 args.selectedPatches,
                 args.options,
                 args.logger,
-                /*
-                onPatchCompleted = {
-                    args.patchesProgress.update { (completed, total) ->
-                        completed + 1 to total
-                    }
-                },*/
                 args.onPatchCompleted,
                 args.onProgress
             )
