@@ -46,11 +46,6 @@ class DashboardViewModel(
 
     val newDownloaderPluginsAvailable = downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
 
-    var updatedManagerVersion: String? by mutableStateOf(null)
-        private set
-    var showBatteryOptimizationsWarning by mutableStateOf(false)
-        private set
-
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
      * This value is true when the conditions that trigger the bug are met.
@@ -58,6 +53,11 @@ class DashboardViewModel(
      * See: https://github.com/ReVanced/revanced-manager/issues/2138
      */
     val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
+
+    var updatedManagerVersion: String? by mutableStateOf(null)
+        private set
+    var showBatteryOptimizationsWarning by mutableStateOf(false)
+        private set
 
     init {
         viewModelScope.launch {
