@@ -3,7 +3,7 @@ package app.revanced.manager.domain.repository
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import app.revanced.library.PatchUtils
+import app.revanced.library.mostCommonCompatibleVersions
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
@@ -55,7 +55,7 @@ class PatchBundleRepository(
         val allPatches =
             it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toPatcherPatch) }.toSet()
 
-        PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
+        allPatches.mostCommonCompatibleVersions(countUnusedPatches = true)
             .mapValues { (_, versions) ->
                 if (versions.keys.size < 2)
                     return@mapValues versions.keys.firstOrNull()
@@ -137,11 +137,11 @@ class PatchBundleRepository(
     private fun addBundle(patchBundle: PatchBundleSource) =
         _sources.update { it.toMutableMap().apply { put(patchBundle.uid, patchBundle) } }
 
-    suspend fun createLocal(patches: InputStream, integrations: InputStream?) = withContext(Dispatchers.Default) {
+    suspend fun createLocal(patches: InputStream) = withContext(Dispatchers.Default) {
         val uid = persistenceRepo.create("", SourceInfo.Local).uid
         val bundle = LocalPatchBundle("", uid, directoryOf(uid))
 
-        bundle.replace(patches, integrations)
+        bundle.replace(patches)
         addBundle(bundle)
     }
 

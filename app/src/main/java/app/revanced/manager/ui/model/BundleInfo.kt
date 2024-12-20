@@ -49,7 +49,7 @@ data class BundleInfo(
                 bundle.uid to patches
             }
 
-        fun PatchBundleRepository.bundleInfoFlow(packageName: String, version: String) =
+        fun PatchBundleRepository.bundleInfoFlow(packageName: String, version: String?) =
             sources.flatMapLatestAndCombine(
                 combiner = { it.filterNotNull() }
             ) { source ->
@@ -64,7 +64,7 @@ data class BundleInfo(
                     bundle.patches.filter { it.compatibleWith(packageName) }.forEach {
                         val targetList = when {
                             it.compatiblePackages == null -> universal
-                            it.supportsVersion(
+                            it.supports(
                                 packageName,
                                 version
                             ) -> supported

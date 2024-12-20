@@ -26,6 +26,9 @@ abstract class BasePreferencesManager(private val context: Context, name: String
     protected fun stringPreference(key: String, default: String) =
         StringPreference(dataStore, key, default)
 
+    protected fun stringSetPreference(key: String, default: Set<String>) =
+        StringSetPreference(dataStore, key, default)
+
     protected fun booleanPreference(key: String, default: Boolean) =
         BooleanPreference(dataStore, key, default)
 
@@ -52,6 +55,10 @@ class EditorContext(private val prefs: MutablePreferences) {
     var <T> Preference<T>.value
         get() = prefs.run { read() }
         set(value) = prefs.run { write(value) }
+
+    operator fun Preference<Set<String>>.plusAssign(value: String) = prefs.run {
+        write(read() + value)
+    }
 }
 
 abstract class Preference<T>(
@@ -65,10 +72,12 @@ abstract class Preference<T>(
 
     suspend fun get() = flow.first()
     fun getBlocking() = runBlocking { get() }
+
     @Composable
     fun getAsState() = flow.collectAsStateWithLifecycle(initialValue = remember {
         getBlocking()
     })
+
     suspend fun update(value: T) = dataStore.editor {
         this@Preference.value = value
     }
@@ -106,6 +115,14 @@ class StringPreference(
     default: String
 ) : BasePreference<String>(dataStore, default) {
     override val key = stringPreferencesKey(key)
+}
+
+class StringSetPreference(
+    dataStore: DataStore<Preferences>,
+    key: String,
+    default: Set<String>
+) : BasePreference<Set<String>>(dataStore, default) {
+    override val key = stringSetPreferencesKey(key)
 }
 
 class BooleanPreference(

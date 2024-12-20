@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -31,8 +31,9 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
-import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
+import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
@@ -48,17 +49,21 @@ enum class DashboardPage(
 }
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
+    onDownloaderPluginClick: () -> Unit,
     onAppClick: (InstalledApp) -> Unit
 ) {
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
+        false
+    )
     val androidContext = LocalContext.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -77,9 +82,9 @@ fun DashboardScreen(
     if (showAddBundleDialog) {
         ImportPatchBundleDialog(
             onDismiss = { showAddBundleDialog = false },
-            onLocalSubmit = { patches, integrations ->
+            onLocalSubmit = { patches ->
                 showAddBundleDialog = false
-                vm.createLocalSource(patches, integrations)
+                vm.createLocalSource(patches)
             },
             onRemoteSubmit = { url, autoUpdate ->
                 showAddBundleDialog = false
@@ -168,7 +173,7 @@ fun DashboardScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
+            HapticFloatingActionButton(
                 onClick = {
                     vm.cancelSourceSelection()
 
@@ -181,7 +186,7 @@ fun DashboardScreen(
                                         DashboardPage.BUNDLES.ordinal
                                     )
                                 }
-                                return@FloatingActionButton
+                                return@HapticFloatingActionButton
                             }
 
                             onAppSelectorClick()
@@ -201,7 +206,7 @@ fun DashboardScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
                 DashboardPage.entries.forEachIndexed { index, page ->
-                    Tab(
+                    HapticTab(
                         selected = pagerState.currentPage == index,
                         onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
                         text = { Text(stringResource(page.titleResId)) },
@@ -236,6 +241,20 @@ fun DashboardScreen(
                             }
                         )
                     }
+                } else null,
+                if (showNewDownloaderPluginsNotification) {
+                    {
+                        NotificationCard(
+                            text = stringResource(R.string.new_downloader_plugins_notification),
+                            icon = Icons.Outlined.Download,
+                            modifier = Modifier.clickable(onClick = onDownloaderPluginClick),
+                            actions = {
+                                TextButton(onClick = vm::ignoreNewDownloaderPlugins) {
+                                    Text(stringResource(R.string.dismiss))
+                                }
+                            }
+                        )
+                    }
                 } else null
             )
 
@@ -262,33 +281,17 @@ fun DashboardScreen(
 
                             val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
 
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                            ) {
-                                sources.forEach {
-                                    BundleItem(
-                                        bundle = it,
-                                        onDelete = {
-                                            vm.delete(it)
-                                        },
-                                        onUpdate = {
-                                            vm.update(it)
-                                        },
-                                        selectable = bundlesSelectable,
-                                        onSelect = {
-                                            vm.selectedSources.add(it)
-                                        },
-                                        isBundleSelected = vm.selectedSources.contains(it),
-                                        toggleSelection = { bundleIsNotSelected ->
-                                            if (bundleIsNotSelected) {
-                                                vm.selectedSources.add(it)
-                                            } else {
-                                                vm.selectedSources.remove(it)
-                                            }
-                                        }
-                                    )
-                                }
-                            }
+                            BundleListScreen(
+                                onDelete = {
+                                    vm.delete(it)
+                                },
+                                onUpdate = {
+                                    vm.update(it)
+                                },
+                                sources = sources,
+                                selectedSources = vm.selectedSources,
+                                bundlesSelectable = bundlesSelectable
+                            )
                         }
                     }
                 }

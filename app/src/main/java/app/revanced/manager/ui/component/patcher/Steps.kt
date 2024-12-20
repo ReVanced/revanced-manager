@@ -44,6 +44,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.StepProgressProvider
+import java.util.Locale
 import kotlin.math.floor
 
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
@@ -238,8 +239,17 @@ fun StepIcon(state: State, progress: Float? = null, size: Dp) {
                             contentDescription = description
                         }
                 },
+                /*
+                progress = {
+                    progress?.let { (current, total) ->
+                        if (total == null) return@let null
+                        current / total
+                    }?.toFloat()
+                },*/
                 progress = { progress },
                 strokeWidth = strokeWidth
             )
     }
 }
+
+private val Long.megaBytes get() = "%.1f".format(locale = Locale.ROOT, toDouble() / 1_000_000)
