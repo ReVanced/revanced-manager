@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Parcelable
 import android.os.PowerManager
 import android.util.Log
-import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
@@ -124,7 +123,7 @@ class PatcherWorker(
 
         val wakeLock: PowerManager.WakeLock =
             (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
-                .newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, "$tag::Patcher")
+                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "$tag::Patcher")
                 .apply {
                     acquire(10 * 60 * 1000L)
                     Log.d(tag, "Acquired wakelock.")
