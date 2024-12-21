@@ -41,13 +41,12 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
-import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstalledAppInfoScreen(
-    onPatchClick: (packageName: String, patchSelection: PatchSelection) -> Unit,
+    onPatchClick: (packageName: String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: InstalledAppInfoViewModel
 ) {
@@ -81,7 +80,7 @@ fun InstalledAppInfoScreen(
             AppInfo(viewModel.appInfo)  {
                 Text(viewModel.installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
 
-                if (viewModel.installedApp.installType == InstallType.ROOT) {
+                if (viewModel.installedApp.installType == InstallType.MOUNT) {
                     Text(
                         text = if (viewModel.isMounted) {
                             stringResource(R.string.mounted)
@@ -112,7 +111,7 @@ fun InstalledAppInfoScreen(
                         onClick = viewModel::uninstall
                     )
 
-                    InstallType.ROOT -> {
+                    InstallType.MOUNT -> {
                         SegmentedButton(
                             icon = Icons.Outlined.SettingsBackupRestore,
                             text = stringResource(R.string.unpatch),
@@ -134,11 +133,9 @@ fun InstalledAppInfoScreen(
                     icon = Icons.Outlined.Update,
                     text = stringResource(R.string.repatch),
                     onClick = {
-                        viewModel.appliedPatches?.let {
-                            onPatchClick(viewModel.installedApp.originalPackageName, it)
-                        }
+                        onPatchClick(viewModel.installedApp.originalPackageName)
                     },
-                    enabled = viewModel.installedApp.installType != InstallType.ROOT || viewModel.rootInstaller.hasRootAccess()
+                    enabled = viewModel.installedApp.installType != InstallType.MOUNT || viewModel.rootInstaller.hasRootAccess()
                 )
             }
 

@@ -43,6 +43,7 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
+import java.util.Locale
 import kotlin.math.floor
 
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
@@ -134,7 +135,7 @@ fun SubStep(
     name: String,
     state: State,
     message: String? = null,
-    downloadProgress: Pair<Float, Float>? = null
+    downloadProgress: Pair<Long, Long?>? = null
 ) {
     var messageExpanded by rememberSaveable { mutableStateOf(true) }
 
@@ -180,7 +181,7 @@ fun SubStep(
             } else {
                 downloadProgress?.let { (current, total) ->
                     Text(
-                        "$current/$total MB",
+                        if (total != null) "${current.megaBytes}/${total.megaBytes} MB" else "${current.megaBytes} MB",
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
@@ -199,7 +200,7 @@ fun SubStep(
 }
 
 @Composable
-fun StepIcon(state: State, progress: Pair<Float, Float>? = null, size: Dp) {
+fun StepIcon(state: State, progress: Pair<Long, Long?>? = null, size: Dp) {
     val strokeWidth = Dp(floor(size.value / 10) + 1)
 
     when (state) {
@@ -233,8 +234,15 @@ fun StepIcon(state: State, progress: Pair<Float, Float>? = null, size: Dp) {
                             contentDescription = description
                         }
                 },
-                progress = { progress?.let { (current, total) -> current / total } },
+                progress = {
+                    progress?.let { (current, total) ->
+                        if (total == null) return@let null
+                        current / total
+                    }?.toFloat()
+                },
                 strokeWidth = strokeWidth
             )
     }
 }
+
+private val Long.megaBytes get() = "%.1f".format(locale = Locale.ROOT, toDouble() / 1_000_000)

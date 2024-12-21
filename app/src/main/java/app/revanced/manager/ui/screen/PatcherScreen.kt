@@ -4,14 +4,10 @@ import android.app.Activity
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -19,13 +15,7 @@ import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
@@ -41,14 +31,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.InstallerStatusDialog
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import app.revanced.manager.util.EventEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,6 +98,41 @@ fun PatcherScreen(
             onConfirm = vm::install
         )
 
+    if (vm.installerStatusDialogModel.packageInstallerStatus != null)
+        InstallerStatusDialog(vm.installerStatusDialogModel)
+
+    val activityLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = vm::handleActivityResult
+    )
+    EventEffect(flow = vm.launchActivityFlow) { intent ->
+        activityLauncher.launch(intent)
+    }
+
+    vm.activityPromptDialog?.let { title ->
+        AlertDialog(
+            onDismissRequest = vm::rejectInteraction,
+            confirmButton = {
+                TextButton(
+                    onClick = vm::allowInteraction
+                ) {
+                    Text(stringResource(R.string.continue_))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = vm::rejectInteraction
+                ) {
+                    Text(stringResource(R.string.cancel))
+                }
+            },
+            title = { Text(title) },
+            text = {
+                Text(stringResource(R.string.plugin_activity_dialog_body))
+            }
+        )
+    }
+
     AppScaffold(
         topBar = {
             AppTopBar(
@@ -116,7 +145,7 @@ fun PatcherScreen(
                 actions = {
                     IconButton(
                         onClick = { exportApkLauncher.launch("${vm.packageName}.apk") },
-                        enabled = canInstall
+                        enabled = patcherSucceeded == true
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
@@ -129,7 +158,7 @@ fun PatcherScreen(
                 },
                 floatingActionButton = {
                     AnimatedVisibility(visible = canInstall) {
-                        ExtendedFloatingActionButton(
+                        HapticExtendedFloatingActionButton(
                             text = {
                                 Text(
                                     stringResource(if (vm.installedPackageName == null) R.string.install_app else R.string.open_app)
@@ -148,7 +177,8 @@ fun PatcherScreen(
                             },
                             onClick = {
                                 if (vm.installedPackageName == null)
-                                    showInstallPicker = true
+                                    if (vm.isDeviceRooted()) showInstallPicker = true
+                                    else vm.install(InstallType.DEFAULT)
                                 else vm.open()
                             }
                         )

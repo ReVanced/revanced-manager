@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
@@ -35,6 +34,9 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchView
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -43,9 +45,10 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
+import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -133,7 +136,7 @@ fun PatchesSelectorScreen(
 
     if (vm.compatibleVersions.isNotEmpty())
         UnsupportedPatchDialog(
-            appVersion = vm.appVersion,
+            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
         )
@@ -142,7 +145,7 @@ fun PatchesSelectorScreen(
     }
     if (showUnsupportedPatchesDialog)
         UnsupportedPatchesDialog(
-            appVersion = vm.appVersion,
+            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
             onDismissRequest = { showUnsupportedPatchesDialog = false }
         )
 
@@ -200,15 +203,15 @@ fun PatchesSelectorScreen(
                         when {
                             // Open unsupported dialog if the patch is not supported
                             !supported -> vm.openUnsupportedDialog(patch)
-                            
+
                             // Show selection warning if enabled
                             vm.selectionWarningEnabled -> showSelectionWarning = true
-                            
+
                             // Set pending universal patch action if the universal patch warning is enabled and there are no compatible packages
                             vm.universalPatchWarningEnabled && patch.compatiblePackages == null -> {
                                 vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
                             }
-                            
+
                             // Toggle the patch otherwise
                             else -> vm.togglePatch(uid, patch)
                         }
@@ -271,7 +274,11 @@ fun PatchesSelectorScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.patches_selected, selectedPatchCount, availablePatchCount),
+                title = stringResource(
+                    R.string.patches_selected,
+                    selectedPatchCount,
+                    availablePatchCount
+                ),
                 onBackClick = onBackClick,
                 actions = {
                     IconButton(onClick = vm::reset) {
@@ -293,7 +300,7 @@ fun PatchesSelectorScreen(
         floatingActionButton = {
             if (!showPatchButton) return@Scaffold
 
-            ExtendedFloatingActionButton(
+            HapticExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = {
                     Icon(
@@ -321,7 +328,7 @@ fun PatchesSelectorScreen(
                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
                 ) {
                     bundles.forEachIndexed { index, bundle ->
-                        Tab(
+                        HapticTab(
                             selected = pagerState.currentPage == index,
                             onClick = {
                                 composableScope.launch {
@@ -438,7 +445,7 @@ private fun PatchItem(
         .clickable(onClick = onToggle)
         .fillMaxSize(),
     leadingContent = {
-        Checkbox(
+        HapticCheckbox(
             checked = selected,
             onCheckedChange = { onToggle() },
             enabled = supported
@@ -452,7 +459,8 @@ private fun PatchItem(
                 Icon(Icons.Outlined.Settings, null)
             }
         }
-    }
+    },
+    colors = transparentListItemColors
 )
 
 @Composable
@@ -477,7 +485,8 @@ private fun ListHeader(
                     )
                 }
             }
-        }
+        },
+        colors = transparentListItemColors
     )
 }
 

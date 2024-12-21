@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -24,6 +23,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
+import app.revanced.manager.util.transparentListItemColors
 
 @Composable
 fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
@@ -76,6 +77,7 @@ private fun AutoUpdatesItem(
 ) = ListItem(
     leadingContent = { Icon(icon, null) },
     headlineContent = { Text(stringResource(headline)) },
-    trailingContent = { Checkbox(checked = checked, onCheckedChange = null) },
-    modifier = Modifier.clickable { onCheckedChange(!checked) }
+    trailingContent = { HapticCheckbox(checked = checked, onCheckedChange = null) },
+    modifier = Modifier.clickable { onCheckedChange(!checked) },
+    colors = transparentListItemColors
 )
