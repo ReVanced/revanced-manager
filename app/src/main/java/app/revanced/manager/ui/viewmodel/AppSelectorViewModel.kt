@@ -6,8 +6,11 @@ import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -23,13 +26,20 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
 
+@OptIn(SavedStateHandleSaveableApi::class)
 class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
     fs: Filesystem,
-    private val patchBundleRepository: PatchBundleRepository
+    private val patchBundleRepository: PatchBundleRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val inputFile = File(fs.uiTempDir, "input.apk").also(File::delete)
+    private val inputFile = savedStateHandle.saveable(key = "inputFile") {
+        File(
+            fs.uiTempDir,
+            "input.apk"
+        ).also(File::delete)
+    }
     val appList = pm.appList
 
     private val storageSelectionChannel = Channel<SelectedApp.Local>()

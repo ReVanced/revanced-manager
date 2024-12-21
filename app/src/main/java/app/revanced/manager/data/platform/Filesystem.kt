@@ -29,9 +29,7 @@ class Filesystem(private val app: Application) {
      * This is the same as [tempDir], but does not get cleared on system-initiated process death.
      * Paths to this directory can be safely stored in parcels.
      */
-    val uiTempDir: File = app.getDir("ui_ephemeral", Context.MODE_PRIVATE).apply {
-        mkdirs()
-    }
+    val uiTempDir: File = app.getDir("ui_ephemeral", Context.MODE_PRIVATE)
 
     fun externalFilesDir(): Path = Environment.getExternalStorageDirectory().toPath()
 

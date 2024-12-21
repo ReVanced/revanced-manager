@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.activity.result.ActivityResult
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,12 +64,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
 
-@Stable
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class PatcherViewModel(
     private val input: Destination.Patcher
@@ -81,7 +80,7 @@ class PatcherViewModel(
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
-    private val savedStateHandle: SavedStateHandle by inject()
+    private val savedStateHandle: SavedStateHandle = get()
 
     private var installedApp: InstalledApp? = null
     val packageName = input.selectedApp.packageName
@@ -325,7 +324,10 @@ class PatcherViewModel(
                 }
             }
         }
+    }
 
+    fun onBack() {
+        // tempDir cannot be deleted inside onCleared because it gets called on system-initiated process death.
         tempDir.deleteRecursively()
     }
 

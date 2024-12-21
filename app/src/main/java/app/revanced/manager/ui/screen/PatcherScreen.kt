@@ -45,7 +45,11 @@ fun PatcherScreen(
     onBackClick: () -> Unit,
     vm: PatcherViewModel
 ) {
-    BackHandler(onBack = onBackClick)
+    fun leaveScreen() {
+        vm.onBack()
+        onBackClick()
+    }
+    BackHandler(onBack = ::leaveScreen)
 
     val context = LocalContext.current
     val exportApkLauncher =
@@ -107,7 +111,7 @@ fun PatcherScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.patcher),
-                onBackClick = onBackClick
+                onBackClick = ::leaveScreen
             )
         },
         bottomBar = {
