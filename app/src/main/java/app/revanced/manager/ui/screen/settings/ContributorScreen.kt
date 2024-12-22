@@ -202,7 +202,7 @@ fun ContributorsCard(
 }
 
 fun processHeadlineText(repositoryName: String): String {
-    return "ReVanced " + repositoryName.replace("revanced/revanced-", "")
+    return repositoryName.replace("revanced/revanced-", "")
         .replace("-", " ")
         .split(" ").joinToString(" ") { if (it.length > 3) it else it.uppercase() }
         .replaceFirstChar { it.uppercase() }
