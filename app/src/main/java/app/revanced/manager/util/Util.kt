@@ -3,8 +3,14 @@ package app.revanced.manager.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.icu.number.Notation
+import android.icu.number.NumberFormatter
+import android.icu.number.Precision
+import android.icu.text.CompactDecimalFormat
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
@@ -28,6 +34,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.revanced.manager.R
@@ -48,6 +55,9 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
+import kotlin.properties.PropertyDelegateProvider
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 typealias PatchSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
@@ -261,3 +271,22 @@ fun <T, R> ((T) -> R).withHapticFeedback(constant: Int): (T) -> R {
 }
 
 fun Modifier.enabled(condition: Boolean) = if (condition) this else alpha(0.5f)
+
+@MainThread
+fun <T : Any> SavedStateHandle.saveableVar(init: () -> T): PropertyDelegateProvider<Any?, ReadWriteProperty<Any?, T>> =
+    PropertyDelegateProvider { _: Any?, property ->
+        val name = property.name
+        if (name !in this) this[name] = init()
+        object : ReadWriteProperty<Any?, T> {
+            override fun getValue(thisRef: Any?, property: KProperty<*>): T = get(name)!!
+            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) =
+                set(name, value)
+        }
+    }
+
+fun <T : Any> SavedStateHandle.saveableVar(): ReadWriteProperty<Any?, T?> =
+    object : ReadWriteProperty<Any?, T?> {
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T? = get(property.name)
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
+            set(property.name, value)
+    }

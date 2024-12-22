@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -27,6 +28,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
+import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
@@ -36,6 +38,7 @@ import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -93,19 +96,35 @@ fun DashboardScreen(
         )
     }
 
-    var showDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialogOnLaunch.getBlocking()) }
+    var showUpdateDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialogOnLaunch.getBlocking()) }
     val availableUpdate by remember {
-        derivedStateOf { vm.updatedManagerVersion.takeIf { showDialog } }
+        derivedStateOf { vm.updatedManagerVersion.takeIf { showUpdateDialog } }
     }
 
     availableUpdate?.let { version ->
         AvailableUpdateDialog(
-            onDismiss = { showDialog = false },
+            onDismiss = { showUpdateDialog = false },
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
             newVersion = version
         )
     }
+
+    val context = LocalContext.current
+    var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
+    val installAppsPermissionLauncher =
+        rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
+            showAndroid11Dialog = false
+            if (granted) onAppSelectorClick()
+        }
+    if (showAndroid11Dialog) Android11Dialog(
+        onDismissRequest = {
+            showAndroid11Dialog = false
+        },
+        onContinue = {
+            installAppsPermissionLauncher.launch(context.packageName)
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -186,6 +205,10 @@ fun DashboardScreen(
                                         DashboardPage.BUNDLES.ordinal
                                     )
                                 }
+                                return@HapticFloatingActionButton
+                            }
+                            if (vm.android11BugActive) {
+                                showAndroid11Dialog = true
                                 return@HapticFloatingActionButton
                             }
 
@@ -316,4 +339,25 @@ fun Notifications(
             }
         }
     }
+}
+
+@Composable
+fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
+    AlertDialogExtended(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onContinue) {
+                Text(stringResource(R.string.continue_))
+            }
+        },
+        title = {
+            Text(stringResource(R.string.android_11_bug_dialog_title))
+        },
+        icon = {
+            Icon(Icons.Outlined.BugReport, null)
+        },
+        text = {
+            Text(stringResource(R.string.android_11_bug_dialog_description))
+        }
+    )
 }

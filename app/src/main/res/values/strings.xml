@@ -35,6 +35,9 @@
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
 
+    <string name="android_11_bug_dialog_title">Android 11 bug</string>
+    <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
+
     <string name="selected_app_meta_any_version">Any available version</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>

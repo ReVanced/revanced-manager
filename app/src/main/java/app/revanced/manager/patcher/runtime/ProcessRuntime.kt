@@ -66,7 +66,7 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        onPatchCompleted: () -> Unit,
+        onPatchCompleted: suspend () -> Unit,
         onProgress: ProgressEventHandler,
     ) = coroutineScope {
         // Get the location of our own Apk.
@@ -123,7 +123,9 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
             val eventHandler = object : IPatcherEvents.Stub() {
                 override fun log(level: String, msg: String) = logger.log(enumValueOf(level), msg)
 
-                override fun patchSucceeded() = onPatchCompleted()
+                override fun patchSucceeded() {
+                    launch { onPatchCompleted() }
+                }
 
                 override fun progress(name: String?, state: String?, msg: String?) =
                     onProgress(name, state?.let { enumValueOf<State>(it) }, msg)
