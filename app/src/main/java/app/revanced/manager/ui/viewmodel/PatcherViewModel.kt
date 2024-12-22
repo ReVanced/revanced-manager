@@ -105,7 +105,9 @@ class PatcherViewModel(
     var isInstalling by mutableStateOf(ongoingPmSession)
         private set
 
-    private var currentActivityRequest: Pair<CompletableDeferred<Boolean>, String>? by mutableStateOf(null)
+    private var currentActivityRequest: Pair<CompletableDeferred<Boolean>, String>? by mutableStateOf(
+        null
+    )
     val activityPromptDialog by derivedStateOf { currentActivityRequest?.second }
 
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
@@ -268,9 +270,7 @@ class PatcherViewModel(
                                 input.selectedPatches
                             )
                         }
-                    }
-
-                    packageInstallerStatus = pmStatus
+                    } else packageInstallerStatus = pmStatus
 
                     isInstalling = false
                 }
@@ -284,9 +284,8 @@ class PatcherViewModel(
                     intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
                         ?.let(logger::trace)
 
-                    if (pmStatus != PackageInstaller.STATUS_SUCCESS) {
+                    if (pmStatus != PackageInstaller.STATUS_SUCCESS)
                         packageInstallerStatus = pmStatus
-                    }
                 }
             }
         }
