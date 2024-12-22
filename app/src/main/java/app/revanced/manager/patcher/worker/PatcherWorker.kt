@@ -42,9 +42,7 @@ import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -73,10 +71,10 @@ class PatcherWorker(
         val selectedPatches: PatchSelection,
         val options: Options,
         val logger: Logger,
-        val downloadProgress: MutableStateFlow<Pair<Long, Long?>?>,
-        val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
+        val onDownloadProgress: suspend (Pair<Long, Long?>?) -> Unit,
+        val onPatchCompleted: suspend () -> Unit,
         val handleStartActivityRequest: suspend (LoadedDownloaderPlugin, Intent) -> ActivityResult,
-        val setInputFile: (File) -> Unit,
+        val setInputFile: suspend (File) -> Unit,
         val onProgress: ProgressEventHandler
     ) {
         val packageName get() = input.packageName
@@ -160,7 +158,7 @@ class PatcherWorker(
                     data,
                     args.packageName,
                     args.input.version,
-                    onDownload = args.downloadProgress::emit
+                    onDownload = args.onDownloadProgress
                 ).also {
                     args.setInputFile(it)
                     updateProgress(state = State.COMPLETED) // Download APK
@@ -224,11 +222,7 @@ class PatcherWorker(
                 args.selectedPatches,
                 args.options,
                 args.logger,
-                onPatchCompleted = {
-                    args.patchesProgress.update { (completed, total) ->
-                        completed + 1 to total
-                    }
-                },
+                args.onPatchCompleted,
                 args.onProgress
             )
 
