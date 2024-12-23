@@ -3,11 +3,6 @@ package app.revanced.manager.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.icu.number.Notation
-import android.icu.number.NumberFormatter
-import android.icu.number.Precision
-import android.icu.text.CompactDecimalFormat
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.MainThread

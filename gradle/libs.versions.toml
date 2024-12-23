@@ -9,6 +9,7 @@ appcompat = "1.7.0"
 preferences-datastore = "1.1.1"
 work-runtime = "2.10.0"
 compose-bom = "2024.12.01"
+navigation = "2.8.5"
 accompanist = "0.34.0"
 placeholder = "1.1.2"
 reorderable = "1.5.2"
@@ -18,9 +19,7 @@ datetime = "0.6.0"
 room-version = "2.6.1"
 revanced-patcher = "21.0.0"
 revanced-library = "3.0.2"
-koin-version = "3.5.3"
-koin-version-compose = "3.5.3"
-reimagined-navigation = "1.5.0"
+koin = "3.5.3"
 ktor = "2.3.9"
 markdown-renderer = "0.22.0"
 fading-edges = "1.0.4"
@@ -57,8 +56,9 @@ compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3"}
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 # Coil
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
@@ -85,12 +85,10 @@ revanced-patcher = { group = "app.revanced", name = "revanced-patcher", version.
 revanced-library = { group = "app.revanced", name = "revanced-library", version.ref = "revanced-library" }
 
 # Koin
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-version" }
-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-version-compose" }
-koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin-version" }
-
-# Compose Navigation
-reimagined-navigation = { group = "dev.olshevski.navigation", name = "reimagined", version.ref = "reimagined-navigation" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
+koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
 
 # About Libraries
 about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries-gradle-plugin" }
