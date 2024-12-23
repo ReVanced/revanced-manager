@@ -88,12 +88,16 @@
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
+    <string name="patch_compat_check_confirmation">Selecting incompatible patches can result in a broken app.\n\nDo you want to proceed anyways?</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
+    <string name="suggested_version_safeguard_confirmation">Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?</string>
     <string name="patch_selection_safeguard">Allow changing patch selection</string>
     <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches</string>
+    <string name="patch_selection_safeguard_confirmation">Changing the selection of patches may cause unexpected issues.\n\nEnable anyways?</string>
     <string name="universal_patches_safeguard">Disable universal patch warning</string>
     <string name="universal_patches_safeguard_description">Disables the warning that appears when you try to select universal patches</string>
+    <string name="universal_patches_safeguard_confirmation">Universal patches are not as well tested as those that target specific apps.\n\nEnable anyways?</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -142,6 +146,8 @@
 
     <string name="options">Options</string>
     <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="edit">Edit</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
