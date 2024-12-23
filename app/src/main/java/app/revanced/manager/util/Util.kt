@@ -49,14 +49,13 @@ import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.Contextual
 import java.util.Locale
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 typealias PatchSelection = Map<Int, Set<String>>
-typealias Options = Map<Int, Map<String, Map<String, @Contextual Any?>>>
+typealias Options = Map<Int, Map<String, Map<String, Any?>>>
 
 val Context.isDebuggable get() = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
 

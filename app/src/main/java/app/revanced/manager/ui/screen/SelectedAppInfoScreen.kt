@@ -164,17 +164,6 @@ fun SelectedAppInfoScreen(
                         ),
                         vm.options
                     )
-                    /*
-                    navController.navigate(
-                        SelectedAppInfoDestination.PatchesSelector(
-                            vm.selectedApp,
-                            vm.getCustomPatches(
-                                bundles,
-                                allowIncompatiblePatches
-                            ),
-                            vm.options
-                        )
-                    )*/
                 }
             )
             PageItem(
@@ -204,25 +193,6 @@ fun SelectedAppInfoScreen(
         }
     }
 }
-
-/*
-PatchesSelectorScreen(
-                onSave = { patches, options ->
-                    vm.updateConfiguration(patches, options, bundles)
-                    navController.pop()
-                },
-                onBackClick = navController::pop,
-                vm = koinViewModel {
-                    parametersOf(
-                        PatchesSelectorViewModel.Params(
-                            destination.app,
-                            destination.currentSelection,
-                            destination.options,
-                        )
-                    )
-                }
-            )
- */
 
 @Composable
 private fun PageItem(@StringRes title: Int, description: String, onClick: () -> Unit) {
