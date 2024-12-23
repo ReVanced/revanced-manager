@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen.settings
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -96,7 +95,7 @@ fun ContributorScreen(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ContributorsCard(
     title: String,
@@ -131,7 +130,7 @@ fun ContributorsCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = processHeadlineText(title),
+                    text = title,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium)
                 )
                 Text(
@@ -199,11 +198,4 @@ fun ContributorsCard(
             }
         }
     }
-}
-
-fun processHeadlineText(repositoryName: String): String {
-    return repositoryName.replace("revanced/revanced-", "")
-        .replace("-", " ")
-        .split(" ").joinToString(" ") { if (it.length > 3) it else it.uppercase() }
-        .replaceFirstChar { it.uppercase() }
 }
