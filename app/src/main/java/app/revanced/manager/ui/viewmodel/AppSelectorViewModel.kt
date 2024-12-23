@@ -6,31 +6,44 @@ import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
 
+@OptIn(SavedStateHandleSaveableApi::class)
 class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
-    private val patchBundleRepository: PatchBundleRepository
+    fs: Filesystem,
+    private val patchBundleRepository: PatchBundleRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val inputFile = File(app.cacheDir, "input.apk").also {
-        it.delete()
+    private val inputFile = savedStateHandle.saveable(key = "inputFile") {
+        File(
+            fs.uiTempDir,
+            "input.apk"
+        ).also(File::delete)
     }
     val appList = pm.appList
 
-    var onStorageClick: (SelectedApp.Local) -> Unit = {}
+    private val storageSelectionChannel = Channel<SelectedApp.Local>()
+    val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
 
@@ -54,7 +67,7 @@ class AppSelectorViewModel(
         }
 
         if (patchBundleRepository.isVersionAllowed(selectedApp.packageName, selectedApp.version)) {
-            onStorageClick(selectedApp)
+            storageSelectionChannel.send(selectedApp)
         } else {
             nonSuggestedVersionDialogSubject = selectedApp
         }
@@ -69,7 +82,7 @@ class AppSelectorViewModel(
                 pm.getPackageInfo(this)?.let { packageInfo ->
                     SelectedApp.Local(
                         packageName = packageInfo.packageName,
-                        version = packageInfo.versionName,
+                        version = packageInfo.versionName!!,
                         file = this,
                         temporary = true
                     )

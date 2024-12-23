@@ -3,6 +3,7 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
+import android.os.Build
 import android.os.PowerManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -17,20 +18,26 @@ import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
+    private val downloaderPluginRepository: DownloaderPluginRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
-    val prefs: PreferencesManager
+    val prefs: PreferencesManager,
+    private val pm: PM,
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundles.map { it.values.sumOf { bundle -> bundle.patches.size } }
@@ -39,17 +46,36 @@ class DashboardViewModel(
     val sources = patchBundleRepository.sources
     val selectedSources = mutableStateListOf<PatchBundleSource>()
 
+    val newDownloaderPluginsAvailable = downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
+
+    /**
+     * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
+     * This value is true when the conditions that trigger the bug are met.
+     *
+     * See: https://github.com/ReVanced/revanced-manager/issues/2138
+     */
+    val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
+
     var updatedManagerVersion: String? by mutableStateOf(null)
         private set
-    var showBatteryOptimizationsWarning by mutableStateOf(false)
-        private set
+    val showBatteryOptimizationsWarningFlow = flow {
+        while (true) {
+            // There is no callback for this, so we have to poll it.
+            val result = !powerManager.isIgnoringBatteryOptimizations(app.packageName)
+            emit(result)
+            if (!result) return@flow
+            delay(500L)
+        }
+    }
 
     init {
         viewModelScope.launch {
             checkForManagerUpdates()
-            showBatteryOptimizationsWarning =
-                !powerManager.isIgnoringBatteryOptimizations(app.packageName)
         }
+    }
+
+    fun ignoreNewDownloaderPlugins() = viewModelScope.launch {
+        downloaderPluginRepository.acknowledgeAllNewPlugins()
     }
 
     fun dismissUpdateDialog() {
@@ -61,6 +87,12 @@ class DashboardViewModel(
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
             updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
+        }
+    }
+
+    fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
+        viewModelScope.launch {
+            prefs.showManagerUpdateDialogOnLaunch.update(value)
         }
     }
 
@@ -89,13 +121,10 @@ class DashboardViewModel(
         selectedSources.clear()
     }
 
-    fun createLocalSource(patchBundle: Uri, integrations: Uri?) =
+    fun createLocalSource(patchBundle: Uri) =
         viewModelScope.launch {
             contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
-                integrations?.let { contentResolver.openInputStream(it) }
-                    .use { integrationsStream ->
-                        patchBundleRepository.createLocal(patchesStream, integrationsStream)
-                    }
+                patchBundleRepository.createLocal(patchesStream)
             }
         }
 

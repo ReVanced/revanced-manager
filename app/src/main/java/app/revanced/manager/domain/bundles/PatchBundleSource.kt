@@ -28,7 +28,6 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
     protected val configRepository: PatchBundlePersistenceRepository by inject()
     private val app: Application by inject()
     protected val patchesFile = directory.resolve("patches.jar")
-    protected val integrationsFile = directory.resolve("integrations.apk")
 
     private val _state = MutableStateFlow(load())
     val state = _state.asStateFlow()
@@ -58,7 +57,7 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
         if (!hasInstalled()) return State.Missing
 
         return try {
-            State.Loaded(PatchBundle(patchesFile, integrationsFile.takeIf(File::exists)))
+            State.Loaded(PatchBundle(patchesFile))
         } catch (t: Throwable) {
             Log.e(tag, "Failed to load patch bundle with UID $uid", t)
             State.Failed(t)
@@ -85,9 +84,9 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
     fun propsFlow() = configRepository.getProps(uid).flowOn(Dispatchers.Default)
     suspend fun getProps() = propsFlow().first()!!
 
-    suspend fun currentVersion() = getProps().versionInfo
-    protected suspend fun saveVersion(patches: String?, integrations: String?) =
-        configRepository.updateVersion(uid, patches, integrations)
+    suspend fun currentVersion() = getProps().version
+    protected suspend fun saveVersion(version: String?) =
+        configRepository.updateVersion(uid, version)
 
     suspend fun setName(name: String) {
         configRepository.setName(uid, name)

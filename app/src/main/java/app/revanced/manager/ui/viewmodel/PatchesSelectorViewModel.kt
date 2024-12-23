@@ -23,6 +23,7 @@ import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.saver.Nullable
@@ -36,10 +37,11 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import kotlinx.collections.immutable.*
+import kotlinx.coroutines.flow.map
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
+class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.ViewModelParams) : ViewModel(), KoinComponent {
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
@@ -77,7 +79,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     }
 
     private var hasModifiedSelection = false
-    private var customPatchSelection: PersistentPatchSelection? by savedStateHandle.saveable(
+    var customPatchSelection: PersistentPatchSelection? by savedStateHandle.saveable(
         key = "selection",
         stateSaver = selectionSaver,
     ) {
@@ -100,15 +102,16 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
 
     val compatibleVersions = mutableStateListOf<String>()
 
-    var filter by mutableIntStateOf(SHOW_SUPPORTED or SHOW_UNIVERSAL or SHOW_UNSUPPORTED)
+    var filter by mutableIntStateOf(0)
         private set
 
-    private suspend fun generateDefaultSelection(): PersistentPatchSelection {
-        val bundles = bundlesFlow.first()
-        val generatedSelection =
-            bundles.toPatchSelection(allowIncompatiblePatches) { _, patch -> patch.include }
+    private val defaultPatchSelection = bundlesFlow.map { bundles ->
+        bundles.toPatchSelection(allowIncompatiblePatches) { _, patch -> patch.include }
+            .toPersistentPatchSelection()
+    }
 
-        return generatedSelection.toPersistentPatchSelection()
+    val defaultSelectionCount = defaultPatchSelection.map { selection ->
+        selection.values.sumOf { it.size }
     }
 
     fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
@@ -124,7 +127,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     fun togglePatch(bundle: Int, patch: PatchInfo) = viewModelScope.launch {
         hasModifiedSelection = true
 
-        val selection = customPatchSelection ?: generateDefaultSelection()
+        val selection = customPatchSelection ?: defaultPatchSelection.first()
         val newPatches = selection[bundle]?.let { patches ->
             if (patch.name in patches)
                 patches.remove(patch.name)
@@ -188,10 +191,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         compatibleVersions.clear()
     }
 
-    fun openUnsupportedDialog(unsupportedPatches: List<PatchInfo>) {
-        compatibleVersions.addAll(unsupportedPatches.flatMap { patch ->
-            patch.compatiblePackages?.find { it.packageName == packageName }?.versions.orEmpty()
-        })
+    fun openUnsupportedDialog(unsupportedPatch: PatchInfo) {
+        compatibleVersions.addAll(unsupportedPatch.compatiblePackages?.find { it.packageName == packageName }?.versions.orEmpty())
     }
 
     fun toggleFlag(flag: Int) {
@@ -214,12 +215,6 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         private val selectionSaver: Saver<PersistentPatchSelection?, Nullable<PatchSelection>> =
             nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
     }
-
-    data class Params(
-        val app: SelectedApp,
-        val currentSelection: PatchSelection?,
-        val options: Options,
-    )
 }
 
 // Versions of other types, but utilizing persistent/observable collection types.
