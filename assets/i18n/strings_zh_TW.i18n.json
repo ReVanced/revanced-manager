@@ -53,7 +53,7 @@
   },
   "patcherView": {
     "widgetTitle": "修補工具",
-    "patchButton": "補丁",
+    "patchButton": "修補",
     "incompatibleArchWarningDialogText": "此架構尚未支援修補，可能會失敗。仍要繼續嗎？",
     "removedPatchesWarningDialogText": "自您上次修補此應用程式以來移除的修補程式：\n\n${patches}\n\n${newPatches}仍要繼續嗎？",
     "addedPatchesDialogText": "自您上次修補此應用程式以來新增的修補程式：\n\n${addedPatches}",
@@ -77,7 +77,7 @@
     "widgetSubtitle": "掃榻以待，歡迎造訪！"
   },
   "appSelectorView": {
-    "viewTitle": "選擇應用程式",
+    "viewTitle": "選取應用程式",
     "searchBarHint": "搜尋應用程式",
     "storageButton": "儲存空間",
     "selectFromStorageButton": "從儲存空間中選取",
@@ -121,7 +121,7 @@
     "unsupportedDialogText": "選取此修補檔可能導致修補錯誤。\n應用程式版本： ${packageVersion}\n支援的版本： ${supportedVersions}",
     "unsupportedPatchVersion": "此版本的應用程式不支援此修補檔。",
     "unsupportedRequiredOption": "此修補檔內含不支援此應用程式的必填選項。",
-    "patchesChangeWarningDialogText": "建議使用預設的修補檔選擇和選項。更改它們可能導致意外問題。\n\n在變更任何修補檔選擇之前，您需要在設定中開啟「允許變更修補檔選擇」。",
+    "patchesChangeWarningDialogText": "建議使用預設的修補檔選擇和選項。更改它們可能導致意外問題。\n\n在變更任何修補檔選擇之前，您需要在設定中開啟「允許變更修補選項」。",
     "patchesChangeWarningDialogButton": "採用預設設定選項"
   },
   "installerView": {
@@ -181,10 +181,10 @@
     "autoUpdatePatchesLabel": "自動更新修補檔",
     "autoUpdatePatchesHint": "自動更新修補檔至最新版本",
     "showUpdateDialogLabel": "顯示更新對話框",
-    "showUpdateDialogHint": "當有新更新可用時，顯示對話框",
+    "showUpdateDialogHint": "如有新更新可用時，顯示對話框",
     "universalPatchesLabel": "顯示通用修補檔",
     "universalPatchesHint": "顯示所有應用程式和通用修補檔（可能會拖慢應用程式列表的速度）",
-    "lastPatchedAppLabel": "儲存已修補的應用程式",
+    "lastPatchedAppLabel": "儲存已修補的安裝檔",
     "lastPatchedAppHint": "儲存最後一次修補以便稍後安裝或匯出",
     "versionCompatibilityCheckLabel": "檢查版本相容性",
     "versionCompatibilityCheckHint": "防止選擇與所選應用程式版本不相容的修補檔",
