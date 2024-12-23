@@ -32,8 +32,10 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.Options
@@ -41,11 +43,13 @@ import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.enabled
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import dev.olshevski.navigation.reimagined.*
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectedAppInfoScreen(
-    onPatchSelectorClick: (SelectedApp, PatchSelection?, Options) -> Unit,
     onPatchClick: (SelectedApp, PatchSelection, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
@@ -78,118 +82,146 @@ fun SelectedAppInfoScreen(
         launcher.launch(intent)
     }
 
-    val error by vm.errorFlow.collectAsStateWithLifecycle(null)
-    Scaffold(
-        topBar = {
-            AppTopBar(
-                title = stringResource(R.string.app_info),
-                onBackClick = onBackClick
-            )
-        },
-        floatingActionButton = {
-            if (error != null) return@Scaffold
+    val navController =
+        rememberNavController<SelectedAppInfoDestination>(startDestination = SelectedAppInfoDestination.Main)
 
-            HapticExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.patch)) },
-                icon = {
-                    Icon(
-                        Icons.Default.AutoFixHigh,
-                        stringResource(R.string.patch)
+    NavBackHandler(controller = navController)
+
+    AnimatedNavHost(controller = navController) { destination ->
+        val error by vm.errorFlow.collectAsStateWithLifecycle(null)
+        when (destination) {
+            is SelectedAppInfoDestination.Main -> Scaffold(
+                topBar = {
+                    AppTopBar(
+                        title = stringResource(R.string.app_info),
+                        onBackClick = onBackClick
                     )
                 },
-                onClick = patchClick@{
-                    if (selectedPatchCount == 0) {
-                        context.toast(context.getString(R.string.no_patches_selected))
+                floatingActionButton = {
+                    if (error != null) return@Scaffold
 
-                        return@patchClick
-                    }
-                    onPatchClick(
-                        vm.selectedApp,
-                        patches,
-                        vm.getOptionsFiltered(bundles)
+                    HapticExtendedFloatingActionButton(
+                        text = { Text(stringResource(R.string.patch)) },
+                        icon = {
+                            Icon(
+                                Icons.Default.AutoFixHigh,
+                                stringResource(R.string.patch)
+                            )
+                        },
+                        onClick = patchClick@{
+                            if (selectedPatchCount == 0) {
+                                context.toast(context.getString(R.string.no_patches_selected))
+
+                                return@patchClick
+                            }
+                            onPatchClick(
+                                vm.selectedApp,
+                                patches,
+                                vm.getOptionsFiltered(bundles)
+                            )
+                        }
                     )
                 }
-            )
-        }
-    ) { paddingValues ->
-        val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
+            ) { paddingValues ->
+                val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
 
-        if (vm.showSourceSelector) {
-            val requiredVersion by vm.requiredVersion.collectAsStateWithLifecycle(null)
+                if (vm.showSourceSelector) {
+                    val requiredVersion by vm.requiredVersion.collectAsStateWithLifecycle(null)
 
-            AppSourceSelectorDialog(
-                plugins = plugins,
-                installedApp = vm.installedAppData,
-                searchApp = SelectedApp.Search(
-                    vm.packageName,
-                    vm.desiredVersion
-                ),
-                activeSearchJob = vm.activePluginAction,
-                hasRoot = vm.hasRoot,
-                onDismissRequest = vm::dismissSourceSelector,
-                onSelectPlugin = vm::searchUsingPlugin,
-                requiredVersion = requiredVersion,
-                onSelect = {
-                    vm.selectedApp = it
-                    vm.dismissSourceSelector()
-                }
-            )
-        }
-
-        ColumnWithScrollbar(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            AppInfo(vm.selectedAppInfo, placeholderLabel = packageName) {
-                Text(
-                    version ?: stringResource(R.string.selected_app_meta_any_version),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-
-            PageItem(
-                R.string.patch_selector_item,
-                stringResource(
-                    R.string.patch_selector_item_description,
-                    selectedPatchCount
-                ),
-                onClick = {
-                    onPatchSelectorClick(
-                        vm.selectedApp,
-                        vm.getCustomPatches(
-                            bundles,
-                            allowIncompatiblePatches
+                    AppSourceSelectorDialog(
+                        plugins = plugins,
+                        installedApp = vm.installedAppData,
+                        searchApp = SelectedApp.Search(
+                            vm.packageName,
+                            vm.desiredVersion
                         ),
-                        vm.options
+                        activeSearchJob = vm.activePluginAction,
+                        hasRoot = vm.hasRoot,
+                        onDismissRequest = vm::dismissSourceSelector,
+                        onSelectPlugin = vm::searchUsingPlugin,
+                        requiredVersion = requiredVersion,
+                        onSelect = {
+                            vm.selectedApp = it
+                            vm.dismissSourceSelector()
+                        }
                     )
                 }
-            )
-            PageItem(
-                R.string.apk_source_selector_item,
-                when (val app = vm.selectedApp) {
-                    is SelectedApp.Search -> stringResource(R.string.apk_source_auto)
-                    is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
-                    is SelectedApp.Download -> stringResource(
-                        R.string.apk_source_downloader,
-                        plugins.find { it.packageName == app.data.pluginPackageName }?.name
-                            ?: app.data.pluginPackageName
-                    )
 
-                    is SelectedApp.Local -> stringResource(R.string.apk_source_local)
+                ColumnWithScrollbar(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    AppInfo(vm.selectedAppInfo, placeholderLabel = packageName) {
+                        Text(
+                            version ?: stringResource(R.string.selected_app_meta_any_version),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+
+                    PageItem(
+                        R.string.patch_selector_item,
+                        stringResource(
+                            R.string.patch_selector_item_description,
+                            selectedPatchCount
+                        ),
+                        onClick = {
+                            navController.navigate(
+                                SelectedAppInfoDestination.PatchesSelector(
+                                    vm.selectedApp,
+                                    vm.getCustomPatches(
+                                        bundles,
+                                        allowIncompatiblePatches
+                                    ),
+                                    vm.options
+                                )
+                            )
+                        }
+                    )
+                    PageItem(
+                        R.string.apk_source_selector_item,
+                        when (val app = vm.selectedApp) {
+                            is SelectedApp.Search -> stringResource(R.string.apk_source_auto)
+                            is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
+                            is SelectedApp.Download -> stringResource(
+                                R.string.apk_source_downloader,
+                                plugins.find { it.packageName == app.data.pluginPackageName }?.name
+                                    ?: app.data.pluginPackageName
+                            )
+
+                            is SelectedApp.Local -> stringResource(R.string.apk_source_local)
+                        },
+                        onClick = {
+                            vm.showSourceSelector()
+                        }
+                    )
+                    error?.let {
+                        Text(
+                            stringResource(it.resourceId),
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(horizontal = 24.dp)
+                        )
+                    }
+                }
+            }
+
+            is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
+                onSave = { patches, options ->
+                    vm.updateConfiguration(patches, options, bundles)
+                    navController.pop()
                 },
-                onClick = {
-                    vm.showSourceSelector()
+                onBackClick = navController::pop,
+                vm = koinViewModel {
+                    parametersOf(
+                        PatchesSelectorViewModel.Params(
+                            destination.app,
+                            destination.currentSelection,
+                            destination.options,
+                        )
+                    )
                 }
             )
-            error?.let {
-                Text(
-                    stringResource(it.resourceId),
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(horizontal = 24.dp)
-                )
-            }
         }
     }
 }

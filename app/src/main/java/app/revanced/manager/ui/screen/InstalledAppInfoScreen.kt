@@ -77,12 +77,10 @@ fun InstalledAppInfoScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            val installedApp = viewModel.installedApp ?: return@ColumnWithScrollbar
-
             AppInfo(viewModel.appInfo)  {
-                Text(installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
+                Text(viewModel.installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
 
-                if (installedApp.installType == InstallType.MOUNT) {
+                if (viewModel.installedApp.installType == InstallType.MOUNT) {
                     Text(
                         text = if (viewModel.isMounted) {
                             stringResource(R.string.mounted)
@@ -106,7 +104,7 @@ fun InstalledAppInfoScreen(
                     onClick = viewModel::launch
                 )
 
-                when (installedApp.installType) {
+                when (viewModel.installedApp.installType) {
                     InstallType.DEFAULT -> SegmentedButton(
                         icon = Icons.Outlined.Delete,
                         text = stringResource(R.string.uninstall),
@@ -135,9 +133,9 @@ fun InstalledAppInfoScreen(
                     icon = Icons.Outlined.Update,
                     text = stringResource(R.string.repatch),
                     onClick = {
-                        onPatchClick(installedApp.originalPackageName)
+                        onPatchClick(viewModel.installedApp.originalPackageName)
                     },
-                    enabled = installedApp.installType != InstallType.MOUNT || viewModel.rootInstaller.hasRootAccess()
+                    enabled = viewModel.installedApp.installType != InstallType.MOUNT || viewModel.rootInstaller.hasRootAccess()
                 )
             }
 
@@ -160,19 +158,19 @@ fun InstalledAppInfoScreen(
 
                 SettingsListItem(
                     headlineContent = stringResource(R.string.package_name),
-                    supportingContent = installedApp.currentPackageName
+                    supportingContent = viewModel.installedApp.currentPackageName
                 )
 
-                if (installedApp.originalPackageName != installedApp.currentPackageName) {
+                if (viewModel.installedApp.originalPackageName != viewModel.installedApp.currentPackageName) {
                     SettingsListItem(
                         headlineContent = stringResource(R.string.original_package_name),
-                        supportingContent = installedApp.originalPackageName
+                        supportingContent = viewModel.installedApp.originalPackageName
                     )
                 }
 
                 SettingsListItem(
                     headlineContent = stringResource(R.string.install_type),
-                    supportingContent = stringResource(installedApp.installType.stringResource)
+                    supportingContent = stringResource(viewModel.installedApp.installType.stringResource)
                 )
             }
         }

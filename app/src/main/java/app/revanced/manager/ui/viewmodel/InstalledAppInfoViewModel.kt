@@ -32,17 +32,15 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class InstalledAppInfoViewModel(
-    packageName: String
+    val installedApp: InstalledApp
 ) : ViewModel(), KoinComponent {
-    private val context: Application by inject()
+    private val app: Application by inject()
     private val pm: PM by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     val rootInstaller: RootInstaller by inject()
 
     lateinit var onBackClick: () -> Unit
 
-    var installedApp: InstalledApp? by mutableStateOf(null)
-        private set
     var appInfo: PackageInfo? by mutableStateOf(null)
         private set
     var appliedPatches: PatchSelection? by mutableStateOf(null)
@@ -51,48 +49,38 @@ class InstalledAppInfoViewModel(
 
     init {
         viewModelScope.launch {
-            installedApp = installedAppRepository.get(packageName)?.also {
-                isMounted = rootInstaller.isAppMounted(it.currentPackageName)
-                appInfo = withContext(Dispatchers.IO) {
-                    pm.getPackageInfo(it.currentPackageName)
-                }
-                appliedPatches = withContext(Dispatchers.IO) {
-                    installedAppRepository.getAppliedPatches(it.currentPackageName)
-                }
-            }
+            isMounted = rootInstaller.isAppMounted(installedApp.currentPackageName)
         }
     }
 
-    fun launch() = installedApp?.currentPackageName?.let(pm::launch)
+    fun launch() = pm.launch(installedApp.currentPackageName)
 
     fun mountOrUnmount() = viewModelScope.launch {
-        val pkgName = installedApp?.currentPackageName ?: return@launch
         try {
             if (isMounted)
-                rootInstaller.unmount(pkgName)
+                rootInstaller.unmount(installedApp.currentPackageName)
             else
-                rootInstaller.mount(pkgName)
+                rootInstaller.mount(installedApp.currentPackageName)
         } catch (e: Exception) {
             if (isMounted) {
-                context.toast(context.getString(R.string.failed_to_unmount, e.simpleMessage()))
+                app.toast(app.getString(R.string.failed_to_unmount, e.simpleMessage()))
                 Log.e(tag, "Failed to unmount", e)
             } else {
-                context.toast(context.getString(R.string.failed_to_mount, e.simpleMessage()))
+                app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
                 Log.e(tag, "Failed to mount", e)
             }
         } finally {
-            isMounted = rootInstaller.isAppMounted(pkgName)
+            isMounted = rootInstaller.isAppMounted(installedApp.currentPackageName)
         }
     }
 
     fun uninstall() {
-        val app = installedApp ?: return
-        when (app.installType) {
-            InstallType.DEFAULT -> pm.uninstallPackage(app.currentPackageName)
+        when (installedApp.installType) {
+            InstallType.DEFAULT -> pm.uninstallPackage(installedApp.currentPackageName)
 
             InstallType.MOUNT -> viewModelScope.launch {
-                rootInstaller.uninstall(app.currentPackageName)
-                installedAppRepository.delete(app)
+                rootInstaller.uninstall(installedApp.currentPackageName)
+                installedAppRepository.delete(installedApp)
                 onBackClick()
             }
         }
@@ -109,22 +97,34 @@ class InstalledAppInfoViewModel(
 
                     if (extraStatus == PackageInstaller.STATUS_SUCCESS) {
                         viewModelScope.launch {
-                            installedApp?.let {
-                                installedAppRepository.delete(it)
-                            }
+                            installedAppRepository.delete(installedApp)
                             onBackClick()
                         }
                     } else if (extraStatus != PackageInstaller.STATUS_FAILURE_ABORTED) {
-                        this@InstalledAppInfoViewModel.context.toast(this@InstalledAppInfoViewModel.context.getString(R.string.uninstall_app_fail, extraStatusMessage))
+                        app.toast(app.getString(R.string.uninstall_app_fail, extraStatusMessage))
                     }
 
                 }
             }
         }
-    }.also {
+    }
+
+    init {
+        viewModelScope.launch {
+            appInfo = withContext(Dispatchers.IO) {
+                pm.getPackageInfo(installedApp.currentPackageName)
+            }
+        }
+
+        viewModelScope.launch {
+            appliedPatches = withContext(Dispatchers.IO) {
+                installedAppRepository.getAppliedPatches(installedApp.currentPackageName)
+            }
+        }
+
         ContextCompat.registerReceiver(
-            context,
-            it,
+            app,
+            uninstallBroadcastReceiver,
             IntentFilter(UninstallService.APP_UNINSTALL_ACTION),
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
@@ -132,6 +132,6 @@ class InstalledAppInfoViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        context.unregisterReceiver(uninstallBroadcastReceiver)
+        app.unregisterReceiver(uninstallBroadcastReceiver)
     }
 }

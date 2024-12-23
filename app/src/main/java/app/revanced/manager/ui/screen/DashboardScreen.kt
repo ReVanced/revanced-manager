@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
@@ -59,7 +60,7 @@ fun DashboardScreen(
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
     onDownloaderPluginClick: () -> Unit,
-    onAppClick: (String) -> Unit
+    onAppClick: (InstalledApp) -> Unit
 ) {
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
@@ -288,7 +289,7 @@ fun DashboardScreen(
                     when (DashboardPage.entries[index]) {
                         DashboardPage.DASHBOARD -> {
                             InstalledAppsScreen(
-                                onAppClick = { onAppClick(it.currentPackageName) }
+                                onAppClick = onAppClick
                             )
                         }
 
