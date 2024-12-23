@@ -1,6 +1,7 @@
 package app.revanced.manager
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,14 +27,12 @@ import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.compose.navigation.koinNavViewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.compose.koinViewModel as getComposeViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel as getAndroidViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
 class MainActivity : ComponentActivity() {
     @ExperimentalAnimationApi
@@ -44,7 +43,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         installSplashScreen()
 
-        val vm: MainViewModel = getAndroidViewModel()
+        val vm: MainViewModel = getActivityViewModel()
         vm.importLegacySettings(this)
 
         setContent {
@@ -66,7 +65,10 @@ private fun ReVancedManager(vm: MainViewModel) {
     val navController = rememberNavController()
 
     EventEffect(vm.appSelectFlow) { app ->
-        // navController.navigate(SelectedApplicationInfo(app))
+        navController.navigateComplex(
+            SelectedApplicationInfo,
+            SelectedApplicationInfo.ViewModelParams(app)
+        )
     }
 
     NavHost(
@@ -77,16 +79,12 @@ private fun ReVancedManager(vm: MainViewModel) {
             DashboardScreen(
                 onSettingsClick = { navController.navigate(Settings) },
                 onAppSelectorClick = {
-                    println("before: ${navController.currentBackStackEntry?.id}")
                     navController.navigate(AppSelector)
-                    println("after: ${navController.currentBackStackEntry?.id}")
                 },
                 onUpdateClick = {
                     navController.navigate(Update())
-                    // navController.navigate(Destination.Settings(SettingsDestination.Update()))
                 },
                 onDownloaderPluginClick = {
-                    // navController.navigate(Destination.Settings(SettingsDestination.Downloads))
                     navController.navigate(Settings.Downloads)
                 },
                 onAppClick = { installedApp ->
@@ -101,7 +99,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             InstalledAppInfoScreen(
                 onPatchClick = vm::selectApp,
                 onBackClick = navController::popBackStack,
-                viewModel = getComposeViewModel { parametersOf(data.packageName) }
+                viewModel = koinViewModel { parametersOf(data.packageName) }
             )
         }
 
@@ -123,45 +121,43 @@ private fun ReVancedManager(vm: MainViewModel) {
                         }
                     }
                 },
-                vm = koinViewModel { parametersOf(it.toRoute<Patcher>()) }
+                vm = koinViewModel { parametersOf(it.getComplexArg<Patcher.ViewModelParams>()) }
             )
         }
 
         navigation<SelectedApplicationInfo>(startDestination = SelectedApplicationInfo.Main) {
             composable<SelectedApplicationInfo.Main> {
                 val parentBackStackEntry = navController.navGraphEntry(it)
-                val data = parentBackStackEntry.toRoute<SelectedApplicationInfo>()
+                val data =
+                    parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
 
                 SelectedAppInfoScreen(
                     onBackClick = navController::popBackStack,
                     onPatchClick = { app, patches, options ->
-                        // navController.navigate(Patcher(app, patches, options))
+                        navController.navigateComplex(
+                            Patcher,
+                            Patcher.ViewModelParams(app, patches, options)
+                        )
                     },
                     onPatchSelectorClick = { app, patches, options ->
-                        /*
-                        navController.navigate(
-                            SelectedApplicationInfo.PatchesSelector(
+                        navController.navigateComplex(
+                            SelectedApplicationInfo.PatchesSelector,
+                            SelectedApplicationInfo.PatchesSelector.ViewModelParams(
                                 app,
                                 patches,
                                 options
                             )
-                        )*/
+                        )
                     },
                     vm = koinNavViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
-                        parametersOf(
-                            SelectedAppInfoViewModel.Params(
-                                data.selectedApp,
-                                data.patchSelection
-                            )
-                        )
+                        parametersOf(data)
                     }
                 )
             }
 
-            composable<SelectedApplicationInfo.PatchesSelector>(
-                // typeMap = mapOf(typeOf<SelectedApplicationInfo.PatchesSelector>() to SelectedApplicationInfo.PatchesSelector.navType)
-            ) {
-                val data = it.toRoute<SelectedApplicationInfo.PatchesSelector>()
+            composable<SelectedApplicationInfo.PatchesSelector> {
+                val data =
+                    it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
                 val selectedAppInfoVm = koinNavViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
@@ -172,15 +168,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                         selectedAppInfoVm.updateConfiguration(patches, options)
                         navController.popBackStack()
                     },
-                    vm = koinViewModel {
-                        parametersOf(
-                            PatchesSelectorViewModel.Params(
-                                data.app,
-                                data.currentSelection,
-                                data.options,
-                            )
-                        )
-                    }
+                    vm = koinViewModel { parametersOf(data) }
                 )
             }
         }
@@ -243,82 +231,16 @@ private fun ReVancedManager(vm: MainViewModel) {
     }
 }
 
-@Composable
-private fun NavController.navGraphEntry(entry: NavBackStackEntry) = remember(entry) {
-    getBackStackEntry(entry.destination.parent!!)
+private fun <T : Parcelable, R : ComplexParameter<T>> NavController.navigateComplex(
+    route: R,
+    data: T
+) {
+    navigate(route)
+    getBackStackEntry(route).savedStateHandle["args"] = data
 }
 
-/*
-                val navController =
-                    rememberNavController<Destination>(startDestination = Destination.Dashboard)
-                NavBackHandler(navController)
+private fun <T : Parcelable> NavBackStackEntry.getComplexArg() = savedStateHandle.get<T>("args")!!
 
-                EventEffect(vm.appSelectFlow) { app ->
-                    navController.navigate(Destination.SelectedApplicationInfo(app))
-                }
-
-                AnimatedNavHost(
-                    controller = navController
-                ) { destination ->
-                    when (destination) {
-                        is Destination.Dashboard -> DashboardScreen(
-                            onSettingsClick = { navController.navigate(Destination.Settings()) },
-                            onAppSelectorClick = { navController.navigate(Destination.AppSelector) },
-                            onUpdateClick = {
-                                navController.navigate(Destination.Settings(SettingsDestination.Update()))
-                            },
-                            onDownloaderPluginClick = {
-                                navController.navigate(Destination.Settings(SettingsDestination.Downloads))
-                            },
-                            onAppClick = { installedApp ->
-                                navController.navigate(
-                                    Destination.InstalledApplicationInfo(
-                                        installedApp
-                                    )
-                                )
-                            }
-                        )
-
-                        is Destination.InstalledApplicationInfo -> InstalledAppInfoScreen(
-                            onPatchClick = vm::selectApp,
-                            onBackClick = { navController.pop() },
-                            viewModel = getComposeViewModel { parametersOf(destination.installedApp) }
-                        )
-
-                        is Destination.Settings -> SettingsScreen(
-                            onBackClick = { navController.pop() },
-                            startDestination = destination.startDestination
-                        )
-
-                        is Destination.AppSelector -> AppSelectorScreen(
-                            onSelect = vm::selectApp,
-                            onStorageSelect = vm::selectApp,
-                            onBackClick = { navController.pop() }
-                        )
-
-                        is Destination.SelectedApplicationInfo -> SelectedAppInfoScreen(
-                            onPatchClick = { app, patches, options ->
-                                navController.navigate(
-                                    Destination.Patcher(
-                                        app, patches, options
-                                    )
-                                )
-                            },
-                            onBackClick = navController::pop,
-                            vm = getComposeViewModel {
-                                parametersOf(
-                                    SelectedAppInfoViewModel.Params(
-                                        destination.selectedApp,
-                                        destination.patchSelection
-                                    )
-                                )
-                            }
-                        )
-
-                        is Destination.Patcher -> PatcherScreen(
-                            onBackClick = { navController.popUpTo { it is Destination.Dashboard } },
-                            vm = getComposeViewModel { parametersOf(destination) }
-                        )
-                    }
-                }
- */
+@Composable
+private fun NavController.navGraphEntry(entry: NavBackStackEntry) =
+    remember(entry) { getBackStackEntry(entry.destination.parent!!.id) }

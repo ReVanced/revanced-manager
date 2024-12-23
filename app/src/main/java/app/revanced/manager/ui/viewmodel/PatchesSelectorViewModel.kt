@@ -23,6 +23,7 @@ import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.saver.Nullable
@@ -40,7 +41,7 @@ import kotlinx.coroutines.flow.map
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
+class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.ViewModelParams) : ViewModel(), KoinComponent {
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
@@ -214,12 +215,6 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         private val selectionSaver: Saver<PersistentPatchSelection?, Nullable<PatchSelection>> =
             nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
     }
-
-    data class Params(
-        val app: SelectedApp,
-        val currentSelection: PatchSelection?,
-        val options: Options,
-    )
 }
 
 // Versions of other types, but utilizing persistent/observable collection types.

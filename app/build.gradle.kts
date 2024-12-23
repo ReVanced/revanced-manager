@@ -177,9 +177,6 @@ dependencies {
     implementation(libs.koin.compose.navigation)
     implementation(libs.koin.workmanager)
 
-    // Compose Navigation
-    implementation(libs.reimagined.navigation)
-
     // Licenses
     implementation(libs.about.libraries)
 

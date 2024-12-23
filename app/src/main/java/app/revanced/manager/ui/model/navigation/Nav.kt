@@ -1,8 +1,11 @@
 package app.revanced.manager.ui.model.navigation
 
+import android.os.Parcelable
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import kotlinx.serialization.Serializable
 
 /*
@@ -28,6 +31,8 @@ sealed interface Destination : Parcelable {
 
 }*/
 
+interface ComplexParameter<T : Parcelable>
+
 @Serializable
 object Dashboard
 
@@ -41,40 +46,35 @@ data class InstalledApplicationInfo(val packageName: String)
 data class Update(val downloadOnScreenEntry: Boolean = false)
 
 @Serializable
-data class SelectedApplicationInfo(
-    val h: Int = 0,
-    // val selectedApp: SelectedApp,
-    // val patchSelection: PatchSelection? = null
-) {
-    val patchSelection: PatchSelection? get() = TODO()
-    val selectedApp: SelectedApp get() = TODO()
+data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.ViewModelParams> {
+    @Parcelize
+    data class ViewModelParams(
+        val app: SelectedApp,
+        val patches: PatchSelection? = null
+    ) : Parcelable
 
     @Serializable
     object Main
 
     @Serializable
-    data class PatchesSelector(
-        val h: Int,
-        //val app: SelectedApp,
-        // val currentSelection: PatchSelection?,
-        // val options: Options
-    ) {
-        val app: SelectedApp get() = TODO()
-        val currentSelection: PatchSelection? get() = TODO()
-        val options: Options get() = TODO()
+    data object PatchesSelector : ComplexParameter<PatchesSelector.ViewModelParams> {
+        @Parcelize
+        data class ViewModelParams(
+            val app: SelectedApp,
+            val currentSelection: PatchSelection?,
+            val options: @RawValue Options,
+        ) : Parcelable
     }
 }
 
 @Serializable
-data class Patcher(
-    val h: Int = 0,
-    //val selectedApp: SelectedApp,
-    // val selectedPatches: PatchSelection,
-    // val options: Options
-) {
-    val selectedApp: SelectedApp get() = TODO()
-    val options: Options get() = TODO()
-    val selectedPatches: PatchSelection get() = TODO()
+data object Patcher : ComplexParameter<Patcher.ViewModelParams> {
+    @Parcelize
+    data class ViewModelParams(
+        val selectedApp: SelectedApp,
+        val selectedPatches: PatchSelection,
+        val options: @RawValue Options
+    ) : Parcelable
 }
 
 @Serializable

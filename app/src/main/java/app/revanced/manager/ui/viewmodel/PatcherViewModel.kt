@@ -39,7 +39,6 @@ import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
-import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.ProgressKey
 import app.revanced.manager.ui.model.SelectedApp
@@ -70,11 +69,10 @@ import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
-import java.util.UUID
 
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class PatcherViewModel(
-    private val input: Patcher
+    private val input: Patcher.ViewModelParams
 ) : ViewModel(), KoinComponent, StepProgressProvider, InstallerModel {
     private val app: Application by inject()
     private val fs: Filesystem by inject()
