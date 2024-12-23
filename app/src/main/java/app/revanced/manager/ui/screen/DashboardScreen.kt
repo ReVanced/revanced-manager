@@ -109,7 +109,6 @@ fun DashboardScreen(
         )
     }
 
-    val context = LocalContext.current
     var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
     val installAppsPermissionLauncher =
         rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
@@ -121,7 +120,7 @@ fun DashboardScreen(
             showAndroid11Dialog = false
         },
         onContinue = {
-            installAppsPermissionLauncher.launch(context.packageName)
+            installAppsPermissionLauncher.launch(androidContext.packageName)
         }
     )
 
@@ -239,6 +238,7 @@ fun DashboardScreen(
                 }
             }
 
+            val showBatteryOptimizationsWarning by vm.showBatteryOptimizationsWarningFlow.collectAsStateWithLifecycle(false)
             Notifications(
                 if (!Aapt.supportsDevice()) {
                     {
@@ -250,7 +250,7 @@ fun DashboardScreen(
                         )
                     }
                 } else null,
-                if (vm.showBatteryOptimizationsWarning) {
+                if (showBatteryOptimizationsWarning) {
                     {
                         NotificationCard(
                             isWarning = true,
