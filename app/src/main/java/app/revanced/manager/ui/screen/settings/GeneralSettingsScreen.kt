@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,14 +31,15 @@ import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.theme.Theme
-import app.revanced.manager.ui.viewmodel.SettingsViewModel
+import app.revanced.manager.ui.viewmodel.GeneralSettingsViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GeneralSettingsScreen(
     onBackClick: () -> Unit,
-    viewModel: SettingsViewModel
+    viewModel: GeneralSettingsViewModel = koinViewModel()
 ) {
     val prefs = viewModel.prefs
     val coroutineScope = viewModel.viewModelScope

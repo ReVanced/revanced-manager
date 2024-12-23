@@ -33,8 +33,10 @@ import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.ui.model.BundleInfo
+import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
@@ -57,7 +59,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
-class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
+class SelectedAppInfoViewModel(
+    input: SelectedApplicationInfo.ViewModelParams
+) : ViewModel(), KoinComponent {
     private val app: Application = get()
     val bundlesRepo: PatchBundleRepository = get()
     private val bundleRepository: PatchBundleRepository = get()
@@ -110,7 +114,10 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         }
     }
 
-    val requiredVersion = combine(prefs.suggestedVersionSafeguard.flow, bundleRepository.suggestedVersions) { suggestedVersionSafeguard, suggestedVersions ->
+    val requiredVersion = combine(
+        prefs.suggestedVersionSafeguard.flow,
+        bundleRepository.suggestedVersions
+    ) { suggestedVersionSafeguard, suggestedVersions ->
         if (!suggestedVersionSafeguard) return@combine null
 
         suggestedVersions[input.app.packageName]
@@ -264,17 +271,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     ): PatchSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
-    fun updateConfiguration(
-        selection: PatchSelection?,
-        options: Options,
-        bundles: List<BundleInfo>
-    ) {
+    fun updateConfiguration(selection: PatchSelection?, options: Options) = viewModelScope.launch {
+        val bundles = bundlesRepo.bundleInfoFlow(packageName, selectedApp.version).first()
+
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
 
         val filteredOptions = options.filtered(bundles)
-        this.options = filteredOptions
+        this@SelectedAppInfoViewModel.options = filteredOptions
 
-        if (!persistConfiguration) return
+        if (!persistConfiguration) return@launch
         viewModelScope.launch(Dispatchers.Default) {
             selection?.let { selectionRepository.updateSelection(packageName, it) }
                 ?: selectionRepository.clearSelection(packageName)
@@ -282,11 +287,6 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
             optionsRepository.saveOptions(packageName, filteredOptions)
         }
     }
-
-    data class Params(
-        val app: SelectedApp,
-        val patches: PatchSelection?,
-    )
 
     enum class Error(@StringRes val resourceId: Int) {
         NoPlugins(R.string.downloader_no_plugins_available)

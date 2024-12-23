@@ -39,7 +39,6 @@ import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
-import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.ProgressKey
 import app.revanced.manager.ui.model.SelectedApp
@@ -47,6 +46,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.StepProgressProvider
+import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.saveableVar
 import app.revanced.manager.util.saver.snapshotStateListSaver
@@ -72,7 +72,7 @@ import java.time.Duration
 
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class PatcherViewModel(
-    private val input: Destination.Patcher
+    private val input: Patcher.ViewModelParams
 ) : ViewModel(), KoinComponent, StepProgressProvider, InstallerModel {
     private val app: Application by inject()
     private val fs: Filesystem by inject()
