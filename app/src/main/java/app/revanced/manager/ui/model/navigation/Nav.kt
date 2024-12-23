@@ -8,29 +8,6 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 import kotlinx.serialization.Serializable
 
-/*
-sealed interface Destination : Parcelable {
-
-    @Parcelize
-    data object Dashboard : Destination
-
-    @Parcelize
-    data class InstalledApplicationInfo(val installedApp: InstalledApp) : Destination
-
-    @Parcelize
-    data object AppSelector : Destination
-
-    @Parcelize
-    data class Settings(val startDestination: SettingsDestination = SettingsDestination.Settings) : Destination
-
-    @Parcelize
-    data class SelectedApplicationInfo(val selectedApp: SelectedApp, val patchSelection: PatchSelection? = null) : Destination
-
-    @Parcelize
-    data class Patcher(val selectedApp: SelectedApp, val selectedPatches: PatchSelection, val options: @RawValue Options) : Destination
-
-}*/
-
 interface ComplexParameter<T : Parcelable>
 
 @Serializable

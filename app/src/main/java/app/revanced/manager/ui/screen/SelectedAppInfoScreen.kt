@@ -34,7 +34,6 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.Options
@@ -42,9 +41,6 @@ import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.enabled
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
-import dev.olshevski.navigation.reimagined.*
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

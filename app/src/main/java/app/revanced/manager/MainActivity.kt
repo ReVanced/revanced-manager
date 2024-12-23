@@ -87,8 +87,8 @@ private fun ReVancedManager(vm: MainViewModel) {
                 onDownloaderPluginClick = {
                     navController.navigate(Settings.Downloads)
                 },
-                onAppClick = { installedApp ->
-                    navController.navigate(InstalledApplicationInfo(installedApp.currentPackageName))
+                onAppClick = { packageName ->
+                    navController.navigate(InstalledApplicationInfo(packageName))
                 }
             )
         }
@@ -122,6 +122,15 @@ private fun ReVancedManager(vm: MainViewModel) {
                     }
                 },
                 vm = koinViewModel { parametersOf(it.getComplexArg<Patcher.ViewModelParams>()) }
+            )
+        }
+
+        composable<Update> {
+            val data = it.toRoute<Update>()
+
+            UpdateScreen(
+                onBackClick = navController::popBackStack,
+                vm = koinViewModel { parametersOf(data.downloadOnScreenEntry) }
             )
         }
 
@@ -231,6 +240,11 @@ private fun ReVancedManager(vm: MainViewModel) {
     }
 }
 
+@Composable
+private fun NavController.navGraphEntry(entry: NavBackStackEntry) =
+    remember(entry) { getBackStackEntry(entry.destination.parent!!.id) }
+
+// Androidx Navigation does not support storing complex types in route objects, so we have to store them inside the saved state handle of the back stack entry instead.
 private fun <T : Parcelable, R : ComplexParameter<T>> NavController.navigateComplex(
     route: R,
     data: T
@@ -240,7 +254,3 @@ private fun <T : Parcelable, R : ComplexParameter<T>> NavController.navigateComp
 }
 
 private fun <T : Parcelable> NavBackStackEntry.getComplexArg() = savedStateHandle.get<T>("args")!!
-
-@Composable
-private fun NavController.navGraphEntry(entry: NavBackStackEntry) =
-    remember(entry) { getBackStackEntry(entry.destination.parent!!.id) }
