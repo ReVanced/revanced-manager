@@ -24,7 +24,9 @@ import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -56,14 +58,19 @@ class DashboardViewModel(
 
     var updatedManagerVersion: String? by mutableStateOf(null)
         private set
-    var showBatteryOptimizationsWarning by mutableStateOf(false)
-        private set
+    val showBatteryOptimizationsWarningFlow = flow {
+        while (true) {
+            // There is no callback for this, so we have to poll it.
+            val result = !powerManager.isIgnoringBatteryOptimizations(app.packageName)
+            emit(result)
+            if (!result) return@flow
+            delay(500L)
+        }
+    }
 
     init {
         viewModelScope.launch {
             checkForManagerUpdates()
-            showBatteryOptimizationsWarning =
-                !powerManager.isIgnoringBatteryOptimizations(app.packageName)
         }
     }
 
