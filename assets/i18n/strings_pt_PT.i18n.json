@@ -12,7 +12,7 @@
   "noShowAgain": "Não mostrar isto novamente",
   "add": "Adicionar",
   "remove": "Remover",
-  "showChangelogButton": "Mostrar as correções",
+  "showChangelogButton": "Mostrar correções",
   "showUpdateButton": "Mostrar atualização",
   "navigationView": {
     "dashboardTab": "Painel de Controlo",
@@ -27,7 +27,7 @@
     "patchedSubtitle": "Aplicações instaladas",
     "changeLaterSubtitle": "Podes modificar esta definição mais tarde.",
     "noSavedAppFound": "Nenhuma aplicação encontrada",
-    "noInstallations": "Nenhuma aplicação com patch instalado",
+    "noInstallations": "Nenhuma aplicação modificada instalada",
     "installUpdate": "Continuar para instalar a atualização?",
     "updateSheetTitle": "Atualizar o ReVanced Manager",
     "updateDialogTitle": "Nova atualização disponível",
@@ -54,9 +54,9 @@
   "patcherView": {
     "widgetTitle": "Modificador",
     "patchButton": "Modificar",
-    "incompatibleArchWarningDialogText": "Patrulhar nesta arquitetura ainda não é suportado e pode falhar. Continuar mesmo assim?",
-    "removedPatchesWarningDialogText": "Removido correções desde a última vez que você corrigiu este aplicativo:\n\n${patches}\n\n${newPatches}Continuar mesmo assim?",
-    "addedPatchesDialogText": "Adicionado patches desde a última vez que você corrigiu este aplicativo:\n\n${addedPatches}\n\n",
+    "incompatibleArchWarningDialogText": "A modificação nesta arquitetura ainda não é suportada e pode falhar. Continuar na mesma?",
+    "removedPatchesWarningDialogText": "Modificações removidas desde a última vez que corrigiu esta aplicação:\n\n${patches}\n\n${newPatches}Continuar mesmo assim?",
+    "addedPatchesDialogText": "Modificações adicionadas desde a última vez que corrigiu esta aplicação:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Algumas opções das Modificações precisam ser definidas."
   },
   "appSelectorCard": {
@@ -164,6 +164,7 @@
     "sourcesResetDialogTitle": "Repor",
     "sourcesResetDialogText": "Tens a certeza de que pretendes repor os valores predefinidos das fontes?",
     "apiURLResetDialogText": "Tens a certeza de que pretendes repor a URL da API para o seu valor predefinido?",
+    "sourcesUpdateNote": "Nota: Esta ação descarrega automaticamente as Modificações do ReVanced de fontes alternativas.\n\nIsto ligá-lo-á à fonte alternativa.",
     "apiURLLabel": "URL da API",
     "apiURLHint": "Configurar a URL da API do Gestor ReVanced",
     "selectApiURL": "URL da API",
