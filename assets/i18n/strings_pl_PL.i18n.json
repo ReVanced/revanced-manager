@@ -16,18 +16,18 @@
   "showUpdateButton": "Pokaż aktualizację",
   "navigationView": {
     "dashboardTab": "Panel główny",
-    "patcherTab": "Program łatający",
+    "patcherTab": "Łatanie",
     "settingsTab": "Ustawienia"
   },
   "homeView": {
     "refreshSuccess": "Odświeżono pomyślnie",
     "widgetTitle": "Panel główny",
     "updatesSubtitle": "Aktualizacje",
-    "lastPatchedAppSubtitle": "Ostatnio poprawiona aplikacja",
+    "lastPatchedAppSubtitle": "Ostatnio załatana aplikacja",
     "patchedSubtitle": "Zainstalowane aplikacje",
     "changeLaterSubtitle": "Możesz zmienić to później w ustawieniach.",
     "noSavedAppFound": "Nie znaleziono aplikacji",
-    "noInstallations": "Nie zainstalowano żadnych poprawionych aplikacji",
+    "noInstallations": "Nie zainstalowano żadnych łatanych aplikacji",
     "installUpdate": "Kontynuować instalację aktualizacji?",
     "updateSheetTitle": "Zaktualizuj Menedżera ReVanced",
     "updateDialogTitle": "Dostępna jest nowa aktualizacja",
@@ -53,7 +53,7 @@
   },
   "patcherView": {
     "widgetTitle": "Program łatający",
-    "patchButton": "Popraw",
+    "patchButton": "Łataj",
     "incompatibleArchWarningDialogText": "Aktualizowanie na tej architekturze nie jest jeszcze obsługiwane i może się nie powieść. Czy chcesz kontynuować mimo to?",
     "removedPatchesWarningDialogText": "Usunięto plastry od ostatniego wprowadzenia aplikacji:\n\n${patches}\n\n${newPatches}Kontynuować?",
     "addedPatchesDialogText": "Dodano plastry od ostatniej aktualizacji aplikacji:\n\n${addedPatches}\n\n",
