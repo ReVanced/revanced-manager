@@ -42,6 +42,9 @@ data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.V
             val options: @RawValue Options,
         ) : Parcelable
     }
+
+    @Serializable
+    data object RequiredOptions : ComplexParameter<PatchesSelector.ViewModelParams>
 }
 
 @Serializable

@@ -365,6 +365,8 @@
     <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
+    <string name="option_required">This option is required</string>
+    <string name="required_options_screen">Required options</string>
 
     <string name="failed_to_check_updates">Failed to check for updates: %s</string>
     <string name="no_update_available">No update available</string>

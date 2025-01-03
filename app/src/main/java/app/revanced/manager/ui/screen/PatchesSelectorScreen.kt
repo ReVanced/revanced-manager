@@ -67,7 +67,7 @@ fun PatchesSelectorScreen(
         mutableStateOf(null)
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-    val showPatchButton by remember {
+    val showSaveButton by remember {
         derivedStateOf { vm.selectionIsValid(bundles) }
     }
 
@@ -298,7 +298,7 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
-            if (!showPatchButton) return@Scaffold
+            if (!showSaveButton) return@Scaffold
 
             HapticExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
@@ -311,7 +311,6 @@ fun PatchesSelectorScreen(
                 expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp
                     ?: true,
                 onClick = {
-                    // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
                 }
             )
@@ -464,7 +463,7 @@ private fun PatchItem(
 )
 
 @Composable
-private fun ListHeader(
+fun ListHeader(
     title: String,
     onHelpClick: (() -> Unit)? = null
 ) {

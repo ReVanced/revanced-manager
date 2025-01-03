@@ -8,6 +8,7 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -141,13 +142,19 @@ private inline fun <T : Any> WithOptionEditor(
 }
 
 @Composable
-fun <T : Any> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
+fun <T : Any> OptionItem(
+    option: Option<T>,
+    value: T?,
+    setValue: (T?) -> Unit,
+) {
     val editor = remember(option.type, option.presets) {
         @Suppress("UNCHECKED_CAST")
         val baseOptionEditor =
             optionEditors.getOrDefault(option.type, UnknownTypeEditor) as OptionEditor<T>
 
-        if (option.type != typeOf<Boolean>() && option.presets != null) PresetOptionEditor(baseOptionEditor)
+        if (option.type != typeOf<Boolean>() && option.presets != null) PresetOptionEditor(
+            baseOptionEditor
+        )
         else baseOptionEditor
     }
 
@@ -155,7 +162,15 @@ fun <T : Any> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
         ListItem(
             modifier = Modifier.clickable(onClick = ::clickAction),
             headlineContent = { Text(option.title) },
-            supportingContent = { Text(option.description) },
+            supportingContent = {
+                Column {
+                    Text(option.description)
+                    if (option.required && value == null) Text(
+                        stringResource(R.string.option_required),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
             trailingContent = { ListItemTrailingContent() }
         )
     }

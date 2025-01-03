@@ -34,20 +34,23 @@ data class BundleInfo(
     }
 
     companion object Extensions {
-        inline fun Iterable<BundleInfo>.toPatchSelection(allowUnsupported: Boolean, condition: (Int, PatchInfo) -> Boolean): PatchSelection = this.associate { bundle ->
-                val patches =
-                    bundle.patchSequence(allowUnsupported)
-                        .mapNotNullTo(mutableSetOf()) { patch ->
-                            patch.name.takeIf {
-                                condition(
-                                    bundle.uid,
-                                    patch
-                                )
-                            }
+        inline fun Iterable<BundleInfo>.toPatchSelection(
+            allowUnsupported: Boolean,
+            condition: (Int, PatchInfo) -> Boolean
+        ): PatchSelection = this.associate { bundle ->
+            val patches =
+                bundle.patchSequence(allowUnsupported)
+                    .mapNotNullTo(mutableSetOf()) { patch ->
+                        patch.name.takeIf {
+                            condition(
+                                bundle.uid,
+                                patch
+                            )
                         }
+                    }
 
-                bundle.uid to patches
-            }
+            bundle.uid to patches
+        }
 
         fun PatchBundleRepository.bundleInfoFlow(packageName: String, version: String?) =
             sources.flatMapLatestAndCombine(
@@ -78,6 +81,28 @@ data class BundleInfo(
                     BundleInfo(source.getName(), source.uid, supported, unsupported, universal)
                 }
             }
+
+        /**
+         * Algorithm for determining whether all required options have been set.
+         */
+        inline fun Iterable<BundleInfo>.requiredOptionsSet(
+            crossinline isSelected: (BundleInfo, PatchInfo) -> Boolean,
+            crossinline optionsForPatch: (BundleInfo, PatchInfo) -> Map<String, Any?>?
+        ) = all bundle@{ bundle ->
+            bundle
+                .all
+                .filter { isSelected(bundle, it) }
+                .all patch@{
+                    if (it.options.isNullOrEmpty()) return@patch true
+                    val opts by lazy { optionsForPatch(bundle, it).orEmpty() }
+
+                    it.options.all option@{ option ->
+                        if (!option.required || option.default != null) return@option true
+
+                        option.key in opts
+                    }
+                }
+        }
     }
 }
 
