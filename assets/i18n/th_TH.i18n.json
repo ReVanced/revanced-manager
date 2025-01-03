@@ -1,0 +1,151 @@
+{
+  "okButton": "ตกลง",
+  "cancelButton": "ยกเลิก",
+  "dismissButton": "ปิด",
+  "quitButton": "ออก",
+  "updateButton": "อัปเดต",
+  "suggested": "แนะนำ: ${version}",
+  "yesButton": "ใช่",
+  "noButton": "ไม่",
+  "warning": "คำเตือน",
+  "notice": "หมายเหตุ",
+  "noShowAgain": "ไม่ต้องแสดงอีก",
+  "add": "เพิ่ม",
+  "remove": "ลบ",
+  "navigationView": {
+    "dashboardTab": "หน้าหลัก",
+    "patcherTab": "ตัวดัดแปลง",
+    "settingsTab": "ตั้งค่า"
+  },
+  "homeView": {
+    "refreshSuccess": "รีเฟรชสำเร็จแล้ว",
+    "widgetTitle": "หน้าหลัก",
+    "updatesSubtitle": "อัปเดต",
+    "noInstallations": "ไม่มีแอปที่มีการดัดแปลงติดตั้งไว้",
+    "updateSheetTitle": "อัปเดต ReVanced Manager",
+    "updatePatchesSheetTitle": "อัปเดต ReVanced Patches",
+    "updateChangelogTitle": "บันทึกการเปลี่ยนแปลง",
+    "downloadingMessage": "กำลังดาวน์โหลดอัปเดต...",
+    "downloadedMessage": "ดาวน์โหลดอัปเดตแล้ว",
+    "installingMessage": "กำลังติดตั้งอัปเดต...",
+    "errorDownloadMessage": "ไม่สามารถดาวน์โหลดอัปเดตได้",
+    "errorInstallMessage": "ไม่สามารถติดตั้งอัปเดตได้",
+    "noConnection": "ไม่​มี​การเชื่อม​ต่อ​อินเตอร์​เน็ต"
+  },
+  "applicationItem": {
+    "infoButton": "ข้อมูล"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "กำลังโหลด...",
+    "timeagoLabel": "${time} ที่ผ่านมา"
+  },
+  "patcherView": {
+    "widgetTitle": "ตัวดัดแปลง",
+    "patchButton": "เริ่มการดัดแปลง"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "ไม่พบแอปพลิเคชัน"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "เลือกการดัดแปลง",
+    "widgetTitleSelected": "การดัดแปลงที่เลือกไว้",
+    "widgetSubtitle": "เลือกแอพลิเคชันก่อน",
+    "widgetEmptySubtitle": "ไม่ได้เลือกการดัดแปลง"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "โซเชียล",
+    "widgetSubtitle": "พวกเราออนไลน์แล้ว!"
+  },
+  "appSelectorView": {
+    "viewTitle": "เลือกแอป",
+    "searchBarHint": "ค้นหาแอป",
+    "storageButton": "พื้นที่จัดเก็บข้อมูล",
+    "selectFromStorageButton": "เลือกจากที่เก็บข้อมูล",
+    "errorMessage": "ไม่สามารถใช้แอปพลิเคชันที่เลือกไว้ได้",
+    "downloadToast": "ฟังก์ชันดาวน์โหลดยังไม่พร้อมใช้งาน",
+    "featureNotAvailable": "ไม่ได้ใช้คุณลักษณะ"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "เลือกการดัดแปลง",
+    "searchBarHint": "ค้นหาการดัดแปลง",
+    "patches": "Patches",
+    "doneButton": "เรียบร้อย",
+    "defaultChip": "ค่าเริ่มต้น",
+    "defaultTooltip": "เลือกการดัดแปลงเริ่มต้นทั้งหมด",
+    "noneChip": "ไม่เลือก",
+    "noneTooltip": "เลิกเลือกการดัดแปลงทั้งหมด",
+    "noPatchesFound": "ไม่พบการดัดแปลงสำหรับแอปที่เลือกไว้"
+  },
+  "patchOptionsView": {
+    "saveOptions": "บันทึก"
+  },
+  "patchItem": {
+    "unsupportedDialogText": "การเลือกการดัดแปลงนี้อาจทำให้การดัดแปลงผิดพลาด\n\nเวอร์ชันปัจจุบัน: ${packageVersion}\nเวอร์ชันที่รองรับ:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "ติดตั้ง",
+    "openButton": "เปิด",
+    "notificationTitle": "ReVanced Manager กำลังดัดแปลง",
+    "notificationText": "แตะเพื่อกลับไปยังตัวติดตั้ง",
+    "noExit": "ตัวติดตั้งกำลังทำงานอยู่ ไม่สามารถออกได้..."
+  },
+  "settingsView": {
+    "widgetTitle": "ตั้งค่า",
+    "appearanceSectionTitle": "หน้าตา",
+    "teamSectionTitle": "ทีม",
+    "advancedSectionTitle": "ขั้นสูง",
+    "exportSectionTitle": "นำเข้าและส่งออก",
+    "themeModeLabel": "ธีมของแอปพลิเคชั่น",
+    "systemThemeLabel": "ค่าเริ่มต้นของระบบ",
+    "lightThemeLabel": "สว่าง",
+    "darkThemeLabel": "มืด",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "เพลิดเพลินกับประสบการณ์ที่ใกล้ชิดกับอุปกรณ์ของคุณมากขึ้น",
+    "languageLabel": "ภาษา",
+    "languageUpdated": "อัพเดตภาษาแล้ว",
+    "sourcesResetDialogTitle": "รีเซ็ต",
+    "apiURLLabel": "ลิงค์ของ API",
+    "selectApiURL": "ลิงค์ของ API",
+    "orgPatchesLabel": "ผู้ดูแลการดัดแปลง",
+    "sourcesPatchesLabel": "ที่มาของการดัดแปลง",
+    "contributorsLabel": "ผู้ช่วยเหลือโปรเจกต์",
+    "contributorsHint": "รายชื่อผู้ที่ช่วยเหลือกับโปรเจ็กต์ ReVanced",
+    "aboutLabel": "เกี่ยวกับ",
+    "snackbarMessage": "คัดลอกลงคลิปบอร์ดแล้ว",
+    "restartAppForChanges": "รีสตาร์ทแอปเพื่อใช้การเปลี่ยนค่า",
+    "deleteTempDirLabel": "ลบไฟล์ชั่วคราว",
+    "deleteTempDirHint": "ลบไฟล์ชั่วคราวที่ไม่ได้ใช้งาน",
+    "deletedTempDir": "ลบไฟล์ชั่วคราวแล้ว",
+    "deletedLogs": "ลบบันทึกแล้ว",
+    "regenerateKeystoreLabel": "สร้าง Keystore ใหม่",
+    "regenerateKeystoreDialogTitle": "สร้าง Keystore ใหม่",
+    "exportKeystoreLabel": "ส่งออก keystore",
+    "exportedKeystore": "ส่งออก keystore แล้ว",
+    "noKeystoreExportFileFound": "ไม่มี keystore ให้ส่งออก",
+    "importKeystoreLabel": "นำเข้า keystore",
+    "importedKeystore": "นำเข้า keystore แล้ว",
+    "selectKeystorePassword": "รหัสผ่านของ keystore",
+    "jsonSelectorErrorMessage": "ใช้ไฟล์ JSON ที่เลือกไว้ไม่ได้"
+  },
+  "appInfoView": {
+    "widgetTitle": "ข้อมูลแอป",
+    "openButton": "เปิด",
+    "installButton": "ติดตั้ง",
+    "uninstallButton": "ถอนการติดตั้ง",
+    "exportButton": "ส่งออก",
+    "deleteButton": "ลบ",
+    "rootDialogTitle": "ข้อผิดพลาด",
+    "rootDialogText": "แอปได้รับการติดตั้งด้วยสิทธิ์ผู้ใช้ขั้นสูงแต่ ReVanced Manager ปัจจุบันยังไม่ได้รับสิทธิ์\nโปรดอนุญาตสิทธิ์ผู้ใช้ขั้นสูงก่อน",
+    "packageNameLabel": "ชื่อแพ็กเกจ",
+    "installTypeLabel": "รูปแบบการติดตั้ง",
+    "patchedDateLabel": "วันที่ดัดแปลง",
+    "appliedPatchesLabel": "ใช้การดัดแปลงแล้ว",
+    "patchedDateHint": "${date} เวลา ${time}",
+    "appliedPatchesHint": "ติดตั้งไว้ ${quantity} ตัว",
+    "updateNotImplemented": "ยังไม่ได้ใช้คุณลักษณะนี้"
+  },
+  "contributorsView": {
+    "widgetTitle": "ผู้ช่วยเหลือโปรเจกต์"
+  },
+  "installErrorDialog": {}
+}

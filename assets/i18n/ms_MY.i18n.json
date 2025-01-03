@@ -1,0 +1,109 @@
+{
+  "cancelButton": "Batal",
+  "updateButton": "Kemas kini",
+  "yesButton": "Ya",
+  "noButton": "Tidak",
+  "warning": "Amaran",
+  "navigationView": {
+    "dashboardTab": "Papan Pemuka",
+    "patcherTab": "Pemodifikasi",
+    "settingsTab": "Tetapan"
+  },
+  "homeView": {
+    "widgetTitle": "Papan Pemuka",
+    "updatesSubtitle": "Kemas Kini",
+    "updateChangelogTitle": "Log perubahan",
+    "downloadingMessage": "Memuat turun pengemaskinian...",
+    "downloadedMessage": "Kemaskini dimuat turun",
+    "installingMessage": "Memasang pengemaskinian...",
+    "errorDownloadMessage": "Tidak dapat memuat turun pengemaskinian",
+    "errorInstallMessage": "Tidak dapat memasang pengemaskinian",
+    "noConnection": "Tiada sambungan internet"
+  },
+  "applicationItem": {
+    "infoButton": "Maklumat"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Memuatkan..."
+  },
+  "patcherView": {
+    "widgetTitle": "Pemodifikasi",
+    "patchButton": "Modifikasi"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Tiada aplikasi ditemui"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Pilih modifikasi",
+    "widgetTitleSelected": "Modifikasi pilihan",
+    "widgetSubtitle": "Pilih aplikasi dahulu",
+    "widgetEmptySubtitle": "Tiada modifikasi terpilih"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sosial",
+    "widgetSubtitle": "Ikuti kami!"
+  },
+  "appSelectorView": {
+    "storageButton": "Storan",
+    "errorMessage": "Tidak dapat menggunakan aplikasi yang dipilih"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Pilih modifikasi",
+    "searchBarHint": "Cari modifikasi",
+    "doneButton": "Selesai",
+    "noneChip": "Tiada",
+    "noPatchesFound": "Tiada modifikasi dijumpai untuk apl pilihan"
+  },
+  "patchOptionsView": {},
+  "patchItem": {
+    "unsupportedDialogText": "Memilih modifikasi mungkin menyebabkan ralat ketika modifikasi.\n\nVersi aplikasi: ${packageVersion}\nVersi disokong:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "Pasang",
+    "openButton": "Buka",
+    "notificationTitle": "Revanced Manager sedang memodifikasi",
+    "notificationText": "Tap untuk kembali ke pemasang",
+    "noExit": "Pemasang masih dijalankan, jangan keluar..."
+  },
+  "settingsView": {
+    "widgetTitle": "Tetapan",
+    "appearanceSectionTitle": "Penampilan",
+    "teamSectionTitle": "Pasukan",
+    "advancedSectionTitle": "Lanjutan",
+    "exportSectionTitle": "Import & Eksport",
+    "dynamicThemeHint": "Nikmati tema yang lebih serasi dengan anda",
+    "languageLabel": "Bahasa",
+    "sourcesResetDialogTitle": "Set semula",
+    "orgPatchesLabel": "Pengarang Modifikasi",
+    "sourcesPatchesLabel": "Sumber Modifikasi",
+    "contributorsLabel": "Penyumbang",
+    "contributorsHint": "Senarai penyokong ReVanced",
+    "aboutLabel": "Tentang",
+    "snackbarMessage": "Disalin ke papan klip",
+    "restartAppForChanges": "Mulakan semula apl untuk menggunakan tetapan",
+    "deleteTempDirLabel": "Buang fail sementara",
+    "deleteTempDirHint": "Padam fail sementara yang tidak digunakan",
+    "deletedTempDir": "Fail sementara dibuang",
+    "deletedLogs": "Log telah dipadam",
+    "jsonSelectorErrorMessage": "Tidak dapat menggunakan fail JSON yang dipilih"
+  },
+  "appInfoView": {
+    "widgetTitle": "Maklumat apl",
+    "openButton": "Buka",
+    "installButton": "Pasang",
+    "uninstallButton": "Nyah pasang",
+    "rootDialogTitle": "Ralat",
+    "rootDialogText": "Aplikasi telah dipasang dengan kebenaran superuser, tetapi ReVanced Manager sekarang tidak ada kebeneran.\nMinta membenarkan kebenaran superuser dahulu.",
+    "packageNameLabel": "Nama pakej",
+    "installTypeLabel": "Jenis Pemasangan",
+    "patchedDateLabel": "Tarikh Modifikasi",
+    "appliedPatchesLabel": "Modifikasi Digunakan",
+    "patchedDateHint": "${date} pada ${time}",
+    "appliedPatchesHint": "${quantity} modifikasi digunakan",
+    "updateNotImplemented": "Ciri ini masih belum dilaksanakan"
+  },
+  "contributorsView": {
+    "widgetTitle": "Penyumbang"
+  },
+  "installErrorDialog": {}
+}

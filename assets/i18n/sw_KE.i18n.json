@@ -1,0 +1,21 @@
+{
+  "navigationView": {},
+  "homeView": {},
+  "applicationItem": {},
+  "latestCommitCard": {},
+  "patcherView": {},
+  "appSelectorCard": {},
+  "patchSelectorCard": {
+    "widgetSubtitle": "Chagua programu kwanza"
+  },
+  "socialMediaCard": {},
+  "appSelectorView": {},
+  "patchesSelectorView": {},
+  "patchOptionsView": {},
+  "patchItem": {},
+  "installerView": {},
+  "settingsView": {},
+  "appInfoView": {},
+  "contributorsView": {},
+  "installErrorDialog": {}
+}

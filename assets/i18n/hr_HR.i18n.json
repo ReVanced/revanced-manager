@@ -1,0 +1,136 @@
+{
+  "okButton": "U redu",
+  "cancelButton": "Poništi",
+  "dismissButton": "Odbaci",
+  "quitButton": "Izađi",
+  "updateButton": "Ažuriraj",
+  "suggested": "Preporučena verzija: ${version}",
+  "yesButton": "Da",
+  "noButton": "Ne",
+  "warning": "Upozorenje",
+  "notice": "Napomena",
+  "noShowAgain": "Ne prikazuj ponovno",
+  "add": "Dodaj",
+  "remove": "Ukloni",
+  "showChangelogButton": "Prikaži napomene o izdanju",
+  "navigationView": {
+    "dashboardTab": "Nadzorna ploča",
+    "patcherTab": "Zakrpe",
+    "settingsTab": "Postavke"
+  },
+  "homeView": {
+    "refreshSuccess": "Uspješno osvježeno",
+    "widgetTitle": "Nadzorna ploča",
+    "updatesSubtitle": "Ažuriranja",
+    "noInstallations": "Nema instaliranih zakrpanih aplikacija",
+    "installUpdate": "Nastaviti s instalacijom ažuriranja?",
+    "updateChangelogTitle": "Zapisnik promjena",
+    "downloadingMessage": "Preuzimanje ažuriranja...",
+    "downloadedMessage": "Ažuriranje je preuzeto",
+    "installingMessage": "Instaliranje ažuriranja...",
+    "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
+    "errorInstallMessage": "Nije moguće instalirati ažuriranje",
+    "noConnection": "Nema internetske veze"
+  },
+  "applicationItem": {
+    "infoButton": "Informacije"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Učitavanje...",
+    "timeagoLabel": "Prije ${time}"
+  },
+  "patcherView": {
+    "widgetTitle": "Zakrpe",
+    "patchButton": "Zakrpi"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Nije pronađena nijedna aplikacija"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Odaberite zakrpe",
+    "widgetTitleSelected": "Odabrane zakrpe",
+    "widgetSubtitle": "Najprije odaberite aplikaciju",
+    "widgetEmptySubtitle": "Nema odabranih zakrpa"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Društvene mreže",
+    "widgetSubtitle": "Pronađite nas ovdje!"
+  },
+  "appSelectorView": {
+    "storageButton": "Pohrana",
+    "selectFromStorageButton": "Odaberi iz pohrane",
+    "errorMessage": "Nije moguće koristiti odabranu aplikaciju",
+    "downloadToast": "Funkcija preuzimanja još nije dostupna",
+    "featureNotAvailable": "Ova značajka još nije ugrađena"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Odaberite zakrpe",
+    "searchBarHint": "Pretraživanje zakrpa",
+    "doneButton": "Završeno",
+    "defaultChip": "Zadano",
+    "defaultTooltip": "Odaberi sve zadane zakrpe",
+    "noneChip": "Ništa",
+    "noneTooltip": "Poništi odabir svih zakrpa",
+    "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
+  },
+  "patchOptionsView": {},
+  "patchItem": {
+    "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti greške pri krpanju.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "Instaliraj",
+    "openButton": "Otvori",
+    "notificationTitle": "Krpanje u tijeku",
+    "notificationText": "Dodirnite za povratak na instalacijski program",
+    "noExit": "Instalacija je u tijeku, nije moguće izaći..."
+  },
+  "settingsView": {
+    "widgetTitle": "Postavke",
+    "appearanceSectionTitle": "Izgled",
+    "teamSectionTitle": "Naš tim",
+    "advancedSectionTitle": "Napredno",
+    "exportSectionTitle": "Uvezi / izvezi",
+    "darkThemeLabel": "Tamni način",
+    "dynamicThemeHint": "Uživajte u iskustvu prilagođenom vašem uređaju",
+    "languageLabel": "Jezik",
+    "sourcesResetDialogTitle": "Ponovno postavljanje",
+    "apiURLLabel": "API URL",
+    "selectApiURL": "API URL",
+    "orgPatchesLabel": "Autori zakrpa",
+    "sourcesPatchesLabel": "Izvor zakrpa",
+    "contributorsLabel": "Pridonositelji",
+    "contributorsHint": "Popis suradnika ReVanceda",
+    "aboutLabel": "O aplikaciji",
+    "snackbarMessage": "Kopirano u međuspremnik",
+    "restartAppForChanges": "Za primjenu promjena ponovo pokreni program",
+    "deleteTempDirLabel": "Izbriši privremene datoteke",
+    "deleteTempDirHint": "Izbrišite nekorištene privremene datoteke",
+    "deletedTempDir": "Privremene datoteke su izbrisane",
+    "deletedLogs": "Zapisnici su izbrisani",
+    "exportKeystoreLabel": "Izvezi spremište ključeva",
+    "exportedKeystore": "Spremište ključeva je izvezeno",
+    "noKeystoreExportFileFound": "Nema spremišta ključeva za izvoz",
+    "importKeystoreLabel": "Uvezi spremište ključeva",
+    "importedKeystore": "Spremište ključeva je uvezeno",
+    "jsonSelectorErrorMessage": "Nije moguće koristiti odabranu JSON datoteku"
+  },
+  "appInfoView": {
+    "widgetTitle": "O aplikaciji",
+    "openButton": "Otvori",
+    "installButton": "Instaliraj",
+    "uninstallButton": "Deinstaliraj",
+    "rootDialogTitle": "Greška",
+    "rootDialogText": "Aplikacija je bila instalirana s superkorisničkom dopuštenosti, ali trenutno ReVanced Upravitelj nema dopuštenja.\nPrvo dodijelite superkorisničko dopuštenje.",
+    "packageNameLabel": "Naziv paketa",
+    "installTypeLabel": "Vrsta instalacije",
+    "patchedDateLabel": "Zakrpano",
+    "appliedPatchesLabel": "Primijenjene zakrpe",
+    "patchedDateHint": "${date} u ${time}",
+    "appliedPatchesHint": "${quantity} primijenjenih zakrpa",
+    "updateNotImplemented": "Ova značajka još nije implementirana"
+  },
+  "contributorsView": {
+    "widgetTitle": "Pridonositelji"
+  },
+  "installErrorDialog": {}
+}

@@ -1,0 +1,112 @@
+{
+  "okButton": "Dakord",
+  "cancelButton": "Anulo",
+  "dismissButton": "Largoje",
+  "quitButton": "Hiq dorë",
+  "updateButton": "Përditëso",
+  "yesButton": "Po",
+  "noButton": "Jo",
+  "warning": "Kujdes",
+  "navigationView": {
+    "dashboardTab": "Paneli",
+    "patcherTab": "Modifikuesi",
+    "settingsTab": "Rregullimet"
+  },
+  "homeView": {
+    "widgetTitle": "Paneli",
+    "updatesSubtitle": "Përditësimet",
+    "updateChangelogTitle": "Lista e ndryshimeve",
+    "downloadingMessage": "Përditësimi po shkarkohet...",
+    "downloadedMessage": "Përditesimi u shkarkua",
+    "installingMessage": "Përditësimi po instalohet...",
+    "errorDownloadMessage": "Përditësimi nuk u shkarkua dot",
+    "errorInstallMessage": "Përditësimi nuk u instalua dot",
+    "noConnection": "Nuk ka internet"
+  },
+  "applicationItem": {
+    "infoButton": "Informacion"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Po ngarkohet..."
+  },
+  "patcherView": {
+    "widgetTitle": "Modifikuesi",
+    "patchButton": "Arnim"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Nuk u gjeten aplikacione"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Zgjidh modifikimet",
+    "widgetSubtitle": "Në fillim zgjidh një aplikacion",
+    "widgetEmptySubtitle": "Nuk janë zgjedhur modifikime"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Shoqëroret",
+    "widgetSubtitle": "Jemi online!"
+  },
+  "appSelectorView": {
+    "storageButton": "Magazina",
+    "errorMessage": "Nuk mund te perdoret aplikacioni qe u zgjodh"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Zgjidh modifikimet",
+    "searchBarHint": "Kërko për modifikime",
+    "doneButton": "U krye",
+    "noneChip": "Asnjë",
+    "noPatchesFound": "Nuk u gjetën modifikime për aplikacionin e zgjedhur"
+  },
+  "patchOptionsView": {},
+  "patchItem": {
+    "unsupportedDialogText": "Duke zgjedhur kte modifikim mund te shfaqen gabime.\n\nVersioni i app-it: ${packageVersion}\nVersionet e mbeshtetura:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "Instalo",
+    "openButton": "Hape",
+    "notificationTitle": "Menaxheri ReVanced po bën modifikime",
+    "notificationText": "Prek që të kthehesh te instaluesi",
+    "noExit": "Instaluesi po punon ende, nuk mund te dalesh..."
+  },
+  "settingsView": {
+    "widgetTitle": "Rregullimet",
+    "appearanceSectionTitle": "Pamja",
+    "teamSectionTitle": "Skuadra",
+    "advancedSectionTitle": "Të përparuarat",
+    "exportSectionTitle": "Importo & Eksporto",
+    "dynamicThemeLabel": "Materiali Ti",
+    "dynamicThemeHint": "Shijo një përvojë më të afërt me pajisjen tënde",
+    "languageLabel": "Gjuha",
+    "sourcesResetDialogTitle": "Rivendos",
+    "orgPatchesLabel": "Organizimi i modifikimeve",
+    "sourcesPatchesLabel": "Burimi i modifikuesëve",
+    "contributorsLabel": "Kontribuesit",
+    "contributorsHint": "Lista e kontribuesve të ReVanced",
+    "aboutLabel": "Rreth nesh",
+    "snackbarMessage": "U kopjua te kujtesa e fragmenteve",
+    "restartAppForChanges": "Rinisni aplikacionin per te aplikuar ndryshimet",
+    "deleteTempDirLabel": "Fshi skedaret e perkoheshme",
+    "deleteTempDirHint": "Fshije dosje te pa perdorura",
+    "deletedTempDir": "Dosjet e perkohshme u fshine",
+    "deletedLogs": "Regjistrat u fshinë",
+    "jsonSelectorErrorMessage": "Nuk mund të përdoret skedari i zgjedhur JSON"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informacioni i aplikacionit",
+    "openButton": "Hape",
+    "installButton": "Instalo",
+    "uninstallButton": "Ç'instaloje",
+    "rootDialogTitle": "Gabim",
+    "rootDialogText": "Aplikacioni u instalua me lejet e superpërdoruesit, por aktualisht Menaxheri i ReVanced nuk ka leje.",
+    "packageNameLabel": "Emri i paketës",
+    "installTypeLabel": "Lloji i instalimit\n",
+    "patchedDateLabel": "Data e arnuar",
+    "appliedPatchesLabel": "Arna të aplikuara",
+    "patchedDateHint": "${date} më ${time}",
+    "appliedPatchesHint": "${quantity} modifikime të aplikuara",
+    "updateNotImplemented": "Kjo veçori nuk është zbatuar ende"
+  },
+  "contributorsView": {
+    "widgetTitle": "Kontribuesit"
+  },
+  "installErrorDialog": {}
+}

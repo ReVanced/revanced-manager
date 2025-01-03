@@ -1,0 +1,156 @@
+{
+  "okButton": "確定",
+  "cancelButton": "取消",
+  "dismissButton": "忽略",
+  "quitButton": "離開",
+  "updateButton": "更新",
+  "suggested": "建議: ${version}",
+  "yesButton": "是",
+  "noButton": "不是",
+  "warning": "警告",
+  "notice": "通知",
+  "noShowAgain": "唔再顯示哩個內容",
+  "add": "增加",
+  "remove": "移除",
+  "showChangelogButton": "顯示更新日誌",
+  "showUpdateButton": "顯示更新",
+  "navigationView": {
+    "dashboardTab": "儀表板",
+    "patcherTab": "修補工具",
+    "settingsTab": "設定"
+  },
+  "homeView": {
+    "refreshSuccess": "刷新成功",
+    "widgetTitle": "儀表板",
+    "updatesSubtitle": "更新",
+    "changeLaterSubtitle": "你可以之後喺設定改返",
+    "noInstallations": "未安裝修改咗既應用",
+    "installUpdate": "繼續安裝更新嗎？",
+    "updateSheetTitle": "更新 ReVanced Manager",
+    "updateDialogTitle": "有新嘅更新",
+    "updatePatchesSheetTitle": "更新 ReVanced 補丁",
+    "updateChangelogTitle": "變更日誌",
+    "downloadConsentDialogTitle": "下載必要嘅文件？",
+    "downloadingMessage": "正在下載更新",
+    "downloadedMessage": "已下載更新",
+    "installingMessage": "正在安裝更新…",
+    "errorDownloadMessage": "下載唔到更新",
+    "errorInstallMessage": "安裝更新失敗",
+    "noConnection": "冇網路連線"
+  },
+  "applicationItem": {
+    "infoButton": "信息"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "載入中...",
+    "timeagoLabel": "${time} 之前"
+  },
+  "patcherView": {
+    "widgetTitle": "修補工具",
+    "patchButton": "修補"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "選擇一個應用程式",
+    "widgetTitleSelected": "揀咗嘅應用程式",
+    "widgetSubtitle": "冇揀咗嘅應用程式",
+    "noAppsLabel": "搵唔到應用",
+    "anyVersion": "任何版本"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "選擇補丁",
+    "widgetTitleSelected": "已揀選嘅補丁",
+    "widgetSubtitle": "揀個應用先",
+    "widgetEmptySubtitle": "冇揀咗嘅補丁"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "社交",
+    "widgetSubtitle": "我哋上線啦！"
+  },
+  "appSelectorView": {
+    "viewTitle": "選擇一個應用程式",
+    "searchBarHint": "搜索應用程式",
+    "storageButton": "儲存空間",
+    "selectFromStorageButton": "係儲存空間裏面選擇",
+    "errorMessage": "用唔到揀咗嘅應用",
+    "downloadToast": "下載功能依家未用得",
+    "featureNotAvailable": "功能未能提供"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "揀補丁",
+    "searchBarHint": "搜尋補丁",
+    "universalPatches": "Universal patches",
+    "newPatches": "新補丁",
+    "patches": "補丁",
+    "doneButton": "完成",
+    "defaultChip": "預設",
+    "defaultTooltip": "選擇所有預設嘅補丁",
+    "noneChip": "冇",
+    "noneTooltip": "取消選擇所有修補項目",
+    "loadPatchesSelection": "載入選擇嘅補丁",
+    "noSavedPatches": "冇保存咗嘅補丁選擇俾呢個應用。\n撳\"完成\"嚟保存當前嘅選擇。",
+    "noPatchesFound": "冇補丁俾呢個揀咗嘅應用。"
+  },
+  "patchItem": {
+    "unsupportedDialogText": "揀咗哩種修改可能會導致修改錯誤\n\nApp 版本: ${packageVersion}\n現時支援嘅版本: \n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "安裝",
+    "openButton": "開啟",
+    "notificationTitle": "ReVanced 管理器正在修補中",
+    "notificationText": "點擊即可返回安裝程式",
+    "noExit": "安裝程序進行緊，不好退出"
+  },
+  "settingsView": {
+    "widgetTitle": "設定",
+    "appearanceSectionTitle": "主題",
+    "teamSectionTitle": "團隊",
+    "advancedSectionTitle": "進階選項",
+    "exportSectionTitle": "匯入/匯出",
+    "darkThemeLabel": "暗黑模式",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "享受一個更貼近你裝置嘅體驗",
+    "languageLabel": "語言",
+    "sourcesResetDialogTitle": "重設",
+    "sourcesResetDialogText": "真喺要重新設定你嘅來源返去預設值？",
+    "apiURLResetDialogText": "真喺要重新設定 API URL 返去預設值？",
+    "apiURLLabel": "API 网址",
+    "selectApiURL": "API 网址",
+    "orgPatchesLabel": "修補檔組織",
+    "sourcesPatchesLabel": "修補檔來源",
+    "contributorsLabel": "貢獻者",
+    "contributorsHint": "ReVanced 貢獻者列表",
+    "logsLabel": "分享記錄檔",
+    "logsHint": "分享 ReVanced Manager 嘅記錄檔",
+    "aboutLabel": "關於",
+    "snackbarMessage": "已複製到剪貼簿",
+    "restartAppForChanges": "重啟應用嚟套用變更",
+    "deleteTempDirLabel": "刪除暫時文件",
+    "deleteTempDirHint": "刪除未使用的暫存檔案",
+    "deletedTempDir": "暫時文件已刪除",
+    "deletedLogs": "日志已被刪除",
+    "exportKeystoreLabel": "導出 keystore",
+    "exportedKeystore": "已導出 keystore",
+    "noKeystoreExportFileFound": "沒有可導出的 keystore",
+    "importKeystoreLabel": "導入 keystore",
+    "importedKeystore": "已導入 keystore",
+    "jsonSelectorErrorMessage": "無法使用選取的 JSON 文件"
+  },
+  "appInfoView": {
+    "widgetTitle": "應用程式資訊",
+    "openButton": "打開",
+    "installButton": "安裝",
+    "uninstallButton": "解除安裝",
+    "rootDialogTitle": "錯誤",
+    "rootDialogText": "程序已用 superuser 權限安裝完畢，但是目前 ReVanced Manager 還未授權.\n請讓ReVanced Manager 授權 superuser",
+    "packageNameLabel": "應用程式名稱",
+    "installTypeLabel": "安裝方式",
+    "patchedDateLabel": "修補日期",
+    "appliedPatchesLabel": "已經修補咗嘅補丁",
+    "patchedDateHint": "${date} 嘅 ${time}",
+    "appliedPatchesHint": "${quantity} 修補咗嘅補丁",
+    "updateNotImplemented": "呢個功能仲未開發"
+  },
+  "contributorsView": {
+    "widgetTitle": "貢獻者"
+  }
+}

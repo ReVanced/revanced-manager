@@ -1,0 +1,82 @@
+{
+  "cancelButton": "Болдырмау",
+  "dismissButton": "Елемеу",
+  "quitButton": "Шығу",
+  "updateButton": "Жаңарту",
+  "suggested": "Ұсынылған: ${version}",
+  "yesButton": "Иә",
+  "noButton": "Жоқ",
+  "warning": "Назар аударыңыз",
+  "notice": "Ескерту",
+  "noShowAgain": "Енді көрсетілмесін",
+  "add": "Қосу",
+  "remove": "Жою",
+  "showChangelogButton": "Өзгерту тарихын көрсету",
+  "showUpdateButton": "Жаңартуды көрсету",
+  "navigationView": {
+    "dashboardTab": "Басқару тақтасы",
+    "patcherTab": "Patcher",
+    "settingsTab": "Баптау"
+  },
+  "homeView": {
+    "refreshSuccess": "Сәтті жаңартылды",
+    "widgetTitle": "Бақылау тақтасы",
+    "updatesSubtitle": "Жаңартулар",
+    "changeLaterSubtitle": "Мұны кейінірек баптауда өзгертіп ала аласыз.",
+    "noInstallations": "Патчталған қолданбалар орнатылмаған",
+    "installUpdate": "Жаңартуды әрі қарай орната берейік пе?",
+    "updateSheetTitle": "ReVanced Manager-ді жаңарту",
+    "updateDialogTitle": "Жаңарту қолжетімді",
+    "updatePatchesSheetTitle": "ReVanced патчін жаңарту",
+    "updateChangelogTitle": "Өзгерту тарихы",
+    "updateDialogText": "${file} үшін жаңарту қолжетімді.\n\nҚазіргі ${version} нұсқасы орнатылып тұр.",
+    "downloadedMessage": "Жаңарту жүктелген",
+    "noConnection": "Интернет байланысы жоқ"
+  },
+  "applicationItem": {
+    "infoButton": "Ақпарат"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Ju'ktely'de..."
+  },
+  "patcherView": {
+    "widgetTitle": "Патчер",
+    "patchButton": "Патч"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Қолданбаны таңдаңыз"
+  },
+  "patchSelectorCard": {},
+  "socialMediaCard": {},
+  "appSelectorView": {
+    "viewTitle": "Қолданбаны таңдаңыз"
+  },
+  "patchesSelectorView": {
+    "doneButton": "Дайын",
+    "noneChip": "Жоқ"
+  },
+  "patchOptionsView": {
+    "selectFolder": "Буманы таңдаңыз"
+  },
+  "patchItem": {},
+  "installerView": {
+    "installButton": "Орнату",
+    "installNonRootType": "Қалыпты"
+  },
+  "settingsView": {
+    "widgetTitle": "Баптау",
+    "appearanceSectionTitle": "Безендіру",
+    "advancedSectionTitle": "Қосымша",
+    "contributorsLabel": "Үлес қосушылар"
+  },
+  "appInfoView": {
+    "widgetTitle": "Қолданба ақпары",
+    "installButton": "Орнату",
+    "uninstallButton": "Алмау",
+    "rootDialogTitle": "Қате"
+  },
+  "contributorsView": {
+    "widgetTitle": "Үлес қосушылар"
+  },
+  "installErrorDialog": {}
+}

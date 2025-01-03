@@ -1,0 +1,147 @@
+{
+  "okButton": "ठीक है",
+  "cancelButton": "रद्द करें",
+  "dismissButton": "बंद करें",
+  "quitButton": "छोड़ें",
+  "updateButton": "अपडेट करें",
+  "suggested": "सुझाया गया: ${version}",
+  "yesButton": "हाँ",
+  "noButton": "नहीं",
+  "warning": "चेतावनी",
+  "notice": "सूचना",
+  "noShowAgain": "इसे पुनः न दिखाएँ",
+  "add": "ऐड करें",
+  "remove": "हटाएं",
+  "showChangelogButton": "बदलाव दिखाएं",
+  "showUpdateButton": "अपडेट देखें ",
+  "navigationView": {
+    "dashboardTab": "नियंत्रण-पट्ट",
+    "patcherTab": "पैचर",
+    "settingsTab": "सेटिंग्स"
+  },
+  "homeView": {
+    "refreshSuccess": "रीफ्रेश हो गया है",
+    "widgetTitle": "नियंत्रण-पट्ट",
+    "updatesSubtitle": "अपडेट",
+    "changeLaterSubtitle": "आप बाद में सेटिंग में जाकर इसे बदल सकते हैं।",
+    "noInstallations": "कोई पैच किया गया एप्लिकेशन इंस्टॉल नहीं किया गया",
+    "installUpdate": "अपडेट इंस्टॉल करना जारी रखें?",
+    "updateSheetTitle": "ReVanced Manager अपडेट करें ",
+    "updateDialogTitle": "नई अपडेट उपलब्ध है",
+    "updatePatchesSheetTitle": "ReVanced Patches अपडेट करें",
+    "updateChangelogTitle": "परिवर्तन पत्र",
+    "downloadingMessage": "अपडेट डाउनलोड हो रहा है",
+    "downloadedMessage": "अपडेट डाउनलोड हो चुकी है",
+    "installingMessage": "अपडेट इंस्टॉल हो रहा है",
+    "errorDownloadMessage": "अपडेट डाउनलोड करने मे असफल",
+    "errorInstallMessage": "अपडेट इंस्टॉल करने में असफल",
+    "noConnection": "कोई इंटरनेट कनेक्शन नहीं"
+  },
+  "applicationItem": {
+    "infoButton": "जानकारी"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "लोड हो रहा है...",
+    "timeagoLabel": "${time} पहले"
+  },
+  "patcherView": {
+    "widgetTitle": "पैचर",
+    "patchButton": "पैच"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "कोई एप्लिकेशन नहीं मिला।"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "पैच चुने",
+    "widgetTitleSelected": "चुने हुए पैच",
+    "widgetSubtitle": "पहले किसी एप्लिकेशन को चुने",
+    "widgetEmptySubtitle": "कोई पैच चुना हुआ नहीं"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "सामाजिक",
+    "widgetSubtitle": "हम ऑनलाइन है"
+  },
+  "appSelectorView": {
+    "storageButton": "संग्रहण",
+    "selectFromStorageButton": "स्टोरेज से चुनें",
+    "errorMessage": "चुने हुए ऐप्लकैशन को उपयोग करने मे असमर्थ",
+    "downloadToast": "डाउनलोड फ़ंक्शन वर्तमान में अनुपलब्ध है",
+    "featureNotAvailable": "कार्रवाई लागू नहीं किया गया है"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "पैच चुने",
+    "searchBarHint": "पैच खोजे",
+    "doneButton": "पूरा हुआ",
+    "defaultChip": "डिफॉल्ट",
+    "defaultTooltip": "सभी डिफ़ॉल्ट पैच का चयन करें",
+    "noneChip": "कुछ नहीं",
+    "noneTooltip": "सभी पैच अचयनित करें",
+    "noPatchesFound": "चुने हुए ऐप्लकैशन के लिए कोई पैच नहीं मिले"
+  },
+  "patchOptionsView": {
+    "saveOptions": "सेव करें",
+    "selectFolder": "फ़ोल्डर चुनें"
+  },
+  "patchItem": {
+    "unsupportedDialogText": "इस पैच को चुनने से पैचिंग मे त्रुटि हो सकती है। \n\nएप वर्ज़न: ${packageVersion}\nसमर्थित वर्ज़न:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "इंस्टॉल करे",
+    "openButton": "खोलें",
+    "notificationTitle": "ReVanced Manager पैच कर रहा है",
+    "notificationText": "इंस्टॉल कर्ता पर जाने के लिए टैप करे",
+    "noExit": "इंस्टॉल कर्ता अब भी चल रहा है, बाहर नहीं निकल सकते"
+  },
+  "settingsView": {
+    "widgetTitle": "सेटिंग्स",
+    "appearanceSectionTitle": "स्वरूप",
+    "teamSectionTitle": "टीम",
+    "advancedSectionTitle": "एडवांसड",
+    "exportSectionTitle": "आयात और निर्यात",
+    "lightThemeLabel": "रोशनी",
+    "darkThemeLabel": "डार्क मोड",
+    "dynamicThemeLabel": "मेटीरियल यू",
+    "dynamicThemeHint": "अपने डिवाइस के करीब एक अनुभव का आनंद लें",
+    "languageLabel": "भाषा",
+    "sourcesResetDialogTitle": "रीसेट करें",
+    "apiURLLabel": "API URL",
+    "selectApiURL": "API URL",
+    "orgPatchesLabel": "पैच संगठन",
+    "sourcesPatchesLabel": "पैच स्रोत",
+    "contributorsLabel": "योगदान कर्ता",
+    "contributorsHint": "ReVanced के योगदानकर्ताओ की सूची",
+    "aboutLabel": "विवरण",
+    "snackbarMessage": "क्लिपबोर्ड में कॉपी हो गया है",
+    "restartAppForChanges": "बदलाव लागू करने के लिए ऐप रीस्टार्ट करें",
+    "deleteTempDirLabel": "अस्थाई फ़ाइलें मिटायें",
+    "deleteTempDirHint": "अप्रयुक्त अस्थायी फ़ाइलों को हटाएं",
+    "deletedTempDir": "क्षणिक फ़ाईल मिटाए गए।",
+    "deleteLogsLabel": "लोग साफ़ करे",
+    "deletedLogs": "लॉग हटा दिए गए",
+    "exportKeystoreLabel": "निर्यात कीस्टोर",
+    "exportedKeystore": "कीस्टोर निर्यात किया गया",
+    "noKeystoreExportFileFound": "निर्यात करने के लिए कोई कीस्टोर नहीं",
+    "importKeystoreLabel": "कीस्टोर आयात करें",
+    "importedKeystore": "कीस्टोर आयात किया गया",
+    "jsonSelectorErrorMessage": "चुने हुए JSON फाइल को उपयोग करने मे असमर्थ"
+  },
+  "appInfoView": {
+    "widgetTitle": "ऐप की जानकारी",
+    "openButton": "खोलें",
+    "installButton": "इंस्टॉल करे",
+    "uninstallButton": "अनइंस्टॉल करें",
+    "rootDialogTitle": "त्रुटि",
+    "rootDialogText": "एप्प superuser परमिशन के साथ इनस्टॉल हुआ था, परन्तु ReVanced मैनेजर के पास कोई परमिशन नहीं है। पहले superuser परमिशन इनेबल करे।",
+    "packageNameLabel": "पैकेज का नाम",
+    "installTypeLabel": "इंस्टॉल का प्रकार",
+    "patchedDateLabel": "पैच करने की तिथि",
+    "appliedPatchesLabel": "लागू किए हुआ पैच",
+    "patchedDateHint": "${date} ${time} पर",
+    "appliedPatchesHint": "${quantity} लागू किए गए पैच",
+    "updateNotImplemented": "यह फीचर फिलहाल इम्प्लीमेंट नहीं हुआ है"
+  },
+  "contributorsView": {
+    "widgetTitle": "योगदान कर्ता"
+  },
+  "installErrorDialog": {}
+}

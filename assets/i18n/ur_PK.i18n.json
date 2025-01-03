@@ -1,0 +1,46 @@
+{
+  "okButton": "ٹھیک ہے",
+  "cancelButton": "منسوخ کریں۔",
+  "quitButton": "چھوڑو",
+  "updateButton": "اپڈیٹ",
+  "suggested": "تجویز کردہ: ${version}",
+  "yesButton": "ہاں",
+  "noButton": "نہیں",
+  "warning": "انتباہ",
+  "notice": "اطلاع",
+  "noShowAgain": "اسے دوبارہ مت دکھائیں۔",
+  "add": "شامل کریں۔",
+  "navigationView": {
+    "dashboardTab": "ڈیش بورڈ",
+    "patcherTab": "پیچر",
+    "settingsTab": "ترتیبات"
+  },
+  "homeView": {
+    "refreshSuccess": "کامیابی کے ساتھ ریفریش کیا گیا",
+    "widgetTitle": "ڈیش بورڈ",
+    "updatesSubtitle": "اپڈیٹس",
+    "patchedSubtitle": "پیچ شدہ ایپلی کیشنز",
+    "noInstallations": "کوئی پیچ شدہ ایپلیکیشن انسٹالڈ نہیں",
+    "installUpdate": "اپڈیٹس انسٹال کرنا جاری رکھیں؟",
+    "updateChangelogTitle": "تبدیلیوں کے لاگز",
+    "downloadingMessage": "اپ ڈیٹ ڈونلوڈ ہو رہی ہے...",
+    "installingMessage": "اپ ڈیٹ انسٹال ہو رہی ہے...",
+    "errorDownloadMessage": "اپ ڈیٹ ڈونلوڈ نہیں ہو سکی",
+    "errorInstallMessage": "اپڈیٹ انسٹال نہیں ہو سکی",
+    "noConnection": "انٹرنیٹ کنکشن میسر نہیں"
+  },
+  "applicationItem": {
+    "infoButton": "معلومات نامہ"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "لوڈ ہو رہا ہے...",
+    "timeagoLabel": "${time} پہلے"
+  },
+  "patcherView": {
+    "widgetTitle": "پیچر",
+    "patchButton": "پیچ کریں"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "کوئی ایپلیکیشن نہیں ملی"
+  }
+}
