@@ -4,7 +4,6 @@
   "dismissButton": "",
   "quitButton": "",
   "updateButton": "Kemas kini",
-  "suggested": "",
   "yesButton": "Ya",
   "noButton": "Tidak",
   "warning": "Amaran",
@@ -33,10 +32,8 @@
     "updateDialogTitle": "",
     "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Log perubahan",
-    "updateDialogText": "",
     "downloadConsentDialogTitle": "",
     "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
     "downloadingMessage": "Memuat turun pengemaskinian...",
     "downloadedMessage": "Kemaskini dimuat turun",
     "installingMessage": "Memasang pengemaskinian...",
@@ -48,15 +45,12 @@
     "infoButton": "Maklumat"
   },
   "latestCommitCard": {
-    "loadingLabel": "Memuatkan...",
-    "timeagoLabel": ""
+    "loadingLabel": "Memuatkan..."
   },
   "patcherView": {
     "widgetTitle": "Pemodifikasi",
     "patchButton": "Modifikasi",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": ""
   },
   "appSelectorCard": {
@@ -83,7 +77,6 @@
     "selectFromStorageButton": "",
     "errorMessage": "Tidak dapat menggunakan aplikasi yang dipilih",
     "downloadToast": "",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "",
     "featureNotAvailableText": ""
   },
@@ -100,8 +93,7 @@
     "noneTooltip": "",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "Tiada modifikasi dijumpai untuk apl pilihan",
-    "setRequiredOption": ""
+    "noPatchesFound": "Tiada modifikasi dijumpai untuk apl pilihan"
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,8 +106,7 @@
     "selectFilePath": "",
     "selectFolder": "",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
     "unsupportedDialogText": "Memilih modifikasi mungkin menyebabkan ralat ketika modifikasi.\n\nVersi aplikasi: ${packageVersion}\nVersi disokong:\n${supportedVersions}",
@@ -290,7 +281,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

@@ -4,7 +4,6 @@
   "dismissButton": "မလုပ်တော့ပါ",
   "quitButton": "ထွက်မည်",
   "updateButton": "အပ်ပဒိတ်",
-  "suggested": "",
   "yesButton": "",
   "noButton": "",
   "warning": "",
@@ -33,10 +32,8 @@
     "updateDialogTitle": "",
     "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "",
-    "updateDialogText": "",
     "downloadConsentDialogTitle": "",
     "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
     "downloadingMessage": "",
     "downloadedMessage": "",
     "installingMessage": "",
@@ -48,15 +45,12 @@
     "infoButton": ""
   },
   "latestCommitCard": {
-    "loadingLabel": "",
-    "timeagoLabel": ""
+    "loadingLabel": ""
   },
   "patcherView": {
     "widgetTitle": "",
     "patchButton": "",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": ""
   },
   "appSelectorCard": {
@@ -83,7 +77,6 @@
     "selectFromStorageButton": "",
     "errorMessage": "",
     "downloadToast": "",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "",
     "featureNotAvailableText": ""
   },
@@ -100,8 +93,7 @@
     "noneTooltip": "",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "",
-    "setRequiredOption": ""
+    "noPatchesFound": ""
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,11 +106,9 @@
     "selectFilePath": "",
     "selectFolder": "",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
-    "unsupportedDialogText": "",
     "unsupportedPatchVersion": "",
     "unsupportedRequiredOption": "",
     "patchesChangeWarningDialogText": "",
@@ -262,8 +252,6 @@
     "patchedDateLabel": "",
     "appliedPatchesLabel": "",
     "sizeLabel": "",
-    "patchedDateHint": "",
-    "appliedPatchesHint": "",
     "updateNotImplemented": ""
   },
   "contributorsView": {
@@ -290,7 +278,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

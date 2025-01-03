@@ -36,7 +36,6 @@
     "updateDialogText": "${file} үшін жаңарту қолжетімді.\n\nҚазіргі ${version} нұсқасы орнатылып тұр.",
     "downloadConsentDialogTitle": "",
     "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
     "downloadingMessage": "",
     "downloadedMessage": "Жаңарту жүктелген",
     "installingMessage": "",
@@ -48,15 +47,12 @@
     "infoButton": "Ақпарат"
   },
   "latestCommitCard": {
-    "loadingLabel": "Ju'ktely'de...",
-    "timeagoLabel": ""
+    "loadingLabel": "Ju'ktely'de..."
   },
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патч",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": ""
   },
   "appSelectorCard": {
@@ -83,7 +79,6 @@
     "selectFromStorageButton": "",
     "errorMessage": "",
     "downloadToast": "",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "",
     "featureNotAvailableText": ""
   },
@@ -100,8 +95,7 @@
     "noneTooltip": "",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "",
-    "setRequiredOption": ""
+    "noPatchesFound": ""
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,11 +108,9 @@
     "selectFilePath": "",
     "selectFolder": "Буманы таңдаңыз",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
-    "unsupportedDialogText": "",
     "unsupportedPatchVersion": "",
     "unsupportedRequiredOption": "",
     "patchesChangeWarningDialogText": "",
@@ -262,8 +254,6 @@
     "patchedDateLabel": "",
     "appliedPatchesLabel": "",
     "sizeLabel": "",
-    "patchedDateHint": "",
-    "appliedPatchesHint": "",
     "updateNotImplemented": ""
   },
   "contributorsView": {
@@ -290,7 +280,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

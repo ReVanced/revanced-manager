@@ -33,7 +33,6 @@
     "updateDialogTitle": "به‌روزرسانی جدیدی موجود است",
     "updatePatchesSheetTitle": "بروزرسانی پچ های Revanced",
     "updateChangelogTitle": "لیست تغییرات",
-    "updateDialogText": "",
     "downloadConsentDialogTitle": "",
     "downloadConsentDialogText": "",
     "downloadConsentDialogText2": "اتصال به ${url}.",
@@ -55,8 +54,6 @@
     "widgetTitle": "نصب کننده پچ",
     "patchButton": "پچ",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "بعضی از تنظیمات پچ باید انتخاب شود."
   },
   "appSelectorCard": {
@@ -83,7 +80,6 @@
     "selectFromStorageButton": "انتخاب از محل ذخیره",
     "errorMessage": "امکان استفاده از برنامه انتخابی وجود ندارد",
     "downloadToast": "بارگیری عملکرد فعلا در دسترس نیست",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "قابلیت اضافه نشده است",
     "featureNotAvailableText": ""
   },
@@ -100,8 +96,7 @@
     "noneTooltip": "حذف انتخاب همه پچ ها",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "هیچ وصله ای برای این برنامه پیدا نشد",
-    "setRequiredOption": ""
+    "noPatchesFound": "هیچ وصله ای برای این برنامه پیدا نشد"
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,8 +109,7 @@
     "selectFilePath": "",
     "selectFolder": "انتخاب پوشه",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
     "unsupportedDialogText": "انتخاب این پچ(وصله) ممکنه خطاهای در هنگام پچ کردن ایجاد کند.\n\nنسخه برنامه: ${packageVersion}\nنسخه های پشتیبان شده:\n${supportedVersions}",
@@ -290,7 +284,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

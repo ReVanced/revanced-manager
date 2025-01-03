@@ -33,10 +33,8 @@
     "updateDialogTitle": "नई अपडेट उपलब्ध है",
     "updatePatchesSheetTitle": "ReVanced Patches अपडेट करें",
     "updateChangelogTitle": "परिवर्तन पत्र",
-    "updateDialogText": "",
     "downloadConsentDialogTitle": "",
     "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
     "downloadingMessage": "अपडेट डाउनलोड हो रहा है",
     "downloadedMessage": "अपडेट डाउनलोड हो चुकी है",
     "installingMessage": "अपडेट इंस्टॉल हो रहा है",
@@ -55,8 +53,6 @@
     "widgetTitle": "पैचर",
     "patchButton": "पैच",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": ""
   },
   "appSelectorCard": {
@@ -83,7 +79,6 @@
     "selectFromStorageButton": "स्टोरेज से चुनें",
     "errorMessage": "चुने हुए ऐप्लकैशन को उपयोग करने मे असमर्थ",
     "downloadToast": "डाउनलोड फ़ंक्शन वर्तमान में अनुपलब्ध है",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "कार्रवाई लागू नहीं किया गया है",
     "featureNotAvailableText": ""
   },
@@ -100,8 +95,7 @@
     "noneTooltip": "सभी पैच अचयनित करें",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "चुने हुए ऐप्लकैशन के लिए कोई पैच नहीं मिले",
-    "setRequiredOption": ""
+    "noPatchesFound": "चुने हुए ऐप्लकैशन के लिए कोई पैच नहीं मिले"
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,8 +108,7 @@
     "selectFilePath": "",
     "selectFolder": "फ़ोल्डर चुनें",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
     "unsupportedDialogText": "इस पैच को चुनने से पैचिंग मे त्रुटि हो सकती है। \n\nएप वर्ज़न: ${packageVersion}\nसमर्थित वर्ज़न:\n${supportedVersions}",
@@ -290,7 +283,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

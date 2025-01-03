@@ -33,10 +33,8 @@
     "updateDialogTitle": "",
     "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Zapisnik promjena",
-    "updateDialogText": "",
     "downloadConsentDialogTitle": "",
     "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
     "downloadingMessage": "Preuzimanje ažuriranja...",
     "downloadedMessage": "Ažuriranje je preuzeto",
     "installingMessage": "Instaliranje ažuriranja...",
@@ -55,8 +53,6 @@
     "widgetTitle": "Zakrpe",
     "patchButton": "Zakrpi",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": ""
   },
   "appSelectorCard": {
@@ -83,7 +79,6 @@
     "selectFromStorageButton": "Odaberi iz pohrane",
     "errorMessage": "Nije moguće koristiti odabranu aplikaciju",
     "downloadToast": "Funkcija preuzimanja još nije dostupna",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "Ova značajka još nije ugrađena",
     "featureNotAvailableText": ""
   },
@@ -100,8 +95,7 @@
     "noneTooltip": "Poništi odabir svih zakrpa",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa",
-    "setRequiredOption": ""
+    "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,8 +108,7 @@
     "selectFilePath": "",
     "selectFolder": "",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
     "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti greške pri krpanju.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}",
@@ -290,7 +283,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

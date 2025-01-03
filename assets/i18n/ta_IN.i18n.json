@@ -55,8 +55,6 @@
     "widgetTitle": "இணைப்பான்",
     "patchButton": "இணைப்பு",
     "incompatibleArchWarningDialogText": "இந்தக் கட்டமைப்பில் பிறழுதல் இன்னும் ஆதரிக்கப்படவில்லை மற்றும் தோல்வியடையக்கூடும்.  எப்படியும் தொடரவா?",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "சில பிறழ்களுக்கு விருப்பங்களை அமைக்க வேண்டும்."
   },
   "appSelectorCard": {
@@ -114,8 +112,7 @@
     "selectFilePath": "கோப்பு பாதையைத் தேர்ந்தெடுக்கவும்",
     "selectFolder": "கோப்புறையைத் தேர்வு செய்",
     "requiredOption": "இந்த விருப்பத்தை அமைக்க வேண்டும்",
-    "unsupportedOption": "இந்த விருப்பம் ஆதரிக்கப்படவில்லை",
-    "requiredOptionNull": ""
+    "unsupportedOption": "இந்த விருப்பம் ஆதரிக்கப்படவில்லை"
   },
   "patchItem": {
     "unsupportedDialogText": "இந்த இணைப்பைத் தேர்ந்தெடுப்பது, இணைப்புப் பிழைகளை ஏற்படுத்தலாம்.\n\nபயன்பாட்டின் பதிப்பு: ${packageVersion}\nதற்போதைய ஆதரிக்கப்படும் பதிப்புகள்:\n${supportedVersions}",
@@ -290,7 +287,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

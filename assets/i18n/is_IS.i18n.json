@@ -55,8 +55,6 @@
     "widgetTitle": "Patcher",
     "patchButton": "Bót",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "Það þarf að stilla nokkra patch valkosti."
   },
   "appSelectorCard": {
@@ -100,8 +98,7 @@
     "noneTooltip": "Afvelja alla plástra",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "",
-    "setRequiredOption": ""
+    "noPatchesFound": ""
   },
   "patchOptionsView": {
     "customValue": "Sérsniðinsgildi",
@@ -114,11 +111,9 @@
     "selectFilePath": "Veldu skráarslóð",
     "selectFolder": "Veldu mappa",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
-    "unsupportedDialogText": "",
     "unsupportedPatchVersion": "",
     "unsupportedRequiredOption": "",
     "patchesChangeWarningDialogText": "",
@@ -262,8 +257,6 @@
     "patchedDateLabel": "",
     "appliedPatchesLabel": "",
     "sizeLabel": "",
-    "patchedDateHint": "",
-    "appliedPatchesHint": "",
     "updateNotImplemented": ""
   },
   "contributorsView": {
@@ -290,7 +283,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

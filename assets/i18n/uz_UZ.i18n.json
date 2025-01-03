@@ -36,7 +36,6 @@
     "updateDialogText": "${file} uchun yangilanish mavjud.\n\nHozirgi o'rnatilgan versiya: ${version}.",
     "downloadConsentDialogTitle": "Ba'zi fayllarni yuklab olish?",
     "downloadConsentDialogText": "ReVanced Manager ishlashi uchun ba'zi fayllarni yuklab olish kerak.",
-    "downloadConsentDialogText2": "",
     "downloadingMessage": "Yangilanishlar otvotti...",
     "downloadedMessage": "Yangilanish otqizildi",
     "installingMessage": "Yangilanishlar ornatib olinvotti...",
@@ -48,15 +47,12 @@
     "infoButton": "Ma'lumot"
   },
   "latestCommitCard": {
-    "loadingLabel": "Yuklanmoqda...",
-    "timeagoLabel": ""
+    "loadingLabel": "Yuklanmoqda..."
   },
   "patcherView": {
     "widgetTitle": "",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": ""
   },
   "appSelectorCard": {
@@ -83,7 +79,6 @@
     "selectFromStorageButton": "",
     "errorMessage": "",
     "downloadToast": "",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "",
     "featureNotAvailableText": ""
   },
@@ -100,8 +95,7 @@
     "noneTooltip": "",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "",
-    "setRequiredOption": ""
+    "noPatchesFound": ""
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,11 +108,9 @@
     "selectFilePath": "",
     "selectFolder": "",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
-    "unsupportedDialogText": "",
     "unsupportedPatchVersion": "",
     "unsupportedRequiredOption": "",
     "patchesChangeWarningDialogText": "",
@@ -262,8 +254,6 @@
     "patchedDateLabel": "",
     "appliedPatchesLabel": "",
     "sizeLabel": "",
-    "patchedDateHint": "",
-    "appliedPatchesHint": "",
     "updateNotImplemented": ""
   },
   "contributorsView": {
@@ -290,7 +280,6 @@
     "status_failure_invalid_description": "",
     "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
     "install_failed_verification_failure_description": "",
     "install_failed_version_downgrade_description": "",
     "status_unknown_description": ""

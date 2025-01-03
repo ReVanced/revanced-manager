@@ -36,7 +36,6 @@
     "updateDialogText": "${file}-ৰ এটা নতুন আপডে’ট উপলব্ধ।\n\nবৰ্তমানে ইনষ্টল কৰা সংস্কৰণটো হৈছে ${version}।",
     "downloadConsentDialogTitle": "প্ৰয়োজনীয় ফাইলবোৰ ডাউনল’ড কৰিবনে?",
     "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
     "downloadingMessage": "",
     "downloadedMessage": "",
     "installingMessage": "",
@@ -48,15 +47,12 @@
     "infoButton": ""
   },
   "latestCommitCard": {
-    "loadingLabel": "",
-    "timeagoLabel": ""
+    "loadingLabel": ""
   },
   "patcherView": {
     "widgetTitle": "",
     "patchButton": "",
     "incompatibleArchWarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": ""
   },
   "appSelectorCard": {
@@ -83,7 +79,6 @@
     "selectFromStorageButton": "",
     "errorMessage": "",
     "downloadToast": "",
-    "requireSuggestedAppVersionDialogText": "",
     "featureNotAvailable": "",
     "featureNotAvailableText": ""
   },
@@ -100,8 +95,7 @@
     "noneTooltip": "",
     "loadPatchesSelection": "",
     "noSavedPatches": "",
-    "noPatchesFound": "",
-    "setRequiredOption": ""
+    "noPatchesFound": ""
   },
   "patchOptionsView": {
     "customValue": "",
@@ -114,11 +108,9 @@
     "selectFilePath": "ফাইলৰ পথ বাছনি কৰক",
     "selectFolder": "ফ’ল্ডাৰ বাছনি কৰক",
     "requiredOption": "",
-    "unsupportedOption": "",
-    "requiredOptionNull": ""
+    "unsupportedOption": ""
   },
   "patchItem": {
-    "unsupportedDialogText": "",
     "unsupportedPatchVersion": "",
     "unsupportedRequiredOption": "",
     "patchesChangeWarningDialogText": "",
