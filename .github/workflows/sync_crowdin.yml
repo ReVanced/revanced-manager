@@ -28,7 +28,7 @@ jobs:
           flutter-version: 3.27.x
 
       - name: Sync translations from Crowdin
-        uses: crowdin/github-action@v1
+        uses: crowdin/github-action@v2
         with:
           config: crowdin.yml
           upload_sources: true
@@ -55,6 +55,8 @@ jobs:
       - name: Normalization of Translation Strings
         run: |
           sudo chmod 766 assets/i18n/*.i18n.json
+          dart run slang analyze
+          dart run slang clean
           dart run slang normalize
           dart run slang
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
