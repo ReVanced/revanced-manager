@@ -61,6 +61,6 @@ Learn how to configure ReVanced Manager.
 
 ## ⏭️ What's next
 
-The next page will lead back to the usage page.
+The next page will explain how to troubleshoot issues with ReVanced Manager.
 
-Continue: [🛠️ Usage](2_usage.md)
+Continue: [❔ Troubleshooting](3_troubleshooting.md)

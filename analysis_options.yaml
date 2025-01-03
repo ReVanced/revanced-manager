@@ -81,7 +81,6 @@ linter:
     - null_check_on_nullable_type_parameter
     - null_closures
     - overridden_fields
-    - package_api_docs
     - package_names
     - prefer_adjacent_string_concatenation
     - prefer_asserts_in_initializer_lists
