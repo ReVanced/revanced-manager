@@ -55,6 +55,8 @@
     "widgetTitle": "修补器",
     "patchButton": "修补",
     "incompatibleArchWarningDialogText": "对此架构的修补尚不支持或可能失败。仍要继续吗？",
+    "removedPatchesWarningDialogText": "自上次修补此应用程序以来已删除的修补程序：\n\n${patches}\n\n${newPatches}仍然继续吗？",
+    "addedPatchesDialogText": "自上次修补此应用程序以来添加的修补程序：\n\n${addedPatches}",
     "requiredOptionDialogText": "某些补丁选项必须设置。"
   },
   "appSelectorCard": {
@@ -286,6 +288,7 @@
     "status_failure_timeout_description": "安装时间太长。\n\n您想再试一次吗？",
     "status_failure_storage_description": "由于存储空间不足，安装失败。\n\n释放一些空间，然后重试。",
     "status_failure_invalid_description": "由于修补的应用程序无效，安装失败。\n\n卸载该应用程序并重试？",
+    "status_failure_incompatible_description": "该应用程序与该设备不兼容。\n\n使用此设备支持的 APK，然后重试。",
     "status_failure_conflict_description": "该应用程序的现有安装阻止了安装。\n\n卸载已安装的应用程序并重试？",
     "status_failure_blocked_description": "安装被 ${packageName} 阻止。\n\n调整您的安全设置并重试。",
     "install_failed_verification_failure_description": "由于验证问题，安装失败。\n\n请调整安全设置并重试。",

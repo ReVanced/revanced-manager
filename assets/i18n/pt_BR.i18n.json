@@ -9,7 +9,7 @@
   "noButton": "Não",
   "warning": "Atenção",
   "notice": "Nota",
-  "noShowAgain": "Não mostrar de novo",
+  "noShowAgain": "Não mostrar isso novamente",
   "add": "Adicionar",
   "remove": "Remover",
   "showChangelogButton": "Mostrar alterações",
@@ -42,7 +42,7 @@
     "installingMessage": "Instalando atualização...",
     "errorDownloadMessage": "Não é possível baixar a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
-    "noConnection": "Sem conexão"
+    "noConnection": "Sem conexão com a internet"
   },
   "applicationItem": {
     "infoButton": "Informações"
@@ -57,7 +57,7 @@
     "incompatibleArchWarningDialogText": "A aplicação de patches nesta arquitetura ainda não é suportada e pode falhar. Continuar mesmo assim?",
     "removedPatchesWarningDialogText": "Patches removidos desde a última vez que você aplicou patches neste app:\n\n${patches}\n\n${newPatches}Continuar mesmo assim?",
     "addedPatchesDialogText": "Patches adicionados desde a última vez que você aplicou patches neste app:\n\n${addedPatches}\n",
-    "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas."
+    "requiredOptionDialogText": "Algumas opções de patch precisam ser definidas."
   },
   "appSelectorCard": {
     "widgetTitle": "Selecione um app",

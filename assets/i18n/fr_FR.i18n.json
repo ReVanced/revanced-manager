@@ -105,7 +105,7 @@
   },
   "patchOptionsView": {
     "customValue": "Valeur personnalisée",
-    "setToNull": "Définir à nul",
+    "setToNull": "Définir à NULL",
     "nullValue": "Cette valeur d'option est actuellement nulle",
     "viewTitle": "Options de patch",
     "saveOptions": "Enregistrer",
