@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,13 +30,16 @@ import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderData
+import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
+import app.revanced.manager.ui.model.BundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
@@ -63,7 +67,6 @@ class SelectedAppInfoViewModel(
     input: SelectedApplicationInfo.ViewModelParams
 ) : ViewModel(), KoinComponent {
     private val app: Application = get()
-    val bundlesRepo: PatchBundleRepository = get()
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
@@ -174,6 +177,10 @@ class SelectedAppInfoViewModel(
         }
     }
 
+    val bundleInfoFlow by derivedStateOf {
+        bundleRepository.bundleInfoFlow(packageName, selectedApp.version)
+    }
+
     fun showSourceSelector() {
         dismissSourceSelector()
         showSourceSelector = true
@@ -260,6 +267,23 @@ class SelectedAppInfoViewModel(
         selectedAppInfo = info
     }
 
+    suspend fun hasSetRequiredOptions(patchSelection: PatchSelection) = bundleInfoFlow
+        .first()
+        .requiredOptionsSet(
+            isSelected = { bundle, patch -> patch.name in patchSelection[bundle.uid]!! },
+            optionsForPatch = { bundle, patch -> options[bundle.uid]?.get(patch.name) },
+        )
+
+    suspend fun getPatcherParams(): Patcher.ViewModelParams {
+        val allowUnsupported = prefs.disablePatchVersionCompatCheck.get()
+        val bundles = bundleInfoFlow.first()
+        return Patcher.ViewModelParams(
+            selectedApp,
+            getPatches(bundles, allowUnsupported),
+            getOptionsFiltered(bundles)
+        )
+    }
+
     fun getOptionsFiltered(bundles: List<BundleInfo>) = options.filtered(bundles)
 
     fun getPatches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
@@ -272,7 +296,7 @@ class SelectedAppInfoViewModel(
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
     fun updateConfiguration(selection: PatchSelection?, options: Options) = viewModelScope.launch {
-        val bundles = bundlesRepo.bundleInfoFlow(packageName, selectedApp.version).first()
+        val bundles = bundleInfoFlow.first()
 
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
 

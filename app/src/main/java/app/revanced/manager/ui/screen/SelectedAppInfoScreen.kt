@@ -14,9 +14,9 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -32,7 +32,6 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
-import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
@@ -41,12 +40,14 @@ import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.enabled
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectedAppInfoScreen(
     onPatchSelectorClick: (SelectedApp, PatchSelection?, Options) -> Unit,
-    onPatchClick: (SelectedApp, PatchSelection, Options) -> Unit,
+    onRequiredOptions: (SelectedApp, PatchSelection?, Options) -> Unit,
+    onPatchClick: () -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
@@ -54,20 +55,14 @@ fun SelectedAppInfoScreen(
 
     val packageName = vm.selectedApp.packageName
     val version = vm.selectedApp.version
-    val bundles by remember(packageName, version) {
-        vm.bundlesRepo.bundleInfoFlow(packageName, version)
-    }.collectAsStateWithLifecycle(initialValue = emptyList())
+    val bundles by vm.bundleInfoFlow.collectAsStateWithLifecycle(emptyList())
 
     val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
-    val patches by remember {
-        derivedStateOf {
-            vm.getPatches(bundles, allowIncompatiblePatches)
-        }
+    val patches = remember(bundles, allowIncompatiblePatches) {
+        vm.getPatches(bundles, allowIncompatiblePatches)
     }
-    val selectedPatchCount by remember {
-        derivedStateOf {
-            patches.values.sumOf { it.size }
-        }
+    val selectedPatchCount = remember(patches) {
+        patches.values.sumOf { it.size }
     }
 
     val launcher = rememberLauncherForActivityResult(
@@ -77,6 +72,7 @@ fun SelectedAppInfoScreen(
     EventEffect(flow = vm.launchActivityFlow) { intent ->
         launcher.launch(intent)
     }
+    val composableScope = rememberCoroutineScope()
 
     val error by vm.errorFlow.collectAsStateWithLifecycle(null)
     Scaffold(
@@ -103,11 +99,19 @@ fun SelectedAppInfoScreen(
 
                         return@patchClick
                     }
-                    onPatchClick(
-                        vm.selectedApp,
-                        patches,
-                        vm.getOptionsFiltered(bundles)
-                    )
+
+                    composableScope.launch {
+                        if (!vm.hasSetRequiredOptions(patches)) {
+                            onRequiredOptions(
+                                vm.selectedApp,
+                                vm.getCustomPatches(bundles, allowIncompatiblePatches),
+                                vm.options
+                            )
+                            return@launch
+                        }
+
+                        onPatchClick()
+                    }
                 }
             )
         }

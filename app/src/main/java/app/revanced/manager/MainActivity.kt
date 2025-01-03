@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -29,6 +30,7 @@ import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.compose.navigation.koinNavViewModel
 import org.koin.core.parameter.parametersOf
@@ -139,14 +141,20 @@ private fun ReVancedManager(vm: MainViewModel) {
                 val parentBackStackEntry = navController.navGraphEntry(it)
                 val data =
                     parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
+                val viewModel =
+                    koinNavViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
+                        parametersOf(data)
+                    }
 
                 SelectedAppInfoScreen(
                     onBackClick = navController::popBackStack,
-                    onPatchClick = { app, patches, options ->
-                        navController.navigateComplex(
-                            Patcher,
-                            Patcher.ViewModelParams(app, patches, options)
-                        )
+                    onPatchClick = {
+                        it.lifecycleScope.launch {
+                            navController.navigateComplex(
+                                Patcher,
+                                viewModel.getPatcherParams()
+                            )
+                        }
                     },
                     onPatchSelectorClick = { app, patches, options ->
                         navController.navigateComplex(
@@ -158,9 +166,17 @@ private fun ReVancedManager(vm: MainViewModel) {
                             )
                         )
                     },
-                    vm = koinNavViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
-                        parametersOf(data)
-                    }
+                    onRequiredOptions = { app, patches, options ->
+                        navController.navigateComplex(
+                            SelectedApplicationInfo.RequiredOptions,
+                            SelectedApplicationInfo.PatchesSelector.ViewModelParams(
+                                app,
+                                patches,
+                                options
+                            )
+                        )
+                    },
+                    vm = viewModel
                 )
             }
 
@@ -176,6 +192,28 @@ private fun ReVancedManager(vm: MainViewModel) {
                     onSave = { patches, options ->
                         selectedAppInfoVm.updateConfiguration(patches, options)
                         navController.popBackStack()
+                    },
+                    vm = koinViewModel { parametersOf(data) }
+                )
+            }
+
+            composable<SelectedApplicationInfo.RequiredOptions> {
+                val data =
+                    it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
+                val selectedAppInfoVm = koinNavViewModel<SelectedAppInfoViewModel>(
+                    viewModelStoreOwner = navController.navGraphEntry(it)
+                )
+
+                RequiredOptionsScreen(
+                    onBackClick = navController::popBackStack,
+                    onContinue = { patches, options ->
+                        selectedAppInfoVm.updateConfiguration(patches, options)
+                        it.lifecycleScope.launch {
+                            navController.navigateComplex(
+                                Patcher,
+                                selectedAppInfoVm.getPatcherParams()
+                            )
+                        }
                     },
                     vm = koinViewModel { parametersOf(data) }
                 )
