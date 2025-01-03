@@ -1,0 +1,145 @@
+{
+  "okButton": "Í Lagi",
+  "cancelButton": "Hætta við",
+  "dismissButton": "Loka",
+  "quitButton": "Hætta við",
+  "updateButton": "Uppfæra",
+  "suggested": "Stungið upp á: ${version}",
+  "yesButton": "Já",
+  "noButton": "Nei",
+  "warning": "Viðvörun",
+  "notice": "Tilkynning",
+  "noShowAgain": "Ekki sýna þetta aftur",
+  "add": "Bæta við",
+  "remove": "Fjarlægja",
+  "showChangelogButton": "Sýna breytingarskrá",
+  "showUpdateButton": "Sýna uppfæra",
+  "navigationView": {
+    "dashboardTab": "Stjórnborð",
+    "patcherTab": "Patcher",
+    "settingsTab": "Stillingar"
+  },
+  "homeView": {
+    "refreshSuccess": "Endurnærð farsællega",
+    "widgetTitle": "Stjórnborð",
+    "updatesSubtitle": "Uppfærslur",
+    "changeLaterSubtitle": "Þú getur breytt þessu í stillingunum síðar.",
+    "noInstallations": "Engin pjatlað forrit uppsett",
+    "installUpdate": "Halda áfram að setja upp uppfærsluna?",
+    "updateSheetTitle": "Uppfæra ReVanced Manager",
+    "updateDialogTitle": "Ný uppfærsla í boði",
+    "updatePatchesSheetTitle": "Uppfæra ReVanced Patches",
+    "updateChangelogTitle": "Breytingaskrá",
+    "updateDialogText": "Ný uppfærsla er fáanleg fyrir ${file}.\n\nNúverandi uppsett útgáfa er ${version}.",
+    "downloadConsentDialogTitle": "Sækja nauðsynlegar skrár?",
+    "downloadConsentDialogText": "ReVanced Manager þarf að hlaða niður nauðsynlegum skrám til að virka rétt.",
+    "downloadConsentDialogText2": "Þetta mun tengja þig við ${url}.",
+    "downloadingMessage": "Er að setja upp uppfæra...",
+    "downloadedMessage": "Uppfærsla sótt",
+    "installingMessage": "Setja upp uppfræslu...",
+    "errorDownloadMessage": "Ekki tókst að setja upp uppfærslu",
+    "errorInstallMessage": "Ekki tókst að setja upp uppfærslu",
+    "noConnection": "Engin internettenging"
+  },
+  "applicationItem": {
+    "infoButton": "Upplýsingar"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Er að halda...",
+    "timeagoLabel": "${time} síðan"
+  },
+  "patcherView": {
+    "widgetTitle": "Patcher",
+    "patchButton": "Bót",
+    "requiredOptionDialogText": "Það þarf að stilla nokkra patch valkosti."
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Veldu forrit",
+    "widgetTitleSelected": "Valið forrit",
+    "widgetSubtitle": "Engin forrit valið",
+    "noAppsLabel": "Engin forrit fundust",
+    "anyVersion": "Öll útgáfa"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Veldu patches",
+    "widgetTitleSelected": "Valið patches",
+    "widgetSubtitle": "Veldu forrit fyrst",
+    "widgetEmptySubtitle": "Engin patches valið"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Samfélagsmiðlum",
+    "widgetSubtitle": "Við erum á netinu!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Veldu forrit",
+    "searchBarHint": "Leita forrit",
+    "storageButton": "Geymsla",
+    "selectFromStorageButton": "Veldu úr geymslu",
+    "errorMessage": "Get ekki notað valið forrit",
+    "downloadToast": "Niðurhalsaðgerð er ekki tiltæk ennþá",
+    "requireSuggestedAppVersionDialogText": "Útgáfan af forritinu sem þú hefur valið passar ekki við þá útgáfu sem lagt er til sem getur leitt til óvæntra vandamála. Vinsamlega notaðu þá útgáfu sem mælt er með.\n\nValin útgáfa: ${selected}\nUppástunga útgáfa: ${suggested}\n\nTil að halda samt áfram skaltu slökkva á \"Krefjast tillögu að útgáfu af forriti\" í stillingunum.",
+    "featureNotAvailable": "Eiginleiki ekki útfærður",
+    "featureNotAvailableText": "Þetta forrit er skipt APK og aðeins er hægt að laga og setja það upp á áreiðanlegan hátt með því að tengja það með rótarheimildum. Hins vegar geturðu lagfært og sett upp fullan APK með því að velja hann úr geymslu."
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Veldu patches",
+    "searchBarHint": "Leita patches",
+    "universalPatches": "Alhliða patches",
+    "newPatches": "Nýtt patches",
+    "patches": "Patches",
+    "doneButton": "Búið",
+    "defaultChip": "Sjálfgefinn",
+    "defaultTooltip": "Veldu alla sjálfgefna plástra",
+    "noneChip": "Enginn",
+    "noneTooltip": "Afvelja alla plástra"
+  },
+  "patchOptionsView": {
+    "customValue": "Sérsniðinsgildi",
+    "viewTitle": "Patch valkostir",
+    "saveOptions": "Vista",
+    "selectFilePath": "Veldu skráarslóð",
+    "selectFolder": "Veldu mappa"
+  },
+  "patchItem": {},
+  "installerView": {
+    "installButton": "Setja upp",
+    "installNonRootType": "Venjulegur",
+    "openButton": "Opna",
+    "exportLogButtonTooltip": "Flytja út annál",
+    "screenshotDetected": "Skjáskot hefur fundist. Ef þú ert að reyna að deila skránni, vinsamlegast deildu textaafriti í staðinn.\n\nAfrita annál á klippiborð?"
+  },
+  "settingsView": {
+    "widgetTitle": "Stillingar",
+    "appearanceSectionTitle": "Útlit",
+    "teamSectionTitle": "Lið",
+    "debugSectionTitle": "Villuleit",
+    "advancedSectionTitle": "Ítarlegur",
+    "exportSectionTitle": "Flytja inn/út",
+    "dataSectionTitle": "Gagnaheimildir",
+    "themeModeLabel": "Forritsþema",
+    "systemThemeLabel": "Kerfi",
+    "lightThemeLabel": "Ljós",
+    "darkThemeLabel": "Dökkt",
+    "languageLabel": "Tungumál",
+    "languageUpdated": "Tungumál uppfært",
+    "sourcesResetDialogTitle": "Endurstilla",
+    "contributorsLabel": "Framlagsaðilar",
+    "logsLabel": "Deila annálum",
+    "autoUpdatePatchesLabel": "Sjálfvirk uppfærsla patches",
+    "aboutLabel": "Um",
+    "snackbarMessage": "Afritað á klippiborð",
+    "deletedLogs": "Annálum eytt"
+  },
+  "appInfoView": {
+    "widgetTitle": "Forritsupplýsingar",
+    "openButton": "Opna",
+    "installButton": "Setja upp",
+    "uninstallButton": "Fjarlægja",
+    "rootDialogTitle": "Villa",
+    "regularTypeLabel": "Venjulegur"
+  },
+  "contributorsView": {
+    "widgetTitle": "Framlagsaðilar"
+  },
+  "installErrorDialog": {}
+}

@@ -1,0 +1,67 @@
+{
+  "cancelButton": "Avbryt",
+  "updateButton": "Oppdater",
+  "suggested": "Anbefalt: ${version}",
+  "yesButton": "Ja",
+  "noButton": "Nei",
+  "warning": "Advarsel",
+  "navigationView": {
+    "dashboardTab": "Dashbord",
+    "settingsTab": "Innstillinger"
+  },
+  "homeView": {
+    "refreshSuccess": "Oppdatering vellykket",
+    "widgetTitle": "Dashbord",
+    "updatesSubtitle": "Oppdateringer",
+    "patchedSubtitle": "Patched applikasjoner",
+    "noInstallations": "Patchet applikasjon er ikke installert",
+    "installUpdate": "Fortsett til installasjon av oppdatering?",
+    "updateChangelogTitle": "Endringslogg",
+    "downloadingMessage": "Laster ned oppdatering...",
+    "installingMessage": "Installerer oppdatering...",
+    "errorDownloadMessage": "Nedlasting av oppdatering var misslykket",
+    "errorInstallMessage": "Installasjon av oppdatering var misslykket",
+    "noConnection": "Ingen nettverksforbindelse"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Laster...",
+    "timeagoLabel": "${time} siden"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Ingen applikasjoner ble funnet"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Velg patcher",
+    "widgetTitleSelected": "Valgte patcher",
+    "widgetSubtitle": "Velg en applikasjon først",
+    "widgetEmptySubtitle": "Ingen patcher valgt"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sosiale Medier",
+    "widgetSubtitle": "Vi er på nett!"
+  },
+  "appSelectorView": {
+    "storageButton": "Lager",
+    "selectFromStorageButton": "Velg fra lager",
+    "errorMessage": "Kan ikke bruke valgt applikasjon",
+    "downloadToast": "Nedlastingsfunksjonen er for øyeblikket utilgjengelig",
+    "featureNotAvailable": "Funksjonen er ikke implementert"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Velg patcher",
+    "searchBarHint": "Søk etter patcher",
+    "doneButton": "Fullført",
+    "defaultTooltip": "Velg alle standard patcher"
+  },
+  "settingsView": {
+    "advancedSectionTitle": "Avansert",
+    "darkThemeLabel": "Mørk modus",
+    "dynamicThemeHint": "Nyt en erfaring nærmere din enhet",
+    "languageLabel": "Språk",
+    "sourcesResetDialogTitle": "Tilbakestill",
+    "orgPatchesLabel": "Patches organisasjon",
+    "sourcesPatchesLabel": "Patches kilde",
+    "contributorsLabel": "Medvirkende",
+    "contributorsHint": "En liste med bidragsytere til ReVanced"
+  }
+}

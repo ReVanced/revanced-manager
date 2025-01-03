@@ -1,0 +1,63 @@
+{
+  "okButton": "ଠିକ୍ ଅଛି",
+  "yesButton": "ହଁ",
+  "noButton": "ନାହିଁ",
+  "warning": "ଚେତାଵନୀ",
+  "navigationView": {
+    "patcherTab": "ରଫୁକାର",
+    "settingsTab": "ସେଟିଂ"
+  },
+  "homeView": {
+    "updateChangelogTitle": "ପରିବର୍ତ୍ତନ ପୋଥି",
+    "noConnection": "କୌଣସି ଇଣ୍ଟର୍‌ନେଟ୍ ସଂଯୋଗ ନାହିଁ"
+  },
+  "applicationItem": {
+    "infoButton": "ସୂଚନା"
+  },
+  "latestCommitCard": {
+    "timeagoLabel": "${time} ପୂର୍ବେ"
+  },
+  "patcherView": {
+    "widgetTitle": "ରଫୁକାର",
+    "patchButton": "ରଫୁ"
+  },
+  "appSelectorCard": {},
+  "patchSelectorCard": {},
+  "socialMediaCard": {
+    "widgetSubtitle": "ଆମେ ଅନଲାଇନ୍ ଅଛୁ!"
+  },
+  "appSelectorView": {
+    "storageButton": "ଷ୍ଟୋରେଜ୍"
+  },
+  "patchesSelectorView": {
+    "doneButton": "ହେଲା",
+    "defaultChip": "ଡିଫଲ୍ଟ",
+    "defaultTooltip": "ସମସ୍ତ ଡିଫଲ୍ଟ ରଫୁ ଚୟନ କର"
+  },
+  "patchOptionsView": {},
+  "patchItem": {},
+  "installerView": {},
+  "settingsView": {
+    "widgetTitle": "ସେଟିଂ",
+    "appearanceSectionTitle": "ରୂପ",
+    "teamSectionTitle": "ଦଳ",
+    "advancedSectionTitle": "ଵିକଶିତ",
+    "exportSectionTitle": "ଆମଦାନୀ ଓ ରପ୍ତାନି",
+    "themeModeLabel": "ଆପ୍ ଥିମ୍",
+    "systemThemeLabel": "ସିଷ୍ଟମ୍",
+    "lightThemeLabel": "ହାଲୁକା",
+    "darkThemeLabel": "ଗାଢ଼",
+    "languageLabel": "ଭାଷା",
+    "languageUpdated": "ଭାଷା ଅଦ୍ୟତନ କରାଗଲା",
+    "apiURLLabel": "APIର URL",
+    "selectApiURL": "APIର URL",
+    "aboutLabel": "ସମ୍ବନ୍ଧରେ",
+    "snackbarMessage": "କ୍ଲିପବୋର୍ଡରେ କପି କରିନିଆଗଲା"
+  },
+  "appInfoView": {
+    "widgetTitle": "ଆପ୍ ସୂଚନା",
+    "rootDialogTitle": "ତ୍ରୁଟି"
+  },
+  "contributorsView": {},
+  "installErrorDialog": {}
+}

@@ -1,0 +1,136 @@
+{
+  "okButton": "تأیید",
+  "cancelButton": "انصراف",
+  "dismissButton": "نادیده گرفتن",
+  "quitButton": "خروج",
+  "updateButton": "به‌روزرسانی",
+  "suggested": "پیشنهاد شده:${version}",
+  "yesButton": "بله",
+  "noButton": "خیر",
+  "warning": "هشدار",
+  "notice": "توجه",
+  "noShowAgain": "دوباره نشان داده نشود",
+  "add": "افزودن",
+  "remove": "حذف",
+  "showChangelogButton": "نمایش تغییرات",
+  "navigationView": {
+    "dashboardTab": "پیشخوان",
+    "patcherTab": "نصب کننده پچ",
+    "settingsTab": "تنظیمات"
+  },
+  "homeView": {
+    "refreshSuccess": "با موفقیت به روزرسانی شد",
+    "widgetTitle": "پیشخوان",
+    "updatesSubtitle": "به‌روزرسانی‌ها",
+    "noInstallations": "هیچ برنامه پچ شده ای نصب نشده",
+    "installUpdate": "ادامه نصب بروزرسانی?",
+    "updateChangelogTitle": "لیست تغییرات",
+    "downloadConsentDialogText2": "اتصال به ${url}.",
+    "downloadingMessage": "در حال بارگیری به‌روزرسانی...",
+    "downloadedMessage": "به‌روزرسانی دانلود شد",
+    "installingMessage": "درحال نصب بروزرسانی...",
+    "errorDownloadMessage": "دانلود بروزرسانی ممکن نیست",
+    "errorInstallMessage": "نصب بروزرسانی ممکن نیست",
+    "noConnection": "اتصال به اینترنت موجود نیست"
+  },
+  "applicationItem": {
+    "infoButton": "اطلاعات"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "درحال بارگذاری...",
+    "timeagoLabel": "${time} پیش"
+  },
+  "patcherView": {
+    "widgetTitle": "نصب کننده پچ",
+    "patchButton": "پچ",
+    "requiredOptionDialogText": "بعضی از تنظیمات پچ باید انتخاب شود."
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "هیچ برنامه ای یافت نشد"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "پچ ها را انتخاب کنید",
+    "widgetTitleSelected": "پچ های انتخاب شده",
+    "widgetSubtitle": "ابتدا یک برنامه را انتخاب کنید",
+    "widgetEmptySubtitle": "هیچ پچی انتخاب نشده است"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "شبکه های اجتماعی",
+    "widgetSubtitle": "ما آنلاین هستیم!"
+  },
+  "appSelectorView": {
+    "storageButton": "محل ذخیره",
+    "selectFromStorageButton": "انتخاب از محل ذخیره",
+    "errorMessage": "امکان استفاده از برنامه انتخابی وجود ندارد",
+    "downloadToast": "بارگیری عملکرد فعلا در دسترس نیست",
+    "featureNotAvailable": "قابلیت اضافه نشده است"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "پچ ها را انتخاب کنید",
+    "searchBarHint": "جست و جوی پچ ها",
+    "universalPatches": "پچ های عمومی",
+    "newPatches": "پچ های جدید",
+    "patches": "پچ ها",
+    "doneButton": "انجام شد",
+    "defaultChip": "پیشفرض",
+    "defaultTooltip": "تمام پچ های پیشفرض انتخاب شود",
+    "noneChip": "هیچکدام",
+    "noneTooltip": "حذف انتخاب همه پچ ها",
+    "noPatchesFound": "هیچ وصله ای برای این برنامه پیدا نشد"
+  },
+  "patchOptionsView": {},
+  "patchItem": {
+    "unsupportedDialogText": "انتخاب این پچ(وصله) ممکنه خطاهای در هنگام پچ کردن ایجاد کند.\n\nنسخه برنامه: ${packageVersion}\nنسخه های پشتیبان شده:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "نصب",
+    "openButton": "باز کن",
+    "notificationTitle": "ریونسد منیجر در حال پچ کردن است",
+    "notificationText": "کلیک کنید تا به نصب کننده برگردید",
+    "noExit": "نصب کننده در حال اجراست، نمی‌توان خارج شد..."
+  },
+  "settingsView": {
+    "widgetTitle": "تنظیمات",
+    "appearanceSectionTitle": "ظاهر",
+    "teamSectionTitle": "گروه",
+    "advancedSectionTitle": "پیشرفته",
+    "exportSectionTitle": "وارد کردن /خروجی گرفتن",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "یک تجربه نزدیکتر به دستگاهتان را داشته باشید",
+    "languageLabel": "زبان",
+    "sourcesResetDialogTitle": "تنظیم مجدد",
+    "apiURLLabel": "آدرس API",
+    "selectApiURL": "آدرس API",
+    "orgPatchesLabel": "سازمان پچ‌ها(وصله ها)",
+    "sourcesPatchesLabel": "منبع پچ ها",
+    "contributorsLabel": "مشارکت کنندگان",
+    "contributorsHint": "لیست مشارکت‌کنندگان ریونسد",
+    "aboutLabel": "درباره ما",
+    "snackbarMessage": "در کلیپ‌بورد کپی شد",
+    "restartAppForChanges": "راه‌اندازی مجدد برنامه برای اعمال تغییرات",
+    "deleteTempDirLabel": "حذف فایل های موقت",
+    "deleteTempDirHint": "حذف فایل‌های بی استفاده",
+    "deletedTempDir": "فایل های موقت حذف شدند",
+    "deletedLogs": "لاگ ها حذف شدند",
+    "jsonSelectorErrorMessage": "فایل JSON انتخاب شده قابل استفاده نیست"
+  },
+  "appInfoView": {
+    "widgetTitle": "اطلاعات برنامه",
+    "openButton": "بازکردن",
+    "installButton": "نصب",
+    "uninstallButton": "حذف نصب",
+    "rootDialogTitle": "خطا",
+    "rootDialogText": "برنامه با مجوز کاربر ویژه نصب شده، ولی اکنون برنامه هیچ مجوزی ندارد. لطفا ابتدا مجوز کاربر ویژه را اعطا کنید.",
+    "packageNameLabel": "نام بسته",
+    "installTypeLabel": "نوع نصب",
+    "patchedDateLabel": "تاریخ وصله شدن",
+    "appliedPatchesLabel": "وصله های اعمال شده",
+    "patchedDateHint": "${date} در ${time}",
+    "appliedPatchesHint": "${quantity} وصله اعمال شده",
+    "updateNotImplemented": "این ویژگی هنوز تکمیل نشده است"
+  },
+  "contributorsView": {
+    "widgetTitle": "مشارکت کنندگان"
+  },
+  "installErrorDialog": {}
+}

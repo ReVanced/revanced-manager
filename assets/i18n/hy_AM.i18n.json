@@ -1,0 +1,73 @@
+{
+  "okButton": "Այո",
+  "cancelButton": "Չեղարկում",
+  "yesButton": "Այո՛",
+  "noButton": "Ոչ",
+  "warning": "Զգուշացում",
+  "navigationView": {
+    "dashboardTab": "Վահանակ",
+    "patcherTab": "Կարկատել",
+    "settingsTab": "Կարգավորումներ"
+  },
+  "homeView": {
+    "widgetTitle": "Վահանակ",
+    "updatesSubtitle": "Թարմացումներ",
+    "updateChangelogTitle": "Փոփոխությունների օրագիր",
+    "downloadingMessage": "Թարմացումը ներբեռնվում է...",
+    "downloadedMessage": "Թարմացումը ներբեռնվեց",
+    "installingMessage": "Թարմացումը տեղադրվում է...",
+    "errorDownloadMessage": "Չհաջողվեց ներբեռնել թարմացումը",
+    "errorInstallMessage": "Չհաջողվեց տեղադրել թարմացումը",
+    "noConnection": "Ինտերնետ կապ չկա"
+  },
+  "applicationItem": {
+    "infoButton": "Ինֆո"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Բեռնվում է..."
+  },
+  "patcherView": {
+    "widgetTitle": "Կարկատել",
+    "patchButton": "Կարկատել"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Դիմումներ չեն գտնվել"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Ընտրեք patches",
+    "widgetTitleSelected": "Ընտրված patches",
+    "widgetSubtitle": "Նախ ընտրեք ծրագիր",
+    "widgetEmptySubtitle": "Ընտրված չեն patches"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Սոցիալներ",
+    "widgetSubtitle": "Մենք առցանց ենք!"
+  },
+  "appSelectorView": {
+    "storageButton": "Պահեստ",
+    "errorMessage": "Հնարավոր չէ օգտագործել ընտրված ծրագիրը"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Ընտրեք patches",
+    "searchBarHint": "Վերջ",
+    "doneButton": "Վերջ"
+  },
+  "patchOptionsView": {},
+  "patchItem": {},
+  "installerView": {
+    "installButton": "Տեղադրվել",
+    "openButton": "Բաց"
+  },
+  "settingsView": {
+    "widgetTitle": "Կարգավորումներ",
+    "languageLabel": "Լեզուն",
+    "aboutLabel": "Ծրագրի մասին"
+  },
+  "appInfoView": {
+    "openButton": "Բաց",
+    "installButton": "Տեղադրվել",
+    "updateNotImplemented": "Ներկայումս այս ֆունկցիան հասանելի չէ"
+  },
+  "contributorsView": {},
+  "installErrorDialog": {}
+}

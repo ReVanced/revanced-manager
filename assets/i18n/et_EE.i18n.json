@@ -1,0 +1,156 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Tühista",
+  "dismissButton": "Loobu",
+  "quitButton": "Välju",
+  "updateButton": "Värskenda",
+  "suggested": "Soovitatud: ${version}",
+  "yesButton": "Jah",
+  "noButton": "Ei",
+  "warning": "Hoiatus",
+  "notice": "Teade",
+  "noShowAgain": "Ära seda enam näita",
+  "add": "Lisa",
+  "remove": "Eemalda",
+  "showChangelogButton": "Näita muutuste nimekirja",
+  "showUpdateButton": "Näita värskendust",
+  "navigationView": {
+    "dashboardTab": "Töölaud",
+    "patcherTab": "Värskendaja",
+    "settingsTab": "Sätted"
+  },
+  "homeView": {
+    "refreshSuccess": "Edukalt värskendatud",
+    "widgetTitle": "Töölaud",
+    "updatesSubtitle": "Värskendused",
+    "changeLaterSubtitle": "Saate seda hiljem sätetest muuta. ",
+    "noInstallations": "Ühtegi parandatud rakendust pole installitud",
+    "installUpdate": "Jätka värskenduse installimist?",
+    "updateSheetTitle": "Värskenda ReVanced Manager",
+    "updateDialogTitle": "Värskendus on saadaval",
+    "updatePatchesSheetTitle": "Värskenda  ReVanced kräkke",
+    "updateChangelogTitle": "Muudatuste logi",
+    "updateDialogText": "Uus värskendus on saadaval ${file}. \n\nHetkel paigaldatud versioon on ${version}. ",
+    "downloadConsentDialogTitle": "Lae alla vajalikud failid? ",
+    "downloadConsentDialogText": "ReVanced Manager peab alla laadima vajalikud failid et töötada. ",
+    "downloadConsentDialogText2": "Siia vajutades liigud ${url}. ",
+    "downloadingMessage": "Värskenduse alla laadimine...",
+    "downloadedMessage": "Värskendus alla laetud",
+    "installingMessage": "Värskenduse installimine...",
+    "errorDownloadMessage": "Värskenduse alla laadimine nurjus",
+    "errorInstallMessage": "Värskenduse installimine nurjus",
+    "noConnection": "Internetiühendus puudub"
+  },
+  "applicationItem": {
+    "infoButton": "Info"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Laadimine...",
+    "timeagoLabel": "${time} tagasi"
+  },
+  "patcherView": {
+    "widgetTitle": "Parandaja",
+    "patchButton": "Parandus",
+    "requiredOptionDialogText": "Mõned paranduste sätted on vaja valida. "
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Vali rakendus",
+    "widgetTitleSelected": "Valitud rakendus",
+    "widgetSubtitle": "Rakendus valimata",
+    "noAppsLabel": "Ühtegi rakendust ei tuvastatud",
+    "anyVersion": "Ükskõik mis versioon"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Valige parandused",
+    "widgetTitleSelected": "Valitud parandused",
+    "widgetSubtitle": "Valige esmalt rakendus",
+    "widgetEmptySubtitle": "Ühtegi parandust pole valitud"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sotsiaalmeediad",
+    "widgetSubtitle": "Oleme võrgus!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Vali rakendus",
+    "searchBarHint": "Otsi rakendust",
+    "storageButton": "Salvestusruum",
+    "selectFromStorageButton": "Valige salvestusruumist",
+    "errorMessage": "Ei ole võimalik kasutada valitud rakendust",
+    "downloadToast": "Alla laadimise funktsioon ei ole hetkel saadaval",
+    "requireSuggestedAppVersionDialogText": "Rakenduse versioon mille olete valinud ei ühti soovitatud versiooniga, mis võib põhjustada ootamatuid vigu. Palun kasutage soovitatud versiooni.\n\nValitud versioon: ${selected}\nSoovitatud versioon: ${suggested}\n\nSelleks, et ikkagi jätkata lülitage sätetest välja \"Nõua soovitatud versiooni\".",
+    "featureNotAvailable": "Funktsioon ei ole implementeeritud"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Valige parandused",
+    "searchBarHint": "Otsi parandustest",
+    "universalPatches": "Universaalsed parandused",
+    "newPatches": "Uued parandused",
+    "patches": "Parandused",
+    "doneButton": "Valmis",
+    "defaultChip": "Vaikimisi",
+    "defaultTooltip": "Vali kõik vaikimisi parandused",
+    "noneChip": "Mitte ükski",
+    "noneTooltip": "Eemalda valikust kõik parandused",
+    "loadPatchesSelection": "Impordi paranduste valik",
+    "noPatchesFound": "Valitud rakenduse jaoks ei leitud mode"
+  },
+  "patchOptionsView": {},
+  "patchItem": {
+    "unsupportedDialogText": "Selle paiga valimine võib tekitada paigatõrke.\n\nRakenduse versioon: ${packageVersion}\nToetatud versioonid: ${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "Paigalda",
+    "openButton": "Ava",
+    "notificationTitle": "ReVanced Manager on lappimine",
+    "notificationText": "Puudutage Installeri juurde naasmiseks",
+    "noExit": "Installer töötab endiselt, ei saa väljuda..."
+  },
+  "settingsView": {
+    "widgetTitle": "Sätted",
+    "appearanceSectionTitle": "Välimus",
+    "teamSectionTitle": "Meeskond",
+    "advancedSectionTitle": "Täpsemad seaded",
+    "exportSectionTitle": "Import & eksport",
+    "dynamicThemeHint": "Nautige kogemust oma seadmele lähemal",
+    "languageLabel": "Keel",
+    "sourcesResetDialogTitle": "Lähtesta",
+    "apiURLLabel": "API URL",
+    "selectApiURL": "API URL",
+    "orgPatchesLabel": "Plaastrite organisatsioon",
+    "sourcesPatchesLabel": "Plaastrite allikas",
+    "contributorsLabel": "Panustajad",
+    "contributorsHint": "Revancedi kaasautorite nimekiri",
+    "aboutLabel": "Teave",
+    "snackbarMessage": "Lõikelauale kopeeritud",
+    "restartAppForChanges": "Muudatuste rakendamiseks taaskäivitage rakendus",
+    "deleteTempDirLabel": "Kustuta ajutised failid",
+    "deleteTempDirHint": "Kustutage kasutamata ajutised failid",
+    "deletedTempDir": "Ajutised failid kustutatud",
+    "deletedLogs": "Logid kustutatud",
+    "exportKeystoreLabel": "Ekspordi võtmehoius",
+    "exportedKeystore": "Võtmehoius eksporditud",
+    "noKeystoreExportFileFound": "Puudub võtmesalv mida eksportida",
+    "importKeystoreLabel": "Impordi võtmehoius",
+    "importedKeystore": "Võtmehoius imporditud",
+    "jsonSelectorErrorMessage": "Valitud JSON-faili kasutamine nurjus"
+  },
+  "appInfoView": {
+    "widgetTitle": "Rakenduse teave",
+    "openButton": "Ava",
+    "installButton": "Paigalda",
+    "uninstallButton": "Desinstalli",
+    "rootDialogTitle": "Viga",
+    "rootDialogText": "Rakendus installiti superkasutaja õigustega, kuid hetkel pole ReVanced halduril õigusi.\nPalun lubage esmalt superkasutaja õigused.",
+    "packageNameLabel": "Pakendi nimi",
+    "installTypeLabel": "Paigaldamise tüüp",
+    "patchedDateLabel": "Parandamise kuupäev",
+    "appliedPatchesLabel": "Rakendatud parandused",
+    "patchedDateHint": "${date} kell ${time}",
+    "appliedPatchesHint": "${quantity} rakendatud parandus/st (1= parandus, 2+= parandust)",
+    "updateNotImplemented": "Seda funktsiooni pole veel ellu viidud"
+  },
+  "contributorsView": {
+    "widgetTitle": "Panustajad"
+  },
+  "installErrorDialog": {}
+}

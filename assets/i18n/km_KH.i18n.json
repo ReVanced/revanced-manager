@@ -1,0 +1,52 @@
+{
+  "okButton": "យល់ព្រម",
+  "cancelButton": "បោះបង់",
+  "dismissButton": "ទាត់ចោល",
+  "quitButton": "ចេញ",
+  "updateButton": "អាប់ដេត",
+  "suggested": "បានណែនាំ៖ ${version}",
+  "yesButton": "បាទ/ចាស",
+  "noButton": "ទេ",
+  "warning": "ការព្រមាន",
+  "notice": "សម្គាល់",
+  "noShowAgain": "កុំបង្ហាញដូច្នេះម្ដងទៀត",
+  "add": "បន្ថែម",
+  "remove": "ដកចេញ",
+  "showChangelogButton": "បង្ហាញកំណត់ហេតុផ្លាស់ប្ដូរ",
+  "showUpdateButton": "បង្ហាញបច្ចុប្បន្នភាព",
+  "navigationView": {
+    "dashboardTab": "ផ្ទាំងគ្រប់គ្រង",
+    "patcherTab": "ផាត់ឆើ",
+    "settingsTab": "ការកំណត់"
+  },
+  "homeView": {
+    "refreshSuccess": "បានរីហ្វ្រែសដោយជោគជ័យ",
+    "widgetTitle": "ផ្ទាំងគ្រប់គ្រង",
+    "updatesSubtitle": "អាប់ដេត",
+    "changeLaterSubtitle": "អ្នកអាចផ្លាស់ប្តូរដូច្នេះនៅក្នុងការកំណត់នៅពេលក្រោយ។",
+    "installUpdate": "បន្តដំឡើងបច្ចុប្បន្នភាពឬ?",
+    "updateSheetTitle": "អាប់ដេត ReVanced Manager",
+    "updateDialogTitle": "មានបច្ចុប្បន្នភាពថ្មិ",
+    "updateChangelogTitle": "កំណត់ហេតុផ្លាស់ប្ដូរ"
+  },
+  "applicationItem": {},
+  "latestCommitCard": {},
+  "patcherView": {
+    "widgetTitle": "ផាត់ឆើ"
+  },
+  "appSelectorCard": {},
+  "patchSelectorCard": {},
+  "socialMediaCard": {},
+  "appSelectorView": {},
+  "patchesSelectorView": {},
+  "patchOptionsView": {},
+  "patchItem": {},
+  "installerView": {},
+  "settingsView": {
+    "widgetTitle": "ការកំណត់",
+    "sourcesResetDialogTitle": "កំណត់ឡើងវិញ"
+  },
+  "appInfoView": {},
+  "contributorsView": {},
+  "installErrorDialog": {}
+}

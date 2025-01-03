@@ -1,0 +1,161 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Zrušiť",
+  "quitButton": "Ukončiť",
+  "updateButton": "Aktualizovať",
+  "suggested": "Navrhované: ${version}",
+  "yesButton": "Áno",
+  "noButton": "Nie",
+  "warning": "Upozornenie",
+  "notice": "Oznámenie",
+  "noShowAgain": "Nabudúce nezobrazovať",
+  "add": "Pridať",
+  "remove": "Odstrániť",
+  "navigationView": {
+    "dashboardTab": "Hlavný panel",
+    "patcherTab": "Zaplátač",
+    "settingsTab": "Nastavenia"
+  },
+  "homeView": {
+    "refreshSuccess": "Úspešne obnovené",
+    "widgetTitle": "Hlavný panel",
+    "updatesSubtitle": "Aktualizácie",
+    "noInstallations": "Zaplátané aplikácie nie sú nainštalované",
+    "installUpdate": "Pokračovať v inštalácii aktualizácie?",
+    "updatePatchesSheetTitle": "Aktualizovať ReVanced záplaty",
+    "updateChangelogTitle": "Zoznam zmien",
+    "downloadConsentDialogText2": "Tým sa pripojíte na ${url}.",
+    "downloadingMessage": "Sťahovanie aktualizácie...",
+    "downloadedMessage": "Aktualizácia bola stiahnutá",
+    "installingMessage": "Inštalujú sa aktualizácie...",
+    "errorDownloadMessage": "Nepodarilo sa stiahnuť aktualizáciu",
+    "errorInstallMessage": "Nepodarilo sa nainštalovať aktualizáciu",
+    "noConnection": "Žiadne pripojenie na internet"
+  },
+  "applicationItem": {
+    "infoButton": "Informácie"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Načítava sa...",
+    "timeagoLabel": "Pred ${time}"
+  },
+  "patcherView": {
+    "widgetTitle": "Zaplátač",
+    "patchButton": "Záplata"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Nebola nájdená žiadna aplikácia"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Vyberte záplaty",
+    "widgetTitleSelected": "Zvolené záplaty",
+    "widgetSubtitle": "Najskôr vyberte aplikáciu",
+    "widgetEmptySubtitle": "Nie sú vybrané žiadne záplaty"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sociálne siete",
+    "widgetSubtitle": "Sme opäť online!"
+  },
+  "appSelectorView": {
+    "storageButton": "Úložisko",
+    "selectFromStorageButton": "Vybrať z úložiska",
+    "errorMessage": "Nie je možné použiť vybranú aplikáciu",
+    "downloadToast": "Funkcia sťahovania zatiaľ nie je k dispozícii",
+    "featureNotAvailable": "Funkcia nie je implementovaná"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Vyberte záplaty",
+    "searchBarHint": "Vyhľadajte záplaty",
+    "universalPatches": "Univerzálne záplaty",
+    "doneButton": "Hotovo",
+    "defaultChip": "Predvolené",
+    "defaultTooltip": "Vybrať všetky predvolené záplaty",
+    "noneChip": "Žiadne",
+    "noneTooltip": "Zrušiť výber všetkých odporúčaných záplat",
+    "noPatchesFound": "Neboli nájdené žiadne záplaty pre zvolenú aplikáciu"
+  },
+  "patchOptionsView": {
+    "saveOptions": "Uložiť",
+    "unsupportedOption": "Táto možnosť nie je podporovaná",
+    "requiredOptionNull": "Je potrebné nastaviť nasledujúce možnosti:\n\n${options}"
+  },
+  "patchItem": {
+    "unsupportedDialogText": "Výber tejto záplaty môže spôsobiť chyby.\n\nVerzia aplikácie: ${packageVersion}\nPodporované verzie:\n${supportedVersions}",
+    "unsupportedRequiredOption": "Táto záplata obsahuje požadovanú možnosť, ktorú táto apka nepodporuje",
+    "patchesChangeWarningDialogButton": "Použiť predvolený výber"
+  },
+  "installerView": {
+    "installType": "Vyberte typ inštalácie",
+    "installButton": "Inštalovať",
+    "installRootType": "Pripojiť",
+    "pressBackAgain": "Opätovným stlačením tlačidla späť zrušíte",
+    "openButton": "Otvoriť",
+    "notificationTitle": "ReVanced manažér zapláta",
+    "notificationText": "Stlačte pre vrátenie na inštalátor",
+    "exportApkButtonTooltip": "Exportovať zaplátané APK",
+    "exportLogButtonTooltip": "Exportovať záznam",
+    "screenshotDetected": "Bola zistená snímka obrazovky. Ak sa snažíte zdieľať záznam, prosím, zdieľajte textovú kópiu namiesto nej.\n\nSkopírovať záznam do schránky?",
+    "copiedToClipboard": "Záznam skopírovaný do schránky",
+    "noExit": "Inštalátor je stále spustený, nedá sa ukončiť..."
+  },
+  "settingsView": {
+    "widgetTitle": "Nastavenia",
+    "appearanceSectionTitle": "Vzhľad",
+    "teamSectionTitle": "Tím",
+    "advancedSectionTitle": "Pokročilé",
+    "exportSectionTitle": "Import a export",
+    "themeModeLabel": "Motív aplikácie",
+    "systemThemeLabel": "Systém",
+    "lightThemeLabel": "Svetlý",
+    "darkThemeLabel": "Tmavý režim",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Užite si tému bližíe prispôsobenú vášmu zariadeniu",
+    "languageLabel": "Jazyk",
+    "sourcesResetDialogTitle": "Resetovať",
+    "apiURLLabel": "URL API",
+    "selectApiURL": "URL API",
+    "orgPatchesLabel": "Autor záplaty",
+    "sourcesPatchesLabel": "Zdroj záplaty",
+    "contributorsLabel": "Prispievatelia",
+    "contributorsHint": "Zoznam prispievateľov projektu ReVanced",
+    "disablePatchesSelectionWarningText": "Chystáte sa zakázať zmenu výberu záplat. \nPredvolený výber záplat bude obnovený.\n\nZakázať aj napriek tomu?",
+    "autoUpdatePatchesLabel": "Automaticky aktualizovať záplaty",
+    "aboutLabel": "Informácie",
+    "snackbarMessage": "Skopírované do schránky",
+    "restartAppForChanges": "Ak chcete použiť zmeny, reštartujte aplikáciu",
+    "deleteTempDirLabel": "Odstrániť dočasné súbory",
+    "deleteTempDirHint": "Odstrániť nepoužívané dočasné súbory",
+    "deletedTempDir": "Dočasné súbory odstránené",
+    "resetStoredPatchesDialogText": "Obnoví sa predvolený výber záplat.",
+    "deletedLogs": "Záznamy odstránené",
+    "regenerateKeystoreLabel": "Vytvoriť nové úložisko kľúčov",
+    "regenerateKeystoreDialogTitle": "Vytvoriť nové úložisko kľúčov?",
+    "regeneratedKeystore": "Vygenerované nové úložisko kľúčov",
+    "exportKeystoreLabel": "Exportovať úložisko kľúčov",
+    "exportedKeystore": "Úložisko kľúčov exportované",
+    "noKeystoreExportFileFound": "Žiadne úložisko kľúčov na export",
+    "importKeystoreLabel": "Importovať úložisko kľúčov",
+    "importedKeystore": "Úložisko kľúčov importované",
+    "jsonSelectorErrorMessage": "Nie je možné použiť vybraný JSON súbor"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informácie o aplikácii",
+    "openButton": "Otvoriť",
+    "installButton": "Inštalovať",
+    "uninstallButton": "Odinštalovať",
+    "rootDialogTitle": "Chyba",
+    "rootDialogText": "Aplikácia bola nainštalovaná s oprávneniami superpoužívateľa, ale v súčasnosti ReVanced Manažér nemá žiadne oprávnenia. Najskôr mu udeľte oprávnenia superužívateľa.",
+    "packageNameLabel": "Názov balíka",
+    "installTypeLabel": "Spôsob inštalácie",
+    "mountTypeLabel": "Pripojiť",
+    "patchedDateLabel": "Dátum záplaty",
+    "appliedPatchesLabel": "Použité záplaty",
+    "patchedDateHint": "${date} o ${time}",
+    "appliedPatchesHint": "${quantity} použitých záplat",
+    "updateNotImplemented": "Táto funkcia ešte nebola implementovaná"
+  },
+  "contributorsView": {
+    "widgetTitle": "Prispievatelia"
+  },
+  "installErrorDialog": {}
+}
