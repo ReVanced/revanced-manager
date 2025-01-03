@@ -11,7 +11,8 @@ The following pages will guide you through using ReVanced Manager to patch apps.
 5. Select the patches you want to apply
 6. Tap the Patch button
 7. Tap on the **Install** button
-   > **Note**: If you are rooted, you can mount the patched app on top of the original app.[^3]
+   > [!Note]
+   > If you are rooted, you can mount the patched app on top of the original app.[^3]
    > Optionally, you may export the patched app to storage using the options in the top right corner.
 
 [^1]: Non-root users may be prompted to select an APK from storage, in which case you have to source the APK file yourself. ReVanced does not provide any APK files.
