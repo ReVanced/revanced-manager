@@ -22,7 +22,6 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
@@ -37,11 +36,14 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import kotlinx.collections.immutable.*
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-@Stable
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.ViewModelParams) : ViewModel(), KoinComponent {
+class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.ViewModelParams) :
+    ViewModel(), KoinComponent {
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
@@ -113,6 +115,22 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     val defaultSelectionCount = defaultPatchSelection.map { selection ->
         selection.values.sumOf { it.size }
     }
+
+    // This is for the required options screen.
+    private val requiredOptsPatchesDeferred = viewModelScope.async(start = CoroutineStart.LAZY) {
+        bundlesFlow.first().map { bundle ->
+            bundle to bundle.all.filter { patch ->
+                val opts by lazy {
+                    getOptions(bundle.uid, patch).orEmpty()
+                }
+                isSelected(
+                    bundle.uid,
+                    patch
+                ) && patch.options?.any { it.required && it.default == null && it.key !in opts } ?: false
+            }.toList()
+        }.filter { (_, patches) -> patches.isNotEmpty() }
+    }
+    val requiredOptsPatches = flow { emit(requiredOptsPatchesDeferred.await()) }
 
     fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
         bundle.patchSequence(allowIncompatiblePatches).any { patch ->
