@@ -1,10 +1,13 @@
 package app.revanced.manager
 
+import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -46,11 +49,21 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val vm: MainViewModel = getActivityViewModel()
-        vm.importLegacySettings(this)
 
         setContent {
+            val launcher = rememberLauncherForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+                onResult = vm::applyLegacySettings
+            )
             val theme by vm.prefs.theme.getAsState()
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
+
+            EventEffect(vm.legacyImportActivityFlow) {
+                try {
+                    launcher.launch(it)
+                } catch (_: ActivityNotFoundException) {
+                }
+            }
 
             ReVancedManagerTheme(
                 darkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK,
