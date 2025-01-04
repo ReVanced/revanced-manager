@@ -16,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AlertDialogExtended
@@ -218,7 +219,7 @@ fun ImportBundleStep(
                         ),
                         headlineContent = { Text(stringResource(R.string.auto_update)) },
                         leadingContent = {
-                            CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                                 HapticCheckbox(
                                     checked = autoUpdate,
                                     onCheckedChange = {
