@@ -12,11 +12,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
+import app.revanced.manager.util.transparentListItemColors
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AvailableUpdateDialog(
     onDismiss: () -> Unit,
@@ -70,10 +71,11 @@ fun AvailableUpdateDialog(
                         Text(stringResource(R.string.never_show_again))
                     },
                     leadingContent = {
-                        CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                        CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                             HapticCheckbox(checked = dontShowAgain, onCheckedChange = { dontShowAgain = it })
                         }
-                    }
+                    },
+                    colors = transparentListItemColors
                 )
             }
         },
