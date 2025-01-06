@@ -222,7 +222,7 @@
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
-    <string name="search_patches">Patch name</string>
+    <string name="search_patches">Search patches</string>
     <string name="app_not_supported">This patch is not compatible with the selected app version (%1$s).\n\nIt only supports the following version(s): %2$s.</string>
     <string name="continue_with_version">Continue with this version?</string>
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>

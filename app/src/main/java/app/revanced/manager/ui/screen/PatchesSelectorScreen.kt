@@ -1,5 +1,17 @@
 package app.revanced.manager.ui.screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
@@ -8,10 +20,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,8 +34,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +50,6 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SafeguardDialog
-import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
@@ -63,8 +79,11 @@ fun PatchesSelectorScreen(
         bundles.size
     }
     val composableScope = rememberCoroutineScope()
-    var search: String? by rememberSaveable {
-        mutableStateOf(null)
+    val (query, setQuery) = rememberSaveable {
+        mutableStateOf("")
+    }
+    val (searchExpanded, setSearchExpanded) = rememberSaveable {
+        mutableStateOf(false)
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val showSaveButton by remember {
@@ -222,102 +241,171 @@ fun PatchesSelectorScreen(
         }
     }
 
-    search?.let { query ->
-        SearchView(
-            query = query,
-            onQueryChange = { search = it },
-            onActiveChange = { if (!it) search = null },
-            placeholder = { Text(stringResource(R.string.search_patches)) }
-        ) {
-            val bundle = bundles[pagerState.currentPage]
-
-            LazyColumnWithScrollbar(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                fun List<PatchInfo>.searched() = filter {
-                    it.name.contains(query, true)
-                }
-
-                patchList(
-                    uid = bundle.uid,
-                    patches = bundle.supported.searched(),
-                    filterFlag = SHOW_SUPPORTED,
-                    supported = true
-                )
-                patchList(
-                    uid = bundle.uid,
-                    patches = bundle.universal.searched(),
-                    filterFlag = SHOW_UNIVERSAL,
-                    supported = true
-                ) {
-                    ListHeader(
-                        title = stringResource(R.string.universal_patches),
-                    )
-                }
-
-                if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
-                patchList(
-                    uid = bundle.uid,
-                    patches = bundle.unsupported.searched(),
-                    filterFlag = SHOW_UNSUPPORTED,
-                    supported = true
-                ) {
-                    ListHeader(
-                        title = stringResource(R.string.unsupported_patches),
-                        onHelpClick = { showUnsupportedPatchesDialog = true }
-                    )
-                }
-            }
-        }
-    }
-
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(
-                    R.string.patches_selected,
-                    selectedPatchCount,
-                    availablePatchCount
-                ),
-                onBackClick = onBackClick,
-                actions = {
-                    IconButton(onClick = vm::reset) {
-                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+            app.revanced.manager.ui.component.SearchBar(
+                query = query,
+                onQueryChange = setQuery,
+                expanded = searchExpanded,
+                onExpandedChange = setSearchExpanded,
+                placeholder = {
+                    Text(stringResource(R.string.search_patches))
+                },
+                leadingIcon = {
+                    val rotation = remember { Animatable(0f) }
+                    LaunchedEffect(searchExpanded) {
+                        val direction = if (searchExpanded) 360f else 0f
+
+                        rotation.animateTo(
+                            targetValue = direction,
+                            animationSpec = tween(durationMillis = 400, easing = EaseInOut)
+                        )
                     }
-                    IconButton(onClick = { showBottomSheet = true }) {
-                        Icon(Icons.Outlined.FilterList, stringResource(R.string.more))
-                    }
-                    IconButton(
-                        onClick = {
-                            search = ""
+                    IconButton(onClick = {
+                        if (searchExpanded) {
+                            setSearchExpanded(false)
+                        } else {
+                            onBackClick()
                         }
-                    ) {
-                        Icon(Icons.Outlined.Search, stringResource(R.string.search))
+                    }) {
+                        Icon(
+                            modifier = Modifier.rotate(rotation.value),
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                },
+                trailingIcon = {
+                    AnimatedContent(
+                        targetState = searchExpanded,
+                        label = "Filter/Clear",
+                        transitionSpec = { fadeIn() togetherWith fadeOut() }
+                    ) { searchExpanded ->
+                        if (searchExpanded) {
+                            IconButton(onClick = { setQuery("") }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = stringResource(R.string.close)
+                                )
+                            }
+                        } else {
+                            IconButton(onClick = { showBottomSheet = true }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.FilterList,
+                                    contentDescription = stringResource(R.string.more)
+                                )
+                            }
+                        }
                     }
                 }
-            )
+            ) {
+                val bundle = bundles[pagerState.currentPage]
+
+                LazyColumnWithScrollbar(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    fun List<PatchInfo>.searched() = filter {
+                        it.name.contains(query, true)
+                    }
+
+                    patchList(
+                        uid = bundle.uid,
+                        patches = bundle.supported.searched(),
+                        filterFlag = SHOW_SUPPORTED,
+                        supported = true
+                    )
+                    patchList(
+                        uid = bundle.uid,
+                        patches = bundle.universal.searched(),
+                        filterFlag = SHOW_UNIVERSAL,
+                        supported = true
+                    ) {
+                        ListHeader(
+                            title = stringResource(R.string.universal_patches),
+                        )
+                    }
+
+                    if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
+                    patchList(
+                        uid = bundle.uid,
+                        patches = bundle.unsupported.searched(),
+                        filterFlag = SHOW_UNSUPPORTED,
+                        supported = true
+                    ) {
+                        ListHeader(
+                            title = stringResource(R.string.unsupported_patches),
+                            onHelpClick = { showUnsupportedPatchesDialog = true }
+                        )
+                    }
+                }
+            }
+        },
+        bottomBar = {
+            AnimatedVisibility(
+                visible = !searchExpanded,
+                enter = expandIn(expandFrom = Alignment.BottomCenter),
+                exit = shrinkOut(shrinkTowards = Alignment.BottomCenter)
+            ) {
+                Surface(tonalElevation = 3.dp) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .windowInsetsPadding(WindowInsets.navigationBars),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        LinearProgressIndicator(
+                            modifier = Modifier.fillMaxWidth(),
+                            progress = {
+                                if (availablePatchCount == 0) return@LinearProgressIndicator 0f
+
+                                selectedPatchCount.toFloat() / availablePatchCount.toFloat()
+                            }
+                        )
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(bottom = 8.dp),
+                            text = stringResource(R.string.patches_selected, selectedPatchCount, availablePatchCount),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+            }
         },
         floatingActionButton = {
             if (!showSaveButton) return@Scaffold
 
-            HapticExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.save)) },
-                icon = {
-                    Icon(
-                        Icons.Outlined.Save,
-                        stringResource(R.string.save)
+            AnimatedVisibility(
+                visible = !searchExpanded,
+                enter = scaleIn(),
+                exit = scaleOut()
+            ) {
+                Column(horizontalAlignment = Alignment.End) {
+                    SmallFloatingActionButton(
+                        onClick = vm::reset,
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    ) {
+                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                    }
+                    HapticExtendedFloatingActionButton(
+                        text = { Text(stringResource(R.string.save)) },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Save,
+                                contentDescription = stringResource(R.string.save)
+                            )
+                        },
+                        expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp ?: true,
+                        onClick = {
+                            onSave(vm.getCustomSelection(), vm.getOptions())
+                        }
                     )
-                },
-                expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp
-                    ?: true,
-                onClick = {
-                    onSave(vm.getCustomSelection(), vm.getOptions())
                 }
-            )
+            }
         }
     ) { paddingValues ->
         Column(
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
