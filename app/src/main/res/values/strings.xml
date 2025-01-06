@@ -164,6 +164,7 @@
     <string name="warning">Warning</string>
     <string name="add">Add</string>
     <string name="close">Close</string>
+    <string name="clear">Clear</string>
     <string name="system">System</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>

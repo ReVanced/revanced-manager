@@ -277,10 +277,13 @@ fun PatchesSelectorScreen(
                         transitionSpec = { fadeIn() togetherWith fadeOut() }
                     ) { searchExpanded ->
                         if (searchExpanded) {
-                            IconButton(onClick = { setQuery("") }) {
+                            IconButton(
+                                onClick = { setQuery("") },
+                                enabled = query.isNotEmpty()
+                            ) {
                                 Icon(
                                     imageVector = Icons.Filled.Close,
-                                    contentDescription = stringResource(R.string.close)
+                                    contentDescription = stringResource(R.string.clear)
                                 )
                             }
                         } else {
