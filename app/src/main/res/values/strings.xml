@@ -210,7 +210,7 @@
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
-    <string name="unsupported_patches">Unsupported patches</string>
+    <string name="unsupported_patches">Incompatible patches</string>
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
@@ -219,8 +219,8 @@
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou need to turn on \"Allow changing patch selection\" in the advanced settings before toggling patches.</string>
     <string name="universal_patch_warning_description">Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.\n\nThis warning can be disabled in the advanced settings.</string>
-    <string name="supported">Supported</string>
-    <string name="universal">Universal</string>
+    <string name="supported">This version</string>
+    <string name="universal">Any app</string>
     <string name="unsupported">Unsupported</string>
     <string name="search_patches">Search patches</string>
     <string name="app_not_supported">This patch is not compatible with the selected app version (%1$s).\n\nIt only supports the following version(s): %2$s.</string>

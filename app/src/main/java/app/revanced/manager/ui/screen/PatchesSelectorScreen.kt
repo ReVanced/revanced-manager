@@ -48,6 +48,7 @@ import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.CheckedFilterChip
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
@@ -57,14 +58,13 @@ import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -127,26 +127,21 @@ fun PatchesSelectorScreen(
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                Row(
+                FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    FilterChip(
+                    CheckedFilterChip(
                         selected = vm.filter and SHOW_SUPPORTED != 0,
                         onClick = { vm.toggleFlag(SHOW_SUPPORTED) },
                         label = { Text(stringResource(R.string.supported)) }
                     )
 
-                    FilterChip(
+                    CheckedFilterChip(
                         selected = vm.filter and SHOW_UNIVERSAL != 0,
                         onClick = { vm.toggleFlag(SHOW_UNIVERSAL) },
                         label = { Text(stringResource(R.string.universal)) },
-                    )
-
-                    FilterChip(
-                        selected = vm.filter and SHOW_UNSUPPORTED != 0,
-                        onClick = { vm.toggleFlag(SHOW_UNSUPPORTED) },
-                        label = { Text(stringResource(R.string.unsupported)) },
                     )
                 }
             }
@@ -194,11 +189,11 @@ fun PatchesSelectorScreen(
     fun LazyListScope.patchList(
         uid: Int,
         patches: List<PatchInfo>,
-        filterFlag: Int,
+        visible: Boolean,
         supported: Boolean,
         header: (@Composable () -> Unit)? = null
     ) {
-        if (patches.isNotEmpty() && (vm.filter and filterFlag) != 0 || vm.filter == 0) {
+        if (patches.isNotEmpty() && visible) {
             header?.let {
                 item {
                     it()
@@ -311,13 +306,13 @@ fun PatchesSelectorScreen(
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.supported.searched(),
-                        filterFlag = SHOW_SUPPORTED,
+                        visible = true,
                         supported = true
                     )
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.universal.searched(),
-                        filterFlag = SHOW_UNIVERSAL,
+                        visible = vm.filter and SHOW_UNIVERSAL != 0,
                         supported = true
                     ) {
                         ListHeader(
@@ -325,12 +320,11 @@ fun PatchesSelectorScreen(
                         )
                     }
 
-                    if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.unsupported.searched(),
-                        filterFlag = SHOW_UNSUPPORTED,
-                        supported = true
+                        visible = vm.filter and SHOW_SUPPORTED == 0,
+                        supported = vm.allowIncompatiblePatches
                     ) {
                         ListHeader(
                             title = stringResource(R.string.unsupported_patches),
@@ -447,13 +441,13 @@ fun PatchesSelectorScreen(
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.supported,
-                            filterFlag = SHOW_SUPPORTED,
+                            visible = true,
                             supported = true
                         )
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.universal,
-                            filterFlag = SHOW_UNIVERSAL,
+                            visible = vm.filter and SHOW_UNIVERSAL != 0,
                             supported = true
                         ) {
                             ListHeader(
@@ -463,7 +457,7 @@ fun PatchesSelectorScreen(
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
-                            filterFlag = SHOW_UNSUPPORTED,
+                            visible = vm.filter and SHOW_SUPPORTED == 0,
                             supported = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(

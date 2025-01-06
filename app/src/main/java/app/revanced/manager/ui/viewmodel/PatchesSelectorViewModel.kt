@@ -2,6 +2,7 @@ package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
@@ -104,7 +105,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
     val compatibleVersions = mutableStateListOf<String>()
 
-    var filter by mutableIntStateOf(0)
+    var filter by mutableIntStateOf(SHOW_SUPPORTED xor SHOW_UNIVERSAL)
         private set
 
     private val defaultPatchSelection = bundlesFlow.map { bundles ->
@@ -220,7 +221,6 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     companion object {
         const val SHOW_SUPPORTED = 1 // 2^0
         const val SHOW_UNIVERSAL = 2 // 2^1
-        const val SHOW_UNSUPPORTED = 4 // 2^2
 
         private val optionsSaver: Saver<PersistentOptions, Options> = snapshotStateMapSaver(
             // Patch name -> Options
