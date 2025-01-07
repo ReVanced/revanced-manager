@@ -12,6 +12,8 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
@@ -37,7 +39,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,7 +72,9 @@ import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -186,6 +196,20 @@ fun PatchesSelectorScreen(
         )
     }
 
+    fun LazyListScope.patchCount(background: @Composable () -> Color) {
+        stickyHeader(key = "count", contentType = 2) {
+            Text(
+                text = stringResource(R.string.patches_selected, selectedPatchCount, availablePatchCount),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(background())
+                    .padding(top = 8.dp, end = 16.dp),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.End
+            )
+        }
+    }
+
     fun LazyListScope.patchList(
         uid: Int,
         patches: List<PatchInfo>,
@@ -195,14 +219,15 @@ fun PatchesSelectorScreen(
     ) {
         if (patches.isNotEmpty() && visible) {
             header?.let {
-                item {
+                item(contentType = 0) {
                     it()
                 }
             }
 
             items(
                 items = patches,
-                key = { it.name }
+                key = { it.name },
+                contentType = { 1 }
             ) { patch ->
                 PatchItem(
                     patch = patch,
@@ -306,6 +331,8 @@ fun PatchesSelectorScreen(
                         it.name.contains(query, true)
                     }
 
+                    patchCount(background = { MaterialTheme.colorScheme.surfaceContainerHigh })
+
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.supported.searched(),
@@ -332,38 +359,6 @@ fun PatchesSelectorScreen(
                         ListHeader(
                             title = stringResource(R.string.unsupported_patches),
                             onHelpClick = { showUnsupportedPatchesDialog = true }
-                        )
-                    }
-                }
-            }
-        },
-        bottomBar = {
-            AnimatedVisibility(
-                visible = !searchExpanded,
-                enter = expandIn(expandFrom = Alignment.BottomCenter),
-                exit = shrinkOut(shrinkTowards = Alignment.BottomCenter)
-            ) {
-                Surface(tonalElevation = 3.dp) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .windowInsetsPadding(WindowInsets.navigationBars),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        LinearProgressIndicator(
-                            modifier = Modifier.fillMaxWidth(),
-                            progress = {
-                                if (availablePatchCount == 0) return@LinearProgressIndicator 0f
-
-                                selectedPatchCount.toFloat() / availablePatchCount.toFloat()
-                            }
-                        )
-                        Text(
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(bottom = 8.dp),
-                            text = stringResource(R.string.patches_selected, selectedPatchCount, availablePatchCount),
-                            style = MaterialTheme.typography.titleMedium
                         )
                     }
                 }
@@ -441,6 +436,8 @@ fun PatchesSelectorScreen(
                         modifier = Modifier.fillMaxSize(),
                         state = patchLazyListStates[index]
                     ) {
+                        patchCount(background = { MaterialTheme.colorScheme.surface })
+
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.supported,
