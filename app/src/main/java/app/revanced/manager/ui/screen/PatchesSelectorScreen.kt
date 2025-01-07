@@ -293,13 +293,15 @@ fun PatchesSelectorScreen(
                             animationSpec = tween(durationMillis = 400, easing = EaseInOut)
                         )
                     }
-                    IconButton(onClick = {
-                        if (searchExpanded) {
-                            setSearchExpanded(false)
-                        } else {
-                            onBackClick()
+                    IconButton(
+                        onClick = {
+                            if (searchExpanded) {
+                                setSearchExpanded(false)
+                            } else {
+                                onBackClick()
+                            }
                         }
-                    }) {
+                    ) {
                         Icon(
                             modifier = Modifier.rotate(rotation.value),
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
