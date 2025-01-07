@@ -372,7 +372,10 @@ fun PatchesSelectorScreen(
                 enter = scaleIn(),
                 exit = scaleOut()
             ) {
-                Column(horizontalAlignment = Alignment.End) {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     SmallFloatingActionButton(
                         onClick = vm::reset,
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
