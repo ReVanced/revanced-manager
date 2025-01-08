@@ -355,6 +355,7 @@
     <string name="download_manager_failed">Failed to download update: %s</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="save_with_count">Save (%1$s)</string>
     <string name="update">Update</string>
     <string name="empty">Empty</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>

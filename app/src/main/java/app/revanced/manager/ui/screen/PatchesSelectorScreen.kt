@@ -10,8 +10,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -84,9 +82,7 @@ import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
-    ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -110,12 +106,6 @@ fun PatchesSelectorScreen(
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val showSaveButton by remember {
         derivedStateOf { vm.selectionIsValid(bundles) }
-    }
-
-    val availablePatchCount by remember {
-        derivedStateOf {
-            bundles.sumOf { it.patchCount }
-        }
     }
 
     val defaultPatchSelectionCount by vm.defaultSelectionCount
@@ -206,20 +196,6 @@ fun PatchesSelectorScreen(
             onCancel = vm::dismissUniversalPatchWarning,
             onConfirm = vm::confirmUniversalPatchWarning
         )
-    }
-
-    fun LazyListScope.patchCount(background: @Composable () -> Color) {
-        stickyHeader(key = "count", contentType = 2) {
-            Text(
-                text = stringResource(R.string.patches_selected, selectedPatchCount, availablePatchCount),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(background())
-                    .padding(top = 8.dp, end = 16.dp),
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.End
-            )
-        }
     }
 
     fun LazyListScope.patchList(
@@ -345,8 +321,6 @@ fun PatchesSelectorScreen(
                         it.name.contains(query, true)
                     }
 
-                    patchCount(background = { MaterialTheme.colorScheme.surfaceContainerHigh })
-
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.supported.searched(),
@@ -397,7 +371,7 @@ fun PatchesSelectorScreen(
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
                     HapticExtendedFloatingActionButton(
-                        text = { Text(stringResource(R.string.save)) },
+                        text = { Text(stringResource(R.string.save_with_count, selectedPatchCount)) },
                         icon = {
                             Icon(
                                 imageVector = Icons.Outlined.Save,
@@ -453,8 +427,6 @@ fun PatchesSelectorScreen(
                         modifier = Modifier.fillMaxSize(),
                         state = patchLazyListStates[index]
                     ) {
-                        patchCount(background = { MaterialTheme.colorScheme.surface })
-
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.supported,
