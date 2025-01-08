@@ -2,8 +2,8 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -27,7 +27,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.FilterList
+import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,7 +46,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +57,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -260,15 +262,11 @@ fun PatchesSelectorScreen(
                     Text(stringResource(R.string.search_patches))
                 },
                 leadingIcon = {
-                    val rotation = remember { Animatable(0f) }
-                    LaunchedEffect(searchExpanded) {
-                        val direction = if (searchExpanded) 360f else 0f
-
-                        rotation.animateTo(
-                            targetValue = direction,
-                            animationSpec = tween(durationMillis = 400, easing = EaseInOut)
-                        )
-                    }
+                    val rotation by animateFloatAsState(
+                        targetValue = if (searchExpanded) 360f else 0f,
+                        animationSpec = tween(durationMillis = 400, easing = EaseInOut),
+                        label = "SearchBar back button"
+                    )
                     IconButton(
                         onClick = {
                             if (searchExpanded) {
@@ -279,7 +277,7 @@ fun PatchesSelectorScreen(
                         }
                     ) {
                         Icon(
-                            modifier = Modifier.rotate(rotation.value),
+                            modifier = Modifier.rotate(rotation),
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
                         )
