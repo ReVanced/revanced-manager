@@ -60,16 +60,16 @@ jobs:
           dart run slang clean
           dart run slang normalize
 
+          cd assets/i18n
+          dart nuke.dart >> $GITHUB_STEP_SUMMARY
+          cd ../..
+
           dart run slang
 
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations
         run: |
-          cd assets/i18n
-          dart nuke.dart >> $GITHUB_STEP_SUMMARY
-          cd ../..
-
           git config user.name revanced-bot
           git config user.email github@revanced.app
           sudo chown -R $USER:$USER .git
