@@ -43,11 +43,16 @@ T? removeBlankEntries<T>(T? json) {
   if (json is List) {
     json.removeWhere((e) => e == null);
     json.forEach(removeBlankEntries);
+    // If the list is empty after removing nulls, return null to remove it.
+    return json.isEmpty ? null : json;
   } else if (json is Map) {
     json.removeWhere(
       (key, value) => key == null || value == null || value == '',
     );
     json.values.forEach(removeBlankEntries);
+    // If the map is empty after removing blank entries, return null to remove it.
+    return json.isEmpty ? null : json;
+
   }
   return json;
 }
@@ -62,11 +67,21 @@ Future<void> processJsonFiles() async {
         final String contents = await file.readAsString();
         final dynamic json = jsonDecode(contents);
         final dynamic processedJson = removeBlankEntries(json);
+        bool isEmpty = false;
 
-        file.writeAsString(
-          const JsonEncoder.withIndent('  ').convert(processedJson),
-        );
-        print('🥞 Task successful on: ${file.path}');
+        if (processedJson is Map) {
+          isEmpty = processedJson.values.every((value) => value is Map && value.isEmpty);
+        }
+
+        if (processedJson == null || isEmpty) {
+          await file.delete();
+          print('🗑️ File deleted: ${file.path}');
+        } else {
+          await file.writeAsString(
+            const JsonEncoder.withIndent('  ').convert(processedJson),
+          );
+          print('🥞 Task successful on: ${file.path}');
+        }
       }
     } catch (e) {
       print('💥 Task failed on: ${file.path}: $e');
