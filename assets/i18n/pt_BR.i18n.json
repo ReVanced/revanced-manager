@@ -9,7 +9,7 @@
   "noButton": "Não",
   "warning": "Atenção",
   "notice": "Nota",
-  "noShowAgain": "Não mostrar de novo",
+  "noShowAgain": "Não mostrar isso novamente",
   "add": "Adicionar",
   "remove": "Remover",
   "showChangelogButton": "Mostrar alterações",
@@ -42,7 +42,7 @@
     "installingMessage": "Instalando atualização...",
     "errorDownloadMessage": "Não é possível baixar a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
-    "noConnection": "Sem conexão"
+    "noConnection": "Sem conexão com a internet"
   },
   "applicationItem": {
     "infoButton": "Informações"
@@ -57,7 +57,7 @@
     "incompatibleArchWarningDialogText": "A aplicação de patches nesta arquitetura ainda não é suportada e pode falhar. Continuar mesmo assim?",
     "removedPatchesWarningDialogText": "Patches removidos desde a última vez que você aplicou patches neste app:\n\n${patches}\n\n${newPatches}Continuar mesmo assim?",
     "addedPatchesDialogText": "Patches adicionados desde a última vez que você aplicou patches neste app:\n\n${addedPatches}\n",
-    "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas."
+    "requiredOptionDialogText": "Algumas opções de patch precisam ser definidas."
   },
   "appSelectorCard": {
     "widgetTitle": "Selecione um app",
@@ -121,7 +121,7 @@
     "unsupportedDialogText": "Selecionar esse patch pode resultar em erros.\n\nVersão do app: ${packageVersion}\nVersões suportadas: ${supportedVersions}",
     "unsupportedPatchVersion": "O patch não é suportado para a versão desse app.",
     "unsupportedRequiredOption": "Esse patch contém uma opção necessária que não é suportada por esse app",
-    "patchesChangeWarningDialogText": "É recomendado usar a seleção de patch padrão e as opções. Alterá-las pode resultar em problemas inesperados.\n\nVocê precisará ativar \"Permitir alteração na seleção de patch\" nas configurações antes de alterar qualquer seleção de patch.",
+    "patchesChangeWarningDialogText": "É recomendado usar a seleção de patch e as opções padrão. Alterá-las pode resultar em problemas inesperados.\n\nVocê precisará ativar \"Permitir alterar a seleção de patch\" nas configurações antes de alterar qualquer seleção de patch.",
     "patchesChangeWarningDialogButton": "Use a seleção padrão"
   },
   "installerView": {
@@ -130,14 +130,14 @@
     "installButton": "Instalar",
     "installRootType": "Montar",
     "installNonRootType": "Normal",
-    "warning": "Desative as atualizações automáticas do app patchedo para evitar problemas inesperados.",
+    "warning": "Desative as atualizações automáticas do app patcheado para evitar problemas inesperados.",
     "pressBackAgain": "Pressione voltar mais uma vez para cancelar",
     "openButton": "Abrir",
     "notificationTitle": "O ReVanced Manager está aplicando os patches",
     "notificationText": "Toque para voltar ao instalador",
     "exportApkButtonTooltip": "Exportar APK com o patch aplicado",
     "exportLogButtonTooltip": "Exportar log",
-    "screenshotDetected": "Uma captura de tela foi detectada. Se está tentando compartilhar esse log, apenas faça a cópia do texto.\n\nCopiar o log para a área de transferência?",
+    "screenshotDetected": "Uma captura de tela foi detectada. Se está tentando compartilhar esse log, por favor apenas faça a cópia do texto.\n\nCopiar o log para a área de transferência?",
     "copiedToClipboard": "Log copiado para a área de transferência",
     "noExit": "O instalador ainda está em execução, não é possível sair..."
   },
@@ -145,7 +145,7 @@
     "widgetTitle": "Configurações",
     "appearanceSectionTitle": "Aparência",
     "teamSectionTitle": "Time",
-    "debugSectionTitle": "Depurando",
+    "debugSectionTitle": "Depuração",
     "advancedSectionTitle": "Avançado",
     "exportSectionTitle": "Importar e exportar",
     "dataSectionTitle": "Fonte de dados",

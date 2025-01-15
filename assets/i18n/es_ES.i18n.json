@@ -54,8 +54,8 @@
   "patcherView": {
     "widgetTitle": "Parcheador",
     "patchButton": "Parchear",
-    "incompatibleArchWarningDialogText": "El parche en esta arquitectura aún no está soportado y podría fallar. ¿Continuar de todos modos?",
-    "removedPatchesWarningDialogText": "Eliminados parches desde la última vez que parcheaste esta aplicación:\n\n${patches}\n\n${newPatches}¿Continuar de todos modos?",
+    "incompatibleArchWarningDialogText": "Parchear en esta arquitectura aún no está soportado y podría fallar. ¿Continuar de todos modos?",
+    "removedPatchesWarningDialogText": "Parches eliminados desde la última vez que parcheaste esta aplicación:\n\n${patches}\n\n${newPatches}¿Continuar de todos modos?",
     "addedPatchesDialogText": "Añadidos parches desde la última vez que parcheaste esta aplicación:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Deben establecerse algunas opciones de parche."
   },
@@ -106,7 +106,7 @@
   "patchOptionsView": {
     "customValue": "Valor personalizado",
     "setToNull": "Establecer a nulo",
-    "nullValue": "Este valor de opción es nulo actualmente",
+    "nullValue": "Este valor de opción actualmente es nulo",
     "viewTitle": "Opciones de parche",
     "saveOptions": "Guardar",
     "unselectPatch": "Deseleccionar parche",
@@ -164,7 +164,7 @@
     "sourcesResetDialogTitle": "Restablecer",
     "sourcesResetDialogText": "¿Estás seguro de que quieres restablecer tus fuentes a sus valores predeterminados?",
     "apiURLResetDialogText": "¿Estás seguro de que quieres restablecer la URL de tu API a su valor predeterminado?",
-    "sourcesUpdateNote": "Nota: Esto descargará automáticamente los Parches ReVanced desde las fuentes alternativas.\n\nEsto te conectará a la fuente alternativa.",
+    "sourcesUpdateNote": "Nota: Esto descargará automáticamente los Parches ReVanced desde las fuentes alternativas.\n\nEsto te conectará a las fuentes alternativas.",
     "apiURLLabel": "URL de la API",
     "apiURLHint": "Configurar la URL de API del ReVanced Manager",
     "selectApiURL": "URL de la API",

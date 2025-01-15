@@ -4,29 +4,29 @@
   "dismissButton": "忽略",
   "quitButton": "退出",
   "updateButton": "更新",
-  "suggested": "建议的版本：${version}",
+  "suggested": "建议版本：${version}",
   "yesButton": "是",
   "noButton": "否",
   "warning": "警告",
   "notice": "提示",
-  "noShowAgain": "不再显示此内容",
+  "noShowAgain": "不再显示",
   "add": "添加",
   "remove": "移除",
   "showChangelogButton": "显示更新日志",
   "showUpdateButton": "显示更新",
   "navigationView": {
-    "dashboardTab": "控制面板",
-    "patcherTab": "补丁程序",
+    "dashboardTab": "仪表盘",
+    "patcherTab": "补丁安装工具",
     "settingsTab": "设置"
   },
   "homeView": {
     "refreshSuccess": "已刷新",
-    "widgetTitle": "控制面板",
+    "widgetTitle": "仪表盘",
     "updatesSubtitle": "更新",
     "lastPatchedAppSubtitle": "最后补丁的应用",
     "patchedSubtitle": "已安装的应用",
     "changeLaterSubtitle": "您可以稍后在设置中更改此设置。",
-    "noSavedAppFound": "没有找到应用",
+    "noSavedAppFound": "未找到应用",
     "noInstallations": "没有安装已修补的应用",
     "installUpdate": "继续安装该更新？",
     "updateSheetTitle": "更新 ReVanced Manager",
@@ -53,8 +53,10 @@
   },
   "patcherView": {
     "widgetTitle": "修补器",
-    "patchButton": "修补",
+    "patchButton": "安装补丁",
     "incompatibleArchWarningDialogText": "对此架构的修补尚不支持或可能失败。仍要继续吗？",
+    "removedPatchesWarningDialogText": "自上次修补此应用程序以来已删除的修补程序：\n\n${patches}\n\n${newPatches}仍然继续吗？",
+    "addedPatchesDialogText": "自上次修补此应用程序以来添加的修补程序：\n\n${addedPatches}",
     "requiredOptionDialogText": "某些补丁选项必须设置。"
   },
   "appSelectorCard": {
@@ -72,14 +74,14 @@
   },
   "socialMediaCard": {
     "widgetTitle": "社交媒体",
-    "widgetSubtitle": "我们也在线上哦！"
+    "widgetSubtitle": "扫塌以待，欢迎造访！"
   },
   "appSelectorView": {
     "viewTitle": "选择一个应用",
-    "searchBarHint": "查找应用",
+    "searchBarHint": "搜索应用",
     "storageButton": "存储空间",
-    "selectFromStorageButton": "从存储中选择",
-    "errorMessage": "无法使用所选应用程序。",
+    "selectFromStorageButton": "从存储空间中选择",
+    "errorMessage": "无法使用所选应用程序",
     "downloadToast": "下载功能尚不可用",
     "requireSuggestedAppVersionDialogText": "你所选择的应用版本与推荐的版本不一致，这可能会导致不可预料的问题。请使用推荐的版本。\n\n选择的版本：${selected}\n推荐的版本：${suggested}",
     "featureNotAvailable": "功能未实现",
@@ -137,7 +139,7 @@
     "exportLogButtonTooltip": "导出日志",
     "screenshotDetected": "已检测到截图。如果您要共享日志，请共享文本副本。\n\n将日志复制到剪贴板？",
     "copiedToClipboard": "复制日志至剪贴板",
-    "noExit": "安装程序仍在运行，无法退出..."
+    "noExit": "安装程序仍在运行，无法退出…"
   },
   "settingsView": {
     "widgetTitle": "设置",
@@ -151,7 +153,7 @@
     "systemThemeLabel": "系统",
     "lightThemeLabel": "亮色主题",
     "darkThemeLabel": "深色模式",
-    "dynamicThemeLabel": "Material You 风格",
+    "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "享受更贴近你的设备的体验",
     "languageLabel": "语言",
     "languageUpdated": "语言已更新",
@@ -249,7 +251,7 @@
     "rootDialogTitle": "错误",
     "lastPatchedAppDescription": "这是上次修补的应用程序的备份。",
     "unmountDialogText": "您确定要卸载此应用程序吗？",
-    "uninstallDialogText": "您确定要卸载此应用程序吗？",
+    "uninstallDialogText": "确定要卸载此应用吗？",
     "rootDialogText": "应用程序曾以超级用户权限安装，但是 ReVanced 管理器目前没有权限。\n请先授予超级用户权限。",
     "removeAppDialogTitle": "删除应用？",
     "removeAppDialogText": "您确定要删除此备份吗？",
@@ -286,6 +288,7 @@
     "status_failure_timeout_description": "安装时间太长。\n\n您想再试一次吗？",
     "status_failure_storage_description": "由于存储空间不足，安装失败。\n\n释放一些空间，然后重试。",
     "status_failure_invalid_description": "由于修补的应用程序无效，安装失败。\n\n卸载该应用程序并重试？",
+    "status_failure_incompatible_description": "该应用程序与该设备不兼容。\n\n使用此设备支持的 APK，然后重试。",
     "status_failure_conflict_description": "该应用程序的现有安装阻止了安装。\n\n卸载已安装的应用程序并重试？",
     "status_failure_blocked_description": "安装被 ${packageName} 阻止。\n\n调整您的安全设置并重试。",
     "install_failed_verification_failure_description": "由于验证问题，安装失败。\n\n请调整安全设置并重试。",
