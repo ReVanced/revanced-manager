@@ -13,6 +13,7 @@
   "add": "افزودن",
   "remove": "حذف",
   "showChangelogButton": "نمایش تغییرات",
+  "showUpdateButton": "نمایش به روز رسانی",
   "navigationView": {
     "dashboardTab": "پیشخوان",
     "patcherTab": "نصب کننده پچ",
@@ -22,8 +23,14 @@
     "refreshSuccess": "با موفقیت به روزرسانی شد",
     "widgetTitle": "پیشخوان",
     "updatesSubtitle": "به‌روزرسانی‌ها",
+    "lastPatchedAppSubtitle": "آخرین برنامه پچ شده",
+    "patchedSubtitle": "برنامه‌های نصب‌شده",
+    "noSavedAppFound": "\n\t\tهیچ برنامه ای پیدا نشد\n\t",
     "noInstallations": "هیچ برنامه پچ شده ای نصب نشده",
     "installUpdate": "ادامه نصب بروزرسانی?",
+    "updateSheetTitle": "بروزرسانی Revanced Manager",
+    "updateDialogTitle": "به‌روزرسانی جدیدی موجود است",
+    "updatePatchesSheetTitle": "بروزرسانی پچ های Revanced",
     "updateChangelogTitle": "لیست تغییرات",
     "downloadConsentDialogText2": "اتصال به ${url}.",
     "downloadingMessage": "در حال بارگیری به‌روزرسانی...",
@@ -46,6 +53,8 @@
     "requiredOptionDialogText": "بعضی از تنظیمات پچ باید انتخاب شود."
   },
   "appSelectorCard": {
+    "widgetTitle": "یک برنامه را انتخاب کنید",
+    "widgetTitleSelected": "برنامه‌ انتخاب شده",
     "noAppsLabel": "هیچ برنامه ای یافت نشد"
   },
   "patchSelectorCard": {
@@ -59,6 +68,8 @@
     "widgetSubtitle": "ما آنلاین هستیم!"
   },
   "appSelectorView": {
+    "viewTitle": "یک برنامه را انتخاب کنید",
+    "searchBarHint": "جستجوی برنامه‌",
     "storageButton": "محل ذخیره",
     "selectFromStorageButton": "انتخاب از محل ذخیره",
     "errorMessage": "امکان استفاده از برنامه انتخابی وجود ندارد",
@@ -78,15 +89,22 @@
     "noneTooltip": "حذف انتخاب همه پچ ها",
     "noPatchesFound": "هیچ وصله ای برای این برنامه پیدا نشد"
   },
-  "patchOptionsView": {},
+  "patchOptionsView": {
+    "setToNull": "تنظیم به null",
+    "saveOptions": "ذخیره",
+    "selectFolder": "انتخاب پوشه"
+  },
   "patchItem": {
     "unsupportedDialogText": "انتخاب این پچ(وصله) ممکنه خطاهای در هنگام پچ کردن ایجاد کند.\n\nنسخه برنامه: ${packageVersion}\nنسخه های پشتیبان شده:\n${supportedVersions}"
   },
   "installerView": {
     "installButton": "نصب",
+    "installRootType": "قرار دادن",
+    "installNonRootType": "عادی",
     "openButton": "باز کن",
     "notificationTitle": "ریونسد منیجر در حال پچ کردن است",
     "notificationText": "کلیک کنید تا به نصب کننده برگردید",
+    "exportLogButtonTooltip": "صدور لاگ",
     "noExit": "نصب کننده در حال اجراست، نمی‌توان خارج شد..."
   },
   "settingsView": {
@@ -95,9 +113,16 @@
     "teamSectionTitle": "گروه",
     "advancedSectionTitle": "پیشرفته",
     "exportSectionTitle": "وارد کردن /خروجی گرفتن",
+    "dataSectionTitle": "منابع اطلاعات",
+    "themeModeLabel": "پوسته برنامه",
+    "systemThemeLabel": "سیستم",
+    "lightThemeLabel": "روشن",
+    "darkThemeLabel": "تاریک",
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "یک تجربه نزدیکتر به دستگاهتان را داشته باشید",
     "languageLabel": "زبان",
+    "languageUpdated": "زبان آپدیت شد",
+    "sourcesLabel": "منبع جایگزین",
     "sourcesResetDialogTitle": "تنظیم مجدد",
     "apiURLLabel": "آدرس API",
     "selectApiURL": "آدرس API",
@@ -105,6 +130,8 @@
     "sourcesPatchesLabel": "منبع پچ ها",
     "contributorsLabel": "مشارکت کنندگان",
     "contributorsHint": "لیست مشارکت‌کنندگان ریونسد",
+    "logsLabel": "اشتراک لاگ ها",
+    "logsHint": "اشتراک لاگ های Revanced Manager",
     "aboutLabel": "درباره ما",
     "snackbarMessage": "در کلیپ‌بورد کپی شد",
     "restartAppForChanges": "راه‌اندازی مجدد برنامه برای اعمال تغییرات",
@@ -119,12 +146,19 @@
     "openButton": "بازکردن",
     "installButton": "نصب",
     "uninstallButton": "حذف نصب",
+    "unmountButton": "پیاده کردن",
+    "exportButton": "صدور",
+    "deleteButton": "حذف",
     "rootDialogTitle": "خطا",
     "rootDialogText": "برنامه با مجوز کاربر ویژه نصب شده، ولی اکنون برنامه هیچ مجوزی ندارد. لطفا ابتدا مجوز کاربر ویژه را اعطا کنید.",
+    "removeAppDialogTitle": "حذف برنامه?",
     "packageNameLabel": "نام بسته",
     "installTypeLabel": "نوع نصب",
+    "mountTypeLabel": "قرار دادن",
+    "regularTypeLabel": "عادی",
     "patchedDateLabel": "تاریخ وصله شدن",
     "appliedPatchesLabel": "وصله های اعمال شده",
+    "sizeLabel": "حجم فایل",
     "patchedDateHint": "${date} در ${time}",
     "appliedPatchesHint": "${quantity} وصله اعمال شده",
     "updateNotImplemented": "این ویژگی هنوز تکمیل نشده است"
@@ -132,5 +166,9 @@
   "contributorsView": {
     "widgetTitle": "مشارکت کنندگان"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {
+    "mount_version_mismatch": "عدم تطابق نسخه ها",
+    "mount_no_root": "بدون دسترسی روت",
+    "install_failed_verification_failure": "اعتبارسنجی با خطا مواجه شد"
+  }
 }
