@@ -55,12 +55,18 @@ jobs:
       - name: Normalization of Translation Strings
         run: |
           sudo chmod 766 assets/i18n/*.i18n.json
+
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
+
+          cd assets/i18n
+          dart nuke.dart >> $GITHUB_STEP_SUMMARY
+          cd ../..
+
           dart run slang
+
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
-        # There will be no way flutter analyze will fail... right?
 
       - name: Commit translations
         run: |
