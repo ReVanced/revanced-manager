@@ -444,7 +444,7 @@ fun PatchesSelectorScreen(
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
-                            visible = vm.filter and SHOW_UNSUPPORTED == 0,
+                            visible = vm.filter and SHOW_UNSUPPORTED != 0,
                             supported = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(
