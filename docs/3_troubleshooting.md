@@ -10,6 +10,12 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
   An existing installation of the app you're trying to patch is conflicting with the patched app. Uninstall the existing app before installing the patched app.
 
+- 🥛 Out Of Memory error
+
+  This indicate that your device doesn't have enough memory to patch the app. Try patching on another device that's have more memory.
+
+  In the meantime there's a remedy fix by going to ⚙️ Settings -> Advanced -> toggle "Run Patcher in another process (experimental)" on
+
 - ❗️ Error code `135`, `139` or `1` when patching the app
 
   Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
