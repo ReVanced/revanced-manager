@@ -81,7 +81,7 @@ Some of the features ReVanced Manager provides are:
 ## 🔽 Download
 
 You can get ReVanced Manager the most recent version of by downloading from 
-the [ReVanced site](https://revanced.app/download) or [GitHub releases](https://github.com/ReVanced/revanced-manager/releases/latest).
+the [ReVanced site](https://revanced.app/download).
 
 Learn how to use ReVanced Manager by following the [documentation](/docs).
 

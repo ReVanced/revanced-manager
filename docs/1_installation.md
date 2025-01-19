@@ -6,8 +6,7 @@ refer to the [Prerequisites](0_prerequisites.md) if haven't already.
 ## 🪜 Installation steps
 
 1. Get the latest version of ReVanced Manager from 
-   the [ReVanced site](https://revanced.app/download) 
-   or [GitHub releases](https://github.com/ReVanced/revanced-manager/releases/latest).
+   the [ReVanced site](https://revanced.app/download).
 2. Install ReVanced Manager
 
 ## ⏭️ What's next
