@@ -7,10 +7,7 @@ To use ReVanced Manager, certain requirements have to be met.
 - Android device running Android 8.0 or higher
 - System that support running at least `arm64-v8a`, `armeabi-v7a`, `x86_64`, or `x86` application
 
-### Additional Requirements
-
-> [!NOTE]
-> These requirements are optional.
+### Optional Requirements
 
 - Rooted Android device with latest version of [KernelSU](https://github.com/tiann/KernelSU) or [Magisk](https://github.com/topjohnwu/Magisk)
 
