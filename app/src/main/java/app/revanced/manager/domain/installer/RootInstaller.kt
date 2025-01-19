@@ -109,7 +109,12 @@ class RootInstaller(
 
         stockAPK?.let { stockApp ->
             pm.getPackageInfo(packageName)?.let { packageInfo ->
-                if (packageInfo.versionName <= version)
+                // TODO: get user id programmatically
+                if (pm.getVersionCode(packageInfo) <= pm.getVersionCode(
+                        pm.getPackageInfo(patchedAPK)
+                            ?: error("Failed to get package info for patched app")
+                    )
+                )
                     execute("pm uninstall -k --user 0 $packageName").assertSuccess("Failed to uninstall stock app")
             }
 

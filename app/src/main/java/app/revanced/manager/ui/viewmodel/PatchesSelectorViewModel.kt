@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
@@ -22,7 +21,7 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
-import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.saver.Nullable
@@ -36,11 +35,14 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import kotlinx.collections.immutable.*
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-@Stable
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
+class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.ViewModelParams) :
+    ViewModel(), KoinComponent {
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
@@ -101,7 +103,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
 
     val compatibleVersions = mutableStateListOf<String>()
 
-    var filter by mutableIntStateOf(0)
+    var filter by mutableIntStateOf(SHOW_UNIVERSAL)
         private set
 
     private val defaultPatchSelection = bundlesFlow.map { bundles ->
@@ -112,6 +114,22 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     val defaultSelectionCount = defaultPatchSelection.map { selection ->
         selection.values.sumOf { it.size }
     }
+
+    // This is for the required options screen.
+    private val requiredOptsPatchesDeferred = viewModelScope.async(start = CoroutineStart.LAZY) {
+        bundlesFlow.first().map { bundle ->
+            bundle to bundle.all.filter { patch ->
+                val opts by lazy {
+                    getOptions(bundle.uid, patch).orEmpty()
+                }
+                isSelected(
+                    bundle.uid,
+                    patch
+                ) && patch.options?.any { it.required && it.default == null && it.key !in opts } ?: false
+            }.toList()
+        }.filter { (_, patches) -> patches.isNotEmpty() }
+    }
+    val requiredOptsPatches = flow { emit(requiredOptsPatchesDeferred.await()) }
 
     fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
         bundle.patchSequence(allowIncompatiblePatches).any { patch ->
@@ -199,9 +217,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     }
 
     companion object {
-        const val SHOW_SUPPORTED = 1 // 2^0
+        const val SHOW_UNSUPPORTED = 1 // 2^0
         const val SHOW_UNIVERSAL = 2 // 2^1
-        const val SHOW_UNSUPPORTED = 4 // 2^2
 
         private val optionsSaver: Saver<PersistentOptions, Options> = snapshotStateMapSaver(
             // Patch name -> Options
@@ -214,12 +231,6 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         private val selectionSaver: Saver<PersistentPatchSelection?, Nullable<PatchSelection>> =
             nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
     }
-
-    data class Params(
-        val app: SelectedApp,
-        val currentSelection: PatchSelection?,
-        val options: Options,
-    )
 }
 
 // Versions of other types, but utilizing persistent/observable collection types.

@@ -5,7 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -24,17 +25,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
+import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
-import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
+import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -48,17 +51,21 @@ enum class DashboardPage(
 }
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
-    onAppClick: (InstalledApp) -> Unit
+    onDownloaderPluginClick: () -> Unit,
+    onAppClick: (String) -> Unit
 ) {
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
+        false
+    )
     val androidContext = LocalContext.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -77,9 +84,9 @@ fun DashboardScreen(
     if (showAddBundleDialog) {
         ImportPatchBundleDialog(
             onDismiss = { showAddBundleDialog = false },
-            onLocalSubmit = { patches, integrations ->
+            onLocalSubmit = { patches ->
                 showAddBundleDialog = false
-                vm.createLocalSource(patches, integrations)
+                vm.createLocalSource(patches)
             },
             onRemoteSubmit = { url, autoUpdate ->
                 showAddBundleDialog = false
@@ -88,19 +95,34 @@ fun DashboardScreen(
         )
     }
 
-    var showDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialogOnLaunch.getBlocking()) }
+    var showUpdateDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialogOnLaunch.getBlocking()) }
     val availableUpdate by remember {
-        derivedStateOf { vm.updatedManagerVersion.takeIf { showDialog } }
+        derivedStateOf { vm.updatedManagerVersion.takeIf { showUpdateDialog } }
     }
 
     availableUpdate?.let { version ->
         AvailableUpdateDialog(
-            onDismiss = { showDialog = false },
+            onDismiss = { showUpdateDialog = false },
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
             newVersion = version
         )
     }
+
+    var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
+    val installAppsPermissionLauncher =
+        rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
+            showAndroid11Dialog = false
+            if (granted) onAppSelectorClick()
+        }
+    if (showAndroid11Dialog) Android11Dialog(
+        onDismissRequest = {
+            showAndroid11Dialog = false
+        },
+        onContinue = {
+            installAppsPermissionLauncher.launch(androidContext.packageName)
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -168,7 +190,7 @@ fun DashboardScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
+            HapticFloatingActionButton(
                 onClick = {
                     vm.cancelSourceSelection()
 
@@ -181,7 +203,11 @@ fun DashboardScreen(
                                         DashboardPage.BUNDLES.ordinal
                                     )
                                 }
-                                return@FloatingActionButton
+                                return@HapticFloatingActionButton
+                            }
+                            if (vm.android11BugActive) {
+                                showAndroid11Dialog = true
+                                return@HapticFloatingActionButton
                             }
 
                             onAppSelectorClick()
@@ -201,7 +227,7 @@ fun DashboardScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
                 DashboardPage.entries.forEachIndexed { index, page ->
-                    Tab(
+                    HapticTab(
                         selected = pagerState.currentPage == index,
                         onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
                         text = { Text(stringResource(page.titleResId)) },
@@ -212,6 +238,7 @@ fun DashboardScreen(
                 }
             }
 
+            val showBatteryOptimizationsWarning by vm.showBatteryOptimizationsWarningFlow.collectAsStateWithLifecycle(false)
             Notifications(
                 if (!Aapt.supportsDevice()) {
                     {
@@ -223,7 +250,7 @@ fun DashboardScreen(
                         )
                     }
                 } else null,
-                if (vm.showBatteryOptimizationsWarning) {
+                if (showBatteryOptimizationsWarning) {
                     {
                         NotificationCard(
                             isWarning = true,
@@ -233,6 +260,20 @@ fun DashboardScreen(
                                 androidContext.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                                     data = Uri.parse("package:${androidContext.packageName}")
                                 })
+                            }
+                        )
+                    }
+                } else null,
+                if (showNewDownloaderPluginsNotification) {
+                    {
+                        NotificationCard(
+                            text = stringResource(R.string.new_downloader_plugins_notification),
+                            icon = Icons.Outlined.Download,
+                            modifier = Modifier.clickable(onClick = onDownloaderPluginClick),
+                            actions = {
+                                TextButton(onClick = vm::ignoreNewDownloaderPlugins) {
+                                    Text(stringResource(R.string.dismiss))
+                                }
                             }
                         )
                     }
@@ -247,7 +288,7 @@ fun DashboardScreen(
                     when (DashboardPage.entries[index]) {
                         DashboardPage.DASHBOARD -> {
                             InstalledAppsScreen(
-                                onAppClick = onAppClick
+                                onAppClick = { onAppClick(it.currentPackageName) }
                             )
                         }
 
@@ -262,33 +303,17 @@ fun DashboardScreen(
 
                             val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
 
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                            ) {
-                                sources.forEach {
-                                    BundleItem(
-                                        bundle = it,
-                                        onDelete = {
-                                            vm.delete(it)
-                                        },
-                                        onUpdate = {
-                                            vm.update(it)
-                                        },
-                                        selectable = bundlesSelectable,
-                                        onSelect = {
-                                            vm.selectedSources.add(it)
-                                        },
-                                        isBundleSelected = vm.selectedSources.contains(it),
-                                        toggleSelection = { bundleIsNotSelected ->
-                                            if (bundleIsNotSelected) {
-                                                vm.selectedSources.add(it)
-                                            } else {
-                                                vm.selectedSources.remove(it)
-                                            }
-                                        }
-                                    )
-                                }
-                            }
+                            BundleListScreen(
+                                onDelete = {
+                                    vm.delete(it)
+                                },
+                                onUpdate = {
+                                    vm.update(it)
+                                },
+                                sources = sources,
+                                selectedSources = vm.selectedSources,
+                                bundlesSelectable = bundlesSelectable
+                            )
                         }
                     }
                 }
@@ -313,4 +338,25 @@ fun Notifications(
             }
         }
     }
+}
+
+@Composable
+fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
+    AlertDialogExtended(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onContinue) {
+                Text(stringResource(R.string.continue_))
+            }
+        },
+        title = {
+            Text(stringResource(R.string.android_11_bug_dialog_title))
+        },
+        icon = {
+            Icon(Icons.Outlined.BugReport, null)
+        },
+        text = {
+            Text(stringResource(R.string.android_11_bug_dialog_description))
+        }
+    )
 }

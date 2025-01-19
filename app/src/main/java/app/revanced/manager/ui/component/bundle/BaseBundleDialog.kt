@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.haptics.HapticSwitch
 
 @Composable
 fun BaseBundleDialog(
@@ -89,7 +90,7 @@ fun BaseBundleDialog(
                 headlineText = stringResource(R.string.bundle_auto_update),
                 supportingText = stringResource(R.string.bundle_auto_update_description),
                 trailingContent = {
-                    Switch(
+                    HapticSwitch(
                         checked = autoUpdate,
                         onCheckedChange = onAutoUpdateChange
                     )

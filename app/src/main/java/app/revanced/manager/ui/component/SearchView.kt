@@ -1,13 +1,15 @@
 package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarColors
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -27,29 +29,38 @@ fun SearchView(
     placeholder: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val colors = SearchBarColors(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        dividerColor = MaterialTheme.colorScheme.outline
+    )
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     SearchBar(
-        query = query,
-        onQueryChange = onQueryChange,
-        onSearch = {
-            keyboardController?.hide()
+        inputField = {
+            SearchBarDefaults.InputField(
+                query = query,
+                onQueryChange = onQueryChange,
+                onSearch = {
+                    keyboardController?.hide()
+                },
+                expanded = true,
+                onExpandedChange = onActiveChange,
+                placeholder = placeholder,
+                leadingIcon = {
+                    IconButton(onClick = { onActiveChange(false) }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            stringResource(R.string.back)
+                        )
+                    }
+                }
+            )
         },
-        active = true,
-        onActiveChange = onActiveChange,
-        modifier = Modifier
-            .fillMaxSize()
-            .focusRequester(focusRequester),
-        placeholder = placeholder,
-        leadingIcon = {
-            IconButton({ onActiveChange(false) }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack,
-                    stringResource(R.string.back)
-                )
-            }
-        },
+        expanded = true,
+        onExpandedChange = onActiveChange,
+        modifier = Modifier.focusRequester(focusRequester),
+        colors = colors,
         content = content
     )
 

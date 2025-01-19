@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Build
+import android.view.HapticFeedbackConstants
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,9 +18,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,9 +31,11 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
+import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.withHapticFeedback
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -52,7 +53,6 @@ fun AdvancedSettingsScreen(
             activityManager.largeMemoryClass
         )
     }
-    val haptics = LocalHapticFeedback.current
 
     Scaffold(
         topBar = {
@@ -103,37 +103,35 @@ fun AdvancedSettingsScreen(
                 headline = R.string.process_runtime_memory_limit,
                 description = R.string.process_runtime_memory_limit_description,
             )
-            BooleanItem(
-                preference = vm.prefs.multithreadingDexFileWriter,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.multithreaded_dex_file_writer,
-                description = R.string.multithreaded_dex_file_writer_description,
-            )
 
             GroupHeader(stringResource(R.string.safeguards))
-            BooleanItem(
+            SafeguardBooleanItem(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_compat_check,
-                description = R.string.patch_compat_check_description
+                description = R.string.patch_compat_check_description,
+                confirmationText = R.string.patch_compat_check_confirmation
             )
-            BooleanItem(
+            SafeguardBooleanItem(
                 preference = vm.prefs.disableUniversalPatchWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.universal_patches_safeguard,
-                description = R.string.universal_patches_safeguard_description
+                description = R.string.universal_patches_safeguard_description,
+                confirmationText = R.string.universal_patches_safeguard_confirmation
             )
-            BooleanItem(
+            SafeguardBooleanItem(
                 preference = vm.prefs.suggestedVersionSafeguard,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.suggested_version_safeguard,
-                description = R.string.suggested_version_safeguard_description
+                description = R.string.suggested_version_safeguard_description,
+                confirmationText = R.string.suggested_version_safeguard_confirmation
             )
-            BooleanItem(
+            SafeguardBooleanItem(
                 preference = vm.prefs.disableSelectionWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_selection_safeguard,
-                description = R.string.patch_selection_safeguard_description
+                description = R.string.patch_selection_safeguard_description,
+                confirmationText = R.string.patch_selection_safeguard_confirmation
             )
 
             GroupHeader(stringResource(R.string.debugging))
@@ -159,13 +157,12 @@ fun AdvancedSettingsScreen(
                     onClick = { },
                     onLongClickLabel = stringResource(R.string.copy_to_clipboard),
                     onLongClick = {
-                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                         clipboard.setPrimaryClip(
                             ClipData.newPlainText("Device Information", deviceContent)
                         )
 
                         context.toast(context.getString(R.string.toast_copied_to_clipboard))
-                    }
+                    }.withHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                 ),
                 headlineContent = stringResource(R.string.about_device),
                 supportingContent = deviceContent

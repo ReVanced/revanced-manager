@@ -4,29 +4,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 
 class LocalPatchBundle(name: String, id: Int, directory: File) :
     PatchBundleSource(name, id, directory) {
-    suspend fun replace(patches: InputStream? = null, integrations: InputStream? = null) {
+    suspend fun replace(patches: InputStream) {
         withContext(Dispatchers.IO) {
-            patches?.let { inputStream ->
-                patchBundleOutputStream().use { outputStream ->
-                    inputStream.copyTo(outputStream)
-                }
-            }
-            integrations?.let {
-                Files.copy(
-                    it,
-                    this@LocalPatchBundle.integrationsFile.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING
-                )
+            patchBundleOutputStream().use { outputStream ->
+                patches.copyTo(outputStream)
             }
         }
 
         reload()?.also {
-            saveVersion(it.readManifestAttribute("Version"), null)
+            saveVersion(it.readManifestAttribute("Version"))
         }
     }
 }

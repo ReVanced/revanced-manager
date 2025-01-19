@@ -74,7 +74,7 @@ special contributor role.
 ### ⏳ Supported Versions
 
 | Version                                  | Branch        | Supported          |
-| ---------------------------------------- | ------------- | ------------------ |
+|------------------------------------------|---------------|--------------------|
 | ![Latest stable release][LatestRelBadge] | `main`        | :white_check_mark: |
 | ![Latest version][LatestVerBadge]        | `dev`         | :white_check_mark: |
 | ![Latest version][LatestVerBadge]        | `compose-dev` | :white_check_mark: |
