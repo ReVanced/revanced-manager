@@ -28,4 +28,4 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - 🚨 Patched app crashes on launch
 
-  Select the **Default** button when choosing patches.
+  Try selecting the **Default** button when choosing patches, if the patched app still failed, file an issue at [ReVanced Patches](https://github.com/revanced/revanced-patches).
