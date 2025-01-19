@@ -15,7 +15,9 @@ Here's everything you'll need to develop on ReVanced Manager
 
 ### Authenticating to GitHub Registry
 
-ReVanced Manager uses dependency from the GitHub Registry and so your build may fail without authenticating to the service, to authenticate you must add create a personal access token with the scope `read:packages` [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced) and add your token to `~/.gradle/gradle.properties`, create the file if it does not exist.
+ReVanced Manager uses dependency from the GitHub Registry (i.e., [ReVanced Patcher](https://github.com/ReVanced/revanced-patcher/packages)) and so your build may fail without authenticating to the service, 
+to authenticate you must add create a personal access token with the scope `read:packages` [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced) 
+and add your token to `~/.gradle/gradle.properties`, create the file if it does not exist.
 
 ```properties
 gpr.user = username
