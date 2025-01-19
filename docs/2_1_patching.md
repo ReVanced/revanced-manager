@@ -12,6 +12,8 @@ The following pages will guide you through using ReVanced Manager to patch apps.
 6. Tap the Patch button
 7. Tap on the **Install** button
    > [!Note]
+   > If the **Install** Button isn't there, it could be that something went wrong. Refer to [3. ❔ Troubleshooting](3_troubleshooting.md)
+   > [!Tip]
    > If you are rooted, you can mount the patched app on top of the original app.[^3]
    > Optionally, you may export the patched app to storage using the options in the top right corner.
 
