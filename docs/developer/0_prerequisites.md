@@ -2,7 +2,7 @@
 
 Here's everything you'll need to develop on ReVanced Manager
 
-## 🤝 Recommended enviroment
+## 🤝 Recommended environment
 
 - Any environment that capable of running the latest Android Studio, latest Android SDK and JDK 17 with at least 4 GB of memory for coding
 - Any devices with preferably the latest Android version or at least higher than the [`minSdk`](/app/build.gradle.kts) for testing
