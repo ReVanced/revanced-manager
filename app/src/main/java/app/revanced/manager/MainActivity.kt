@@ -9,6 +9,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,9 +25,31 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import app.revanced.manager.ui.model.navigation.*
-import app.revanced.manager.ui.screen.*
-import app.revanced.manager.ui.screen.settings.*
+import app.revanced.manager.ui.model.navigation.AppSelector
+import app.revanced.manager.ui.model.navigation.ComplexParameter
+import app.revanced.manager.ui.model.navigation.Dashboard
+import app.revanced.manager.ui.model.navigation.InstalledApplicationInfo
+import app.revanced.manager.ui.model.navigation.Patcher
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
+import app.revanced.manager.ui.model.navigation.Settings
+import app.revanced.manager.ui.model.navigation.Update
+import app.revanced.manager.ui.screen.AppSelectorScreen
+import app.revanced.manager.ui.screen.DashboardScreen
+import app.revanced.manager.ui.screen.InstalledAppInfoScreen
+import app.revanced.manager.ui.screen.PatcherScreen
+import app.revanced.manager.ui.screen.PatchesSelectorScreen
+import app.revanced.manager.ui.screen.RequiredOptionsScreen
+import app.revanced.manager.ui.screen.SelectedAppInfoScreen
+import app.revanced.manager.ui.screen.SettingsScreen
+import app.revanced.manager.ui.screen.UpdateScreen
+import app.revanced.manager.ui.screen.settings.AboutSettingsScreen
+import app.revanced.manager.ui.screen.settings.AdvancedSettingsScreen
+import app.revanced.manager.ui.screen.settings.ContributorScreen
+import app.revanced.manager.ui.screen.settings.DeveloperOptionsScreen
+import app.revanced.manager.ui.screen.settings.DownloadsSettingsScreen
+import app.revanced.manager.ui.screen.settings.GeneralSettingsScreen
+import app.revanced.manager.ui.screen.settings.ImportExportSettingsScreen
+import app.revanced.manager.ui.screen.settings.LicensesScreen
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
@@ -89,6 +113,10 @@ private fun ReVancedManager(vm: MainViewModel) {
     NavHost(
         navController = navController,
         startDestination = Dashboard,
+        enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
+        exitTransition = { slideOutHorizontally(targetOffsetX = { -it / 3 }) },
+        popEnterTransition = { slideInHorizontally(initialOffsetX = { -it / 3 }) },
+        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
     ) {
         composable<Dashboard> {
             DashboardScreen(
