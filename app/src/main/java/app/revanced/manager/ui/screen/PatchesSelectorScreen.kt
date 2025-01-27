@@ -44,6 +44,8 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -57,6 +59,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -76,8 +79,8 @@ import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionBut
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
@@ -251,6 +254,8 @@ fun PatchesSelectorScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
         topBar = {
             SearchBar(
@@ -383,7 +388,8 @@ fun PatchesSelectorScreen(
                     )
                 }
             }
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         Column(
             modifier = Modifier

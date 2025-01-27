@@ -121,9 +121,10 @@ fun PatcherScreen(
     }
 
     AppScaffold(
-        topBar = {
+        topBar = { scrollBehavior ->
             AppTopBar(
                 title = stringResource(R.string.patcher),
+                scrollBehavior = scrollBehavior,
                 onBackClick = ::leaveScreen
             )
         },
