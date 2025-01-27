@@ -14,9 +14,9 @@ This documentation explains how to develop for [ReVanced Manager](https://github
 1. [🧑‍💻 Developing for ReVanced Manager](1_developing.md)
 2. [🎉 Submitting your Pull Request](2_submitting.md)
 
-## Store provider
+## Transparency
 
-1. [✒️ Verifying ReVanced Manager](3_verifying.md)
+1. [✒️ Verification and Authenticity of ReVanced Manager](3_verifying.md)
 
 ## ⏭️ Start here
 
