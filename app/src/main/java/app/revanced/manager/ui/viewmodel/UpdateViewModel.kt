@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageInstaller
-import androidx.annotation.StringRes
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -135,12 +134,12 @@ class UpdateViewModel(
         location.delete()
     }
 
-    enum class State(@StringRes val title: Int, val showCancel: Boolean = false) {
-        CAN_DOWNLOAD(R.string.update_available),
-        DOWNLOADING(R.string.downloading_manager_update, true),
-        CAN_INSTALL(R.string.ready_to_install_update, true),
-        INSTALLING(R.string.installing_manager_update),
-        FAILED(R.string.install_update_manager_failed),
-        SUCCESS(R.string.update_completed)
+    enum class State(val showCancel: Boolean = false) {
+        CAN_DOWNLOAD,
+        DOWNLOADING(true),
+        CAN_INSTALL(true),
+        INSTALLING,
+        FAILED,
+        SUCCESS
     }
 }

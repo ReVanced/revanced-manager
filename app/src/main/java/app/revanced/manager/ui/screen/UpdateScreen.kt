@@ -2,7 +2,6 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -68,7 +67,7 @@ fun UpdateScreen(
             )
         }
     ) { paddingValues ->
-        AnimatedVisibility(visible = vm.showInternetCheckDialog) {
+        AnimatedVisibility(vm.showInternetCheckDialog) {
             MeteredDownloadConfirmationDialog(
                 onDismiss = { vm.showInternetCheckDialog = false },
                 onDownloadAnyways = { vm.downloadUpdate(true) }
@@ -78,13 +77,17 @@ fun UpdateScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(vertical = 16.dp, horizontal = 24.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(32.dp)
+                .verticalScroll(rememberScrollState())
         ) {
+            if (vm.state in listOf(State.DOWNLOADING, State.CAN_INSTALL)) {
+                LinearProgressIndicator(
+                    progress = { vm.downloadProgress },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
             vm.releaseInfo?.let { changelog ->
                 Changelog(changelog)
-            } ?: Spacer(modifier = Modifier.weight(1f))
+            }
         }
     }
 }
@@ -122,6 +125,7 @@ private fun ColumnScope.Changelog(releaseInfo: ReVancedAsset) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
+            .padding(16.dp)
             .weight(1f)
             .verticalScroll(scrollState)
             .verticalFadingEdges(
@@ -163,12 +167,6 @@ private fun BottomAppBar(
                 .fillMaxWidth()
                 .windowInsetsPadding(WindowInsets.navigationBars)
         ) {
-            if (state == State.DOWNLOADING || state == State.CAN_INSTALL) {
-                LinearProgressIndicator(
-                    progress = { downloadData.downloadProgress },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -197,6 +195,13 @@ private fun BottomAppBar(
                         color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
+
+                    State.FAILED -> {
+
+                        Button(onClick = onDownloadClick) {
+                            Text(text = stringResource(R.string.try_again))
+                        }
+                    }
 
                     else -> {}
                 }
