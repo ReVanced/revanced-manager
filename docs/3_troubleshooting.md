@@ -36,8 +36,6 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 ## ⏭️ What's next
 
-The next page will guide you through troubleshooting ReVanced Manager.
-
 You have successfully finished the guide for on how to use ReVanced Manager.
 
 If you wish to review the Table of Content for how to use ReVanced Manager, feel free to do so.
