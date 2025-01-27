@@ -14,4 +14,3 @@ After patching an app, you may want to manage it. This page will guide you throu
 The next page will bring you back to the usage page.
 
 Continue: [🛠️ Usage](2_usage.md)
-
