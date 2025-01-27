@@ -8,7 +8,7 @@ The styling is based on https://kotlinlang.org/docs/coding-conventions.html
 
 ## Commit
 
-At ReVanced, we adopt a naming convention for commit called [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) so for example when your adding new feature you must add `feat: ` before the description of your commit.
+At ReVanced, we adopt a naming convention for commit called [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) so for example when you're adding a new feature you must add `feat: ` before the description of your commit.
 
 ## Building
 

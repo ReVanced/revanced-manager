@@ -105,7 +105,7 @@ See the guideline for reporting security vulnerability [here](/SECURITY.md)
 ## 🤚 I don't want to do any of that but I want to contribute either way
 
 You can still contribute by spreading positive word about us or if you'd like to sponsor us, checkout https://revanced.app/donate 
-to learn more on how to you can sponsor via GitHub, Open Collective and cryptocurrencies.
+to learn more about how you can sponsor via GitHub, Open Collective, and cryptocurrencies.
 
 ❤️ Thank you for considering contributing to ReVanced Manager,
 ReVanced

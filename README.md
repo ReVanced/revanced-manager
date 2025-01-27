@@ -80,7 +80,7 @@ Some of the features ReVanced Manager provides are:
 
 ## 🔽 Download
 
-You can get ReVanced Manager the most recent version of by downloading from 
+You can get the most recent version of ReVanced Manager by downloading from
 the [ReVanced site](https://revanced.app/download).
 
 Learn how to use ReVanced Manager by following the [documentation](/docs).
