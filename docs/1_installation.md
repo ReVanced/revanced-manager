@@ -5,8 +5,7 @@ refer to the [Prerequisites](0_prerequisites.md) if haven't already.
 
 ## 🪜 Installation steps
 
-1. Get the latest version of ReVanced Manager from 
-   the [ReVanced site][Official ReVanced Download].
+1. Get the latest version of ReVanced Manager from the [ReVanced site][Official ReVanced Download].
 2. Install ReVanced Manager
 
 ### ✒️ Verifying authenticity of ReVanced Manager
