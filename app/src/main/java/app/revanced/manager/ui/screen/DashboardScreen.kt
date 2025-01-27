@@ -171,11 +171,7 @@ fun DashboardScreen(
                             ) {
                                 BadgedBox(
                                     badge = {
-                                        Badge(
-                                            // A size value above 6.dp forces the Badge icon to be closer to the center, fixing a clipping issue
-                                            modifier = Modifier.size(7.dp),
-                                            containerColor = MaterialTheme.colorScheme.primary,
-                                        )
+                                        Badge(modifier = Modifier.size(6.dp))
                                     }
                                 ) {
                                     Icon(Icons.Outlined.Update, stringResource(R.string.update))
@@ -238,7 +234,9 @@ fun DashboardScreen(
                 }
             }
 
-            val showBatteryOptimizationsWarning by vm.showBatteryOptimizationsWarningFlow.collectAsStateWithLifecycle(false)
+            val showBatteryOptimizationsWarning by vm.showBatteryOptimizationsWarningFlow.collectAsStateWithLifecycle(
+                false
+            )
             Notifications(
                 if (!Aapt.supportsDevice()) {
                     {
