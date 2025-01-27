@@ -78,6 +78,7 @@ fun AdvancedSettingsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.advanced),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

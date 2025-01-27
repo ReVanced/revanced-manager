@@ -110,6 +110,7 @@ fun ImportExportSettingsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.import_export),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

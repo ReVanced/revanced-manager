@@ -64,6 +64,7 @@ fun DownloadsSettingsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.downloads),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {

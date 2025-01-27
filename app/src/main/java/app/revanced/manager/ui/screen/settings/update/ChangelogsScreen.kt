@@ -37,6 +37,7 @@ fun ChangelogsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.changelog),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

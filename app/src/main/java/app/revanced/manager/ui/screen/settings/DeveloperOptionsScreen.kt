@@ -30,6 +30,7 @@ fun DeveloperOptionsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.developer_options),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

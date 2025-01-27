@@ -75,6 +75,7 @@ fun RequiredOptionsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.required_options_screen),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

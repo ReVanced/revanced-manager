@@ -159,6 +159,7 @@ fun AppSelectorScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.select_app),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick,
                 actions = {
                     IconButton(onClick = { search = true }) {

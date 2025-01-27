@@ -60,6 +60,7 @@ fun GeneralSettingsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.general),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

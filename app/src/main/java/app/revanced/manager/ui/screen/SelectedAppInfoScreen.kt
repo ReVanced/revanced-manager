@@ -91,6 +91,7 @@ fun SelectedAppInfoScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.app_info),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

@@ -61,6 +61,7 @@ fun UpdateScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.update),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },

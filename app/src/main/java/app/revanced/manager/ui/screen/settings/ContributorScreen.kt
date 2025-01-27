@@ -62,6 +62,7 @@ fun ContributorScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.contributors),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
         },
