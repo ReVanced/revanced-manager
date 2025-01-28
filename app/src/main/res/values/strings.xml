@@ -418,5 +418,5 @@
     <string name="any_version">Any</string>
     <string name="never_show_again">Never show again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
-    <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
+    <string name="try_again">Try again</string>
 </resources>
