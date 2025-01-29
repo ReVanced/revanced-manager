@@ -34,9 +34,9 @@ ReVanced Manager has settings that can be configured to your liking.
 
   Location: `⚙️ Settings -> Import & export -> Signing`
 
-- ### 📄 Export, import or reset ReVanced Patches selection
+- ### 📄 Export, import or reset patch selection
 
-  Manage the ReVanced Patches selection. This is useful if you want to share your ReVanced Patches selection with others or reset it to the default selection.
+  Manage the ReVanced Patches selection. This is useful if you want to share your patch selection with others or reset it to the default selection.
 
   Location: `⚙️ Settings -> Import & export -> Patches`
 
