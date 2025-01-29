@@ -5,7 +5,6 @@ To use ReVanced Manager, certain requirements have to be met.
 ## 🤝 Requirements
 
 - Android device running Android 8.0 or higher
-- System that support running at least `arm64-v8a`, `armeabi-v7a`, `x86_64`, or `x86` application
 
 ### Optional Requirements
 
