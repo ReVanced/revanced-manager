@@ -16,7 +16,7 @@ ReVanced Manager has settings that can be configured to your liking.
 
   Location: `Patch bundles -> + Button`
 
-- ### 🧪 Experimental ReVanced Patches support
+- ### 🧪 Experimental patches
 
   Lift app version constraints from ReVanced Patches. This allows you to patch any version of an app, even if the patch is not explicitly compatible with it.
 
