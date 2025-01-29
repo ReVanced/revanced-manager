@@ -69,25 +69,27 @@ class ImportExportViewModel(
     }
 
     fun startKeystoreImport(content: Uri) = viewModelScope.launch {
-        val path = withContext(Dispatchers.IO) {
-            File.createTempFile("signing", "ks", app.cacheDir).toPath().also {
-                Files.copy(
-                    contentResolver.openInputStream(content)!!,
-                    it,
-                    StandardCopyOption.REPLACE_EXISTING
-                )
-            }
-        }
-
-        aliases.forEach { alias ->
-            knownPasswords.forEach { pass ->
-                if (tryKeystoreImport(alias, pass, path)) {
-                    return@launch
+        uiSafe(app, R.string.failed_to_import_keystore, "Failed to import keystore") {
+            val path = withContext(Dispatchers.IO) {
+                File.createTempFile("signing", "ks", app.cacheDir).toPath().also {
+                    Files.copy(
+                        contentResolver.openInputStream(content)!!,
+                        it,
+                        StandardCopyOption.REPLACE_EXISTING
+                    )
                 }
             }
-        }
 
-        keystoreImportPath = path
+            aliases.forEach { alias ->
+                knownPasswords.forEach { pass ->
+                    if (tryKeystoreImport(alias, pass, path)) {
+                        return@launch
+                    }
+                }
+            }
+
+            keystoreImportPath = path
+        }
     }
 
     fun cancelKeystoreImport() {

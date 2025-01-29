@@ -37,6 +37,7 @@ import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -86,8 +87,10 @@ fun ImportExportSettingsScreen(
             onDismissRequest = vm::cancelKeystoreImport,
             onSubmit = { cn, pass ->
                 vm.viewModelScope.launch {
-                    val result = vm.tryKeystoreImport(cn, pass)
-                    if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                    uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
+                        val result = vm.tryKeystoreImport(cn, pass)
+                        if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                    }
                 }
             }
         )
