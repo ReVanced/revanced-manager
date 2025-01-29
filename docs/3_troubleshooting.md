@@ -12,9 +12,9 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - 🥛 Out Of Memory error
 
-  This indicate that your device doesn't have enough memory to patch the app. Try patching on another device that's have more memory.
+  This indicates that your device is not giving ReVanced Manager enough memory to patch the app.
 
-  In the meantime there's a remedy fix by going to `⚙️ Settings -> Advanced -> toggle "Run Patcher in another process (experimental)"` on
+  Turning on  `⚙️ Settings -> Advanced -> toggle "Run Patcher in another process (experimental)"` may solve the issue.
 
 - ❗️ Error code `135`, `139` or `1` when patching the app
 
