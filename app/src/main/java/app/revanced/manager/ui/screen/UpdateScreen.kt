@@ -2,14 +2,16 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -17,11 +19,11 @@ import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.ui.component.AppTopBar
@@ -58,9 +59,15 @@ fun UpdateScreen(
                 title = stringResource(R.string.update),
                 onBackClick = onBackClick
             )
+        },
+        bottomBar = {
+            BottomAppBar(
+                vm.state, vm::downloadUpdate, vm::installUpdate, onBackClick,
+                DownloadData(vm.downloadProgress, vm.downloadedSize, vm.totalSize)
+            )
         }
     ) { paddingValues ->
-        AnimatedVisibility(visible = vm.showInternetCheckDialog) {
+        AnimatedVisibility(vm.showInternetCheckDialog) {
             MeteredDownloadConfirmationDialog(
                 onDismiss = { vm.showInternetCheckDialog = false },
                 onDownloadAnyways = { vm.downloadUpdate(true) }
@@ -70,20 +77,17 @@ fun UpdateScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(vertical = 16.dp, horizontal = 24.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(32.dp)
+                .verticalScroll(rememberScrollState())
         ) {
-            Header(
-                vm.state,
-                vm.releaseInfo,
-                DownloadData(vm.downloadProgress, vm.downloadedSize, vm.totalSize)
-            )
+            if (vm.state in listOf(State.DOWNLOADING, State.CAN_INSTALL)) {
+                LinearProgressIndicator(
+                    progress = { vm.downloadProgress },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
             vm.releaseInfo?.let { changelog ->
-                HorizontalDivider()
                 Changelog(changelog)
-            } ?: Spacer(modifier = Modifier.weight(1f))
-            Buttons(vm.state, vm::downloadUpdate, vm::installUpdate, onBackClick)
+            }
         }
     }
 }
@@ -117,62 +121,11 @@ private fun MeteredDownloadConfirmationDialog(
 }
 
 @Composable
-private fun Header(state: State, releaseInfo: ReVancedAsset?, downloadData: DownloadData) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text(
-            text = stringResource(state.title),
-            style = MaterialTheme.typography.headlineMedium
-        )
-        if (state == State.CAN_DOWNLOAD) {
-            Column {
-                Text(
-                    text = stringResource(
-                        id = R.string.current_version,
-                        BuildConfig.VERSION_NAME
-                    ),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                releaseInfo?.version?.let {
-                    Text(
-                        text = stringResource(
-                            R.string.new_version,
-                            it.replace("v", "")
-                        ),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        } else if (state == State.DOWNLOADING) {
-            LinearProgressIndicator(
-                progress = { downloadData.downloadProgress },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Text(
-                text =
-                "${downloadData.downloadedSize.div(1000000)} MB /  ${
-                    downloadData.totalSize.div(
-                        1000000
-                    )
-                } MB (${
-                    downloadData.downloadProgress.times(
-                        100
-                    ).toInt()
-                }%)",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
-    }
-}
-
-@Composable
 private fun ColumnScope.Changelog(releaseInfo: ReVancedAsset) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
+            .padding(16.dp)
             .weight(1f)
             .verticalScroll(scrollState)
             .verticalFadingEdges(
@@ -201,30 +154,57 @@ private fun ColumnScope.Changelog(releaseInfo: ReVancedAsset) {
 }
 
 @Composable
-private fun Buttons(
+private fun BottomAppBar(
     state: State,
     onDownloadClick: () -> Unit,
     onInstallClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    downloadData: DownloadData
 ) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        if (state.showCancel) {
-            TextButton(
-                onClick = onBackClick,
+    Surface(tonalElevation = 3.dp) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.navigationBars)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                Text(text = stringResource(R.string.cancel))
-            }
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        if (state == State.CAN_DOWNLOAD) {
-            Button(onClick = onDownloadClick) {
-                Text(text = stringResource(R.string.update))
-            }
-        } else if (state == State.CAN_INSTALL) {
-            Button(
-                onClick = onInstallClick
-            ) {
-                Text(text = stringResource(R.string.install_app))
+                if (state.showCancel) {
+                    TextButton(onClick = onBackClick) {
+                        Text(text = stringResource(R.string.cancel))
+                    }
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                when (state) {
+                    State.CAN_DOWNLOAD -> Button(onClick = onDownloadClick) {
+                        Text(text = stringResource(R.string.update))
+                    }
+
+                    State.CAN_INSTALL -> Button(onClick = onInstallClick) {
+                        Text(text = stringResource(R.string.install_app))
+                    }
+
+                    State.DOWNLOADING -> Text(
+                        text = "${downloadData.downloadedSize / 1_000_000} MB / ${downloadData.totalSize / 1_000_000} MB (${(downloadData.downloadProgress * 100).toInt()}%)",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.outline,
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+
+                    State.FAILED -> {
+
+                        Button(onClick = onDownloadClick) {
+                            Text(text = stringResource(R.string.try_again))
+                        }
+                    }
+
+                    else -> {}
+                }
             }
         }
     }
