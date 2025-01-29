@@ -28,6 +28,7 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (dev)")
+            isPseudoLocalesEnabled = true
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
@@ -43,6 +44,8 @@ android {
                 applicationIdSuffix = ".debug"
                 resValue("string", "app_name", "ReVanced Manager Debug")
                 signingConfig = signingConfigs.getByName("debug")
+
+                isPseudoLocalesEnabled = true
             }
 
             buildConfigField("long", "BUILD_ID", "0L")
