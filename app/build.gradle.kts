@@ -13,7 +13,7 @@ plugins {
 android {
     namespace = "app.revanced.manager"
     compileSdk = 35
-    buildToolsVersion = "35.0.0"
+    buildToolsVersion = "35.0.1"
 
     defaultConfig {
         applicationId = "app.revanced.manager"
