@@ -108,14 +108,19 @@ class UpdateViewModel(
                 val extra =
                     intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
 
-                if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
-                    app.toast(app.getString(R.string.install_app_success))
-                    state = State.SUCCESS
-                } else {
-                    state = State.FAILED
-                    // TODO: handle install fail with a popup
-                    installError = extra
-                    app.toast(app.getString(R.string.install_app_fail, extra))
+                when(pmStatus) {
+                    PackageInstaller.STATUS_SUCCESS -> {
+                        app.toast(app.getString(R.string.install_app_success))
+                        state = State.SUCCESS
+                    }
+                    PackageInstaller.STATUS_FAILURE_ABORTED -> {
+                        state = State.CAN_INSTALL
+                    }
+                    else -> {
+                        app.toast(app.getString(R.string.install_app_fail, extra))
+                        installError = extra
+                        state = State.FAILED
+                    }
                 }
             }
         }
