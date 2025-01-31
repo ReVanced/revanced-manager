@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
@@ -21,13 +24,17 @@ fun DeveloperOptionsScreen(
     onBackClick: () -> Unit,
     vm: DeveloperOptionsViewModel = koinViewModel()
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.developer_options),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             GroupHeader(stringResource(R.string.patch_bundles_section))
