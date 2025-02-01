@@ -58,13 +58,13 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         private set
 
     val allowIncompatiblePatches =
-        get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
+        get<PreferencesManager>().allowIncompatibleMixing.getBlocking()
     val bundlesFlow =
         get<PatchBundleRepository>().bundleInfoFlow(packageName, input.app.version)
 
     init {
         viewModelScope.launch {
-            universalPatchWarningEnabled = !prefs.disableUniversalPatchWarning.get()
+            universalPatchWarningEnabled = !prefs.allowUniversalPatch.get()
 
             if (prefs.disableSelectionWarning.get()) {
                 selectionWarningEnabled = false

@@ -44,7 +44,13 @@ fun DeveloperOptionsScreen(
             )
             SettingsListItem(
                 headlineContent = stringResource(R.string.patch_bundles_reset),
-                modifier = Modifier.clickable(onClick = vm::redownloadBundles)
+                modifier = Modifier.clickable(onClick = vm::resetBundles)
+            )
+
+            GroupHeader(stringResource(R.string.testing))
+            SettingsListItem(
+                headlineContent = stringResource(R.string.disable_safeguard),
+                modifier = Modifier.clickable(onClick = vm::disableSafeguard)
             )
         }
     }

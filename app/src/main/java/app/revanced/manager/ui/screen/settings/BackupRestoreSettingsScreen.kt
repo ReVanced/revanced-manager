@@ -32,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -54,7 +55,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ImportExportSettingsScreen(
+fun BackupRestoreSettingsScreen(
     onBackClick: () -> Unit,
     vm: ImportExportViewModel = koinViewModel()
 ) {
@@ -100,7 +101,7 @@ fun ImportExportSettingsScreen(
                 vm.viewModelScope.launch {
                     uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
                         val result = vm.tryKeystoreImport(cn, pass)
-                        if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                        if (!result) context.toast(context.getString(R.string.restore_keystore_wrong_credentials))
                     }
                 }
             }
@@ -112,7 +113,7 @@ fun ImportExportSettingsScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.import_export),
+                title = stringResource(R.string.backup_restore),
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
@@ -147,63 +148,89 @@ fun ImportExportSettingsScreen(
                 }
             }
 
-            GroupHeader(stringResource(R.string.import_))
-            GroupItem(
-                onClick = {
-                    importKeystoreLauncher.launch("*/*")
-                },
-                headline = R.string.import_keystore,
-                description = R.string.import_keystore_description
-            )
-            GroupItem(
-                onClick = vm::importSelection,
-                headline = R.string.import_patch_selection,
-                description = R.string.import_patch_selection_description
-            )
-
-            GroupHeader(stringResource(R.string.export))
+            GroupHeader(stringResource(R.string.keystore))
             GroupItem(
                 onClick = {
                     if (!vm.canExport()) {
-                        context.toast(context.getString(R.string.export_keystore_unavailable))
+                        context.toast(context.getString(R.string.backup_keystore_unavailable))
                         return@GroupItem
                     }
                     exportKeystoreLauncher.launch("Manager.keystore")
                 },
-                headline = R.string.export_keystore,
-                description = R.string.export_keystore_description
+                headline = R.string.backup,
+                description = R.string.backup_keystore_description
             )
             GroupItem(
-                onClick = vm::exportSelection,
-                headline = R.string.export_patch_selection,
-                description = R.string.export_patch_selection_description
+                onClick = {
+                    importKeystoreLauncher.launch("*/*")
+                },
+                headline = R.string.restore,
+                description = R.string.restore_keystore_description
             )
-
-            GroupHeader(stringResource(R.string.reset))
             GroupItem(
                 onClick = vm::regenerateKeystore,
-                headline = R.string.regenerate_keystore,
+                headline = {
+                    Text(
+                        stringResource(R.string.regenerate_keystore),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                },
                 description = R.string.regenerate_keystore_description
+            )
+
+            GroupHeader(stringResource(R.string.patch_selection))
+            GroupItem(
+                onClick = vm::exportSelection,
+                headline = R.string.backup,
+                description = R.string.restore_patch_selection_description
+            )
+            GroupItem(
+                onClick = vm::importSelection,
+                headline = R.string.restore,
+                description = R.string.backup_patch_selection_description
             )
             GroupItem(
                 onClick = vm::resetSelection, // TODO: allow resetting selection for specific bundle or package name.
-                headline = R.string.reset_patch_selection,
+                headline = {
+                    Text(
+                        stringResource(R.string.reset),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                },
                 description = R.string.reset_patch_selection_description
             )
+
+            GroupHeader(stringResource(R.string.patch_options))
+            // TODO: patch options import/export.
             GroupItem(
-                onClick = vm::resetOptions, // TODO: patch options import/export.
-                headline = R.string.patch_options_reset_all,
+                onClick = vm::resetOptions,
+                headline = {
+                    Text(
+                        stringResource(R.string.reset),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                },
                 description = R.string.patch_options_reset_all_description,
             )
             GroupItem(
                 onClick = { showPackageSelector = true },
-                headline = R.string.patch_options_reset_package,
+                headline = {
+                    Text(
+                        stringResource(R.string.patch_options_reset_package),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                },
                 description = R.string.patch_options_reset_package_description
             )
             if (patchBundles.size > 1) {
                 GroupItem(
                     onClick = { showBundleSelector = true },
-                    headline = R.string.patch_options_reset_bundle,
+                    headline = {
+                        Text(
+                            stringResource(R.string.patch_options_reset_bundle),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    },
                     description = R.string.patch_options_reset_bundle_description,
                 )
             }
@@ -283,6 +310,19 @@ private fun GroupItem(
 }
 
 @Composable
+private fun GroupItem(
+    onClick: () -> Unit,
+    headline: @Composable () -> Unit,
+    @StringRes description: Int? = null
+) {
+    SettingsListItem(
+        modifier = Modifier.clickable { onClick() },
+        headlineContent = headline,
+        supportingContent = description?.let { stringResource(it) }
+    )
+}
+
+@Composable
 fun KeystoreCredentialsDialog(
     onDismissRequest: () -> Unit,
     onSubmit: (String, String) -> Unit
@@ -298,7 +338,7 @@ fun KeystoreCredentialsDialog(
                     onSubmit(cn, pass)
                 }
             ) {
-                Text(stringResource(R.string.import_keystore_dialog_button))
+                Text(stringResource(R.string.restore_keystore_dialog_button))
             }
         },
         dismissButton = {
@@ -311,7 +351,7 @@ fun KeystoreCredentialsDialog(
         },
         title = {
             Text(
-                text = stringResource(R.string.import_keystore_dialog_title),
+                text = stringResource(R.string.restore_keystore_dialog_title),
                 style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -322,19 +362,19 @@ fun KeystoreCredentialsDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.import_keystore_dialog_description),
+                    text = stringResource(R.string.restore_keystore_dialog_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 OutlinedTextField(
                     value = cn,
                     onValueChange = { cn = it },
-                    label = { Text(stringResource(R.string.import_keystore_dialog_alias_field)) }
+                    label = { Text(stringResource(R.string.restore_keystore_dialog_alias_field)) }
                 )
                 PasswordField(
                     value = pass,
                     onValueChange = { pass = it },
-                    label = { Text(stringResource(R.string.import_keystore_dialog_password_field)) }
+                    label = { Text(stringResource(R.string.restore_keystore_dialog_password_field)) }
                 )
             }
         }

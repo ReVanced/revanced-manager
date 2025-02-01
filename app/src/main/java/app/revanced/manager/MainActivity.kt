@@ -48,7 +48,7 @@ import app.revanced.manager.ui.screen.settings.ContributorScreen
 import app.revanced.manager.ui.screen.settings.DeveloperOptionsScreen
 import app.revanced.manager.ui.screen.settings.DownloadsSettingsScreen
 import app.revanced.manager.ui.screen.settings.GeneralSettingsScreen
-import app.revanced.manager.ui.screen.settings.ImportExportSettingsScreen
+import app.revanced.manager.ui.screen.settings.BackupRestoreSettingsScreen
 import app.revanced.manager.ui.screen.settings.LicensesScreen
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
@@ -290,7 +290,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             }
 
             composable<Settings.ImportExport> {
-                ImportExportSettingsScreen(onBackClick = navController::popBackStack)
+                BackupRestoreSettingsScreen(onBackClick = navController::popBackStack)
             }
 
             composable<Settings.About> {

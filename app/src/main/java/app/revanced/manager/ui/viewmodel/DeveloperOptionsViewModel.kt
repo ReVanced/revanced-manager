@@ -24,4 +24,10 @@ class DeveloperOptionsViewModel(
     fun resetBundles() = viewModelScope.launch {
         patchBundleRepository.reset()
     }
+
+    fun disableSafeguard() = viewModelScope.launch {
+        prefs.allowIncompatibleMixing.update(true)
+        prefs.allowChangingPatchSelection.update(true)
+        prefs.allowUniversalPatch.update(true)
+    }
 }

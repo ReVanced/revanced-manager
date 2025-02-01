@@ -76,7 +76,7 @@ class PatchBundleRepository(
 
     suspend fun isVersionAllowed(packageName: String, version: String) =
         withContext(Dispatchers.Default) {
-            if (!prefs.suggestedVersionSafeguard.get()) return@withContext true
+            if (!prefs.allowIncompatibleMixing.get()) return@withContext true
 
             val suggestedVersion = suggestedVersions.first()[packageName] ?: return@withContext true
             suggestedVersion == version

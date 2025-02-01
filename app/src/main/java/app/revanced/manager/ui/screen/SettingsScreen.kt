@@ -22,18 +22,13 @@ private val settingsSections = listOf(
         Icons.Outlined.Settings
     ) to Settings.General,
     Triple(
-        R.string.updates,
-        R.string.updates_description,
-        Icons.Outlined.Update
-    ) to Settings.Updates,
-    Triple(
-        R.string.downloads,
-        R.string.downloads_description,
+        R.string.extensions,
+        R.string.extensions_description,
         Icons.Outlined.Download
     ) to Settings.Downloads,
     Triple(
-        R.string.import_export,
-        R.string.import_export_description,
+        R.string.backup_restore,
+        R.string.backup_restore_description,
         Icons.Outlined.SwapVert
     ) to Settings.ImportExport,
     Triple(

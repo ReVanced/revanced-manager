@@ -47,7 +47,6 @@ android {
 
                 isPseudoLocalesEnabled = true
             }
-
             buildConfigField("long", "BUILD_ID", "0L")
         }
     }

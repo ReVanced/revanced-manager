@@ -124,7 +124,7 @@ class MainViewModel(
             prefs.api.update(api.removeSuffix("/"))
         }
         settings.experimentalPatchesEnabled?.let { allowExperimental ->
-            prefs.disablePatchVersionCompatCheck.update(allowExperimental)
+            prefs.allowIncompatibleMixing.update(allowExperimental)
         }
         settings.patchesAutoUpdate?.let { autoUpdate ->
             with(patchBundleRepository) {

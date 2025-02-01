@@ -103,7 +103,7 @@ class ImportExportViewModel(
     private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
         path.inputStream().use { stream ->
             if (keystoreManager.import(cn, pass, stream)) {
-                app.toast(app.getString(R.string.import_keystore_success))
+                app.toast(app.getString(R.string.restore_keystore_success))
                 cancelKeystoreImport()
                 return true
             }
@@ -122,7 +122,7 @@ class ImportExportViewModel(
 
     fun exportKeystore(target: Uri) = viewModelScope.launch {
         keystoreManager.export(contentResolver.openOutputStream(target)!!)
-        app.toast(app.getString(R.string.export_keystore_success))
+        app.toast(app.getString(R.string.backup_keystore_success))
     }
 
     fun regenerateKeystore() = viewModelScope.launch {
@@ -171,7 +171,7 @@ class ImportExportViewModel(
         override val activityArg = JSON_MIMETYPE
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
-            R.string.import_patch_selection_fail,
+            R.string.restore_patch_selection_fail,
             "Failed to restore patch selection"
         ) {
             val selection = withContext(Dispatchers.IO) {
@@ -181,7 +181,7 @@ class ImportExportViewModel(
             }
 
             selectionRepository.import(bundleUid, selection)
-            app.toast(app.getString(R.string.import_patch_selection_success))
+            app.toast(app.getString(R.string.restore_patch_selection_success))
         }
     }
 
@@ -190,7 +190,7 @@ class ImportExportViewModel(
         override val activityArg = "selection.json"
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
-            R.string.export_patch_selection_fail,
+            R.string.backup_patch_selection_fail,
             "Failed to backup patch selection"
         ) {
             val selection = selectionRepository.export(bundleUid)
@@ -200,7 +200,7 @@ class ImportExportViewModel(
                     Json.Default.encodeToStream(selection, it)
                 }
             }
-            app.toast(app.getString(R.string.export_patch_selection_success))
+            app.toast(app.getString(R.string.backup_patch_selection_success))
         }
     }
 
