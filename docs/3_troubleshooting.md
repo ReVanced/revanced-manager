@@ -10,11 +10,19 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
   An existing installation of the app you're trying to patch is conflicting with the patched app. Uninstall the existing app before installing the patched app.
 
+- 🥛 Out Of Memory error
+
+  This indicates that your device is not giving ReVanced Manager enough memory to patch the app.
+
+  Turning on  `⚙️ Settings -> Advanced -> toggle "Run Patcher in another process (experimental)"` may solve the issue.
+
 - ❗️ Error code `135`, `139` or `1` when patching the app
 
   Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
 
-  Alternatively, you can use [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the app.
+  Alternatively, you can use [ReVanced CLI][ReVanced CLI GitHub]) to patch the app.
+
+  [ReVanced CLI GitHub]: https://github.com/revanced/revanced-cli
 
 - 🚫 Non-root install is not possible with the current patches selection
 
@@ -22,10 +30,14 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - 🚨 Patched app crashes on launch
 
-  Select the **Default** button when choosing patches.
+  Try selecting the **Default** button when choosing patches, if the patched app still failed, file an issue at [ReVanced Patches][ReVanced Patches GitHub].
+
+  [ReVanced Patches GitHub]: https://github.com/revanced/revanced-patches
 
 ## ⏭️ What's next
 
-The next page will teach you how to build ReVanced Manager from source.
+You have successfully finished the guide for on how to use ReVanced Manager.
 
-Continue: [🔨 Building from source](4_building.md)
+If you wish to review the Table of Content for how to use ReVanced Manager, feel free to do so.
+
+Continue: [💊 ReVanced Manager](/docs/README.md)
