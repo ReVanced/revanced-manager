@@ -1,7 +1,7 @@
 [versions]
 revanced-patcher = "21.0.0"
 revanced-library = "3.0.2"
-desugar_jdk_libs = "2.1.3"
+desugar_jdk_libs = "2.1.4"
 
 [libraries]
 revanced-patcher = { module = "app.revanced:revanced-patcher", version.ref = "revanced-patcher" }
