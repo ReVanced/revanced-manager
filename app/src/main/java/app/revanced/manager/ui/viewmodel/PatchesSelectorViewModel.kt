@@ -66,7 +66,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         viewModelScope.launch {
             universalPatchWarningEnabled = !prefs.allowUniversalPatch.get()
 
-            if (prefs.disableSelectionWarning.get()) {
+            if (prefs.allowChangingPatchSelection.get()) {
                 selectionWarningEnabled = false
                 return@launch
             }

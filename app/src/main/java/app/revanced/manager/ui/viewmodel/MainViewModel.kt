@@ -137,8 +137,8 @@ class MainViewModel(
                 updateCheck()
             }
         }
-        settings.patchesChangeEnabled?.let { disableSelectionWarning ->
-            prefs.disableSelectionWarning.update(disableSelectionWarning)
+        settings.patchesChangeEnabled?.let { allowChangingPatchSelection ->
+            prefs.allowChangingPatchSelection.update(allowChangingPatchSelection)
         }
         settings.keystore?.let { keystore ->
             val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
