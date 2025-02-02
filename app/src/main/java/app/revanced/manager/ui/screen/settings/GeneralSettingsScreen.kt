@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Scaffold
@@ -35,6 +36,7 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.GeneralSettingsViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -42,16 +44,17 @@ import org.koin.compose.koinInject
 @Composable
 fun GeneralSettingsScreen(
     onBackClick: () -> Unit,
-    viewModel: GeneralSettingsViewModel = koinViewModel()
+    vm: GeneralSettingsViewModel = koinViewModel(),
+    onUpdateClick: () -> Unit,
 ) {
-    val prefs = viewModel.prefs
-    val coroutineScope = viewModel.viewModelScope
+    val prefs = vm.prefs
+    val coroutineScope = vm.viewModelScope
     var showThemePicker by rememberSaveable { mutableStateOf(false) }
 
     if (showThemePicker) {
         ThemePicker(
             onDismiss = { showThemePicker = false },
-            onConfirm = { viewModel.setTheme(it) }
+            onConfirm = { vm.setTheme(it) }
         )
     }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -76,10 +79,10 @@ fun GeneralSettingsScreen(
             val theme by prefs.theme.getAsState()
             SettingsListItem(
                 modifier = Modifier.clickable { showThemePicker = true },
-                headlineContent = stringResource(R.string.theme),
-                supportingContent = stringResource(R.string.theme_description),
+                headlineContent = stringResource(R.string.theme_mode),
+                supportingContent = stringResource(R.string.theme_mode_description),
                 trailingContent = {
-                    FilledTonalButton(
+                    Button (
                         onClick = {
                             showThemePicker = true
                         }
@@ -92,9 +95,22 @@ fun GeneralSettingsScreen(
                 BooleanItem(
                     preference = prefs.dynamicColor,
                     coroutineScope = coroutineScope,
-                    headline = R.string.dynamic_color,
-                    description = R.string.dynamic_color_description
+                    headline = R.string.personalized_color,
+                    description = R.string.personalized_color_description
                 )
+            }
+
+            GroupHeader(stringResource(R.string.update))
+            BooleanItem(
+                preference = vm.managerAutoUpdates,
+                headline = R.string.check_for_update,
+                description = R.string.check_for_update_auto_description
+            )
+            FilledTonalButton (
+                modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+                onClick = onUpdateClick
+            ) {
+                Text(stringResource(R.string.check_for_update))
             }
         }
     }
@@ -110,7 +126,7 @@ private fun ThemePicker(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.theme)) },
+        title = { Text(stringResource(R.string.theme_mode)) },
         text = {
             Column {
                 Theme.entries.forEach {

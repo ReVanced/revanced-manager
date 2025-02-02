@@ -27,6 +27,7 @@ class AdvancedSettingsViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
+    val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
     val debugLogFileName: String
         get() {
             val time = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now())
@@ -34,7 +35,7 @@ class AdvancedSettingsViewModel(
             return "revanced-manager_logcat_$time"
         }
 
-    fun setApiUrl(value: String) = viewModelScope.launch(Dispatchers.Default) {
+    fun setApiSource(value: String) = viewModelScope.launch(Dispatchers.Default) {
         if (value == prefs.api.get()) return@launch
 
         prefs.api.update(value)

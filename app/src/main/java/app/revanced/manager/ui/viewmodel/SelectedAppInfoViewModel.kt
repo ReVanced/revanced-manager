@@ -30,7 +30,6 @@ import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderData
-import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
@@ -118,7 +117,7 @@ class SelectedAppInfoViewModel(
     }
 
     val requiredVersion = combine(
-        prefs.suggestedVersionSafeguard.flow,
+        prefs.allowIncompatibleMixing.flow,
         bundleRepository.suggestedVersions
     ) { suggestedVersionSafeguard, suggestedVersions ->
         if (!suggestedVersionSafeguard) return@combine null
@@ -152,7 +151,7 @@ class SelectedAppInfoViewModel(
 
         // Try to get the previous selection if customization is enabled.
         viewModelScope.launch {
-            if (!prefs.disableSelectionWarning.get()) return@launch
+            if (!prefs.allowChangingPatchSelection.get()) return@launch
 
             val previous = selectionRepository.getSelection(packageName)
             if (previous.values.sumOf { it.size } == 0) return@launch
@@ -275,7 +274,7 @@ class SelectedAppInfoViewModel(
         )
 
     suspend fun getPatcherParams(): Patcher.ViewModelParams {
-        val allowUnsupported = prefs.disablePatchVersionCompatCheck.get()
+        val allowUnsupported = prefs.allowIncompatibleMixing.get()
         val bundles = bundleInfoFlow.first()
         return Patcher.ViewModelParams(
             selectedApp,

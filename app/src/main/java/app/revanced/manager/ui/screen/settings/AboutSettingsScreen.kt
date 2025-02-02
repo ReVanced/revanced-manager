@@ -51,8 +51,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AboutSettingsScreen(
     onBackClick: () -> Unit,
+    onChangelogClick: () -> Unit,
     navigate: (Settings.Destination) -> Unit,
-    viewModel: AboutViewModel = koinViewModel()
+    vm: AboutViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     // painterResource() is broken on release builds for some reason.
@@ -60,11 +61,11 @@ fun AboutSettingsScreen(
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
     })
 
-    val (preferredSocials, socials) = remember(viewModel.socials) {
-        viewModel.socials.partition(ReVancedSocial::preferred)
+    val (preferredSocials, socials) = remember(vm.socials) {
+        vm.socials.partition(ReVancedSocial::preferred)
     }
 
-    val preferredSocialButtons = remember(preferredSocials, viewModel.donate, viewModel.contact) {
+    val preferredSocialButtons = remember(preferredSocials, vm.donate, vm.contact) {
         preferredSocials.map {
             Triple(
                 getSocialIcon(it.name),
@@ -74,7 +75,7 @@ fun AboutSettingsScreen(
                 }
             )
         } + listOfNotNull(
-            viewModel.donate?.let {
+            vm.donate?.let {
                 Triple(
                     Icons.Outlined.FavoriteBorder,
                     context.getString(R.string.donate),
@@ -83,7 +84,7 @@ fun AboutSettingsScreen(
                     }
                 )
             },
-            viewModel.contact?.let {
+            vm.contact?.let {
                 Triple(
                     Icons.Outlined.MailOutline,
                     context.getString(R.string.contact),
@@ -108,11 +109,18 @@ fun AboutSettingsScreen(
     }
 
     val listItems = listOfNotNull(
-        Triple(stringResource(R.string.submit_feedback),
+        Triple(
+            stringResource(R.string.changelog),
+            stringResource(R.string.changelog_description),
+            third = { onChangelogClick }
+        ),
+        Triple(
+            stringResource(R.string.submit_feedback),
             stringResource(R.string.submit_feedback_description),
             third = {
                 context.openUrl("https://github.com/ReVanced/revanced-manager/issues/new/choose")
-            }),
+            },
+        ),
         Triple(
             stringResource(R.string.contributors),
             stringResource(R.string.contributors_description),

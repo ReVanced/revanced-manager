@@ -48,10 +48,9 @@ import app.revanced.manager.ui.screen.settings.ContributorScreen
 import app.revanced.manager.ui.screen.settings.DeveloperOptionsScreen
 import app.revanced.manager.ui.screen.settings.DownloadsSettingsScreen
 import app.revanced.manager.ui.screen.settings.GeneralSettingsScreen
-import app.revanced.manager.ui.screen.settings.ImportExportSettingsScreen
+import app.revanced.manager.ui.screen.settings.BackupRestoreSettingsScreen
 import app.revanced.manager.ui.screen.settings.LicensesScreen
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
-import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
@@ -270,32 +269,29 @@ private fun ReVancedManager(vm: MainViewModel) {
             }
 
             composable<Settings.General> {
-                GeneralSettingsScreen(onBackClick = navController::popBackStack)
+                GeneralSettingsScreen(
+                    onBackClick = navController::popBackStack,
+                    onUpdateClick = { navController.navigate(Update()) }
+                )
             }
 
             composable<Settings.Advanced> {
                 AdvancedSettingsScreen(onBackClick = navController::popBackStack)
             }
 
-            composable<Settings.Updates> {
-                UpdatesSettingsScreen(
-                    onBackClick = navController::popBackStack,
-                    onChangelogClick = { navController.navigate(Settings.Changelogs) },
-                    onUpdateClick = { navController.navigate(Update()) }
-                )
-            }
 
             composable<Settings.Downloads> {
                 DownloadsSettingsScreen(onBackClick = navController::popBackStack)
             }
 
             composable<Settings.ImportExport> {
-                ImportExportSettingsScreen(onBackClick = navController::popBackStack)
+                BackupRestoreSettingsScreen(onBackClick = navController::popBackStack)
             }
 
             composable<Settings.About> {
                 AboutSettingsScreen(
                     onBackClick = navController::popBackStack,
+                    onChangelogClick = { navController.navigate(Settings.Changelogs) },
                     navigate = navController::navigate
                 )
             }

@@ -53,22 +53,22 @@ import java.security.MessageDigest
 @Composable
 fun DownloadsSettingsScreen(
     onBackClick: () -> Unit,
-    viewModel: DownloadsViewModel = koinViewModel()
+    vm: DownloadsViewModel = koinViewModel()
 ) {
     val pullRefreshState = rememberPullToRefreshState()
-    val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
-    val pluginStates by viewModel.downloaderPluginStates.collectAsStateWithLifecycle()
+    val downloadedApps by vm.downloadedApps.collectAsStateWithLifecycle(emptyList())
+    val pluginStates by vm.downloaderPluginStates.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.downloads),
+                title = stringResource(R.string.extensions),
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick,
                 actions = {
-                    if (viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { viewModel.deleteApps() }) {
+                    if (vm.appSelection.isNotEmpty()) {
+                        IconButton(onClick = { vm.deleteApps() }) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }
@@ -86,7 +86,7 @@ fun DownloadsSettingsScreen(
         ) {
             PullToRefreshDefaults.Indicator(
                 state = pullRefreshState,
-                isRefreshing = viewModel.isRefreshingPlugins
+                isRefreshing = vm.isRefreshingPlugins
             )
         }
 
@@ -95,9 +95,9 @@ fun DownloadsSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .pullToRefresh(
-                    isRefreshing = viewModel.isRefreshingPlugins,
+                    isRefreshing = vm.isRefreshingPlugins,
                     state = pullRefreshState,
-                    onRefresh = viewModel::refreshPlugins
+                    onRefresh = vm::refreshPlugins
                 )
         ) {
             item {
@@ -115,7 +115,7 @@ fun DownloadsSettingsScreen(
 
                     val packageInfo =
                         remember(packageName) {
-                            viewModel.pm.getPackageInfo(
+                            vm.pm.getPackageInfo(
                                 packageName
                             )
                         } ?: return@item
@@ -124,7 +124,7 @@ fun DownloadsSettingsScreen(
                         val signature =
                             remember(packageName) {
                                 val androidSignature =
-                                    viewModel.pm.getSignature(packageName)
+                                    vm.pm.getSignature(packageName)
                                 val hash = MessageDigest.getInstance("SHA-256")
                                     .digest(androidSignature.toByteArray())
                                 hash.toHexString(format = HexFormat.UpperCase)
@@ -140,7 +140,7 @@ fun DownloadsSettingsScreen(
                                 ),
                                 onDismiss = ::dismiss,
                                 onConfirm = {
-                                    viewModel.revokePluginTrust(packageName)
+                                    vm.revokePluginTrust(packageName)
                                     dismiss()
                                 }
                             )
@@ -161,7 +161,7 @@ fun DownloadsSettingsScreen(
                                 ),
                                 onDismiss = ::dismiss,
                                 onConfirm = {
-                                    viewModel.trustPlugin(packageName)
+                                    vm.trustPlugin(packageName)
                                     dismiss()
                                 }
                             )
@@ -201,17 +201,17 @@ fun DownloadsSettingsScreen(
                 GroupHeader(stringResource(R.string.downloaded_apps))
             }
             items(downloadedApps, key = { it.packageName to it.version }) { app ->
-                val selected = app in viewModel.appSelection
+                val selected = app in vm.appSelection
 
                 SettingsListItem(
-                    modifier = Modifier.clickable { viewModel.toggleApp(app) },
+                    modifier = Modifier.clickable { vm.toggleApp(app) },
                     headlineContent = app.packageName,
                     leadingContent = (@Composable {
                         HapticCheckbox(
                             checked = selected,
-                            onCheckedChange = { viewModel.toggleApp(app) }
+                            onCheckedChange = { vm.toggleApp(app) }
                         )
-                    }).takeIf { viewModel.appSelection.isNotEmpty() },
+                    }).takeIf { vm.appSelection.isNotEmpty() },
                     supportingContent = app.version,
                     tonalElevation = if (selected) 8.dp else 0.dp
                 )

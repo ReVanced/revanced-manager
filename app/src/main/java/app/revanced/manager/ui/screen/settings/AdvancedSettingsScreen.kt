@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Api
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -89,71 +90,79 @@ fun AdvancedSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            GroupHeader(stringResource(R.string.manager))
+            val apiSource by vm.prefs.api.getAsState()
+            var showApiSourceDialog by rememberSaveable { mutableStateOf(false) }
 
-            val apiUrl by vm.prefs.api.getAsState()
-            var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
-
-            if (showApiUrlDialog) {
-                APIUrlDialog(
-                    currentUrl = apiUrl,
+            if (showApiSourceDialog) {
+                APISourceDialog(
+                    currentUrl = apiSource,
                     defaultUrl = vm.prefs.api.default,
                     onSubmit = {
-                        showApiUrlDialog = false
-                        it?.let(vm::setApiUrl)
+                        showApiSourceDialog = false
+                        it?.let(vm::setApiSource)
                     }
                 )
             }
-            SettingsListItem(
-                headlineContent = stringResource(R.string.api_url),
-                supportingContent = stringResource(R.string.api_url_description),
-                modifier = Modifier.clickable {
-                    showApiUrlDialog = true
-                }
-            )
 
-            GroupHeader(stringResource(R.string.patcher))
-            BooleanItem(
-                preference = vm.prefs.useProcessRuntime,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.process_runtime,
-                description = R.string.process_runtime_description,
-            )
+            GroupHeader(stringResource(R.string.revanced_patcher))
             IntegerItem(
                 preference = vm.prefs.patcherProcessMemoryLimit,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.process_runtime_memory_limit,
-                description = R.string.process_runtime_memory_limit_description,
+                description = vm.prefs.patcherProcessMemoryLimit.getAsState().value,
             )
 
-            GroupHeader(stringResource(R.string.safeguards))
-            SafeguardBooleanItem(
-                preference = vm.prefs.disablePatchVersionCompatCheck,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.patch_compat_check,
-                description = R.string.patch_compat_check_description,
-                confirmationText = R.string.patch_compat_check_confirmation
+            GroupHeader(stringResource(R.string.manager))
+            SettingsListItem(
+                headlineContent = stringResource(R.string.api_source),
+                supportingContent = apiSource,
+                modifier = Modifier.clickable {
+                    showApiSourceDialog = true
+                },
+                trailingContent = {
+                    IconButton(onClick = { showApiSourceDialog = true }) {
+                        Icon(
+                            Icons.Outlined.Edit,
+                            contentDescription = stringResource(R.string.edit)
+                        )
+                    }
+                }
             )
             SafeguardBooleanItem(
-                preference = vm.prefs.disableUniversalPatchWarning,
+                preference = vm.prefs.allowIncompatibleMixing,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.allow_compatibility_mixing,
+                description = R.string.allow_compatibility_mixing_description,
+                confirmationText = R.string.allow_compatibility_mixing_confirmation
+            )
+            SafeguardBooleanItem(
+                preference = vm.prefs.allowUniversalPatch,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.universal_patches_safeguard,
                 description = R.string.universal_patches_safeguard_description,
                 confirmationText = R.string.universal_patches_safeguard_confirmation
             )
             SafeguardBooleanItem(
-                preference = vm.prefs.suggestedVersionSafeguard,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.suggested_version_safeguard,
-                description = R.string.suggested_version_safeguard_description,
-                confirmationText = R.string.suggested_version_safeguard_confirmation
-            )
-            SafeguardBooleanItem(
-                preference = vm.prefs.disableSelectionWarning,
+                preference = vm.prefs.allowChangingPatchSelection,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_selection_safeguard,
                 description = R.string.patch_selection_safeguard_description,
                 confirmationText = R.string.patch_selection_safeguard_confirmation
+            )
+
+            GroupHeader(stringResource(R.string.update))
+            BooleanItem(
+                preference = vm.showManagerUpdateDialogOnLaunch,
+                headline = R.string.show_manager_update_dialog_on_launch,
+                description = R.string.check_for_update_auto_description
+            )
+
+            GroupHeader(stringResource(R.string.experimental_features))
+            BooleanItem(
+                preference = vm.prefs.useProcessRuntime,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime,
+                description = R.string.process_runtime_description,
             )
 
             GroupHeader(stringResource(R.string.debugging))
@@ -167,11 +176,10 @@ fun AdvancedSettingsScreen(
             )
             val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
             val deviceContent = """
-                    Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-                    Build type: ${BuildConfig.BUILD_TYPE}
+                    Version: ${BuildConfig.VERSION_NAME}, ${BuildConfig.BUILD_TYPE} (${BuildConfig.VERSION_CODE})
                     Model: ${Build.MODEL}
                     Android version: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
-                    Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
+                    Preferred Architectures: ${Build.SUPPORTED_ABIS.joinToString(", ")}
                     Memory limit: $memoryLimit
                 """.trimIndent()
             SettingsListItem(
@@ -194,18 +202,18 @@ fun AdvancedSettingsScreen(
 }
 
 @Composable
-private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
-    var url by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
+private fun APISourceDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
+    var source by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
 
     AlertDialog(
         onDismissRequest = { onSubmit(null) },
         confirmButton = {
             TextButton(
                 onClick = {
-                    onSubmit(url)
+                    onSubmit(source)
                 }
             ) {
-                Text(stringResource(R.string.api_url_dialog_save))
+                Text(stringResource(R.string.api_source_dialog_save))
             }
         },
         dismissButton = {
@@ -218,7 +226,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
         },
         title = {
             Text(
-                text = stringResource(R.string.api_url_dialog_title),
+                text = stringResource(R.string.api_source_dialog_title),
                 style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -228,23 +236,23 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.api_url_dialog_description),
+                    text = stringResource(R.string.api_source_dialog_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = stringResource(R.string.api_url_dialog_warning),
+                    text = stringResource(R.string.api_source_dialog_warning),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = url,
-                    onValueChange = { url = it },
-                    label = { Text(stringResource(R.string.api_url)) },
+                    value = source,
+                    onValueChange = { source = it },
+                    label = { Text(stringResource(R.string.api_source)) },
                     trailingIcon = {
-                        IconButton(onClick = { url = defaultUrl }) {
-                            Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
+                        IconButton(onClick = { source = defaultUrl }) {
+                            Icon(Icons.Outlined.Restore, stringResource(R.string.api_source_dialog_reset))
                         }
                     }
                 )
