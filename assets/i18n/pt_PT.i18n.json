@@ -259,7 +259,7 @@
     "installTypeLabel": "Tipo de instalação",
     "mountTypeLabel": "Montar",
     "regularTypeLabel": "Normal",
-    "patchedDateLabel": "Data do patch",
+    "patchedDateLabel": "Data da Modificação",
     "appliedPatchesLabel": "Modificações aplicadas",
     "sizeLabel": "Tamanho do ficheiro",
     "patchedDateHint": "${date} às ${time}",
