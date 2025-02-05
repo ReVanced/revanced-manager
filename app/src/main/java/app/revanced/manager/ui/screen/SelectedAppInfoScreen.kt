@@ -66,7 +66,7 @@ fun SelectedAppInfoScreen(
     val version = vm.selectedApp.version
     val bundles by vm.bundleInfoFlow.collectAsStateWithLifecycle(emptyList())
 
-    val allowIncompatiblePatches by vm.prefs.allowIncompatibleMixing.getAsState()
+    val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
     val patches = remember(bundles, allowIncompatiblePatches) {
         vm.getPatches(bundles, allowIncompatiblePatches)
     }

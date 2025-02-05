@@ -90,37 +90,45 @@ fun AdvancedSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            val apiSource by vm.prefs.api.getAsState()
-            var showApiSourceDialog by rememberSaveable { mutableStateOf(false) }
+            GroupHeader(stringResource(R.string.manager))
 
-            if (showApiSourceDialog) {
-                APISourceDialog(
-                    currentUrl = apiSource,
+            val apiUrl by vm.prefs.api.getAsState()
+            var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
+
+            if (showApiUrlDialog) {
+                APIUrlDialog(
+                    currentUrl = apiUrl,
                     defaultUrl = vm.prefs.api.default,
                     onSubmit = {
-                        showApiSourceDialog = false
+                        showApiUrlDialog = false
                         it?.let(vm::setApiSource)
                     }
                 )
             }
 
-            GroupHeader(stringResource(R.string.revanced_patcher))
+            GroupHeader(stringResource(R.string.patcher))
+            BooleanItem(
+                preference = vm.prefs.useProcessRuntime,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime,
+                description = R.string.process_runtime_description,
+            )
             IntegerItem(
                 preference = vm.prefs.patcherProcessMemoryLimit,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.process_runtime_memory_limit,
-                description = vm.prefs.patcherProcessMemoryLimit.getAsState().value,
+                description = R.string.process_runtime_memory_limit_description,
             )
 
             GroupHeader(stringResource(R.string.manager))
             SettingsListItem(
                 headlineContent = stringResource(R.string.api_source),
-                supportingContent = apiSource,
+                supportingContent = apiUrl,
                 modifier = Modifier.clickable {
-                    showApiSourceDialog = true
+                    showApiUrlDialog = true
                 },
                 trailingContent = {
-                    IconButton(onClick = { showApiSourceDialog = true }) {
+                    IconButton(onClick = { showApiUrlDialog = true }) {
                         Icon(
                             Icons.Outlined.Edit,
                             contentDescription = stringResource(R.string.edit)
@@ -129,21 +137,21 @@ fun AdvancedSettingsScreen(
                 }
             )
             SafeguardBooleanItem(
-                preference = vm.prefs.allowIncompatibleMixing,
+                preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.allow_compatibility_mixing,
                 description = R.string.allow_compatibility_mixing_description,
                 confirmationText = R.string.allow_compatibility_mixing_confirmation
             )
             SafeguardBooleanItem(
-                preference = vm.prefs.allowUniversalPatch,
+                preference = vm.prefs.disableUniversalPatchWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.universal_patches_safeguard,
                 description = R.string.universal_patches_safeguard_description,
                 confirmationText = R.string.universal_patches_safeguard_confirmation
             )
             SafeguardBooleanItem(
-                preference = vm.prefs.allowChangingPatchSelection,
+                preference = vm.prefs.disableSelectionWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_selection_safeguard,
                 description = R.string.patch_selection_safeguard_description,
@@ -152,7 +160,7 @@ fun AdvancedSettingsScreen(
 
             GroupHeader(stringResource(R.string.update))
             BooleanItem(
-                preference = vm.showManagerUpdateDialogOnLaunch,
+                preference = vm.prefs.showManagerUpdateDialogOnLaunch,
                 headline = R.string.show_manager_update_dialog_on_launch,
                 description = R.string.check_for_update_auto_description
             )
@@ -176,10 +184,11 @@ fun AdvancedSettingsScreen(
             )
             val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
             val deviceContent = """
-                    Version: ${BuildConfig.VERSION_NAME}, ${BuildConfig.BUILD_TYPE} (${BuildConfig.VERSION_CODE})
+                    Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
+                    Build type: ${BuildConfig.BUILD_TYPE}
                     Model: ${Build.MODEL}
                     Android version: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
-                    Preferred Architectures: ${Build.SUPPORTED_ABIS.joinToString(", ")}
+                    Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
                     Memory limit: $memoryLimit
                 """.trimIndent()
             SettingsListItem(
@@ -202,15 +211,15 @@ fun AdvancedSettingsScreen(
 }
 
 @Composable
-private fun APISourceDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
-    var source by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
+private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
+    var url by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
 
     AlertDialog(
         onDismissRequest = { onSubmit(null) },
         confirmButton = {
             TextButton(
                 onClick = {
-                    onSubmit(source)
+                    onSubmit(url)
                 }
             ) {
                 Text(stringResource(R.string.api_source_dialog_save))
@@ -247,11 +256,11 @@ private fun APISourceDialog(currentUrl: String, defaultUrl: String, onSubmit: (S
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = source,
-                    onValueChange = { source = it },
+                    value = url,
+                    onValueChange = { url = it },
                     label = { Text(stringResource(R.string.api_source)) },
                     trailingIcon = {
-                        IconButton(onClick = { source = defaultUrl }) {
+                        IconButton(onClick = { url = defaultUrl }) {
                             Icon(Icons.Outlined.Restore, stringResource(R.string.api_source_dialog_reset))
                         }
                     }

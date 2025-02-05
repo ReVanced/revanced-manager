@@ -36,7 +36,6 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.GeneralSettingsViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -44,17 +43,17 @@ import org.koin.compose.koinInject
 @Composable
 fun GeneralSettingsScreen(
     onBackClick: () -> Unit,
-    vm: GeneralSettingsViewModel = koinViewModel(),
     onUpdateClick: () -> Unit,
+    viewModel: GeneralSettingsViewModel = koinViewModel()
 ) {
-    val prefs = vm.prefs
-    val coroutineScope = vm.viewModelScope
+    val prefs = viewModel.prefs
+    val coroutineScope = viewModel.viewModelScope
     var showThemePicker by rememberSaveable { mutableStateOf(false) }
 
     if (showThemePicker) {
         ThemePicker(
             onDismiss = { showThemePicker = false },
-            onConfirm = { vm.setTheme(it) }
+            onConfirm = { viewModel.setTheme(it) }
         )
     }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -82,7 +81,7 @@ fun GeneralSettingsScreen(
                 headlineContent = stringResource(R.string.theme_mode),
                 supportingContent = stringResource(R.string.theme_mode_description),
                 trailingContent = {
-                    Button (
+                    Button(
                         onClick = {
                             showThemePicker = true
                         }
@@ -99,19 +98,19 @@ fun GeneralSettingsScreen(
                     description = R.string.personalized_color_description
                 )
             }
+        }
 
-            GroupHeader(stringResource(R.string.update))
-            BooleanItem(
-                preference = vm.managerAutoUpdates,
-                headline = R.string.check_for_update,
-                description = R.string.check_for_update_auto_description
-            )
-            FilledTonalButton (
-                modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
-                onClick = onUpdateClick
-            ) {
-                Text(stringResource(R.string.check_for_update))
-            }
+        GroupHeader(stringResource(R.string.update))
+        BooleanItem(
+            preference = prefs.managerAutoUpdates,
+            headline = R.string.check_for_update,
+            description = R.string.check_for_update_auto_description
+        )
+        FilledTonalButton (
+            modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+            onClick = onUpdateClick
+        ) {
+            Text(stringResource(R.string.check_for_update))
         }
     }
 }

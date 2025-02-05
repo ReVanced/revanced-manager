@@ -27,7 +27,6 @@ class AdvancedSettingsViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
-    val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
     val debugLogFileName: String
         get() {
             val time = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now())

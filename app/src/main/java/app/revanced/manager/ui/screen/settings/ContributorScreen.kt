@@ -53,9 +53,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ContributorScreen(
     onBackClick: () -> Unit,
-    vm: ContributorViewModel = koinViewModel()
+    viewModel: ContributorViewModel = koinViewModel()
 ) {
-    val repositories = vm.repositories
+    val repositories = viewModel.repositories
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(

@@ -22,9 +22,10 @@ class PreferencesManager(
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
     val showManagerUpdateDialogOnLaunch = booleanPreference("show_manager_update_dialog_on_launch", true)
 
-    val allowIncompatibleMixing = booleanPreference("allow_incompatible_mixing", false)
-    val allowChangingPatchSelection = booleanPreference("allow_changing_patch_selection", false)
-    val allowUniversalPatch = booleanPreference("allow_universal_patch", false)
+    val disablePatchVersionCompatCheck = booleanPreference("disable_patch_version_compatibility_check", false)
+    val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
+    val disableUniversalPatchWarning = booleanPreference("disable_universal_patch_warning", false)
+    val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
 
     val acknowledgedDownloaderPlugins = stringSetPreference("acknowledged_downloader_plugins", emptySet())
 }

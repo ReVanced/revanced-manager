@@ -71,9 +71,6 @@ object Settings {
     data object Advanced : Destination
 
     @Serializable
-    data object Updates : Destination
-
-    @Serializable
     data object Downloads : Destination
 
     @Serializable

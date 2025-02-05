@@ -26,8 +26,8 @@ class DeveloperOptionsViewModel(
     }
 
     fun disableSafeguard() = viewModelScope.launch {
-        prefs.allowIncompatibleMixing.update(true)
-        prefs.allowChangingPatchSelection.update(true)
-        prefs.allowUniversalPatch.update(true)
+        prefs.disablePatchVersionCompatCheck.update(true)
+        prefs.disableSelectionWarning.update(true)
+        prefs.disableUniversalPatchWarning.update(true)
     }
 }

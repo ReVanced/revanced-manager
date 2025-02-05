@@ -44,11 +44,11 @@ import app.revanced.manager.ui.screen.SettingsScreen
 import app.revanced.manager.ui.screen.UpdateScreen
 import app.revanced.manager.ui.screen.settings.AboutSettingsScreen
 import app.revanced.manager.ui.screen.settings.AdvancedSettingsScreen
+import app.revanced.manager.ui.screen.settings.BackupRestoreSettingsScreen
 import app.revanced.manager.ui.screen.settings.ContributorScreen
 import app.revanced.manager.ui.screen.settings.DeveloperOptionsScreen
 import app.revanced.manager.ui.screen.settings.DownloadsSettingsScreen
 import app.revanced.manager.ui.screen.settings.GeneralSettingsScreen
-import app.revanced.manager.ui.screen.settings.BackupRestoreSettingsScreen
 import app.revanced.manager.ui.screen.settings.LicensesScreen
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
@@ -278,7 +278,6 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<Settings.Advanced> {
                 AdvancedSettingsScreen(onBackClick = navController::popBackStack)
             }
-
 
             composable<Settings.Downloads> {
                 DownloadsSettingsScreen(onBackClick = navController::popBackStack)

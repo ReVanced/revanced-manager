@@ -32,7 +32,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -57,50 +56,50 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun BackupRestoreSettingsScreen(
     onBackClick: () -> Unit,
-    vm: ImportExportViewModel = koinViewModel()
+    viewModel: ImportExportViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
 
     val importKeystoreLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
-            it?.let { uri -> vm.startKeystoreImport(uri) }
+            it?.let { uri -> viewModel.startKeystoreImport(uri) }
         }
     val exportKeystoreLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("*/*")) {
-            it?.let(vm::exportKeystore)
+            it?.let(viewModel::exportKeystore)
         }
 
-    val patchBundles by vm.patchBundles.collectAsStateWithLifecycle(initialValue = emptyList())
-    val packagesWithOptions by vm.packagesWithOptions.collectAsStateWithLifecycle(initialValue = emptySet())
+    val patchBundles by viewModel.patchBundles.collectAsStateWithLifecycle(initialValue = emptyList())
+    val packagesWithOptions by viewModel.packagesWithOptions.collectAsStateWithLifecycle(initialValue = emptySet())
 
-    vm.selectionAction?.let { action ->
+    viewModel.selectionAction?.let { action ->
         val launcher = rememberLauncherForActivityResult(action.activityContract) { uri ->
             if (uri == null) {
-                vm.clearSelectionAction()
+                viewModel.clearSelectionAction()
             } else {
-                vm.executeSelectionAction(uri)
+                viewModel.executeSelectionAction(uri)
             }
         }
 
-        if (vm.selectedBundle == null) {
+        if (viewModel.selectedBundle == null) {
             BundleSelector(patchBundles) {
                 if (it == null) {
-                    vm.clearSelectionAction()
+                    viewModel.clearSelectionAction()
                 } else {
-                    vm.selectBundle(it)
+                    viewModel.selectBundle(it)
                     launcher.launch(action.activityArg)
                 }
             }
         }
     }
 
-    if (vm.showCredentialsDialog) {
+    if (viewModel.showCredentialsDialog) {
         KeystoreCredentialsDialog(
-            onDismissRequest = vm::cancelKeystoreImport,
+            onDismissRequest = viewModel::cancelKeystoreImport,
             onSubmit = { cn, pass ->
-                vm.viewModelScope.launch {
+                viewModel.viewModelScope.launch {
                     uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
-                        val result = vm.tryKeystoreImport(cn, pass)
+                        val result = viewModel.tryKeystoreImport(cn, pass)
                         if (!result) context.toast(context.getString(R.string.restore_keystore_wrong_credentials))
                     }
                 }
@@ -134,7 +133,7 @@ fun BackupRestoreSettingsScreen(
 
             if (showPackageSelector) {
                 PackageSelector(packages = packagesWithOptions) { selected ->
-                    selected?.let(vm::resetOptionsForPackage)
+                    selected?.let(viewModel::resetOptionsForPackage)
 
                     showPackageSelector = false
                 }
@@ -142,7 +141,7 @@ fun BackupRestoreSettingsScreen(
 
             if (showBundleSelector) {
                 BundleSelector(bundles = patchBundles) { bundle ->
-                    bundle?.let(vm::clearOptionsForBundle)
+                    bundle?.let(viewModel::clearOptionsForBundle)
 
                     showBundleSelector = false
                 }
@@ -151,7 +150,7 @@ fun BackupRestoreSettingsScreen(
             GroupHeader(stringResource(R.string.keystore))
             GroupItem(
                 onClick = {
-                    if (!vm.canExport()) {
+                    if (!viewModel.canExport()) {
                         context.toast(context.getString(R.string.backup_keystore_unavailable))
                         return@GroupItem
                     }
@@ -168,7 +167,7 @@ fun BackupRestoreSettingsScreen(
                 description = R.string.restore_keystore_description
             )
             GroupItem(
-                onClick = vm::regenerateKeystore,
+                onClick = viewModel::regenerateKeystore,
                 headline = {
                     Text(
                         stringResource(R.string.regenerate_keystore),
@@ -180,17 +179,17 @@ fun BackupRestoreSettingsScreen(
 
             GroupHeader(stringResource(R.string.patch_selection))
             GroupItem(
-                onClick = vm::exportSelection,
+                onClick = viewModel::exportSelection,
                 headline = R.string.backup,
                 description = R.string.restore_patch_selection_description
             )
             GroupItem(
-                onClick = vm::importSelection,
+                onClick = viewModel::importSelection,
                 headline = R.string.restore,
                 description = R.string.backup_patch_selection_description
             )
             GroupItem(
-                onClick = vm::resetSelection, // TODO: allow resetting selection for specific bundle or package name.
+                onClick = viewModel::resetSelection, // TODO: allow resetting selection for specific bundle or package name.
                 headline = {
                     Text(
                         stringResource(R.string.reset),
@@ -203,7 +202,7 @@ fun BackupRestoreSettingsScreen(
             GroupHeader(stringResource(R.string.patch_options))
             // TODO: patch options import/export.
             GroupItem(
-                onClick = vm::resetOptions,
+                onClick = viewModel::resetOptions,
                 headline = {
                     Text(
                         stringResource(R.string.reset),
