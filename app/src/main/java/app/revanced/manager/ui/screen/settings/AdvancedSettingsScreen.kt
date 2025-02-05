@@ -122,7 +122,7 @@ fun AdvancedSettingsScreen(
 
             GroupHeader(stringResource(R.string.manager))
             SettingsListItem(
-                headlineContent = stringResource(R.string.api_source),
+                headlineContent = stringResource(R.string.api_url),
                 supportingContent = apiUrl,
                 modifier = Modifier.clickable {
                     showApiUrlDialog = true
@@ -222,7 +222,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     onSubmit(url)
                 }
             ) {
-                Text(stringResource(R.string.api_source_dialog_save))
+                Text(stringResource(R.string.api_url_dialog_save))
             }
         },
         dismissButton = {
@@ -235,7 +235,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
         },
         title = {
             Text(
-                text = stringResource(R.string.api_source_dialog_title),
+                text = stringResource(R.string.api_url_dialog_title),
                 style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -245,12 +245,12 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.api_source_dialog_description),
+                    text = stringResource(R.string.api_url_dialog_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = stringResource(R.string.api_source_dialog_warning),
+                    text = stringResource(R.string.api_url_dialog_warning),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
@@ -258,10 +258,10 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     modifier = Modifier.fillMaxWidth(),
                     value = url,
                     onValueChange = { url = it },
-                    label = { Text(stringResource(R.string.api_source)) },
+                    label = { Text(stringResource(R.string.api_url)) },
                     trailingIcon = {
                         IconButton(onClick = { url = defaultUrl }) {
-                            Icon(Icons.Outlined.Restore, stringResource(R.string.api_source_dialog_reset))
+                            Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
                         }
                     }
                 )
