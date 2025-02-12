@@ -83,7 +83,9 @@ class PatcherViewModel(
     private val savedStateHandle: SavedStateHandle = get()
 
     private var installedApp: InstalledApp? = null
-    val packageName = input.selectedApp.packageName
+    private val selectedApp = input.selectedApp
+    val packageName = selectedApp.packageName
+    val version = selectedApp.version
 
     var installedPackageName by savedStateHandle.saveable(
         key = "installedPackageName",
