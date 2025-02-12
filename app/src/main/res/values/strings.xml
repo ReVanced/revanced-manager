@@ -142,7 +142,9 @@
     <string name="downloader_plugin_state_untrusted">Untrusted</string>
     <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
     <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_plugin_trust_dialog_body">Package name: %1$s\nSignature (SHA-256): %2$s</string>
+    <string name="downloader_plugin_trust_dialog_body">By continuing you\'ve agreed to running external plugins.\n\nDo not allow any suspicious plugin(s) to be installed as they can run arbitrary code.</string>
+    <string name="downloader_plugin_trust_dialog_signature">Signature:\n\n%s</string>
+    <string name="downloader_plugin_trust_dialog_plugin">Plugin:\n%s</string>
     <string name="downloader_plugin_delete_apps_title">Delete selected apps</string>
     <string name="downloader_plugin_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found</string>
