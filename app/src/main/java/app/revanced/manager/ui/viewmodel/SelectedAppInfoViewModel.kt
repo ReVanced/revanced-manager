@@ -30,14 +30,13 @@ import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderData
-import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
-import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.BundleInfo.Extensions.requiredOptionsSet
+import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
@@ -275,25 +274,25 @@ class SelectedAppInfoViewModel(
         )
 
     suspend fun getPatcherParams(): Patcher.ViewModelParams {
-        val allowUnsupported = prefs.disablePatchVersionCompatCheck.get()
+        val allowIncompatible = prefs.disablePatchVersionCompatCheck.get()
         val bundles = bundleInfoFlow.first()
         return Patcher.ViewModelParams(
             selectedApp,
-            getPatches(bundles, allowUnsupported),
+            getPatches(bundles, allowIncompatible),
             getOptionsFiltered(bundles)
         )
     }
 
     fun getOptionsFiltered(bundles: List<BundleInfo>) = options.filtered(bundles)
 
-    fun getPatches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
-        selectionState.patches(bundles, allowUnsupported)
+    fun getPatches(bundles: List<BundleInfo>, allowIncompatible: Boolean) =
+        selectionState.patches(bundles, allowIncompatible)
 
     fun getCustomPatches(
         bundles: List<BundleInfo>,
-        allowUnsupported: Boolean
+        allowIncompatible: Boolean
     ): PatchSelection? =
-        (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
+        (selectionState as? SelectionState.Customized)?.patches(bundles, allowIncompatible)
 
     fun updateConfiguration(selection: PatchSelection?, options: Options) = viewModelScope.launch {
         val bundles = bundleInfoFlow.first()
@@ -343,13 +342,13 @@ class SelectedAppInfoViewModel(
 }
 
 private sealed interface SelectionState : Parcelable {
-    fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchSelection
+    fun patches(bundles: List<BundleInfo>, allowIncompatible: Boolean): PatchSelection
 
     @Parcelize
     data class Customized(val patchSelection: PatchSelection) : SelectionState {
-        override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
+        override fun patches(bundles: List<BundleInfo>, allowIncompatible: Boolean) =
             bundles.toPatchSelection(
-                allowUnsupported
+                allowIncompatible
             ) { uid, patch ->
                 patchSelection[uid]?.contains(patch.name) ?: false
             }
@@ -357,8 +356,8 @@ private sealed interface SelectionState : Parcelable {
 
     @Parcelize
     data object Default : SelectionState {
-        override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
-            bundles.toPatchSelection(allowUnsupported) { _, patch -> patch.include }
+        override fun patches(bundles: List<BundleInfo>, allowIncompatible: Boolean) =
+            bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
     }
 }
 

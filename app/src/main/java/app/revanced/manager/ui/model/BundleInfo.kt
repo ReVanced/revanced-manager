@@ -12,34 +12,34 @@ import kotlinx.coroutines.flow.map
 data class BundleInfo(
     val name: String,
     val uid: Int,
-    val supported: List<PatchInfo>,
-    val unsupported: List<PatchInfo>,
+    val compatible: List<PatchInfo>,
+    val incompatible: List<PatchInfo>,
     val universal: List<PatchInfo>
 ) {
     val all = sequence {
-        yieldAll(supported)
-        yieldAll(unsupported)
+        yieldAll(compatible)
+        yieldAll(incompatible)
         yieldAll(universal)
     }
 
-    val patchCount get() = supported.size + unsupported.size + universal.size
+    val patchCount get() = compatible.size + incompatible.size + universal.size
 
-    fun patchSequence(allowUnsupported: Boolean) = if (allowUnsupported) {
+    fun patchSequence(allowIncompatible: Boolean) = if (allowIncompatible) {
         all
     } else {
         sequence {
-            yieldAll(supported)
+            yieldAll(compatible)
             yieldAll(universal)
         }
     }
 
     companion object Extensions {
         inline fun Iterable<BundleInfo>.toPatchSelection(
-            allowUnsupported: Boolean,
+            allowIncompatible: Boolean,
             condition: (Int, PatchInfo) -> Boolean
         ): PatchSelection = this.associate { bundle ->
             val patches =
-                bundle.patchSequence(allowUnsupported)
+                bundle.patchSequence(allowIncompatible)
                     .mapNotNullTo(mutableSetOf()) { patch ->
                         patch.name.takeIf {
                             condition(
@@ -60,8 +60,8 @@ data class BundleInfo(
                 source.state.map { state ->
                     val bundle = state.patchBundleOrNull() ?: return@map null
 
-                    val supported = mutableListOf<PatchInfo>()
-                    val unsupported = mutableListOf<PatchInfo>()
+                    val compatible = mutableListOf<PatchInfo>()
+                    val incompatible = mutableListOf<PatchInfo>()
                     val universal = mutableListOf<PatchInfo>()
 
                     bundle.patches.filter { it.compatibleWith(packageName) }.forEach {
@@ -70,15 +70,15 @@ data class BundleInfo(
                             it.supports(
                                 packageName,
                                 version
-                            ) -> supported
+                            ) -> compatible
 
-                            else -> unsupported
+                            else -> incompatible
                         }
 
                         targetList.add(it)
                     }
 
-                    BundleInfo(source.getName(), source.uid, supported, unsupported, universal)
+                    BundleInfo(source.getName(), source.uid, compatible, incompatible, universal)
                 }
             }
 
