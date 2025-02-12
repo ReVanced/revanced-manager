@@ -87,7 +87,7 @@
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
-    <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
+    <string name="patch_compat_check_description">The check restricts patches to compatible app versions</string>
     <string name="patch_compat_check_confirmation">Selecting incompatible patches can result in a broken app.\n\nDo you want to proceed anyways?</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
@@ -211,7 +211,7 @@
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
-    <string name="unsupported_patches">Incompatible patches</string>
+    <string name="incompatible_patches">Incompatible patches</string>
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
@@ -220,13 +220,12 @@
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou need to turn on \"Allow changing patch selection\" in the advanced settings before toggling patches.</string>
     <string name="universal_patch_warning_description">Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.\n\nThis warning can be disabled in the advanced settings.</string>
-    <string name="supported">This version</string>
+    <string name="this_version">This version</string>
     <string name="universal">Any app</string>
-    <string name="unsupported">Unsupported</string>
     <string name="search_patches">Search patches</string>
-    <string name="app_not_supported">This patch is not compatible with the selected app version (%1$s).\n\nIt only supports the following version(s): %2$s.</string>
+    <string name="app_version_not_compatible">This patch is not compatible with the selected app version (%1$s).\n\nIt is only compatible with the following version(s): %2$s.</string>
     <string name="continue_with_version">Continue with this version?</string>
-    <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
+    <string name="version_not_compatible">Not all patches are compatible with this version (%s). Do you want to continue anyway?</string>
     <string name="download_application">Download application?</string>
     <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
     <string name="failed_to_load_apk">Failed to load APK</string>
@@ -400,7 +399,7 @@
     <string name="installation_aborted_description">The installation was cancelled manually. Try again?</string>
     <string name="installation_blocked_description">The installation was blocked. Review your device security settings and try again.</string>
     <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
-    <string name="installation_incompatible_description">The app is incompatible with this device. Use an APK that is supported by this device and try again.</string>
+    <string name="installation_incompatible_description">The app is incompatible with this device. Use an APK that is compatible by this device and try again.</string>
     <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
     <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
     <string name="installation_timeout_description">The installation took too long. Try again?</string>
@@ -413,8 +412,8 @@
     <string name="add_patch_bundle">Add patch bundle</string>
     <string name="bundle_url">Bundle URL</string>
     <string name="auto_update">Auto update</string>
-    <string name="unsupported_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
-    <string name="unsupported_patch">Unsupported patch</string>
+    <string name="incompatible_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
+    <string name="incompatible_patch">Incompatible patch</string>
     <string name="any_version">Any</string>
     <string name="never_show_again">Never show again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>

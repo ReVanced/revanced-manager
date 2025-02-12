@@ -76,8 +76,8 @@ import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionBut
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_INCOMPATIBLE
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
@@ -147,9 +147,9 @@ fun PatchesSelectorScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     CheckedFilterChip(
-                        selected = vm.filter and SHOW_UNSUPPORTED == 0,
-                        onClick = { vm.toggleFlag(SHOW_UNSUPPORTED) },
-                        label = { Text(stringResource(R.string.supported)) }
+                        selected = vm.filter and SHOW_INCOMPATIBLE == 0,
+                        onClick = { vm.toggleFlag(SHOW_INCOMPATIBLE) },
+                        label = { Text(stringResource(R.string.this_version)) }
                     )
 
                     CheckedFilterChip(
@@ -163,18 +163,18 @@ fun PatchesSelectorScreen(
     }
 
     if (vm.compatibleVersions.isNotEmpty())
-        UnsupportedPatchDialog(
+        IncompatiblePatchDialog(
             appVersion = vm.appVersion ?: stringResource(R.string.any_version),
-            supportedVersions = vm.compatibleVersions,
+            compatibleVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
         )
-    var showUnsupportedPatchesDialog by rememberSaveable {
+    var showIncompatiblePatchesDialog by rememberSaveable {
         mutableStateOf(false)
     }
-    if (showUnsupportedPatchesDialog)
-        UnsupportedPatchesDialog(
+    if (showIncompatiblePatchesDialog)
+        IncompatiblePatchesDialog(
             appVersion = vm.appVersion ?: stringResource(R.string.any_version),
-            onDismissRequest = { showUnsupportedPatchesDialog = false }
+            onDismissRequest = { showIncompatiblePatchesDialog = false }
         )
 
     vm.optionsDialog?.let { (bundle, patch) ->
@@ -204,7 +204,7 @@ fun PatchesSelectorScreen(
         uid: Int,
         patches: List<PatchInfo>,
         visible: Boolean,
-        supported: Boolean,
+        compatible: Boolean,
         header: (@Composable () -> Unit)? = null
     ) {
         if (patches.isNotEmpty() && visible) {
@@ -224,14 +224,14 @@ fun PatchesSelectorScreen(
                     onOptionsDialog = {
                         vm.optionsDialog = uid to patch
                     },
-                    selected = supported && vm.isSelected(
+                    selected = compatible && vm.isSelected(
                         uid,
                         patch
                     ),
                     onToggle = {
                         when {
-                            // Open unsupported dialog if the patch is not supported
-                            !supported -> vm.openUnsupportedDialog(patch)
+                            // Open incompatible dialog if the patch is not supported
+                            !compatible -> vm.openIncompatibleDialog(patch)
 
                             // Show selection warning if enabled
                             vm.selectionWarningEnabled -> showSelectionWarning = true
@@ -245,7 +245,7 @@ fun PatchesSelectorScreen(
                             else -> vm.togglePatch(uid, patch)
                         }
                     },
-                    supported = supported
+                    compatible = compatible
                 )
             }
         }
@@ -321,15 +321,15 @@ fun PatchesSelectorScreen(
 
                     patchList(
                         uid = bundle.uid,
-                        patches = bundle.supported.searched(),
+                        patches = bundle.compatible.searched(),
                         visible = true,
-                        supported = true
+                        compatible = true
                     )
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.universal.searched(),
                         visible = vm.filter and SHOW_UNIVERSAL != 0,
-                        supported = true
+                        compatible = true
                     ) {
                         ListHeader(
                             title = stringResource(R.string.universal_patches),
@@ -338,13 +338,13 @@ fun PatchesSelectorScreen(
 
                     patchList(
                         uid = bundle.uid,
-                        patches = bundle.unsupported.searched(),
-                        visible = vm.filter and SHOW_UNSUPPORTED != 0,
-                        supported = vm.allowIncompatiblePatches
+                        patches = bundle.incompatible.searched(),
+                        visible = vm.filter and SHOW_INCOMPATIBLE != 0,
+                        compatible = vm.allowIncompatiblePatches
                     ) {
                         ListHeader(
-                            title = stringResource(R.string.unsupported_patches),
-                            onHelpClick = { showUnsupportedPatchesDialog = true }
+                            title = stringResource(R.string.incompatible_patches),
+                            onHelpClick = { showIncompatiblePatchesDialog = true }
                         )
                     }
                 }
@@ -427,15 +427,15 @@ fun PatchesSelectorScreen(
                     ) {
                         patchList(
                             uid = bundle.uid,
-                            patches = bundle.supported,
+                            patches = bundle.compatible,
                             visible = true,
-                            supported = true
+                            compatible = true
                         )
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.universal,
                             visible = vm.filter and SHOW_UNIVERSAL != 0,
-                            supported = true
+                            compatible = true
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.universal_patches),
@@ -443,13 +443,13 @@ fun PatchesSelectorScreen(
                         }
                         patchList(
                             uid = bundle.uid,
-                            patches = bundle.unsupported,
-                            visible = vm.filter and SHOW_UNSUPPORTED != 0,
-                            supported = vm.allowIncompatiblePatches
+                            patches = bundle.incompatible,
+                            visible = vm.filter and SHOW_INCOMPATIBLE != 0,
+                            compatible = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(
-                                title = stringResource(R.string.unsupported_patches),
-                                onHelpClick = { showUnsupportedPatchesDialog = true }
+                                title = stringResource(R.string.incompatible_patches),
+                                onHelpClick = { showIncompatiblePatchesDialog = true }
                             )
                         }
                     }
@@ -506,24 +506,24 @@ private fun PatchItem(
     onOptionsDialog: () -> Unit,
     selected: Boolean,
     onToggle: () -> Unit,
-    supported: Boolean = true
+    compatible: Boolean = true
 ) = ListItem(
     modifier = Modifier
-        .let { if (!supported) it.alpha(0.5f) else it }
+        .let { if (!compatible) it.alpha(0.5f) else it }
         .clickable(onClick = onToggle)
         .fillMaxSize(),
     leadingContent = {
         HapticCheckbox(
             checked = selected,
             onCheckedChange = { onToggle() },
-            enabled = supported
+            enabled = compatible
         )
     },
     headlineContent = { Text(patch.name) },
     supportingContent = patch.description?.let { { Text(it) } },
     trailingContent = {
         if (patch.options?.isNotEmpty() == true) {
-            IconButton(onClick = onOptionsDialog, enabled = supported) {
+            IconButton(onClick = onOptionsDialog, enabled = compatible) {
                 Icon(Icons.Outlined.Settings, null)
             }
         }
@@ -559,7 +559,7 @@ fun ListHeader(
 }
 
 @Composable
-private fun UnsupportedPatchesDialog(
+private fun IncompatiblePatchesDialog(
     appVersion: String,
     onDismissRequest: () -> Unit
 ) = AlertDialog(
@@ -572,11 +572,11 @@ private fun UnsupportedPatchesDialog(
             Text(stringResource(R.string.ok))
         }
     },
-    title = { Text(stringResource(R.string.unsupported_patches)) },
+    title = { Text(stringResource(R.string.incompatible_patches)) },
     text = {
         Text(
             stringResource(
-                R.string.unsupported_patches_dialog,
+                R.string.incompatible_patches_dialog,
                 appVersion
             )
         )
@@ -584,9 +584,9 @@ private fun UnsupportedPatchesDialog(
 )
 
 @Composable
-private fun UnsupportedPatchDialog(
+private fun IncompatiblePatchDialog(
     appVersion: String,
-    supportedVersions: List<String>,
+    compatibleVersions: List<String>,
     onDismissRequest: () -> Unit
 ) = AlertDialog(
     icon = {
@@ -598,13 +598,13 @@ private fun UnsupportedPatchDialog(
             Text(stringResource(R.string.ok))
         }
     },
-    title = { Text(stringResource(R.string.unsupported_patch)) },
+    title = { Text(stringResource(R.string.incompatible_patch)) },
     text = {
         Text(
             stringResource(
-                R.string.app_not_supported,
+                R.string.app_version_not_compatible,
                 appVersion,
-                supportedVersions.joinToString(", ")
+                compatibleVersions.joinToString(", ")
             )
         )
     }
