@@ -12,16 +12,16 @@ on:
         description: App flavor
         default: 'release'
         type: choice
-        options: 
+        options:
           - release
           - debug
           - profile
 
-      # Flutter Configurations, 
+      # Flutter Configurations,
       # it's recommended to be set when you have problem regarding with flutter itself
       # For most part you do not need to change this.
 
-      # Flutter version to use, note that the version had to exist in whether channel 
+      # Flutter version to use, note that the version had to exist in whether channel
       # to grab
       # Try using exact version or particular version on a specific branch instead of "any"
       flutter-channel:
@@ -36,7 +36,7 @@ on:
       flutter-version:
         description: Flutter version
         default: '3.29.x'
-        
+
 run-name: "Build pull request ${{ inputs.pr-number }}"
 
 jobs:
@@ -66,20 +66,26 @@ jobs:
           flutter-version: ${{ inputs.flutter-version }}
 
       - name: Get dependencies
+        continue-on-error: true
         run: flutter pub get
 
       - name: Generate translations
+        continue-on-error: true
         run: dart run slang
 
       - name: Generate code files
+        continue-on-error: true
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build
         continue-on-error: true
         id: flutter-build
         run: flutter build apk --${{ inputs.app-flavor }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare comment
+        id: prepare-comment # Added ID for accessing outputs
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
@@ -105,10 +111,22 @@ jobs:
 
             Details: [_execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**_](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
 
-            ### ⚙️ Workflow run configuration
+            ### ⚙️ Workflow Steps
 
-            - App flavor: ${{ inputs.app-flavor }}
-            - Flutter version: ${{ inputs.flutter-version }} (${{ inputs.flutter-channel }})
+            | Step                      | Status                                                   |
+            | ------------------------- | :------------------------------------------------------- |
+            | **Get dependencies**      | ${{ steps.get-dependencies.outcome || job.status }}      |
+            | **Generate translations** | ${{ steps.generate-translations.outcome || job.status }} |
+            | **Generate code files**   | ${{ steps.generate-code-files.outcome || job.status }}   |
+            | **Build**                 | ${{ steps.flutter-build.outcome }}                       |
+
+            ### ⚙️ Workflow Configuration
+
+            | Parameter        | Value                                    |
+            | :--------------- | :--------------------------------------- |
+            | App flavor       | ${{ inputs.app-flavor }}                  |
+            | Flutter version  | ${{ inputs.flutter-version }}            |
+            | Flutter channel  | ${{ inputs.flutter-channel }}            |
 
       - name: Upload Artifact
         if: steps.flutter-build.outcome == 'success'
