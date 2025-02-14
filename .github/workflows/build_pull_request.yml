@@ -3,29 +3,42 @@ name: Build pull request
 on:
   workflow_dispatch:
     inputs:
-      # Enable or disable cache
-      flutter-cache:
-        description: Cache
-        type: boolean
-        default: true
-      
-      # Select app flavour
-      app-flavour:
-        description: App flavour
+      # Select pull request
+      pr-number:
+        description: PR number (Without hashtag)
+        required: true
+      # Select app flavor
+      app-flavor:
+        description: App flavor
         default: 'release'
         type: choice
         options: 
           - release
           - debug
           - profile
-      
-      # Select pull request
-      pr-number:
-        description: PR number (Without hashtag)
-        required: true
 
-run-name: "Build pull request ${{ inputs.pr-number }}"
+      # Flutter Configurations, 
+      # it's recommended to be set when you have problem regarding with flutter itself
+      # For most part you do not need to change this.
+
+      # Flutter version to use, note that the version had to exist in whether channel 
+      # to grab
+      # Try using exact version or particular version on a specific branch instead of "any"
+      flutter-channel:
+        description: Flutter channel
+        default: 'stable'
+        type: choice
+        options:
+          - stable
+          - beta
+          - dev
+          - any
+      flutter-version:
+        description: Flutter version
+        default: '3.29.x'
         
+run-name: "Build pull request ${{ inputs.pr-number }}"
+
 jobs:
   build:
     name: Build
@@ -34,35 +47,23 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Setup pull request
-        env: 
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh repo clone "${{ github.repository }}"
-          cd revanced-manager
-          gh repo set-default "${{ github.repository }}"
-          gh pr checkout "${{ inputs.pr-number }}"
-          
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          
-      - name: Checkout
+      - name: Checkout PR
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          ref: refs/pull/${{ inputs.pr-number }}/merge
           fetch-depth: 0
 
-      - name: Cache Gradle
-        uses: burrunan/gradle-cache-action@v2
-
       - name: Setup Java
-        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
-          flutter-version: 3.24.x
-          cache: ${{ inputs.flutter-cache }}
+          channel: ${{ inputs.flutter-channel }}
+          flutter-version: ${{ inputs.flutter-version }}
 
       - name: Get dependencies
         run: flutter pub get
@@ -76,42 +77,44 @@ jobs:
       - name: Build
         continue-on-error: true
         id: flutter-build
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          flutter build apk --"${{ inputs.app-flavour }}";
+        run: flutter build apk --${{ inputs.app-flavor }}
 
       - name: Prepare comment
         run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            echo "MESSAGE=✅ Succeeded build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
+            MESSAGE="✅ Succeeded build on $COMMIT_HASH."
           else
-            echo "MESSAGE=🚫 Failed build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
+            MESSAGE="🚫 Failed build on $COMMIT_HASH."
           fi
+          echo "MESSAGE=$MESSAGE" >> $GITHUB_OUTPUT
 
       - name: "Comment on pull request #${{ inputs.pr-number }}"
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
-          GITHUB_TOKEN: ${{ github.token }}
-          pr_number: ${{ inputs.pr-number }}
+          github-token: ${{ github.token }}
+          pr-number: ${{ inputs.pr-number }}
           mode: recreate
+          comment-tag: execution
           message: |
             ## ⚒️ Build status
-            
-            ${{ env.MESSAGE }}
-            
-            Details: [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
+
+            🧪 Workflow triggered by: ${{ github.actor }}
+
+            ${{ steps.prepare-comment.outputs.MESSAGE }}
+
+            Details: [_execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**_](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
 
             ### ⚙️ Workflow run configuration
 
-            - Flutter cache: ${{ inputs.flutter-cache }}
-            - App flavor: ${{ inputs.app-flavour }}
+            - App flavor: ${{ inputs.app-flavor }}
+            - Flutter version: ${{ inputs.flutter-version }} (${{ inputs.flutter-channel }})
 
-      - name: Upload
+      - name: Upload Artifact
+        if: steps.flutter-build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          if-no-files-found: error
-          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})
+          name: revanced-manager-(${{ steps.prepare-comment.outputs.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavor }}-${{ inputs.flutter-version }})
           path: |
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
