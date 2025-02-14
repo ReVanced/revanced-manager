@@ -133,5 +133,5 @@ jobs:
         with:
           name: revanced-manager-(${{ steps.prepare-comment.outputs.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavor }}-${{ inputs.flutter-version }})
           path: |
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk.sha1
