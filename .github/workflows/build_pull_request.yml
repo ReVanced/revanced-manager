@@ -85,7 +85,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare comment
-        id: prepare-comment # Added ID for accessing outputs
+        id: prepare-comment # This should work now?
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
@@ -93,7 +93,6 @@ jobs:
           else
             MESSAGE="🚫 Failed build on $COMMIT_HASH."
           fi
-          echo "MESSAGE=$MESSAGE" >> $GITHUB_OUTPUT
 
       - name: "Comment on pull request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v3
