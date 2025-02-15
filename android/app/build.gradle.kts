@@ -45,7 +45,7 @@ android {
 
             signingConfig = signingConfigs["debug"]
 
-            ndk.abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
+            ndk.abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64")
         }
 
         release {
@@ -64,24 +64,20 @@ android {
                 resValue("string", "app_name", "ReVanced Manager")
             } else {
                 applicationIdSuffix = ".development"
-
-                signingConfig = signingConfigs["debug"]
-
                 resValue("string", "app_name", "ReVanced Manager (Development)")
+                signingConfig = signingConfigs["debug"]
             }
         }
 
         debug {
             applicationIdSuffix = ".debug"
-
             resValue("string", "app_name", "ReVanced Manager (Debug)")
         }
 
-        profile {
+        named("profile") {
+            initWith(getByName("debug"))
             applicationIdSuffix = ".profile"
-
             resValue("string", "app_name", "ReVanced Manager (Profile)")
-            applicationIdSuffix = ".debug"
         }
     }
 
@@ -97,7 +93,6 @@ android {
     }
 }
 
-
 flutter {
     source = "../.."
 }
@@ -107,4 +102,3 @@ dependencies {
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
 }
-

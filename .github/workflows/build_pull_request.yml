@@ -87,7 +87,7 @@ jobs:
       - name: Prepare comment
         id: prepare-comment # This should work now?
         run: |
-          COMMIT_HASH=$(git rev-parse --short HEAD)
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
             MESSAGE="✅ Succeeded build on $COMMIT_HASH."
           else
@@ -108,12 +108,12 @@ jobs:
 
             ${{ steps.prepare-comment.outputs.MESSAGE }}
 
-            Details: [_execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**_](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
+            Details: [_Job execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**_](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
 
             ### ⚙️ Workflow Steps
 
             | Step                      | Status                                                   |
-            | ------------------------- | :------------------------------------------------------- |
+            | :------------------------ | :------------------------------------------------------- |
             | **Get dependencies**      | ${{ steps.get-dependencies.outcome || job.status }}      |
             | **Generate translations** | ${{ steps.generate-translations.outcome || job.status }} |
             | **Generate code files**   | ${{ steps.generate-code-files.outcome || job.status }}   |
@@ -123,7 +123,7 @@ jobs:
 
             | Parameter        | Value                                    |
             | :--------------- | :--------------------------------------- |
-            | App flavor       | ${{ inputs.app-flavor }}                  |
+            | App flavor       | ${{ inputs.app-flavor }}                 |
             | Flutter version  | ${{ inputs.flutter-version }}            |
             | Flutter channel  | ${{ inputs.flutter-channel }}            |
 
@@ -131,7 +131,7 @@ jobs:
         if: steps.flutter-build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: revanced-manager-(${{ steps.prepare-comment.outputs.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavor }}-${{ inputs.flutter-version }})
+          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavor }}-${{ inputs.flutter-version }})
           path: |
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk.sha1

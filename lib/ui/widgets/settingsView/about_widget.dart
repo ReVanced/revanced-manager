@@ -28,7 +28,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                       ClipboardData(
                         text: 'Version: ${snapshot.data!['version']}\n'
                             'Model: ${snapshot.data!['model']}\n'
-                            'Android Version: ${snapshot.data!['androidVersion']}\n'
+                            'Android version: ${snapshot.data!['androidVersion']}\n'
                             '${snapshot.data!['supportedArch'].length > 1 ? 'Supported Archs' : 'Supported Arch'}: ${snapshot.data!['supportedArch'].join(", ")}\n',
                       ),
                     );
