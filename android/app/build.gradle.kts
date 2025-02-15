@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "app.revanced.manager.flutter"
     compileSdk = 35
-    ndkVersion = "27.0.12077973"
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -64,11 +63,11 @@ android {
 
                 resValue("string", "app_name", "ReVanced Manager")
             } else {
-                applicationIdSuffix = ".debug"
+                applicationIdSuffix = ".development"
 
                 signingConfig = signingConfigs["debug"]
 
-                resValue("string", "app_name", "ReVanced Manager (Debug signed)")
+                resValue("string", "app_name", "ReVanced Manager (Development)")
             }
         }
 
@@ -76,6 +75,13 @@ android {
             applicationIdSuffix = ".debug"
 
             resValue("string", "app_name", "ReVanced Manager (Debug)")
+        }
+
+        profile {
+            applicationIdSuffix = ".profile"
+
+            resValue("string", "app_name", "ReVanced Manager (Profile)")
+            applicationIdSuffix = ".debug"
         }
     }
 
