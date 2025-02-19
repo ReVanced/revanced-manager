@@ -1,10 +1,11 @@
 # 💼 Prerequisites
 
-In order to use ReVanced Manager, certain requirements must be met.
+To use ReVanced Manager, certain requirements have to be met.
 
 ## 🤝 Requirements
 
-- An Android device running Android 8 or higher
+- Android device running Android 8.0 or higher
+- **Optionally** Rooted Android device with latest version of [KernelSU](https://github.com/tiann/KernelSU) or [Magisk](https://github.com/topjohnwu/Magisk)
 
 ## ⏭️ What's next
 
