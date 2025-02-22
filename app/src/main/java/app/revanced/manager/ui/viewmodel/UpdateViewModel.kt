@@ -9,6 +9,7 @@ import android.content.pm.PackageInstaller
 import androidx.annotation.StringRes
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
@@ -42,9 +43,9 @@ class UpdateViewModel(
     private val networkInfo: NetworkInfo by inject()
     private val fs: Filesystem by inject()
 
-    var downloadedSize by mutableStateOf(0L)
+    var downloadedSize by mutableLongStateOf(0L)
         private set
-    var totalSize by mutableStateOf(0L)
+    var totalSize by mutableLongStateOf(0L)
         private set
     val downloadProgress by derivedStateOf {
         if (downloadedSize == 0L || totalSize == 0L) return@derivedStateOf 0f
@@ -89,7 +90,7 @@ class UpdateViewModel(
                             totalSize = contentLength
                         }
                     }
-                    state = State.CAN_INSTALL
+                    installUpdate()
                 }
             }
         }
@@ -140,10 +141,10 @@ class UpdateViewModel(
         location.delete()
     }
 
-    enum class State(@StringRes val title: Int, val showCancel: Boolean = false) {
+    enum class State(@StringRes val title: Int) {
         CAN_DOWNLOAD(R.string.update_available),
-        DOWNLOADING(R.string.downloading_manager_update, true),
-        CAN_INSTALL(R.string.ready_to_install_update, true),
+        DOWNLOADING(R.string.downloading_manager_update),
+        CAN_INSTALL(R.string.ready_to_install_update),
         INSTALLING(R.string.installing_manager_update),
         FAILED(R.string.install_update_manager_failed),
         SUCCESS(R.string.update_completed)
