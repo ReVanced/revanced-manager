@@ -68,6 +68,6 @@ jobs:
           
       - name: Generate artifact attestation
         if: github.ref == 'refs/heads/main'
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v2
         with:
           subject-path: build/app/outputs/apk/release/revanced-manager-*.apk
