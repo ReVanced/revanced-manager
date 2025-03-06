@@ -38,7 +38,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   google_fonts: ^6.2.1
   injectable: ^2.4.0
-  intl: ^0.20.0
+  intl: ^0.19.0
   json_annotation: ^4.9.0
   language_code: ^0.5.5
   logcat:
