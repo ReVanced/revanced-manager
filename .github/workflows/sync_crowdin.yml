@@ -25,7 +25,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          flutter-version: 3.27.x
 
       - name: Sync translations from Crowdin
         uses: crowdin/github-action@v2
@@ -59,12 +58,12 @@ jobs:
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
+          
+          dart run slang
 
           cd assets/i18n
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
           cd ../..
-
-          dart run slang
 
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
