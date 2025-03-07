@@ -60,7 +60,7 @@
     "requiredOptionDialogText": "Kailangan mo i-set ang ilang mga opsyon para sa patch."
   },
   "appSelectorCard": {
-    "widgetTitle": "Pumili ka ng app",
+    "widgetTitle": "Pumili ka ng apps",
     "widgetTitleSelected": "Piniling app",
     "widgetSubtitle": "Walang app na pinili",
     "noAppsLabel": "Walang nakitang aplikasyon",
