@@ -19,7 +19,7 @@ dependencies:
       url: https://github.com/ponces/flutter_plugin_device_apps
       ref: 0609662324b9e00931fccfa87e9e1b00b7610907
   device_info_plus: ^11.3.3
-  dio: ^5.4.3+1
+  dio: ^5.8.0+1
   dio_cache_interceptor: ^3.5.0
   dynamic_color: ^1.7.0
   dynamic_themes: ^1.1.0
@@ -57,12 +57,12 @@ dependencies:
       url: https://github.com/BenjaminHalko/flutter_screenshot_callback
       ref: 1a1616ac91e16cd1f3dd170a81febf27ffce3587 # Branch: master
   share_plus: ^10.1.4
-  shared_preferences: ^2.5.2
+  shared_preferences: ^2.5.3
   skeletons:
     git: # remove once https://github.com/badjio/skeletons/pull/12 is merged
       url: https://github.com/konnic/skeletons
       ref: aa3237babe1e36457a6d09eb0d3889cdde97d89e # Branch: add-flutter-3-22-0-compatibility
-  slang: ^4.5.0
+  slang: ^4.6.0
   slang_flutter: ^4.5.0
   stacked: ^3.4.4
   stacked_generator: ^1.6.1
@@ -75,7 +75,7 @@ dependencies:
       ref: c23ec0f8a4d51b88e2aa23611cc2785dfbe52f34 # Branch: master
   timezone: ^0.10.0
   url_launcher: ^6.3.1
-  wakelock_plus: ^1.2.10
+  wakelock_plus: ^1.2.11
 
 dev_dependencies:
   analyzer: ^6.3.0
