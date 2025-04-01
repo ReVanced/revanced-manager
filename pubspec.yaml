@@ -20,7 +20,7 @@ dependencies:
       ref: 0609662324b9e00931fccfa87e9e1b00b7610907
   device_info_plus: ^11.3.3
   dio: ^5.4.3+1
-  dio_cache_interceptor: ^3.5.0
+  dio_cache_interceptor: ^4.0.2
   dynamic_color: ^1.7.0
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
