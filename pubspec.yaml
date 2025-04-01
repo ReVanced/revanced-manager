@@ -24,7 +24,7 @@ dependencies:
   dynamic_color: ^1.7.0
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker: ^9.0.2
+  file_picker: ^10.0.0
   flutter:
     sdk: flutter
   flutter_background: ^1.3.0+1
