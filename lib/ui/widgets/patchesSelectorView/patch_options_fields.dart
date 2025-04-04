@@ -85,7 +85,7 @@ class _IntAndStringPatchOptionState extends State<IntAndStringPatchOption> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFieldForPatchOption(
-                value: value,
+                value: value.toString(),
                 patchOption: widget.patchOption,
                 selectedKey: getKey(),
                 onChanged: (value) {
