@@ -3,39 +3,17 @@ name: Build pull request
 on:
   workflow_dispatch:
     inputs:
-      # Select pull request
       pr-number:
-        description: PR number (Without hashtag)
+        description: PR number
         required: true
-      # Select app flavor
       app-flavor:
-        description: App flavor
-        default: 'release'
+        description: App flavour
+        default: release
         type: choice
         options:
           - release
           - debug
           - profile
-
-      # Flutter Configurations,
-      # it's recommended to be set when you have problem regarding with flutter itself
-      # For most part you do not need to change this.
-
-      # Flutter version to use, note that the version had to exist in whether channel
-      # to grab
-      # Try using exact version or particular version on a specific branch instead of "any"
-      flutter-channel:
-        description: Flutter channel
-        default: 'stable'
-        type: choice
-        options:
-          - stable
-          - beta
-          - dev
-          - any
-      flutter-version:
-        description: Flutter version
-        default: '3.29.x'
 
 run-name: "Build pull request ${{ inputs.pr-number }}"
 
@@ -62,76 +40,27 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ inputs.flutter-channel }}
-          flutter-version: ${{ inputs.flutter-version }}
+          channel: stable
 
       - name: Get dependencies
-        continue-on-error: true
         run: flutter pub get
 
       - name: Generate translations
-        continue-on-error: true
         run: dart run slang
 
       - name: Generate code files
-        continue-on-error: true
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build
-        continue-on-error: true
         id: flutter-build
         run: flutter build apk --${{ inputs.app-flavor }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prepare comment
-        id: prepare-comment # This should work now?
-        run: |
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            MESSAGE="✅ Succeeded build on $COMMIT_HASH."
-          else
-            MESSAGE="🚫 Failed build on $COMMIT_HASH."
-          fi
-
-      - name: "Comment on pull request #${{ inputs.pr-number }}"
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          github-token: ${{ github.token }}
-          pr-number: ${{ inputs.pr-number }}
-          mode: recreate
-          comment-tag: execution
-          message: |
-            ## ⚒️ Build status
-
-            🧪 Workflow triggered by: ${{ github.actor }}
-
-            ${{ steps.prepare-comment.outputs.MESSAGE }}
-
-            Details: [_Job execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**_](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
-
-            ### ⚙️ Workflow Steps
-
-            | Step                      | Status                                                   |
-            | :------------------------ | :------------------------------------------------------- |
-            | **Get dependencies**      | ${{ steps.get-dependencies.outcome || job.status }}      |
-            | **Generate translations** | ${{ steps.generate-translations.outcome || job.status }} |
-            | **Generate code files**   | ${{ steps.generate-code-files.outcome || job.status }}   |
-            | **Build**                 | ${{ steps.flutter-build.outcome }}                       |
-
-            ### ⚙️ Workflow Configuration
-
-            | Parameter        | Value                                    |
-            | :--------------- | :--------------------------------------- |
-            | App flavor       | ${{ inputs.app-flavor }}                 |
-            | Flutter version  | ${{ inputs.flutter-version }}            |
-            | Flutter channel  | ${{ inputs.flutter-channel }}            |
-
-      - name: Upload Artifact
+      - name: Upload artifacts
         if: steps.flutter-build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavor }}-${{ inputs.flutter-version }})
+          name: revanced-manager-(${{ env.COMMIT_HASH }}
           path: |
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk.sha1
+            build/app/outputs/flutter-apk/app-*.apk
