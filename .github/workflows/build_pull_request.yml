@@ -15,8 +15,6 @@ on:
           - debug
           - profile
 
-run-name: "Build pull request ${{ inputs.pr-number }}"
-
 jobs:
   build:
     name: Build
