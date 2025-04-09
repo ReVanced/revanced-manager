@@ -12,3 +12,6 @@
 -dontwarn com.google.j2objc.annotations.*
 -dontwarn java.awt.**
 -dontwarn javax.**
+
+# Keep this for Share Plus or else you can't share log in Settings
+-keep interface android.content.res.XmlResourceParser { *; }
