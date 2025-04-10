@@ -41,6 +41,8 @@ jobs:
 
       - name: Cache Gradle
         uses: burrunan/gradle-cache-action@v1
+        with:
+          home-directory: ${{ github.workspace }}/android
 
       - name: Install dependencies
         run: npm ci
