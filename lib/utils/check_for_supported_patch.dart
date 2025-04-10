@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -17,12 +18,12 @@ bool isPatchSupported(Patch patch) {
 bool hasUnsupportedRequiredOption(List<Option> options, Patch patch) {
   final List<String> requiredOptionsType = [];
   final List<String> supportedOptionsType = [
-    'String',
-    'Boolean',
-    'Int',
-    'StringArray',
-    'IntArray',
-    'LongArray',
+    'kotlin.String',          
+    'kotlin.Int',          
+    'kotlin.Boolean',     
+    'kotlin.StringArray', 
+    'kotlin.IntArray',    
+    'kotlin.LongArray',   
   ];
   for (final Option option in options) {
     if (option.required &&
@@ -38,6 +39,9 @@ bool hasUnsupportedRequiredOption(List<Option> options, Patch patch) {
   }
   for (final String optionType in requiredOptionsType) {
     if (!supportedOptionsType.contains(optionType)) {
+      if (kDebugMode) {
+        print('${patch.name} has unsupported required patch option: $requiredOptionsType');
+      }
       return true;
     }
   }
