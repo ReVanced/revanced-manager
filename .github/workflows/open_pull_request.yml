@@ -12,6 +12,8 @@ env:
 jobs:
   pull-request:
     name: Open pull request
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,4 +27,3 @@ jobs:
           pr_body: |
             This pull request will ${{ env.MESSAGE }}.
           pr_draft: true
-          github_token: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
