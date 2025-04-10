@@ -7,7 +7,7 @@ on:
         description: PR number
         required: true
       app-flavor:
-        description: App flavour
+        description: App flavor
         default: release
         type: choice
         options:
