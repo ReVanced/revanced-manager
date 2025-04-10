@@ -43,6 +43,7 @@ app.*.map.json
 /android/app/release
 
 # Generated files
+android/app/.cxx
 **/*.g.dart
 **/*.locator.dart
 **/*.router.dart
