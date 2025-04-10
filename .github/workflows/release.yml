@@ -39,6 +39,9 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Cache Gradle
+        uses: burrunan/gradle-cache-action@v1
+
       - name: Install dependencies
         run: npm ci
 
