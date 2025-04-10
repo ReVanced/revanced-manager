@@ -6,19 +6,13 @@ on:
     branches:
       - main
       - dev
-    paths:
-      - ".github/workflows/release.yml"
-      - "android/**"
-      - "assets/**"
-      - "lib/**"
-      - "pubspec.yaml"
 
 jobs:
   release:
     name: Release
     permissions:
-      id-token: write
       contents: write
+      id-token: write
       attestations: write
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +22,10 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Java
-        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,6 +37,10 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
+
+      - name: Cache Gradle
+        uses: burrunan/gradle-cache-action@v1
 
       - name: Install dependencies
         run: npm ci
@@ -57,17 +58,17 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "android/app/keystore.jks"
 
-      - name: Release
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
+        id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
-        run: |
-          npx semantic-release
           
-      - name: Generate artifact attestation
-        if: github.ref == 'refs/heads/main'
-        uses: actions/attest-build-provenance@v1
+      - name: Attest
+        if: steps.semantic.outputs.new_release_published == 'true'
+        uses: actions/attest-build-provenance@v2
         with:
           subject-path: build/app/outputs/apk/release/revanced-manager-*.apk
