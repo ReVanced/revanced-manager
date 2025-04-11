@@ -15,6 +15,7 @@ analyzer:
     - lib/app/app.router.dart
     - lib/models/patch.g.dart
     - lib/models/patched_application.g.dart
+    - lib/gen/
 
 linter:
   rules:
