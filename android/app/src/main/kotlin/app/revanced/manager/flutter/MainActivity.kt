@@ -9,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import app.revanced.library.ApkUtils
 import app.revanced.library.ApkUtils.applyTo
-import app.revanced.library.installation.installer.LocalInstaller
 import app.revanced.manager.flutter.utils.Aapt
 import app.revanced.manager.flutter.utils.packageInstaller.InstallerReceiver
 import app.revanced.manager.flutter.utils.packageInstaller.UninstallerReceiver
@@ -169,7 +168,8 @@ class MainActivity : FlutterActivity() {
                                             putValue(option.default)
 
                                             option.values?.let { values ->
-                                                put("values",
+                                                put(
+                                                    "values",
                                                     JSONObject().apply {
                                                         values.forEach { (key, value) ->
                                                             putValue(value, key)
@@ -257,16 +257,19 @@ class MainActivity : FlutterActivity() {
 
             // Setup logger
             Logger.getLogger("").apply {
-                handlers.forEach {
-                    it.close()
-                    removeHandler(it)
+                handlers.forEach { handler ->
+                    handler.close()
+                    removeHandler(handler)
                 }
 
                 object : java.util.logging.Handler() {
                     override fun publish(record: LogRecord) {
-                        if (record.loggerName?.startsWith("app.revanced") != true || cancel) return
-
-                        updateProgress(-1.0, "", record.message)
+                        if (cancel) return
+                        if (
+                            record.loggerName?.startsWith("app.revanced") == true ||
+                            // Logger in class brut.util.OS.
+                            record.loggerName == ""
+                        ) updateProgress(-1.0, "", record.message)
                     }
 
                     override fun flush() = Unit
