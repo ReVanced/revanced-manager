@@ -36,14 +36,6 @@
     "updateDialogText": "${file}-ৰ এটা নতুন আপডে’ট উপলব্ধ।\n\nবৰ্তমানে ইনষ্টল কৰা সংস্কৰণটো হৈছে ${version}।",
     "downloadConsentDialogTitle": "প্ৰয়োজনীয় ফাইলবোৰ ডাউনল’ড কৰিবনে?"
   },
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
   "patchOptionsView": {
     "saveOptions": "ছে’ভ কৰক",
     "unselectPatch": "পেট্‌চ বাছনি-মুক্ত কৰক",
@@ -51,8 +43,6 @@
     "selectFilePath": "ফাইলৰ পথ বাছনি কৰক",
     "selectFolder": "ফ’ল্ডাৰ বাছনি কৰক"
   },
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "themeModeLabel": "এপৰ থীম",
     "systemThemeLabel": "ছিষ্টেমৰ",

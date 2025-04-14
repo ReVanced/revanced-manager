@@ -100,7 +100,6 @@
     "selectFilePath": "Veldu skráarslóð",
     "selectFolder": "Veldu mappa"
   },
-  "patchItem": {},
   "installerView": {
     "installButton": "Setja upp",
     "installNonRootType": "Venjulegur",
@@ -140,6 +139,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Framlagsaðilar"
-  },
-  "installErrorDialog": {}
+  }
 }

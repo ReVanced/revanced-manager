@@ -21,8 +21,6 @@
     "widgetTitle": "ରଫୁକାର",
     "patchButton": "ରଫୁ"
   },
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
   "socialMediaCard": {
     "widgetSubtitle": "ଆମେ ଅନଲାଇନ୍ ଅଛୁ!"
   },
@@ -34,9 +32,6 @@
     "defaultChip": "ଡିଫଲ୍ଟ",
     "defaultTooltip": "ସମସ୍ତ ଡିଫଲ୍ଟ ରଫୁ ଚୟନ କର"
   },
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "widgetTitle": "ସେଟିଂ",
     "appearanceSectionTitle": "ରୂପ",
@@ -57,7 +52,5 @@
   "appInfoView": {
     "widgetTitle": "ଆପ୍ ସୂଚନା",
     "rootDialogTitle": "ତ୍ରୁଟି"
-  },
-  "contributorsView": {},
-  "installErrorDialog": {}
+  }
 }

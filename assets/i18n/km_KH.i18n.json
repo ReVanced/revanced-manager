@@ -29,24 +29,11 @@
     "updateDialogTitle": "មានបច្ចុប្បន្នភាពថ្មិ",
     "updateChangelogTitle": "កំណត់ហេតុផ្លាស់ប្ដូរ"
   },
-  "applicationItem": {},
-  "latestCommitCard": {},
   "patcherView": {
     "widgetTitle": "ផាត់ឆើ"
   },
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "widgetTitle": "ការកំណត់",
     "sourcesResetDialogTitle": "កំណត់ឡើងវិញ"
-  },
-  "appInfoView": {},
-  "contributorsView": {},
-  "installErrorDialog": {}
+  }
 }
