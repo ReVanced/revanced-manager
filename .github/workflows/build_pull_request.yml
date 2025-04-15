@@ -40,7 +40,12 @@ jobs:
         with:
           channel: stable
           cache: true
-
+          
+      - name: Cache Gradle
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          build-root-directory: ${{ github.workspace }}/android
+          
       - name: Get dependencies
         run: flutter pub get
 
