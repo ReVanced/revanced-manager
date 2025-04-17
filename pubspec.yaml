@@ -4,7 +4,7 @@ homepage: https://revanced.app
 
 publish_to: 'none'
 
-version: 1.24.1-dev.4+101800059
+version: 1.24.1-dev.5+101800060
 
 environment:
   sdk: '>=3.7.0'
