@@ -26,7 +26,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -58,7 +57,21 @@ fun UpdateScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(vm.state.title),
+                title = {
+                    Column {
+                        Text(stringResource(vm.state.title))
+
+                        if (vm.state == State.DOWNLOADING) {
+                            Text(
+                                text = "${vm.downloadedSize.div(1000000)} MB /  ${
+                                    vm.totalSize.div(1000000)
+                                } MB (${vm.downloadProgress.times(100).toInt()}%)",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.outline
+                            )
+                        }
+                    }
+                },
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
@@ -96,32 +109,12 @@ fun UpdateScreen(
             modifier = Modifier
                 .padding(paddingValues),
         ) {
-            if (vm.state == State.DOWNLOADING) {
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    LinearProgressIndicator(
-                        progress = { vm.downloadProgress },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    Text(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        text =
-                        "${vm.downloadedSize.div(1000000)} MB /  ${
-                            vm.totalSize.div(
-                                1000000
-                            )
-                        } MB (${
-                            vm.downloadProgress.times(
-                                100
-                            ).toInt()
-                        }%)",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.outline
-                    )
-                }
-            }
+            if (vm.state == State.DOWNLOADING)
+                LinearProgressIndicator(
+                    progress = { vm.downloadProgress },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
             AnimatedVisibility(visible = vm.showInternetCheckDialog) {
                 MeteredDownloadConfirmationDialog(
                     onDismiss = { vm.showInternetCheckDialog = false },

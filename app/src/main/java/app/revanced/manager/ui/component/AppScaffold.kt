@@ -81,3 +81,41 @@ fun AppTopBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppTopBar(
+    title: @Composable () -> Unit,
+    onBackClick: (() -> Unit)? = null,
+    backIcon: @Composable (() -> Unit) = @Composable {
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(
+                R.string.back
+            )
+        )
+    },
+    actions: @Composable (RowScope.() -> Unit) = {},
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    applyContainerColor: Boolean = false
+) {
+    val containerColor = if (applyContainerColor) {
+        MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
+    } else {
+        Color.Unspecified
+    }
+
+    TopAppBar(
+        title = title,
+        scrollBehavior = scrollBehavior,
+        navigationIcon = {
+            if (onBackClick != null) {
+                IconButton(onClick = onBackClick) {
+                    backIcon()
+                }
+            }
+        },
+        actions = actions,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = containerColor
+        )
+    )
+}
