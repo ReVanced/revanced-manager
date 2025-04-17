@@ -73,7 +73,6 @@
     "noneTooltip": "Poništi odabir svih zakrpa",
     "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti greške pri krpanju.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}"
   },
@@ -131,6 +130,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Pridonositelji"
-  },
-  "installErrorDialog": {}
+  }
 }

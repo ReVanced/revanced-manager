@@ -25,7 +25,7 @@
     "changeLaterSubtitle": "Keyinroq sozlamalardan o'zgartirishingiz mumkin.",
     "noInstallations": "Patchlangan dasturlar o'rnatilmagan",
     "installUpdate": "Yangilanish o'rnatilishi davom ettirilsinmi?",
-    "updateSheetTitle": "ReVanced Managerni yangilash",
+    "updateSheetTitle": "ReVanced Manager yangilash",
     "updateDialogTitle": "Yangilanish mavjud",
     "updatePatchesSheetTitle": "ReVanched Patchlarni yangilash",
     "updateChangelogTitle": "O'zgarishlar",
@@ -56,15 +56,10 @@
     "widgetTitleSelected": "Tanlangan patchlar",
     "widgetSubtitle": "Ilovani birinchi tanlang"
   },
-  "socialMediaCard": {},
-  "appSelectorView": {},
   "patchesSelectorView": {
     "viewTitle": "Patchlarni tanlang",
     "patches": "Patches"
   },
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "widgetTitle": "Sozlamalar",
     "exportSectionTitle": "Import & eksport",
@@ -77,9 +72,7 @@
     "aboutLabel": "Haqida",
     "snackbarMessage": "Vaqtinchalik xotiraga nusxalandi"
   },
-  "appInfoView": {},
   "contributorsView": {
     "widgetTitle": "Yordamchilar"
-  },
-  "installErrorDialog": {}
+  }
 }

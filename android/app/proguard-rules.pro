@@ -13,5 +13,5 @@
 -dontwarn java.awt.**
 -dontwarn javax.**
 
-# Keep this for Share Plus or else you can't share log in Settings
+# Required for Share Plus, ref: ReVanced/revanced-manager#2474
 -keep interface android.content.res.XmlResourceParser { *; }
