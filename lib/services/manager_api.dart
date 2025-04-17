@@ -67,7 +67,8 @@ class ManagerAPI {
       releaseBuild = !(await getCurrentManagerVersion()).contains('-dev');
     }
 
-    final hasMigratedToNewMigrationSystem = _prefs.getBool('migratedToNewApiPrefSystem') ?? false;
+    final hasMigratedToNewMigrationSystem =
+        _prefs.getBool('migratedToNewApiPrefSystem') ?? false;
     if (!hasMigratedToNewMigrationSystem) {
       final apiUrl = getApiUrl().toLowerCase();
 
@@ -174,6 +175,10 @@ class ManagerAPI {
 
   void setPrereleases(bool value) {
     _prefs.setBool('usePrereleases', value);
+    if (isPatchesAutoUpdate()) {
+      setCurrentPatchesVersion('0.0.0');
+      _toast.showBottom(t.settingsView.restartAppForChanges);
+    }
   }
 
   bool isPatchesChangeEnabled() {
@@ -215,32 +220,36 @@ class ManagerAPI {
   List<Patch> getSavedPatches(String packageName) {
     final List<String> patchesJson =
         _prefs.getStringList('savedPatches-$packageName') ?? [];
-    final List<Patch> patches = patchesJson.map((String patchJson) {
-      return Patch.fromJson(jsonDecode(patchJson));
-    }).toList();
+    final List<Patch> patches =
+        patchesJson.map((String patchJson) {
+          return Patch.fromJson(jsonDecode(patchJson));
+        }).toList();
     return patches;
   }
 
   Future<void> savePatches(List<Patch> patches, String packageName) async {
-    final List<String> patchesJson = patches.map((Patch patch) {
-      return jsonEncode(patch.toJson());
-    }).toList();
+    final List<String> patchesJson =
+        patches.map((Patch patch) {
+          return jsonEncode(patch.toJson());
+        }).toList();
     await _prefs.setStringList('savedPatches-$packageName', patchesJson);
   }
 
   List<Patch> getUsedPatches(String packageName) {
     final List<String> patchesJson =
         _prefs.getStringList('usedPatches-$packageName') ?? [];
-    final List<Patch> patches = patchesJson.map((String patchJson) {
-      return Patch.fromJson(jsonDecode(patchJson));
-    }).toList();
+    final List<Patch> patches =
+        patchesJson.map((String patchJson) {
+          return Patch.fromJson(jsonDecode(patchJson));
+        }).toList();
     return patches;
   }
 
   Future<void> setUsedPatches(List<Patch> patches, String packageName) async {
-    final List<String> patchesJson = patches.map((Patch patch) {
-      return jsonEncode(patch.toJson());
-    }).toList();
+    final List<String> patchesJson =
+        patches.map((Patch patch) {
+          return jsonEncode(patch.toJson());
+        }).toList();
     await _prefs.setStringList('usedPatches-$packageName', patchesJson);
   }
 
@@ -254,8 +263,9 @@ class ManagerAPI {
   }
 
   Option? getPatchOption(String packageName, String patchName, String key) {
-    final String? optionJson =
-        _prefs.getString('patchOption-$packageName-$patchName-$key');
+    final String? optionJson = _prefs.getString(
+      'patchOption-$packageName-$patchName-$key',
+    );
     if (optionJson != null) {
       final Option option = Option.fromJson(jsonDecode(optionJson));
       return option;
@@ -348,9 +358,7 @@ class ManagerAPI {
   }
 
   Future<void> deleteKeystore() async {
-    final File keystore = File(
-      keystoreFile,
-    );
+    final File keystore = File(keystoreFile);
     if (await keystore.exists()) {
       await keystore.delete();
     }
@@ -370,19 +378,13 @@ class ManagerAPI {
     }
   }
 
-  Future<void> setLastPatchedApp(
-    PatchedApplication app,
-    File outFile,
-  ) async {
+  Future<void> setLastPatchedApp(PatchedApplication app, File outFile) async {
     deleteLastPatchedApp();
     final Directory appCache = await getApplicationSupportDirectory();
     app.patchedFilePath =
         outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
     app.fileSize = outFile.lengthSync();
-    await _prefs.setString(
-      'lastPatchedApp',
-      json.encode(app.toJson()),
-    );
+    await _prefs.setString('lastPatchedApp', json.encode(app.toJson()));
   }
 
   List<PatchedApplication> getPatchedApps() {
@@ -390,9 +392,7 @@ class ManagerAPI {
     return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
   }
 
-  Future<void> setPatchedApps(
-    List<PatchedApplication> patchedApps,
-  ) async {
+  Future<void> setPatchedApps(List<PatchedApplication> patchedApps) async {
     if (patchedApps.length > 1) {
       patchedApps.sort((a, b) => a.name.compareTo(b.name));
     }
@@ -405,10 +405,8 @@ class ManagerAPI {
   Future<void> savePatchedApp(PatchedApplication app) async {
     final List<PatchedApplication> patchedApps = getPatchedApps();
     patchedApps.removeWhere((a) => a.packageName == app.packageName);
-    final ApplicationWithIcon? installed = await DeviceApps.getApp(
-      app.packageName,
-      true,
-    ) as ApplicationWithIcon?;
+    final ApplicationWithIcon? installed =
+        await DeviceApps.getApp(app.packageName, true) as ApplicationWithIcon?;
     if (installed != null) {
       app.name = installed.appName;
       app.version = installed.versionName!;
@@ -448,14 +446,13 @@ class ManagerAPI {
       try {
         final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
           'getPatches',
-          {
-            'patchBundleFilePath': patchBundleFile.path,
-          },
+          {'patchBundleFilePath': patchBundleFile.path},
         );
         final List<dynamic> patchesJsonList = jsonDecode(patchesJson);
-        patches = patchesJsonList
-            .map((patchJson) => Patch.fromJson(patchJson))
-            .toList();
+        patches =
+            patchesJsonList
+                .map((patchJson) => Patch.fromJson(patchJson))
+                .toList();
         return patches;
       } on Exception catch (e) {
         if (kDebugMode) {
@@ -500,8 +497,9 @@ class ManagerAPI {
     } else {
       final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
-        final DateTime timestamp =
-            DateTime.parse(release['created_at'] as String);
+        final DateTime timestamp = DateTime.parse(
+          release['created_at'] as String,
+        );
         return format(timestamp, locale: 'en_short');
       } else {
         return null;
@@ -510,22 +508,16 @@ class ManagerAPI {
   }
 
   Future<String?> getLatestManagerReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime(
-      'manager',
-    );
+    return await _revancedAPI.getLatestReleaseTime('manager');
   }
 
   Future<String?> getLatestManagerVersion() async {
-    return await _revancedAPI.getLatestReleaseVersion(
-      'manager',
-    );
+    return await _revancedAPI.getLatestReleaseVersion('manager');
   }
 
   Future<String?> getLatestPatchesVersion() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseVersion(
-        'patches',
-      );
+      return await _revancedAPI.getLatestReleaseVersion('patches');
     } else {
       final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
@@ -539,8 +531,9 @@ class ManagerAPI {
   String getLastUsedPatchesVersion() {
     final String lastPatchesVersions =
         _prefs.getString('lastUsedPatchesVersion') ?? '{}';
-    final Map<String, dynamic> lastPatchesVersionMap =
-        jsonDecode(lastPatchesVersions);
+    final Map<String, dynamic> lastPatchesVersionMap = jsonDecode(
+      lastPatchesVersions,
+    );
     final String repo = getPatchesRepo();
     return lastPatchesVersionMap[repo] ?? '0.0.0';
   }
@@ -548,8 +541,9 @@ class ManagerAPI {
   void setLastUsedPatchesVersion({String? version}) {
     final String lastPatchesVersions =
         _prefs.getString('lastUsedPatchesVersion') ?? '{}';
-    final Map<String, dynamic> lastPatchesVersionMap =
-        jsonDecode(lastPatchesVersions);
+    final Map<String, dynamic> lastPatchesVersionMap = jsonDecode(
+      lastPatchesVersions,
+    );
     final repo = getPatchesRepo();
     final String lastPatchesVersion =
         version ?? lastPatchesVersionMap[repo] ?? '0.0.0';
@@ -606,10 +600,8 @@ class ManagerAPI {
     if (hasRootPermissions) {
       final List<String> installedApps = await _rootAPI.getInstalledApps();
       for (final String packageName in installedApps) {
-        final ApplicationWithIcon? application = await DeviceApps.getApp(
-          packageName,
-          true,
-        ) as ApplicationWithIcon?;
+        final ApplicationWithIcon? application =
+            await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
         if (application != null) {
           mountedApps.add(
             PatchedApplication(
@@ -630,55 +622,55 @@ class ManagerAPI {
   }
 
   Future<void> showPatchesChangeWarningDialog(BuildContext context) {
-    final ValueNotifier<bool> noShow =
-        ValueNotifier(!showPatchesChangeWarning());
+    final ValueNotifier<bool> noShow = ValueNotifier(
+      !showPatchesChangeWarning(),
+    );
     return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          title: Text(t.warning),
-          content: ValueListenableBuilder(
-            valueListenable: noShow,
-            builder: (context, value, child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    t.patchItem.patchesChangeWarningDialogText,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  HapticCheckboxListTile(
-                    value: value,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      t.noShowAgain,
-                    ),
-                    onChanged: (selected) {
-                      noShow.value = selected!;
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: [
-            FilledButton(
-              onPressed: () {
-                setPatchesChangeWarning(noShow.value);
-                Navigator.of(context).pop();
-              },
-              child: Text(t.okButton),
+      builder:
+          (context) => PopScope(
+            canPop: false,
+            child: AlertDialog(
+              title: Text(t.warning),
+              content: ValueListenableBuilder(
+                valueListenable: noShow,
+                builder: (context, value, child) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        t.patchItem.patchesChangeWarningDialogText,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      HapticCheckboxListTile(
+                        value: value,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(t.noShowAgain),
+                        onChanged: (selected) {
+                          noShow.value = selected!;
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+              actions: [
+                FilledButton(
+                  onPressed: () {
+                    setPatchesChangeWarning(noShow.value);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.okButton),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
@@ -686,15 +678,17 @@ class ManagerAPI {
     final List<PatchedApplication> patchedApps = getPatchedApps();
 
     // Remove apps that are not installed anymore.
-    final List<PatchedApplication> toRemove =
-        await getAppsToRemove(patchedApps);
+    final List<PatchedApplication> toRemove = await getAppsToRemove(
+      patchedApps,
+    );
     patchedApps.removeWhere((a) => toRemove.contains(a));
 
     // Determine all apps that are installed by mounting.
     final List<PatchedApplication> mountedApps = await getMountedApps();
     mountedApps.removeWhere(
-      (app) => patchedApps
-          .any((patchedApp) => patchedApp.packageName == app.packageName),
+      (app) => patchedApps.any(
+        (patchedApp) => patchedApp.packageName == app.packageName,
+      ),
     );
     patchedApps.addAll(mountedApps);
 
@@ -734,10 +728,7 @@ class ManagerAPI {
     return app != null && app.isSplit;
   }
 
-  Future<void> setSelectedPatches(
-    String app,
-    List<String> patches,
-  ) async {
+  Future<void> setSelectedPatches(String app, List<String> patches) async {
     final File selectedPatchesFile = File(storedPatchesFile);
     final Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
     if (patches.isEmpty) {
@@ -793,9 +784,9 @@ class ManagerAPI {
     final Map<String, dynamic> settings = _prefs
         .getKeys()
         .fold<Map<String, dynamic>>({}, (Map<String, dynamic> map, String key) {
-      map[key] = _prefs.get(key);
-      return map;
-    });
+          map[key] = _prefs.get(key);
+          return map;
+        });
     return jsonEncode(settings);
   }
 
@@ -820,11 +811,11 @@ class ManagerAPI {
   }
 
   void resetAllOptions() {
-    _prefs.getKeys().where((key) => key.startsWith('patchOption-')).forEach(
-      (key) {
-        _prefs.remove(key);
-      },
-    );
+    _prefs.getKeys().where((key) => key.startsWith('patchOption-')).forEach((
+      key,
+    ) {
+      _prefs.remove(key);
+    });
   }
 
   Future<void> resetLastSelectedPatches() async {
