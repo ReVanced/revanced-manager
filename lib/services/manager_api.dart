@@ -325,7 +325,7 @@ class ManagerAPI {
   }
 
   String getLocale() {
-    return _prefs.getString('locale') ?? 'en';
+    return _prefs.getString('locale') ?? Platform.localeName;
   }
 
   Future<void> setLocale(String value) async {
