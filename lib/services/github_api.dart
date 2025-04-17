@@ -33,12 +33,12 @@ class GithubAPI {
     });
   }
 
-  Future<Map<String, dynamic>?> getLatestRelease(
-    String repoName,
-  ) async {
+  Future<Map<String, dynamic>?> getLatestRelease(String repoName) async {
+    final String prerelease =
+        _managerAPI.usePrereleases() ? '?per_page=1' : '/latest';
     try {
       final response = await _dioGetSynchronously(
-        '/repos/$repoName/releases/latest',
+        '/repos/$repoName/releases$prerelease',
       );
       return response.data;
     } on Exception catch (e) {
@@ -50,17 +50,19 @@ class GithubAPI {
   }
 
   Future<String?> getChangelogs(bool isPatches) async {
-    final String repoName = isPatches
-        ? _managerAPI.getPatchesRepo()
-        : _managerAPI.defaultManagerRepo;
+    final String repoName =
+        isPatches
+            ? _managerAPI.getPatchesRepo()
+            : _managerAPI.defaultManagerRepo;
     try {
       final response = await _dioGetSynchronously(
         '/repos/$repoName/releases?per_page=50',
       );
       final buffer = StringBuffer();
-      final String version = isPatches
-          ? _managerAPI.getLastUsedPatchesVersion()
-          : await _managerAPI.getCurrentManagerVersion();
+      final String version =
+          isPatches
+              ? _managerAPI.getLastUsedPatchesVersion()
+              : await _managerAPI.getCurrentManagerVersion();
       int releases = 0;
       for (final release in response.data) {
         if (release['tag_name'] == version) {
@@ -70,7 +72,7 @@ class GithubAPI {
           }
           break;
         }
-        if (release['prerelease']) {
+        if (!_managerAPI.usePrereleases() && release['prerelease']) {
           continue;
         }
         buffer.writeln(release['body']);
@@ -96,25 +98,21 @@ class GithubAPI {
   ) async {
     try {
       if (url.isNotEmpty) {
-        return await _downloadManager.getSingleFile(
-          url,
-        );
+        return await _downloadManager.getSingleFile(url);
       }
       final response = await _dioGetSynchronously(
         '/repos/$repoName/releases/tags/$version',
       );
       final Map<String, dynamic>? release = response.data;
       if (release != null) {
-        final Map<String, dynamic>? asset =
-            (release['assets'] as List<dynamic>).firstWhereOrNull(
-          (asset) => (asset['name'] as String).endsWith(extension),
-        );
+        final Map<String, dynamic>? asset = (release['assets'] as List<dynamic>)
+            .firstWhereOrNull(
+              (asset) => (asset['name'] as String).endsWith(extension),
+            );
         if (asset != null) {
           final String downloadUrl = asset['browser_download_url'];
           _managerAPI.setPatchesDownloadURL(downloadUrl);
-          return await _downloadManager.getSingleFile(
-            downloadUrl,
-          );
+          return await _downloadManager.getSingleFile(downloadUrl);
         }
       }
     } on Exception catch (e) {

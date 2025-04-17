@@ -14,6 +14,7 @@ import 'package:timeago/timeago.dart';
 class RevancedAPI {
   late final Dio _dio;
   late final DownloadManager _downloadManager = locator<DownloadManager>();
+  late final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
   final Lock getToolsLock = Lock();
 
@@ -43,15 +44,15 @@ class RevancedAPI {
     return contributors;
   }
 
-  Future<Map<String, dynamic>?> _getLatestRelease(
-    String toolName,
-  ) {
+  Future<Map<String, dynamic>?> _getLatestRelease(String toolName) {
     if (!locator<ManagerAPI>().getDownloadConsent()) {
       return Future(() => null);
     }
     return getToolsLock.synchronized(() async {
       try {
-        final response = await _dio.get('/$toolName');
+        final response = await _dio.get(
+          '/$toolName?prerelease=${_managerAPI.usePrereleases()}',
+        );
         return response.data;
       } on Exception catch (e) {
         if (kDebugMode) {
@@ -62,13 +63,9 @@ class RevancedAPI {
     });
   }
 
-  Future<String?> getLatestReleaseVersion(
-    String toolName,
-  ) async {
+  Future<String?> getLatestReleaseVersion(String toolName) async {
     try {
-      final Map<String, dynamic>? release = await _getLatestRelease(
-        toolName,
-      );
+      final Map<String, dynamic>? release = await _getLatestRelease(toolName);
       if (release != null) {
         return release['version'];
       }
@@ -81,13 +78,9 @@ class RevancedAPI {
     return null;
   }
 
-  Future<File?> getLatestReleaseFile(
-    String toolName,
-  ) async {
+  Future<File?> getLatestReleaseFile(String toolName) async {
     try {
-      final Map<String, dynamic>? release = await _getLatestRelease(
-        toolName,
-      );
+      final Map<String, dynamic>? release = await _getLatestRelease(toolName);
       if (release != null) {
         final String url = release['download_url'];
         return await _downloadManager.getSingleFile(url);
@@ -136,16 +129,13 @@ class RevancedAPI {
     return outputFile;
   }
 
-  Future<String?> getLatestReleaseTime(
-    String toolName,
-  ) async {
+  Future<String?> getLatestReleaseTime(String toolName) async {
     try {
-      final Map<String, dynamic>? release = await _getLatestRelease(
-        toolName,
-      );
+      final Map<String, dynamic>? release = await _getLatestRelease(toolName);
       if (release != null) {
-        final DateTime timestamp =
-            DateTime.parse(release['created_at'] as String);
+        final DateTime timestamp = DateTime.parse(
+          release['created_at'] as String,
+        );
         return format(timestamp, locale: 'en_short');
       }
     } on Exception catch (e) {

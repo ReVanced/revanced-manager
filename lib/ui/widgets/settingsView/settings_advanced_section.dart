@@ -9,6 +9,7 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_require_sugges
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_show_update_dialog.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_universal_patches.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_use_prereleases.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_version_compatibility_check.dart';
 
 class SAdvancedSection extends StatelessWidget {
@@ -20,6 +21,7 @@ class SAdvancedSection extends StatelessWidget {
       title: t.settingsView.advancedSectionTitle,
       children: const <Widget>[
         SAutoUpdatePatches(),
+        SUsePrereleases(),
         SShowUpdateDialog(),
         SEnablePatchesSelection(),
         SRequireSuggestedAppVersion(),

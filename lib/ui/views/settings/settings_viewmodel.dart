@@ -40,6 +40,15 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool usePrereleases() {
+    return _managerAPI.usePrereleases();
+  }
+
+  void setPrereleases(bool value) {
+    _managerAPI.setPrereleases(value);
+    notifyListeners();
+  }
+
   bool showUpdateDialog() {
     return _managerAPI.showUpdateDialog();
   }

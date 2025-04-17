@@ -180,6 +180,8 @@
     "disablePatchesSelectionWarningText": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
     "autoUpdatePatchesLabel": "Auto update patches",
     "autoUpdatePatchesHint": "Automatically update patches to the latest version",
+    "usePrereleasesLabel": "Use pre-releases",
+    "usePrereleasesHint": "Use pre-releases of ReVanced Manager and ReVanced Patches",
     "showUpdateDialogLabel": "Show update dialog",
     "showUpdateDialogHint": "Show a dialog when a new update is available",
     "universalPatchesLabel": "Show universal patches",

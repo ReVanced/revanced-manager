@@ -168,6 +168,14 @@ class ManagerAPI {
     return _prefs.getBool('patchesAutoUpdate') ?? false;
   }
 
+  bool usePrereleases() {
+    return _prefs.getBool('usePrereleases') ?? false;
+  }
+
+  void setPrereleases(bool value) {
+    _prefs.setBool('usePrereleases', value);
+  }
+
   bool isPatchesChangeEnabled() {
     return _prefs.getBool('patchesChangeEnabled') ?? false;
   }
