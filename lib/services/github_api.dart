@@ -34,12 +34,15 @@ class GithubAPI {
   }
 
   Future<Map<String, dynamic>?> getLatestRelease(String repoName) async {
-    final String prerelease =
+    final String target =
         _managerAPI.usePrereleases() ? '?per_page=1' : '/latest';
     try {
       final response = await _dioGetSynchronously(
-        '/repos/$repoName/releases$prerelease',
+        '/repos/$repoName/releases$target',
       );
+      if (_managerAPI.usePrereleases()) {
+        return response.data.first;
+      }
       return response.data;
     } on Exception catch (e) {
       if (kDebugMode) {

@@ -36,7 +36,6 @@ class ManagerAPI {
   Patch? selectedPatch;
   BuildContext? ctx;
   bool isRooted = false;
-  bool releaseBuild = false;
   bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
   bool isScopedStorageAvailable = false;
@@ -63,9 +62,6 @@ class ManagerAPI {
     isScopedStorageAvailable = sdkVersion >= 30; // ANDROID_11_SDK_VERSION = 30
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
-    if (kReleaseMode) {
-      releaseBuild = !(await getCurrentManagerVersion()).contains('-dev');
-    }
 
     final hasMigratedToNewMigrationSystem =
         _prefs.getBool('migratedToNewApiPrefSystem') ?? false;

@@ -82,10 +82,13 @@ class HomeViewModel extends BaseViewModel {
     );
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.requestNotificationsPermission();
-    final bool isConnected = !(await Connectivity().checkConnectivity())
-        .contains(ConnectivityResult.none);
+    final bool isConnected =
+        !(await Connectivity().checkConnectivity()).contains(
+          ConnectivityResult.none,
+        );
     if (!isConnected) {
       _toast.showBottom(t.homeView.noConnection);
     }
@@ -106,8 +109,10 @@ class HomeViewModel extends BaseViewModel {
   void navigateToAppInfo(PatchedApplication app, bool isLastPatchedApp) {
     _navigationService.navigateTo(
       Routes.appInfoView,
-      arguments:
-          AppInfoViewArguments(app: app, isLastPatchedApp: isLastPatchedApp),
+      arguments: AppInfoViewArguments(
+        app: app,
+        isLastPatchedApp: isLastPatchedApp,
+      ),
     );
   }
 
@@ -118,8 +123,8 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> navigateToPatcher(PatchedApplication app) async {
     locator<PatcherViewModel>().selectedApp = app;
-    locator<PatcherViewModel>().selectedPatches =
-        await _patcherAPI.getAppliedPatches(app.appliedPatches);
+    locator<PatcherViewModel>().selectedPatches = await _patcherAPI
+        .getAppliedPatches(app.appliedPatches);
     locator<PatcherViewModel>().notifyListeners();
     locator<NavigationViewModel>().setIndex(1);
   }
@@ -135,9 +140,6 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> hasManagerUpdates() async {
-    if (!_managerAPI.releaseBuild) {
-      return false;
-    }
     latestManagerVersion =
         await _managerAPI.getLatestManagerVersion() ?? _currentManagerVersion;
 
@@ -151,10 +153,12 @@ class HomeViewModel extends BaseViewModel {
     latestPatchesVersion = await _managerAPI.getLatestPatchesVersion();
     if (latestPatchesVersion != null) {
       try {
-        final int latestVersionInt =
-            int.parse(latestPatchesVersion!.replaceAll(RegExp('[^0-9]'), ''));
-        final int currentVersionInt =
-            int.parse(_currentPatchesVersion.replaceAll(RegExp('[^0-9]'), ''));
+        final int latestVersionInt = int.parse(
+          latestPatchesVersion!.replaceAll(RegExp('[^0-9]'), ''),
+        );
+        final int currentVersionInt = int.parse(
+          _currentPatchesVersion.replaceAll(RegExp('[^0-9]'), ''),
+        );
         return latestVersionInt > currentVersionInt;
       } on Exception catch (e) {
         if (kDebugMode) {
@@ -187,123 +191,128 @@ class HomeViewModel extends BaseViewModel {
     await showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          title: Text(t.homeView.downloadConsentDialogTitle),
-          content: ValueListenableBuilder(
-            valueListenable: autoUpdate,
-            builder: (context, value, child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    t.homeView.downloadConsentDialogText,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      t.homeView.downloadConsentDialogText2(
-                        url: _managerAPI.defaultApiUrl.split('/')[2],
+      builder:
+          (context) => PopScope(
+            canPop: false,
+            child: AlertDialog(
+              title: Text(t.homeView.downloadConsentDialogTitle),
+              content: ValueListenableBuilder(
+                valueListenable: autoUpdate,
+                builder: (context, value, child) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        t.homeView.downloadConsentDialogText,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                       ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.error,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          t.homeView.downloadConsentDialogText2(
+                            url: _managerAPI.defaultApiUrl.split('/')[2],
+                          ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              );
-            },
+                    ],
+                  );
+                },
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    _managerAPI.setDownloadConsent(false);
+                    SystemNavigator.pop();
+                  },
+                  child: Text(t.quitButton),
+                ),
+                FilledButton(
+                  onPressed: () async {
+                    _managerAPI.setDownloadConsent(true);
+                    _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.okButton),
+                ),
+              ],
+            ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                _managerAPI.setDownloadConsent(false);
-                SystemNavigator.pop();
-              },
-              child: Text(t.quitButton),
-            ),
-            FilledButton(
-              onPressed: () async {
-                _managerAPI.setDownloadConsent(true);
-                _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
-                Navigator.of(context).pop();
-              },
-              child: Text(t.okButton),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
   void showUpdateDialog(BuildContext context, bool isPatches) {
-    final ValueNotifier<bool> noShow =
-        ValueNotifier(!_managerAPI.showUpdateDialog());
+    final ValueNotifier<bool> noShow = ValueNotifier(
+      !_managerAPI.showUpdateDialog(),
+    );
     showDialog(
       context: context,
-      builder: (innerContext) => AlertDialog(
-        title: Text(t.homeView.updateDialogTitle),
-        content: ValueListenableBuilder(
-          valueListenable: noShow,
-          builder: (context, value, child) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  t.homeView.updateDialogText(
-                    file: isPatches ? 'ReVanced Patches' : 'ReVanced Manager',
-                    version: isPatches
-                        ? _currentPatchesVersion
-                        : _currentManagerVersion,
-                  ),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                HapticCheckboxListTile(
-                  value: value,
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(t.noShowAgain),
-                  subtitle: Text(t.homeView.changeLaterSubtitle),
-                  onChanged: (selected) {
-                    noShow.value = selected!;
-                  },
-                ),
-              ],
-            );
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              _managerAPI.setShowUpdateDialog(!noShow.value);
-              Navigator.pop(innerContext);
-            },
-            child: Text(t.dismissButton), // Decide later
+      builder:
+          (innerContext) => AlertDialog(
+            title: Text(t.homeView.updateDialogTitle),
+            content: ValueListenableBuilder(
+              valueListenable: noShow,
+              builder: (context, value, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      t.homeView.updateDialogText(
+                        file:
+                            isPatches ? 'ReVanced Patches' : 'ReVanced Manager',
+                        version:
+                            isPatches
+                                ? _currentPatchesVersion
+                                : _currentManagerVersion,
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    HapticCheckboxListTile(
+                      value: value,
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(t.noShowAgain),
+                      subtitle: Text(t.homeView.changeLaterSubtitle),
+                      onChanged: (selected) {
+                        noShow.value = selected!;
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  _managerAPI.setShowUpdateDialog(!noShow.value);
+                  Navigator.pop(innerContext);
+                },
+                child: Text(t.dismissButton), // Decide later
+              ),
+              FilledButton(
+                onPressed: () async {
+                  _managerAPI.setShowUpdateDialog(!noShow.value);
+                  Navigator.pop(innerContext);
+                  await showUpdateConfirmationDialog(context, isPatches);
+                },
+                child: Text(t.showUpdateButton),
+              ),
+            ],
           ),
-          FilledButton(
-            onPressed: () async {
-              _managerAPI.setShowUpdateDialog(!noShow.value);
-              Navigator.pop(innerContext);
-              await showUpdateConfirmationDialog(context, isPatches);
-            },
-            child: Text(t.showUpdateButton),
-          ),
-        ],
-      ),
     );
   }
 
@@ -326,94 +335,95 @@ class HomeViewModel extends BaseViewModel {
       _toast.showBottom(t.homeView.downloadingMessage);
       showDialog(
         context: context,
-        builder: (context) => ValueListenableBuilder(
-          valueListenable: downloaded,
-          builder: (context, value, child) {
-            return AlertDialog(
-              title: Text(
-                !value
-                    ? t.homeView.downloadingMessage
-                    : t.homeView.downloadedMessage,
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (!value)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        StreamBuilder<double>(
-                          initialData: 0.0,
-                          stream: _revancedAPI.managerUpdateProgress.stream,
-                          builder: (context, snapshot) {
-                            return LinearProgressIndicator(
-                              value: snapshot.data! * 0.01,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).colorScheme.secondary,
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16.0),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: FilledButton(
-                            onPressed: () {
-                              _revancedAPI.disposeManagerUpdateProgress();
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(t.cancelButton),
-                          ),
-                        ),
-                      ],
-                    ),
-                  if (value)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          t.homeView.installUpdate,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        const SizedBox(height: 16.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+        builder:
+            (context) => ValueListenableBuilder(
+              valueListenable: downloaded,
+              builder: (context, value, child) {
+                return AlertDialog(
+                  title: Text(
+                    !value
+                        ? t.homeView.downloadingMessage
+                        : t.homeView.downloadedMessage,
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (!value)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            StreamBuilder<double>(
+                              initialData: 0.0,
+                              stream: _revancedAPI.managerUpdateProgress.stream,
+                              builder: (context, snapshot) {
+                                return LinearProgressIndicator(
+                                  value: snapshot.data! * 0.01,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Theme.of(context).colorScheme.secondary,
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
                             Align(
                               alignment: Alignment.centerRight,
-                              child: TextButton(
+                              child: FilledButton(
                                 onPressed: () {
+                                  _revancedAPI.disposeManagerUpdateProgress();
                                   Navigator.of(context).pop();
                                 },
                                 child: Text(t.cancelButton),
                               ),
                             ),
-                            const SizedBox(width: 8.0),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: FilledButton(
-                                onPressed: () async {
-                                  await _patcherAPI.installApk(
-                                    context,
-                                    downloadedApk!.path,
-                                  );
-                                },
-                                child: Text(t.updateButton),
+                          ],
+                        ),
+                      if (value)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              t.homeView.installUpdate,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
+                            ),
+                            const SizedBox(height: 16.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(t.cancelButton),
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: FilledButton(
+                                    onPressed: () async {
+                                      await _patcherAPI.installApk(
+                                        context,
+                                        downloadedApk!.path,
+                                      );
+                                    },
+                                    child: Text(t.updateButton),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                ],
-              ),
-            );
-          },
-        ),
+                    ],
+                  ),
+                );
+              },
+            ),
       );
       final File? managerApk = await downloadManager();
       if (managerApk != null) {
@@ -468,10 +478,11 @@ class HomeViewModel extends BaseViewModel {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
       ),
-      builder: (context) => UpdateConfirmationSheet(
-        isPatches: isPatches,
-        changelog: changelog,
-      ),
+      builder:
+          (context) => UpdateConfirmationSheet(
+            isPatches: isPatches,
+            changelog: changelog,
+          ),
     );
   }
 
