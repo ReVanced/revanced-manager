@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.outlined.Campaign
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.Sell
+import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,26 +34,16 @@ fun Changelog(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = Icons.Outlined.Campaign,
+                imageVector = Icons.Outlined.NewReleases,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .size(32.dp)
             )
             Text(
-                version.removePrefix("v"),
+                "${version.removePrefix("v")} ($publishDate)",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight(800)),
                 color = MaterialTheme.colorScheme.primary,
-            )
-        }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Tag(
-                Icons.Outlined.CalendarToday,
-                publishDate
             )
         }
     }
