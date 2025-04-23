@@ -6,6 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -264,9 +265,6 @@ fun DashboardScreen(
                 }
             }
 
-            val showBatteryOptimizationsWarning by vm.showBatteryOptimizationsWarningFlow.collectAsStateWithLifecycle(
-                false
-            )
             Notifications(
                 if (!Aapt.supportsDevice()) {
                     {
@@ -278,16 +276,23 @@ fun DashboardScreen(
                         )
                     }
                 } else null,
-                if (showBatteryOptimizationsWarning) {
+                if (vm.showBatteryOptimizationsWarning) {
                     {
+                        val batteryOptimizationsLauncher =
+                            rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                                vm.updateBatteryOptimizationsWarning()
+                            }
                         NotificationCard(
                             isWarning = true,
                             icon = Icons.Default.BatteryAlert,
                             text = stringResource(R.string.battery_optimization_notification),
                             onClick = {
-                                androidContext.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                                    data = Uri.parse("package:${androidContext.packageName}")
-                                })
+                                batteryOptimizationsLauncher.launch(
+                                    Intent(
+                                        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                                        Uri.fromParts("package", androidContext.packageName, null)
+                                    )
+                                )
                             }
                         )
                     }
