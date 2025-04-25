@@ -181,7 +181,7 @@
     "autoUpdatePatchesLabel": "Auto update patches",
     "autoUpdatePatchesHint": "Automatically update patches to the latest version",
     "usePrereleasesLabel": "Use pre-releases",
-    "usePrereleasesHint": "Use pre-releases of ReVanced Manager and ReVanced Patches",
+    "usePrereleasesHint": "Use pre-release versions of ReVanced Manager and ReVanced Patches",
     "showUpdateDialogLabel": "Show update dialog",
     "showUpdateDialogHint": "Show a dialog when a new update is available",
     "universalPatchesLabel": "Show universal patches",
