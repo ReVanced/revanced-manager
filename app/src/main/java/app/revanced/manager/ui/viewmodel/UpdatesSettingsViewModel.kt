@@ -3,6 +3,7 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.util.toast
@@ -12,9 +13,13 @@ class UpdatesSettingsViewModel(
     prefs: PreferencesManager,
     private val app: Application,
     private val reVancedAPI: ReVancedAPI,
+    private val network: NetworkInfo,
 ) : ViewModel() {
     val managerAutoUpdates = prefs.managerAutoUpdates
     val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
+
+    val isConnected: Boolean
+        get() = network.isConnected()
 
     suspend fun checkForUpdates(): Boolean {
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {

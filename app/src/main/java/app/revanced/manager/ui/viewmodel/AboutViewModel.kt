@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedDonationLink
 import app.revanced.manager.network.dto.ReVancedSocial
@@ -23,16 +24,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
+class AboutViewModel(
+    private val reVancedAPI: ReVancedAPI,
+    private val network: NetworkInfo,
+) : ViewModel() {
     var socials by mutableStateOf(emptyList<ReVancedSocial>())
-    	private set
+        private set
     var contact by mutableStateOf<String?>(null)
-      	private set
+        private set
     var donate by mutableStateOf<String?>(null)
-      	private set
+        private set
+    val isConnected: Boolean
+        get() = network.isConnected()
 
     init {
         viewModelScope.launch {
+            if (!isConnected) {
+                return@launch
+            }
             withContext(Dispatchers.IO) {
                 reVancedAPI.getInfo("https://api.revanced.app").getOrNull()
             }?.let {

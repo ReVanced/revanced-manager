@@ -38,6 +38,8 @@
     <string name="android_11_bug_dialog_title">Android 11 bug</string>
     <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
 
+    <string name="no_network_toast">No internet connection available</string>
+
     <string name="selected_app_meta_any_version">Any available version</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
@@ -50,6 +52,9 @@
     <string name="patch_selector_item">Patch selection and options</string>
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="no_patches_selected">No patches selected</string>
+
+    <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
+    <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
     <string name="apk_source_selector_item">Change source</string>
     <string name="apk_source_auto">Current: All downloaders</string>
