@@ -19,6 +19,7 @@ datetime = "0.6.1"
 room-version = "2.6.1"
 revanced-patcher = "21.0.0"
 revanced-library = "3.0.2"
+plugin-api = "1.0.0"
 koin = "3.5.3"
 ktor = "2.3.9"
 markdown-renderer = "0.30.0"
@@ -27,7 +28,6 @@ kotlin = "2.1.10"
 android-gradle-plugin = "8.8.0"
 dev-tools-gradle-plugin = "2.1.10-1.0.29"
 about-libraries-gradle-plugin = "11.5.0"
-binary-compatibility-validator = "0.17.0"
 coil = "2.7.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
@@ -45,7 +45,6 @@ runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", ve
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -83,6 +82,9 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 # Patcher
 revanced-patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "revanced-patcher" }
 revanced-library = { group = "app.revanced", name = "revanced-library", version.ref = "revanced-library" }
+
+# Plugin API
+plugin-api = { group = "app.revanced", name = "revanced-manager-downloader-api", version.ref = "plugin-api" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
@@ -144,4 +146,3 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }
-binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
