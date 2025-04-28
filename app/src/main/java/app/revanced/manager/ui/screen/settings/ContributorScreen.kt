@@ -97,7 +97,14 @@ fun ContributorScreen(
                         )
                     }
                 }
-            } ?: item { LoadingIndicator() }
+            } ?: item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    LoadingIndicator()
+                }
+            }
         }
     }
 }

@@ -44,6 +44,7 @@ import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.viewmodel.AboutViewModel
 import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
 import app.revanced.manager.util.openUrl
+import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import org.koin.androidx.compose.koinViewModel
 
@@ -116,7 +117,14 @@ fun AboutSettingsScreen(
         Triple(
             stringResource(R.string.contributors),
             stringResource(R.string.contributors_description),
-            third = { navigate(Settings.Contributors) }
+            third = nav@{
+                if (!viewModel.isConnected) {
+                    context.toast(context.getString(R.string.no_network_toast))
+                    return@nav
+                }
+
+                navigate(Settings.Contributors)
+            }
         ),
         Triple(
             stringResource(R.string.developer_options),

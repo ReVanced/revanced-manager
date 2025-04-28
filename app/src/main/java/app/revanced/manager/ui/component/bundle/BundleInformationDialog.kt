@@ -16,6 +16,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.bundles.LocalPatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
@@ -23,6 +24,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefaul
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,6 +34,8 @@ fun BundleInformationDialog(
     bundle: PatchBundleSource,
     onUpdate: () -> Unit,
 ) {
+    val networkInfo = koinInject<NetworkInfo>()
+    val hasNetwork = remember { networkInfo.isConnected() }
     val composableScope = rememberCoroutineScope()
     var viewCurrentBundlePatches by remember { mutableStateOf(false) }
     val isLocal = bundle is LocalPatchBundle
@@ -81,7 +85,7 @@ fun BundleInformationDialog(
                                 )
                             }
                         }
-                        if (!isLocal) {
+                        if (!isLocal && hasNetwork) {
                             IconButton(onClick = onUpdate) {
                                 Icon(
                                     Icons.Outlined.Update,
