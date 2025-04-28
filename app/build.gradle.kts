@@ -161,7 +161,7 @@ dependencies {
     implementation(libs.revanced.library)
 
     // Downloader plugins
-    implementation(project(":downloader-plugin"))
+    implementation(libs.plugin.api)
 
     // Native processes
     implementation(libs.kotlin.process)
