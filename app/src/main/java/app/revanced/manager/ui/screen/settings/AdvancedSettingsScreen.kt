@@ -112,20 +112,6 @@ fun AdvancedSettingsScreen(
                 }
             )
 
-            GroupHeader(stringResource(R.string.patcher))
-            BooleanItem(
-                preference = vm.prefs.useProcessRuntime,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.process_runtime,
-                description = R.string.process_runtime_description,
-            )
-            IntegerItem(
-                preference = vm.prefs.patcherProcessMemoryLimit,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.process_runtime_memory_limit,
-                description = R.string.process_runtime_memory_limit_description,
-            )
-
             GroupHeader(stringResource(R.string.safeguards))
             SafeguardBooleanItem(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
@@ -154,6 +140,20 @@ fun AdvancedSettingsScreen(
                 headline = R.string.patch_selection_safeguard,
                 description = R.string.patch_selection_safeguard_description,
                 confirmationText = R.string.patch_selection_safeguard_confirmation
+            )
+
+            GroupHeader(stringResource(R.string.patcher))
+            BooleanItem(
+                preference = vm.prefs.useProcessRuntime,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime,
+                description = R.string.process_runtime_description,
+            )
+            IntegerItem(
+                preference = vm.prefs.patcherProcessMemoryLimit,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime_memory_limit,
+                description = R.string.process_runtime_memory_limit_description,
             )
 
             GroupHeader(stringResource(R.string.debugging))
