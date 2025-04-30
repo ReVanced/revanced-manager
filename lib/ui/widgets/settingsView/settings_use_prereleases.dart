@@ -23,10 +23,9 @@ class _SUsePrereleasesState extends State<SUsePrereleases> {
       ),
       subtitle: Text(t.settingsView.usePrereleasesHint),
       value: _settingsViewModel.usePrereleases(),
-      onChanged: (value) {
-        setState(() {
-          _settingsViewModel.setPrereleases(value);
-        });
+      onChanged: (value) async {
+        await _settingsViewModel.showUsePrereleasesDialog(context, value);
+        setState(() {});
       },
     );
   }

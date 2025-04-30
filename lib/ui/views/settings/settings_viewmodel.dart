@@ -44,11 +44,6 @@ class SettingsViewModel extends BaseViewModel {
     return _managerAPI.usePrereleases();
   }
 
-  void setPrereleases(bool value) {
-    _managerAPI.setPrereleases(value);
-    notifyListeners();
-  }
-
   bool showUpdateDialog() {
     return _managerAPI.showUpdateDialog();
   }
@@ -73,6 +68,45 @@ class SettingsViewModel extends BaseViewModel {
     return _managerAPI.isUsingAlternativeSources();
   }
 
+  Future<void> showUsePrereleasesDialog(
+    BuildContext context,
+    bool value,
+  ) async {
+    if (value) {
+      return showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              title: Text(t.warning),
+              content: Text(
+                t.settingsView.usePrereleasesWarningText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _managerAPI.setPrereleases(true);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.yesButton),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.noButton),
+                ),
+              ],
+            ),
+      );
+    } else {
+      _managerAPI.setPrereleases(false);
+    }
+  }
+
   Future<void> showPatchesChangeEnableDialog(
     bool value,
     BuildContext context,
@@ -80,63 +114,65 @@ class SettingsViewModel extends BaseViewModel {
     if (value) {
       return showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(t.warning),
-          content: Text(
-            t.settingsView.enablePatchesSelectionWarningText,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+        builder:
+            (context) => AlertDialog(
+              title: Text(t.warning),
+              content: Text(
+                t.settingsView.enablePatchesSelectionWarningText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _managerAPI.setChangingToggleModified(true);
+                    _managerAPI.setPatchesChangeEnabled(true);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.yesButton),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.noButton),
+                ),
+              ],
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                _managerAPI.setChangingToggleModified(true);
-                _managerAPI.setPatchesChangeEnabled(true);
-                Navigator.of(context).pop();
-              },
-              child: Text(t.yesButton),
-            ),
-            FilledButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(t.noButton),
-            ),
-          ],
-        ),
       );
     } else {
       return showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(t.warning),
-          content: Text(
-            t.settingsView.disablePatchesSelectionWarningText,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+        builder:
+            (context) => AlertDialog(
+              title: Text(t.warning),
+              content: Text(
+                t.settingsView.disablePatchesSelectionWarningText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.noButton),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    _managerAPI.setChangingToggleModified(true);
+                    _patchesSelectorViewModel.selectDefaultPatches();
+                    _managerAPI.setPatchesChangeEnabled(false);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.yesButton),
+                ),
+              ],
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(t.noButton),
-            ),
-            FilledButton(
-              onPressed: () {
-                _managerAPI.setChangingToggleModified(true);
-                _patchesSelectorViewModel.selectDefaultPatches();
-                _managerAPI.setPatchesChangeEnabled(false);
-                Navigator.of(context).pop();
-              },
-              child: Text(t.yesButton),
-            ),
-          ],
-        ),
       );
     }
   }
@@ -182,31 +218,32 @@ class SettingsViewModel extends BaseViewModel {
     if (!value) {
       return showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(t.warning),
-          content: Text(
-            t.settingsView.requireSuggestedAppVersionDialogText,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+        builder:
+            (context) => AlertDialog(
+              title: Text(t.warning),
+              content: Text(
+                t.settingsView.requireSuggestedAppVersionDialogText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _managerAPI.enableRequireSuggestedAppVersionStatus(false);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.yesButton),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(t.noButton),
+                ),
+              ],
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                _managerAPI.enableRequireSuggestedAppVersionStatus(false);
-                Navigator.of(context).pop();
-              },
-              child: Text(t.yesButton),
-            ),
-            FilledButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(t.noButton),
-            ),
-          ],
-        ),
       );
     } else {
       _managerAPI.enableRequireSuggestedAppVersionStatus(true);
@@ -258,9 +295,7 @@ class SettingsViewModel extends BaseViewModel {
   Future<void> importSettings() async {
     try {
       final String? result = await FlutterFileDialog.pickFile(
-        params: const OpenFileDialogParams(
-          fileExtensionsFilter: ['json'],
-        ),
+        params: const OpenFileDialogParams(fileExtensionsFilter: ['json']),
       );
       if (result != null) {
         final File inFile = File(result);
@@ -307,9 +342,7 @@ class SettingsViewModel extends BaseViewModel {
     if (isPatchesChangeEnabled()) {
       try {
         final String? result = await FlutterFileDialog.pickFile(
-          params: const OpenFileDialogParams(
-            fileExtensionsFilter: ['json'],
-          ),
+          params: const OpenFileDialogParams(fileExtensionsFilter: ['json']),
         );
         if (result != null) {
           final File inFile = File(result);
@@ -402,8 +435,9 @@ class SettingsViewModel extends BaseViewModel {
         .replaceAll(':', '')
         .replaceAll('T', '')
         .replaceAll('.', '');
-    final File logcat =
-        File('${logDir.path}/revanced-manager_logcat_$dateTime.log');
+    final File logcat = File(
+      '${logDir.path}/revanced-manager_logcat_$dateTime.log',
+    );
     final String logs = await Logcat.execute();
     logcat.writeAsStringSync(logs);
     await Share.shareXFiles([XFile(logcat.path)]);
