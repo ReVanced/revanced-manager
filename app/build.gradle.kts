@@ -40,12 +40,21 @@ android {
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
-            if (project.hasProperty("signAsDebug")) {
+            val keystoreFile = file("keystore.jks")
+
+            if (project.hasProperty("signAsDebug") || !keystoreFile.exists()) {
                 applicationIdSuffix = ".debug_signed"
                 resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs.getByName("debug")
 
                 isPseudoLocalesEnabled = true
+            } else {
+                signingConfig = signingConfigs.create("release") {
+                    storeFile = keystoreFile
+                    storePassword = System.getenv("KEYSTORE_PASSWORD")
+                    keyAlias = System.getenv("KEYSTORE_ENTRY_ALIAS")
+                    keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
+                }
             }
 
             buildConfigField("long", "BUILD_ID", "0L")
