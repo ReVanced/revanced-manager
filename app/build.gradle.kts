@@ -58,7 +58,6 @@ android {
             }
 
             buildConfigField("long", "BUILD_ID", "0L")
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -73,15 +72,17 @@ android {
     }
 
     packaging {
-        resources.excludes.addAll(listOf(
-            "/prebuilt/**",
-            "META-INF/DEPENDENCIES",
-            "META-INF/**.version",
-            "DebugProbesKt.bin",
-            "kotlin-tooling-metadata.json",
-            "org/bouncycastle/pqc/**.properties",
-            "org/bouncycastle/x509/**.properties",
-        ))
+        resources.excludes.addAll(
+            listOf(
+                "/prebuilt/**",
+                "META-INF/DEPENDENCIES",
+                "META-INF/**.version",
+                "DebugProbesKt.bin",
+                "kotlin-tooling-metadata.json",
+                "org/bouncycastle/pqc/**.properties",
+                "org/bouncycastle/x509/**.properties",
+            )
+        )
         jniLibs {
             useLegacyPackaging = true
         }
