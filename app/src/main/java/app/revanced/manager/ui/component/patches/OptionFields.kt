@@ -21,8 +21,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DragHandle
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.SelectAll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.derivedStateOf
@@ -42,7 +59,11 @@ import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
-import app.revanced.manager.ui.component.*
+import app.revanced.manager.ui.component.AlertDialogExtended
+import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.FloatInputDialog
+import app.revanced.manager.ui.component.IntInputDialog
+import app.revanced.manager.ui.component.LongInputDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
@@ -602,8 +623,10 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                         interactionSource = interactionSource,
                                         onLongClickLabel = stringResource(R.string.select),
                                         onLongClick = {
-                                            deletionTargets.add(item.key)
-                                            deleteMode = true
+                                            if (!deleteMode) {
+                                                deletionTargets.add(item.key)
+                                                deleteMode = true
+                                            }
                                         },
                                         onClick = {
                                             if (!deleteMode) {
