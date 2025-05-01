@@ -55,3 +55,9 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: revanced-manager-${{ env.RELEASE_VERSION }}.apk
+
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: 'ReVanced Manager ${{ env.RELEASE_VERSION }}'
+          subject-path: revanced-manager-${{ env.RELEASE_VERSION }}.apk
