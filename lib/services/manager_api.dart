@@ -696,15 +696,6 @@ class ManagerAPI {
     patchedApps.addAll(mountedApps);
 
     await setPatchedApps(patchedApps);
-
-    // Delete the saved app pref if the file is not found.
-    final PatchedApplication? lastPatchedApp = getLastPatchedApp();
-    if (lastPatchedApp != null) {
-      final File file = File(lastPatchedApp.patchedFilePath);
-      if (!file.existsSync()) {
-        _prefs.remove('lastPatchedApp');
-      }
-    }
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {
