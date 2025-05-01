@@ -47,7 +47,7 @@ dependencies:
       ref: 4a6d5e0e22292c8eb160cfb9365b9ea29735fd43 # Branch: master
   package_info_plus: ^8.3.0
   path_provider: ^2.1.5
-  permission_handler: ^11.4.0
+  permission_handler: ^12.0.0+1
   root:
     git:
       url: https://github.com/validcube/root
