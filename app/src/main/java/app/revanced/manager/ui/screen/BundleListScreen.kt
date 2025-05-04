@@ -19,13 +19,17 @@ fun BundleListScreen(
     selectedSources: SnapshotStateList<PatchBundleSource>,
     bundlesSelectable: Boolean,
 ) {
+    val sortedSources = sources.sortedBy {
+        it.state.value.patchBundleOrNull()?.patches?.size
+    }
+
     LazyColumnWithScrollbar(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         items(
-            sources,
+            sortedSources,
             key = { it.uid }
         ) { source ->
             BundleItem(
