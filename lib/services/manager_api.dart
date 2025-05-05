@@ -339,7 +339,7 @@ class ManagerAPI {
   }
 
   String getLocale() {
-    return _prefs.getString('locale') ?? 'en';
+    return _prefs.getString('locale') ?? Platform.localeName;
   }
 
   Future<void> setLocale(String value) async {
@@ -374,7 +374,10 @@ class ManagerAPI {
     }
   }
 
-  Future<void> setLastPatchedApp(PatchedApplication app, File outFile) async {
+  Future<void> setLastPatchedApp(
+    PatchedApplication app,
+    File outFile
+  ) async {
     deleteLastPatchedApp();
     final Directory appCache = await getApplicationSupportDirectory();
     app.patchedFilePath =
@@ -689,16 +692,6 @@ class ManagerAPI {
     patchedApps.addAll(mountedApps);
 
     await setPatchedApps(patchedApps);
-
-    // Delete the saved app if the file is not found.
-    final PatchedApplication? lastPatchedApp = getLastPatchedApp();
-    if (lastPatchedApp != null) {
-      final File file = File(lastPatchedApp.patchedFilePath);
-      if (!file.existsSync()) {
-        deleteLastPatchedApp();
-        _prefs.remove('lastPatchedApp');
-      }
-    }
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {

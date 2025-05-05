@@ -54,7 +54,6 @@
     "noneChip": "Tiada",
     "noPatchesFound": "Tiada modifikasi dijumpai untuk apl pilihan"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "Memilih modifikasi mungkin menyebabkan ralat ketika modifikasi.\n\nVersi aplikasi: ${packageVersion}\nVersi disokong:\n${supportedVersions}"
   },
@@ -104,6 +103,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Penyumbang"
-  },
-  "installErrorDialog": {}
+  }
 }

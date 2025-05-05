@@ -67,10 +67,10 @@
     "anyVersion": "Jakákoli verze"
   },
   "patchSelectorCard": {
-    "widgetTitle": "Vybrat patche",
+    "widgetTitle": "Vybrat záplaty",
     "widgetTitleSelected": "Vybrané patche",
     "widgetSubtitle": "Nejprve vyberte aplikaci",
-    "widgetEmptySubtitle": "Nejsou vybrány žádné patche"
+    "widgetEmptySubtitle": "Nejsou vybrány žádné záplaty"
   },
   "socialMediaCard": {
     "widgetTitle": "Sociální sítě",
@@ -89,15 +89,15 @@
   },
   "patchesSelectorView": {
     "viewTitle": "Vybrat patche",
-    "searchBarHint": "Vyhledat patche",
+    "searchBarHint": "Vyhledat záplaty",
     "universalPatches": "Univerzální záplaty",
     "newPatches": "Nové záplaty",
     "patches": "Záplaty",
     "doneButton": "Hotovo",
     "defaultChip": "Výchozí",
-    "defaultTooltip": "Vybrat všechny výchozí patche",
+    "defaultTooltip": "Vybrat všechny výchozí záplaty",
     "noneChip": "Žádné",
-    "noneTooltip": "Zrušit výběr všech patchů",
+    "noneTooltip": "Zrušit výběr všech záplat",
     "loadPatchesSelection": "Načíst výběr záplat",
     "noSavedPatches": "Žádný uložený výběr patch pro vybranou aplikaci.\nStisknutím Dokončeno uložíte aktuální výběr.",
     "noPatchesFound": "Pro vybranou aplikaci nebyly nalezeny žádné záplaty",
@@ -169,7 +169,7 @@
     "apiURLHint": "Konfigurace URL API ReVanced Manager",
     "selectApiURL": "API URL",
     "orgPatchesLabel": "Organizace patchů",
-    "sourcesPatchesLabel": "Zdroj patchů",
+    "sourcesPatchesLabel": "Zdroj záplat",
     "contributorsLabel": "Přispěvatelé",
     "contributorsHint": "Seznam přispěvatelů ReVanced",
     "logsLabel": "Sdílet záznamy",
@@ -260,10 +260,10 @@
     "mountTypeLabel": "Připojit",
     "regularTypeLabel": "Běžný",
     "patchedDateLabel": "Datum patchování",
-    "appliedPatchesLabel": "Použité patche",
+    "appliedPatchesLabel": "Použité záplaty",
     "sizeLabel": "Velikost souboru",
     "patchedDateHint": "${date} v ${time}",
-    "appliedPatchesHint": "${quantity} použité patche",
+    "appliedPatchesHint": "${quantity} použité záplaty",
     "updateNotImplemented": "Tato funkce ještě není implementována"
   },
   "contributorsView": {

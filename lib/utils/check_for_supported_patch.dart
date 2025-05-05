@@ -18,12 +18,12 @@ bool isPatchSupported(Patch patch) {
 bool hasUnsupportedRequiredOption(List<Option> options, Patch patch) {
   final List<String> requiredOptionsType = [];
   final List<String> supportedOptionsType = [
-    'kotlin.String',          
-    'kotlin.Int',          
-    'kotlin.Boolean',     
-    'kotlin.StringArray', 
-    'kotlin.IntArray',    
-    'kotlin.LongArray',   
+    'kotlin.String',
+    'kotlin.Int',
+    'kotlin.Boolean',
+    'kotlin.StringArray',
+    'kotlin.IntArray',
+    'kotlin.LongArray',
   ];
   for (final Option option in options) {
     if (option.required &&
@@ -40,7 +40,7 @@ bool hasUnsupportedRequiredOption(List<Option> options, Patch patch) {
   for (final String optionType in requiredOptionsType) {
     if (!supportedOptionsType.contains(optionType)) {
       if (kDebugMode) {
-        print('${patch.name} has unsupported required patch option: $requiredOptionsType');
+        print('PatchCompatibilityCheck: ${patch.name} has unsupported required patch option type: $requiredOptionsType');
       }
       return true;
     }

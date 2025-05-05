@@ -5,7 +5,7 @@
   "quitButton": "Esci",
   "updateButton": "Aggiorna",
   "suggested": "Consigliata: ${version}",
-  "yesButton": "Si",
+  "yesButton": "Sì",
   "noButton": "No",
   "warning": "Attenzione",
   "notice": "Avviso",
@@ -55,7 +55,7 @@
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "La patch su questa architettura non è ancora supportata e potrebbe non riuscire. Continuare comunque?",
-    "removedPatchesWarningDialogText": "Le patch rimosse dall'ultima volta che hai patchato questa app:\n\n${patches}\n\n${newPatches}Continuare comunque?",
+    "removedPatchesWarningDialogText": "Patch rimosse dall'ultima volta che hai patchato questa app:\n\n${patches}\n\n${newPatches}Continuare comunque?",
     "addedPatchesDialogText": "Patch aggiunte dall'ultima volta che hai patchato questa app:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Alcune opzioni di patch devono essere impostate."
   },

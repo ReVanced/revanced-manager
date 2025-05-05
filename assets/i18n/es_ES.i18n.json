@@ -56,7 +56,7 @@
     "patchButton": "Parchear",
     "incompatibleArchWarningDialogText": "Parchear en esta arquitectura aún no está soportado y podría fallar. ¿Continuar de todos modos?",
     "removedPatchesWarningDialogText": "Parches eliminados desde la última vez que parcheaste esta aplicación:\n\n${patches}\n\n${newPatches}¿Continuar de todos modos?",
-    "addedPatchesDialogText": "Añadidos parches desde la última vez que parcheaste esta aplicación:\n\n${addedPatches}\n\n",
+    "addedPatchesDialogText": "Parches añadidos desde la última vez que parcheaste esta aplicación:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Deben establecerse algunas opciones de parche."
   },
   "appSelectorCard": {
