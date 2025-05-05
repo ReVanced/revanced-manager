@@ -366,7 +366,6 @@ class ManagerAPI {
     PatchedApplication app,
     File outFile,
   ) async {
-    deleteLastPatchedApp();
     final Directory appCache = await getApplicationSupportDirectory();
     app.patchedFilePath =
         outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
@@ -691,16 +690,6 @@ class ManagerAPI {
     patchedApps.addAll(mountedApps);
 
     await setPatchedApps(patchedApps);
-
-    // Delete the saved app if the file is not found.
-    final PatchedApplication? lastPatchedApp = getLastPatchedApp();
-    if (lastPatchedApp != null) {
-      final File file = File(lastPatchedApp.patchedFilePath);
-      if (!file.existsSync()) {
-        deleteLastPatchedApp();
-        _prefs.remove('lastPatchedApp');
-      }
-    }
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {
