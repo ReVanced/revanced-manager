@@ -42,6 +42,11 @@ private val settingsSections = listOf(
         Icons.Outlined.Tune
     ) to Settings.Advanced,
     Triple(
+        R.string.developer_options,
+        R.string.developer_options_description,
+        Icons.Outlined.Code
+    ) to Settings.DeveloperOptions,
+    Triple(
         R.string.about,
         R.string.app_name,
         Icons.Outlined.Info
