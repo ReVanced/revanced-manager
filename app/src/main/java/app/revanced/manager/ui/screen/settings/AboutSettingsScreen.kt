@@ -33,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.hideFromAccessibility
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
@@ -43,6 +45,7 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.viewmodel.AboutViewModel
 import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
+import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.openUrl
 import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -109,7 +112,8 @@ fun AboutSettingsScreen(
     }
 
     val listItems = listOfNotNull(
-        Triple(stringResource(R.string.submit_feedback),
+        Triple(
+            stringResource(R.string.submit_feedback),
             stringResource(R.string.submit_feedback_description),
             third = {
                 context.openUrl("https://github.com/ReVanced/revanced-manager/issues/new/choose")
@@ -127,11 +131,6 @@ fun AboutSettingsScreen(
             }
         ),
         Triple(
-            stringResource(R.string.developer_options),
-            stringResource(R.string.developer_options_description),
-            third = { navigate(Settings.DeveloperOptions) }
-        ),
-        Triple(
             stringResource(R.string.opensource_licenses),
             stringResource(R.string.opensource_licenses_description),
             third = { navigate(Settings.Licenses) }
@@ -139,6 +138,13 @@ fun AboutSettingsScreen(
     )
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    EventEffect(viewModel.developerTaps) { taps ->
+        val remaining = AboutViewModel.DEVELOPER_OPTIONS_TAPS - taps
+
+        if (remaining > 0) context.toast("$remaining taps remaining")
+        else context.toast("you are devloper!!1!1")
+    }
 
     Scaffold(
         topBar = {
@@ -158,9 +164,11 @@ fun AboutSettingsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Image(
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .clickable(onClick = viewModel::onIconTap),
                 painter = icon,
-                contentDescription = null
+                contentDescription = stringResource(R.string.app_name)
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -168,7 +176,11 @@ fun AboutSettingsScreen(
             ) {
                 Text(
                     stringResource(R.string.app_name),
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.semantics {
+                        // Icon already has this information for the purpose of being clickable.
+                        hideFromAccessibility()
+                    }
                 )
                 Text(
                     text = stringResource(R.string.version) + " " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")",
