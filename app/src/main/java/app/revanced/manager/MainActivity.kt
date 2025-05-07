@@ -277,6 +277,10 @@ private fun ReVancedManager(vm: MainViewModel) {
                 AdvancedSettingsScreen(onBackClick = navController::popBackStack)
             }
 
+            composable<Settings.DeveloperOptions> {
+                DeveloperOptionsScreen(onBackClick = navController::popBackStack)
+            }
+
             composable<Settings.Updates> {
                 UpdatesSettingsScreen(
                     onBackClick = navController::popBackStack,
@@ -312,9 +316,6 @@ private fun ReVancedManager(vm: MainViewModel) {
                 LicensesScreen(onBackClick = navController::popBackStack)
             }
 
-            composable<Settings.DeveloperOptions> {
-                DeveloperOptionsScreen(onBackClick = navController::popBackStack)
-            }
         }
     }
 }

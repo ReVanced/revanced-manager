@@ -127,11 +127,6 @@ fun AboutSettingsScreen(
             }
         ),
         Triple(
-            stringResource(R.string.developer_options),
-            stringResource(R.string.developer_options_description),
-            third = { navigate(Settings.DeveloperOptions) }
-        ),
-        Triple(
             stringResource(R.string.opensource_licenses),
             stringResource(R.string.opensource_licenses_description),
             third = { navigate(Settings.Licenses) }
