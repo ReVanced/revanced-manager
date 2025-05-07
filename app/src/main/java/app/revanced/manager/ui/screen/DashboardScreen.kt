@@ -156,15 +156,13 @@ fun DashboardScreen(
     )
 
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
-
     if (showDeleteConfirmationDialog) {
         BundleDeleteDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
             onConfirm = {
                 vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
                 vm.cancelSourceSelection()
-            },
-            bundleName = null
+            }
         )
     }
 

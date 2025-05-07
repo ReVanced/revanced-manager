@@ -7,15 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -45,6 +42,7 @@ fun BundleItem(
     toggleSelection: (Boolean) -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
     val version by remember(bundle) {
@@ -53,24 +51,22 @@ fun BundleItem(
     val name by bundle.nameState
 
     if (viewBundleDialogPage) {
-        var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
-
-        if (showDeleteConfirmationDialog) {
-            BundleDeleteDialog(
-                onDismiss = { showDeleteConfirmationDialog = false },
-                onConfirm = {
-                    onDelete()
-                    viewBundleDialogPage = false
-                },
-                bundleName = name
-            )
-        }
-
         BundleInformationDialog(
             onDismissRequest = { viewBundleDialogPage = false },
             onDeleteRequest = { showDeleteConfirmationDialog = true },
             bundle = bundle,
             onUpdate = onUpdate,
+        )
+    }
+
+    if (showDeleteConfirmationDialog) {
+        BundleDeleteDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = {
+                onDelete()
+                viewBundleDialogPage = false
+            },
+            bundleName = name
         )
     }
 
@@ -119,39 +115,5 @@ fun BundleItem(
                 version?.let { Text(text = it) }
             }
         },
-    )
-}
-
-@Composable
-public fun BundleDeleteDialog( //TODO change public
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-    bundleName: String?
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        dismissButton = {
-            TextButton(onDismiss) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirm()
-                    onDismiss()
-                }
-            ) {
-                Text(stringResource(R.string.confirm))
-            }
-        },
-        title = { Text(stringResource(R.string.delete_bundle_dialog_title)) },
-        icon = { Icon(Icons.Outlined.Delete, null) },
-        text = { Text(
-            if(bundleName != null)
-                stringResource(R.string.delete_bundle_single_dialog_description, bundleName)
-            else
-                stringResource(R.string.delete_bundle_multiple_dialog_description)
-        ) }
     )
 }
