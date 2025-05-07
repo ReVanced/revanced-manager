@@ -61,16 +61,14 @@ fun BundleItem(
                 onConfirm = {
                     onDelete()
                     viewBundleDialogPage = false
-                }
+                },
+                bundleName = name
             )
         }
 
         BundleInformationDialog(
             onDismissRequest = { viewBundleDialogPage = false },
-            onDeleteRequest = {
-                showDeleteConfirmationDialog = true
-                //
-            },
+            onDeleteRequest = { showDeleteConfirmationDialog = true },
             bundle = bundle,
             onUpdate = onUpdate,
         )
@@ -125,9 +123,10 @@ fun BundleItem(
 }
 
 @Composable
-private fun BundleDeleteDialog(
+public fun BundleDeleteDialog( //TODO change public
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    bundleName: String?
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -148,6 +147,11 @@ private fun BundleDeleteDialog(
         },
         title = { Text(stringResource(R.string.delete_bundle_dialog_title)) },
         icon = { Icon(Icons.Outlined.Delete, null) },
-        text = { Text(stringResource(R.string.delete_bundle_dialog_description)) }
+        text = { Text(
+            if(bundleName != null)
+                stringResource(R.string.delete_bundle_single_dialog_description, bundleName)
+            else
+                stringResource(R.string.delete_bundle_multiple_dialog_description)
+        ) }
     )
 }

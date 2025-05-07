@@ -426,6 +426,7 @@
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="delete_bundle_dialog_title">Delete bundle</string>
-    <string name="delete_bundle_dialog_description">Are you sure you want to delete?</string>
+    <string name="delete_bundle_single_dialog_description">Are you sure you want to delete the bundle %s?</string>
+    <string name="delete_bundle_multiple_dialog_description">Are you sure you want to delete the selected bundles?</string>
     <string name="confirm">Confirm</string>
 </resources>

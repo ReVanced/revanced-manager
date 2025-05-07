@@ -62,6 +62,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.bundle.BundleDeleteDialog
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
@@ -154,6 +155,19 @@ fun DashboardScreen(
         }
     )
 
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+
+    if (showDeleteConfirmationDialog) {
+        BundleDeleteDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = {
+                vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
+                vm.cancelSourceSelection()
+            },
+            bundleName = null
+        )
+    }
+
     Scaffold(
         topBar = {
             if (bundlesSelectable) {
@@ -169,8 +183,7 @@ fun DashboardScreen(
                     actions = {
                         IconButton(
                             onClick = {
-                                vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
-                                vm.cancelSourceSelection()
+                                showDeleteConfirmationDialog = true
                             }
                         ) {
                             Icon(
