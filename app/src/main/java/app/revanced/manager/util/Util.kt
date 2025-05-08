@@ -180,7 +180,7 @@ fun LocalDateTime.relativeTime(context: Context): String {
 
 private var transparentListItemColorsCached: ListItemColors? = null
 
-fun resetCachedTransparentColor() {
+fun resetListItemColorsCached() {
     transparentListItemColorsCached = null
 }
 
