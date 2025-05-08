@@ -180,6 +180,10 @@ fun LocalDateTime.relativeTime(context: Context): String {
 
 private var transparentListItemColorsCached: ListItemColors? = null
 
+fun resetListItemColorsCached() {
+    transparentListItemColorsCached = null
+}
+
 /**
  * The default ListItem colors, but with [ListItemColors.containerColor] set to [Color.Transparent].
  */
