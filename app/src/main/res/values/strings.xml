@@ -143,6 +143,8 @@
     <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
     <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
     <string name="downloader_plugin_trust_dialog_body">Package name: %1$s\nSignature (SHA-256): %2$s</string>
+    <string name="downloader_plugin_delete_apps_title">Delete selected apps</string>
+    <string name="downloader_plugin_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found</string>
 
     <string name="search_apps">Search apps…</string>
@@ -336,7 +338,8 @@
     <string name="bundle_view_patches">View patches</string>
     <string name="bundle_view_patches_any_version">Any version</string>
     <string name="bundle_view_patches_any_package">Any package</string>
-    <string name="bundle_delete_dialog_title">Delete bundle</string>
+    <string name="bundle_delete_single_dialog_title">Delete bundle</string>
+    <string name="bundle_delete_multiple_dialog_title">Delete bundles</string>
     <string name="bundle_delete_single_dialog_description">Are you sure you want to delete the bundle %s?</string>
     <string name="bundle_delete_multiple_dialog_description">Are you sure you want to delete the selected bundles?</string>
 

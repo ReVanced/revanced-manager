@@ -43,6 +43,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.bundle.GenericDeleteDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -59,6 +60,16 @@ fun DownloadsSettingsScreen(
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val pluginStates by viewModel.downloaderPluginStates.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showDeleteConfirmationDialog) {
+        GenericDeleteDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = { viewModel.deleteApps() },
+            title = { Text(stringResource(R.string.downloader_plugin_delete_apps_title)) },
+            description = { Text(stringResource(R.string.downloader_plugin_delete_apps_description)) }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -68,7 +79,7 @@ fun DownloadsSettingsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { viewModel.deleteApps() }) {
+                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }

@@ -11,10 +11,11 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
 @Composable
-fun BundleDeleteDialog(
+fun GenericDeleteDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    bundleName: String? = null
+    title: @Composable () -> Unit,
+    description: @Composable () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -33,15 +34,8 @@ fun BundleDeleteDialog(
                 Text(stringResource(R.string.confirm))
             }
         },
-        title = { Text(stringResource(R.string.bundle_delete_dialog_title)) },
+        title = title,
         icon = { Icon(Icons.Outlined.Delete, null) },
-        text = {
-            Text(
-                if (bundleName != null)
-                    stringResource(R.string.bundle_delete_single_dialog_description, bundleName)
-                else
-                    stringResource(R.string.bundle_delete_multiple_dialog_description)
-            )
-        }
+        text = description
     )
 }

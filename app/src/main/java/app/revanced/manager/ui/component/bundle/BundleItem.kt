@@ -60,13 +60,14 @@ fun BundleItem(
     }
 
     if (showDeleteConfirmationDialog) {
-        BundleDeleteDialog(
+        GenericDeleteDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
             onConfirm = {
                 onDelete()
                 viewBundleDialogPage = false
             },
-            bundleName = name
+            title = { Text(stringResource(R.string.bundle_delete_single_dialog_title)) },
+            description = { Text(stringResource(R.string.bundle_delete_single_dialog_description, name)) }
         )
     }
 

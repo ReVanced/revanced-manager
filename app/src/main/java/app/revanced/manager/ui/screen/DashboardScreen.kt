@@ -62,7 +62,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
-import app.revanced.manager.ui.component.bundle.BundleDeleteDialog
+import app.revanced.manager.ui.component.bundle.GenericDeleteDialog
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
@@ -157,12 +157,14 @@ fun DashboardScreen(
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {
-        BundleDeleteDialog(
+        GenericDeleteDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
             onConfirm = {
                 vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
                 vm.cancelSourceSelection()
-            }
+            },
+            title = { Text(stringResource(R.string.bundle_delete_multiple_dialog_title)) },
+            description = { Text(stringResource(R.string.bundle_delete_multiple_dialog_description)) }
         )
     }
 
