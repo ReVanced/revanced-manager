@@ -1,4 +1,4 @@
-package app.revanced.manager.ui.component.bundle
+package app.revanced.manager.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete

@@ -62,7 +62,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
-import app.revanced.manager.ui.component.bundle.GenericDeleteDialog
+import app.revanced.manager.ui.component.GenericDeleteDialog
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton

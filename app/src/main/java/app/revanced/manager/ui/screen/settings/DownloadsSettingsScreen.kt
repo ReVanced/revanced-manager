@@ -43,7 +43,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
-import app.revanced.manager.ui.component.bundle.GenericDeleteDialog
+import app.revanced.manager.ui.component.GenericDeleteDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel

@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
+import app.revanced.manager.ui.component.GenericDeleteDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import kotlinx.coroutines.flow.map
 
@@ -67,7 +68,14 @@ fun BundleItem(
                 viewBundleDialogPage = false
             },
             title = { Text(stringResource(R.string.bundle_delete_single_dialog_title)) },
-            description = { Text(stringResource(R.string.bundle_delete_single_dialog_description, name)) }
+            description = {
+                Text(
+                    stringResource(
+                        R.string.bundle_delete_single_dialog_description,
+                        name
+                    )
+                )
+            }
         )
     }
 
