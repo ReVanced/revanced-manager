@@ -42,7 +42,7 @@ fun BundleItem(
     toggleSelection: (Boolean) -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
-    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
     val version by remember(bundle) {

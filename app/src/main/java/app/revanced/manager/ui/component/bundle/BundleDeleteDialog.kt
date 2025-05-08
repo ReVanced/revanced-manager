@@ -33,13 +33,15 @@ fun BundleDeleteDialog(
                 Text(stringResource(R.string.confirm))
             }
         },
-        title = { Text(stringResource(R.string.delete_bundle_dialog_title)) },
+        title = { Text(stringResource(R.string.bundle_delete_dialog_title)) },
         icon = { Icon(Icons.Outlined.Delete, null) },
-        text = { Text(
-            if (bundleName != null)
-                stringResource(R.string.delete_bundle_single_dialog_description, bundleName)
-            else
-                stringResource(R.string.delete_bundle_multiple_dialog_description)
-        ) }
+        text = {
+            Text(
+                if (bundleName != null)
+                    stringResource(R.string.bundle_delete_single_dialog_description, bundleName)
+                else
+                    stringResource(R.string.bundle_delete_multiple_dialog_description)
+            )
+        }
     )
 }

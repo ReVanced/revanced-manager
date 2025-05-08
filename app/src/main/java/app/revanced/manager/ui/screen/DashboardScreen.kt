@@ -155,7 +155,7 @@ fun DashboardScreen(
         }
     )
 
-    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {
         BundleDeleteDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
