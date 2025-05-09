@@ -1,9 +1,9 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_foreach
 
 import 'dart:convert';
 import 'dart:io';
 
-T? removeBlankEntries<T>(T? json) {
+dynamic removeBlankEntries(dynamic json) {
   // This function is protected by BSD 3-Clause License
   // Changes made to this section are allow removing of '' values from JSON
 
@@ -37,18 +37,47 @@ T? removeBlankEntries<T>(T? json) {
   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   */
+
   if (json == null) {
     return null;
   }
+
   if (json is List) {
-    json.removeWhere((e) => e == null);
-    json.forEach(removeBlankEntries);
+    for (int i = json.length - 1; i >= 0; i--) {
+      final processedElement = removeBlankEntries(json[i]);
+      if (processedElement == null) {
+        json.removeAt(i);
+      } else {
+        json[i] = processedElement;
+      }
+    }
+    return json.isEmpty ? null : json;
   } else if (json is Map) {
-    json.removeWhere(
-      (key, value) => key == null || value == null || value == '',
-    );
-    json.values.forEach(removeBlankEntries);
+    final keysToRemove = <dynamic>{};
+    final keys = json.keys.toList();
+
+    for (final key in keys) {
+      if (key == null) {
+        keysToRemove.add(key);
+        continue;
+      }
+      final processedValue = removeBlankEntries(json[key]);
+      if (processedValue == null || processedValue == '') {
+        keysToRemove.add(key);
+      } else {
+        json[key] = processedValue;
+      }
+    }
+    for (final key in keysToRemove) {
+      json.remove(key);
+    }
+    return json.isEmpty ? null : json;
   }
+
+  if (json is String && json.isEmpty) {
+    return null;
+  }
+
   return json;
 }
 
@@ -57,23 +86,44 @@ Future<void> processJsonFiles() async {
   final List<FileSystemEntity> files = directory.listSync();
 
   for (final file in files) {
+    if (!file.path.endsWith('.json') || file is! File) {
+      continue;
+    }
     try {
-      if (file is File && file.path.endsWith('.json')) {
-        final String contents = await file.readAsString();
-        final dynamic json = jsonDecode(contents);
-        final dynamic processedJson = removeBlankEntries(json);
+      final contents = await file.readAsString();
+      if (contents.trim().isEmpty) {
+        print('🗑️ File is empty, deleting: ${file.path}');
+        await file.delete();
+        continue;
+      }
 
-        file.writeAsString(
-          const JsonEncoder.withIndent('  ').convert(processedJson),
-        );
+      dynamic jsonInput;
+      try {
+        jsonInput = jsonDecode(contents);
+      } on FormatException catch (e, stackTrace) {
+        print('💥 Invalid JSON in file: ${file.path}: $e');
+        print(stackTrace);
+        continue;
+      }
+
+      final dynamic processedJson = removeBlankEntries(jsonInput);
+      if (processedJson == null) {
+        await file.delete();
+        print('🗑️ File resulted in empty JSON, deleted: ${file.path}');
+      } else {
+        final prettyJson = const JsonEncoder.withIndent(
+          '  ',  // Two spaces
+        ).convert(processedJson);
+        await file.writeAsString(prettyJson);
         print('🥞 Task successful on: ${file.path}');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('💥 Task failed on: ${file.path}: $e');
+      print(stackTrace);
     }
   }
 }
 
 void main() async {
-  processJsonFiles();
+  await processJsonFiles();
 }

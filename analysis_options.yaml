@@ -15,6 +15,7 @@ analyzer:
     - lib/app/app.router.dart
     - lib/models/patch.g.dart
     - lib/models/patched_application.g.dart
+    - lib/gen/
 
 linter:
   rules:
@@ -81,7 +82,6 @@ linter:
     - null_check_on_nullable_type_parameter
     - null_closures
     - overridden_fields
-    - package_api_docs
     - package_names
     - prefer_adjacent_string_concatenation
     - prefer_asserts_in_initializer_lists
@@ -140,7 +140,6 @@ linter:
     - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
-    - unsafe_html
     - use_build_context_synchronously
     - use_full_hex_values_for_flutter_colors
     - use_function_type_syntax_for_parameters

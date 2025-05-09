@@ -12,3 +12,6 @@
 -dontwarn com.google.j2objc.annotations.*
 -dontwarn java.awt.**
 -dontwarn javax.**
+
+# Required for Share Plus, ref: ReVanced/revanced-manager#2474
+-keep interface android.content.res.XmlResourceParser { *; }

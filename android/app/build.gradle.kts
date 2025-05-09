@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "app.revanced.manager.flutter"
     compileSdk = 35
-    ndkVersion = "27.0.12077973"
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -46,7 +45,7 @@ android {
 
             signingConfig = signingConfigs["debug"]
 
-            ndk.abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
+            ndk.abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64")
         }
 
         release {
@@ -64,18 +63,21 @@ android {
 
                 resValue("string", "app_name", "ReVanced Manager")
             } else {
-                applicationIdSuffix = ".debug"
-
+                applicationIdSuffix = ".development"
+                resValue("string", "app_name", "ReVanced Manager (Development)")
                 signingConfig = signingConfigs["debug"]
-
-                resValue("string", "app_name", "ReVanced Manager (Debug signed)")
             }
         }
 
         debug {
             applicationIdSuffix = ".debug"
-
             resValue("string", "app_name", "ReVanced Manager (Debug)")
+        }
+
+        named("profile") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".profile"
+            resValue("string", "app_name", "ReVanced Manager (Profile)")
         }
     }
 
@@ -91,7 +93,6 @@ android {
     }
 }
 
-
 flutter {
     source = "../.."
 }
@@ -101,4 +102,3 @@ dependencies {
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
 }
-

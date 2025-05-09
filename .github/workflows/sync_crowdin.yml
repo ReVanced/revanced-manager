@@ -15,6 +15,9 @@ jobs:
   sync:
     name: Sync
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,10 +28,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          flutter-version: 3.24.x
 
       - name: Sync translations from Crowdin
-        uses: crowdin/github-action@v1
+        uses: crowdin/github-action@v2
         with:
           config: crowdin.yml
           upload_sources: true
@@ -40,33 +42,34 @@ jobs:
           pull_request_body: "Sync translations from [crowdin.com/project/revanced](https://crowdin.com/project/revanced)"
           pull_request_base_branch_name: "dev"
           commit_message: "chore: Sync translations"
-          github_user_name: revanced-bot
-          github_user_email: github@revanced.app
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-        # There has to be a better way to do this
-      - name: Normalization of Translation Strings
+      - name: Validation of synced translations
         run: |
           dart pub get
-          cd assets/i18n
-          sudo chmod 766 *.json
-          cd ../..
+          dart run slang validate
+
+      - name: Normalization of Translation Strings
+        run: |
+          sudo chmod 766 assets/i18n/*.i18n.json
+
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
+          
+          dart run slang
+
           cd assets/i18n
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
           cd ../..
-          dart run slang
+
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations
         run: |
-          git config user.name revanced-bot
-          git config user.email github@revanced.app
           sudo chown -R $USER:$USER .git
-          git commit -m "chore: Remove empty values from JSON" assets/i18n/strings_*.json
+          git commit -m "chore: Remove empty values from JSON" assets/i18n/*.i18n.json
           git push origin HEAD:feat/translations

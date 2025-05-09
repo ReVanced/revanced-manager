@@ -9,6 +9,6 @@ Learn how to update ReVanced Manager.
 
 ## ⏭️ What's next
 
-The next page will lead back to the usage page.
+The next page will explain how to configure ReVanced Manager.
 
-Continue: [🛠️ Usage](2_usage.md)
+Continue: [⚙️ Configuring ReVanced Manager](2_4_settings.md)

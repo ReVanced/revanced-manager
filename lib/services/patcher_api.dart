@@ -175,23 +175,8 @@ class PatcherAPI {
     final File inApkFile = File('${workDir.path}/in.apk');
     await File(apkFilePath).copy(inApkFile.path);
 
-    if (isFromStorage) {
-      // The selected apk was copied to cacheDir by the file picker, so it's not needed anymore.
-      // rename() can't be used here, as Android system also counts the size of files moved out from cacheDir
-      // as part of the app's cache size.
-      File(apkFilePath).delete();
-    }
-
-    if (_managerAPI.isLastPatchedAppEnabled()) {
-      // Get a random name from temp dir
-      // This is to avoid overwriting the last patched app
-      final String randomName = workDir.path.split('/')[workDir.path.split('/').length - 1];
-      final Directory cacheDir = await getApplicationSupportDirectory();
-      outFile = File('${cacheDir.path}/$randomName.apk');
-    } else {
-      outFile = File('${workDir.path}/out.apk');
-    }
-
+    outFile = File('${workDir.path}/out.apk');
+    
     final Directory tmpDir =
         Directory('${workDir.path}/revanced-temporary-files');
 
