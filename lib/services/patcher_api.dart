@@ -176,7 +176,7 @@ class PatcherAPI {
     await File(apkFilePath).copy(inApkFile.path);
 
     outFile = File('${workDir.path}/out.apk');
-    
+
     final Directory tmpDir =
         Directory('${workDir.path}/revanced-temporary-files');
 
