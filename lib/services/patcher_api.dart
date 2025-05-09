@@ -175,7 +175,12 @@ class PatcherAPI {
     final File inApkFile = File('${workDir.path}/in.apk');
     await File(apkFilePath).copy(inApkFile.path);
 
-    outFile = File('${workDir.path}/out.apk');
+    if (_managerAPI.isLastPatchedAppEnabled()) {
+      final Directory cacheDir = await getApplicationSupportDirectory();
+      outFile = File('${cacheDir.path}/out.apk');
+    } else {
+      outFile = File('${workDir.path}/out.apk');
+    }
 
     final Directory tmpDir =
         Directory('${workDir.path}/revanced-temporary-files');
