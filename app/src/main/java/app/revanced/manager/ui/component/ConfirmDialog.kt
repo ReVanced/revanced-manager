@@ -1,21 +1,21 @@
 package app.revanced.manager.ui.component
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
 @Composable
-fun GenericDeleteDialog(
+fun ConfirmDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    title: @Composable () -> Unit,
-    description: @Composable () -> Unit
+    title: String,
+    description: String,
+    imageVector: ImageVector
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -34,8 +34,8 @@ fun GenericDeleteDialog(
                 Text(stringResource(R.string.confirm))
             }
         },
-        title = title,
-        icon = { Icon(Icons.Outlined.Delete, null) },
-        text = description
+        title = { Text(title) },
+        icon = { Icon(imageVector, null) },
+        text = { Text(description) }
     )
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,7 +44,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
-import app.revanced.manager.ui.component.GenericDeleteDialog
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -63,11 +64,12 @@ fun DownloadsSettingsScreen(
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showDeleteConfirmationDialog) {
-        GenericDeleteDialog(
+        ConfirmDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
             onConfirm = { viewModel.deleteApps() },
-            title = { Text(stringResource(R.string.downloader_plugin_delete_apps_title)) },
-            description = { Text(stringResource(R.string.downloader_plugin_delete_apps_description)) }
+            title = stringResource(R.string.downloader_plugin_delete_apps_title),
+            description = stringResource(R.string.downloader_plugin_delete_apps_description),
+            imageVector = Icons.Outlined.Delete
         )
     }
 

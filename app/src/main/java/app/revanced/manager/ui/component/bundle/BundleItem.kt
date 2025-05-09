@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.component.bundle
 
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
@@ -27,7 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
-import app.revanced.manager.ui.component.GenericDeleteDialog
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import kotlinx.coroutines.flow.map
 
@@ -61,21 +62,15 @@ fun BundleItem(
     }
 
     if (showDeleteConfirmationDialog) {
-        GenericDeleteDialog(
+        ConfirmDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
             onConfirm = {
                 onDelete()
                 viewBundleDialogPage = false
             },
-            title = { Text(stringResource(R.string.bundle_delete_single_dialog_title)) },
-            description = {
-                Text(
-                    stringResource(
-                        R.string.bundle_delete_single_dialog_description,
-                        name
-                    )
-                )
-            }
+            title = stringResource(R.string.bundle_delete_single_dialog_title),
+            description = stringResource(R.string.bundle_delete_single_dialog_description, name),
+            imageVector = Icons.Outlined.Delete
         )
     }
 
