@@ -176,8 +176,8 @@ class PatcherAPI {
     await File(apkFilePath).copy(inApkFile.path);
 
     if (_managerAPI.isLastPatchedAppEnabled()) {
-      final Directory cacheDir = await getApplicationSupportDirectory();
-      outFile = File('${cacheDir.path}/out.apk');
+      final Directory filesDir = await getApplicationSupportDirectory();
+      outFile = File('${filesDir.path}/out.apk');
     } else {
       outFile = File('${workDir.path}/out.apk');
     }
