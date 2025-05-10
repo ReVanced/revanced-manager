@@ -77,7 +77,7 @@ fun ImportPatchBundleDialog(
     AlertDialogExtended(
         onDismissRequest = onDismiss,
         title = {
-            Text(stringResource(if (currentStep == 0) R.string.select else R.string.add_patch_bundle))
+            Text(stringResource(if (currentStep == 0) R.string.select else R.string.add_patches))
         },
         text = {
             steps[currentStep]()
@@ -126,7 +126,7 @@ fun SelectBundleTypeStep(
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 24.dp),
-            text = stringResource(R.string.select_bundle_type_dialog_description)
+            text = stringResource(R.string.select_patches_type_dialog_description)
         )
         Column {
             ListItem(
@@ -136,7 +136,7 @@ fun SelectBundleTypeStep(
                 ),
                 headlineContent = { Text(stringResource(R.string.enter_url)) },
                 overlineContent = { Text(stringResource(R.string.recommended)) },
-                supportingContent = { Text(stringResource(R.string.remote_bundle_description)) },
+                supportingContent = { Text(stringResource(R.string.remote_patches_description)) },
                 leadingContent = {
                     HapticRadioButton(
                         selected = bundleType == BundleType.Remote,
@@ -152,7 +152,7 @@ fun SelectBundleTypeStep(
                     onClick = { onBundleTypeSelected(BundleType.Local) }
                 ),
                 headlineContent = { Text(stringResource(R.string.select_from_storage)) },
-                supportingContent = { Text(stringResource(R.string.local_bundle_description)) },
+                supportingContent = { Text(stringResource(R.string.local_patches_description)) },
                 overlineContent = { },
                 leadingContent = {
                     HapticRadioButton(
@@ -185,7 +185,7 @@ fun ImportBundleStep(
                 ) {
                     ListItem(
                         headlineContent = {
-                            Text(stringResource(R.string.patch_bundle_field))
+                            Text(stringResource(R.string.patches))
                         },
                         supportingContent = { Text(stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set)) },
                         trailingContent = {
@@ -206,7 +206,7 @@ fun ImportBundleStep(
                     OutlinedTextField(
                         value = remoteUrl,
                         onValueChange = onRemoteUrlChange,
-                        label = { Text(stringResource(R.string.bundle_url)) }
+                        label = { Text(stringResource(R.string.patches_url)) }
                     )
                 }
                 Column(

@@ -50,7 +50,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     suspend fun setAutoUpdate(value: Boolean) = configRepository.setAutoUpdate(uid, value)
 
     companion object {
-        const val updateFailMsg = "Failed to update patch bundle(s)"
+        const val updateFailMsg = "Failed to update patches"
     }
 }
 

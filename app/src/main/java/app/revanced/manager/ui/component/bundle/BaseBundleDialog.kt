@@ -92,8 +92,8 @@ fun BaseBundleDialog(
 
         if (remoteUrl != null) {
             BundleListItem(
-                headlineText = stringResource(R.string.bundle_auto_update),
-                supportingText = stringResource(R.string.bundle_auto_update_description),
+                headlineText = stringResource(R.string.auto_update),
+                supportingText = stringResource(R.string.auto_update_description),
                 trailingContent = {
                     HapticSwitch(
                         checked = autoUpdate,
@@ -113,7 +113,7 @@ fun BaseBundleDialog(
             if (showUrlInputDialog) {
                 TextInputDialog(
                     initial = url,
-                    title = stringResource(R.string.bundle_input_source_url),
+                    title = stringResource(R.string.patches_url),
                     onDismissRequest = { showUrlInputDialog = false },
                     onConfirm = {
                         showUrlInputDialog = false
@@ -134,7 +134,7 @@ fun BaseBundleDialog(
                         showUrlInputDialog = true
                     }
                 ),
-                headlineText = stringResource(R.string.bundle_input_source_url),
+                headlineText = stringResource(R.string.patches_url),
                 supportingText = url.ifEmpty {
                     stringResource(R.string.field_not_set)
                 }
@@ -143,8 +143,8 @@ fun BaseBundleDialog(
 
         val patchesClickable = patchCount > 0
         BundleListItem(
-            headlineText = stringResource(R.string.bundle_view_patches),
-            supportingText = stringResource(R.string.bundle_view_all_patches, patchCount),
+            headlineText = stringResource(R.string.patches),
+            supportingText = stringResource(R.string.view_patches),
             modifier = Modifier.clickable(
                 enabled = patchesClickable,
                 onClick = onPatchesClick

@@ -14,26 +14,24 @@
     <string name="dashboard">Dashboard</string>
     <string name="settings">Settings</string>
     <string name="select_app">Select an app</string>
-    <string name="patches_selected">%1$d/%2$d selected</string>
+    <string name="patches_count_selected">%1$d/%2$d selected</string>
 
     <string name="new_downloader_plugins_notification">New downloader plugins available. Click here to configure them.</string>
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
-    <string name="import_bundle">Import patch bundle</string>
-    <string name="bundle_patches">Bundle patches</string>
-    <string name="patch_bundle_field">Patch bundle</string>
+    <string name="import_patches">Import patches</string>
     <string name="file_field_set">Selected</string>
     <string name="file_field_not_set">Not selected</string>
 
     <string name="field_not_set">Not set</string>
 
-    <string name="bundle_missing">Missing</string>
-    <string name="bundle_error">Error</string>
-    <string name="bundle_error_description">Bundle could not be loaded. Click to view the error</string>
-    <string name="bundle_not_downloaded">Bundle has not been downloaded. Click here to download it</string>
-    <string name="bundle_name_default">Default</string>
-    <string name="bundle_name_fallback">Unnamed</string>
+    <string name="patches_missing">Missing</string>
+    <string name="patches_error">Error</string>
+    <string name="patches_error_description">Patches could not be loaded. Click to view the error</string>
+    <string name="patches_not_downloaded">Patches has not been downloaded. Click here to download it</string>
+    <string name="patches_name_default">Patches</string>
+    <string name="patches_name_fallback">Unnamed</string>
 
     <string name="android_11_bug_dialog_title">Android 11 bug</string>
     <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
@@ -139,16 +137,15 @@
     <string name="patch_selection_reset_package">Reset patch selection for app</string>
     <string name="patch_selection_reset_package_dialog_description">You are about to reset the patch selection for the app \"%s\". You will have to manually select each patch again.</string>
     <string name="patch_selection_reset_package_description">Resets patch selection for a single app</string>
-    <string name="patch_selection_reset_bundle">Resets patch selection for bundle</string>
-    <string name="patch_selection_reset_bundle_dialog_description">You are about to reset the patch selection for the bundle \"%s\". You will have to manually select each patch again.</string>
-    <string name="patch_selection_reset_bundle_description">Resets the patch selection for all patches in a bundle</string>
+    <string name="patch_selection_reset_patches">Resets patch selection for a specific patches</string>
+    <string name="patch_selection_reset_patches_dialog_description">You are about to reset the patch selection for \"%s\". You will have to manually select each patch again.</string>
+    <string name="patch_selection_reset_patches_description">Resets the patch selection for a specific patches</string>
     <string name="patch_options_reset_package">Reset patch options for app</string>
     <string name="patch_options_reset_package_dialog_description">You are about to reset the patch options for the app \"%s\". You will have to reapply each option again.</string>
     <string name="patch_options_reset_package_description">Resets patch options for a single app</string>
-    <string name="patch_options_reset_bundle">Resets patch options for bundle</string>
-    <string name="patch_options_reset_bundle_dialog_description">You are about to reset the patch options for the bundle \"%s\". You will have to reapply each option again.</string>
-    <string name="patch_options_reset_bundle_description">Resets patch options for all patches in a bundle</string>
-    <string name="patch_options_reset_all">Reset patch options</string>
+    <string name="patch_options_reset">Reset patch options</string>
+    <string name="patch_options_reset_dialog_description">You are about to reset the patch options for \"%s\". You will have to reapply each option again.</string>
+    <string name="patch_options_reset_all">Reset patch options for all</string>
     <string name="patch_options_reset_all_dialog_description">You are about to reset patch options. You will have to reapply each option again.</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="downloader_plugins">Plugins</string>
@@ -164,7 +161,7 @@
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
-    <string name="downloading_patches">Downloading patch bundle…</string>
+    <string name="downloading_patches">Downloading patches…</string>
 
     <string name="options">Options</string>
     <string name="ok">OK</string>
@@ -202,8 +199,8 @@
     <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
     <string name="api_url_description">The API used to download necessary files.</string>
-    <string name="api_url_dialog_title">Set custom API URL</string>
-    <string name="api_url_dialog_description">Set the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
+    <string name="api_url_dialog_title">Change API URL</string>
+    <string name="api_url_dialog_description">Change the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
     <string name="api_url_dialog_warning">ReVanced Manager connects to the API to download patches and updates. Make sure that you trust it.</string>
     <string name="api_url_dialog_save">Set</string>
     <string name="api_url_dialog_reset">Reset API URL</string>
@@ -213,26 +210,25 @@
     <string name="device_architectures">CPU Architectures</string>
     <string name="device_memory_limit">Memory limits</string>
     <string name="device_memory_limit_format">%1$dMB (Normal) - %2$dMB (Large)</string>
-    <string name="patch_bundles_section">Patch bundles</string>
-    <string name="patch_bundles_force_download">Force download all patch bundles</string>
-    <string name="patch_bundles_reset">Reset patch bundles</string>
+    <string name="patches_force_download">Force download all patches</string>
+    <string name="patches_reset">Reset patches</string>
     <string name="patching">Patching</string>
     <string name="signing">Signing</string>
     <string name="storage">Storage</string>
-    <string name="patches_unavailable">No patches are available. Check your bundles</string>
+    <string name="no_patch_found">No patch can be found. Check your patches</string>
     <string name="tab_apps">Apps</string>
-    <string name="tab_bundles">Patch bundles</string>
+    <string name="tab_patches">Patches</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
     <string name="download_apk">Download APK file</string>
-    <string name="source_download_fail">Failed to download patch bundle: %s</string>
-    <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
+    <string name="patches_download_fail">Failed to download patches: %s</string>
+    <string name="patches_replace_fail">Failed to load updated patches: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
-    <string name="bundles_selected">%s selected</string>
+    <string name="patches_selected">%s selected</string>
     <string name="incompatible_patches">Incompatible patches</string>
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
@@ -348,20 +344,13 @@
     <string name="submit_feedback_description">Help us improve this application</string>
     <string name="developer_options">Developer options</string>
     <string name="developer_options_description">Options for debugging issues</string>
-    <string name="bundle_input_source_url">Source URL</string>
-    <string name="bundle_update_success">Successfully updated %s</string>
-    <string name="bundle_update_unavailable">No update available for %s</string>
-    <string name="bundle_auto_update">Auto update</string>
-    <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
-    <string name="bundle_view_patches">View patches</string>
-    <string name="bundle_view_all_patches">View all %d patches</string>
-    <string name="bundle_view_patches_any_version">Any version</string>
-    <string name="bundle_view_patches_any_package">Any package</string>
-    <string name="bundle_delete_single_dialog_title">Delete bundle</string>
-    <string name="bundle_delete_multiple_dialog_title">Delete bundles</string>
-    <string name="bundle_delete_single_dialog_description">Are you sure you want to delete the bundle \"%s\"?</string>
-    <string name="bundle_delete_multiple_dialog_description">Are you sure you want to delete the selected bundles?</string>
-
+    <string name="patches_update_success">Successfully updated %s</string>
+    <string name="patches_update_unavailable">No update available for %s</string>
+    <string name="view_patches">View patches</string>
+    <string name="patches_view_any_version">Any version</string>
+    <string name="patches_view_any_package">Any package</string>
+    <string name="patches_delete_single_dialog_description">Are you sure you want to delete \"%s\"?</string>
+    <string name="patches_delete_multiple_dialog_description">Are you sure you want to delete the selected patches?</string>
 
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
@@ -391,7 +380,7 @@
     <string name="save_with_count">Save (%1$s)</string>
     <string name="update">Update</string>
     <string name="empty">Empty</string>
-    <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
+    <string name="installing_message">Tap on <b>Update</b> when prompted.\nReVanced Manager will close when updating.</string>
     <string name="no_changelogs_found">No changelogs found</string>
     <string name="just_now">Just now</string>
     <string name="minutes_ago">%sm ago</string>
@@ -415,10 +404,9 @@
     <string name="no_contributors_found">No contributors found</string>
     <string name="select">Select</string>
     <string name="select_deselect_all">Select or deselect all</string>
-    <string name="select_bundle_type_dialog_title">Add new bundle</string>
-    <string name="select_bundle_type_dialog_description">Add a new bundle from a URL or storage</string>
-    <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
-    <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
+    <string name="select_patches_type_dialog_description">Add new patches from URL or local files</string>
+    <string name="local_patches_description">Add patches from local storage.</string>
+    <string name="remote_patches_description">Add patches from URL. Patches can automatically update.</string>
     <string name="recommended">Recommended</string>
 
     <string name="installation_failed_dialog_title">Installation failed</string>
@@ -443,9 +431,10 @@
     <string name="about_device">About device</string>
     <string name="enter_url">Enter URL</string>
     <string name="next">Next</string>
-    <string name="add_patch_bundle">Add patch bundle</string>
-    <string name="bundle_url">Bundle URL</string>
     <string name="auto_update">Auto update</string>
+    <string name="add_patches">Add patches</string>
+    <string name="auto_update_description">Automatically update when a new version is available</string>
+    <string name="patches_url">Patches URL</string>
     <string name="incompatible_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
     <string name="incompatible_patch">Incompatible patch</string>
     <string name="any_version">Any</string>
