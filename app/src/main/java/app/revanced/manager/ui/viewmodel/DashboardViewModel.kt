@@ -135,13 +135,13 @@ class DashboardViewModel(
 
         uiSafe(
             app,
-            R.string.source_download_fail,
+            R.string.patches_download_fail,
             RemotePatchBundle.updateFailMsg
         ) {
             if (bundle.update())
-                app.toast(app.getString(R.string.bundle_update_success, bundle.getName()))
+                app.toast(app.getString(R.string.patches_update_success, bundle.getName()))
             else
-                app.toast(app.getString(R.string.bundle_update_unavailable, bundle.getName()))
+                app.toast(app.getString(R.string.patches_update_unavailable, bundle.getName()))
         }
     }
 }
