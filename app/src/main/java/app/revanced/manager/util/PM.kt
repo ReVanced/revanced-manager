@@ -51,7 +51,7 @@ class PM(
                 .flatMap { it.compatiblePackages.orEmpty() }
                 .groupingBy { it.packageName }
                 .eachCount()
-            LongArray::class.java
+
             compatiblePackages.keys.map { pkg ->
                 getPackageInfo(pkg)?.let { packageInfo ->
                     AppInfo(
