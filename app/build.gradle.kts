@@ -27,7 +27,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
-            resValue("string", "app_name", "ReVanced Manager (dev)")
+            resValue("string", "app_name", "ReVanced Manager (Debug)")
             isPseudoLocalesEnabled = true
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
@@ -40,12 +40,21 @@ android {
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
-            if (project.hasProperty("signAsDebug")) {
-                applicationIdSuffix = ".debug"
-                resValue("string", "app_name", "ReVanced Manager Debug")
+            val keystoreFile = file("keystore.jks")
+
+            if (project.hasProperty("signAsDebug") || !keystoreFile.exists()) {
+                applicationIdSuffix = ".debug_signed"
+                resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs.getByName("debug")
 
                 isPseudoLocalesEnabled = true
+            } else {
+                signingConfig = signingConfigs.create("release") {
+                    storeFile = keystoreFile
+                    storePassword = System.getenv("KEYSTORE_PASSWORD")
+                    keyAlias = System.getenv("KEYSTORE_ENTRY_ALIAS")
+                    keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
+                }
             }
 
             buildConfigField("long", "BUILD_ID", "0L")
@@ -63,15 +72,17 @@ android {
     }
 
     packaging {
-        resources.excludes.addAll(listOf(
-            "/prebuilt/**",
-            "META-INF/DEPENDENCIES",
-            "META-INF/**.version",
-            "DebugProbesKt.bin",
-            "kotlin-tooling-metadata.json",
-            "org/bouncycastle/pqc/**.properties",
-            "org/bouncycastle/x509/**.properties",
-        ))
+        resources.excludes.addAll(
+            listOf(
+                "/prebuilt/**",
+                "META-INF/DEPENDENCIES",
+                "META-INF/**.version",
+                "DebugProbesKt.bin",
+                "kotlin-tooling-metadata.json",
+                "org/bouncycastle/pqc/**.properties",
+                "org/bouncycastle/x509/**.properties",
+            )
+        )
         jniLibs {
             useLegacyPackaging = true
         }
