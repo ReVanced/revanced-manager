@@ -1,8 +1,10 @@
 package app.revanced.manager.patcher.runtime.process
 
+import android.annotation.SuppressLint
 import android.app.ActivityThread
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import app.revanced.manager.BuildConfig
@@ -95,6 +97,10 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
     }
 
     companion object {
+        private val longArrayClass = LongArray::class.java
+        private val emptyLongArray = LongArray(0)
+
+        @SuppressLint("PrivateApi")
         @JvmStatic
         fun main(args: Array<String>) {
             Looper.prepare()
@@ -104,6 +110,15 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
             // Abuse hidden APIs to get a context.
             val systemContext = ActivityThread.systemMain().systemContext as Context
             val appContext = systemContext.createPackageContext(managerPackageName, 0)
+
+            // Avoid annoying logs. See https://github.com/robolectric/robolectric/blob/ad0484c6b32c7d11176c711abeb3cb4a900f9258/robolectric/src/main/java/org/robolectric/android/internal/AndroidTestEnvironment.java#L376-L388
+            Class.forName("android.app.AppCompatCallbacks").apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                    getDeclaredMethod("install", longArrayClass, longArrayClass).also { it.isAccessible = true }(null, emptyLongArray, emptyLongArray)
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    getDeclaredMethod("install", longArrayClass).also { it.isAccessible = true }(null, emptyLongArray)
+                }
+            }
 
             val ipcInterface = PatcherProcess(appContext)
 
