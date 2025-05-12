@@ -340,7 +340,7 @@
     <string name="bundle_view_patches_any_package">Any package</string>
     <string name="bundle_delete_single_dialog_title">Delete bundle</string>
     <string name="bundle_delete_multiple_dialog_title">Delete bundles</string>
-    <string name="bundle_delete_single_dialog_description">Are you sure you want to delete the bundle %s?</string>
+    <string name="bundle_delete_single_dialog_description">Are you sure you want to delete the bundle \"%s\"?</string>
     <string name="bundle_delete_multiple_dialog_description">Are you sure you want to delete the selected bundles?</string>
 
 
