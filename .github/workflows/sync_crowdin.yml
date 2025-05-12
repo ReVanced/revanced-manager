@@ -19,7 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: dev
           fetch-depth: 0
+          clean: true
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -34,6 +36,7 @@ jobs:
           upload_translations: false
           download_translations: true
           localization_branch_name: feat/translations
+          skip_ref_checkout: true
           create_pull_request: true
           pull_request_title: "chore: Sync translations"
           pull_request_body: "Sync translations from [crowdin.com/project/revanced](https://crowdin.com/project/revanced)"
