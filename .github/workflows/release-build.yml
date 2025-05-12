@@ -23,8 +23,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Cache Gradle
+        uses: burrunan/gradle-cache-action@v1
 
       - name: Build with Gradle
         env:
@@ -44,9 +44,10 @@ jobs:
       - name: Add version to APK
         run: mv ${{ steps.sign_apk.outputs.signedFile }} revanced-manager-${{ env.RELEASE_VERSION }}.apk
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v1
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
         with:
+          subject-name: 'ReVanced Manager ${{ env.RELEASE_VERSION }}'
           subject-path: revanced-manager-${{ env.RELEASE_VERSION }}.apk
 
       - name: Publish release APK
