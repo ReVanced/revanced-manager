@@ -1,0 +1,25 @@
+name: Build pull request
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  release:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache Gradle
+        uses: burrunan/gradle-cache-action@v1
+
+      - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew build --no-daemon
