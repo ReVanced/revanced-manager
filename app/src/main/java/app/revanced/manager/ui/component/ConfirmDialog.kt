@@ -15,7 +15,7 @@ fun ConfirmDialog(
     onConfirm: () -> Unit,
     title: String,
     description: String,
-    imageVector: ImageVector
+    icon: ImageVector
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -35,7 +35,7 @@ fun ConfirmDialog(
             }
         },
         title = { Text(title) },
-        icon = { Icon(imageVector, null) },
+        icon = { Icon(icon, null) },
         text = { Text(description) }
     )
 }

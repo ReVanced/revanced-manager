@@ -70,7 +70,7 @@ fun BundleItem(
             },
             title = stringResource(R.string.bundle_delete_single_dialog_title),
             description = stringResource(R.string.bundle_delete_single_dialog_description, name),
-            imageVector = Icons.Outlined.Delete
+            icon = Icons.Outlined.Delete
         )
     }
 

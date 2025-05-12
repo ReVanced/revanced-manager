@@ -69,7 +69,7 @@ fun DownloadsSettingsScreen(
             onConfirm = { viewModel.deleteApps() },
             title = stringResource(R.string.downloader_plugin_delete_apps_title),
             description = stringResource(R.string.downloader_plugin_delete_apps_description),
-            imageVector = Icons.Outlined.Delete
+            icon = Icons.Outlined.Delete
         )
     }
 

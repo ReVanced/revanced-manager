@@ -166,7 +166,7 @@ fun DashboardScreen(
             },
             title = stringResource(R.string.bundle_delete_multiple_dialog_title),
             description = stringResource(R.string.bundle_delete_multiple_dialog_description),
-            imageVector = Icons.Outlined.Delete
+            icon = Icons.Outlined.Delete
         )
     }
 
