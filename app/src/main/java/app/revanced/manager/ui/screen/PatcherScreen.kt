@@ -17,7 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
@@ -105,7 +105,7 @@ fun PatcherScreen(
             },
             title = stringResource(R.string.patcher_stop_confirm_title),
             description = stringResource(R.string.patcher_stop_confirm_description),
-            icon = Icons.Outlined.Delete
+            icon = Icons.Outlined.Cancel
         )
     }
 
