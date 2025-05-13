@@ -425,4 +425,5 @@
     <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
+    <string name="no_patches_found">No patches found</string>
 </resources>

@@ -3,15 +3,30 @@ package app.revanced.manager.ui.component.bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -30,6 +45,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SearchView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +56,23 @@ fun BundlePatchesDialog(
     var showAllVersions by rememberSaveable { mutableStateOf(false) }
     var showOptions by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
+    var search by rememberSaveable { mutableStateOf(false) }
+    var filterText by rememberSaveable { mutableStateOf("") }
+    val patchList = state.patchBundleOrNull()?.patches.orEmpty()
+    val filterTextLower = filterText.lowercase()
+
+    val filteredPatchList = remember(patchList, filterTextLower) {
+        patchList.filter { patch ->
+            with(patch) {
+                name.lowercase().contains(filterTextLower) ||
+                        description.orEmpty().lowercase().contains(filterTextLower) ||
+                        compatiblePackages.orEmpty().any { pkg ->
+                            pkg.packageName.lowercase().contains(filterTextLower) ||
+                                    pkg.versions.orEmpty().any { it.lowercase().contains(filterTextLower) }
+                        }
+            }
+        }
+    }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -48,36 +81,72 @@ fun BundlePatchesDialog(
             dismissOnBackPress = true
         )
     ) {
-        Scaffold(
-            topBar = {
-                BundleTopBar(
-                    title = stringResource(R.string.bundle_patches),
-                    onBackClick = onDismissRequest,
-                    backIcon = {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    },
-                )
-            },
-        ) { paddingValues ->
-            LazyColumnWithScrollbar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(16.dp)
+        if (search) {
+            SearchView(
+                query = filterText,
+                onQueryChange = { filterText = it },
+                onActiveChange = { search = it },
+                placeholder = { Text(stringResource(R.string.search_patches)) }
             ) {
-                state.patchBundleOrNull()?.let { bundle ->
-                    items(bundle.patches) { patch ->
-                        PatchItem(
-                            patch,
-                            showAllVersions,
-                            onExpandVersions = { showAllVersions = !showAllVersions },
-                            showOptions,
-                            onExpandOptions = { showOptions = !showOptions }
-                        )
+                if (filteredPatchList.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.no_patches_found),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                } else {
+                    LazyColumnWithScrollbar(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+                        items(filteredPatchList) { patch ->
+                            PatchItem(
+                                patch,
+                                showAllVersions,
+                                onExpandVersions = { showAllVersions = !showAllVersions },
+                                showOptions,
+                                onExpandOptions = { showOptions = !showOptions }
+                            )
+                        }
+                    }
+                }
+            }
+        } else {
+            Scaffold(
+                topBar = {
+                    BundleTopBar(
+                        title = stringResource(R.string.bundle_patches),
+                        onBackClick = onDismissRequest,
+                        backIcon = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back)
+                            )
+                        },
+                        actions = {
+                            ArrowButton(expanded = search, onClick = { search = !search })
+                        }
+                    )
+                },
+            ) { paddingValues ->
+                LazyColumnWithScrollbar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(paddingValues),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    state.patchBundleOrNull()?.let { bundle ->
+                        items(bundle.patches) { patch ->
+                            PatchItem(
+                                patch,
+                                showAllVersions,
+                                onExpandVersions = { showAllVersions = !showAllVersions },
+                                showOptions,
+                                onExpandOptions = { showOptions = !showOptions }
+                            )
+                        }
                     }
                 }
             }
