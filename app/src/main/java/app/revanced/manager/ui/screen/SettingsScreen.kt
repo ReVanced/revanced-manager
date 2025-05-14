@@ -45,7 +45,7 @@ private val settingsSections = listOf(
         R.string.developer_options,
         R.string.developer_options_description,
         Icons.Outlined.Code
-    ) to Settings.DeveloperOptions,
+    ) to Settings.Developer,
     Triple(
         R.string.about,
         R.string.app_name,
