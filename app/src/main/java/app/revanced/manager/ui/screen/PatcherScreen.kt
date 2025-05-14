@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
@@ -45,6 +46,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
@@ -58,25 +60,23 @@ import app.revanced.manager.util.EventEffect
 @Composable
 fun PatcherScreen(
     onBackClick: () -> Unit,
-    vm: PatcherViewModel
+    viewModel: PatcherViewModel
 ) {
-    fun leaveScreen() {
-        vm.onBack()
-        onBackClick()
-    }
-    BackHandler(onBack = ::leaveScreen)
 
     val context = LocalContext.current
     val exportApkLauncher =
-        rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
+        rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
 
-    val patcherSucceeded by vm.patcherSucceeded.observeAsState(null)
-    val canInstall by remember { derivedStateOf { patcherSucceeded == true && (vm.installedPackageName != null || !vm.isInstalling) } }
+    val patcherSucceeded by viewModel.patcherSucceeded.observeAsState(null)
+    val canInstall by remember { derivedStateOf { patcherSucceeded == true && (viewModel.installedPackageName != null || !viewModel.isInstalling) } }
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
+    var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(onBack = { showDismissConfirmationDialog = true })
 
     val steps by remember {
         derivedStateOf {
-            vm.steps.groupBy { it.category }
+            viewModel.steps.groupBy { it.category }
         }
     }
 
@@ -93,34 +93,47 @@ fun PatcherScreen(
     if (showInstallPicker)
         InstallPickerDialog(
             onDismiss = { showInstallPicker = false },
-            onConfirm = vm::install
+            onConfirm = viewModel::install
         )
 
-    vm.packageInstallerStatus?.let {
-        InstallerStatusDialog(it, vm, vm::dismissPackageInstallerDialog)
+    if (showDismissConfirmationDialog) {
+        ConfirmDialog(
+            onDismiss = { showDismissConfirmationDialog = false },
+            onConfirm = {
+                viewModel.onBack()
+                onBackClick()
+            },
+            title = stringResource(R.string.patcher_stop_confirm_title),
+            description = stringResource(R.string.patcher_stop_confirm_description),
+            icon = Icons.Outlined.Cancel
+        )
+    }
+
+    viewModel.packageInstallerStatus?.let {
+        InstallerStatusDialog(it, viewModel, viewModel::dismissPackageInstallerDialog)
     }
 
     val activityLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = vm::handleActivityResult
+        onResult = viewModel::handleActivityResult
     )
-    EventEffect(flow = vm.launchActivityFlow) { intent ->
+    EventEffect(flow = viewModel.launchActivityFlow) { intent ->
         activityLauncher.launch(intent)
     }
 
-    vm.activityPromptDialog?.let { title ->
+    viewModel.activityPromptDialog?.let { title ->
         AlertDialog(
-            onDismissRequest = vm::rejectInteraction,
+            onDismissRequest = viewModel::rejectInteraction,
             confirmButton = {
                 TextButton(
-                    onClick = vm::allowInteraction
+                    onClick = viewModel::allowInteraction
                 ) {
                     Text(stringResource(R.string.continue_))
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = vm::rejectInteraction
+                    onClick = viewModel::rejectInteraction
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -137,20 +150,20 @@ fun PatcherScreen(
             AppTopBar(
                 title = stringResource(R.string.patcher),
                 scrollBehavior = scrollBehavior,
-                onBackClick = ::leaveScreen
+                onBackClick = { showDismissConfirmationDialog = true }
             )
         },
         bottomBar = {
             BottomAppBar(
                 actions = {
                     IconButton(
-                        onClick = { exportApkLauncher.launch("${vm.packageName}_${vm.version}_revanced_patched.apk") },
+                        onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
                         enabled = patcherSucceeded == true
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
                     IconButton(
-                        onClick = { vm.exportLogs(context) },
+                        onClick = { viewModel.exportLogs(context) },
                         enabled = patcherSucceeded != null
                     ) {
                         Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
@@ -161,11 +174,11 @@ fun PatcherScreen(
                         HapticExtendedFloatingActionButton(
                             text = {
                                 Text(
-                                    stringResource(if (vm.installedPackageName == null) R.string.install_app else R.string.open_app)
+                                    stringResource(if (viewModel.installedPackageName == null) R.string.install_app else R.string.open_app)
                                 )
                             },
                             icon = {
-                                vm.installedPackageName?.let {
+                                viewModel.installedPackageName?.let {
                                     Icon(
                                         Icons.AutoMirrored.Outlined.OpenInNew,
                                         stringResource(R.string.open_app)
@@ -176,10 +189,10 @@ fun PatcherScreen(
                                 )
                             },
                             onClick = {
-                                if (vm.installedPackageName == null)
-                                    if (vm.isDeviceRooted()) showInstallPicker = true
-                                    else vm.install(InstallType.DEFAULT)
-                                else vm.open()
+                                if (viewModel.installedPackageName == null)
+                                    if (viewModel.isDeviceRooted()) showInstallPicker = true
+                                    else viewModel.install(InstallType.DEFAULT)
+                                else viewModel.open()
                             }
                         )
                     }
@@ -193,7 +206,7 @@ fun PatcherScreen(
                 .fillMaxSize()
         ) {
             LinearProgressIndicator(
-                progress = { vm.progress },
+                progress = { viewModel.progress },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -209,8 +222,8 @@ fun PatcherScreen(
                     Steps(
                         category = category,
                         steps = steps,
-                        stepCount = if (category == StepCategory.PATCHING) vm.patchesProgress else null,
-                        stepProgressProvider = vm
+                        stepCount = if (category == StepCategory.PATCHING) viewModel.patchesProgress else null,
+                        stepProgressProvider = viewModel
                     )
                 }
             }
