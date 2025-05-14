@@ -92,5 +92,5 @@ object Settings {
     data object Licenses : Destination
 
     @Serializable
-    data object DeveloperOptions : Destination
+    data object Developer : Destination
 }
