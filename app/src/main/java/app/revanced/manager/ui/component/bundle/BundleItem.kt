@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Icon
@@ -26,8 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
+import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -42,6 +44,7 @@ fun BundleItem(
     toggleSelection: (Boolean) -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
     val version by remember(bundle) {
@@ -52,12 +55,22 @@ fun BundleItem(
     if (viewBundleDialogPage) {
         BundleInformationDialog(
             onDismissRequest = { viewBundleDialogPage = false },
-            onDeleteRequest = {
-                viewBundleDialogPage = false
-                onDelete()
-            },
+            onDeleteRequest = { showDeleteConfirmationDialog = true },
             bundle = bundle,
             onUpdate = onUpdate,
+        )
+    }
+
+    if (showDeleteConfirmationDialog) {
+        ConfirmDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = {
+                onDelete()
+                viewBundleDialogPage = false
+            },
+            title = stringResource(R.string.bundle_delete_single_dialog_title),
+            description = stringResource(R.string.bundle_delete_single_dialog_description, name),
+            icon = Icons.Outlined.Delete
         )
     }
 

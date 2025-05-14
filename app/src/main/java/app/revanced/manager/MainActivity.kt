@@ -164,7 +164,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                         }
                     }
                 },
-                vm = koinViewModel { parametersOf(it.getComplexArg<Patcher.ViewModelParams>()) }
+                viewModel = koinViewModel { parametersOf(it.getComplexArg<Patcher.ViewModelParams>()) }
             )
         }
 

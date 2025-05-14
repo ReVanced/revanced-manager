@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,6 +44,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -59,6 +61,17 @@ fun DownloadsSettingsScreen(
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val pluginStates by viewModel.downloaderPluginStates.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showDeleteConfirmationDialog) {
+        ConfirmDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = { viewModel.deleteApps() },
+            title = stringResource(R.string.downloader_plugin_delete_apps_title),
+            description = stringResource(R.string.downloader_plugin_delete_apps_description),
+            icon = Icons.Outlined.Delete
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -68,7 +81,7 @@ fun DownloadsSettingsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { viewModel.deleteApps() }) {
+                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }

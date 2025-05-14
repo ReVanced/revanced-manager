@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Refresh
@@ -62,6 +63,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
@@ -154,6 +156,20 @@ fun DashboardScreen(
         }
     )
 
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
+    if (showDeleteConfirmationDialog) {
+        ConfirmDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = {
+                vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
+                vm.cancelSourceSelection()
+            },
+            title = stringResource(R.string.bundle_delete_multiple_dialog_title),
+            description = stringResource(R.string.bundle_delete_multiple_dialog_description),
+            icon = Icons.Outlined.Delete
+        )
+    }
+
     Scaffold(
         topBar = {
             if (bundlesSelectable) {
@@ -169,8 +185,7 @@ fun DashboardScreen(
                     actions = {
                         IconButton(
                             onClick = {
-                                vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
-                                vm.cancelSourceSelection()
+                                showDeleteConfirmationDialog = true
                             }
                         ) {
                             Icon(
