@@ -60,14 +60,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.CheckedFilterChip
+import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchBar
@@ -369,14 +368,22 @@ fun PatchesSelectorScreen(
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
                     HapticExtendedFloatingActionButton(
-                        text = { Text(stringResource(R.string.save_with_count, selectedPatchCount)) },
+                        text = {
+                            Text(
+                                stringResource(
+                                    R.string.save_with_count,
+                                    selectedPatchCount
+                                )
+                            )
+                        },
                         icon = {
                             Icon(
                                 imageVector = Icons.Outlined.Save,
                                 contentDescription = stringResource(R.string.save)
                             )
                         },
-                        expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp ?: true,
+                        expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp
+                            ?: true,
                         onClick = {
                             onSave(vm.getCustomSelection(), vm.getOptions())
                         }
@@ -630,13 +637,7 @@ private fun OptionsDialog(
     reset: () -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
-) = Dialog(
-    onDismissRequest = onDismissRequest,
-    properties = DialogProperties(
-        usePlatformDefaultWidth = false,
-        dismissOnBackPress = true
-    )
-) {
+) = FullscreenDialog(onDismissRequest = onDismissRequest) {
     Scaffold(
         topBar = {
             AppTopBar(
