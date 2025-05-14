@@ -8,6 +8,16 @@ import java.io.File
 import java.io.IOException
 import java.util.jar.JarFile
 
+class PatchBundleManifestAttributes(
+    val name: String?,
+    val description: String?,
+    val source: String?,
+    val author: String?,
+    val contact: String?,
+    val website: String?,
+    val license: String?
+)
+
 class PatchBundle(val patchesJar: File) {
     private val loader = object : Iterable<Patch<*>> {
         private fun load(): Iterable<Patch<*>> {
@@ -36,7 +46,19 @@ class PatchBundle(val patchesJar: File) {
         null
     }
 
-    fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)
+    val patchBundleManifestAttributes = if(manifest != null)
+        PatchBundleManifestAttributes(
+            name = readManifestAttribute("name"),
+            description = readManifestAttribute("description"),
+            source = readManifestAttribute("source"),
+            author = readManifestAttribute("author"),
+            contact = readManifestAttribute("contact"),
+            website = readManifestAttribute("website"),
+            license = readManifestAttribute("license")
+        ) else
+            null
+
+    fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)?.takeIf { it.isNotBlank() } //If empty, set it to null instead
 
     /**
      * Load all patches compatible with the specified package.
