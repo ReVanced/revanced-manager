@@ -20,7 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeveloperOptionsScreen(
+fun DeveloperSettingsScreen(
     onBackClick: () -> Unit,
     vm: DeveloperOptionsViewModel = koinViewModel()
 ) {
