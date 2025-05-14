@@ -16,8 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 
@@ -26,12 +24,8 @@ import app.revanced.manager.ui.component.bundle.BundleTopBar
 fun ExceptionViewerDialog(text: String, onDismiss: () -> Unit) {
     val context = LocalContext.current
 
-    Dialog(
+    FullscreenDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            dismissOnBackPress = true
-        )
     ) {
         Scaffold(
             topBar = {
