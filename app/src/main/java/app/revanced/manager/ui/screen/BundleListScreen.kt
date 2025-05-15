@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,13 +20,19 @@ fun BundleListScreen(
     selectedSources: SnapshotStateList<PatchBundleSource>,
     bundlesSelectable: Boolean,
 ) {
+    val sortedSources = remember(sources) {
+        sources.sortedByDescending { source ->
+            source.state.value.patchBundleOrNull()?.patches?.size ?: 0
+        }
+    }
+
     LazyColumnWithScrollbar(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         items(
-            sources,
+            sortedSources,
             key = { it.uid }
         ) { source ->
             BundleItem(

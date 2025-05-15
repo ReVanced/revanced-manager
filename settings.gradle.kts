@@ -1,19 +1,16 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
-        google()
         mavenCentral()
-        maven("https://jitpack.io")
-        mavenLocal()
+        google()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
         mavenCentral()
+        google()
         maven("https://jitpack.io")
-        mavenLocal()
         maven {
             // A repository must be specified for some reason. "registry" is a dummy.
             url = uri("https://maven.pkg.github.com/revanced/registry")
@@ -24,5 +21,6 @@ dependencyResolutionManagement {
         }
     }
 }
+
 rootProject.name = "ReVanced Manager"
 include(":app")

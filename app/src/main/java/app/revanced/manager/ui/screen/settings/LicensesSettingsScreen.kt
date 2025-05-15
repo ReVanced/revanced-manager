@@ -18,7 +18,7 @@ import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LicensesScreen(
+fun LicensesSettingsScreen(
     onBackClick: () -> Unit,
 ) {
     AppScaffold(

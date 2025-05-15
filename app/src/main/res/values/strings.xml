@@ -143,6 +143,8 @@
     <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
     <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
     <string name="downloader_plugin_trust_dialog_body">Package name: %1$s\nSignature (SHA-256): %2$s</string>
+    <string name="downloader_plugin_delete_apps_title">Delete selected apps</string>
+    <string name="downloader_plugin_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found</string>
 
     <string name="search_apps">Search apps…</string>
@@ -301,6 +303,8 @@
     <string name="patcher_step_write_patched">Write patched APK file</string>
     <string name="patcher_step_sign_apk">Sign patched APK file</string>
     <string name="patcher_notification_message">Patching in progress…</string>
+    <string name="patcher_stop_confirm_title">Stop patcher</string>
+    <string name="patcher_stop_confirm_description">Are you sure you want to stop the patching process?</string>
     <string name="execute_patches">Execute patches</string>
     <string name="executing_patch">Execute %s</string>
     <string name="failed_to_execute_patch">Failed to execute %s</string>
@@ -336,6 +340,11 @@
     <string name="bundle_view_patches">View patches</string>
     <string name="bundle_view_patches_any_version">Any version</string>
     <string name="bundle_view_patches_any_package">Any package</string>
+    <string name="bundle_delete_single_dialog_title">Delete bundle</string>
+    <string name="bundle_delete_multiple_dialog_title">Delete bundles</string>
+    <string name="bundle_delete_single_dialog_description">Are you sure you want to delete the bundle \"%s\"?</string>
+    <string name="bundle_delete_multiple_dialog_description">Are you sure you want to delete the selected bundles?</string>
+
 
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
@@ -425,4 +434,5 @@
     <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
+    <string name="confirm">Confirm</string>
 </resources>

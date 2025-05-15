@@ -12,8 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
@@ -23,6 +21,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemote
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import app.revanced.manager.ui.component.ExceptionViewerDialog
+import app.revanced.manager.ui.component.FullscreenDialog
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -56,12 +55,8 @@ fun BundleInformationDialog(
         )
     }
 
-    Dialog(
+    FullscreenDialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            dismissOnBackPress = true
-        )
     ) {
         val bundleName by bundle.nameState
 

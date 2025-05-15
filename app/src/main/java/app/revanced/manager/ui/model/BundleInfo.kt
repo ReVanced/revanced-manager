@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
  */
 data class BundleInfo(
     val name: String,
+    val version: String?,
     val uid: Int,
     val compatible: List<PatchInfo>,
     val incompatible: List<PatchInfo>,
@@ -78,7 +79,7 @@ data class BundleInfo(
                         targetList.add(it)
                     }
 
-                    BundleInfo(source.getName(), source.uid, compatible, incompatible, universal)
+                    BundleInfo(source.getName(), source.currentVersion(), source.uid, compatible, incompatible, universal)
                 }
             }
 

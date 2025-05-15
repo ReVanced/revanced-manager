@@ -44,13 +44,13 @@ import app.revanced.manager.ui.screen.SettingsScreen
 import app.revanced.manager.ui.screen.UpdateScreen
 import app.revanced.manager.ui.screen.settings.AboutSettingsScreen
 import app.revanced.manager.ui.screen.settings.AdvancedSettingsScreen
-import app.revanced.manager.ui.screen.settings.ContributorScreen
-import app.revanced.manager.ui.screen.settings.DeveloperOptionsScreen
+import app.revanced.manager.ui.screen.settings.ContributorSettingsScreen
+import app.revanced.manager.ui.screen.settings.DeveloperSettingsScreen
 import app.revanced.manager.ui.screen.settings.DownloadsSettingsScreen
 import app.revanced.manager.ui.screen.settings.GeneralSettingsScreen
 import app.revanced.manager.ui.screen.settings.ImportExportSettingsScreen
-import app.revanced.manager.ui.screen.settings.LicensesScreen
-import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
+import app.revanced.manager.ui.screen.settings.LicensesSettingsScreen
+import app.revanced.manager.ui.screen.settings.update.ChangelogsSettingsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
@@ -164,7 +164,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                         }
                     }
                 },
-                vm = koinViewModel { parametersOf(it.getComplexArg<Patcher.ViewModelParams>()) }
+                viewModel = koinViewModel { parametersOf(it.getComplexArg<Patcher.ViewModelParams>()) }
             )
         }
 
@@ -277,6 +277,10 @@ private fun ReVancedManager(vm: MainViewModel) {
                 AdvancedSettingsScreen(onBackClick = navController::popBackStack)
             }
 
+            composable<Settings.Developer> {
+                DeveloperSettingsScreen(onBackClick = navController::popBackStack)
+            }
+
             composable<Settings.Updates> {
                 UpdatesSettingsScreen(
                     onBackClick = navController::popBackStack,
@@ -301,20 +305,17 @@ private fun ReVancedManager(vm: MainViewModel) {
             }
 
             composable<Settings.Changelogs> {
-                ChangelogsScreen(onBackClick = navController::popBackStack)
+                ChangelogsSettingsScreen(onBackClick = navController::popBackStack)
             }
 
             composable<Settings.Contributors> {
-                ContributorScreen(onBackClick = navController::popBackStack)
+                ContributorSettingsScreen(onBackClick = navController::popBackStack)
             }
 
             composable<Settings.Licenses> {
-                LicensesScreen(onBackClick = navController::popBackStack)
+                LicensesSettingsScreen(onBackClick = navController::popBackStack)
             }
 
-            composable<Settings.DeveloperOptions> {
-                DeveloperOptionsScreen(onBackClick = navController::popBackStack)
-            }
         }
     }
 }

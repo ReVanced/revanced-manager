@@ -25,7 +25,7 @@ private data class Section(
     @StringRes val name: Int,
     @StringRes val description: Int,
     val image: ImageVector,
-    val destination: Settings.Destination
+    val destination: Settings.Destination,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,8 +75,8 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
             Section(
                 R.string.developer_options,
                 R.string.developer_options_description,
-                Icons.Outlined.DeveloperMode,
-                Settings.DeveloperOptions
+                Icons.Outlined.Code,
+                Settings.Developer
             ).takeIf { showDeveloperOptions }
         )
     }

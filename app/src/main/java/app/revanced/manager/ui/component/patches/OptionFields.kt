@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -55,13 +56,13 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.FloatInputDialog
+import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.IntInputDialog
 import app.revanced.manager.ui.component.LongInputDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
@@ -73,16 +74,17 @@ import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyColumnState
+import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.io.Serializable
 import kotlin.random.Random
 import kotlin.reflect.typeOf
-import androidx.compose.ui.window.Dialog as ComposeDialog
 
 private class OptionEditorScope<T : Any>(
     private val editor: OptionEditor<T>,
@@ -497,7 +499,8 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
 
         val lazyListState = rememberLazyListState()
         val reorderableLazyColumnState =
-            rememberReorderableLazyColumnState(lazyListState) { from, to ->
+            // Update the list
+            rememberReorderableLazyListState(lazyListState) { from, to ->
                 // Update the list
                 items.add(to.index, items.removeAt(from.index))
             }
@@ -524,12 +527,8 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
             scope.submitDialog(items.mapNotNull { it.value })
         }
 
-        ComposeDialog(
+        FullscreenDialog(
             onDismissRequest = back,
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false,
-                dismissOnBackPress = true
-            ),
         ) {
             Scaffold(
                 topBar = {

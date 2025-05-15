@@ -111,6 +111,7 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
         }
 
         val patching = CompletableDeferred<Unit>()
+        val scope = this
 
         launch(Dispatchers.IO) {
             val binder = awaitBinderConnection()
@@ -124,7 +125,7 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
                 override fun log(level: String, msg: String) = logger.log(enumValueOf(level), msg)
 
                 override fun patchSucceeded() {
-                    launch { onPatchCompleted() }
+                    scope.launch { onPatchCompleted() }
                 }
 
                 override fun progress(name: String?, state: String?, msg: String?) =
@@ -179,7 +180,7 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
     }
 
     /**
-     * An [Exception] occured in the remote process while patching.
+     * An [Exception] occurred in the remote process while patching.
      *
      * @param originalStackTrace The stack trace of the original [Exception].
      */
