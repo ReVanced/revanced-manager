@@ -69,7 +69,9 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
     init {
         viewModelScope.launch {
-            universalPatchWarningEnabled = !prefs.disableUniversalPatchWarning.get()
+            if (prefs.disableUniversalPatchCheck.get()) {
+                universalPatchWarningEnabled = false
+            }
 
             if (prefs.disableSelectionWarning.get()) {
                 selectionWarningEnabled = false
@@ -158,13 +160,6 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         } ?: persistentSetOf(patch.name)
 
         customPatchSelection = selection.put(bundle, newPatches)
-    }
-
-    fun confirmUniversalPatchWarning() {
-        universalPatchWarningEnabled = false
-
-        pendingUniversalPatchAction?.invoke()
-        pendingUniversalPatchAction = null
     }
 
     fun dismissUniversalPatchWarning() {
