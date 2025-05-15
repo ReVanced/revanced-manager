@@ -32,9 +32,9 @@ private data class Section(
 @Composable
 fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> Unit) {
     val prefs: PreferencesManager = koinInject()
-    val showDeveloperOptions by prefs.showDeveloperOptions.getAsState()
+    val showDeveloperSettings by prefs.showDeveloperSettings.getAsState()
 
-    val settingsSections = remember(showDeveloperOptions) {
+    val settingsSections = remember(showDeveloperSettings) {
         listOfNotNull(
             Section(
                 R.string.general,
@@ -77,7 +77,7 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
                 R.string.developer_options_description,
                 Icons.Outlined.Code,
                 Settings.Developer
-            ).takeIf { showDeveloperOptions }
+            ).takeIf { showDeveloperSettings }
         )
     }
 

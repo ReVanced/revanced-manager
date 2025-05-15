@@ -43,7 +43,7 @@ fun DeveloperSettingsScreen(
         Column(modifier = Modifier.padding(paddingValues)) {
             GroupHeader(stringResource(R.string.manager))
             BooleanItem(
-                preference = prefs.showDeveloperOptions,
+                preference = prefs.showDeveloperSettings,
                 headline = R.string.developer_options,
                 description = R.string.developer_options_description,
             )

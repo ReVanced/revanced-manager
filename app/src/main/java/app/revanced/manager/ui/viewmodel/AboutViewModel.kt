@@ -67,7 +67,7 @@ class AboutViewModel(
         .filter { it > 0 }
         .onEach { taps ->
             if (taps == DEVELOPER_OPTIONS_TAPS) {
-                prefs.showDeveloperOptions.update(true)
+                prefs.showDeveloperSettings.update(true)
                 _developerTaps.emit(0)
             }
         }
@@ -90,7 +90,7 @@ class AboutViewModel(
     }
 
     fun onIconTap() = viewModelScope.launch {
-        if (prefs.showDeveloperOptions.get()) {
+        if (prefs.showDeveloperSettings.get()) {
             app.toast("You are already a developer")
             return@launch
         }
