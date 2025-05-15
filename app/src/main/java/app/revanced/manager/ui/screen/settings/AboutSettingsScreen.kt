@@ -142,8 +142,8 @@ fun AboutSettingsScreen(
     EventEffect(viewModel.developerTaps) { taps ->
         val remaining = AboutViewModel.DEVELOPER_OPTIONS_TAPS - taps
 
-        if (remaining > 0) context.toast("$remaining taps remaining")
-        else context.toast("you are devloper!!1!1")
+        if (remaining > 0) context.toast(context.getString(R.string.developer_options_taps, remaining))
+        else context.toast(context.getString(R.string.developer_options_enabled))
     }
 
     Scaffold(

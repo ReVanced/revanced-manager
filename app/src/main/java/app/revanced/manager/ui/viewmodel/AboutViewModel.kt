@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.network.api.ReVancedAPI
@@ -91,7 +92,7 @@ class AboutViewModel(
 
     fun onIconTap() = viewModelScope.launch {
         if (prefs.showDeveloperSettings.get()) {
-            app.toast("You are already a developer")
+            app.toast(app.getString(R.string.developer_options_already_enabled))
             return@launch
         }
 
