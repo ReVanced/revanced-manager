@@ -3,6 +3,7 @@ package app.revanced.manager.domain.manager
 import android.content.Context
 import app.revanced.manager.domain.manager.base.BasePreferencesManager
 import app.revanced.manager.ui.theme.Theme
+import app.revanced.manager.util.isDebuggable
 
 class PreferencesManager(
     context: Context
@@ -28,4 +29,6 @@ class PreferencesManager(
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
 
     val acknowledgedDownloaderPlugins = stringSetPreference("acknowledged_downloader_plugins", emptySet())
+
+    val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
 }
