@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.data.platform.NetworkInfo
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedDonationLink
 import app.revanced.manager.network.dto.ReVancedSocial
@@ -27,6 +28,7 @@ import kotlinx.coroutines.withContext
 class AboutViewModel(
     private val reVancedAPI: ReVancedAPI,
     private val network: NetworkInfo,
+    prefs: PreferencesManager,
 ) : ViewModel() {
     var socials by mutableStateOf(emptyList<ReVancedSocial>())
         private set
@@ -36,6 +38,8 @@ class AboutViewModel(
         private set
     val isConnected: Boolean
         get() = network.isConnected()
+
+    val showDeveloperSettings = prefs.showDeveloperSettings
 
     init {
         viewModelScope.launch {
@@ -53,6 +57,8 @@ class AboutViewModel(
     }
 
     companion object {
+        const val DEVELOPER_OPTIONS_TAPS = 5
+
         private val socialIcons = mapOf(
             "Discord" to FontAwesomeIcons.Brands.Discord,
             "GitHub" to FontAwesomeIcons.Brands.Github,
