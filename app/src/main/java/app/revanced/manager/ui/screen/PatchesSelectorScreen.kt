@@ -185,17 +185,14 @@ fun PatchesSelectorScreen(
         )
     }
 
-    var showSelectionWarning by rememberSaveable {
-        mutableStateOf(false)
-    }
-    if (showSelectionWarning) {
+    var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
+    var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
+
+    if (showSelectionWarning)
         SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
-    }
-    viewModel.pendingUniversalPatchAction?.let {
-        UniversalPatchWarningDialog(
-            onCancel = viewModel::dismissUniversalPatchWarning
-        )
-    }
+
+    if (showUniversalWarning)
+        UniversalPatchWarningDialog(onDismiss = { showUniversalWarning = false })
 
     fun LazyListScope.patchList(
         uid: Int,
@@ -233,10 +230,8 @@ fun PatchesSelectorScreen(
                             // Show selection warning if enabled
                             viewModel.selectionWarningEnabled -> showSelectionWarning = true
 
-                            // Set pending universal patch action if the universal patch warning is enabled and there are no compatible packages
-                            viewModel.universalPatchWarningEnabled && patch.compatiblePackages == null -> {
-                                viewModel.pendingUniversalPatchAction = { viewModel.togglePatch(uid, patch) }
-                            }
+                            // Show universal warning if enabled
+                            viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
 
                             // Toggle the patch otherwise
                             else -> viewModel.togglePatch(uid, patch)
@@ -477,7 +472,9 @@ fun PatchesSelectorScreen(
 }
 
 @Composable
-private fun SelectionWarningDialog(onDismiss: () -> Unit) {
+private fun SelectionWarningDialog(
+    onDismiss: () -> Unit
+) {
     SafeguardDialog(
         onDismiss = onDismiss,
         title = R.string.warning,
@@ -487,10 +484,10 @@ private fun SelectionWarningDialog(onDismiss: () -> Unit) {
 
 @Composable
 private fun UniversalPatchWarningDialog(
-    onCancel: () -> Unit
+    onDismiss: () -> Unit
 ) {
     SafeguardDialog(
-        onDismiss = onCancel,
+        onDismiss = onDismiss,
         title = R.string.warning,
         body = stringResource(R.string.universal_patch_warning_description),
     )
