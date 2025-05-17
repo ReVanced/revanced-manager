@@ -58,7 +58,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
@@ -88,9 +87,9 @@ import kotlinx.coroutines.launch
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
-    vm: PatchesSelectorViewModel
+    viewModel: PatchesSelectorViewModel
 ) {
-    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val bundles by viewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
@@ -106,15 +105,15 @@ fun PatchesSelectorScreen(
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val showSaveButton by remember {
-        derivedStateOf { vm.selectionIsValid(bundles) }
+        derivedStateOf { viewModel.selectionIsValid(bundles) }
     }
 
-    val defaultPatchSelectionCount by vm.defaultSelectionCount
+    val defaultPatchSelectionCount by viewModel.defaultSelectionCount
         .collectAsStateWithLifecycle(initialValue = 0)
 
     val selectedPatchCount by remember {
         derivedStateOf {
-            vm.customPatchSelection?.values?.sumOf { it.size } ?: defaultPatchSelectionCount
+            viewModel.customPatchSelection?.values?.sumOf { it.size } ?: defaultPatchSelectionCount
         }
     }
 
@@ -146,14 +145,14 @@ fun PatchesSelectorScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     CheckedFilterChip(
-                        selected = vm.filter and SHOW_INCOMPATIBLE == 0,
-                        onClick = { vm.toggleFlag(SHOW_INCOMPATIBLE) },
+                        selected = viewModel.filter and SHOW_INCOMPATIBLE == 0,
+                        onClick = { viewModel.toggleFlag(SHOW_INCOMPATIBLE) },
                         label = { Text(stringResource(R.string.this_version)) }
                     )
 
                     CheckedFilterChip(
-                        selected = vm.filter and SHOW_UNIVERSAL != 0,
-                        onClick = { vm.toggleFlag(SHOW_UNIVERSAL) },
+                        selected = viewModel.filter and SHOW_UNIVERSAL != 0,
+                        onClick = { viewModel.toggleFlag(SHOW_UNIVERSAL) },
                         label = { Text(stringResource(R.string.universal)) },
                     )
                 }
@@ -161,43 +160,39 @@ fun PatchesSelectorScreen(
         }
     }
 
-    if (vm.compatibleVersions.isNotEmpty())
+    if (viewModel.compatibleVersions.isNotEmpty())
         IncompatiblePatchDialog(
-            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
-            compatibleVersions = vm.compatibleVersions,
-            onDismissRequest = vm::dismissDialogs
+            appVersion = viewModel.appVersion ?: stringResource(R.string.any_version),
+            compatibleVersions = viewModel.compatibleVersions,
+            onDismissRequest = viewModel::dismissDialogs
         )
     var showIncompatiblePatchesDialog by rememberSaveable {
         mutableStateOf(false)
     }
     if (showIncompatiblePatchesDialog)
         IncompatiblePatchesDialog(
-            appVersion = vm.appVersion ?: stringResource(R.string.any_version),
+            appVersion = viewModel.appVersion ?: stringResource(R.string.any_version),
             onDismissRequest = { showIncompatiblePatchesDialog = false }
         )
 
-    vm.optionsDialog?.let { (bundle, patch) ->
+    viewModel.optionsDialog?.let { (bundle, patch) ->
         OptionsDialog(
-            onDismissRequest = vm::dismissDialogs,
+            onDismissRequest = viewModel::dismissDialogs,
             patch = patch,
-            values = vm.getOptions(bundle, patch),
-            reset = { vm.resetOptions(bundle, patch) },
-            set = { key, value -> vm.setOption(bundle, patch, key, value) }
+            values = viewModel.getOptions(bundle, patch),
+            reset = { viewModel.resetOptions(bundle, patch) },
+            set = { key, value -> viewModel.setOption(bundle, patch, key, value) }
         )
     }
 
-    var showSelectionWarning by rememberSaveable {
-        mutableStateOf(false)
-    }
-    if (showSelectionWarning) {
+    var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
+    var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
+
+    if (showSelectionWarning)
         SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
-    }
-    vm.pendingUniversalPatchAction?.let {
-        UniversalPatchWarningDialog(
-            onCancel = vm::dismissUniversalPatchWarning,
-            onConfirm = vm::confirmUniversalPatchWarning
-        )
-    }
+
+    if (showUniversalWarning)
+        UniversalPatchWarningDialog(onDismiss = { showUniversalWarning = false })
 
     fun LazyListScope.patchList(
         uid: Int,
@@ -221,27 +216,25 @@ fun PatchesSelectorScreen(
                 PatchItem(
                     patch = patch,
                     onOptionsDialog = {
-                        vm.optionsDialog = uid to patch
+                        viewModel.optionsDialog = uid to patch
                     },
-                    selected = compatible && vm.isSelected(
+                    selected = compatible && viewModel.isSelected(
                         uid,
                         patch
                     ),
                     onToggle = {
                         when {
                             // Open incompatible dialog if the patch is not supported
-                            !compatible -> vm.openIncompatibleDialog(patch)
+                            !compatible -> viewModel.openIncompatibleDialog(patch)
 
                             // Show selection warning if enabled
-                            vm.selectionWarningEnabled -> showSelectionWarning = true
+                            viewModel.selectionWarningEnabled -> showSelectionWarning = true
 
-                            // Set pending universal patch action if the universal patch warning is enabled and there are no compatible packages
-                            vm.universalPatchWarningEnabled && patch.compatiblePackages == null -> {
-                                vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
-                            }
+                            // Show universal warning if enabled
+                            viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
 
                             // Toggle the patch otherwise
-                            else -> vm.togglePatch(uid, patch)
+                            else -> viewModel.togglePatch(uid, patch)
                         }
                     },
                     compatible = compatible
@@ -327,7 +320,7 @@ fun PatchesSelectorScreen(
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.universal.searched(),
-                        visible = vm.filter and SHOW_UNIVERSAL != 0,
+                        visible = viewModel.filter and SHOW_UNIVERSAL != 0,
                         compatible = true
                     ) {
                         ListHeader(
@@ -338,8 +331,8 @@ fun PatchesSelectorScreen(
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.incompatible.searched(),
-                        visible = vm.filter and SHOW_INCOMPATIBLE != 0,
-                        compatible = vm.allowIncompatiblePatches
+                        visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
+                        compatible = viewModel.allowIncompatiblePatches
                     ) {
                         ListHeader(
                             title = stringResource(R.string.incompatible_patches),
@@ -362,7 +355,7 @@ fun PatchesSelectorScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     SmallFloatingActionButton(
-                        onClick = vm::reset,
+                        onClick = viewModel::reset,
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
                     ) {
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
@@ -385,7 +378,7 @@ fun PatchesSelectorScreen(
                         expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp
                             ?: true,
                         onClick = {
-                            onSave(vm.getCustomSelection(), vm.getOptions())
+                            onSave(viewModel.getCustomSelection(), viewModel.getOptions())
                         }
                     )
                 }
@@ -453,7 +446,7 @@ fun PatchesSelectorScreen(
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.universal,
-                            visible = vm.filter and SHOW_UNIVERSAL != 0,
+                            visible = viewModel.filter and SHOW_UNIVERSAL != 0,
                             compatible = true
                         ) {
                             ListHeader(
@@ -463,8 +456,8 @@ fun PatchesSelectorScreen(
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.incompatible,
-                            visible = vm.filter and SHOW_INCOMPATIBLE != 0,
-                            compatible = vm.allowIncompatiblePatches
+                            visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
+                            compatible = viewModel.allowIncompatiblePatches
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.incompatible_patches),
@@ -479,7 +472,9 @@ fun PatchesSelectorScreen(
 }
 
 @Composable
-private fun SelectionWarningDialog(onDismiss: () -> Unit) {
+private fun SelectionWarningDialog(
+    onDismiss: () -> Unit
+) {
     SafeguardDialog(
         onDismiss = onDismiss,
         title = R.string.warning,
@@ -489,33 +484,12 @@ private fun SelectionWarningDialog(onDismiss: () -> Unit) {
 
 @Composable
 private fun UniversalPatchWarningDialog(
-    onCancel: () -> Unit,
-    onConfirm: () -> Unit
+    onDismiss: () -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onCancel,
-        confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(stringResource(R.string.continue_))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onCancel) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        icon = {
-            Icon(Icons.Outlined.WarningAmber, null)
-        },
-        title = {
-            Text(
-                text = stringResource(R.string.warning),
-                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center)
-            )
-        },
-        text = {
-            Text(stringResource(R.string.universal_patch_warning_description))
-        }
+    SafeguardDialog(
+        onDismiss = onDismiss,
+        title = R.string.warning,
+        body = stringResource(R.string.universal_patch_warning_description),
     )
 }
 

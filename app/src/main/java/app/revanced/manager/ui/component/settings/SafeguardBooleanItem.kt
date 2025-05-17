@@ -1,6 +1,8 @@
 package app.revanced.manager.ui.component.settings
 
 import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +11,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import app.revanced.manager.R
 import app.revanced.manager.domain.manager.base.Preference
+import app.revanced.manager.ui.component.ConfirmDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -28,13 +32,15 @@ fun SafeguardBooleanItem(
     }
 
     if (showSafeguardWarning) {
-        SafeguardConfirmationDialog(
+        ConfirmDialog(
             onDismiss = { showSafeguardWarning = false },
             onConfirm = {
                 coroutineScope.launch { preference.update(!value) }
                 showSafeguardWarning = false
             },
-            body = stringResource(confirmationText)
+            title = stringResource(id = R.string.warning),
+            description = stringResource(confirmationText),
+            icon = Icons.Outlined.WarningAmber
         )
     }
 

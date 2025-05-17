@@ -61,7 +61,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
-    vm: AdvancedSettingsViewModel = koinViewModel()
+    viewModel: AdvancedSettingsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val memoryLimit = remember {
@@ -91,16 +91,16 @@ fun AdvancedSettingsScreen(
         ) {
             GroupHeader(stringResource(R.string.manager))
 
-            val apiUrl by vm.prefs.api.getAsState()
+            val apiUrl by viewModel.prefs.api.getAsState()
             var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
             if (showApiUrlDialog) {
                 APIUrlDialog(
                     currentUrl = apiUrl,
-                    defaultUrl = vm.prefs.api.default,
+                    defaultUrl = viewModel.prefs.api.default,
                     onSubmit = {
                         showApiUrlDialog = false
-                        it?.let(vm::setApiUrl)
+                        it?.let(viewModel::setApiUrl)
                     }
                 )
             }
@@ -114,44 +114,44 @@ fun AdvancedSettingsScreen(
 
             GroupHeader(stringResource(R.string.safeguards))
             SafeguardBooleanItem(
-                preference = vm.prefs.disablePatchVersionCompatCheck,
-                coroutineScope = vm.viewModelScope,
+                preference = viewModel.prefs.disablePatchVersionCompatCheck,
+                coroutineScope = viewModel.viewModelScope,
                 headline = R.string.patch_compat_check,
                 description = R.string.patch_compat_check_description,
                 confirmationText = R.string.patch_compat_check_confirmation
             )
             SafeguardBooleanItem(
-                preference = vm.prefs.disableUniversalPatchWarning,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.universal_patches_safeguard,
-                description = R.string.universal_patches_safeguard_description,
-                confirmationText = R.string.universal_patches_safeguard_confirmation
-            )
-            SafeguardBooleanItem(
-                preference = vm.prefs.suggestedVersionSafeguard,
-                coroutineScope = vm.viewModelScope,
+                preference = viewModel.prefs.suggestedVersionSafeguard,
+                coroutineScope = viewModel.viewModelScope,
                 headline = R.string.suggested_version_safeguard,
                 description = R.string.suggested_version_safeguard_description,
                 confirmationText = R.string.suggested_version_safeguard_confirmation
             )
             SafeguardBooleanItem(
-                preference = vm.prefs.disableSelectionWarning,
-                coroutineScope = vm.viewModelScope,
+                preference = viewModel.prefs.disableSelectionWarning,
+                coroutineScope = viewModel.viewModelScope,
                 headline = R.string.patch_selection_safeguard,
                 description = R.string.patch_selection_safeguard_description,
                 confirmationText = R.string.patch_selection_safeguard_confirmation
             )
+            SafeguardBooleanItem(
+                preference = viewModel.prefs.disableUniversalPatchCheck,
+                coroutineScope = viewModel.viewModelScope,
+                headline = R.string.universal_patches_safeguard,
+                description = R.string.universal_patches_safeguard_description,
+                confirmationText = R.string.universal_patches_safeguard_confirmation
+            )
 
             GroupHeader(stringResource(R.string.patcher))
             BooleanItem(
-                preference = vm.prefs.useProcessRuntime,
-                coroutineScope = vm.viewModelScope,
+                preference = viewModel.prefs.useProcessRuntime,
+                coroutineScope = viewModel.viewModelScope,
                 headline = R.string.process_runtime,
                 description = R.string.process_runtime_description,
             )
             IntegerItem(
-                preference = vm.prefs.patcherProcessMemoryLimit,
-                coroutineScope = vm.viewModelScope,
+                preference = viewModel.prefs.patcherProcessMemoryLimit,
+                coroutineScope = viewModel.viewModelScope,
                 headline = R.string.process_runtime_memory_limit,
                 description = R.string.process_runtime_memory_limit_description,
             )
@@ -159,11 +159,11 @@ fun AdvancedSettingsScreen(
             GroupHeader(stringResource(R.string.debugging))
             val exportDebugLogsLauncher =
                 rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    it?.let(vm::exportDebugLogs)
+                    it?.let(viewModel::exportDebugLogs)
                 }
             SettingsListItem(
                 headlineContent = stringResource(R.string.debug_logs_export),
-                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
+                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(viewModel.debugLogFileName) }
             )
             val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
             val deviceContent = """
