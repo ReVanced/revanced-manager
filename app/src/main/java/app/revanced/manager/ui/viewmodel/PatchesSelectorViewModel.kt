@@ -55,8 +55,6 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     private val packageName = input.app.packageName
     val appVersion = input.app.version
 
-    var pendingUniversalPatchAction by mutableStateOf<(() -> Unit)?>(null)
-
     var selectionWarningEnabled by mutableStateOf(true)
         private set
     var universalPatchWarningEnabled by mutableStateOf(true)
@@ -69,7 +67,9 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
     init {
         viewModelScope.launch {
-            universalPatchWarningEnabled = !prefs.disableUniversalPatchWarning.get()
+            if (prefs.disableUniversalPatchCheck.get()) {
+                universalPatchWarningEnabled = false
+            }
 
             if (prefs.disableSelectionWarning.get()) {
                 selectionWarningEnabled = false
@@ -158,17 +158,6 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         } ?: persistentSetOf(patch.name)
 
         customPatchSelection = selection.put(bundle, newPatches)
-    }
-
-    fun confirmUniversalPatchWarning() {
-        universalPatchWarningEnabled = false
-
-        pendingUniversalPatchAction?.invoke()
-        pendingUniversalPatchAction = null
-    }
-
-    fun dismissUniversalPatchWarning() {
-        pendingUniversalPatchAction = null
     }
 
     fun reset() {

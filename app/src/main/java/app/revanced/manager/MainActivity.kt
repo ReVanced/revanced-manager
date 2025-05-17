@@ -234,7 +234,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                         selectedAppInfoVm.updateConfiguration(patches, options)
                         navController.popBackStack()
                     },
-                    vm = koinViewModel { parametersOf(data) }
+                    viewModel = koinViewModel { parametersOf(data) }
                 )
             }
 
