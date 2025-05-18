@@ -83,7 +83,7 @@ fun PatcherScreen(
             onLeave()
     }
 
-    BackHandler(onBack = { onPageBack() })
+    BackHandler(onBack = ::onPageBack)
 
     val steps by remember {
         derivedStateOf {
@@ -110,7 +110,7 @@ fun PatcherScreen(
     if (showDismissConfirmationDialog) {
         ConfirmDialog(
             onDismiss = { showDismissConfirmationDialog = false },
-            onConfirm = { onLeave() },
+            onConfirm = ::onLeave,
             title = stringResource(R.string.patcher_stop_confirm_title),
             description = stringResource(R.string.patcher_stop_confirm_description),
             icon = Icons.Outlined.Cancel
@@ -158,7 +158,7 @@ fun PatcherScreen(
             AppTopBar(
                 title = stringResource(R.string.patcher),
                 scrollBehavior = scrollBehavior,
-                onBackClick = { onPageBack() }
+                onBackClick = ::onPageBack
             )
         },
         bottomBar = {
