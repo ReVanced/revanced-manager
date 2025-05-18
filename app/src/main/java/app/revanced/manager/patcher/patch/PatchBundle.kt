@@ -10,6 +10,7 @@ import java.util.jar.JarFile
 
 class PatchBundleManifestAttributes(
     val name: String?,
+    val version: String?,
     val description: String?,
     val source: String?,
     val author: String?,
@@ -49,6 +50,7 @@ class PatchBundle(val patchesJar: File) {
     val patchBundleManifestAttributes = if(manifest != null)
         PatchBundleManifestAttributes(
             name = readManifestAttribute("name"),
+            version = readManifestAttribute("version"),
             description = readManifestAttribute("description"),
             source = readManifestAttribute("source"),
             author = readManifestAttribute("author"),
@@ -58,7 +60,7 @@ class PatchBundle(val patchesJar: File) {
         ) else
             null
 
-    fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)?.takeIf { it.isNotBlank() } //If empty, set it to null instead
+    private fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)?.takeIf { it.isNotBlank() } //If empty, set it to null instead
 
     /**
      * Load all patches compatible with the specified package.
