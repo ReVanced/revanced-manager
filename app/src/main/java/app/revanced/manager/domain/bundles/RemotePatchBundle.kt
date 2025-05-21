@@ -35,7 +35,8 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
 
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
         val info = getLatestInfo()
-        if (hasInstalled() && info.version == currentVersion())
+        if (hasInstalled() && info.version == currentVersion()+"r") //FIXME
+            //Log.i()
             return@withContext false
 
         download(info)

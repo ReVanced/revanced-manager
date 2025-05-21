@@ -1,20 +1,16 @@
 package app.revanced.manager.patcher.worker
 
 import android.app.Activity
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Parcelable
 import android.os.PowerManager
 import android.util.Log
 import androidx.activity.result.ActivityResult
-import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import app.revanced.manager.R
@@ -79,32 +75,23 @@ class PatcherWorker(
     ) {
         val packageName get() = input.packageName
     }
+    val notificationChannel = NotificationChannel(
+        "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_HIGH
+    )
 
     override suspend fun getForegroundInfo() =
-        ForegroundInfo(
-            1,
-            createNotification(),
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0
-        )
-
-    private fun createNotification(): Notification {
-        val notificationIntent = Intent(applicationContext, PatcherWorker::class.java)
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(
-            applicationContext, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
-        )
-        val channel = NotificationChannel(
-            "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_HIGH
-        )
-        val notificationManager =
-            ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
-        notificationManager!!.createNotificationChannel(channel)
-        return Notification.Builder(applicationContext, channel.id)
-            .setContentTitle(applicationContext.getText(R.string.app_name))
-            .setContentText(applicationContext.getText(R.string.patcher_notification_message))
-            .setLargeIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
-            .setSmallIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
-            .setContentIntent(pendingIntent).build()
-    }
+        workerRepository.createNotification<PatcherWorker>(
+            applicationContext,
+            notificationChannel,
+            applicationContext.getString(R.string.app_name),
+            applicationContext.getString(R.string.patcher_notification_message)
+        ).first.let {
+            ForegroundInfo(
+                1,
+                it,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0
+            )
+        }
 
     override suspend fun doWork(): Result {
         if (runAttemptCount > 0) {

@@ -70,10 +70,6 @@ class DashboardViewModel(
         downloaderPluginRepository.acknowledgeAllNewPlugins()
     }
 
-    fun dismissUpdateDialog() {
-        updatedManagerVersion = null
-    }
-
     private suspend fun checkForManagerUpdates() {
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 

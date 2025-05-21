@@ -2,21 +2,33 @@ package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
+import app.revanced.manager.domain.manager.BackgroundBundleUpdateTime
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.launch
 
 class UpdatesSettingsViewModel(
-    prefs: PreferencesManager,
+    val prefs: PreferencesManager,
     private val app: Application,
     private val reVancedAPI: ReVancedAPI,
     private val network: NetworkInfo,
+    private val workerRepository: WorkerRepository
 ) : ViewModel() {
     val managerAutoUpdates = prefs.managerAutoUpdates
     val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
+
+    fun updateBackgroundBundleUpdateTime(backgroundBundleUpdateTime: BackgroundBundleUpdateTime) {
+        viewModelScope.launch {
+            prefs.backgroundBundleUpdateTime.update(backgroundBundleUpdateTime)
+            workerRepository.scheduleBundleUpdateNotificationWork(backgroundBundleUpdateTime)
+        }
+    }
 
     val isConnected: Boolean
         get() = network.isConnected()

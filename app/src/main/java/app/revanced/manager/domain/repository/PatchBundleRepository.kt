@@ -9,24 +9,25 @@ import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.domain.bundles.APIPatchBundle
 import app.revanced.manager.domain.bundles.JsonPatchBundle
-import app.revanced.manager.data.room.bundles.Source as SourceInfo
 import app.revanced.manager.domain.bundles.LocalPatchBundle
-import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.flatMapLatestAndCombine
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStream
+import app.revanced.manager.data.room.bundles.Source as SourceInfo
 
 class PatchBundleRepository(
     private val app: Application,
@@ -164,21 +165,34 @@ class PatchBundleRepository(
     suspend fun redownloadRemoteBundles() =
         getBundlesByType<RemotePatchBundle>().forEach { it.downloadLatest() }
 
-    suspend fun updateCheck() =
+    suspend fun updateCheck(): List<Result<RemotePatchBundle>> {
+        var updateResult: List<Result<RemotePatchBundle>> = emptyList()
         uiSafe(app, R.string.source_download_fail, "Failed to update bundles") {
             coroutineScope {
                 if (!networkInfo.isSafe()) {
-                    Log.d(tag, "Skipping update check because the network is down or metered.")
                     return@coroutineScope
                 }
+            }
 
-                getBundlesByType<RemotePatchBundle>().forEach {
-                    launch {
-                        if (!it.getProps().autoUpdate) return@launch
-                        Log.d(tag, "Updating patch bundle: ${it.getName()}")
-                        it.update()
+            updateResult = coroutineScope {
+                getBundlesByType<RemotePatchBundle>()
+                    .filter { it.getProps().autoUpdate }
+                    .map { bundle ->
+                        async {
+                            try {
+                                if (bundle.update())
+                                    return@async Result.success(bundle)
+                                else
+                                    return@async null
+                            } catch (e: Exception) {
+                                Result.failure(e)
+                            }
+                        }
                     }
-                }
+                    .awaitAll()
+                    .filterNotNull()
             }
         }
+        return updateResult
+    }
 }

@@ -4,17 +4,26 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import android.util.Log
+import androidx.work.Configuration
 import app.revanced.manager.data.platform.Filesystem
-import app.revanced.manager.di.*
+import app.revanced.manager.di.databaseModule
+import app.revanced.manager.di.httpModule
+import app.revanced.manager.di.managerModule
+import app.revanced.manager.di.preferencesModule
+import app.revanced.manager.di.repositoryModule
+import app.revanced.manager.di.rootModule
+import app.revanced.manager.di.serviceModule
+import app.revanced.manager.di.viewModelModule
+import app.revanced.manager.di.workerModule
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.tag
-import kotlinx.coroutines.Dispatchers
 import coil.Coil
 import coil.ImageLoader
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.internal.BuilderImpl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import me.zhanghai.android.appiconloader.coil.AppIconFetcher
@@ -25,12 +34,16 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 
-class ManagerApplication : Application() {
+class ManagerApplication : Application(), Configuration.Provider {
     private val scope = MainScope()
     private val prefs: PreferencesManager by inject()
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val downloaderPluginRepository: DownloaderPluginRepository by inject()
     private val fs: Filesystem by inject()
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .build()
 
     override fun onCreate() {
         super.onCreate()
@@ -51,7 +64,6 @@ class ManagerApplication : Application() {
                 rootModule
             )
         }
-
         val pixels = 512
         Coil.setImageLoader(
             ImageLoader.Builder(this)

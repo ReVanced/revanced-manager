@@ -34,6 +34,8 @@
     <string name="bundle_not_downloaded">Bundle has not been downloaded. Click here to download it</string>
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
+    <string name="bundle_update">Bundle update</string>
+    <string name="bundle_update_description">Bundle %s has been update to version %s</string>
 
     <string name="android_11_bug_dialog_title">Android 11 bug</string>
     <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
@@ -181,6 +183,12 @@
     <string name="process_runtime_description">This is faster and allows Patcher to use more memory.</string>
     <string name="process_runtime_memory_limit">Patcher process memory limit</string>
     <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use (in megabytes)</string>
+    <string name="background_bundle_update">Enable bundles auto update in background</string>
+    <string name="background_bundle_update_description">TODO</string>
+    <string name="never">Never</string>
+    <string name="minutes_15">Every 15 minutes</string>
+    <string name="hourly">Hourly</string>
+    <string name="daily">Daily</string>
     <string name="debug_logs_export">Export debug logs</string>
     <string name="debug_logs_export_read_failed">Failed to read logs (exit code %d)</string>
     <string name="debug_logs_export_failed">Failed to export logs</string>
