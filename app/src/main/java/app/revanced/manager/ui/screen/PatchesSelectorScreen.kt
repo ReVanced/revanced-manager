@@ -230,8 +230,8 @@ fun PatchesSelectorScreen(
                             // Show selection warning if enabled
                             viewModel.selectionWarningEnabled -> showSelectionWarning = true
 
-                            // Show universal warning if enabled
-                            viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
+                            // Show universal warning if universal patch is selected and the toggle is off
+                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
 
                             // Toggle the patch otherwise
                             else -> viewModel.togglePatch(uid, patch)
