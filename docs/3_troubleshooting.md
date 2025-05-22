@@ -1,31 +1,20 @@
-# ❔ Troubleshooting
+# ❓ Troubleshooting
 
-In case you encounter any issues while using ReVanced Manager, please refer to this page for possible solutions.
+Find common issues and their solutions below.
 
-- 💉 Patching fails with an error
+## 🆘 Common issues
 
-  Make sure ReVanced Manager is up to date by following [🔄 Updating ReVanced Manager](2_3_updating.md) and select the **Default** button when choosing patches.
-  
-- 💥 App not installed as package conflicts with an existing package
-
-  An existing installation of the app you're trying to patch is conflicting with the patched app. Uninstall the existing app before installing the patched app.
-
-- ❗️ Error code `135`, `139` or `1` when patching the app
-
-  Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
-
-  Alternatively, you can use [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the app.
-
-- 🚫 Non-root install is not possible with the current patches selection
-
-  Select the **Default** button when choosing patches.
-
-- 🚨 Patched app crashes on launch
-
-  Select the **Default** button when choosing patches.
+- **Patching fails with an error or patched app crashes**:
+  - Make sure ReVanced Manager is up to date by following [🔄 Updating ReVanced Manager](2_4_updating.md)  
+  - Reset the safeguard settings under `Settings` > `Advanced` to their default values
+  - If a patch has options, reset them to their default values or correctly configure them
+  - Make sure you are patching a full APK file and not an [APK bundle](https://developer.android.com/guide/app-bundle/app-bundle-format)
+- **Patches fail to load**: The selected file is not using the ReVanced API format or the remote URL is not reachable.
+- **Patching takes too long**: Make sure you are using a device with enough storage space and free memory.
+  Be patient during the patching process.
 
 ## ⏭️ What's next
 
-The next page will teach you how to build ReVanced Manager from source.
+Learn how to build ReVanced Manager from source.
 
-Continue: [🔨 Building from source](4_building.md)
+Continue: [🔨 Build from source](4_building.md)
