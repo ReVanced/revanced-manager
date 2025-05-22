@@ -43,24 +43,24 @@
     <string name="selected_app_meta_any_version">Any available version</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
-    <string name="app_source_dialog_option_auto_description">Use all installed downloaders to find a suitable APK file</string>
+    <string name="app_source_dialog_option_auto_description">Use all available downloader to download the app</string>
     <string name="app_source_dialog_option_auto_unavailable">No plugins available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
 
     <string name="patch_item_description">Start patching the application</string>
-    <string name="patch_selector_item">Patch selection and options</string>
+    <string name="patch_selector_item">Select patches</string>
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="no_patches_selected">No patches selected</string>
 
     <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
     <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
-    <string name="apk_source_selector_item">Change source</string>
-    <string name="apk_source_auto">Current: All downloaders</string>
-    <string name="apk_source_downloader">Current: %s</string>
-    <string name="apk_source_installed">Current: Installed</string>
-    <string name="apk_source_local">Current: File</string>
+    <string name="apk_source_selector_item">Select APK source</string>
+    <string name="apk_source_auto">Using all APK downloader</string>
+    <string name="apk_source_downloader">Using %s</string>
+    <string name="apk_source_installed">Using installed APK</string>
+    <string name="apk_source_local">Using a local APK file</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
@@ -263,8 +263,8 @@
     <string name="downloader_invalid_version">Downloader did not fetch the correct version</string>
     <string name="downloader_app_not_found">Downloader did not find the app</string>
     <string name="downloader_error">Downloader error: %s</string>
-    <string name="downloader_no_plugins_installed">No plugins installed.</string>
-    <string name="downloader_no_plugins_available">No trusted plugins available for use. Check your settings.</string>
+    <string name="downloader_no_plugins_installed">No downloader installed.</string>
+    <string name="downloader_no_plugins_available">There are downloader installed but none is trusted. Check your settings.</string>
     <string name="already_patched">Already patched</string>
 
     <string name="patch_selector_sheet_filter_title">Filter</string>
@@ -347,7 +347,7 @@
 
 
     <string name="about_revanced_manager">About ReVanced Manager</string>
-    <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
+    <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
     <string name="developer_options_taps">%d taps remaining</string>
     <string name="developer_options_enabled">Developer options enabled</string>
     <string name="developer_options_already_enabled">Developer options are already enabled</string>
@@ -359,7 +359,7 @@
     <string name="install_update_manager_failed">Failed to install update</string>
     <string name="manual_update_check">Check for updates</string>
     <string name="manual_update_check_description">Manually check for updates</string>
-    <string name="update_checking_manager">Auto check for updates</string>
+    <string name="update_checking_manager">Check for updates on launch</string>
     <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
     <string name="changelog">View changelogs</string>
     <string name="changelog_loading">Loading changelog</string>

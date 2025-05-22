@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 /**
- * A container for [Parcelable] data returned from downloaders. Instances of this class can be safely stored in a bundle without needing to set the [ClassLoader].
+ * A container for [Parcelable] data returned from downloader. Instances of this class can be safely stored in a bundle without needing to set the [ClassLoader].
  */
 class ParceledDownloaderData private constructor(
     val pluginPackageName: String,
