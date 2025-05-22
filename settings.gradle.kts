@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ReVanced Manager"
-include(":app")
+rootProject.name = "revanced-manager"
+include(":app", ":api")

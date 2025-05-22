@@ -19,7 +19,6 @@ datetime = "0.6.1"
 room-version = "2.7.1"
 revanced-patcher = "21.0.0"
 revanced-library = "3.0.2"
-plugin-api = "1.0.0"
 koin = "3.5.3"
 ktor = "2.3.9"
 markdown-renderer = "0.30.0"
@@ -37,6 +36,7 @@ enumutil = "1.1.1"
 compose-icons = "1.2.4"
 kotlin-process = "1.5.1"
 hidden-api-stub = "4.3.3"
+binary-compatibility-validator = "0.17.0"
 
 [libraries]
 # AndroidX Core
@@ -82,9 +82,6 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 # Patcher
 revanced-patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "revanced-patcher" }
 revanced-library = { group = "app.revanced", name = "revanced-library", version.ref = "revanced-library" }
-
-# Plugin API
-plugin-api = { group = "app.revanced", name = "revanced-manager-downloader-api", version.ref = "plugin-api" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
@@ -146,3 +143,4 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }

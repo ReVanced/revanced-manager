@@ -8,6 +8,109 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.devtools)
     alias(libs.plugins.about.libraries)
+    signing
+}
+
+val outputApkFileName = "${rootProject.name}-$version.apk"
+
+dependencies {
+    // AndroidX Core
+    implementation(libs.androidx.ktx)
+    implementation(libs.runtime.ktx)
+    implementation(libs.runtime.compose)
+    implementation(libs.splash.screen)
+    implementation(libs.activity.compose)
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.preferences.datastore)
+    implementation(libs.appcompat)
+
+    // Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.preview)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.livedata)
+    implementation(libs.compose.material.icons.extended)
+    implementation(libs.compose.material3)
+    implementation(libs.navigation.compose)
+
+    // Accompanist
+    implementation(libs.accompanist.drawablepainter)
+
+    // Placeholder
+    implementation(libs.placeholder.material3)
+
+    // HTML Scraper
+    implementation(libs.skrapeit.dsl)
+    implementation(libs.skrapeit.parser)
+
+    // Coil (async image loading, network image)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.appiconloader)
+
+    // KotlinX
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.collection.immutable)
+    implementation(libs.kotlinx.datetime)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+
+    // ReVanced
+    implementation(libs.revanced.patcher)
+    implementation(libs.revanced.library)
+
+    // Downloader plugins
+    implementation(project(":api"))
+
+    // Native processes
+    implementation(libs.kotlin.process)
+
+    // HiddenAPI
+    compileOnly(libs.hidden.api.stub)
+
+    // LibSU
+    implementation(libs.libsu.core)
+    implementation(libs.libsu.service)
+    implementation(libs.libsu.nio)
+
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.navigation)
+    implementation(libs.koin.workmanager)
+
+    // Licenses
+    implementation(libs.about.libraries)
+
+    // Ktor
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.logging)
+    implementation(libs.ktor.okhttp)
+    implementation(libs.ktor.content.negotiation)
+    implementation(libs.ktor.serialization)
+
+    // Markdown
+    implementation(libs.markdown.renderer)
+
+    // Fading Edges
+    implementation(libs.fading.edges)
+
+    // Scrollbars
+    implementation(libs.scrollbars)
+
+    // EnumUtil
+    implementation(libs.enumutil)
+    ksp(libs.enumutil.ksp)
+
+    // Reorderable lists
+    implementation(libs.reorderable)
+
+    // Compose Icons
+    implementation(libs.compose.icons.fontawesome)
 }
 
 android {
@@ -58,6 +161,15 @@ android {
             }
 
             buildConfigField("long", "BUILD_ID", "0L")
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+
+    applicationVariants.all {
+        outputs.all {
+            this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+
+            outputFileName = outputApkFileName
         }
     }
 
@@ -120,103 +232,26 @@ kotlin {
     jvmToolchain(17)
 }
 
-dependencies {
+tasks {
+    // Needed by gradle-semantic-release-plugin.
+    // Tracking: https://github.com/KengoTODA/gradle-semantic-release-plugin/issues/435.
+    val publish by registering {
+        group = "publishing"
+        description = "Build the release APK"
 
-    // AndroidX Core
-    implementation(libs.androidx.ktx)
-    implementation(libs.runtime.ktx)
-    implementation(libs.runtime.compose)
-    implementation(libs.splash.screen)
-    implementation(libs.activity.compose)
-    implementation(libs.work.runtime.ktx)
-    implementation(libs.preferences.datastore)
-    implementation(libs.appcompat)
+        dependsOn("assembleRelease")
 
-    // Compose
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.preview)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.livedata)
-    implementation(libs.compose.material.icons.extended)
-    implementation(libs.compose.material3)
-    implementation(libs.navigation.compose)
+        val apk = project.layout.buildDirectory.file("outputs/apk/release/${outputApkFileName}")
+        val ascFile = apk.map { it.asFile.resolveSibling("${it.asFile.name}.asc") }
 
-    // Accompanist
-    implementation(libs.accompanist.drawablepainter)
+        inputs.file(apk).withPropertyName("inputApk")
+        outputs.file(ascFile).withPropertyName("outputAsc")
 
-    // Placeholder
-    implementation(libs.placeholder.material3)
-
-    // HTML Scraper
-    implementation(libs.skrapeit.dsl)
-    implementation(libs.skrapeit.parser)
-
-    // Coil (async image loading, network image)
-    implementation(libs.coil.compose)
-    implementation(libs.coil.appiconloader)
-
-    // KotlinX
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.collection.immutable)
-    implementation(libs.kotlinx.datetime)
-
-    // Room
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    annotationProcessor(libs.room.compiler)
-    ksp(libs.room.compiler)
-
-    // ReVanced
-    implementation(libs.revanced.patcher)
-    implementation(libs.revanced.library)
-
-    // Downloader plugins
-    implementation(libs.plugin.api)
-
-    // Native processes
-    implementation(libs.kotlin.process)
-
-    // HiddenAPI
-    compileOnly(libs.hidden.api.stub)
-
-    // LibSU
-    implementation(libs.libsu.core)
-    implementation(libs.libsu.service)
-    implementation(libs.libsu.nio)
-
-    // Koin
-    implementation(libs.koin.android)
-    implementation(libs.koin.compose)
-    implementation(libs.koin.compose.navigation)
-    implementation(libs.koin.workmanager)
-
-    // Licenses
-    implementation(libs.about.libraries)
-
-    // Ktor
-    implementation(libs.ktor.core)
-    implementation(libs.ktor.logging)
-    implementation(libs.ktor.okhttp)
-    implementation(libs.ktor.content.negotiation)
-    implementation(libs.ktor.serialization)
-
-    // Markdown
-    implementation(libs.markdown.renderer)
-
-    // Fading Edges
-    implementation(libs.fading.edges)
-
-    // Scrollbars
-    implementation(libs.scrollbars)
-
-    // EnumUtil
-    implementation(libs.enumutil)
-    ksp(libs.enumutil.ksp)
-
-    // Reorderable lists
-    implementation(libs.reorderable)
-
-    // Compose Icons
-    implementation(libs.compose.icons.fontawesome)
+        doLast {
+            signing {
+                useGpgCmd()
+                sign(apk.get().asFile)
+            }
+        }
+    }
 }
