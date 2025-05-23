@@ -184,7 +184,10 @@
     <string name="process_runtime_memory_limit">Patcher process memory limit</string>
     <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use (in megabytes)</string>
     <string name="background_bundle_update">Enable bundles auto update in background</string>
-    <string name="background_bundle_update_description">TODO</string>
+    <string name="background_bundle_update_description">Automatically checks for bundles updates and update them in the background</string>
+    <string name="background_radio_menu_title">Check for bundles updates</string>
+    <string name="background_bundle_ask_notification">Stay updated</string>
+    <string name="background_bundle_ask_notification_description">ReVanced will send you a notification when a bundle was updated. Press "OK" if you wish to be notified.</string>
     <string name="never">Never</string>
     <string name="minutes_15">Every 15 minutes</string>
     <string name="hourly">Hourly</string>

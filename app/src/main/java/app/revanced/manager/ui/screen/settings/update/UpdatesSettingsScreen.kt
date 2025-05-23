@@ -1,11 +1,15 @@
 package app.revanced.manager.ui.screen.settings.update
 
+import android.Manifest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -33,6 +37,8 @@ import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
+import app.revanced.manager.util.PermissionRequestHandler
+import app.revanced.manager.util.hasNotificationPermission
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -129,11 +135,34 @@ private fun BackgroundBundleUpdateTimeDialog(
     onConfirm: (BackgroundBundleUpdateTime) -> Unit,
     prefs: PreferencesManager = koinInject()
 ) {
+    var context = LocalContext.current
     var selected by rememberSaveable { mutableStateOf(prefs.backgroundBundleUpdateTime.getBlocking()) }
+
+    var askNotificationPermission by rememberSaveable { mutableStateOf(false) }
+
+    fun onApply() {
+        onConfirm(selected)
+        onDismiss()
+    }
+
+    if (askNotificationPermission) {
+        PermissionRequestHandler(
+            contract = ActivityResultContracts.RequestPermission(),
+            input = Manifest.permission.POST_NOTIFICATIONS,
+            title = stringResource(R.string.background_bundle_ask_notification),
+            description = stringResource(R.string.background_bundle_ask_notification_description),
+            icon = Icons.Outlined.Notifications,
+            onDismissRequest = { askNotificationPermission = false },
+            onResult = { granted ->
+                askNotificationPermission = false
+                onApply()
+            }
+        )
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.theme)) },
+        title = { Text(stringResource(R.string.background_radio_menu_title)) },
         text = {
             Column {
                 BackgroundBundleUpdateTime.entries.forEach {
@@ -154,8 +183,11 @@ private fun BackgroundBundleUpdateTimeDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    onConfirm(selected)
-                    onDismiss()
+                    if (selected != BackgroundBundleUpdateTime.NEVER &&
+                        !hasNotificationPermission(context)
+                        ) askNotificationPermission = true
+                    else
+                        onApply()
                 }
             ) {
                 Text(stringResource(R.string.apply))
