@@ -151,7 +151,7 @@ class SelectedAppInfoViewModel(
 
         // Try to get the previous selection if customization is enabled.
         viewModelScope.launch {
-            if (!prefs.disableSelectionWarning.get()) return@launch
+            if (!prefs.disableSelectionWarning.getBlocking()) return@launch
 
             val previous = selectionRepository.getSelection(packageName)
             if (previous.values.sumOf { it.size } == 0) return@launch
