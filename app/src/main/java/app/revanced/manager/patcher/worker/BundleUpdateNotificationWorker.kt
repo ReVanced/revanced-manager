@@ -1,13 +1,9 @@
 package app.revanced.manager.patcher.worker
 
-import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.os.Build
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.work.WorkerParameters
 import app.revanced.manager.MainActivity
 import app.revanced.manager.R
@@ -15,6 +11,7 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.plugin.downloader.PluginHostApi
+import app.revanced.manager.util.hasNotificationPermission
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -36,11 +33,16 @@ class BundleUpdateNotificationWorker(
     }
 
     override suspend fun doWork(): Result {
+        /**
+         * If the user did not consent to be notified, there is no point in checking in background.
+         * The auto update will still happen on app opening.
+         **/
+        if (!hasNotificationPermission(applicationContext))
+            return Result.success()
+
         Log.d(LOG_TAG, "Searching for updates.")
         return try {
-            val shouldSendNotification = patchBundleRepository.updateCheck()
-            Log.d(LOG_TAG, "Found ${shouldSendNotification.size} new updates.")
-            shouldSendNotification.forEach {
+            patchBundleRepository.updateCheck().forEach {
                 it.getOrNull()?.let { bundle ->
                     sendNotification(bundle.getName(), bundle.currentVersion()!!)
                 }
@@ -63,24 +65,11 @@ class BundleUpdateNotificationWorker(
                 bundleVersion
             )
         ).also { (notification, notificationManager) ->
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                 if (ContextCompat.checkSelfPermission(
-                         applicationContext,
-                         POST_NOTIFICATIONS
-                     ) == PERMISSION_GRANTED
-                 ) {
-                     notificationManager.notify("$bundleName-$bundleVersion".hashCode(), notification)
-                     Log.d(LOG_TAG, "Notification sent.")
-                 } else {
-                     Log.d(
-                         LOG_TAG,
-                         "POST_NOTIFICATIONS permission not granted. Cannot send notification."
-                     )
-                 }
-             } else {
-                 notificationManager.notify("$bundleName-$bundleVersion".hashCode(), notification)
-                 Log.d(LOG_TAG, "Notification sent (pre-Android 13).")
-             }
+             if (hasNotificationPermission(applicationContext))
+                 notificationManager.notify(
+                     "$bundleName-$bundleVersion".hashCode(),
+                     notification
+                 )
          }
     }
 }
