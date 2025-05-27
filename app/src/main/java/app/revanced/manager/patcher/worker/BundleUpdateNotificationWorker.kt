@@ -42,9 +42,22 @@ class BundleUpdateNotificationWorker(
 
         Log.d(LOG_TAG, "Searching for updates.")
         return try {
-            patchBundleRepository.updateCheck().forEach {
-                it.getOrNull()?.let { bundle ->
-                    sendNotification(bundle.getName(), bundle.currentVersion()!!)
+            patchBundleRepository.fetchUpdatesAndNotify(applicationContext) { bundleName, bundleVersion ->
+                workerRepository.createNotification<MainActivity>(
+                    applicationContext,
+                    notificationChannel,
+                    applicationContext.getString(R.string.bundle_update_available),
+                    applicationContext.getString(
+                        R.string.bundle_update_description_available,
+                        bundleName,
+                        bundleVersion
+                    )
+                ).also { (notification, notificationManager) ->
+                    if (hasNotificationPermission(applicationContext))
+                        notificationManager.notify(
+                            "$bundleName-$bundleVersion".hashCode(),
+                            notification
+                        )
                 }
             }
             Result.success()
@@ -52,24 +65,5 @@ class BundleUpdateNotificationWorker(
             Log.d(LOG_TAG, "Error during work: ${e.message}")
             Result.failure()
         }
-    }
-
-    private fun sendNotification(bundleName: String, bundleVersion: String) {
-         workerRepository.createNotification<MainActivity>(
-            applicationContext,
-            notificationChannel,
-            applicationContext.getString(R.string.bundle_update),
-            applicationContext.getString(
-                R.string.bundle_update_description,
-                bundleName,
-                bundleVersion
-            )
-        ).also { (notification, notificationManager) ->
-             if (hasNotificationPermission(applicationContext))
-                 notificationManager.notify(
-                     "$bundleName-$bundleVersion".hashCode(),
-                     notification
-                 )
-         }
     }
 }

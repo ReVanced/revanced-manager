@@ -25,7 +25,8 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
             }
         }
 
-        saveVersion(info.version)
+        updateVersion(info.version)
+        updateInstallationProps(info.description, info.createdAt.toString())
         reload()
     }
 
@@ -33,10 +34,20 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
         download(getLatestInfo())
     }
 
+    suspend fun fetchLatestRemoteInfo(): ReVancedAsset = withContext(Dispatchers.Default) {
+        var info = getLatestInfo()
+        configRepository.updateLatestRemoteInfo(
+            uid,
+            info.version,
+            info.description,
+            info.createdAt.toString()
+        )
+        info
+    }
+
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
-        val info = getLatestInfo()
-        if (hasInstalled() && info.version == currentVersion()+"r") //FIXME
-            //Log.i()
+        val info = fetchLatestRemoteInfo()
+        if (hasInstalled() && info.version == currentVersion())
             return@withContext false
 
         download(info)
@@ -49,6 +60,8 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     }
 
     suspend fun setAutoUpdate(value: Boolean) = configRepository.setAutoUpdate(uid, value)
+
+    suspend fun setSearchUpdate(value: Boolean) = configRepository.setSearchUpdate(uid, value)
 
     companion object {
         const val updateFailMsg = "Failed to update patch bundle(s)"

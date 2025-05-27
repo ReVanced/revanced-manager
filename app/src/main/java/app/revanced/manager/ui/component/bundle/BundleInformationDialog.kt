@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.DeleteOutline
+import androidx.compose.material.icons.outlined.Newspaper
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,12 +32,13 @@ fun BundleInformationDialog(
     onDismissRequest: () -> Unit,
     onDeleteRequest: () -> Unit,
     bundle: PatchBundleSource,
-    onUpdate: () -> Unit,
+    onUpdate: () -> Unit
 ) {
     val networkInfo = koinInject<NetworkInfo>()
     val hasNetwork = remember { networkInfo.isConnected() }
     val composableScope = rememberCoroutineScope()
     var viewCurrentBundlePatches by remember { mutableStateOf(false) }
+    var viewChangelog by remember { mutableStateOf(false) }
     val isLocal = bundle is LocalPatchBundle
     val state by bundle.state.collectAsStateWithLifecycle()
     val props by remember(bundle) {
@@ -80,6 +82,14 @@ fun BundleInformationDialog(
                                 )
                             }
                         }
+                        if (!isLocal) {
+                            IconButton(onClick = { viewChangelog = true }) {
+                                Icon(
+                                    Icons.Outlined.Newspaper,
+                                    stringResource(R.string.changelog)
+                                )
+                            }
+                        }
                         if (!isLocal && hasNetwork) {
                             IconButton(onClick = onUpdate) {
                                 Icon(
@@ -103,6 +113,12 @@ fun BundleInformationDialog(
                 onAutoUpdateChange = {
                     composableScope.launch {
                         bundle.asRemoteOrNull?.setAutoUpdate(it)
+                    }
+                },
+                searchUpdate = props?.searchUpdate ?: false,
+                onSearchUpdateChange = {
+                    composableScope.launch {
+                        bundle.asRemoteOrNull?.setSearchUpdate(it)
                     }
                 },
                 onPatchesClick = {

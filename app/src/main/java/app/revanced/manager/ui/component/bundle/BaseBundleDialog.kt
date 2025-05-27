@@ -36,6 +36,8 @@ fun BaseBundleDialog(
     version: String?,
     autoUpdate: Boolean,
     onAutoUpdateChange: (Boolean) -> Unit,
+    searchUpdate: Boolean,
+    onSearchUpdateChange: (Boolean) -> Unit,
     onPatchesClick: () -> Unit,
     extraFields: @Composable ColumnScope.() -> Unit = {}
 ) {
@@ -86,6 +88,21 @@ fun BaseBundleDialog(
         )
 
         if (remoteUrl != null) {
+            BundleListItem(
+                headlineText = stringResource(R.string.bundle_search_update),
+                supportingText = stringResource(R.string.bundle_search_update_description),
+                trailingContent = {
+                    HapticSwitch(
+                        checked = searchUpdate,
+                        onCheckedChange = onSearchUpdateChange
+                    )
+                },
+                modifier = Modifier.clickable {
+                    onSearchUpdateChange(!searchUpdate)
+                }
+            //TODO handle job scheduled to never run (a popup or disable the button)
+            )
+
             BundleListItem(
                 headlineText = stringResource(R.string.bundle_auto_update),
                 supportingText = stringResource(R.string.bundle_auto_update_description),

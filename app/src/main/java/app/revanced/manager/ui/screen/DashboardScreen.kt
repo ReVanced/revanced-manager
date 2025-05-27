@@ -121,9 +121,9 @@ fun DashboardScreen(
                 showAddBundleDialog = false
                 vm.createLocalSource(patches)
             },
-            onRemoteSubmit = { url, autoUpdate ->
+            onRemoteSubmit = { url, searchUpdate, autoUpdate ->
                 showAddBundleDialog = false
-                vm.createRemoteSource(url, autoUpdate)
+                vm.createRemoteSource(url, searchUpdate, autoUpdate)
             }
         )
     }

@@ -57,7 +57,7 @@ fun BundleItem(
             onDismissRequest = { viewBundleDialogPage = false },
             onDeleteRequest = { showDeleteConfirmationDialog = true },
             bundle = bundle,
-            onUpdate = onUpdate,
+            onUpdate = onUpdate
         )
     }
 

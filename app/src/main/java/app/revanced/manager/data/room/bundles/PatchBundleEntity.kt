@@ -33,12 +33,25 @@ sealed class Source {
 data class PatchBundleEntity(
     @PrimaryKey val uid: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "version") val version: String? = null,
     @ColumnInfo(name = "source") val source: Source,
-    @ColumnInfo(name = "auto_update") val autoUpdate: Boolean
+    @Embedded val properties: BundleProperties,
+    @Embedded val remoteProperties: RemoteBundleProperties? = null,
+    @Embedded val remoteLatestProperties: RemoteLatestBundleProperties? = null
 )
 
 data class BundleProperties(
     @ColumnInfo(name = "version") val version: String? = null,
+    @ColumnInfo(name = "search_update") val searchUpdate: Boolean,
     @ColumnInfo(name = "auto_update") val autoUpdate: Boolean
+)
+
+data class RemoteBundleProperties(
+    @ColumnInfo(name = "changelog") val changelog: String? = null,
+    @ColumnInfo(name = "publish_date") val publishDate: String? = null
+)
+
+data class RemoteLatestBundleProperties(
+    @ColumnInfo(name = "latest_version") val latestVersion: String? = null,
+    @ColumnInfo(name = "latest_changelog") val latestChangelog: String? = null,
+    @ColumnInfo(name = "latest_publish_date") val latestPublishDate: String? = null
 )

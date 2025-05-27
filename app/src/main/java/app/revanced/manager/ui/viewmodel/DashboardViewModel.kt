@@ -120,8 +120,8 @@ class DashboardViewModel(
             }
         }
 
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) =
-        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, autoUpdate) }
+    fun createRemoteSource(apiUrl: String, searchUpdate: Boolean, autoUpdate: Boolean) =
+        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, searchUpdate, autoUpdate) }
 
     fun delete(bundle: PatchBundleSource) =
         viewModelScope.launch { patchBundleRepository.remove(bundle) }
