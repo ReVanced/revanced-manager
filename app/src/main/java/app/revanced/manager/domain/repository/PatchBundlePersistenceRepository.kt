@@ -58,6 +58,8 @@ class PatchBundlePersistenceRepository(db: AppDatabase) {
 
     fun getLatestProps(id: Int) = dao.getLatestPropsById(id).distinctUntilChanged()
 
+    fun getInstalledProps(id: Int) = dao.getInstalledProps(id).distinctUntilChanged()
+
     private companion object {
         val defaultSource = PatchBundleEntity(
             uid = 0,

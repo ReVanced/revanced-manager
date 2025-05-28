@@ -193,7 +193,7 @@ class PatchBundleRepository(
             getBundlesByType<RemotePatchBundle>().forEach { bundle ->
                 Log.d(tag, "Running fetchUpdatesAndNotify for bundle: ${bundle.getName()}")
                 if (!bundle.getProps().searchUpdate || !hasNotificationPermission(context))
-                    return@coroutineScope
+                    return@forEach
 
                 var oldLatestVersion = bundle.getLatestProps().latestVersion
                 var info = bundle.fetchLatestRemoteInfo()
@@ -203,7 +203,7 @@ class PatchBundleRepository(
                     oldLatestVersion == newLatestVersion || // Already notified
                     newLatestVersion == bundle.getProps().version // Already installed
                     )
-                    return@coroutineScope
+                    return@forEach
 
                 notificationBlock(bundle.getName(), info.version)
             }

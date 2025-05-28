@@ -3,14 +3,18 @@ package app.revanced.manager.ui.component.bundle
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,12 +49,18 @@ fun BundleItem(
     toggleSelection: (Boolean) -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
+    var fromChangelogClick by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
     val version by remember(bundle) {
         bundle.propsFlow().map { props -> props?.version }
     }.collectAsStateWithLifecycle(null)
+
+    val latestVersion by remember(bundle) {
+        bundle.latestPropsFlow().map { props -> props?.latestVersion }
+    }.collectAsStateWithLifecycle(null)
+
     val name by bundle.nameState
 
     if (viewBundleDialogPage) {
@@ -57,7 +68,8 @@ fun BundleItem(
             onDismissRequest = { viewBundleDialogPage = false },
             onDeleteRequest = { showDeleteConfirmationDialog = true },
             bundle = bundle,
-            onUpdate = onUpdate
+            onUpdate = onUpdate,
+            fromUpdateClick = fromChangelogClick
         )
     }
 
@@ -114,6 +126,24 @@ fun BundleItem(
                         modifier = Modifier.size(24.dp),
                         tint = MaterialTheme.colorScheme.error
                     )
+                }
+
+                if (version != null && latestVersion != null && version != latestVersion ) {
+                    IconButton(
+                        onClick = {
+                            fromChangelogClick = true
+                            viewBundleDialogPage = true
+                                  },
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .fillMaxHeight()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.NewReleases,
+                            contentDescription = "Update available",
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
                 }
 
                 version?.let { Text(text = it) }

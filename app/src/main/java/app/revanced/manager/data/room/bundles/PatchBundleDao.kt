@@ -15,6 +15,9 @@ interface PatchBundleDao {
     @Query("SELECT latest_version, latest_changelog, latest_publish_date FROM patch_bundles WHERE uid = :uid")
     fun getLatestPropsById(uid: Int): Flow<RemoteLatestBundleProperties?>
 
+    @Query("SELECT changelog, publish_date FROM patch_bundles WHERE uid = :uid")
+    fun getInstalledProps(uid: Int): Flow<RemoteBundleProperties?>
+
     @Query("UPDATE patch_bundles SET version = :patches WHERE uid = :uid")
     suspend fun updateVersion(uid: Int, patches: String?)
 
