@@ -69,7 +69,9 @@ class WorkerRepository(app: Application) {
                 .setContentText(description)
                 .setLargeIcon(Icon.createWithResource(context, R.drawable.ic_notification))
                 .setSmallIcon(Icon.createWithResource(context, R.drawable.ic_notification))
-                .setContentIntent(pendingIntent).build(),
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build(),
             notificationManager
         )
     }

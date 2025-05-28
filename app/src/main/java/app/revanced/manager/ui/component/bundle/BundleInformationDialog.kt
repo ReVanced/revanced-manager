@@ -9,7 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.DeleteOutline
+import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.InstallMobile
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -46,6 +48,7 @@ fun BundleInformationDialog(
     onDismissRequest: () -> Unit,
     onDeleteRequest: () -> Unit,
     bundle: PatchBundleSource,
+    onSearchUpdate: () -> Unit,
     onUpdate: () -> Unit,
     fromUpdateClick: Boolean
 ) {
@@ -96,6 +99,16 @@ fun BundleInformationDialog(
                                 )
                             }
                         }
+
+                        if (!isLocal) {
+                            IconButton(onClick = onSearchUpdate) {
+                                Icon(
+                                    Icons.Outlined.Refresh,
+                                    stringResource(R.string.refresh)
+                                )
+                            }
+                        }
+
                         if (!isLocal) {
                             IconButton(onClick = {
                                 if (props?.version != null && latestProps?.latestVersion != null && props?.version != latestProps?.latestVersion)
@@ -105,7 +118,7 @@ fun BundleInformationDialog(
                             }) {
                                 Icon(
                                     Icons.Outlined.Update,
-                                    stringResource(R.string.refresh)
+                                    stringResource(R.string.update)
                                 )
                             }
                         }

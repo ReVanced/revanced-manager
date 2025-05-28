@@ -1,6 +1,8 @@
 package app.revanced.manager.domain.bundles
 
+import android.util.Log
 import androidx.compose.runtime.Stable
+import app.revanced.manager.domain.bundles.RemotePatchBundleFetchResponse
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.service.HttpService
@@ -8,8 +10,23 @@ import app.revanced.manager.network.utils.getOrThrow
 import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTime.Companion
+import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.inject
 import java.io.File
+
+class RemotePatchBundleFetchResponse(
+    val response: ReVancedAsset,
+    oldVersion: String?,
+    oldLatestVersion: String?
+) {
+    val isNewLatestVersion = response.version != oldLatestVersion
+
+    val canUpdateVersion= response.version != oldVersion
+
+    val isLatestInstalled = response.version == oldVersion
+}
 
 @Stable
 sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpoint: String) :
@@ -34,23 +51,26 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
         download(getLatestInfo())
     }
 
-    suspend fun fetchLatestRemoteInfo(): ReVancedAsset = withContext(Dispatchers.Default) {
-        var info = getLatestInfo()
-        configRepository.updateLatestRemoteInfo(
-            uid,
-            info.version,
-            info.description,
-            info.createdAt.toString()
-        )
-        info
+    suspend fun fetchLatestRemoteInfo(): RemotePatchBundleFetchResponse = withContext(Dispatchers.Default) {
+        getLatestInfo().let {
+            val result = RemotePatchBundleFetchResponse(it, getProps().version, getLatestProps().latestVersion)
+            Log.i("testtt", "result; ${getProps().version}, ${getLatestProps().latestVersion}")
+            configRepository.updateLatestRemoteInfo(
+                uid,
+                it.version,
+                it.description,
+                it.createdAt.toString()
+            )
+            result
+        }
     }
 
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
-        val info = fetchLatestRemoteInfo()
-        if (hasInstalled() && info.version == currentVersion())
+        val fetchedInfo = fetchLatestRemoteInfo()
+        if (!hasInstalled() || !fetchedInfo.canUpdateVersion)
             return@withContext false
 
-        download(info)
+        download(fetchedInfo.response)
         true
     }
 

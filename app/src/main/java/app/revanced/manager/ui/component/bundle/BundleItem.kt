@@ -42,6 +42,7 @@ import kotlinx.coroutines.flow.map
 fun BundleItem(
     bundle: PatchBundleSource,
     onDelete: () -> Unit,
+    onSearchUpdate: () -> Unit,
     onUpdate: () -> Unit,
     selectable: Boolean,
     onSelect: () -> Unit,
@@ -69,6 +70,7 @@ fun BundleItem(
             onDeleteRequest = { showDeleteConfirmationDialog = true },
             bundle = bundle,
             onUpdate = onUpdate,
+            onSearchUpdate = onSearchUpdate,
             fromUpdateClick = fromChangelogClick
         )
     }
@@ -91,7 +93,10 @@ fun BundleItem(
             .height(64.dp)
             .fillMaxWidth()
             .combinedClickable(
-                onClick = { viewBundleDialogPage = true },
+                onClick = {
+                    viewBundleDialogPage = true
+                    fromChangelogClick = false
+                          },
                 onLongClick = onSelect,
             ),
         leadingContent = if (selectable) {

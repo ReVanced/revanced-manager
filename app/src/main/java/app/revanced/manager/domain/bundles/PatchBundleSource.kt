@@ -90,7 +90,6 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
     fun latestPropsFlow() = configRepository.getLatestProps(uid).flowOn(Dispatchers.Default)
     suspend fun getLatestProps() = latestPropsFlow().first()!!
 
-    suspend fun currentVersion() = getProps().version
     protected suspend fun updateVersion(version: String?) =
         configRepository.updateVersion(uid, version)
 

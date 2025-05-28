@@ -9,12 +9,14 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.bundle.BundleItem
 
 @Composable
 fun BundleListScreen(
     onDelete: (PatchBundleSource) -> Unit,
+    onSearchUpdate: (PatchBundleSource) -> Unit,
     onUpdate: (PatchBundleSource) -> Unit,
     sources: List<PatchBundleSource>,
     selectedSources: SnapshotStateList<PatchBundleSource>,
@@ -39,6 +41,9 @@ fun BundleListScreen(
                 bundle = source,
                 onDelete = {
                     onDelete(source)
+                },
+                onSearchUpdate = {
+                    onSearchUpdate(source)
                 },
                 onUpdate = {
                     onUpdate(source)

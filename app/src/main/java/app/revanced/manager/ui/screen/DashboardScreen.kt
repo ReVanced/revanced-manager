@@ -356,6 +356,9 @@ fun DashboardScreen(
                                 onDelete = {
                                     vm.delete(it)
                                 },
+                                onSearchUpdate = {
+                                    vm.searchUpdate(it)
+                                },
                                 onUpdate = {
                                     vm.update(it)
                                 },

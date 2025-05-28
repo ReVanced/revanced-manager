@@ -195,17 +195,16 @@ class PatchBundleRepository(
                 if (!bundle.getProps().searchUpdate || !hasNotificationPermission(context))
                     return@forEach
 
-                var oldLatestVersion = bundle.getLatestProps().latestVersion
-                var info = bundle.fetchLatestRemoteInfo()
-                var newLatestVersion = info.version
-                Log.d(tag, "OldLatestVersion: ${oldLatestVersion}, NewLatestVersion: $newLatestVersion")
+                var fetchResponse = bundle.fetchLatestRemoteInfo()
+                Log.d(tag, "isNewLatestVersion: ${fetchResponse.isNewLatestVersion}")
+                Log.d(tag, "isLatestInstalled: ${fetchResponse.isLatestInstalled}")
                 if (
-                    oldLatestVersion == newLatestVersion || // Already notified
-                    newLatestVersion == bundle.getProps().version // Already installed
+                    !fetchResponse.isNewLatestVersion|| // Already notified
+                    fetchResponse.isLatestInstalled // Latest is already installed
                     )
                     return@forEach
 
-                notificationBlock(bundle.getName(), info.version)
+                notificationBlock(bundle.getName(), fetchResponse.response.version)
             }
         }
     }
