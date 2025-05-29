@@ -34,6 +34,45 @@ import java.nio.file.StandardCopyOption
 import kotlin.io.path.deleteExisting
 import kotlin.io.path.inputStream
 
+sealed class ResetDialogState(
+    val title: String,
+    val description: String,
+    val onConfirm: () -> Unit
+) {
+    object None : ResetDialogState("", "", { })
+
+    class Keystore(onConfirm: () -> Unit) : ResetDialogState(
+        title = "Keystore regeneration",
+        description = "You are about to regenerate your keystore the manager will use during the patching process.\n\n" +
+                "You will not be able to update the previously installed apps from this source.",
+        onConfirm = onConfirm
+    )
+
+    class PatchSelection(onConfirm: () -> Unit) : ResetDialogState(
+        title = "Reset patch selections",
+        description = "You are about to reset patch selections. You will need to manually select each patch again.",
+        onConfirm = onConfirm
+    )
+
+    class PatchOption(onConfirm: () -> Unit) : ResetDialogState(
+        title = "Reset patch options",
+        description = "You are about to reset patch options. You will have to reapply each option again.",
+        onConfirm = onConfirm
+    )
+
+    class PackagePatchOption(packageName: String, onConfirm: () -> Unit) : ResetDialogState(
+        title = "Reset package patch options",
+        description = "You are about to reset patch options for the package \"$packageName\". You will have to reapply each option again.",
+        onConfirm = onConfirm
+    )
+
+    class BundlePatchOption(bundleName: String, onConfirm: () -> Unit) : ResetDialogState(
+        title = "Reset bundle patch options",
+        description = "You are about to reset patch options for the bundle \"$bundleName\". You will have to reapply each option again.",
+        onConfirm = onConfirm
+    )
+}
+
 @OptIn(ExperimentalSerializationApi::class)
 class ImportExportViewModel(
     private val app: Application,
@@ -50,6 +89,8 @@ class ImportExportViewModel(
         private set
     private var keystoreImportPath by mutableStateOf<Path?>(null)
     val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
+
+    var resetDialogState by mutableStateOf<ResetDialogState>(ResetDialogState.None)
 
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
 

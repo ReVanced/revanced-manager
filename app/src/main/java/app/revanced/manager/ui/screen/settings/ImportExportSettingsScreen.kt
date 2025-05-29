@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Key
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,11 +44,13 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.PasswordField
 import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.ImportExportViewModel
+import app.revanced.manager.ui.viewmodel.ResetDialogState
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
@@ -59,6 +63,7 @@ fun ImportExportSettingsScreen(
     vm: ImportExportViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val importKeystoreLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
@@ -107,6 +112,16 @@ fun ImportExportSettingsScreen(
         )
     }
 
+    if (vm.resetDialogState != ResetDialogState.None) {
+        ConfirmDialog(
+            onDismiss = { vm.resetDialogState = ResetDialogState.None },
+            onConfirm = vm.resetDialogState.onConfirm,
+            title = vm.resetDialogState.title,
+            description = vm.resetDialogState.description,
+            icon = Icons.Outlined.WarningAmber
+        )
+    }
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -133,15 +148,24 @@ fun ImportExportSettingsScreen(
 
             if (showPackageSelector) {
                 PackageSelector(packages = packagesWithOptions) { selected ->
-                    selected?.let(vm::resetOptionsForPackage)
-
+                    selected?.also {
+                        vm.resetDialogState = ResetDialogState.PackagePatchOption(selected) {
+                            vm.resetOptionsForPackage(selected)
+                        }
+                    }
                     showPackageSelector = false
                 }
             }
 
             if (showBundleSelector) {
                 BundleSelector(bundles = patchBundles) { bundle ->
-                    bundle?.let(vm::clearOptionsForBundle)
+                    bundle?.also {
+                        coroutineScope.launch {
+                            vm.resetDialogState = ResetDialogState.BundlePatchOption(it.getName()) {
+                                vm.clearOptionsForBundle(it)
+                            }
+                        }
+                    }
 
                     showBundleSelector = false
                 }
@@ -181,17 +205,29 @@ fun ImportExportSettingsScreen(
 
             GroupHeader(stringResource(R.string.reset))
             GroupItem(
-                onClick = vm::regenerateKeystore,
+                onClick = {
+                    vm.resetDialogState = ResetDialogState.Keystore {
+                        vm.regenerateKeystore()
+                    }
+                },
                 headline = R.string.regenerate_keystore,
                 description = R.string.regenerate_keystore_description
             )
             GroupItem(
-                onClick = vm::resetSelection, // TODO: allow resetting selection for specific bundle or package name.
+                onClick = {
+                    vm.resetDialogState = ResetDialogState.PatchSelection {
+                        vm.resetSelection()
+                    }
+                }, // TODO: allow resetting selection for specific bundle or package name.
                 headline = R.string.reset_patch_selection,
                 description = R.string.reset_patch_selection_description
             )
             GroupItem(
-                onClick = vm::resetOptions, // TODO: patch options import/export.
+                onClick = {
+                    vm.resetDialogState = ResetDialogState.PatchOption {
+                        vm.resetOptions()
+                    }
+                }, // TODO: patch options import/export.
                 headline = R.string.patch_options_reset_all,
                 description = R.string.patch_options_reset_all_description,
             )
