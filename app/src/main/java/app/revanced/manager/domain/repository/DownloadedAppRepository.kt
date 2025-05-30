@@ -96,7 +96,7 @@ class DownloadedAppRepository(
             val pkgInfo =
                 pm.getPackageInfo(targetFile.toFile()) ?: error("Downloaded APK file is invalid")
             if (pkgInfo.packageName != expectedPackageName) error("Downloaded APK has the wrong package name. Expected: $expectedPackageName, Actual: ${pkgInfo.packageName}")
-            if (expectedVersion != null && pkgInfo.versionName != expectedVersion) error("Downloaded APK has the wrong version. Expected: $expectedVersion, Actual: ${pkgInfo.versionName}")
+            if (expectedVersion != null && pkgInfo.versionName != expectedVersion) error("The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: $expectedVersion\n\nTo continue anyway, disable \"Require suggested app version\" in the advanced settings.")
 
             // Delete the previous copy (if present).
             dao.get(pkgInfo.packageName, pkgInfo.versionName!!)?.directory?.let {
