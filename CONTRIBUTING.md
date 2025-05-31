@@ -96,7 +96,7 @@ If you encounter a bug while using ReVanced Manager, open an issue using the
 
 ## 🤚 I want to contribute but don't know how to code
 
-Even if you don't know how to code, you can still contribute by 
+Even if you don't know how to code, you can still contribute by
 translating ReVanced Manager on [Crowdin](https://translate.revanced.app/).
 
 ❤️ Thank you for considering contributing to ReVanced Manager,  

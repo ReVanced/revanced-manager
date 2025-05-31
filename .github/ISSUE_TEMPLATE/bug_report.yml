@@ -1,7 +1,7 @@
 name: 🐞 Bug report
 description: Report a bug or an issue.
-title: "bug: "
-labels: ["Bug report"]
+title: 'bug: '
+labels: ['Bug report']
 body:
   - type: markdown
     attributes:
@@ -80,38 +80,21 @@ body:
         - Describe your bug in detail
         - Add steps to reproduce the bug if possible (Step 1. ... Step 2. ...)
         - Add images and videos if possible
-        - List used patches if applicable
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Version of ReVanced Manager and version & name of app you are patching
-    validations:
-      required: true
-  - type: dropdown
-    attributes:
-      label: Installation method
-      options:
-        - Regular
-        - Mount
-    validations:
-      required: false
-  - type: textarea
-    attributes:
-      label: ReVanced Manager logs
-      description: Export logs from the ReVanced Manager settings.
-      render: shell
+        - List used patches, downloader and settings if applicable
     validations:
       required: true
   - type: textarea
     attributes:
       label: Patch logs
-      description: Export logs from the "Patcher" screen.
+      description: Patch logs can be exported by clicking on the "Logs" button in the "Patcher" screen, when patching finishes.
       render: shell
+  - type: textarea
+    attributes:
+      label: Debug logs
+      description: Debug logs can be exported by clicking on  "Export debug logs" in "Settings" > "Advanced".
     validations:
-      required: false
+      required: true
   - type: checkboxes
-    id: acknowledgements
     attributes:
       label: Acknowledgements
       description: Your bug report will be closed if you don't follow the checklist below.

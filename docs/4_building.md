@@ -1,8 +1,18 @@
-# 🛠️ Building from source
+# 🛠️ Build from source
 
-Learn how to build ReVanced Manager from source.
+This page will guide you through building ReVanced Manager from source.
 
-1. Setup the Flutter environment for your [platform](https://docs.flutter.dev/get-started/install)
+1. Install Java Development Kit 17 (e.g. [Temurin JDK](https://adoptium.net/temurin/releases/?os=any&arch=any&version=17))
+
+   Using [WinGet](https://learn.microsoft.com/en-us/windows/package-manager/winget):
+   ``sh
+   winget install EclipseAdoptium.Temurin.17.JDK
+   ``
+   
+   Using [SDKMAN!](https://sdkman.io/):
+   ```sh
+   sdk install java 17.0.15-tem
+   ```
 
 2. Clone the repository
 
@@ -10,32 +20,19 @@ Learn how to build ReVanced Manager from source.
    git clone https://github.com/revanced/revanced-manager.git && cd revanced-manager
    ```
 
-3. Get dependencies
+3. Build the APK
 
    ```sh
-   flutter pub get
-   ```
-
-4. Generate temporary files
-
-   ```sh
-   dart run slang
-   dart run build_runner build -d
-   ```
-
-5. Build the APK
-
-   ```sh
-   flutter build apk
+   ./gradlew assembleRelease
    ```
 
 > [!NOTE]
 > If the build fails due to authentication, you may need to authenticate to GitHub Packages.
-> Create a PAT with the scope `read:packages` [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced) and add your token to ~/.gradle/gradle.properties.
+> Create a personal access tokens with the scope `read:packages` [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced) and add your token to ~/.gradle/gradle.properties. Create the file if it does not exist.
 >
 > Example `gradle.properties` file:
 >
 > ```properties
-> gpr.user = user
-> gpr.key = key
+> gpr.user = <GitHub username>
+> gpr.key = <Personal access token>
 > ```

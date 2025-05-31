@@ -2,69 +2,30 @@ name: Build pull request
 
 on:
   workflow_dispatch:
-    inputs:
-      pr-number:
-        description: PR number
-        required: true
-      app-flavor:
-        description: App flavor
-        default: release
-        type: choice
-        options:
-          - release
-          - debug
-          - profile
+  pull_request:
+    branches:
+      - dev
 
 jobs:
-  build:
+  release:
     name: Build
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
     steps:
-      - name: Checkout PR
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: refs/pull/${{ inputs.pr-number }}/merge
           fetch-depth: 0
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-          
       - name: Cache Gradle
         uses: burrunan/gradle-cache-action@v1
-        with:
-          build-root-directory: ${{ github.workspace }}/android
-          
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Generate translations
-        run: dart run slang
-
-      - name: Generate code files
-        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build
-        id: flutter-build
-        run: flutter build apk --${{ inputs.app-flavor }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew assembleRelease --no-daemon
 
       - name: Upload artifacts
-        if: steps.flutter-build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: revanced-manager-(${{ env.COMMIT_HASH }}
-          path: |
-            build/app/outputs/flutter-apk/app-*.apk
+          name: revanced-manager
+          path: app/build/outputs/apk/release/revanced-manager*.apk?(.asc)

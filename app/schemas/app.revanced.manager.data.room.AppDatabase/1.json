@@ -1,0 +1,429 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d0119047505da435972c5247181de675",
+    "entities": [
+      {
+        "tableName": "patch_bundles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `version` TEXT, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "autoUpdate",
+            "columnName": "auto_update",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "uid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "patch_selections",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `patch_bundle` INTEGER NOT NULL, `package_name` TEXT NOT NULL, PRIMARY KEY(`uid`), FOREIGN KEY(`patch_bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patchBundle",
+            "columnName": "patch_bundle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "uid"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_patch_selections_patch_bundle_package_name",
+            "unique": true,
+            "columnNames": [
+              "patch_bundle",
+              "package_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patch_selections_patch_bundle_package_name` ON `${TABLE_NAME}` (`patch_bundle`, `package_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "patch_bundles",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patch_bundle"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "selected_patches",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`selection` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, PRIMARY KEY(`selection`, `patch_name`), FOREIGN KEY(`selection`) REFERENCES `patch_selections`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "selection",
+            "columnName": "selection",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patchName",
+            "columnName": "patch_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "selection",
+            "patch_name"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "patch_selections",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "selection"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "downloaded_app",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `directory` TEXT NOT NULL, `last_used` INTEGER NOT NULL, PRIMARY KEY(`package_name`, `version`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "directory",
+            "columnName": "directory",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUsed",
+            "columnName": "last_used",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "package_name",
+            "version"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "installed_app",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`current_package_name` TEXT NOT NULL, `original_package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `install_type` TEXT NOT NULL, PRIMARY KEY(`current_package_name`))",
+        "fields": [
+          {
+            "fieldPath": "currentPackageName",
+            "columnName": "current_package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "originalPackageName",
+            "columnName": "original_package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "installType",
+            "columnName": "install_type",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "current_package_name"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "applied_patch",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `bundle` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, PRIMARY KEY(`package_name`, `bundle`, `patch_name`), FOREIGN KEY(`package_name`) REFERENCES `installed_app`(`current_package_name`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bundle",
+            "columnName": "bundle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patchName",
+            "columnName": "patch_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "package_name",
+            "bundle",
+            "patch_name"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_applied_patch_bundle",
+            "unique": false,
+            "columnNames": [
+              "bundle"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_applied_patch_bundle` ON `${TABLE_NAME}` (`bundle`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "installed_app",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "package_name"
+            ],
+            "referencedColumns": [
+              "current_package_name"
+            ]
+          },
+          {
+            "table": "patch_bundles",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "bundle"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "option_groups",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `patch_bundle` INTEGER NOT NULL, `package_name` TEXT NOT NULL, PRIMARY KEY(`uid`), FOREIGN KEY(`patch_bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patchBundle",
+            "columnName": "patch_bundle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "uid"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_option_groups_patch_bundle_package_name",
+            "unique": true,
+            "columnNames": [
+              "patch_bundle",
+              "package_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_option_groups_patch_bundle_package_name` ON `${TABLE_NAME}` (`patch_bundle`, `package_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "patch_bundles",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patch_bundle"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "options",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, `key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`group`, `patch_name`, `key`), FOREIGN KEY(`group`) REFERENCES `option_groups`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "group",
+            "columnName": "group",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patchName",
+            "columnName": "patch_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "group",
+            "patch_name",
+            "key"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "option_groups",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "group"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "trusted_downloader_plugins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `signature` BLOB NOT NULL, PRIMARY KEY(`package_name`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "package_name"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0119047505da435972c5247181de675')"
+    ]
+  }
+}
