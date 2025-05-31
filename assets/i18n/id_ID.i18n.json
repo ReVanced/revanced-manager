@@ -181,8 +181,6 @@
     "autoUpdatePatchesLabel": "Otomatis perbarui tambalan",
     "autoUpdatePatchesHint": "Otomatis perbarui tambalan ke versi terbaru",
     "usePrereleasesLabel": "Gunakan rilis pra-rilis",
-    "usePrereleasesHint": "",
-    "usePrereleasesWarningText": "",
     "showUpdateDialogLabel": "Tampilkan dialog pembaruan",
     "showUpdateDialogHint": "Tampilkan dialog ketika pembaruan tersedia",
     "universalPatchesLabel": "Tampilkan tambalan universal",

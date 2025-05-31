@@ -181,7 +181,6 @@
     "autoUpdatePatchesLabel": "Tự động cập nhật các bản vá",
     "autoUpdatePatchesHint": "Tự động cập nhật các bản vá lên phiên bản mới nhất",
     "usePrereleasesLabel": "Sử dụng bản phát hành trước",
-    "usePrereleasesHint": "",
     "usePrereleasesWarningText": "Sử dụng các phiên bản phát hành trước có thể gây ra các sự cố không mong muốn.\n\nVẫn tiếp tục bật?",
     "showUpdateDialogLabel": "Hiện hộp thoại cập nhật",
     "showUpdateDialogHint": "Hiện một hộp thoại khi có một bản cập nhật",

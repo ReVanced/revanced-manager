@@ -181,8 +181,6 @@
     "autoUpdatePatchesLabel": "อัปเดตการแก้ไขโดยอัตโนมัติ",
     "autoUpdatePatchesHint": "อัปเดตการแก้ไขเป็นเวอร์ชันล่าสุดโดยอัตโนมัติ",
     "usePrereleasesLabel": "ใช้รุ่นก่อนเผยแพร่",
-    "usePrereleasesHint": "",
-    "usePrereleasesWarningText": "",
     "showUpdateDialogLabel": "แสดงกล่องโต้ตอบการอัปเดต",
     "showUpdateDialogHint": "แสดงกล่องโต้ตอบเมื่อมีการอัปเดตใหม่",
     "universalPatchesLabel": "แสดงการแก้ไขแบบสากล",

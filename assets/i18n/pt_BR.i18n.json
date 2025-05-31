@@ -181,8 +181,6 @@
     "autoUpdatePatchesLabel": "Atualizar patches automaticamente",
     "autoUpdatePatchesHint": "Atualize automaticamente os patches para a versão mais recente",
     "usePrereleasesLabel": "Usar versões preliminares",
-    "usePrereleasesHint": "",
-    "usePrereleasesWarningText": "",
     "showUpdateDialogLabel": "Mostrar alerta de atualização",
     "showUpdateDialogHint": "Mostra um aviso quando uma nova atualização estiver disponível",
     "universalPatchesLabel": "Mostrar patches universais",
