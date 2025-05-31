@@ -27,7 +27,7 @@
     "patchedSubtitle": "已安裝應用程式",
     "changeLaterSubtitle": "你稍後可以在設定中變更此選項。",
     "noSavedAppFound": "找不到應用程式",
-    "noInstallations": "未安裝已修補的應用程式",
+    "noInstallations": "未安裝已修補應用程式",
     "installUpdate": "是否要繼續更新？",
     "updateSheetTitle": "更新 ReVanced Manager",
     "updateDialogTitle": "有可用的更新",
@@ -99,7 +99,7 @@
     "noneChip": "無",
     "noneTooltip": "取消選取修補檔",
     "loadPatchesSelection": "載入修補檔選項",
-    "noSavedPatches": "所選的應用程式沒有已儲存的修補選項。\n按下「完成」以儲存目前的選擇。",
+    "noSavedPatches": "所選的應用程式沒有已儲存的修補選項。\n按下「完成」以儲存目前的修補選項。",
     "noPatchesFound": "找不到適合所選應用程式的修補檔",
     "setRequiredOption": "某些修補檔選項需要進行設定：\n\n${patches}\n\n請在繼續之前進行設定。"
   },

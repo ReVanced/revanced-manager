@@ -180,6 +180,7 @@
     "disablePatchesSelectionWarningText": "Você irá desabilitar a mudança da pré-seleção dos patches.\nA seleção padrão dos patches será restaurada.\n\nDesabilitar mesmo assim?",
     "autoUpdatePatchesLabel": "Atualizar patches automaticamente",
     "autoUpdatePatchesHint": "Atualize automaticamente os patches para a versão mais recente",
+    "usePrereleasesLabel": "Usar versões preliminares",
     "showUpdateDialogLabel": "Mostrar alerta de atualização",
     "showUpdateDialogHint": "Mostra um aviso quando uma nova atualização estiver disponível",
     "universalPatchesLabel": "Mostrar patches universais",

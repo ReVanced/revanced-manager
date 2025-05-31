@@ -180,6 +180,7 @@
     "disablePatchesSelectionWarningText": "আপনি নির্বাচিত প্যাচ পরিবর্তনকে নিষ্ক্রিয় করতে যাচ্ছেন।\nপূর্বনির্ধারিত নির্বাচিত প্যাচসমূহ ফিরিয়ে আনা হবে।\n\nযেকোন ভাবে নিষ্ক্রিয় করতে চান?",
     "autoUpdatePatchesLabel": "প্যাচসমূহ স্বয়ংক্রিয়ভাবে আপডেট করুন",
     "autoUpdatePatchesHint": "প্যাচসমূহ স্বয়ংক্রিয়ভাবে সর্বশেষ সংস্করণে আপডেট হবে",
+    "usePrereleasesLabel": "প্রি-রিলিজ ব্যবহার করুন",
     "showUpdateDialogLabel": "হালনাগাদ ডায়ালগ দেখান",
     "showUpdateDialogHint": "যখন হালনাগাদ উপলব্ধ থাকবে তখন একটি ডায়ালগ দেখান",
     "universalPatchesLabel": "বৈশ্বিক প্যাচসমূহ দেখান",

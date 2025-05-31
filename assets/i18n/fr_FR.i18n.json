@@ -137,7 +137,7 @@
     "notificationText": "Appuyez pour revenir à l'installation",
     "exportApkButtonTooltip": "Exporter l'APK patché",
     "exportLogButtonTooltip": "Exporter le journal",
-    "screenshotDetected": "Une capture d’écran a été détectée. Si vous essayez de partager le log, veuillez plutôt partager une copie du texte.\n\nCopier les logs dans le presse-papiers ?",
+    "screenshotDetected": "Une capture d’écran a été détectée. Si vous essayez de partager le journal, veuillez plutôt partager une copie textuelle.\n\nCopier le journal dans le presse-papiers ?",
     "copiedToClipboard": "Journal copié dans le presse-papiers",
     "noExit": "L'installateur s'exécute encore, impossible de quitter..."
   },
@@ -180,6 +180,9 @@
     "disablePatchesSelectionWarningText": "Vous êtes sur le point de désactiver la modification de la sélection de patchs.\nLa sélection de patchs par défaut sera rétablie.\n\nDésactiver quand même ?",
     "autoUpdatePatchesLabel": "Mise à jour auto. des patchs",
     "autoUpdatePatchesHint": "Mettre à jour automatiquement les patchs vers la dernière version",
+    "usePrereleasesLabel": "Utiliser les préversions",
+    "usePrereleasesHint": "Utilisez les versions préliminaires de ReVanced Manager et ReVanced Patches",
+    "usePrereleasesWarningText": "L'utilisation de versions préliminaires peut entraîner des problèmes inattendus.\n\nActiver quand même ?",
     "showUpdateDialogLabel": "Afficher la boîte de dialogue de mise à jour",
     "showUpdateDialogHint": "Afficher une boîte de dialogue lorsqu'une nouvelle mise à jour est disponible",
     "universalPatchesLabel": "Afficher les patchs universels",
