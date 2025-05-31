@@ -24,7 +24,7 @@ dependencies:
   dynamic_color: ^1.7.0
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker: ^9.0.2
+  file_picker: ^10.1.9
   flutter:
     sdk: flutter
   flutter_background: ^1.3.0+1
@@ -38,7 +38,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   google_fonts: ^6.2.1
   injectable: ^2.4.0
-  intl: ^0.19.0
+  intl: ^0.20.2
   json_annotation: ^4.9.0
   language_code: ^0.5.5
   logcat:
@@ -47,7 +47,7 @@ dependencies:
       ref: 4a6d5e0e22292c8eb160cfb9365b9ea29735fd43 # Branch: master
   package_info_plus: ^8.3.0
   path_provider: ^2.1.5
-  permission_handler: ^11.4.0
+  permission_handler: ^12.0.0
   root:
     git:
       url: https://github.com/validcube/root
@@ -80,7 +80,7 @@ dependencies:
 dev_dependencies:
   analyzer: ^6.3.0
   build_runner: ^2.4.15
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   injectable_generator: ^2.6.1
   json_serializable: ^6.9.0
 
