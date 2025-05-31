@@ -125,7 +125,7 @@ class InstallerViewModel extends BaseViewModel {
     });
     await WakelockPlus.enable();
     await handlePlatformChannelMethods();
-    await runPatcher(context);
+    await runPatcher();
   }
 
   Future<dynamic> handlePlatformChannelMethods() async {
@@ -164,6 +164,16 @@ class InstallerViewModel extends BaseViewModel {
       _managerAPI.setLastUsedPatchesVersion(
         version: _managerAPI.patchesVersion,
       );
+      _app.appliedPatches = _patches.map((p) => p.name).toList();
+      if (_managerAPI.isLastPatchedAppEnabled()) {
+        await _managerAPI.setLastPatchedApp(_app, _patcherAPI.outFile!);
+      } else {
+        _app.patchedFilePath = _patcherAPI.outFile!.path;
+      }
+      final homeViewModel = locator<HomeViewModel>();
+      _managerAPI
+          .reAssessPatchedApps()
+          .then((_) => homeViewModel.getPatchedApps());
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
@@ -187,7 +197,7 @@ class InstallerViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> runPatcher(BuildContext context) async {
+  Future<void> runPatcher() async {
     try {
       await _patcherAPI.runPatcher(
         _app.packageName,
@@ -195,16 +205,6 @@ class InstallerViewModel extends BaseViewModel {
         _patches,
         _app.isFromStorage,
       );
-      _app.appliedPatches = _patches.map((p) => p.name).toList();
-      if (_managerAPI.isLastPatchedAppEnabled()) {
-        await _managerAPI.setLastPatchedApp(_app, _patcherAPI.outFile!);
-      } else {
-        _app.patchedFilePath = _patcherAPI.outFile!.path;
-      }
-      final homeViewModel = locator<HomeViewModel>();
-      _managerAPI
-          .reAssessPatchedApps()
-          .then((_) => homeViewModel.getPatchedApps());
     } on Exception catch (e) {
       update(
         -100.0,
@@ -506,7 +506,7 @@ class InstallerViewModel extends BaseViewModel {
       _app.isRooted = installAsRoot;
       if (headerLogs != 'Installing...') {
         update(
-          .85,
+          -1.0,
           'Installing...',
           _app.isRooted ? 'Mounting patched app' : 'Installing patched app',
         );
@@ -534,7 +534,7 @@ class InstallerViewModel extends BaseViewModel {
         update(1.0, 'Installed', 'Installed');
       } else if (response == 3) {
         update(
-          .85,
+          -1.0,
           'Installation canceled',
           'Installation canceled',
         );
@@ -542,7 +542,7 @@ class InstallerViewModel extends BaseViewModel {
         installResult(context, installAsRoot);
       } else {
         update(
-          .85,
+          -1.0,
           'Installation failed',
           'Installation failed',
         );
