@@ -73,6 +73,8 @@ jobs:
 
       - name: Commit translations
         run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           sudo chown -R $USER:$USER .git
           git commit -m "chore: Remove empty values from JSON" assets/i18n/*.i18n.json
           git push origin HEAD:feat/translations
