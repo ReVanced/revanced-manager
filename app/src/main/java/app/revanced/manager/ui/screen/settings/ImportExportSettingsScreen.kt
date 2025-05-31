@@ -113,13 +113,17 @@ fun ImportExportSettingsScreen(
     }
 
     if (vm.resetDialogState != ResetDialogState.None) {
-        ConfirmDialog(
-            onDismiss = { vm.resetDialogState = ResetDialogState.None },
-            onConfirm = vm.resetDialogState.onConfirm,
-            title = vm.resetDialogState.title,
-            description = vm.resetDialogState.description,
-            icon = Icons.Outlined.WarningAmber
-        )
+        with(vm.resetDialogState) {
+            ConfirmDialog(
+                onDismiss = { vm.resetDialogState = ResetDialogState.None },
+                onConfirm = onConfirm,
+                title = stringResource(titleResId),
+                description = dialogOptionName?.let {
+                    stringResource(descriptionResId, it)
+                } ?: stringResource(descriptionResId),
+                icon = Icons.Outlined.WarningAmber
+            )
+        }
     }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())

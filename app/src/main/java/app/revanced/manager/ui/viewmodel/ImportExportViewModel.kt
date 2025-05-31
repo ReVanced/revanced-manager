@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,41 +36,43 @@ import kotlin.io.path.deleteExisting
 import kotlin.io.path.inputStream
 
 sealed class ResetDialogState(
-    val title: String,
-    val description: String,
-    val onConfirm: () -> Unit
+    @StringRes val titleResId: Int,
+    @StringRes val descriptionResId: Int,
+    val onConfirm: () -> Unit,
+    val dialogOptionName: String? = null
 ) {
-    object None : ResetDialogState("", "", { })
+    object None : ResetDialogState(0, 0, { })
 
     class Keystore(onConfirm: () -> Unit) : ResetDialogState(
-        title = "Keystore regeneration",
-        description = "You are about to regenerate your keystore the manager will use during the patching process.\n\n" +
-                "You will not be able to update the previously installed apps from this source.",
+        titleResId = R.string.regenerate_keystore,
+        descriptionResId = R.string.regenerate_keystore_dialog_description,
         onConfirm = onConfirm
     )
 
     class PatchSelection(onConfirm: () -> Unit) : ResetDialogState(
-        title = "Reset patch selections",
-        description = "You are about to reset patch selections. You will need to manually select each patch again.",
+        titleResId = R.string.reset_patch_selection,
+        descriptionResId = R.string.reset_patch_selection_dialog_description,
         onConfirm = onConfirm
     )
 
     class PatchOption(onConfirm: () -> Unit) : ResetDialogState(
-        title = "Reset patch options",
-        description = "You are about to reset patch options. You will have to reapply each option again.",
+        titleResId = R.string.patch_options_reset_all,
+        descriptionResId = R.string.patch_options_reset_all_dialog_description,
         onConfirm = onConfirm
     )
 
-    class PackagePatchOption(packageName: String, onConfirm: () -> Unit) : ResetDialogState(
-        title = "Reset package patch options",
-        description = "You are about to reset patch options for the package \"$packageName\". You will have to reapply each option again.",
-        onConfirm = onConfirm
+    class PackagePatchOption(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset_package,
+        descriptionResId = R.string.patch_options_reset_package_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
     )
 
-    class BundlePatchOption(bundleName: String, onConfirm: () -> Unit) : ResetDialogState(
-        title = "Reset bundle patch options",
-        description = "You are about to reset patch options for the bundle \"$bundleName\". You will have to reapply each option again.",
-        onConfirm = onConfirm
+    class BundlePatchOption(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset_bundle,
+        descriptionResId = R.string.patch_options_reset_bundle_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
     )
 }
 
