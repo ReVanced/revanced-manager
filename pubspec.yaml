@@ -56,7 +56,7 @@ dependencies:
     git: # remove once https://github.com/flutter-moum/flutter_screenshot_callback/pull/81 is merged
       url: https://github.com/BenjaminHalko/flutter_screenshot_callback
       ref: 1a1616ac91e16cd1f3dd170a81febf27ffce3587 # Branch: master
-  share_plus: ^10.1.4
+  share_plus: ^11.0.0
   shared_preferences: ^2.5.2
   skeletons:
     git: # remove once https://github.com/badjio/skeletons/pull/12 is merged
