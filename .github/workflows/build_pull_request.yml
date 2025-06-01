@@ -42,7 +42,7 @@ jobs:
           cache: true
           
       - name: Cache Gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v3
         with:
           build-root-directory: ${{ github.workspace }}/android
           
