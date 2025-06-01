@@ -48,13 +48,13 @@ fun DeveloperSettingsScreen(
                 description = R.string.developer_options_description,
             )
 
-            GroupHeader(stringResource(R.string.patch_bundles_section))
+            GroupHeader(stringResource(R.string.patches))
             SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_force_download),
+                headlineContent = stringResource(R.string.patches_force_download),
                 modifier = Modifier.clickable(onClick = vm::redownloadBundles)
             )
             SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_reset),
+                headlineContent = stringResource(R.string.patches_reset),
                 modifier = Modifier.clickable(onClick = vm::redownloadBundles)
             )
         }

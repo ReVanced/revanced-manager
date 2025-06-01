@@ -63,7 +63,7 @@ fun BundleInformationDialog(
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.patch_bundle_field),
+                    title = stringResource(R.string.patches),
                     onBackClick = onDismissRequest,
                     backIcon = {
                         Icon(
@@ -119,8 +119,8 @@ fun BundleInformationDialog(
                         )
 
                         BundleListItem(
-                            headlineText = stringResource(R.string.bundle_error),
-                            supportingText = stringResource(R.string.bundle_error_description),
+                            headlineText = stringResource(R.string.patches_error),
+                            supportingText = stringResource(R.string.patches_error_description),
                             trailingContent = {
                                 Icon(
                                     Icons.AutoMirrored.Outlined.ArrowRight,
@@ -133,8 +133,8 @@ fun BundleInformationDialog(
 
                     if (state is PatchBundleSource.State.Missing && !isLocal) {
                         BundleListItem(
-                            headlineText = stringResource(R.string.bundle_error),
-                            supportingText = stringResource(R.string.bundle_not_downloaded),
+                            headlineText = stringResource(R.string.patches_error),
+                            supportingText = stringResource(R.string.patches_not_downloaded),
                             modifier = Modifier.clickable(onClick = onUpdate)
                         )
                     }

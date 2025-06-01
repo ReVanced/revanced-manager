@@ -203,8 +203,8 @@ fun ImportExportSettingsScreen(
             if (patchBundles.size > 1) {
                 GroupItem(
                     onClick = { showBundleSelector = true },
-                    headline = R.string.patch_options_reset_bundle,
-                    description = R.string.patch_options_reset_bundle_description,
+                    headline = R.string.patch_options_reset_patches,
+                    description = R.string.patch_options_reset_patches_description,
                 )
             }
         }

@@ -15,7 +15,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 
@@ -47,7 +49,7 @@ fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSourc
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "Select bundle",
+                    text = stringResource(R.string.select),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
