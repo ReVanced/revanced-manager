@@ -56,6 +56,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
@@ -150,11 +151,11 @@ class SelectedAppInfoViewModel(
         val selection: MutableState<SelectionState> = mutableStateOf(SelectionState.Default)
 
         // Try to get the previous selection if customization is enabled.
-        viewModelScope.launch {
-            if (!prefs.disableSelectionWarning.getBlocking()) return@launch
+        runBlocking {
+            if (!prefs.disableSelectionWarning.get()) return@runBlocking
 
             val previous = selectionRepository.getSelection(packageName)
-            if (previous.values.sumOf { it.size } == 0) return@launch
+            if (previous.values.sumOf { it.size } == 0) return@runBlocking
             selection.value = SelectionState.Customized(previous)
         }
 
