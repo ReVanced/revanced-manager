@@ -53,7 +53,7 @@ fun BundleInformationDialog(
             onDismissRequest = {
                 viewCurrentBundlePatches = false
             },
-            bundle = bundle,
+            bundle = bundle
         )
     }
 
@@ -65,7 +65,7 @@ fun BundleInformationDialog(
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.patch_bundle_field),
+                    title = bundleName,
                     onBackClick = onDismissRequest,
                     backIcon = {
                         Icon(
@@ -97,7 +97,6 @@ fun BundleInformationDialog(
             BaseBundleDialog(
                 modifier = Modifier.padding(paddingValues),
                 isDefault = bundle.isDefault,
-                name = bundleName,
                 remoteUrl = bundle.asRemoteOrNull?.endpoint,
                 patchCount = patchCount,
                 version = props?.version,

@@ -17,6 +17,7 @@ import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +43,6 @@ import app.revanced.manager.ui.component.haptics.HapticSwitch
 fun BaseBundleDialog(
     modifier: Modifier = Modifier,
     isDefault: Boolean,
-    name: String?,
     remoteUrl: String?,
     onRemoteUrlChange: ((String) -> Unit)? = null,
     patchCount: Int,
@@ -62,11 +62,9 @@ fun BaseBundleDialog(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(
-                text = "$name $version",
-                style = MaterialTheme.typography.titleLarge
-            )
-
+            version?.let {
+                Tag(Icons.Outlined.Sell, it)
+            }
             bundleManifestAttributes?.description?.let {
                 Tag(Icons.Outlined.Description, it)
             }
@@ -189,8 +187,7 @@ private fun Tag(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.size(16.dp)
         )
         Text(
             text,
