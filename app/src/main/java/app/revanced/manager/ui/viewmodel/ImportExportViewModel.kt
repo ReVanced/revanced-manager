@@ -49,26 +49,40 @@ sealed class ResetDialogState(
         onConfirm = onConfirm
     )
 
-    class PatchSelection(onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.reset_patch_selection,
-        descriptionResId = R.string.reset_patch_selection_dialog_description,
+    class PatchSelectionAll(onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_all,
+        descriptionResId = R.string.patch_selection_reset_all_dialog_description,
         onConfirm = onConfirm
     )
 
-    class PatchOption(onConfirm: () -> Unit) : ResetDialogState(
+    class PatchSelectionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_package,
+        descriptionResId = R.string.patch_selection_reset_package_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchSelectionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_bundle,
+        descriptionResId = R.string.patch_selection_reset_bundle_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchOptionsAll(onConfirm: () -> Unit) : ResetDialogState(
         titleResId = R.string.patch_options_reset_all,
         descriptionResId = R.string.patch_options_reset_all_dialog_description,
         onConfirm = onConfirm
     )
 
-    class PackagePatchOption(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
+    class PatchOptionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
         titleResId = R.string.patch_options_reset_package,
         descriptionResId = R.string.patch_options_reset_package_dialog_description,
         onConfirm = onConfirm,
         dialogOptionName = dialogOptionName
     )
 
-    class BundlePatchOption(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
+    class PatchOptionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
         titleResId = R.string.patch_options_reset_bundle,
         descriptionResId = R.string.patch_options_reset_bundle_dialog_description,
         onConfirm = onConfirm,
@@ -96,14 +110,15 @@ class ImportExportViewModel(
     var resetDialogState by mutableStateOf<ResetDialogState>(ResetDialogState.None)
 
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
+    val packagesWithSelection = optionsRepository.getPackagesWithSavedSelection()
 
     fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
-        optionsRepository.clearOptionsForPackage(packageName)
+        optionsRepository.resetOptionsForPackage(packageName)
         app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
-    fun clearOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
-        optionsRepository.clearOptionsForPatchBundle(patchBundle.uid)
+    fun resetOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
+        optionsRepository.resetOptionsForPatchBundle(patchBundle.uid)
         app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
@@ -176,6 +191,16 @@ class ImportExportViewModel(
 
     fun resetSelection() = viewModelScope.launch {
         withContext(Dispatchers.Default) { selectionRepository.reset() }
+        app.toast(app.getString(R.string.reset_patch_selection_success))
+    }
+
+    fun resetSelectionForPackage(packageName: String) = viewModelScope.launch {
+        optionsRepository.resetSelectionForPackage(packageName)
+        app.toast(app.getString(R.string.reset_patch_selection_success))
+    }
+
+    fun resetSelectionForPatchBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
+        optionsRepository.resetSelectionForPatchBundle(patchBundle.uid)
         app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 

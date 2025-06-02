@@ -76,7 +76,12 @@ class PatchOptionsRepository(db: AppDatabase) {
     fun getPackagesWithSavedOptions() =
         dao.getPackagesWithOptions().map(Iterable<String>::toSet).distinctUntilChanged()
 
-    suspend fun clearOptionsForPackage(packageName: String) = dao.clearForPackage(packageName)
-    suspend fun clearOptionsForPatchBundle(uid: Int) = dao.clearForPatchBundle(uid)
+    fun getPackagesWithSavedSelection() =
+        dao.getPackagesWithSelection().map(Iterable<String>::toSet).distinctUntilChanged()
+
+    suspend fun resetOptionsForPackage(packageName: String) = dao.resetOptionsForPackage(packageName)
+    suspend fun resetOptionsForPatchBundle(uid: Int) = dao.resetOptionsForPatchBundle(uid)
+    suspend fun resetSelectionForPackage(packageName: String) = dao.resetSelectionForPackage(packageName)
+    suspend fun resetSelectionForPatchBundle(uid: Int) = dao.resetSelectionForPatchBundle(uid)
     suspend fun reset() = dao.reset()
 }
