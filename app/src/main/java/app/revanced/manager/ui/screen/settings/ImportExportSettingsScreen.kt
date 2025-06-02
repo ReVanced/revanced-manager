@@ -116,10 +116,10 @@ fun ImportExportSettingsScreen(
         )
     }
 
-    if (vm.resetDialogState != ResetDialogState.None) {
-        with(vm.resetDialogState) {
+    vm.resetDialogState?.let {
+        with(vm.resetDialogState!!) {
             ConfirmDialog(
-                onDismiss = { vm.resetDialogState = ResetDialogState.None },
+                onDismiss = { vm.resetDialogState = null },
                 onConfirm = onConfirm,
                 title = stringResource(titleResId),
                 description = dialogOptionName?.let {

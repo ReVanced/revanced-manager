@@ -41,8 +41,6 @@ sealed class ResetDialogState(
     val onConfirm: () -> Unit,
     val dialogOptionName: String? = null
 ) {
-    object None : ResetDialogState(0, 0, { })
-
     class Keystore(onConfirm: () -> Unit) : ResetDialogState(
         titleResId = R.string.regenerate_keystore,
         descriptionResId = R.string.regenerate_keystore_dialog_description,
@@ -107,7 +105,7 @@ class ImportExportViewModel(
     private var keystoreImportPath by mutableStateOf<Path?>(null)
     val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
 
-    var resetDialogState by mutableStateOf<ResetDialogState>(ResetDialogState.None)
+    var resetDialogState by mutableStateOf<ResetDialogState?>(null)
 
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
     val packagesWithSelection = optionsRepository.getPackagesWithSavedSelection()
