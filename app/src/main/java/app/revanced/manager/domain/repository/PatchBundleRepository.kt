@@ -14,7 +14,6 @@ import app.revanced.manager.domain.bundles.JsonPatchBundle
 import app.revanced.manager.domain.bundles.LocalPatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.RemotePatchBundle
-import app.revanced.manager.domain.manager.BackgroundBundleUpdateTime
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.flatMapLatestAndCombine
@@ -22,8 +21,6 @@ import app.revanced.manager.util.hasNotificationPermission
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -196,8 +193,6 @@ class PatchBundleRepository(
                     return@forEach
 
                 var fetchResponse = bundle.fetchLatestRemoteInfo()
-                Log.d(tag, "isNewLatestVersion: ${fetchResponse.isNewLatestVersion}")
-                Log.d(tag, "isLatestInstalled: ${fetchResponse.isLatestInstalled}")
                 if (
                     !fetchResponse.isNewLatestVersion|| // Already notified
                     fetchResponse.isLatestInstalled // Latest is already installed

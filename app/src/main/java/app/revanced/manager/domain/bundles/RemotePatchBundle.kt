@@ -1,8 +1,6 @@
 package app.revanced.manager.domain.bundles
 
-import android.util.Log
 import androidx.compose.runtime.Stable
-import app.revanced.manager.domain.bundles.RemotePatchBundleFetchResponse
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.service.HttpService
@@ -10,11 +8,12 @@ import app.revanced.manager.network.utils.getOrThrow
 import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTime.Companion
-import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.inject
 import java.io.File
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+
 
 class RemotePatchBundleFetchResponse(
     val response: ReVancedAsset,
@@ -23,8 +22,6 @@ class RemotePatchBundleFetchResponse(
 ) {
     val isNewLatestVersion = response.version != oldLatestVersion
 
-    val canUpdateVersion= response.version != oldVersion
-
     val isLatestInstalled = response.version == oldVersion
 }
 
@@ -32,6 +29,13 @@ class RemotePatchBundleFetchResponse(
 sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpoint: String) :
     PatchBundleSource(name, id, directory) {
     protected val http: HttpService by inject()
+
+    private fun canUpdateVersionFlow(): Flow<Boolean> = flow {
+        val current = getProps().version
+        val latest = getLatestProps().latestVersion
+        emit(current != latest)
+    }
+    suspend fun canUpdateVersion() = canUpdateVersionFlow().first()
 
     protected abstract suspend fun getLatestInfo(): ReVancedAsset
 
@@ -54,7 +58,6 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     suspend fun fetchLatestRemoteInfo(): RemotePatchBundleFetchResponse = withContext(Dispatchers.Default) {
         getLatestInfo().let {
             val result = RemotePatchBundleFetchResponse(it, getProps().version, getLatestProps().latestVersion)
-            Log.i("testtt", "result; ${getProps().version}, ${getLatestProps().latestVersion}")
             configRepository.updateLatestRemoteInfo(
                 uid,
                 it.version,
@@ -67,7 +70,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
 
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
         val fetchedInfo = fetchLatestRemoteInfo()
-        if (!hasInstalled() || !fetchedInfo.canUpdateVersion)
+        if (!hasInstalled() || !canUpdateVersion())
             return@withContext false
 
         download(fetchedInfo.response)

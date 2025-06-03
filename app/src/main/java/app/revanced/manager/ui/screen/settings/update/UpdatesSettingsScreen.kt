@@ -29,7 +29,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
-import app.revanced.manager.domain.manager.BackgroundBundleUpdateTime
+import app.revanced.manager.domain.manager.SearchForUpdatesBackgroundInterval
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -132,11 +132,11 @@ fun UpdatesSettingsScreen(
 @Composable
 private fun BackgroundBundleUpdateTimeDialog(
     onDismiss: () -> Unit,
-    onConfirm: (BackgroundBundleUpdateTime) -> Unit,
+    onConfirm: (SearchForUpdatesBackgroundInterval) -> Unit,
     prefs: PreferencesManager = koinInject()
 ) {
     var context = LocalContext.current
-    var selected by rememberSaveable { mutableStateOf(prefs.backgroundBundleUpdateTime.getBlocking()) }
+    var selected by rememberSaveable { mutableStateOf(prefs.searchForUpdatesBackgroundInterval.getBlocking()) }
 
     var askNotificationPermission by rememberSaveable { mutableStateOf(false) }
 
@@ -165,7 +165,7 @@ private fun BackgroundBundleUpdateTimeDialog(
         title = { Text(stringResource(R.string.background_radio_menu_title)) },
         text = {
             Column {
-                BackgroundBundleUpdateTime.entries.forEach {
+                SearchForUpdatesBackgroundInterval.entries.forEach {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -183,7 +183,7 @@ private fun BackgroundBundleUpdateTimeDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    if (selected != BackgroundBundleUpdateTime.NEVER &&
+                    if (selected != SearchForUpdatesBackgroundInterval.NEVER &&
                         !hasNotificationPermission(context)
                         ) askNotificationPermission = true
                     else

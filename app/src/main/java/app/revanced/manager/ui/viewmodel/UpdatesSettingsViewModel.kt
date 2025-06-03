@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.manager.BackgroundBundleUpdateTime
+import app.revanced.manager.domain.manager.SearchForUpdatesBackgroundInterval
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.network.api.ReVancedAPI
@@ -23,10 +23,10 @@ class UpdatesSettingsViewModel(
     val managerAutoUpdates = prefs.managerAutoUpdates
     val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
 
-    fun updateBackgroundBundleUpdateTime(backgroundBundleUpdateTime: BackgroundBundleUpdateTime) {
+    fun updateBackgroundBundleUpdateTime(searchForUpdatesBackgroundInterval: SearchForUpdatesBackgroundInterval) {
         viewModelScope.launch {
-            prefs.backgroundBundleUpdateTime.update(backgroundBundleUpdateTime)
-            workerRepository.scheduleBundleUpdateNotificationWork(backgroundBundleUpdateTime)
+            prefs.searchForUpdatesBackgroundInterval.update(searchForUpdatesBackgroundInterval)
+            workerRepository.scheduleBundleUpdateNotificationWork(searchForUpdatesBackgroundInterval)
         }
     }
 

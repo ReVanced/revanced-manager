@@ -150,7 +150,7 @@ class DashboardViewModel(
             R.string.source_download_fail,//TODO
             RemotePatchBundle.updateFailMsg
         ) {
-            if (bundle.fetchLatestRemoteInfo().canUpdateVersion)
+            if (bundle.canUpdateVersion())
                 app.toast(app.getString(R.string.bundle_update_success, bundle.getName()))
             else
                 app.toast(app.getString(R.string.bundle_update_unavailable, bundle.getName()))

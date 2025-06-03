@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
@@ -74,6 +75,15 @@ fun BundleInformationDialog(
         state.patchBundleOrNull()?.patches?.size ?: 0
     }
 
+    //TODO FIX this thing not updating
+    val canUpdateState by produceState(initialValue = false, key1 = bundle) {
+        value = if (bundle is RemotePatchBundle) {
+            bundle.canUpdateVersion()
+        } else {
+            false
+        }
+    }
+
     FullscreenDialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -109,17 +119,24 @@ fun BundleInformationDialog(
                             }
                         }
 
-                        if (!isLocal) {
-                            IconButton(onClick = {
-                                if (props?.version != null && latestProps?.latestVersion != null && props?.version != latestProps?.latestVersion)
+                        val canUpdate = bundle is RemotePatchBundle && canUpdateState
+
+                        IconButton(
+                            onClick = {
+                                if (canUpdate) {
                                     updateBundleDialog = true
-                                else
-                                    context.toast(context.getString(R.string.no_update_available))
-                            }) {
-                                Icon(
-                                    Icons.Outlined.Update,
-                                    stringResource(R.string.update)
-                                )
+                                }
+                            },
+                            enabled = canUpdate
+                        ) {
+                            if (canUpdate) {
+                                BadgedBox(badge = {
+                                    Badge(modifier = Modifier.size(6.dp))
+                                }) {
+                                    Icon(Icons.Outlined.Update, stringResource(R.string.update))
+                                }
+                            } else {
+                                Icon(Icons.Outlined.Update, stringResource(R.string.update))
                             }
                         }
                     }

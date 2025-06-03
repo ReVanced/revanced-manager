@@ -16,7 +16,7 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import app.revanced.manager.R
-import app.revanced.manager.domain.manager.BackgroundBundleUpdateTime
+import app.revanced.manager.domain.manager.SearchForUpdatesBackgroundInterval
 import app.revanced.manager.patcher.worker.BundleUpdateNotificationWorker
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -76,9 +76,9 @@ class WorkerRepository(app: Application) {
         )
     }
 
-    fun scheduleBundleUpdateNotificationWork(bundleUpdateTime: BackgroundBundleUpdateTime) {
+    fun scheduleBundleUpdateNotificationWork(bundleUpdateTime: SearchForUpdatesBackgroundInterval) {
         val workId = "BundleUpdateNotificationWork"
-        if(bundleUpdateTime == BackgroundBundleUpdateTime.NEVER) {
+        if(bundleUpdateTime == SearchForUpdatesBackgroundInterval.NEVER) {
             workManager.cancelUniqueWork(workId)
             Log.d("WorkManager","Cancelled job with workId $workId.")
         } else {

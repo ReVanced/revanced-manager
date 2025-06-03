@@ -19,6 +19,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
+import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import kotlinx.coroutines.flow.map
@@ -58,9 +60,13 @@ fun BundleItem(
         bundle.propsFlow().map { props -> props?.version }
     }.collectAsStateWithLifecycle(null)
 
-    val latestVersion by remember(bundle) {
-        bundle.latestPropsFlow().map { props -> props?.latestVersion }
-    }.collectAsStateWithLifecycle(null)
+    val canUpdateState = remember { mutableStateOf(false) }
+
+    LaunchedEffect(bundle) {
+        if (bundle is RemotePatchBundle) {
+            canUpdateState.value = bundle.canUpdateVersion()
+        }
+    }
 
     val name by bundle.nameState
 
@@ -133,7 +139,7 @@ fun BundleItem(
                     )
                 }
 
-                if (version != null && latestVersion != null && version != latestVersion ) {
+                if (bundle is RemotePatchBundle && canUpdateState.value) {
                     IconButton(
                         onClick = {
                             fromChangelogClick = true
