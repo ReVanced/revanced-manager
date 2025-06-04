@@ -193,12 +193,12 @@ class ImportExportViewModel(
     }
 
     fun resetSelectionForPackage(packageName: String) = viewModelScope.launch {
-        optionsRepository.resetSelectionForPackage(packageName)
+        selectionRepository.resetSelectionForPackage(packageName)
         app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 
     fun resetSelectionForPatchBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
-        optionsRepository.resetSelectionForPatchBundle(patchBundle.uid)
+        selectionRepository.resetSelectionForPatchBundle(patchBundle.uid)
         app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 

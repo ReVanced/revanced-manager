@@ -35,10 +35,10 @@ abstract class SelectionDao {
     abstract suspend fun createSelection(selection: PatchSelection)
 
     @Query("DELETE FROM patch_selections WHERE patch_bundle = :uid")
-    abstract suspend fun clearForPatchBundle(uid: Int)
+    abstract suspend fun resetForPatchBundle(uid: Int)
 
     @Query("DELETE FROM patch_selections WHERE package_name = :packageName")
-    abstract suspend fun clearForPackage(packageName: String)
+    abstract suspend fun resetForPackage(packageName: String)
 
     @Query("DELETE FROM patch_selections")
     abstract suspend fun reset()
