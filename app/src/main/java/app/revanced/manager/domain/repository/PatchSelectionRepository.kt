@@ -3,6 +3,8 @@ package app.revanced.manager.domain.repository
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.selection.PatchSelection
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class PatchSelectionRepository(db: AppDatabase) {
     private val dao = db.selectionDao()
@@ -24,6 +26,9 @@ class PatchSelectionRepository(db: AppDatabase) {
                 packageName
             )
         })
+
+    fun getPackagesWithSavedSelection() =
+        dao.getPackagesWithSelection().map(Iterable<String>::toSet).distinctUntilChanged()
 
     suspend fun resetSelectionForPackage(packageName: String) {
         dao.resetForPackage(packageName)

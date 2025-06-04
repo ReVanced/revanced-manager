@@ -23,9 +23,6 @@ abstract class OptionDao {
     @Query("SELECT package_name FROM option_groups")
     abstract fun getPackagesWithOptions(): Flow<List<String>>
 
-    @Query("SELECT package_name FROM patch_selections")
-    abstract fun getPackagesWithSelection(): Flow<List<String>>
-
     @Insert
     abstract suspend fun createOptionGroup(group: OptionGroup)
 

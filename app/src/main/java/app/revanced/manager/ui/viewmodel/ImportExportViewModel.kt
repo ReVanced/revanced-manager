@@ -108,7 +108,7 @@ class ImportExportViewModel(
     var resetDialogState by mutableStateOf<ResetDialogState?>(null)
 
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
-    val packagesWithSelection = optionsRepository.getPackagesWithSavedSelection()
+    val packagesWithSelection = selectionRepository.getPackagesWithSavedSelection()
 
     fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
         optionsRepository.resetOptionsForPackage(packageName)

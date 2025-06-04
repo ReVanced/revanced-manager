@@ -29,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -66,7 +65,7 @@ fun ImportExportSettingsScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    var selectorDialog by remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
+    var selectorDialog by rememberSaveable { mutableStateOf<(@Composable () -> Unit)?>(null) }
 
     val importKeystoreLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {

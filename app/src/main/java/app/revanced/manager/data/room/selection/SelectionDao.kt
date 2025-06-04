@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.MapColumn
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class SelectionDao {
@@ -33,6 +34,9 @@ abstract class SelectionDao {
 
     @Insert
     abstract suspend fun createSelection(selection: PatchSelection)
+
+    @Query("SELECT package_name FROM patch_selections")
+    abstract fun getPackagesWithSelection(): Flow<List<String>>
 
     @Query("DELETE FROM patch_selections WHERE patch_bundle = :uid")
     abstract suspend fun resetForPatchBundle(uid: Int)
