@@ -144,19 +144,19 @@ class SelectedAppInfoViewModel(
     }
         private set
 
-    private var selectionState by savedStateHandle.saveable {
+    private var selectionState: SelectionState by savedStateHandle.saveable {
         if (input.patches != null)
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
 
         val selection: MutableState<SelectionState> = mutableStateOf(SelectionState.Default)
 
         // Try to get the previous selection if customization is enabled.
-        runBlocking {
-            if (!prefs.disableSelectionWarning.get()) return@runBlocking
+        viewModelScope.launch {
+            if (!prefs.disableSelectionWarning.get()) return@launch
 
             val previous = selectionRepository.getSelection(packageName)
-            if (previous.values.sumOf { it.size } == 0) return@runBlocking
-            selection.value = SelectionState.Customized(previous)
+            if (previous.values.sumOf { it.size } == 0) return@launch
+            selectionState = SelectionState.Customized(previous)
         }
 
         selection
