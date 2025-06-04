@@ -15,6 +15,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Scrollbar
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
+import com.mikepenz.aboutlibraries.ui.compose.libraryColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

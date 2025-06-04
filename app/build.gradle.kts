@@ -161,7 +161,6 @@ android {
             }
 
             buildConfigField("long", "BUILD_ID", "0L")
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
