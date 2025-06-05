@@ -1,18 +1,24 @@
 package app.revanced.manager.ui.component.bundle
 
 import android.webkit.URLUtil
-import org.koin.compose.koinInject
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.Sell
-import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,13 +30,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.RemotePatchBundle
+import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.manager.SearchForUpdatesBackgroundInterval
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
-import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.manager.SearchForUpdatesBackgroundInterval
+import org.koin.compose.koinInject
 
 @Composable
 fun BaseBundleDialog(
@@ -49,13 +56,9 @@ fun BaseBundleDialog(
     extraFields: @Composable ColumnScope.() -> Unit = {},
     prefs: PreferencesManager = koinInject()
 ) {
-    val searchUpdatesScheduledJobInterval =
-        remember { mutableStateOf<SearchForUpdatesBackgroundInterval?>(null) }
-
-    LaunchedEffect(Unit) {
-        searchUpdatesScheduledJobInterval.value =
-            prefs.searchForUpdatesBackgroundInterval.get()
-    }
+    val searchUpdatesScheduledJobInterval by remember {
+        prefs.searchForUpdatesBackgroundInterval.flow
+    }.collectAsStateWithLifecycle(null)
 
     ColumnWithScrollbar(
         modifier = Modifier
@@ -103,14 +106,16 @@ fun BaseBundleDialog(
             color = MaterialTheme.colorScheme.outlineVariant
         )
 
-        if (remoteUrl != null
-            && searchUpdatesScheduledJobInterval.value != null
-            ) {
+        if (
+            remoteUrl != null &&
+            searchUpdatesScheduledJobInterval != null
+        ) {
             BundleListItem(
                 headlineText = stringResource(R.string.bundle_search_update),
                 supportingText = stringResource(R.string.bundle_search_update_description),
+                //TODO imrpove description if it's off
                 trailingContent = {
-                    if (searchUpdatesScheduledJobInterval.value != SearchForUpdatesBackgroundInterval.NEVER) {
+                    if (searchUpdatesScheduledJobInterval != SearchForUpdatesBackgroundInterval.NEVER) {
                         HapticSwitch(
                             checked = searchUpdate,
                             onCheckedChange = onSearchUpdateChange

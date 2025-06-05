@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.InstallMobile
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Update
@@ -38,7 +37,6 @@ import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.settings.Changelog
 import app.revanced.manager.util.relativeTime
-import app.revanced.manager.util.toast
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
@@ -54,7 +52,6 @@ fun BundleInformationDialog(
     onUpdate: () -> Unit,
     fromUpdateClick: Boolean
 ) {
-    val context = LocalContext.current
     val networkInfo = koinInject<NetworkInfo>()
     val hasNetwork = remember { networkInfo.isConnected() }
     val composableScope = rememberCoroutineScope()
@@ -78,7 +75,6 @@ fun BundleInformationDialog(
     val canUpdateState by remember(bundle) {
         if (bundle is RemotePatchBundle) bundle.canUpdateVersionFlow() else flowOf(false)
     }.collectAsStateWithLifecycle(null)
-
 
     FullscreenDialog(
         onDismissRequest = onDismissRequest,
@@ -119,13 +115,13 @@ fun BundleInformationDialog(
 
                         IconButton(
                             onClick = {
-                                if (canUpdate) {
+                                if (canUpdateState == true) {
                                     updateBundleDialog = true
                                 }
                             },
-                            enabled = canUpdate
+                            enabled = canUpdateState == true
                         ) {
-                            if (canUpdate) {
+                            if (canUpdateState == true) {
                                 BadgedBox(badge = {
                                     Badge(modifier = Modifier.size(6.dp))
                                 }) {
@@ -255,7 +251,6 @@ fun BundleInformationDialog(
     }
 
     if (updateBundleDialog) {
-        //TODO make something to refresh latest version
         val publishDate = latestProps?.latestPublishDate
         val changelog = latestProps?.latestChangelog
         val version = latestProps?.latestVersion

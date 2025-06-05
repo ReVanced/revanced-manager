@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -25,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
@@ -37,6 +39,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameStat
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -60,13 +63,9 @@ fun BundleItem(
         bundle.propsFlow().map { props -> props?.version }
     }.collectAsStateWithLifecycle(null)
 
-    val canUpdateState = remember { mutableStateOf(false) }
-
-    LaunchedEffect(bundle) {
-        if (bundle is RemotePatchBundle) {
-            canUpdateState.value = bundle.canUpdateVersion()
-        }
-    }
+    val canUpdateState by remember(bundle) {
+        if (bundle is RemotePatchBundle) bundle.canUpdateVersionFlow() else flowOf(false)
+    }.collectAsStateWithLifecycle(null)
 
     val name by bundle.nameState
 
@@ -121,7 +120,9 @@ fun BundleItem(
             }
         },
         trailingContent = {
-            Row {
+            Row (
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 val icon = remember(state) {
                     when (state) {
                         is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.bundle_error
@@ -139,7 +140,7 @@ fun BundleItem(
                     )
                 }
 
-                if (bundle is RemotePatchBundle && canUpdateState.value) {
+                if (bundle is RemotePatchBundle && canUpdateState == true) {
                     IconButton(
                         onClick = {
                             fromChangelogClick = true
@@ -148,11 +149,13 @@ fun BundleItem(
                         modifier = Modifier
                             .clip(CircleShape)
                             .fillMaxHeight()
+                            .padding(8.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.NewReleases,
                             contentDescription = "Update available",
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier
+                                .size(24.dp),
                         )
                     }
                 }

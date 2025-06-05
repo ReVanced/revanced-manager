@@ -17,7 +17,7 @@ import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.flatMapLatestAndCombine
-import app.revanced.manager.util.hasNotificationPermission
+import app.revanced.manager.util.permission.hasNotificationPermission
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
@@ -189,7 +189,7 @@ class PatchBundleRepository(
         coroutineScope {
             getBundlesByType<RemotePatchBundle>().forEach { bundle ->
                 Log.d(tag, "Running fetchUpdatesAndNotify for bundle: ${bundle.getName()}")
-                if (!bundle.getProps().searchUpdate || !hasNotificationPermission(context))
+                if (!bundle.getProps().searchUpdate || !context.hasNotificationPermission())
                     return@forEach
 
                 var fetchResponse = bundle.fetchLatestRemoteInfo()

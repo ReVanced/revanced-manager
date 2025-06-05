@@ -38,8 +38,9 @@ import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
+import app.revanced.manager.util.enabled
 import app.revanced.manager.util.permission.PermissionRequestHandler
-import app.revanced.manager.util.hasNotificationPermission
+import app.revanced.manager.util.permission.hasNotificationPermission
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -122,9 +123,9 @@ fun UpdatesSettingsScreen(
             SettingsListItem(
                 headlineContent = stringResource(R.string.background_bundle_update),
                 supportingContent = stringResource(R.string.background_bundle_update_description),
-                modifier = Modifier.clickable {
-                    showBackgroundUpdateDialog = true
-                }
+                modifier = Modifier.clickable(
+                    onClick = { showBackgroundUpdateDialog = true }
+                )
             )
         }
     }
@@ -185,9 +186,9 @@ private fun BackgroundBundleUpdateTimeDialog(
             TextButton(
                 onClick = {
                     Log.i("testtt", "selected ${selected.toString()}")
-                    Log.i("testtt", "hasNotificationPermission ${hasNotificationPermission(context).toString()}")
+                    Log.i("testtt", "hasNotificationPermission ${context.hasNotificationPermission().toString()}")
                     if (selected != SearchForUpdatesBackgroundInterval.NEVER &&
-                        !hasNotificationPermission(context)
+                        !context.hasNotificationPermission()
                         ) askNotificationPermission = true
                     else
                         onApply()

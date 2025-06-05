@@ -11,7 +11,7 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.plugin.downloader.PluginHostApi
-import app.revanced.manager.util.hasNotificationPermission
+import app.revanced.manager.util.permission.hasNotificationPermission
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -37,7 +37,7 @@ class BundleUpdateNotificationWorker(
          * If the user did not consent to be notified, there is no point in checking in background.
          * The auto update will still happen on app opening.
          **/
-        if (!hasNotificationPermission(applicationContext))
+        if (!applicationContext.hasNotificationPermission())
             return Result.success()
 
         Log.d(LOG_TAG, "Searching for updates.")
@@ -53,7 +53,7 @@ class BundleUpdateNotificationWorker(
                         bundleVersion
                     )
                 ).also { (notification, notificationManager) ->
-                    if (hasNotificationPermission(applicationContext))
+                    if (applicationContext.hasNotificationPermission())
                         notificationManager.notify(
                             "$bundleName-$bundleVersion".hashCode(),
                             notification

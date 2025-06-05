@@ -10,9 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.inject
 import java.io.File
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 
 
 class RemotePatchBundleFetchResponse(
@@ -30,11 +30,11 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     PatchBundleSource(name, id, directory) {
     protected val http: HttpService by inject()
 
-    fun canUpdateVersionFlow(): Flow<Boolean> = flow {
-        val current = getProps().version
-        val latest = getLatestProps().latestVersion
-        emit(current != latest)
-    }
+    fun canUpdateVersionFlow(): Flow<Boolean> =
+        combine(propsFlow(), latestPropsFlow()) { current, latest ->
+            current?.version != latest?.latestVersion
+        }
+
     suspend fun canUpdateVersion() = canUpdateVersionFlow().first()
 
     protected abstract suspend fun getLatestInfo(): ReVancedAsset

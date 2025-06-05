@@ -1,6 +1,7 @@
 package app.revanced.manager.util
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -37,6 +38,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.util.permission.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -293,13 +295,3 @@ fun <T : Any> SavedStateHandle.saveableVar(): ReadWriteProperty<Any?, T?> =
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
             set(property.name, value)
     }
-
-fun hasNotificationPermission(context: Context): Boolean {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.POST_NOTIFICATIONS
-        ) == PackageManager.PERMISSION_GRANTED
-    } else
-        true
-}
