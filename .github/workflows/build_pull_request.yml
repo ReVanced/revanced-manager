@@ -28,4 +28,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: revanced-manager
-          path: app/build/outputs/apk/release/revanced-manager*.apk?(.asc)
+          path: |
+            app/build/outputs/apk/release/revanced-manager*.apk
+            app/build/outputs/apk/release/revanced-manager*.apk.asc
