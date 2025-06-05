@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <permission
+        android:name="app.revanced.manager.permission.PLUGIN_HOST"
+        android:protectionLevel="signature"
+        android:label="@string/plugin_host_permission_label"
+        android:description="@string/plugin_host_permission_description"
+        />
+
+    <uses-permission android:name="app.revanced.manager.permission.PLUGIN_HOST" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:name=".ManagerApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:largeHeap="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ReVancedManager"
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="34">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ReVancedManager">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".plugin.downloader.webview.WebViewActivity" android:exported="false" android:theme="@style/Theme.WebViewActivity" />
+
+        <service android:name=".service.InstallService" />
+        <service android:name=".service.UninstallService" />
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="specialUse"
+            android:exported="false"
+            tools:node="merge">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="patching"
+                />
+        </service>
+
+        <provider
+                android:name="androidx.startup.InitializationProvider"
+                android:authorities="${applicationId}.androidx-startup"
+                android:exported="false"
+                tools:node="merge">
+            <meta-data
+                    android:name="androidx.work.WorkManagerInitializer"
+                    android:value="androidx.startup"
+                    tools:node="remove" />
+        </provider>
+    </application>
+</manifest>

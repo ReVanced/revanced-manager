@@ -1,7 +1,3 @@
-name: ⭐ Feature request
-description: Create a detailed request for a new feature.
-title: "feat: "
-labels: ["Feature request"]
 body:
   - type: markdown
     attributes:
@@ -84,7 +80,7 @@ body:
       label: Motivation
       description: |
         A strong motivation is necessary for a feature request to be considered.
-
+        
         - Why should this feature be implemented? 
         - What is the explicit use case?
         - What are the benefits?
@@ -97,9 +93,11 @@ body:
       label: Acknowledgements
       description: Your feature request will be closed if you don't follow the checklist below.
       options:
-        - label:  I have checked all open and closed feature requests and this is not a duplicate.
+        - label: I have checked all open and closed feature requests and this is not a duplicate
           required: true
         - label: I have chosen an appropriate title.
+          required: true
+        - label: All requested information has been provided properly.
           required: true
         - label: The feature request is only related to ReVanced Manager.
           required: true

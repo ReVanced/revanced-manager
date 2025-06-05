@@ -22,7 +22,5 @@ jobs:
         with:
           destination_branch: 'main'
           pr_title: 'chore: ${{ env.MESSAGE }}'
-          pr_body: |
-            This pull request will ${{ env.MESSAGE }}.
+          pr_body: 'This pull request will ${{ env.MESSAGE }}.'
           pr_draft: true
-          github_token: ${{ secrets.REPOSITORY_PUSH_ACCESS }}

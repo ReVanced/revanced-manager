@@ -1,6 +1,6 @@
 # ⬇️ Installation
 
-To use ReVanced on your Android device, ReVanced Manager must be first installed.
+In order to use ReVanced on your Android device, ReVanced Manager must be installed.
 
 ## ✅ Installation steps
 
@@ -9,6 +9,6 @@ To use ReVanced on your Android device, ReVanced Manager must be first installed
 
 ## ⏭️ What's next
 
-The next page explain how to use ReVanced Manager to update ReVanced Manager and manage or patch apps.
+The next page will guide you through using ReVanced Manager.
 
 Continue: [🛠️ Usage](2_usage.md)
