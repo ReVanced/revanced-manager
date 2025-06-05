@@ -1,6 +1,8 @@
-package app.revanced.manager.util
+package app.revanced.manager.util.permission
 
 import android.app.Activity
+import android.content.Context
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.material3.Icon
@@ -26,28 +28,38 @@ fun PermissionRequestHandler(
     icon: ImageVector
 ) {
     val context = LocalContext.current
-    val showDialog = ActivityCompat.shouldShowRequestPermissionRationale(
-        context as Activity,
-        input
-    )
+    val activity = context as? Activity ?: return
+    val permissionHelper = PermissionHelper(context)
 
     val launcher = rememberLauncherForActivityResult(contract) { result ->
+        Log.d("testtt", "rememberLauncherForActivityResult $result")
         onResult(result)
     }
 
-    if(showDialog)
-        PermissionDialog(
-            title,
-            description,
-            icon,
-            onDismissRequest = onDismissRequest,
-            onContinue = {
-                onContinue()
-                launcher.launch(input)
-            }
-        )
-    else
-        onResult(false)
+    when (permissionHelper.getPermissionState(activity, input)) {
+        PermissionHelper.PermissionState.Granted -> {
+            onResult(true)
+        }
+        PermissionHelper.PermissionState.FirstTime,
+        PermissionHelper.PermissionState.DeniedWithRationale -> {
+            Log.d("testtt", "DeniedWithRationale or FirstTime")
+            PermissionDialog(
+                title = title,
+                description = description,
+                icon = icon,
+                onDismissRequest = onDismissRequest,
+                onContinue = {
+                    onContinue()
+                    launcher.launch(input)
+                }
+            )
+        }
+        PermissionHelper.PermissionState.DeniedPermanently -> {
+            Log.d("testtt", "DeniedPermanently")
+            //TODO Handle the "go to settings" case if needed
+            onResult(false)
+        }
+    }
 }
 
 @Composable

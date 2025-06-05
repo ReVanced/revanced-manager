@@ -39,6 +39,7 @@ import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionBut
 import app.revanced.manager.ui.component.settings.Changelog
 import app.revanced.manager.util.relativeTime
 import app.revanced.manager.util.toast
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import org.koin.compose.koinInject
@@ -74,15 +75,10 @@ fun BundleInformationDialog(
     val patchCount = remember(state) {
         state.patchBundleOrNull()?.patches?.size ?: 0
     }
+    val canUpdateState by remember(bundle) {
+        if (bundle is RemotePatchBundle) bundle.canUpdateVersionFlow() else flowOf(false)
+    }.collectAsStateWithLifecycle(null)
 
-    //TODO FIX this thing not updating
-    val canUpdateState by produceState(initialValue = false, key1 = bundle) {
-        value = if (bundle is RemotePatchBundle) {
-            bundle.canUpdateVersion()
-        } else {
-            false
-        }
-    }
 
     FullscreenDialog(
         onDismissRequest = onDismissRequest,
@@ -119,7 +115,7 @@ fun BundleInformationDialog(
                             }
                         }
 
-                        val canUpdate = bundle is RemotePatchBundle && canUpdateState
+                        val canUpdate = bundle is RemotePatchBundle && canUpdateState == true
 
                         IconButton(
                             onClick = {

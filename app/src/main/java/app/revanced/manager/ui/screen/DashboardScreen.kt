@@ -58,7 +58,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
-import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
@@ -69,7 +68,7 @@ import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
-import app.revanced.manager.util.PermissionRequestHandler
+import app.revanced.manager.util.permission.PermissionRequestHandler
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch

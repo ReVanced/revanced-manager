@@ -30,7 +30,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     PatchBundleSource(name, id, directory) {
     protected val http: HttpService by inject()
 
-    private fun canUpdateVersionFlow(): Flow<Boolean> = flow {
+    fun canUpdateVersionFlow(): Flow<Boolean> = flow {
         val current = getProps().version
         val latest = getLatestProps().latestVersion
         emit(current != latest)
@@ -70,7 +70,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
 
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
         val fetchedInfo = fetchLatestRemoteInfo()
-        if (!hasInstalled() || !canUpdateVersion())
+        if (!canUpdateVersion())
             return@withContext false
 
         download(fetchedInfo.response)

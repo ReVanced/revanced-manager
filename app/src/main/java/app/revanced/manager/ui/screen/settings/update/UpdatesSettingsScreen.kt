@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screen.settings.update
 
 import android.Manifest
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,7 @@ import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
-import app.revanced.manager.util.PermissionRequestHandler
+import app.revanced.manager.util.permission.PermissionRequestHandler
 import app.revanced.manager.util.hasNotificationPermission
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -183,6 +184,8 @@ private fun BackgroundBundleUpdateTimeDialog(
         confirmButton = {
             TextButton(
                 onClick = {
+                    Log.i("testtt", "selected ${selected.toString()}")
+                    Log.i("testtt", "hasNotificationPermission ${hasNotificationPermission(context).toString()}")
                     if (selected != SearchForUpdatesBackgroundInterval.NEVER &&
                         !hasNotificationPermission(context)
                         ) askNotificationPermission = true
