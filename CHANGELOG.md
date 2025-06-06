@@ -1,3 +1,10 @@
+# [1.0.0-dev.3](https://github.com/brosssh/revanced-manager/compare/v1.0.0-dev.2...v1.0.0-dev.3) (2025-06-06)
+
+
+### Bug Fixes
+
+* Use correct path to attest ([f20b25e](https://github.com/brosssh/revanced-manager/commit/f20b25ec89470d4532f5bee74b7df0ba070664a7))
+
 # [1.0.0-dev.2](https://github.com/brosssh/revanced-manager/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2025-06-06)
 
 
