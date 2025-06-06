@@ -1,3 +1,10 @@
+# [1.0.0-dev.2](https://github.com/brosssh/revanced-manager/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2025-06-06)
+
+
+### Bug Fixes
+
+* Added GPG import ([998de00](https://github.com/brosssh/revanced-manager/commit/998de00c19f9543e37b609564ec6271a7a871576))
+
 # 1.0.0-dev.1 (2025-06-06)
 
 
