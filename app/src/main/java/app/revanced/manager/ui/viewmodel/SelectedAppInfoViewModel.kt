@@ -131,7 +131,7 @@ class SelectedAppInfoViewModel(
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
-            state.value = withContext(Dispatchers.Default) {
+            options = withContext(Dispatchers.Default) {
                 val bundlePatches = bundleRepository.bundles.first()
                     .mapValues { (_, bundle) -> bundle.patches.associateBy { it.name } }
 
