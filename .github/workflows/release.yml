@@ -44,6 +44,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          fingerprint: ${{ vars.GPG_FINGERPRINT }}
+
       - name: Setup keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
@@ -62,4 +69,4 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: 'ReVanced Manager ${{ steps.release.outputs.new_release_git_tag }}'
-          subject-path: build/app/outputs/apk/release/revanced-manager-*.apk
+          subject-path: app/build/outputs/apk/release/revanced-manager*.apk
