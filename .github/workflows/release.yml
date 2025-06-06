@@ -69,4 +69,4 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: 'ReVanced Manager ${{ steps.release.outputs.new_release_git_tag }}'
-          subject-path: build/app/outputs/apk/release/revanced-manager-*.apk
+          subject-path: app/build/outputs/apk/release/revanced-manager*.apk
