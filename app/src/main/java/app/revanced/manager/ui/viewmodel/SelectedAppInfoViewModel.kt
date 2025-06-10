@@ -131,7 +131,7 @@ class SelectedAppInfoViewModel(
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
-            state.value = withContext(Dispatchers.Default) {
+            options = withContext(Dispatchers.Default) {
                 val bundlePatches = bundleRepository.bundles.first()
                     .mapValues { (_, bundle) -> bundle.patches.associateBy { it.name } }
 
@@ -143,7 +143,7 @@ class SelectedAppInfoViewModel(
     }
         private set
 
-    private var selectionState by savedStateHandle.saveable {
+    private var selectionState: SelectionState by savedStateHandle.saveable {
         if (input.patches != null)
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
 
@@ -155,7 +155,7 @@ class SelectedAppInfoViewModel(
 
             val previous = selectionRepository.getSelection(packageName)
             if (previous.values.sumOf { it.size } == 0) return@launch
-            selection.value = SelectionState.Customized(previous)
+            selectionState = SelectionState.Customized(previous)
         }
 
         selection
