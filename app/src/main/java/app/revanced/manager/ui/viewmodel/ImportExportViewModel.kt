@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +35,59 @@ import java.nio.file.StandardCopyOption
 import kotlin.io.path.deleteExisting
 import kotlin.io.path.inputStream
 
+sealed class ResetDialogState(
+    @StringRes val titleResId: Int,
+    @StringRes val descriptionResId: Int,
+    val onConfirm: () -> Unit,
+    val dialogOptionName: String? = null
+) {
+    class Keystore(onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.regenerate_keystore,
+        descriptionResId = R.string.regenerate_keystore_dialog_description,
+        onConfirm = onConfirm
+    )
+
+    class PatchSelectionAll(onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_all,
+        descriptionResId = R.string.patch_selection_reset_all_dialog_description,
+        onConfirm = onConfirm
+    )
+
+    class PatchSelectionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_package,
+        descriptionResId = R.string.patch_selection_reset_package_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchSelectionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_bundle,
+        descriptionResId = R.string.patch_selection_reset_bundle_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchOptionsAll(onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset_all,
+        descriptionResId = R.string.patch_options_reset_all_dialog_description,
+        onConfirm = onConfirm
+    )
+
+    class PatchOptionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset_package,
+        descriptionResId = R.string.patch_options_reset_package_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchOptionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset_bundle,
+        descriptionResId = R.string.patch_options_reset_bundle_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+}
+
 @OptIn(ExperimentalSerializationApi::class)
 class ImportExportViewModel(
     private val app: Application,
@@ -51,15 +105,18 @@ class ImportExportViewModel(
     private var keystoreImportPath by mutableStateOf<Path?>(null)
     val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
 
+    var resetDialogState by mutableStateOf<ResetDialogState?>(null)
+
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
+    val packagesWithSelection = selectionRepository.getPackagesWithSavedSelection()
 
     fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
-        optionsRepository.clearOptionsForPackage(packageName)
+        optionsRepository.resetOptionsForPackage(packageName)
         app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
-    fun clearOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
-        optionsRepository.clearOptionsForPatchBundle(patchBundle.uid)
+    fun resetOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
+        optionsRepository.resetOptionsForPatchBundle(patchBundle.uid)
         app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
@@ -132,6 +189,16 @@ class ImportExportViewModel(
 
     fun resetSelection() = viewModelScope.launch {
         withContext(Dispatchers.Default) { selectionRepository.reset() }
+        app.toast(app.getString(R.string.reset_patch_selection_success))
+    }
+
+    fun resetSelectionForPackage(packageName: String) = viewModelScope.launch {
+        selectionRepository.resetSelectionForPackage(packageName)
+        app.toast(app.getString(R.string.reset_patch_selection_success))
+    }
+
+    fun resetSelectionForPatchBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
+        selectionRepository.resetSelectionForPatchBundle(patchBundle.uid)
         app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 

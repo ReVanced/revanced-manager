@@ -13,11 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
+import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,6 +57,10 @@ fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSourc
             }
             bundles.forEach {
                 val name by it.nameState
+                val version by remember(it) {
+                    it.propsFlow().map { props -> props?.version }
+                }.collectAsStateWithLifecycle(null)
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
@@ -65,7 +72,7 @@ fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSourc
                         }
                 ) {
                     Text(
-                        name,
+                        "$name $version",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )

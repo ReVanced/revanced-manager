@@ -305,7 +305,7 @@ class SelectedAppInfoViewModel(
         if (!persistConfiguration) return@launch
         viewModelScope.launch(Dispatchers.Default) {
             selection?.let { selectionRepository.updateSelection(packageName, it) }
-                ?: selectionRepository.clearSelection(packageName)
+                ?: selectionRepository.resetSelectionForPackage(packageName)
 
             optionsRepository.saveOptions(packageName, filteredOptions)
         }
