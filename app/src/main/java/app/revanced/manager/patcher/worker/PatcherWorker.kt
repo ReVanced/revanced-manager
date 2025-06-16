@@ -157,7 +157,7 @@ class PatcherWorker(
                     plugin,
                     data,
                     args.packageName,
-                    args.input.version,
+                    if (prefs.suggestedVersionSafeguard.get()) args.input.version else null,
                     onDownload = args.onDownloadProgress
                 ).also {
                     args.setInputFile(it)
