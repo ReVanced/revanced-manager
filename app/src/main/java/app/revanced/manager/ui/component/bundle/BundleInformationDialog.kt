@@ -42,16 +42,18 @@ fun BundleInformationDialog(
     val props by remember(bundle) {
         bundle.propsFlow()
     }.collectAsStateWithLifecycle(null)
+    val bundleFromState = state.patchBundleOrNull()
     val patchCount = remember(state) {
-        state.patchBundleOrNull()?.patches?.size ?: 0
+        bundleFromState?.patches?.size ?: 0
     }
+    val bundleManifestAttributes = bundleFromState?.patchBundleManifestAttributes
 
     if (viewCurrentBundlePatches) {
         BundlePatchesDialog(
             onDismissRequest = {
                 viewCurrentBundlePatches = false
             },
-            bundle = bundle,
+            bundle = bundle
         )
     }
 
@@ -63,7 +65,7 @@ fun BundleInformationDialog(
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.patch_bundle_field),
+                    title = bundleName,
                     onBackClick = onDismissRequest,
                     backIcon = {
                         Icon(
@@ -95,11 +97,11 @@ fun BundleInformationDialog(
             BaseBundleDialog(
                 modifier = Modifier.padding(paddingValues),
                 isDefault = bundle.isDefault,
-                name = bundleName,
                 remoteUrl = bundle.asRemoteOrNull?.endpoint,
                 patchCount = patchCount,
                 version = props?.version,
                 autoUpdate = props?.autoUpdate ?: false,
+                bundleManifestAttributes = bundleManifestAttributes,
                 onAutoUpdateChange = {
                     composableScope.launch {
                         bundle.asRemoteOrNull?.setAutoUpdate(it)
