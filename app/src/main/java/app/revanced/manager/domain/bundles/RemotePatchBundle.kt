@@ -5,6 +5,7 @@ import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.getOrThrow
+import app.revanced.manager.patcher.patch.PatchBundle
 import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,7 +26,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
             }
         }
 
-        saveVersion(info.version)
+        saveVersion(State.Loaded(PatchBundle(patchesFile)).bundle.readManifestAttribute("Version"))
         reload()
     }
 
