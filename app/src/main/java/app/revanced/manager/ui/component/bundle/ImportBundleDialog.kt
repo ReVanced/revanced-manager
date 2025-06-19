@@ -210,7 +210,7 @@ fun ImportBundleStep(
                     )
                 }
                 Column(
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp)
                 ) {
                     ListItem(
                         modifier = Modifier.clickable(
