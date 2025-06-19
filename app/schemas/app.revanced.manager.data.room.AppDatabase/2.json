@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "d0119047505da435972c5247181de675",
+    "version": 2,
+    "identityHash": "799b1231ff07c511b2c9a27b4c28c19d",
     "entities": [
       {
         "tableName": "patch_bundles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `version` TEXT, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `source` TEXT NOT NULL, `version` TEXT, `search_update` INTEGER NOT NULL, `auto_update` INTEGER NOT NULL, `changelog` TEXT, `publish_date` TEXT, `latest_changelog` TEXT, `latest_publish_date` TEXT, `latest_version` TEXT, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -21,21 +21,52 @@
             "notNull": true
           },
           {
-            "fieldPath": "version",
-            "columnName": "version",
-            "affinity": "TEXT"
-          },
-          {
             "fieldPath": "source",
             "columnName": "source",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "autoUpdate",
+            "fieldPath": "properties.version",
+            "columnName": "version",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "properties.searchUpdate",
+            "columnName": "search_update",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "properties.autoUpdate",
             "columnName": "auto_update",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "remoteProperties.changelog",
+            "columnName": "changelog",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "remoteProperties.publishDate",
+            "columnName": "publish_date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "remoteLatestProperties.latestChangelog",
+            "columnName": "latest_changelog",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "remoteLatestProperties.latestPublishDate",
+            "columnName": "latest_publish_date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "remoteLatestProperties.latestVersion",
+            "columnName": "latest_version",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -411,7 +442,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0119047505da435972c5247181de675')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '799b1231ff07c511b2c9a27b4c28c19d')"
     ]
   }
 }

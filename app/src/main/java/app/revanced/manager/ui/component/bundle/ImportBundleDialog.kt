@@ -30,7 +30,7 @@ import app.revanced.manager.util.transparentListItemColors
 @Composable
 fun ImportPatchBundleDialog(
     onDismiss: () -> Unit,
-    onRemoteSubmit: (String, Boolean) -> Unit,
+    onRemoteSubmit: (String, Boolean, Boolean) -> Unit,
     onLocalSubmit: (Uri) -> Unit
 ) {
     var currentStep by rememberSaveable { mutableIntStateOf(0) }
@@ -38,6 +38,7 @@ fun ImportPatchBundleDialog(
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(false) }
+    var searchUpdate by rememberSaveable { mutableStateOf(false) }
 
     val patchActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -60,9 +61,11 @@ fun ImportPatchBundleDialog(
                 patchBundle,
                 remoteUrl,
                 autoUpdate,
+                searchUpdate,
                 { launchPatchActivity() },
                 { remoteUrl = it },
-                { autoUpdate = it }
+                { autoUpdate = it },
+                { searchUpdate = it }
             )
         }
     )
@@ -89,7 +92,7 @@ fun ImportPatchBundleDialog(
                     onClick = {
                         when (bundleType) {
                             BundleType.Local -> patchBundle?.let(onLocalSubmit)
-                            BundleType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
+                            BundleType.Remote -> onRemoteSubmit(remoteUrl, searchUpdate, autoUpdate)
                         }
                     }
                 ) {
@@ -173,9 +176,11 @@ fun ImportBundleStep(
     patchBundle: Uri?,
     remoteUrl: String,
     autoUpdate: Boolean,
+    searchUpdate: Boolean,
     launchPatchActivity: () -> Unit,
     onRemoteUrlChange: (String) -> Unit,
-    onAutoUpdateChange: (Boolean) -> Unit
+    onAutoUpdateChange: (Boolean) -> Unit,
+    onSearchUpdateChange: (Boolean) -> Unit,
 ) {
     Column {
         when (bundleType) {
@@ -224,6 +229,24 @@ fun ImportBundleStep(
                                     checked = autoUpdate,
                                     onCheckedChange = {
                                         onAutoUpdateChange(!autoUpdate)
+                                    }
+                                )
+                            }
+                        },
+                        colors = transparentListItemColors
+                    )
+                    ListItem(
+                        modifier = Modifier.clickable(
+                            role = Role.Checkbox,
+                            onClick = { onSearchUpdateChange(!searchUpdate) }
+                        ),
+                        headlineContent = { Text(stringResource(R.string.auto_update)) },
+                        leadingContent = {
+                            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+                                HapticCheckbox(
+                                    checked = searchUpdate,
+                                    onCheckedChange = {
+                                        onSearchUpdateChange(!searchUpdate)
                                     }
                                 )
                             }

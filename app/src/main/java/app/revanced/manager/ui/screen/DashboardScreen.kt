@@ -58,7 +58,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
-import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
@@ -69,6 +68,7 @@ import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.util.permission.PermissionRequestHandler
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -120,9 +120,9 @@ fun DashboardScreen(
                 showAddBundleDialog = false
                 vm.createLocalSource(patches)
             },
-            onRemoteSubmit = { url, autoUpdate ->
+            onRemoteSubmit = { url, searchUpdate, autoUpdate ->
                 showAddBundleDialog = false
-                vm.createRemoteSource(url, autoUpdate)
+                vm.createRemoteSource(url, searchUpdate, autoUpdate)
             }
         )
     }
@@ -142,19 +142,19 @@ fun DashboardScreen(
     }
 
     var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
-    val installAppsPermissionLauncher =
-        rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
-            showAndroid11Dialog = false
-            if (granted) onAppSelectorClick()
-        }
-    if (showAndroid11Dialog) Android11Dialog(
-        onDismissRequest = {
-            showAndroid11Dialog = false
-        },
-        onContinue = {
-            installAppsPermissionLauncher.launch(androidContext.packageName)
-        }
-    )
+
+    if(showAndroid11Dialog)
+        PermissionRequestHandler(
+            contract = RequestInstallAppsContract,
+            input = androidContext.packageName,
+            title = stringResource(R.string.android_11_bug_dialog_title),
+            description = stringResource(R.string.android_11_bug_dialog_description),
+            icon = Icons.Outlined.BugReport,
+            onDismissRequest = { showAndroid11Dialog = false },
+            onResult = { granted ->
+                if (granted) onAppSelectorClick()
+            }
+        )
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {
@@ -355,6 +355,9 @@ fun DashboardScreen(
                                 onDelete = {
                                     vm.delete(it)
                                 },
+                                onSearchUpdate = {
+                                    vm.searchUpdate(it)
+                                },
                                 onUpdate = {
                                     vm.update(it)
                                 },
@@ -386,25 +389,4 @@ fun Notifications(
             }
         }
     }
-}
-
-@Composable
-fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
-    AlertDialogExtended(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onContinue) {
-                Text(stringResource(R.string.continue_))
-            }
-        },
-        title = {
-            Text(stringResource(R.string.android_11_bug_dialog_title))
-        },
-        icon = {
-            Icon(Icons.Outlined.BugReport, null)
-        },
-        text = {
-            Text(stringResource(R.string.android_11_bug_dialog_description))
-        }
-    )
 }

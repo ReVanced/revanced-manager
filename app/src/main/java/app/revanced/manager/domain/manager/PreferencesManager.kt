@@ -1,9 +1,18 @@
 package app.revanced.manager.domain.manager
 
 import android.content.Context
+import app.revanced.manager.R
 import app.revanced.manager.domain.manager.base.BasePreferencesManager
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.isDebuggable
+
+
+enum class SearchForUpdatesBackgroundInterval(val displayName: Int, val value: Long) {
+    NEVER(R.string.never, 0),
+    MIN15(R.string.minutes_15, 15),
+    HOUR(R.string.hourly, 60),
+    DAY(R.string.daily, 60 * 24)
+}
 
 class PreferencesManager(
     context: Context
@@ -22,6 +31,7 @@ class PreferencesManager(
     val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
     val showManagerUpdateDialogOnLaunch = booleanPreference("show_manager_update_dialog_on_launch", true)
+    val searchForUpdatesBackgroundInterval = enumPreference("background_bundle_update_time", SearchForUpdatesBackgroundInterval.NEVER)
 
     val disablePatchVersionCompatCheck = booleanPreference("disable_patch_version_compatibility_check", false)
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
