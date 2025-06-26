@@ -37,10 +37,11 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: 3.29.x
           cache: true
 
       - name: Cache Gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v3
         with:
           build-root-directory: ${{ github.workspace }}/android
 

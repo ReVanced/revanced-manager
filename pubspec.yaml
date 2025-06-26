@@ -7,8 +7,8 @@ publish_to: 'none'
 version: 1.25.0-dev.1+101800061
 
 environment:
-  sdk: '>=3.8.0'
-  flutter: '>=3.32.0'
+  sdk: '>=3.7.0'
+  flutter: '>=3.29.3 <=3.32.0' # Do NOT use 3.32.0, sees https://github.com/flutter/flutter/issues/169215
 
 dependencies:
   animations: ^2.0.11
@@ -38,7 +38,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   google_fonts: ^6.2.1
   injectable: ^2.4.0
-  intl: ^0.20.2
+  intl: ^0.19.0
   json_annotation: ^4.9.0
   language_code: ^0.5.5
   logcat:
@@ -78,9 +78,9 @@ dependencies:
   wakelock_plus: ^1.2.10
 
 dev_dependencies:
-  analyzer: ^6.3.0
+  analyzer: ^6.3.0 
   build_runner: ^2.4.15
-  flutter_lints: ^6.0.0
+  flutter_lints: ^5.0.0
   injectable_generator: ^2.6.1
   json_serializable: ^6.9.0
 
