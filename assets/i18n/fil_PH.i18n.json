@@ -60,7 +60,7 @@
     "requiredOptionDialogText": "Kailangan mo i-set ang ilang mga opsyon para sa patch."
   },
   "appSelectorCard": {
-    "widgetTitle": "Pumili ka ng app",
+    "widgetTitle": "Pumili ka ng apps",
     "widgetTitleSelected": "Piniling app",
     "widgetSubtitle": "Walang app na pinili",
     "noAppsLabel": "Walang nakitang aplikasyon",
@@ -180,6 +180,7 @@
     "disablePatchesSelectionWarningText": "Ikaw ay malapit nang magdisable sa pagpalit ng mga pinili na patches.\nDahil dyan, ang karaniwang pagpili ng mga patch ay maibalik.\n\nI-disable pa rin?",
     "autoUpdatePatchesLabel": "Auto update patches",
     "autoUpdatePatchesHint": "Awtomatikong i-update ang mga patch sa pinakabagong bersyon",
+    "usePrereleasesLabel": "Gumamit ng mga pre-release",
     "showUpdateDialogLabel": "Ipakita ang dialog ng update",
     "showUpdateDialogHint": "Ipakita ang isang dialog kapag magagamit ang isang bagong update",
     "universalPatchesLabel": "Ipakita ang mga pangkalahatang patch",

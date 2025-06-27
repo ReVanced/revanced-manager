@@ -180,6 +180,7 @@
     "disablePatchesSelectionWarningText": "Jūs gatavojaties atspējot labojumu izvēles maiņu.\nTiksies atjaunota labojumu noklusējuma izvēle.\n\nTomēr atspējot?",
     "autoUpdatePatchesLabel": "Automātiski atjaunināt ielāpus",
     "autoUpdatePatchesHint": "Automātiski atjaunināt ielāpus uz jaunāko versiju",
+    "usePrereleasesLabel": "Lietot pirmizlaidumus",
     "showUpdateDialogLabel": "Rādīt atjauninājuma dialoglodziņu",
     "showUpdateDialogHint": "Rādīt dialoglodziņu, kad ir pieejams jauns atjauninājums",
     "universalPatchesLabel": "Rādīt universālos ielāpus",

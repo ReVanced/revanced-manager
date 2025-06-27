@@ -46,8 +46,6 @@
   "appSelectorCard": {
     "widgetTitle": "Қолданбаны таңдаңыз"
   },
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
   "appSelectorView": {
     "viewTitle": "Қолданбаны таңдаңыз"
   },
@@ -58,7 +56,6 @@
   "patchOptionsView": {
     "selectFolder": "Буманы таңдаңыз"
   },
-  "patchItem": {},
   "installerView": {
     "installButton": "Орнату",
     "installNonRootType": "Қалыпты"
@@ -77,6 +74,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Үлес қосушылар"
-  },
-  "installErrorDialog": {}
+  }
 }

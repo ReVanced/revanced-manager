@@ -180,6 +180,7 @@
     "disablePatchesSelectionWarningText": "คุณกำลังจะปิดใช้งานการเปลี่ยนการเลือกการแก้ไข\nการเลือกการแก้ไขเริ่มต้นจะถูกคืนค่า\n\nปิดใช้งานอยู่ดี?",
     "autoUpdatePatchesLabel": "อัปเดตการแก้ไขโดยอัตโนมัติ",
     "autoUpdatePatchesHint": "อัปเดตการแก้ไขเป็นเวอร์ชันล่าสุดโดยอัตโนมัติ",
+    "usePrereleasesLabel": "ใช้รุ่นก่อนเผยแพร่",
     "showUpdateDialogLabel": "แสดงกล่องโต้ตอบการอัปเดต",
     "showUpdateDialogHint": "แสดงกล่องโต้ตอบเมื่อมีการอัปเดตใหม่",
     "universalPatchesLabel": "แสดงการแก้ไขแบบสากล",

@@ -1,18 +1,41 @@
 {
+  "okButton": "OK",
   "cancelButton": "Batal",
+  "dismissButton": "Melepaskan",
+  "quitButton": "Henti",
   "updateButton": "Kemas kini",
+  "suggested": "Versi dicadangkan: ${version}",
   "yesButton": "Ya",
   "noButton": "Tidak",
   "warning": "Amaran",
+  "notice": "Notis",
+  "noShowAgain": "Jangan tunjukkan lagi",
+  "add": "Tambah",
+  "remove": "Buang",
+  "showChangelogButton": "Tunjuk log perubahan",
+  "showUpdateButton": "Tunjuk kemas kini",
   "navigationView": {
     "dashboardTab": "Papan Pemuka",
     "patcherTab": "Pemodifikasi",
     "settingsTab": "Tetapan"
   },
   "homeView": {
+    "refreshSuccess": "Muat semula berjaya",
     "widgetTitle": "Papan Pemuka",
     "updatesSubtitle": "Kemas Kini",
+    "lastPatchedAppSubtitle": "Aplikasi tampalan terakhir",
+    "patchedSubtitle": "Apl yang telah di pasang",
+    "changeLaterSubtitle": "Anda boleh menukar tetapan pada waktu lain",
+    "noSavedAppFound": "Tiada aplikasi di jumpai",
+    "noInstallations": "Tiada aplikasi tampalan telah di pasang",
+    "installUpdate": "Teruskan untuk pasang kemaskini? ",
+    "updateSheetTitle": "Kemaskini ReVanced Manager",
+    "updateDialogTitle": "Kemas kini baharu tersedia",
+    "updatePatchesSheetTitle": "Kemaskini ReVanced Patches",
     "updateChangelogTitle": "Log perubahan",
+    "updateDialogText": "Kemas kini baharu tersedia untuk ${file}\n\nVersi yang terpasang adalah ${version}",
+    "downloadConsentDialogTitle": "Muat turun fail yang diperlukan?",
+    "downloadConsentDialogText": "ReVanced Manager perlu memuat turun fail penting untuk berfungsi dengan baik.",
     "downloadingMessage": "Memuat turun pengemaskinian...",
     "downloadedMessage": "Kemaskini dimuat turun",
     "installingMessage": "Memasang pengemaskinian...",
@@ -54,7 +77,6 @@
     "noneChip": "Tiada",
     "noPatchesFound": "Tiada modifikasi dijumpai untuk apl pilihan"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "Memilih modifikasi mungkin menyebabkan ralat ketika modifikasi.\n\nVersi aplikasi: ${packageVersion}\nVersi disokong:\n${supportedVersions}"
   },
@@ -104,6 +126,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Penyumbang"
-  },
-  "installErrorDialog": {}
+  }
 }

@@ -15,15 +15,22 @@ jobs:
   sync:
     name: Sync
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: dev
           fetch-depth: 0
+          clean: true
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          channel: stable
+          flutter-version: 3.29.x
           cache: true
 
       - name: Sync translations from Crowdin
@@ -34,15 +41,14 @@ jobs:
           upload_translations: false
           download_translations: true
           localization_branch_name: feat/translations
+          skip_ref_checkout: true
           create_pull_request: true
           pull_request_title: "chore: Sync translations"
           pull_request_body: "Sync translations from [crowdin.com/project/revanced](https://crowdin.com/project/revanced)"
           pull_request_base_branch_name: "dev"
           commit_message: "chore: Sync translations"
-          github_user_name: revanced-bot
-          github_user_email: github@revanced.app
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
@@ -69,8 +75,8 @@ jobs:
 
       - name: Commit translations
         run: |
-          git config user.name revanced-bot
-          git config user.email github@revanced.app
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           sudo chown -R $USER:$USER .git
           git commit -m "chore: Remove empty values from JSON" assets/i18n/*.i18n.json
           git push origin HEAD:feat/translations

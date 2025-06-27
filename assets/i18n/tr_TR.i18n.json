@@ -77,7 +77,7 @@
     "widgetSubtitle": "Sosyal medyadayız!"
   },
   "appSelectorView": {
-    "viewTitle": "Bir uygulama seç",
+    "viewTitle": "Bir uygulama seçin",
     "searchBarHint": "Uygulama ara",
     "storageButton": "Depolama",
     "selectFromStorageButton": "Depolama alanından seçin",
@@ -180,6 +180,9 @@
     "disablePatchesSelectionWarningText": "Yama seçimini değiştirmeyi devre dışı bırakmak üzeresiniz.\nVarsayılan yama seçimi geri yüklenecektir.\n\nYine de devre dışı bırakılsın mı?",
     "autoUpdatePatchesLabel": "Yamaları otomatik güncelle",
     "autoUpdatePatchesHint": "Yamaları otomatik olarak en son sürüme güncelle",
+    "usePrereleasesLabel": "Ön sürümleri kullan",
+    "usePrereleasesHint": "ReVanced Manager ve ReVanced Yamaları'nın ön sürüm versiyonlarını kullan",
+    "usePrereleasesWarningText": "Ön sürüm versiyonlarını kullanmak beklenmedik sorunlara neden olabilir.\n\nYine de etkinleştirmek istiyor musunuz?",
     "showUpdateDialogLabel": "Güncelleme penceresini göster",
     "showUpdateDialogHint": "Yeni bir güncelleme mevcut olduğunda bir pencere göster",
     "universalPatchesLabel": "Ortak yamaları göster",
