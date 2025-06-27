@@ -180,7 +180,6 @@
     "disablePatchesSelectionWarningText": "Te olete peaaegu keelamas paranduste valiku muutmise.\nParanduste vaikimisi valik taastatakse.\n\nKas keelate ikkagi?",
     "autoUpdatePatchesLabel": "Automaatne paranduste uuendamine",
     "autoUpdatePatchesHint": "Uuenda parandused automaatselt uusimasse versiooni",
-    "usePrereleasesLabel": "Kasuta eelväljalaskeid",
     "showUpdateDialogLabel": "Näita uuenduse dialoogi",
     "showUpdateDialogHint": "Näita dialoogi, kui on saadaval uus uuendus",
     "universalPatchesLabel": "Näita universaalseid parandusi",
