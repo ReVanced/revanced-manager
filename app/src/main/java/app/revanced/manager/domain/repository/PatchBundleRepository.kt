@@ -1,6 +1,8 @@
 package app.revanced.manager.domain.repository
 
 import android.app.Application
+import android.app.Notification
+import android.app.NotificationManager
 import android.content.Context
 import android.util.Log
 import app.revanced.library.mostCommonCompatibleVersions
@@ -9,13 +11,13 @@ import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.domain.bundles.APIPatchBundle
 import app.revanced.manager.domain.bundles.JsonPatchBundle
-import app.revanced.manager.data.room.bundles.Source as SourceInfo
 import app.revanced.manager.domain.bundles.LocalPatchBundle
-import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.flatMapLatestAndCombine
+import app.revanced.manager.util.permission.hasNotificationPermission
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +29,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStream
+import app.revanced.manager.data.room.bundles.Source as SourceInfo
 
 class PatchBundleRepository(
     private val app: Application,
@@ -145,8 +148,8 @@ class PatchBundleRepository(
         addBundle(bundle)
     }
 
-    suspend fun createRemote(url: String, autoUpdate: Boolean) = withContext(Dispatchers.Default) {
-        val entity = persistenceRepo.create("", SourceInfo.from(url), autoUpdate)
+    suspend fun createRemote(url: String, searchUpdate: Boolean, autoUpdate: Boolean) = withContext(Dispatchers.Default) {
+        val entity = persistenceRepo.create("", SourceInfo.from(url), searchUpdate, autoUpdate)
         addBundle(entity.load())
     }
 
@@ -181,4 +184,23 @@ class PatchBundleRepository(
                 }
             }
         }
+
+    suspend fun fetchUpdatesAndNotify(context: Context, notificationBlock: (bundleName: String, bundleVersion: String) -> Pair<Notification, NotificationManager>) {
+        coroutineScope {
+            getBundlesByType<RemotePatchBundle>().forEach { bundle ->
+                Log.d(tag, "Running fetchUpdatesAndNotify for bundle: ${bundle.getName()}")
+                if (!bundle.getProps().searchUpdate || !context.hasNotificationPermission())
+                    return@forEach
+
+                var fetchResponse = bundle.fetchLatestRemoteInfo()
+                if (
+                    !fetchResponse.isNewLatestVersion|| // Already notified
+                    fetchResponse.isLatestInstalled // Latest is already installed
+                    )
+                    return@forEach
+
+                notificationBlock(bundle.getName(), fetchResponse.response.version)
+            }
+        }
+    }
 }

@@ -84,9 +84,17 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
     fun propsFlow() = configRepository.getProps(uid).flowOn(Dispatchers.Default)
     suspend fun getProps() = propsFlow().first()!!
 
-    suspend fun currentVersion() = getProps().version
-    protected suspend fun saveVersion(version: String?) =
+    fun installedPropsFlow() = configRepository.getInstalledProps(uid).flowOn(Dispatchers.Default)
+    suspend fun getInstalledProps() = installedPropsFlow().first()!!
+
+    fun latestPropsFlow() = configRepository.getLatestProps(uid).flowOn(Dispatchers.Default)
+    suspend fun getLatestProps() = latestPropsFlow().first()!!
+
+    protected suspend fun updateVersion(version: String?) =
         configRepository.updateVersion(uid, version)
+
+    protected suspend fun updateInstallationProps(changelog: String, createdAt: String) =
+        configRepository.updateInstallationProps(uid, changelog, createdAt)
 
     suspend fun setName(name: String) {
         configRepository.setName(uid, name)

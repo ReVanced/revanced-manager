@@ -10,11 +10,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.inject
 import java.io.File
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+
+
+class RemotePatchBundleFetchResponse(
+    val response: ReVancedAsset,
+    oldVersion: String?,
+    oldLatestVersion: String?
+) {
+    val isNewLatestVersion = response.version != oldLatestVersion
+
+    val isLatestInstalled = response.version == oldVersion
+}
 
 @Stable
 sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpoint: String) :
     PatchBundleSource(name, id, directory) {
     protected val http: HttpService by inject()
+
+    fun canUpdateVersionFlow(): Flow<Boolean> =
+        combine(propsFlow(), latestPropsFlow()) { current, latest ->
+            current?.version != latest?.latestVersion
+        }
+
+    suspend fun canUpdateVersion() = canUpdateVersionFlow().first()
 
     protected abstract suspend fun getLatestInfo(): ReVancedAsset
 
@@ -25,7 +46,8 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
             }
         }
 
-        saveVersion(info.version)
+        updateVersion(info.version)
+        updateInstallationProps(info.description, info.createdAt.toString())
         reload()
     }
 
@@ -33,12 +55,25 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
         download(getLatestInfo())
     }
 
+    suspend fun fetchLatestRemoteInfo(): RemotePatchBundleFetchResponse = withContext(Dispatchers.Default) {
+        getLatestInfo().let {
+            val result = RemotePatchBundleFetchResponse(it, getProps().version, getLatestProps().latestVersion)
+            configRepository.updateLatestRemoteInfo(
+                uid,
+                it.version,
+                it.description,
+                it.createdAt.toString()
+            )
+            result
+        }
+    }
+
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
-        val info = getLatestInfo()
-        if (hasInstalled() && info.version == currentVersion())
+        val fetchedInfo = fetchLatestRemoteInfo()
+        if (!canUpdateVersion())
             return@withContext false
 
-        download(info)
+        download(fetchedInfo.response)
         true
     }
 
@@ -48,6 +83,8 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     }
 
     suspend fun setAutoUpdate(value: Boolean) = configRepository.setAutoUpdate(uid, value)
+
+    suspend fun setSearchUpdate(value: Boolean) = configRepository.setSearchUpdate(uid, value)
 
     companion object {
         const val updateFailMsg = "Failed to update patch bundle(s)"

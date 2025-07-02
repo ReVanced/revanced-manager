@@ -2,16 +2,26 @@ package app.revanced.manager.ui.component.bundle
 
 import android.webkit.URLUtil
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.Sell
-import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -20,10 +30,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.manager.SearchForUpdatesBackgroundInterval
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
+import org.koin.compose.koinInject
 
 @Composable
 fun BaseBundleDialog(
@@ -36,9 +50,16 @@ fun BaseBundleDialog(
     version: String?,
     autoUpdate: Boolean,
     onAutoUpdateChange: (Boolean) -> Unit,
+    searchUpdate: Boolean,
+    onSearchUpdateChange: (Boolean) -> Unit,
     onPatchesClick: () -> Unit,
-    extraFields: @Composable ColumnScope.() -> Unit = {}
+    extraFields: @Composable ColumnScope.() -> Unit = {},
+    prefs: PreferencesManager = koinInject()
 ) {
+    val searchUpdatesScheduledJobInterval by remember {
+        prefs.searchForUpdatesBackgroundInterval.flow
+    }.collectAsStateWithLifecycle(null)
+
     ColumnWithScrollbar(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,7 +106,33 @@ fun BaseBundleDialog(
             color = MaterialTheme.colorScheme.outlineVariant
         )
 
-        if (remoteUrl != null) {
+        if (
+            remoteUrl != null &&
+            searchUpdatesScheduledJobInterval != null
+        ) {
+            BundleListItem(
+                headlineText = stringResource(R.string.bundle_search_update),
+                supportingText = stringResource(R.string.bundle_search_update_description),
+                //TODO imrpove description if it's off
+                trailingContent = {
+                    if (searchUpdatesScheduledJobInterval != SearchForUpdatesBackgroundInterval.NEVER) {
+                        HapticSwitch(
+                            checked = searchUpdate,
+                            onCheckedChange = onSearchUpdateChange
+                        )
+                    } else {
+                        HapticSwitch(
+                            checked = false,
+                            onCheckedChange = onSearchUpdateChange,
+                            enabled = false
+                        )
+                    }
+                },
+                modifier = Modifier.clickable {
+                    onSearchUpdateChange(!searchUpdate)
+                }
+            )
+
             BundleListItem(
                 headlineText = stringResource(R.string.bundle_auto_update),
                 supportingText = stringResource(R.string.bundle_auto_update_description),

@@ -5,6 +5,7 @@ import android.content.ContentResolver
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -70,10 +71,6 @@ class DashboardViewModel(
         downloaderPluginRepository.acknowledgeAllNewPlugins()
     }
 
-    fun dismissUpdateDialog() {
-        updatedManagerVersion = null
-    }
-
     private suspend fun checkForManagerUpdates() {
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
@@ -124,8 +121,8 @@ class DashboardViewModel(
             }
         }
 
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) =
-        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, autoUpdate) }
+    fun createRemoteSource(apiUrl: String, searchUpdate: Boolean, autoUpdate: Boolean) =
+        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, searchUpdate, autoUpdate) }
 
     fun delete(bundle: PatchBundleSource) =
         viewModelScope.launch { patchBundleRepository.remove(bundle) }
@@ -139,6 +136,21 @@ class DashboardViewModel(
             RemotePatchBundle.updateFailMsg
         ) {
             if (bundle.update())
+                app.toast(app.getString(R.string.bundle_update_success, bundle.getName()))
+            else
+                app.toast(app.getString(R.string.bundle_update_unavailable, bundle.getName()))
+        }
+    }
+
+    fun searchUpdate(bundle: PatchBundleSource) = viewModelScope.launch {
+        if (bundle !is RemotePatchBundle) return@launch
+
+        uiSafe(
+            app,
+            R.string.source_download_fail,//TODO
+            RemotePatchBundle.updateFailMsg
+        ) {
+            if (bundle.canUpdateVersion())
                 app.toast(app.getString(R.string.bundle_update_success, bundle.getName()))
             else
                 app.toast(app.getString(R.string.bundle_update_unavailable, bundle.getName()))

@@ -34,6 +34,8 @@
     <string name="bundle_not_downloaded">Bundle has not been downloaded. Click here to download it</string>
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
+    <string name="bundle_update_available">Bundle update available</string>
+    <string name="bundle_update_description_available">A new version %s for the bundle %s was just released</string>
 
     <string name="android_11_bug_dialog_title">Android 11 bug</string>
     <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
@@ -196,6 +198,15 @@
     <string name="process_runtime_description">This is faster and allows Patcher to use more memory.</string>
     <string name="process_runtime_memory_limit">Patcher process memory limit</string>
     <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use (in megabytes)</string>
+    <string name="background_bundle_update">Enable bundles auto update in background</string>
+    <string name="background_bundle_update_description">Automatically checks for bundles updates and update them in the background</string>
+    <string name="background_radio_menu_title">Check for bundles updates</string>
+    <string name="background_bundle_ask_notification">Stay updated</string>
+    <string name="background_bundle_ask_notification_description">ReVanced will send you a notification when a bundle was updated. Press "OK" if you wish to be notified.</string>
+    <string name="never">Never</string>
+    <string name="minutes_15">Every 15 minutes</string>
+    <string name="hourly">Hourly</string>
+    <string name="daily">Daily</string>
     <string name="debug_logs_export">Export debug logs</string>
     <string name="debug_logs_export_read_failed">Failed to read logs (exit code %d)</string>
     <string name="debug_logs_export_failed">Failed to export logs</string>
@@ -350,6 +361,8 @@
     <string name="bundle_input_source_url">Source URL</string>
     <string name="bundle_update_success">Successfully updated %s</string>
     <string name="bundle_update_unavailable">No update available for %s</string>
+    <string name="bundle_search_update">Search for update</string>
+    <string name="bundle_search_update_description">Search for updates in background and send a notification when an update is available</string>
     <string name="bundle_auto_update">Auto update</string>
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_view_patches">View patches</string>

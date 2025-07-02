@@ -22,7 +22,7 @@ import kotlin.random.Random
 
 @Database(
     entities = [PatchBundleEntity::class, PatchSelection::class, SelectedPatch::class, DownloadedApp::class, InstalledApp::class, AppliedPatch::class, OptionGroup::class, Option::class, TrustedDownloaderPlugin::class],
-    version = 1
+    version = 2
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
