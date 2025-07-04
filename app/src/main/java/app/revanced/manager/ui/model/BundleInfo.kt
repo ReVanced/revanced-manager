@@ -79,7 +79,7 @@ data class BundleInfo(
                         targetList.add(it)
                     }
 
-                    BundleInfo(source.getName(), source.currentVersion(), source.uid, compatible, incompatible, universal)
+                    BundleInfo(source.getName(), bundle.readManifestAttribute("Version"), source.uid, compatible, incompatible, universal)
                 }
             }
 

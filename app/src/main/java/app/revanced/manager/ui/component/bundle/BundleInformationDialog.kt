@@ -42,9 +42,8 @@ fun BundleInformationDialog(
     val props by remember(bundle) {
         bundle.propsFlow()
     }.collectAsStateWithLifecycle(null)
-    val patchCount = remember(state) {
-        state.patchBundleOrNull()?.patches?.size ?: 0
-    }
+    val patchCount by bundle.patchCountFlow.collectAsStateWithLifecycle(0)
+    val version by bundle.versionFlow.collectAsStateWithLifecycle(null)
 
     if (viewCurrentBundlePatches) {
         BundlePatchesDialog(
@@ -98,8 +97,8 @@ fun BundleInformationDialog(
                 name = bundleName,
                 remoteUrl = bundle.asRemoteOrNull?.endpoint,
                 patchCount = patchCount,
-                version = props?.version,
-                autoUpdate = props?.autoUpdate ?: false,
+                version = version,
+                autoUpdate = props?.autoUpdate == true,
                 onAutoUpdateChange = {
                     composableScope.launch {
                         bundle.asRemoteOrNull?.setAutoUpdate(it)

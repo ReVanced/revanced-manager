@@ -57,9 +57,7 @@ fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSourc
             }
             bundles.forEach {
                 val name by it.nameState
-                val version by remember(it) {
-                    it.propsFlow().map { props -> props?.version }
-                }.collectAsStateWithLifecycle(null)
+                val version by it.versionFlow.collectAsStateWithLifecycle(null)
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
