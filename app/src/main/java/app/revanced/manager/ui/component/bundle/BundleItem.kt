@@ -47,9 +47,8 @@ fun BundleItem(
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
-    val version by remember(bundle) {
-        bundle.propsFlow().map { props -> props?.version }
-    }.collectAsStateWithLifecycle(null)
+    val version by bundle.versionFlow.collectAsStateWithLifecycle(null)
+    val patchCount by bundle.patchCountFlow.collectAsStateWithLifecycle(0)
     val name by bundle.nameState
 
     if (viewBundleDialogPage) {
@@ -93,7 +92,7 @@ fun BundleItem(
 
         headlineContent = { Text(name) },
         supportingContent = {
-            state.patchBundleOrNull()?.patches?.size?.let { patchCount ->
+            if (state is PatchBundleSource.State.Loaded) {
                 Text(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
             }
         },

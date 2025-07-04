@@ -25,7 +25,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
             }
         }
 
-        saveVersion(info.version)
+        saveVersionHash(info.version)
         reload()
     }
 
@@ -35,7 +35,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
 
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
         val info = getLatestInfo()
-        if (hasInstalled() && info.version == currentVersion())
+        if (hasInstalled() && info.version == currentVersionHash())
             return@withContext false
 
         download(info)
