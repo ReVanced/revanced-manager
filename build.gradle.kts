@@ -7,4 +7,12 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.about.libraries) apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.spotless)
+}
+
+spotless {
+    kotlin {
+        target("app/src/*/java/**/*.kt", "api/src/*/kotlin/**/*.kt")
+        ktfmt().googleStyle()
+    }
 }
