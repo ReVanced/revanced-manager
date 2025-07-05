@@ -69,8 +69,13 @@ fun AppTopBar(
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
-                    backIcon()
+                TooltipWrap(
+                    modifier = Modifier,
+                    tooltip = stringResource(R.string.back),
+                ) {
+                    IconButton(onClick = onBackClick) {
+                        backIcon()
+                    }
                 }
             }
         },
@@ -108,8 +113,13 @@ fun AppTopBar(
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
-                    backIcon()
+                TooltipWrap(
+                    modifier = Modifier,
+                    tooltip = stringResource(R.string.back),
+                ) {
+                    IconButton(onClick = onBackClick) {
+                        backIcon()
+                    }
                 }
             }
         },

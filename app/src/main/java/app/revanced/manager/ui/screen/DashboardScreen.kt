@@ -62,8 +62,9 @@ import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
@@ -183,26 +184,36 @@ fun DashboardScreen(
                         )
                     },
                     actions = {
-                        IconButton(
-                            onClick = {
-                                showDeleteConfirmationDialog = true
-                            }
+                        TooltipWrap(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.delete),
                         ) {
-                            Icon(
-                                Icons.Outlined.DeleteOutline,
-                                stringResource(R.string.delete)
-                            )
+                            IconButton(
+                                onClick = {
+                                    showDeleteConfirmationDialog = true
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.DeleteOutline,
+                                    stringResource(R.string.delete)
+                                )
+                            }
                         }
-                        IconButton(
-                            onClick = {
-                                vm.selectedSources.forEach { vm.update(it) }
-                                vm.cancelSourceSelection()
-                            }
+                        TooltipWrap(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.refresh),
                         ) {
-                            Icon(
-                                Icons.Outlined.Refresh,
-                                stringResource(R.string.refresh)
-                            )
+                            IconButton(
+                                onClick = {
+                                    vm.selectedSources.forEach { vm.update(it) }
+                                    vm.cancelSourceSelection()
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.Refresh,
+                                    stringResource(R.string.refresh)
+                                )
+                            }
                         }
                     }
                 )
@@ -211,20 +222,30 @@ fun DashboardScreen(
                     title = stringResource(R.string.app_name),
                     actions = {
                         if (!vm.updatedManagerVersion.isNullOrEmpty()) {
-                            IconButton(
-                                onClick = onUpdateClick,
+                            TooltipWrap(
+                                modifier = Modifier,
+                                tooltip = stringResource(R.string.update),
                             ) {
-                                BadgedBox(
-                                    badge = {
-                                        Badge(modifier = Modifier.size(6.dp))
-                                    }
+                                IconButton(
+                                    onClick = onUpdateClick,
                                 ) {
-                                    Icon(Icons.Outlined.Update, stringResource(R.string.update))
+                                    BadgedBox(
+                                        badge = {
+                                            Badge(modifier = Modifier.size(6.dp))
+                                        }
+                                    ) {
+                                        Icon(Icons.Outlined.Update, stringResource(R.string.update))
+                                    }
                                 }
                             }
                         }
-                        IconButton(onClick = onSettingsClick) {
-                            Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                        TooltipWrap(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.settings),
+                        ) {
+                            IconButton(onClick = onSettingsClick) {
+                                Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                            }
                         }
                     },
                     applyContainerColor = true
@@ -232,35 +253,40 @@ fun DashboardScreen(
             }
         },
         floatingActionButton = {
-            HapticFloatingActionButton(
-                onClick = {
-                    vm.cancelSourceSelection()
+            TooltipWrap(
+                modifier = Modifier,
+                tooltip = stringResource(R.string.add),
+            ) {
+                HapticFloatingActionButton(
+                    onClick = {
+                        vm.cancelSourceSelection()
 
-                    when (pagerState.currentPage) {
-                        DashboardPage.DASHBOARD.ordinal -> {
-                            if (availablePatches < 1) {
-                                androidContext.toast(androidContext.getString(R.string.patches_unavailable))
-                                composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        DashboardPage.BUNDLES.ordinal
-                                    )
+                        when (pagerState.currentPage) {
+                            DashboardPage.DASHBOARD.ordinal -> {
+                                if (availablePatches < 1) {
+                                    androidContext.toast(androidContext.getString(R.string.patches_unavailable))
+                                    composableScope.launch {
+                                        pagerState.animateScrollToPage(
+                                            DashboardPage.BUNDLES.ordinal
+                                        )
+                                    }
+                                    return@HapticFloatingActionButton
                                 }
-                                return@HapticFloatingActionButton
-                            }
-                            if (vm.android11BugActive) {
-                                showAndroid11Dialog = true
-                                return@HapticFloatingActionButton
+                                if (vm.android11BugActive) {
+                                    showAndroid11Dialog = true
+                                    return@HapticFloatingActionButton
+                                }
+
+                                onAppSelectorClick()
                             }
 
-                            onAppSelectorClick()
-                        }
-
-                        DashboardPage.BUNDLES.ordinal -> {
-                            showAddBundleDialog = true
+                            DashboardPage.BUNDLES.ordinal -> {
+                                showAddBundleDialog = true
+                            }
                         }
                     }
-                }
-            ) { Icon(Icons.Default.Add, stringResource(R.string.add)) }
+                ) { Icon(Icons.Default.Add, stringResource(R.string.add)) }
+            }
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {

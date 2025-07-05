@@ -48,6 +48,7 @@ import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.InstallerStatusDialog
+import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
@@ -164,17 +165,27 @@ fun PatcherScreen(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(
-                        onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
-                        enabled = patcherSucceeded == true
+                    TooltipWrap(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.save_apk),
                     ) {
-                        Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
+                        IconButton(
+                            onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
+                            enabled = patcherSucceeded == true
+                        ) {
+                            Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
+                        }
                     }
-                    IconButton(
-                        onClick = { viewModel.exportLogs(context) },
-                        enabled = patcherSucceeded != null
+                    TooltipWrap(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.save_logs),
                     ) {
-                        Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
+                        IconButton(
+                            onClick = { viewModel.exportLogs(context) },
+                            enabled = patcherSucceeded != null
+                        ) {
+                            Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
+                        }
                     }
                 },
                 floatingActionButton = {

@@ -48,6 +48,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
@@ -243,8 +244,13 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     onValueChange = { url = it },
                     label = { Text(stringResource(R.string.api_url)) },
                     trailingIcon = {
-                        IconButton(onClick = { url = defaultUrl }) {
-                            Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
+                        TooltipWrap(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.api_url_dialog_reset),
+                        ) {
+                            IconButton(onClick = { url = defaultUrl }) {
+                                Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
+                            }
                         }
                     }
                 )

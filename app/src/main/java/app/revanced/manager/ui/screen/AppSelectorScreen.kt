@@ -44,6 +44,7 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.component.SearchView
+import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
@@ -162,8 +163,13 @@ fun AppSelectorScreen(
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick,
                 actions = {
-                    IconButton(onClick = { search = true }) {
-                        Icon(Icons.Outlined.Search, stringResource(R.string.search))
+                    TooltipWrap(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.search_patches),
+                    ) {
+                        IconButton(onClick = { search = true }) {
+                            Icon(Icons.Outlined.Search, stringResource(R.string.search))
+                        }
                     }
                 }
             )

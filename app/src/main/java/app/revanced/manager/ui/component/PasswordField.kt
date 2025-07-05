@@ -33,13 +33,18 @@ fun PasswordField(modifier: Modifier = Modifier, value: String, onValueChange: (
         label = label,
         modifier = modifier,
         trailingIcon = {
-            IconButton(onClick = {
-                visible = !visible
-            }) {
-                val (icon, description) = remember(visible) {
-                    if (visible) Icons.Outlined.VisibilityOff to R.string.hide_password_field else Icons.Outlined.Visibility to R.string.show_password_field
+            TooltipWrap(
+                modifier = modifier,
+                tooltip = if (visible) stringResource(R.string.show_password_field) else stringResource(R.string.hide_password_field),
+            ) {
+                IconButton(onClick = {
+                    visible = !visible
+                }) {
+                    val (icon, description) = remember(visible) {
+                        if (visible) Icons.Outlined.VisibilityOff to R.string.hide_password_field else Icons.Outlined.Visibility to R.string.show_password_field
+                    }
+                    Icon(icon, stringResource(description))
                 }
-                Icon(icon, stringResource(description))
             }
         },
         keyboardOptions = KeyboardOptions(

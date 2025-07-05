@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.base.Preference
 import app.revanced.manager.ui.component.IntInputDialog
+import app.revanced.manager.ui.component.TooltipWrap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -65,11 +66,16 @@ fun IntegerItem(
         headlineContent = stringResource(headline),
         supportingContent = stringResource(description),
         trailingContent = {
-            IconButton(onClick = { dialogOpen = true }) {
-                Icon(
-                    Icons.Outlined.Edit,
-                    contentDescription = stringResource(R.string.edit)
-                )
+            TooltipWrap(
+                modifier = Modifier,
+                tooltip = stringResource(R.string.edit),
+            ) {
+                IconButton(onClick = { dialogOpen = true }) {
+                    Icon(
+                        Icons.Outlined.Edit,
+                        contentDescription = stringResource(R.string.edit)
+                    )
+                }
             }
         }
     )

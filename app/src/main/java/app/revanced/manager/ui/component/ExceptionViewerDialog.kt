@@ -39,25 +39,30 @@ fun ExceptionViewerDialog(text: String, onDismiss: () -> Unit) {
                         )
                     },
                     actions = {
-                        IconButton(
-                            onClick = {
-                                val sendIntent: Intent = Intent().apply {
-                                    action = Intent.ACTION_SEND
-                                    putExtra(
-                                        Intent.EXTRA_TEXT,
-                                        text
-                                    )
-                                    type = "text/plain"
-                                }
-
-                                val shareIntent = Intent.createChooser(sendIntent, null)
-                                context.startActivity(shareIntent)
-                            }
+                        TooltipWrap(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.share),
                         ) {
-                            Icon(
-                                Icons.Outlined.Share,
-                                contentDescription = stringResource(R.string.share)
-                            )
+                            IconButton(
+                                onClick = {
+                                    val sendIntent: Intent = Intent().apply {
+                                        action = Intent.ACTION_SEND
+                                        putExtra(
+                                            Intent.EXTRA_TEXT,
+                                            text
+                                        )
+                                        type = "text/plain"
+                                    }
+
+                                    val shareIntent = Intent.createChooser(sendIntent, null)
+                                    context.startActivity(shareIntent)
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.Share,
+                                    contentDescription = stringResource(R.string.share)
+                                )
+                            }
                         }
                     }
                 )

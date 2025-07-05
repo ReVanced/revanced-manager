@@ -189,6 +189,7 @@ fun ImportBundleStep(
                         },
                         supportingContent = { Text(stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set)) },
                         trailingContent = {
+                            // TODO: Determine if this button should be [TooltipWrap]'ped
                             IconButton(onClick = launchPatchActivity) {
                                 Icon(imageVector = Icons.Default.Topic, contentDescription = null)
                             }

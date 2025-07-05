@@ -22,6 +22,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefaul
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.FullscreenDialog
+import app.revanced.manager.ui.component.TooltipWrap
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -72,19 +73,29 @@ fun BundleInformationDialog(
                     },
                     actions = {
                         if (!bundle.isDefault) {
-                            IconButton(onClick = onDeleteRequest) {
-                                Icon(
-                                    Icons.Outlined.DeleteOutline,
-                                    stringResource(R.string.delete)
-                                )
+                            TooltipWrap(
+                                modifier = Modifier,
+                                tooltip = stringResource(R.string.delete),
+                            ) {
+                                IconButton(onClick = onDeleteRequest) {
+                                    Icon(
+                                        Icons.Outlined.DeleteOutline,
+                                        stringResource(R.string.delete)
+                                    )
+                                }
                             }
                         }
                         if (!isLocal && hasNetwork) {
-                            IconButton(onClick = onUpdate) {
-                                Icon(
-                                    Icons.Outlined.Update,
-                                    stringResource(R.string.refresh)
-                                )
+                            TooltipWrap(
+                                modifier = Modifier,
+                                tooltip = stringResource(R.string.refresh),
+                            ) {
+                                IconButton(onClick = onUpdate) {
+                                    Icon(
+                                        Icons.Outlined.Update,
+                                        stringResource(R.string.refresh)
+                                    )
+                                }
                             }
                         }
                     }

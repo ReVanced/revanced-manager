@@ -138,12 +138,17 @@ fun NotificationCard(
                 )
             }
             if (onDismiss != null) {
-                IconButton(onClick = onDismiss) {
-                    Icon(
-                        imageVector = Icons.Outlined.Close,
-                        contentDescription = stringResource(R.string.close),
-                        tint = color,
-                    )
+                TooltipWrap(
+                    modifier = modifier,
+                    tooltip = stringResource(R.string.close),
+                ) {
+                    IconButton(onClick = onDismiss) {
+                        Icon(
+                            imageVector = Icons.Outlined.Close,
+                            contentDescription = stringResource(R.string.close),
+                            tint = color,
+                        )
+                    }
                 }
             }
         }

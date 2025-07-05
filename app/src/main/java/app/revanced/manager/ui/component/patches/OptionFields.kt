@@ -65,6 +65,7 @@ import app.revanced.manager.ui.component.FloatInputDialog
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.IntInputDialog
 import app.revanced.manager.ui.component.LongInputDialog
+import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
@@ -74,13 +75,11 @@ import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyColumnState
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.io.Serializable
 import kotlin.random.Random
@@ -113,8 +112,13 @@ private interface OptionEditor<T : Any> {
 
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        IconButton(onClick = { clickAction(scope) }) {
-            Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
+        TooltipWrap(
+            modifier = Modifier,
+            tooltip = stringResource(R.string.edit),
+        ) {
+            IconButton(onClick = { clickAction(scope) }) {
+                Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
+            }
         }
     }
 
@@ -249,13 +253,18 @@ private object StringOptionEditor : OptionEditor<String> {
                     },
                     trailingIcon = {
                         var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
-                        IconButton(
-                            onClick = { showDropdownMenu = true }
+                        TooltipWrap(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.string_option_menu_description),
                         ) {
-                            Icon(
-                                Icons.Outlined.MoreVert,
-                                stringResource(R.string.string_option_menu_description)
-                            )
+                            IconButton(
+                                onClick = { showDropdownMenu = true }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.MoreVert,
+                                    stringResource(R.string.string_option_menu_description)
+                                )
+                            }
                         }
 
                         DropdownMenu(
@@ -551,32 +560,47 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                         },
                         actions = {
                             if (deleteMode) {
-                                IconButton(
-                                    onClick = {
-                                        if (items.size == deletionTargets.size) deletionTargets.clear()
-                                        else deletionTargets.addAll(items.map { it.key })
-                                    }
+                                TooltipWrap(
+                                    modifier = Modifier,
+                                    tooltip = stringResource(R.string.select_deselect_all),
                                 ) {
-                                    Icon(
-                                        Icons.Outlined.SelectAll,
-                                        stringResource(R.string.select_deselect_all)
-                                    )
+                                    IconButton(
+                                        onClick = {
+                                            if (items.size == deletionTargets.size) deletionTargets.clear()
+                                            else deletionTargets.addAll(items.map { it.key })
+                                        }
+                                    ) {
+                                        Icon(
+                                            Icons.Outlined.SelectAll,
+                                            stringResource(R.string.select_deselect_all)
+                                        )
+                                    }
                                 }
-                                IconButton(
-                                    onClick = {
-                                        items.removeIf { it.key in deletionTargets }
-                                        deletionTargets.clear()
-                                        deleteMode = false
-                                    }
+                                TooltipWrap(
+                                    modifier = Modifier,
+                                    tooltip = stringResource(R.string.delete),
                                 ) {
-                                    Icon(
-                                        Icons.Outlined.Delete,
-                                        stringResource(R.string.delete)
-                                    )
+                                    IconButton(
+                                        onClick = {
+                                            items.removeIf { it.key in deletionTargets }
+                                            deletionTargets.clear()
+                                            deleteMode = false
+                                        }
+                                    ) {
+                                        Icon(
+                                            Icons.Outlined.Delete,
+                                            stringResource(R.string.delete)
+                                        )
+                                    }
                                 }
                             } else {
-                                IconButton(onClick = items::clear) {
-                                    Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                                TooltipWrap(
+                                    modifier = Modifier,
+                                    tooltip = stringResource(R.string.reset),
+                                ) {
+                                    IconButton(onClick = items::clear) {
+                                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                                    }
                                 }
                             }
                         }
@@ -643,14 +667,19 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     ),
                                     tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
                                     leadingContent = {
-                                        IconButton(
-                                            modifier = Modifier.draggableHandle(interactionSource = interactionSource),
-                                            onClick = {},
+                                        TooltipWrap(
+                                            modifier = Modifier,
+                                            tooltip = stringResource(R.string.drag_handle),
                                         ) {
-                                            Icon(
-                                                Icons.Filled.DragHandle,
-                                                stringResource(R.string.drag_handle)
-                                            )
+                                            IconButton(
+                                                modifier = Modifier.draggableHandle(interactionSource = interactionSource),
+                                                onClick = {},
+                                            ) {
+                                                Icon(
+                                                    Icons.Filled.DragHandle,
+                                                    stringResource(R.string.drag_handle)
+                                                )
+                                            }
                                         }
                                     },
                                     headlineContent = {

@@ -48,11 +48,16 @@ fun SearchView(
                 onExpandedChange = onActiveChange,
                 placeholder = placeholder,
                 leadingIcon = {
-                    IconButton(onClick = { onActiveChange(false) }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(R.string.back)
-                        )
+                    TooltipWrap(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.back),
+                    ) {
+                        IconButton(onClick = { onActiveChange(false) }) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                stringResource(R.string.back)
+                            )
+                        }
                     }
                 }
             )

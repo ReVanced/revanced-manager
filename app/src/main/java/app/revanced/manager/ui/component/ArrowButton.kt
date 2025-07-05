@@ -27,14 +27,19 @@ fun ArrowButton(
     )
 
     onClick?.let {
-        IconButton(onClick = it) {
-            Icon(
-                imageVector = Icons.Filled.KeyboardArrowUp,
-                contentDescription = stringResource(description),
-                modifier = Modifier
-                    .rotate(rotation)
-                    .then(modifier)
-            )
+        TooltipWrap(
+            modifier = Modifier,
+            tooltip = stringResource(description),
+        ) {
+            IconButton(onClick = it) {
+                Icon(
+                    imageVector = Icons.Filled.KeyboardArrowUp,
+                    contentDescription = stringResource(description),
+                    modifier = Modifier
+                        .rotate(rotation)
+                        .then(modifier)
+                )
+            }
         }
     } ?: Icon(
         imageVector = Icons.Filled.KeyboardArrowUp,

@@ -45,6 +45,7 @@ import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -81,8 +82,13 @@ fun DownloadsSettingsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
-                            Icon(Icons.Default.Delete, stringResource(R.string.delete))
+                        TooltipWrap(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.delete),
+                        ) {
+                            IconButton(onClick = { showDeleteConfirmationDialog = true }) {
+                                Icon(Icons.Default.Delete, stringResource(R.string.delete))
+                            }
                         }
                     }
                 }

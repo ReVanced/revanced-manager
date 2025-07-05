@@ -49,6 +49,7 @@ import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.viewmodel.AboutViewModel
@@ -252,16 +253,21 @@ fun AboutSettingsScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
                 socialButtons.forEach { (icon, text, onClick) ->
-                    IconButton(
-                        onClick = onClick,
-                        modifier = Modifier.padding(end = 8.dp),
+                    TooltipWrap(
+                        modifier = Modifier,
+                        tooltip = text,
                     ) {
-                        Icon(
-                            icon,
-                            contentDescription = text,
-                            modifier = Modifier.size(28.dp),
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
+                        IconButton(
+                            onClick = onClick,
+                            modifier = Modifier.padding(end = 8.dp),
+                        ) {
+                            Icon(
+                                icon,
+                                contentDescription = text,
+                                modifier = Modifier.size(28.dp),
+                                tint = MaterialTheme.colorScheme.secondary
+                            )
+                        }
                     }
                 }
             }
