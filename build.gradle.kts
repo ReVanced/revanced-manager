@@ -11,6 +11,7 @@ plugins {
 }
 
 spotless {
+    ratchetFrom("compose-dev")
     kotlin {
         target("app/src/*/java/**/*.kt", "api/src/*/kotlin/**/*.kt")
         ktfmt().googleStyle()
