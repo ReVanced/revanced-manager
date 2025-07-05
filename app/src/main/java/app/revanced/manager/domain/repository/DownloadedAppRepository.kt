@@ -102,7 +102,7 @@ class DownloadedAppRepository(
                 if (
                     pkgInfo.versionName != expectedVersion &&
                     (appCompatibilityCheck || patchesCompatibilityCheck)
-                ) error("The selected app version doesn't match the suggested version. Please use the suggested version ($expectedVersion), or adjust your settings by disabling \"Require suggested app version\" and enabling \"Disable version compatibility check\".")
+                ) error("The selected app version ($pkgInfo.versionName) doesn't match the suggested version. Please use the suggested version ($expectedVersion), or adjust your settings by disabling \"Require suggested app version\" and enabling \"Disable version compatibility check\".")
             }
 
             // Delete the previous copy (if present).
