@@ -23,8 +23,6 @@ data class BundleInfo(
         yieldAll(universal)
     }
 
-    val patchCount get() = compatible.size + incompatible.size + universal.size
-
     fun patchSequence(allowIncompatible: Boolean) = if (allowIncompatible) {
         all
     } else {
@@ -79,7 +77,7 @@ data class BundleInfo(
                         targetList.add(it)
                     }
 
-                    BundleInfo(source.getName(), bundle.readManifestAttribute("Version"), source.uid, compatible, incompatible, universal)
+                    BundleInfo(source.getName(), bundle.patchBundleManifestAttributes?.version, source.uid, compatible, incompatible, universal)
                 }
             }
 

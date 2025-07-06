@@ -143,8 +143,8 @@ fun BaseBundleDialog(
 
         val patchesClickable = patchCount > 0
         BundleListItem(
-            headlineText = "${stringResource(R.string.patches)} ($patchCount)",
-            supportingText = stringResource(R.string.bundle_view_patches),
+            headlineText = stringResource(R.string.bundle_view_patches),
+            supportingText = stringResource(R.string.bundle_view_all_patches, patchCount),
             modifier = Modifier.clickable(
                 enabled = patchesClickable,
                 onClick = onPatchesClick

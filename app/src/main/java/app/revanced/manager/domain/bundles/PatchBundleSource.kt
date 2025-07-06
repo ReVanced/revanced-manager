@@ -38,7 +38,7 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
 
     suspend fun getName() = nameFlow.first()
 
-    val versionFlow = state.map { it.patchBundleOrNull()?.readManifestAttribute("Version") }
+    val versionFlow = state.map { it.patchBundleOrNull()?.patchBundleManifestAttributes?.version }
     val patchCountFlow = state.map { it.patchBundleOrNull()?.patches?.size ?: 0 }
 
     /**
