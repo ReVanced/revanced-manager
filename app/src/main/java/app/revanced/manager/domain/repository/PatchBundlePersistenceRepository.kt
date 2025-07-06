@@ -25,7 +25,7 @@ class PatchBundlePersistenceRepository(db: AppDatabase) {
         PatchBundleEntity(
             uid = generateUid(),
             name = name,
-            version = null,
+            versionHash = null,
             source = source,
             autoUpdate = autoUpdate
         ).also {
@@ -34,8 +34,11 @@ class PatchBundlePersistenceRepository(db: AppDatabase) {
 
     suspend fun delete(uid: Int) = dao.remove(uid)
 
-    suspend fun updateVersion(uid: Int, version: String?) =
-        dao.updateVersion(uid, version)
+    /**
+     * Sets the version hash used for updates.
+     */
+    suspend fun updateVersionHash(uid: Int, versionHash: String?) =
+        dao.updateVersionHash(uid, versionHash)
 
     suspend fun setAutoUpdate(uid: Int, value: Boolean) = dao.setAutoUpdate(uid, value)
 
@@ -47,7 +50,7 @@ class PatchBundlePersistenceRepository(db: AppDatabase) {
         val defaultSource = PatchBundleEntity(
             uid = 0,
             name = "",
-            version = null,
+            versionHash = null,
             source = Source.API,
             autoUpdate = false
         )

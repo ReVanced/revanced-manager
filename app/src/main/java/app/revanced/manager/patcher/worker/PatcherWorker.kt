@@ -158,6 +158,8 @@ class PatcherWorker(
                     data,
                     args.packageName,
                     args.input.version,
+                    prefs.suggestedVersionSafeguard.get(),
+                    !prefs.disablePatchVersionCompatCheck.get(),
                     onDownload = args.onDownloadProgress
                 ).also {
                     args.setInputFile(it)

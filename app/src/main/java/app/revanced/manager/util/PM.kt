@@ -112,7 +112,7 @@ class PM(
                 app.packageManager.getPackageInfo(packageName, PackageInfoFlags.of(flags.toLong()))
             else
                 app.packageManager.getPackageInfo(packageName, flags)
-        } catch (e: NameNotFoundException) {
+        } catch (_: NameNotFoundException) {
             null
         }
 
@@ -184,6 +184,8 @@ class PM(
         get() = PackageInstaller.SessionParams(
             PackageInstaller.SessionParams.MODE_FULL_INSTALL
         ).apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+                setRequestUpdateOwnership(true)
             setInstallReason(PackageManager.INSTALL_REASON_USER)
         }
 

@@ -38,6 +38,9 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
 
     suspend fun getName() = nameFlow.first()
 
+    val versionFlow = state.map { it.patchBundleOrNull()?.readManifestAttribute("Version") }
+    val patchCountFlow = state.map { it.patchBundleOrNull()?.patches?.size ?: 0 }
+
     /**
      * Returns true if the bundle has been downloaded to local storage.
      */
@@ -84,9 +87,9 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
     fun propsFlow() = configRepository.getProps(uid).flowOn(Dispatchers.Default)
     suspend fun getProps() = propsFlow().first()!!
 
-    suspend fun currentVersion() = getProps().version
-    protected suspend fun saveVersion(version: String?) =
-        configRepository.updateVersion(uid, version)
+    suspend fun currentVersionHash() = getProps().versionHash
+    protected suspend fun saveVersionHash(version: String?) =
+        configRepository.updateVersionHash(uid, version)
 
     suspend fun setName(name: String) {
         configRepository.setName(uid, name)

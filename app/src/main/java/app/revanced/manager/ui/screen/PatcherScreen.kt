@@ -62,6 +62,10 @@ fun PatcherScreen(
     onBackClick: () -> Unit,
     viewModel: PatcherViewModel
 ) {
+    fun onLeave() {
+        viewModel.onBack()
+        onBackClick()
+    }
 
     val context = LocalContext.current
     val exportApkLauncher =
@@ -72,7 +76,14 @@ fun PatcherScreen(
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
     var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
-    BackHandler(onBack = { showDismissConfirmationDialog = true })
+    fun onPageBack() {
+        if(patcherSucceeded == null)
+            showDismissConfirmationDialog = true
+        else
+            onLeave()
+    }
+
+    BackHandler(onBack = ::onPageBack)
 
     val steps by remember {
         derivedStateOf {
@@ -99,10 +110,7 @@ fun PatcherScreen(
     if (showDismissConfirmationDialog) {
         ConfirmDialog(
             onDismiss = { showDismissConfirmationDialog = false },
-            onConfirm = {
-                viewModel.onBack()
-                onBackClick()
-            },
+            onConfirm = ::onLeave,
             title = stringResource(R.string.patcher_stop_confirm_title),
             description = stringResource(R.string.patcher_stop_confirm_description),
             icon = Icons.Outlined.Cancel
@@ -150,7 +158,7 @@ fun PatcherScreen(
             AppTopBar(
                 title = stringResource(R.string.patcher),
                 scrollBehavior = scrollBehavior,
-                onBackClick = { showDismissConfirmationDialog = true }
+                onBackClick = ::onPageBack
             )
         },
         bottomBar = {

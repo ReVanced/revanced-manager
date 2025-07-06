@@ -15,7 +15,7 @@ class LocalPatchBundle(name: String, id: Int, directory: File) :
         }
 
         reload()?.also {
-            saveVersion(it.patchBundleManifestAttributes?.version)
+            saveVersionHash(it.patchBundleManifestAttributes?.version)
         }
     }
 }
