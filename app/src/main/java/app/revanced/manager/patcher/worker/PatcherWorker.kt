@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
@@ -15,6 +16,7 @@ import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import app.revanced.manager.MainActivity
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
@@ -86,6 +88,12 @@ class PatcherWorker(
         )
 
     private fun createNotification(): Notification {
+        val notificationIntent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
+        )
         val channel = NotificationChannel(
             "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_LOW
         )
@@ -93,9 +101,10 @@ class PatcherWorker(
             applicationContext.getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(channel)
         return Notification.Builder(applicationContext, channel.id)
-            .setContentTitle(applicationContext.getText(R.string.app_name))
-            .setContentText(applicationContext.getText(R.string.patcher_notification_message))
+            .setContentTitle(applicationContext.getText(R.string.patcher_notification_title))
+            .setContentText(applicationContext.getText(R.string.patcher_notification_text))
             .setSmallIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
+            .setContentIntent(pendingIntent)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
     }
