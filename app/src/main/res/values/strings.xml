@@ -317,7 +317,8 @@
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched APK file</string>
     <string name="patcher_step_sign_apk">Sign patched APK file</string>
-    <string name="patcher_notification_message">Patching in progress…</string>
+    <string name="patcher_notification_title">Patching in progress…</string>
+    <string name="patcher_notification_text">Tap to return to the patcher</string>
     <string name="patcher_stop_confirm_title">Stop patcher</string>
     <string name="patcher_stop_confirm_description">Are you sure you want to stop the patching process?</string>
     <string name="execute_patches">Execute patches</string>

@@ -14,9 +14,9 @@ import android.os.Parcelable
 import android.os.PowerManager
 import android.util.Log
 import androidx.activity.result.ActivityResult
-import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import app.revanced.manager.MainActivity
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
@@ -88,22 +88,25 @@ class PatcherWorker(
         )
 
     private fun createNotification(): Notification {
-        val notificationIntent = Intent(applicationContext, PatcherWorker::class.java)
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+        val notificationIntent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val pendingIntent = PendingIntent.getActivity(
             applicationContext, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
         )
         val channel = NotificationChannel(
-            "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_HIGH
+            "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_LOW
         )
         val notificationManager =
-            ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
-        notificationManager!!.createNotificationChannel(channel)
+            applicationContext.getSystemService(NotificationManager::class.java)
+        notificationManager.createNotificationChannel(channel)
         return Notification.Builder(applicationContext, channel.id)
-            .setContentTitle(applicationContext.getText(R.string.app_name))
-            .setContentText(applicationContext.getText(R.string.patcher_notification_message))
-            .setLargeIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
+            .setContentTitle(applicationContext.getText(R.string.patcher_notification_title))
+            .setContentText(applicationContext.getText(R.string.patcher_notification_text))
             .setSmallIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
-            .setContentIntent(pendingIntent).build()
+            .setContentIntent(pendingIntent)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .build()
     }
 
     override suspend fun doWork(): Result {
