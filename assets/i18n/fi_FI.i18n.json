@@ -104,7 +104,7 @@
     "setRequiredOption": "Joillekin paikkauksille on määritettävä asetuksia:\n\n${patches}\n\nMääritä ne ennen kuin jatkat."
   },
   "patchOptionsView": {
-    "customValue": "Oma arvo",
+    "customValue": "Mukautettu arvo",
     "setToNull": "Aseta nollaksi",
     "nullValue": "Tämän asetuksen arvo on tällä hetkellä tyhjä",
     "viewTitle": "Paikkausasetukset",
@@ -180,9 +180,9 @@
     "disablePatchesSelectionWarningText": "Olet poistamassa paikkausvalikoiman muokkauksen käytöstä.\nOletusarvoiset paikkasvalikoimat palautetaan.\n\nEstetäänkö se silti?",
     "autoUpdatePatchesLabel": "Päivitä paikkaukset automaattisesti",
     "autoUpdatePatchesHint": "Päivitä paikkaukset automaattisesti uusimpiin versioihin",
-    "usePrereleasesLabel": "Käytä ennakkojulkaisuja",
-    "usePrereleasesHint": "Käytä ReVanced Managerin ja ReVanced Patchesien ennakkojulkaisuversioita",
-    "usePrereleasesWarningText": "Ennakkojulkaisuversioiden käyttäminen voi aiheuttaa odottamattomia ongelmia.\n\nOtetaanko se silti käyttöön?",
+    "usePrereleasesLabel": "Käytä ennakkoversioita",
+    "usePrereleasesHint": "Käytä ReVanced Managerin ja ReVanced Patchesin ennakkoversioita",
+    "usePrereleasesWarningText": "Ennakkoversioiden käyttö voi aiheuttaa odottamattomia ongelmia.\n\nOtetaanko silti käyttöön?",
     "showUpdateDialogLabel": "Näytä päivitysruutu",
     "showUpdateDialogHint": "Näytä ilmoitus, kun uusi päivitys on saatavilla",
     "universalPatchesLabel": "Näytä yleispaikkaukset",
