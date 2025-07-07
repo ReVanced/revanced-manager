@@ -78,7 +78,7 @@ fun BaseBundleDialog(
                 Tag(Icons.AutoMirrored.Outlined.Send, it)
             }
             bundleManifestAttributes?.website?.let {
-                Tag(Icons.Outlined.Language, it, isClickable = true)
+                Tag(Icons.Outlined.Language, it, isUrl = true)
             }
             bundleManifestAttributes?.license?.let {
                 Tag(Icons.Outlined.Gavel, it)
@@ -166,14 +166,14 @@ fun BaseBundleDialog(
 private fun Tag(
     icon: ImageVector,
     text: String,
-    isClickable: Boolean = false
+    isUrl: Boolean = false
 ) {
     val uriHandler = LocalUriHandler.current
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = if (isClickable) {
+        modifier = if (isUrl) {
             Modifier
                 .clickable {
                     try {
@@ -192,7 +192,7 @@ private fun Tag(
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium,
-            color = if(isClickable) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+            color = if(isUrl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
         )
     }
 }

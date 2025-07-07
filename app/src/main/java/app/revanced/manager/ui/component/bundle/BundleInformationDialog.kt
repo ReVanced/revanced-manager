@@ -44,8 +44,7 @@ fun BundleInformationDialog(
     }.collectAsStateWithLifecycle(null)
     val patchCount by bundle.patchCountFlow.collectAsStateWithLifecycle(0)
     val version by bundle.versionFlow.collectAsStateWithLifecycle(null)
-    val bundleFromState = state.patchBundleOrNull()
-    val bundleManifestAttributes = bundleFromState?.patchBundleManifestAttributes
+    val bundleManifestAttributes = state.patchBundleOrNull()?.patchBundleManifestAttributes
 
     if (viewCurrentBundlePatches) {
         BundlePatchesDialog(
