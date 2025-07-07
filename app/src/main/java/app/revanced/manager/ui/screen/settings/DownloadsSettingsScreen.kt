@@ -40,7 +40,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -254,21 +253,6 @@ fun DownloadsSettingsScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun PreviewTrustDialog() {
-    TrustDialog(
-        title = R.string.downloader_plugin_trust_dialog_title,
-        body = stringResource(
-            R.string.downloader_plugin_trust_dialog_body,
-        ),
-        onDismiss = { },
-        onConfirm = { },
-        pluginName = "app.revanced.manager.apkmirror",
-        signature = "23 01 84 F6 0B AE 2F EA F2 44 F1 0A 8B AC 05 3C 8F F3 3A 18 3B CC 36 5B 4D 8B 87 6D 2B 7F 48 09"
-    )
 }
 
 @Composable
