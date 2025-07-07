@@ -181,7 +181,7 @@
     "autoUpdatePatchesLabel": "Automatski ažuriraj pečeve",
     "autoUpdatePatchesHint": "Instalira najnoviju verziju pečeva automatski",
     "usePrereleasesLabel": "Koristi predizdanja",
-    "usePrereleasesHint": "Korišćenje verzije predizdanja ReVanced Managera i ReVanced pečeva",
+    "usePrereleasesHint": "Koristite verzije predizdanja ReVanced Managera i ReVanced pečeva",
     "usePrereleasesWarningText": "Korišćenje verzija predizdanja može izazvati neočekivane probleme.\n\nIpak omogućiti?",
     "showUpdateDialogLabel": "Prikaži dijalog o ažuriranju",
     "showUpdateDialogHint": "Prikazivanje dijaloga kada je novo ažuriranje dostupno",

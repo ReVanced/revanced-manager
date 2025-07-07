@@ -182,7 +182,7 @@
     "autoUpdatePatchesHint": "Nuashonraigh go huathoibríoch paistí go dtí an leagan is déanaí",
     "usePrereleasesLabel": "Úsáid réamheisiúintí",
     "usePrereleasesHint": "Úsáid leaganacha réamheisiúna de ReVanced Manager agus ReVanced Patches",
-    "usePrereleasesWarningText": "D’fhéadfadh fadhbanna gan choinne a bheith mar thoradh ar úsáid a bhaint as leaganacha réamhscaoilte.\n\nAr mhaith leat é a chumasú ar aon nós?",
+    "usePrereleasesWarningText": "D'fhéadfadh leaganacha réamheisiúna a úsáid a bheith ina chúis le fadhbanna gan choinne.Cumasaigh ar aon nós?",
     "showUpdateDialogLabel": "Taispeáin dialóg nuashonrú",
     "showUpdateDialogHint": "Taispeáin dialóg nuair a bhíonn nuashonrú nua ar fáil",
     "universalPatchesLabel": "Taispeáin paistí uilíocha",

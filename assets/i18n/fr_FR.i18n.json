@@ -182,7 +182,7 @@
     "autoUpdatePatchesHint": "Mettre à jour automatiquement les patchs vers la dernière version",
     "usePrereleasesLabel": "Utiliser les préversions",
     "usePrereleasesHint": "Utilisez les versions préliminaires de ReVanced Manager et ReVanced Patches",
-    "usePrereleasesWarningText": "L'utilisation de versions préliminaires peut entraîner des problèmes inattendus.\n\nActiver quand même ?",
+    "usePrereleasesWarningText": "L'utilisation de versions préliminaires est susceptible d'engendrer des problèmes inattendus.\n\nActiver quand même ?",
     "showUpdateDialogLabel": "Afficher la boîte de dialogue de mise à jour",
     "showUpdateDialogHint": "Afficher une boîte de dialogue lorsqu'une nouvelle mise à jour est disponible",
     "universalPatchesLabel": "Afficher les patchs universels",
