@@ -9,9 +9,9 @@
   "noButton": "Ne",
   "warning": "Įspėjimas",
   "notice": "Pranešimas",
-  "noShowAgain": "Daugiau to nerodyti",
+  "noShowAgain": "Daugiau neberodyti",
   "add": "Pridėti",
-  "remove": "Pašalinti",
+  "remove": "Šalinti",
   "showChangelogButton": "Rodyti pakeitimų sąrašą",
   "showUpdateButton": "Rodyti naujinimą",
   "navigationView": {
@@ -180,6 +180,9 @@
     "disablePatchesSelectionWarningText": "Jūs ketinate išjungti pataisymų pasirinkimo keitimą.\nNumatytasis pataisymų pasirinkimas bus atstatytas.\n\nVis dėlto išjungti?",
     "autoUpdatePatchesLabel": "Automatiškai atnaujinti pataisymus",
     "autoUpdatePatchesHint": "Automatiškai atnaujinti pataisymus iki naujausios versijos",
+    "usePrereleasesLabel": "Naudoti išankstines versijas",
+    "usePrereleasesHint": "Naudoti išankstines ReVanced Manager ir ReVanced lopų versijas",
+    "usePrereleasesWarningText": "Naudojant bandomąsias versijas gali kilti netikėtų problemų.\\n\\nVis tiek įjungti?",
     "showUpdateDialogLabel": "Rodyti atnaujinimo dialogą",
     "showUpdateDialogHint": "Rodyti dialogą, kai pasiekiamas naujas atnaujinimas",
     "universalPatchesLabel": "Rodyti universalius pataisymus",
@@ -289,10 +292,10 @@
     "status_failure_storage_description": "Įdiegimas nepavyko dėl nepakankamos saugojimo vietos.\n\nIšlaisvinkite vietos ir bandykite dar kartą.",
     "status_failure_invalid_description": "Įdiegimas nepavyko, nes pataisyta programa yra netinkama.\n\nPašalinkite programą ir bandykite dar kartą?",
     "status_failure_incompatible_description": "Programa nesuderinama su šiuo įrenginiu.\n\nNaudokite APK, kuris yra palaikomas šio įrenginio, ir bandykite dar kartą.",
-    "status_failure_conflict_description": "Esamas programos įdiegimas sustabdė įdiegimą.\n\nPašalinkite įdiegtą programą ir bandykite dar kartą?",
-    "status_failure_blocked_description": "Įdiegimą blokavo ${packageName}.\n\nSureguliuokite saugos nustatymus ir bandykite dar kartą.",
-    "install_failed_verification_failure_description": "Įdiegimas nepavyko dėl patvirtinimo klaidos.\n\nSureguliuokite saugos nustatymus ir bandykite dar kartą.",
-    "install_failed_version_downgrade_description": "Įdiegimas nepavyko, nes pataisyta programa yra senesnės versijos nei įdiegta programa.\n\nPašalinti programą ir bandyti dar kartą?",
-    "status_unknown_description": "Įdiegimas nepavyko dėl nežinomos priežasties. Bandykite dar kartą."
+    "status_failure_conflict_description": "Diegimas buvo sustabdymas dėl jau įdiegtos programos.\n\nPašalinti įdiegtą programą ir bandyti dar kartą?",
+    "status_failure_blocked_description": "Diegimą užblokavo „${packageName}“.\n\nSureguliuokite saugumo nustatymus ir bandykite dar kartą.",
+    "install_failed_verification_failure_description": "Diegimas nepavyko dėl patvirtinimo problemos.\n\nSureguliuokite saugumo nustatymus ir bandykite dar kartą.",
+    "install_failed_version_downgrade_description": "Diegimas nepavyko, nes pataisyta programa yra žemesnės versijos nei įdiegta programa.\n\nPašalinti programą ir bandyti dar kartą?",
+    "status_unknown_description": "Diegimas nepavyko dėl nežinomos priežasties. Bandykite dar kartą."
   }
 }

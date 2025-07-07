@@ -27,7 +27,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: refs/pull/${{ inputs.pr-number }}/merge
-          fetch-depth: 0
 
       - name: Setup Java
         uses: actions/setup-java@v4

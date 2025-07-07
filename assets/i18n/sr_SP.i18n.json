@@ -181,7 +181,7 @@
     "autoUpdatePatchesLabel": "Аутоматски ажурирај печеве",
     "autoUpdatePatchesHint": "Инсталира најновију верзију печева аутоматски",
     "usePrereleasesLabel": "Користи предиздања",
-    "usePrereleasesHint": "Коришћење верзија предиздања ReVanced Manager-а и ReVanced печева",
+    "usePrereleasesHint": "Користите верзије предиздања ReVanced Manager-а и ReVanced печева",
     "usePrereleasesWarningText": "Коришћење верзија предиздања може изазвати неочекиване проблеме.\n\nИпак омогућити?",
     "showUpdateDialogLabel": "Прикажи дијалог о ажурирању",
     "showUpdateDialogHint": "Приказивање дијалога када је ново ажурирање доступно",
