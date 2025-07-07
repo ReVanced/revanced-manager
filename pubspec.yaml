@@ -18,13 +18,13 @@ dependencies:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
       ref: 0609662324b9e00931fccfa87e9e1b00b7610907
-  device_info_plus: ^11.3.3
+  device_info_plus: ^11.5.0
   dio: ^5.4.3+1
   dio_cache_interceptor: ^3.5.0
   dynamic_color: ^1.7.0
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker: ^10.1.9
+  file_picker: ^10.2.0
   flutter:
     sdk: flutter
   flutter_background: ^1.3.0+1
@@ -38,7 +38,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   google_fonts: ^6.2.1
   injectable: ^2.4.0
-  intl: ^0.19.0
+  intl: ^0.20.2
   json_annotation: ^4.9.0
   language_code: ^0.5.5
   logcat:
@@ -67,7 +67,7 @@ dependencies:
   stacked: ^3.4.4
   stacked_generator: ^1.6.1
   stacked_services: ^1.6.0
-  synchronized: ^3.3.1
+  synchronized: ^3.4.0
   timeago:
     git: # remove once new release include c23ec0f8a (intl 0.20 compatibility)
       url: https://github.com/andresaraujo/timeago.dart
@@ -79,7 +79,7 @@ dependencies:
 
 dev_dependencies:
   analyzer: ^6.3.0 
-  build_runner: ^2.4.15
+  build_runner: ^2.5.4
   flutter_lints: ^5.0.0
   injectable_generator: ^2.6.1
   json_serializable: ^6.9.0
