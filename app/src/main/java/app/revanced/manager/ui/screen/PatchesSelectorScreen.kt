@@ -216,7 +216,10 @@ fun PatchesSelectorScreen(
                 PatchItem(
                     patch = patch,
                     onOptionsDialog = {
-                        viewModel.optionsDialog = uid to patch
+                        if (viewModel.selectionWarningEnabled)
+                            showSelectionWarning = true
+                        else
+                            viewModel.optionsDialog = uid to patch
                     },
                     selected = compatible && viewModel.isSelected(
                         uid,
