@@ -354,6 +354,7 @@
     <string name="bundle_auto_update">Auto update</string>
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_view_patches">View patches</string>
+    <string name="bundle_view_all_patches">View all %d patches</string>
     <string name="bundle_view_patches_any_version">Any version</string>
     <string name="bundle_view_patches_any_package">Any package</string>
     <string name="bundle_delete_single_dialog_title">Delete bundle</string>
