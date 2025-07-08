@@ -60,7 +60,7 @@ class PatchBundle(val patchesJar: File) {
         ) else
             null
 
-    private fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)?.takeIf { it.isNotBlank() } //If empty, set it to null instead
+    private fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)?.takeIf { it.isNotBlank() } // If empty, set it to null instead.
 
     /**
      * Load all patches compatible with the specified package.
