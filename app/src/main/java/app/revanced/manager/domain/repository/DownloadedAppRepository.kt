@@ -40,6 +40,8 @@ class DownloadedAppRepository(
         data: Parcelable,
         expectedPackageName: String,
         expectedVersion: String?,
+        appCompatibilityCheck: Boolean,
+        patchesCompatibilityCheck: Boolean,
         onDownload: suspend (downloadProgress: Pair<Long, Long?>) -> Unit,
     ): File {
         // Converted integers cannot contain / or .. unlike the package name or version, so they are safer to use here.
@@ -96,7 +98,12 @@ class DownloadedAppRepository(
             val pkgInfo =
                 pm.getPackageInfo(targetFile.toFile()) ?: error("Downloaded APK file is invalid")
             if (pkgInfo.packageName != expectedPackageName) error("Downloaded APK has the wrong package name. Expected: $expectedPackageName, Actual: ${pkgInfo.packageName}")
-            if (expectedVersion != null && pkgInfo.versionName != expectedVersion) error("Downloaded APK has the wrong version. Expected: $expectedVersion, Actual: ${pkgInfo.versionName}")
+            expectedVersion?.let {
+                if (
+                    pkgInfo.versionName != expectedVersion &&
+                    (appCompatibilityCheck || patchesCompatibilityCheck)
+                ) error("The selected app version ($pkgInfo.versionName) doesn't match the suggested version. Please use the suggested version ($expectedVersion), or adjust your settings by disabling \"Require suggested app version\" and enabling \"Disable version compatibility check\".")
+            }
 
             // Delete the previous copy (if present).
             dao.get(pkgInfo.packageName, pkgInfo.versionName!!)?.directory?.let {

@@ -2,13 +2,26 @@ package app.revanced.manager.ui.component.bundle
 
 import android.webkit.URLUtil
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Inventory2
+import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.outlined.Commit
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Gavel
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Sell
-import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,10 +30,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.patcher.patch.PatchBundleManifestAttributes
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
@@ -29,12 +43,12 @@ import app.revanced.manager.ui.component.haptics.HapticSwitch
 fun BaseBundleDialog(
     modifier: Modifier = Modifier,
     isDefault: Boolean,
-    name: String?,
     remoteUrl: String?,
     onRemoteUrlChange: ((String) -> Unit)? = null,
     patchCount: Int,
     version: String?,
     autoUpdate: Boolean,
+    bundleManifestAttributes: PatchBundleManifestAttributes?,
     onAutoUpdateChange: (Boolean) -> Unit,
     onPatchesClick: () -> Unit,
     extraFields: @Composable ColumnScope.() -> Unit = {}
@@ -48,35 +62,26 @@ fun BaseBundleDialog(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Inventory2,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(32.dp)
-                )
-                name?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight(800)),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+            version?.let {
+                Tag(Icons.Outlined.Sell, it)
             }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 2.dp)
-            ) {
-                version?.let {
-                    Tag(Icons.Outlined.Sell, it)
-                }
-                Tag(Icons.Outlined.Extension, patchCount.toString())
+            bundleManifestAttributes?.description?.let {
+                Tag(Icons.Outlined.Description, it)
+            }
+            bundleManifestAttributes?.source?.let {
+                Tag(Icons.Outlined.Commit, it)
+            }
+            bundleManifestAttributes?.author?.let {
+                Tag(Icons.Outlined.Person, it)
+            }
+            bundleManifestAttributes?.contact?.let {
+                Tag(Icons.AutoMirrored.Outlined.Send, it)
+            }
+            bundleManifestAttributes?.website?.let {
+                Tag(Icons.Outlined.Language, it, isUrl = true)
+            }
+            bundleManifestAttributes?.license?.let {
+                Tag(Icons.Outlined.Gavel, it)
             }
         }
 
@@ -138,8 +143,8 @@ fun BaseBundleDialog(
 
         val patchesClickable = patchCount > 0
         BundleListItem(
-            headlineText = stringResource(R.string.patches),
-            supportingText = stringResource(R.string.bundle_view_patches),
+            headlineText = stringResource(R.string.bundle_view_patches),
+            supportingText = stringResource(R.string.bundle_view_all_patches, patchCount),
             modifier = Modifier.clickable(
                 enabled = patchesClickable,
                 onClick = onPatchesClick
@@ -160,22 +165,34 @@ fun BaseBundleDialog(
 @Composable
 private fun Tag(
     icon: ImageVector,
-    text: String
+    text: String,
+    isUrl: Boolean = false
 ) {
+    val uriHandler = LocalUriHandler.current
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = if (isUrl) {
+            Modifier
+                .clickable {
+                    try {
+                        uriHandler.openUri(text)
+                    } catch (_: Exception) {}
+                }
+        }
+        else
+            Modifier,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.size(16.dp)
         )
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.outline,
+            color = if(isUrl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
         )
     }
 }

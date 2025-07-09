@@ -38,7 +38,7 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
 
     suspend fun getName() = nameFlow.first()
 
-    val versionFlow = state.map { it.patchBundleOrNull()?.readManifestAttribute("Version") }
+    val versionFlow = state.map { it.patchBundleOrNull()?.patchBundleManifestAttributes?.version }
     val patchCountFlow = state.map { it.patchBundleOrNull()?.patches?.size ?: 0 }
 
     /**
@@ -74,7 +74,7 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
         val bundle = newState.patchBundleOrNull()
         // Try to read the name from the patch bundle manifest if the bundle does not have a name.
         if (bundle != null && _nameFlow.value.isEmpty()) {
-            bundle.readManifestAttribute("Name")?.let { setName(it) }
+            bundle.patchBundleManifestAttributes?.name?.let { setName(it) }
         }
 
         return bundle
