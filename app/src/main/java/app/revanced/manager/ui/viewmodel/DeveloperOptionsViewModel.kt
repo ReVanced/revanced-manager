@@ -16,7 +16,7 @@ class DeveloperOptionsViewModel(
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
     fun redownloadBundles() = viewModelScope.launch {
-        uiSafe(app, R.string.source_download_fail, RemotePatchBundle.updateFailMsg) {
+        uiSafe(app, R.string.patches_download_fail, RemotePatchBundle.updateFailMsg) {
             patchBundleRepository.redownloadRemoteBundles()
         }
     }

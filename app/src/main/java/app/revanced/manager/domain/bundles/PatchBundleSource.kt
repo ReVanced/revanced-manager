@@ -34,7 +34,7 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
 
     private val _nameFlow = MutableStateFlow(initialName)
     val nameFlow =
-        _nameFlow.map { it.ifEmpty { app.getString(if (isDefault) R.string.bundle_name_default else R.string.bundle_name_fallback) } }
+        _nameFlow.map { it.ifEmpty { app.getString(if (isDefault) R.string.patches_name_default else R.string.patches_name_fallback) } }
 
     suspend fun getName() = nameFlow.first()
 

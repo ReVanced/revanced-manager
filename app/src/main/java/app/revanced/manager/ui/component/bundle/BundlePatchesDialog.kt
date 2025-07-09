@@ -46,7 +46,7 @@ fun BundlePatchesDialog(
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.bundle_patches),
+                    title = stringResource(R.string.patches),
                     onBackClick = onDismissRequest,
                     backIcon = {
                         Icon(
@@ -133,10 +133,10 @@ fun PatchItem(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         PatchInfoChip(
-                            text = "$PACKAGE_ICON ${stringResource(R.string.bundle_view_patches_any_package)}"
+                            text = "$PACKAGE_ICON ${stringResource(R.string.patches_view_any_package)}"
                         )
                         PatchInfoChip(
-                            text = "$VERSION_ICON ${stringResource(R.string.bundle_view_patches_any_version)}"
+                            text = "$VERSION_ICON ${stringResource(R.string.patches_view_any_version)}"
                         )
                     }
                 } else {

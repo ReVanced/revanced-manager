@@ -30,7 +30,7 @@ fun ExceptionViewerDialog(text: String, onDismiss: () -> Unit) {
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.bundle_error),
+                    title = stringResource(R.string.patches_error),
                     onBackClick = onDismiss,
                     backIcon = {
                         Icon(

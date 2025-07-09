@@ -67,8 +67,8 @@ fun BundleItem(
                 onDelete()
                 viewBundleDialogPage = false
             },
-            title = stringResource(R.string.bundle_delete_single_dialog_title),
-            description = stringResource(R.string.bundle_delete_single_dialog_description, name),
+            title = stringResource(R.string.delete),
+            description = stringResource(R.string.patches_delete_single_dialog_description, name),
             icon = Icons.Outlined.Delete
         )
     }
@@ -100,8 +100,8 @@ fun BundleItem(
             Row {
                 val icon = remember(state) {
                     when (state) {
-                        is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.bundle_error
-                        is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.bundle_missing
+                        is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.patches_error
+                        is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.patches_missing
                         is PatchBundleSource.State.Loaded -> null
                     }
                 }
