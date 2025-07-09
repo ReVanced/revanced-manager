@@ -410,6 +410,7 @@ fun PatchesSelectorScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .padding(top = 16.dp)
         ) {
             if (bundles.size > 1) {
                 ScrollableTabRow(

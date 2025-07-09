@@ -317,7 +317,8 @@
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched APK file</string>
     <string name="patcher_step_sign_apk">Sign patched APK file</string>
-    <string name="patcher_notification_message">Patching in progress…</string>
+    <string name="patcher_notification_title">Patching in progress…</string>
+    <string name="patcher_notification_text">Tap to return to the patcher</string>
     <string name="patcher_stop_confirm_title">Stop patcher</string>
     <string name="patcher_stop_confirm_description">Are you sure you want to stop the patching process?</string>
     <string name="execute_patches">Execute patches</string>
@@ -353,6 +354,7 @@
     <string name="bundle_auto_update">Auto update</string>
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_view_patches">View patches</string>
+    <string name="bundle_view_all_patches">View all %d patches</string>
     <string name="bundle_view_patches_any_version">Any version</string>
     <string name="bundle_view_patches_any_package">Any package</string>
     <string name="bundle_delete_single_dialog_title">Delete bundle</string>
