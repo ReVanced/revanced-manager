@@ -19,6 +19,11 @@ jobs:
       - name: Cache Gradle
         uses: burrunan/gradle-cache-action@v1
 
+      - name: Spotless Check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew spotlessCheck --no-daemon
+
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
