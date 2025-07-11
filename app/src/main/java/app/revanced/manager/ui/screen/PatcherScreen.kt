@@ -1,5 +1,7 @@
 package app.revanced.manager.ui.screen
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.FileDownload
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.AlertDialog
@@ -48,6 +51,7 @@ import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.InstallerStatusDialog
+import app.revanced.manager.ui.component.PermissionRequestHandler
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
@@ -55,10 +59,36 @@ import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.permissions.shouldAskNotificationPermission
+
+@SuppressLint("InlinedApi")
+@Composable
+fun PatcherScreen(
+    onBackClick: () -> Unit,
+    viewModel: PatcherViewModel
+) {
+    val context = LocalContext.current
+    var askNotificationPermission by rememberSaveable { mutableStateOf(true) }
+
+    if (askNotificationPermission) {
+        if (!context.shouldAskNotificationPermission()) askNotificationPermission = false
+        PermissionRequestHandler(
+            contract = ActivityResultContracts.RequestPermission(),
+            input = Manifest.permission.POST_NOTIFICATIONS,
+            title = stringResource(R.string.patcher_ask_notification),
+            description = stringResource(R.string.patcher_ask_notification_description),
+            icon = Icons.Outlined.Notifications,
+            onDismissRequest = { askNotificationPermission = false },
+            onResult = { _ -> askNotificationPermission = false }
+        )
+    } else {
+        PatcherMainScreen(onBackClick, viewModel)
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PatcherScreen(
+private fun PatcherMainScreen(
     onBackClick: () -> Unit,
     viewModel: PatcherViewModel
 ) {
@@ -77,7 +107,7 @@ fun PatcherScreen(
     var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
     fun onPageBack() {
-        if(patcherSucceeded == null)
+        if (patcherSucceeded == null)
             showDismissConfirmationDialog = true
         else
             onLeave()
@@ -116,7 +146,6 @@ fun PatcherScreen(
             icon = Icons.Outlined.Cancel
         )
     }
-
     viewModel.packageInstallerStatus?.let {
         InstallerStatusDialog(it, viewModel, viewModel::dismissPackageInstallerDialog)
     }

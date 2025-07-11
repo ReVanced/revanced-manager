@@ -40,6 +40,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.permissions.hasNotificationPermission
 import app.revanced.manager.util.tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -114,12 +115,15 @@ class PatcherWorker(
             Log.d(tag, "Android requested retrying but retrying is disabled.".logFmt())
             return Result.failure()
         }
-
-        try {
-            // This does not always show up for some reason.
-            setForeground(getForegroundInfo())
-        } catch (e: Exception) {
-            Log.d(tag, "Failed to set foreground info:", e)
+        var rej = applicationContext.hasNotificationPermission()
+        Log.i("testtt", "hasNotificationPermission: $rej")
+        if (rej) {
+            try {
+                // This does not always show up for some reason.
+                setForeground(getForegroundInfo())
+            } catch (e: Exception) {
+                Log.d(tag, "Failed to set foreground info:", e)
+            }
         }
 
         val wakeLock: PowerManager.WakeLock =

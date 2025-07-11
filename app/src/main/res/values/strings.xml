@@ -455,4 +455,6 @@
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
+    <string name="patcher_ask_notification">Monitor the patching process</string>
+    <string name="patcher_ask_notification_description">You can give ReVanced will send you a notification when a bundle was updated.</string>
 </resources>

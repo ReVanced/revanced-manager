@@ -9,6 +9,7 @@
         android:description="@string/plugin_host_permission_description"
         />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="app.revanced.manager.permission.PLUGIN_HOST" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
