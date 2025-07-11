@@ -240,8 +240,8 @@ fun ImportExportSettingsScreen(
                                     }
                                 }
                             },
-                            headline = R.string.patch_selection_reset_bundle,
-                            description = R.string.patch_selection_reset_bundle_description
+                            headline = R.string.patch_selection_reset_patches,
+                            description = R.string.patch_selection_reset_patches_description
                         )
                     }
                 }
@@ -296,8 +296,8 @@ fun ImportExportSettingsScreen(
                                     }
                                 }
                             },
-                            headline = R.string.patch_options_reset_bundle,
-                            description = R.string.patch_options_reset_bundle_description,
+                            headline = R.string.patch_options_reset,
+                            description = R.string.patch_options_reset_all,
                         )
                     }
                 }

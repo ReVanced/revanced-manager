@@ -80,7 +80,7 @@ enum class DashboardPage(
     val icon: ImageVector
 ) {
     DASHBOARD(R.string.tab_apps, Icons.Outlined.Apps),
-    BUNDLES(R.string.tab_bundles, Icons.Outlined.Source),
+    BUNDLES(R.string.tab_patches, Icons.Outlined.Source),
 }
 
 @SuppressLint("BatteryLife")
@@ -94,7 +94,7 @@ fun DashboardScreen(
     onDownloaderPluginClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
-    val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
+    val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.isNotEmpty() } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
         false
@@ -165,8 +165,8 @@ fun DashboardScreen(
                 vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
                 vm.cancelSourceSelection()
             },
-            title = stringResource(R.string.bundle_delete_multiple_dialog_title),
-            description = stringResource(R.string.bundle_delete_multiple_dialog_description),
+            title = stringResource(R.string.delete),
+            description = stringResource(R.string.patches_delete_multiple_dialog_description),
             icon = Icons.Outlined.Delete
         )
     }
@@ -175,7 +175,7 @@ fun DashboardScreen(
         topBar = {
             if (bundlesSelectable) {
                 BundleTopBar(
-                    title = stringResource(R.string.bundles_selected, vm.selectedSources.size),
+                    title = stringResource(R.string.patches_selected, vm.selectedSources.size),
                     onBackClick = vm::cancelSourceSelection,
                     backIcon = {
                         Icon(
@@ -258,7 +258,7 @@ fun DashboardScreen(
                     when (pagerState.currentPage) {
                         DashboardPage.DASHBOARD.ordinal -> {
                             if (availablePatches < 1) {
-                                androidContext.toast(androidContext.getString(R.string.patches_unavailable))
+                                androidContext.toast(androidContext.getString(R.string.no_patch_found))
                                 composableScope.launch {
                                     pagerState.animateScrollToPage(
                                         DashboardPage.BUNDLES.ordinal

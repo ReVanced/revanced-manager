@@ -30,12 +30,12 @@ fun ExceptionViewerDialog(text: String, onDismiss: () -> Unit) {
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.share),
+                    title = stringResource(R.string.patches_error),
                     onBackClick = onDismiss,
                     backIcon = {
                         Icon(
-                            Icons.Outlined.Share,
-                            contentDescription = stringResource(R.string.share)
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            stringResource(R.string.back)
                         )
                     },
                     actions = {
@@ -54,11 +54,11 @@ fun ExceptionViewerDialog(text: String, onDismiss: () -> Unit) {
                                 val shareIntent = Intent.createChooser(sendIntent, null)
                                 context.startActivity(shareIntent)
                             },
-                            tooltip = stringResource(R.string.refresh),
+                            tooltip = stringResource(R.string.share),
                         ) {
                             Icon(
                                 Icons.Outlined.Share,
-                                stringResource(R.string.share)
+                                contentDescription = stringResource(R.string.share)
                             )
                         }
                     }

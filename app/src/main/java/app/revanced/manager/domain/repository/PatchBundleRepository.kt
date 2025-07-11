@@ -165,7 +165,7 @@ class PatchBundleRepository(
         getBundlesByType<RemotePatchBundle>().forEach { it.downloadLatest() }
 
     suspend fun updateCheck() =
-        uiSafe(app, R.string.source_download_fail, "Failed to update bundles") {
+        uiSafe(app, R.string.patches_download_fail, "Failed to update bundles") {
             coroutineScope {
                 if (!networkInfo.isSafe()) {
                     Log.d(tag, "Skipping update check because the network is down or metered.")
