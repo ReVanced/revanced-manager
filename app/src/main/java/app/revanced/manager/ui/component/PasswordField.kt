@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 
 @Composable
 fun PasswordField(modifier: Modifier = Modifier, value: String, onValueChange: (String) -> Unit, label: @Composable (() -> Unit)? = null, placeholder: @Composable (() -> Unit)? = null) {
@@ -33,18 +33,19 @@ fun PasswordField(modifier: Modifier = Modifier, value: String, onValueChange: (
         label = label,
         modifier = modifier,
         trailingIcon = {
-            TooltipWrap(
-                modifier = modifier,
-                tooltip = if (visible) stringResource(R.string.show_password_field) else stringResource(R.string.hide_password_field),
-            ) {
-                IconButton(onClick = {
+            TooltipIconButton(
+                modifier = Modifier,
+                onClick = {
                     visible = !visible
-                }) {
-                    val (icon, description) = remember(visible) {
-                        if (visible) Icons.Outlined.VisibilityOff to R.string.hide_password_field else Icons.Outlined.Visibility to R.string.show_password_field
-                    }
-                    Icon(icon, stringResource(description))
+                },
+                tooltip = if (visible) stringResource(R.string.show_password_field) else stringResource(
+                    R.string.hide_password_field
+                ),
+            ) {
+                val (icon, description) = remember(visible) {
+                    if (visible) Icons.Outlined.VisibilityOff to R.string.hide_password_field else Icons.Outlined.Visibility to R.string.show_password_field
                 }
+                Icon(icon, stringResource(description))
             }
         },
         keyboardOptions = KeyboardOptions(

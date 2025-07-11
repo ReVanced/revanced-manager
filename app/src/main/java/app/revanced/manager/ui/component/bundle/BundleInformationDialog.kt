@@ -22,7 +22,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefaul
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.FullscreenDialog
-import app.revanced.manager.ui.component.TooltipWrap
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -74,29 +74,27 @@ fun BundleInformationDialog(
                     },
                     actions = {
                         if (!bundle.isDefault) {
-                            TooltipWrap(
+                            TooltipIconButton(
                                 modifier = Modifier,
+                                onClick = onDeleteRequest,
                                 tooltip = stringResource(R.string.delete),
                             ) {
-                                IconButton(onClick = onDeleteRequest) {
-                                    Icon(
-                                        Icons.Outlined.DeleteOutline,
-                                        stringResource(R.string.delete)
-                                    )
-                                }
+                                Icon(
+                                    Icons.Outlined.DeleteOutline,
+                                    stringResource(R.string.delete)
+                                )
                             }
                         }
                         if (!isLocal && hasNetwork) {
-                            TooltipWrap(
+                            TooltipIconButton(
                                 modifier = Modifier,
+                                onClick = onUpdate,
                                 tooltip = stringResource(R.string.refresh),
                             ) {
-                                IconButton(onClick = onUpdate) {
-                                    Icon(
-                                        Icons.Outlined.Update,
-                                        stringResource(R.string.refresh)
-                                    )
-                                }
+                                Icon(
+                                    Icons.Outlined.Update,
+                                    stringResource(R.string.refresh)
+                                )
                             }
                         }
                     }

@@ -19,7 +19,6 @@ import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -49,8 +48,8 @@ import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.viewmodel.AboutViewModel
 import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.DEVELOPER_OPTIONS_TAPS
@@ -253,21 +252,17 @@ fun AboutSettingsScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
                 socialButtons.forEach { (icon, text, onClick) ->
-                    TooltipWrap(
-                        modifier = Modifier,
+                    TooltipIconButton(
+                        modifier = Modifier.padding(end = 8.dp),
                         tooltip = text,
+                        onClick = onClick
                     ) {
-                        IconButton(
-                            onClick = onClick,
-                            modifier = Modifier.padding(end = 8.dp),
-                        ) {
-                            Icon(
-                                icon,
-                                contentDescription = text,
-                                modifier = Modifier.size(28.dp),
-                                tint = MaterialTheme.colorScheme.secondary
-                            )
-                        }
+                        Icon(
+                            icon,
+                            contentDescription = text,
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.secondary
+                        )
                     }
                 }
             }

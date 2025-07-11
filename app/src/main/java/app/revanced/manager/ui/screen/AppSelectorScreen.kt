@@ -16,7 +16,6 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,7 +43,7 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.component.SearchView
-import app.revanced.manager.ui.component.TooltipWrap
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
@@ -163,13 +162,15 @@ fun AppSelectorScreen(
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick,
                 actions = {
-                    TooltipWrap(
+                    TooltipIconButton(
                         modifier = Modifier,
                         tooltip = stringResource(R.string.search_patches),
+                        onClick = { search = true }
                     ) {
-                        IconButton(onClick = { search = true }) {
-                            Icon(Icons.Outlined.Search, stringResource(R.string.search))
-                        }
+                        Icon(
+                            Icons.Outlined.Search,
+                            stringResource(R.string.search)
+                        )
                     }
                 }
             )

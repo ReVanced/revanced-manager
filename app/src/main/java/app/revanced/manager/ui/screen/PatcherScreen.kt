@@ -25,7 +25,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -48,10 +47,10 @@ import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.InstallerStatusDialog
-import app.revanced.manager.ui.component.TooltipWrap
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
@@ -165,27 +164,21 @@ fun PatcherScreen(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    TooltipWrap(
+                    TooltipIconButton(
                         modifier = Modifier,
+                        onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
+                        enabled = patcherSucceeded == true,
                         tooltip = stringResource(R.string.save_apk),
                     ) {
-                        IconButton(
-                            onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
-                            enabled = patcherSucceeded == true
-                        ) {
-                            Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
-                        }
+                        Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
-                    TooltipWrap(
+                    TooltipIconButton(
                         modifier = Modifier,
+                        onClick = { viewModel.exportLogs(context) },
+                        enabled = patcherSucceeded != null,
                         tooltip = stringResource(R.string.save_logs),
                     ) {
-                        IconButton(
-                            onClick = { viewModel.exportLogs(context) },
-                            enabled = patcherSucceeded != null
-                        ) {
-                            Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
-                        }
+                        Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
                     }
                 },
                 floatingActionButton = {

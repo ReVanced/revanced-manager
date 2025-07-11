@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.base.Preference
 import app.revanced.manager.ui.component.IntInputDialog
-import app.revanced.manager.ui.component.TooltipWrap
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -66,16 +65,15 @@ fun IntegerItem(
         headlineContent = stringResource(headline),
         supportingContent = stringResource(description),
         trailingContent = {
-            TooltipWrap(
-                modifier = Modifier,
+            TooltipIconButton(
+                modifier = modifier,
+                onClick = { dialogOpen = true },
                 tooltip = stringResource(R.string.edit),
             ) {
-                IconButton(onClick = { dialogOpen = true }) {
-                    Icon(
-                        Icons.Outlined.Edit,
-                        contentDescription = stringResource(R.string.edit)
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = stringResource(R.string.edit),
+                )
             }
         }
     )

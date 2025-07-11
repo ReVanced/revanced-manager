@@ -9,7 +9,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.bundle.BundleTopBar
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,39 +30,36 @@ fun ExceptionViewerDialog(text: String, onDismiss: () -> Unit) {
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.bundle_error),
+                    title = stringResource(R.string.share),
                     onBackClick = onDismiss,
                     backIcon = {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(R.string.back)
+                            Icons.Outlined.Share,
+                            contentDescription = stringResource(R.string.share)
                         )
                     },
                     actions = {
-                        TooltipWrap(
+                        TooltipIconButton(
                             modifier = Modifier,
-                            tooltip = stringResource(R.string.share),
-                        ) {
-                            IconButton(
-                                onClick = {
-                                    val sendIntent: Intent = Intent().apply {
-                                        action = Intent.ACTION_SEND
-                                        putExtra(
-                                            Intent.EXTRA_TEXT,
-                                            text
-                                        )
-                                        type = "text/plain"
-                                    }
-
-                                    val shareIntent = Intent.createChooser(sendIntent, null)
-                                    context.startActivity(shareIntent)
+                            onClick = {
+                                val sendIntent: Intent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    putExtra(
+                                        Intent.EXTRA_TEXT,
+                                        text
+                                    )
+                                    type = "text/plain"
                                 }
-                            ) {
-                                Icon(
-                                    Icons.Outlined.Share,
-                                    contentDescription = stringResource(R.string.share)
-                                )
-                            }
+
+                                val shareIntent = Intent.createChooser(sendIntent, null)
+                                context.startActivity(shareIntent)
+                            },
+                            tooltip = stringResource(R.string.refresh),
+                        ) {
+                            Icon(
+                                Icons.Outlined.Share,
+                                stringResource(R.string.share)
+                            )
                         }
                     }
                 )
