@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -45,8 +46,10 @@ import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.tooltip.TooltipWrap
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.security.MessageDigest
@@ -81,7 +84,11 @@ fun DownloadsSettingsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
+                        TooltipIconButton(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.delete),
+                            onClick = { showDeleteConfirmationDialog = true }
+                        ) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }

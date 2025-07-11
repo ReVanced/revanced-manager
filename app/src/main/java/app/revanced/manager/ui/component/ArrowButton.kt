@@ -4,13 +4,13 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 
 @Composable
 fun ArrowButton(
@@ -27,7 +27,11 @@ fun ArrowButton(
     )
 
     onClick?.let {
-        IconButton(onClick = it) {
+        TooltipIconButton(
+            modifier = Modifier,
+            onClick = it,
+            tooltip = stringResource(description),
+        ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowUp,
                 contentDescription = stringResource(description),

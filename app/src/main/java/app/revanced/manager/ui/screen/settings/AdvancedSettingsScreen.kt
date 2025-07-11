@@ -21,7 +21,6 @@ import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -52,6 +51,7 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.withHapticFeedback
@@ -243,7 +243,11 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     onValueChange = { url = it },
                     label = { Text(stringResource(R.string.api_url)) },
                     trailingIcon = {
-                        IconButton(onClick = { url = defaultUrl }) {
+                        TooltipIconButton(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.api_url_dialog_reset),
+                            onClick = { url = defaultUrl }
+                        ) {
                             Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
                         }
                     }

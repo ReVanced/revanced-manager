@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarColors
@@ -19,6 +18,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,7 +48,11 @@ fun SearchView(
                 onExpandedChange = onActiveChange,
                 placeholder = placeholder,
                 leadingIcon = {
-                    IconButton(onClick = { onActiveChange(false) }) {
+                    TooltipIconButton(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.back),
+                        onClick = { onActiveChange(false) }
+                    ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             stringResource(R.string.back)

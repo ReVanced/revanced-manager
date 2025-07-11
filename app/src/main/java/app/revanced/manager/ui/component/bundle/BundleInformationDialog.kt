@@ -22,6 +22,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefaul
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.FullscreenDialog
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -73,7 +74,11 @@ fun BundleInformationDialog(
                     },
                     actions = {
                         if (!bundle.isDefault) {
-                            IconButton(onClick = onDeleteRequest) {
+                            TooltipIconButton(
+                                modifier = Modifier,
+                                onClick = onDeleteRequest,
+                                tooltip = stringResource(R.string.delete),
+                            ) {
                                 Icon(
                                     Icons.Outlined.DeleteOutline,
                                     stringResource(R.string.delete)
@@ -81,7 +86,11 @@ fun BundleInformationDialog(
                             }
                         }
                         if (!isLocal && hasNetwork) {
-                            IconButton(onClick = onUpdate) {
+                            TooltipIconButton(
+                                modifier = Modifier,
+                                onClick = onUpdate,
+                                tooltip = stringResource(R.string.refresh),
+                            ) {
                                 Icon(
                                     Icons.Outlined.Update,
                                     stringResource(R.string.refresh)
