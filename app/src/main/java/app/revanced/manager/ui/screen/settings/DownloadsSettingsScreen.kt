@@ -2,7 +2,9 @@ package app.revanced.manager.ui.screen.settings
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,10 +13,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,6 +63,7 @@ fun DownloadsSettingsScreen(
     onBackClick: () -> Unit,
     viewModel: DownloadsViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     val pullRefreshState = rememberPullToRefreshState()
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val pluginStates by viewModel.downloaderPluginStates.collectAsStateWithLifecycle()
@@ -81,7 +88,7 @@ fun DownloadsSettingsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
+                        IconButton(onClick = { viewModel.deleteApps() }) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }
@@ -142,15 +149,20 @@ fun DownloadsSettingsScreen(
                                     .digest(androidSignature.toByteArray())
                                 hash.toHexString(format = HexFormat.UpperCase)
                             }
+                        val appName = remember {
+                            packageInfo.applicationInfo?.loadLabel(context.packageManager)
+                                ?.toString()
+                                ?: packageName
+                        }
 
                         when (state) {
                             is DownloaderPluginState.Loaded -> TrustDialog(
                                 title = R.string.downloader_plugin_revoke_trust_dialog_title,
                                 body = stringResource(
                                     R.string.downloader_plugin_trust_dialog_body,
-                                    packageName,
-                                    signature
                                 ),
+                                pluginName = appName,
+                                signature = signature,
                                 onDismiss = ::dismiss,
                                 onConfirm = {
                                     viewModel.revokePluginTrust(packageName)
@@ -165,19 +177,20 @@ fun DownloadsSettingsScreen(
                                 onDismiss = ::dismiss
                             )
 
-                            is DownloaderPluginState.Untrusted -> TrustDialog(
-                                title = R.string.downloader_plugin_trust_dialog_title,
-                                body = stringResource(
-                                    R.string.downloader_plugin_trust_dialog_body,
-                                    packageName,
-                                    signature
-                                ),
-                                onDismiss = ::dismiss,
-                                onConfirm = {
-                                    viewModel.trustPlugin(packageName)
-                                    dismiss()
-                                }
-                            )
+                            is DownloaderPluginState.Untrusted ->
+                                TrustDialog(
+                                    title = R.string.downloader_plugin_trust_dialog_title,
+                                    body = stringResource(
+                                        R.string.downloader_plugin_trust_dialog_body
+                                    ),
+                                    pluginName = appName,
+                                    signature = signature,
+                                    onDismiss = ::dismiss,
+                                    onConfirm = {
+                                        viewModel.trustPlugin(packageName)
+                                        dismiss()
+                                    }
+                                )
                         }
                     }
 
@@ -246,6 +259,8 @@ fun DownloadsSettingsScreen(
 private fun TrustDialog(
     @StringRes title: Int,
     body: String,
+    pluginName: String,
+    signature: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -262,6 +277,35 @@ private fun TrustDialog(
             }
         },
         title = { Text(stringResource(title)) },
-        text = { Text(body) }
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(body)
+                Card {
+                    Column(
+                        Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            stringResource(
+                                R.string.downloader_plugin_trust_dialog_plugin,
+                                pluginName
+                            ),
+                        )
+                        OutlinedCard(
+                            colors = CardDefaults.outlinedCardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
+                            )
+                        ) {
+                            Text(
+                                stringResource(
+                                    R.string.downloader_plugin_trust_dialog_signature,
+                                    signature.chunked(2).joinToString(" ")
+                                ), modifier = Modifier.padding(12.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
     )
 }
