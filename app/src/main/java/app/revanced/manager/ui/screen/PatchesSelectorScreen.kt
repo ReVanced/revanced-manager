@@ -364,10 +364,11 @@ fun PatchesSelectorScreen(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    TooltipIconButton(
+                    TooltipSmallFloatingActionButton(
                         modifier = Modifier,
-                        onClick = { showBottomSheet = true },
                         tooltip = stringResource(R.string.more),
+                        onClick = { showBottomSheet = true },
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.FilterList,
