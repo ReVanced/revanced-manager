@@ -74,6 +74,7 @@ import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.component.tooltip.TooltipFloatingActionButton
 import app.revanced.manager.ui.component.tooltip.TooltipIconButton
+import app.revanced.manager.ui.component.tooltip.TooltipSmallFloatingActionButton
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_INCOMPATIBLE
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
@@ -373,7 +374,7 @@ fun PatchesSelectorScreen(
                             contentDescription = stringResource(R.string.more)
                         )
                     }
-                    TooltipFloatingActionButton(
+                    TooltipSmallFloatingActionButton(
                         modifier = Modifier,
                         tooltip = stringResource(R.string.reset),
                         onClick = viewModel::reset,

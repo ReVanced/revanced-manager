@@ -1,7 +1,5 @@
 package app.revanced.manager.ui.component.tooltip
 
-import android.annotation.SuppressLint
-import androidx.annotation.Discouraged
 import androidx.annotation.StringRes
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.ExperimentalMaterial3Api
