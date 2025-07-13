@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.bundles.PatchBundleSource
@@ -14,7 +13,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 class BundleListViewModel : ViewModel(), KoinComponent {
-    private val app: Application = get()
     private val patchBundleRepository: PatchBundleRepository = get()
     val patchCounts = patchBundleRepository.patchCountsFlow
     val sources = combine(
@@ -41,7 +39,8 @@ class BundleListViewModel : ViewModel(), KoinComponent {
 
             Event.UPDATE_SELECTED -> viewModelScope.launch {
                 patchBundleRepository.update(
-                    *getSelectedSources().filterIsInstance<RemotePatchBundle>().toTypedArray()
+                    *getSelectedSources().filterIsInstance<RemotePatchBundle>().toTypedArray(),
+                    showToast = true,
                 )
             }
         }

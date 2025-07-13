@@ -3,6 +3,7 @@ package app.revanced.manager.domain.repository
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.annotation.StringRes
 import app.revanced.library.mostCommonCompatibleVersions
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
@@ -51,11 +52,6 @@ class PatchBundleRepository(
     private val dao = db.patchBundleDao()
     private val bundlesDir = app.getDir("patch_bundles", Context.MODE_PRIVATE)
 
-    /*
-    private val _sources: MutableStateFlow<Map<Int, PatchBundleSource>> =
-        MutableStateFlow(emptyMap())
-    val sources = _sources.map { it.values.toList() }*/
-
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private val store = Store(coroutineScope, State())
 
@@ -66,59 +62,6 @@ class PatchBundleRepository(
         }.toMap()
     }
     val bundleInfoFlow = store.state.map { it.info }
-    /*
-    val bundles = sources.flatMapLatestAndCombine(
-        combiner = {
-            it.mapNotNull { (uid, state) ->
-                val bundle = state.patchBundleOrNull() ?: return@mapNotNull null
-                uid to bundle
-            }.toMap()
-        }
-    ) {
-        it.state.map { state -> it.uid to state }
-    }*/
-
-    /*
-    val bundleInfoFlow = sources.flatMapLatestAndCombine(
-        transformer = { source ->
-            source.state.map {
-                source to it
-            }
-        },
-        combiner = { states ->
-            // Map bundles -> sources
-            val map = states.mapNotNull { (src, state) ->
-                (state.patchBundleOrNull() ?: return@mapNotNull null) to src
-            }.toMap()
-
-            val metadata = try {
-                PatchBundle.Loader.metadata(map.keys)
-            } catch (error: Throwable) {
-                coroutineScope.launch {
-                    map.values.forEach { src -> src.markAsFailed(error) }
-                }
-
-                Log.e(tag, "Failed to load bundles", error)
-                emptyMap()
-            }
-
-            metadata.entries.associate { (bundle, patches) ->
-                val src = map[bundle]!!
-                src.uid to PatchBundleInfo.Global(
-                    src.getName(),
-                    bundle.manifestAttributes?.version,
-                    src.uid,
-                    patches
-                )
-            }
-        }
-    )
-        .onStart { Log.i(tag, "Starting bundle info flow") }
-        .shareIn(
-            coroutineScope,
-            SharingStarted.WhileSubscribed(stopTimeoutMillis = 3000L),
-            replay = 1
-        )*/
 
     fun scopedBundleInfoFlow(packageName: String, version: String?) = bundleInfoFlow.map {
         it.map { (_, bundleInfo) ->
@@ -396,6 +339,9 @@ class PatchBundleRepository(
         private val showToast: Boolean = false,
         private val predicate: (bundle: RemotePatchBundle) -> Boolean = { true },
     ) : Action<State> {
+        private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
+            withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
+
         override fun toString() = if (force) "Redownload remote bundles" else "Update check"
 
         override suspend fun ActionContext<State>.execute(
@@ -424,7 +370,7 @@ class PatchBundleRepository(
                 .filterNotNull()
                 .toMap()
             if (updated.isEmpty()) {
-                if (showToast) app.toast(app.getString(R.string.patches_update_unavailable))
+                if (showToast) toast(R.string.patches_update_unavailable)
                 return@coroutineScope current
             }
 
@@ -436,20 +382,13 @@ class PatchBundleRepository(
                 }
             }
 
-            if (showToast) app.toast(app.getString(R.string.patches_update_success))
+            if (showToast) toast(R.string.patches_update_success)
             doReload()
         }
 
         override suspend fun catch(exception: Exception) {
             Log.e(tag, "Failed to update patches", exception)
-            withContext(Dispatchers.Main) {
-                app.toast(
-                    app.getString(
-                        R.string.patches_download_fail,
-                        exception.simpleMessage()
-                    )
-                )
-            }
+            toast(R.string.patches_download_fail, exception.simpleMessage())
         }
     }
 
