@@ -153,7 +153,7 @@ class PatchBundleRepository(
     private suspend fun loadFromDb(): List<PatchBundleEntity> {
         val all = dao.all()
         if (all.isEmpty()) {
-            dao.add(defaultSource)
+            dao.upsert(defaultSource)
             return listOf(defaultSource)
         }
 
