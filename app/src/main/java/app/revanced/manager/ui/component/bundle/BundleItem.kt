@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -24,41 +24,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.propsOrNullFlow
-import kotlinx.coroutines.flow.map
+import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BundleItem(
-    bundle: PatchBundleSource,
+    src: PatchBundleSource,
     patchCount: Int,
     selectable: Boolean,
     isBundleSelected: Boolean,
     toggleSelection: (Boolean) -> Unit,
+    onSelect: () -> Unit,
     onDelete: () -> Unit,
     onUpdate: () -> Unit,
-    onSelect: () -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
-    val state by bundle.state.collectAsStateWithLifecycle()
-
-    val version by remember(bundle) {
-        bundle.propsOrNullFlow().map { props -> props?.versionInfo?.patches }
-    }.collectAsStateWithLifecycle(null)
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
     if (viewBundleDialogPage) {
         BundleInformationDialog(
-            bundle = bundle,
+            src = src,
             patchCount = patchCount,
             onDismissRequest = { viewBundleDialogPage = false },
-            onDeleteRequest = {
-                viewBundleDialogPage = false
+            onDeleteRequest = { showDeleteConfirmationDialog = true },
+            onUpdate = onUpdate,
+        )
+    }
+
+    if (showDeleteConfirmationDialog) {
+        ConfirmDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = {
                 onDelete()
+                viewBundleDialogPage = false
             },
-            onRefreshButton = onUpdate,
+            title = stringResource(R.string.delete),
+            description = stringResource(R.string.patches_delete_single_dialog_description, src.name),
+            icon = Icons.Outlined.Delete
         )
     }
 
@@ -72,37 +77,39 @@ fun BundleItem(
             ),
         leadingContent = if (selectable) {
             {
-                Checkbox(
+                HapticCheckbox(
                     checked = isBundleSelected,
                     onCheckedChange = toggleSelection,
                 )
             }
         } else null,
 
-        headlineContent = { Text(text = bundle.name) },
+        headlineContent = { Text(src.name) },
         supportingContent = {
-            Text(text = pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
+            if (src.state is PatchBundleSource.State.Available) {
+                Text(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
+            }
         },
         trailingContent = {
             Row {
-                val icon = remember(state) {
-                    when (state) {
-                        is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.bundle_error
-                        is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.bundle_missing
+                val icon = remember(src.state) {
+                    when (src.state) {
+                        is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.patches_error
+                        is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.patches_missing
                         is PatchBundleSource.State.Available -> null
                     }
                 }
 
                 icon?.let { (vector, description) ->
                     Icon(
-                        imageVector = vector,
+                        vector,
                         contentDescription = stringResource(description),
                         modifier = Modifier.size(24.dp),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }
 
-                version?.let { Text(text = it) }
+                src.version?.let { Text(text = it) }
             }
         },
     )

@@ -1,15 +1,17 @@
 package app.revanced.manager.patcher.runtime.process
 
+import android.annotation.SuppressLint
 import android.app.ActivityThread
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.patcher.patch.PatchBundleLoader
+import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.patcher.runtime.ProcessRuntime
 import app.revanced.manager.ui.model.State
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -54,14 +56,9 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
 
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
-            val integrations =
-                parameters.configurations.mapNotNull { it.bundle.integrations }
-            val patchBundleLoader = PatchBundleLoader(parameters.configurations.map { it.bundle })
-
+            val allPatches = PatchBundle.Loader.patches(parameters.configurations.map { it.bundle }, parameters.packageName)
             val patchList = parameters.configurations.flatMap { config ->
-                val patches =
-                    patchBundleLoader
-                        .loadPatches(config.bundle, parameters.packageName)
+                val patches = (allPatches[config.bundle] ?: return@flatMap emptyList())
                         .filter { it.name in config.patches }
                         .associateBy { it.name }
 
@@ -83,7 +80,6 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
                 cacheDir = parameters.cacheDir,
                 aaptPath = parameters.aaptPath,
                 frameworkDir = parameters.frameworkDir,
-                multithreadingDexFileWriter = parameters.enableMultithrededDexWriter,
                 androidContext = context,
                 logger = logger,
                 input = File(parameters.inputFile),
@@ -92,7 +88,7 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
                     events.progress(name, state?.name, message)
                 }
             ).use {
-                it.run(File(parameters.outputFile), patchList, integrations)
+                it.run(File(parameters.outputFile), patchList)
             }
 
             events.finished(null)
@@ -100,6 +96,10 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
     }
 
     companion object {
+        private val longArrayClass = LongArray::class.java
+        private val emptyLongArray = LongArray(0)
+
+        @SuppressLint("PrivateApi")
         @JvmStatic
         fun main(args: Array<String>) {
             Looper.prepare()
@@ -109,6 +109,15 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
             // Abuse hidden APIs to get a context.
             val systemContext = ActivityThread.systemMain().systemContext as Context
             val appContext = systemContext.createPackageContext(managerPackageName, 0)
+
+            // Avoid annoying logs. See https://github.com/robolectric/robolectric/blob/ad0484c6b32c7d11176c711abeb3cb4a900f9258/robolectric/src/main/java/org/robolectric/android/internal/AndroidTestEnvironment.java#L376-L388
+            Class.forName("android.app.AppCompatCallbacks").apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                    getDeclaredMethod("install", longArrayClass, longArrayClass).also { it.isAccessible = true }(null, emptyLongArray, emptyLongArray)
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    getDeclaredMethod("install", longArrayClass).also { it.isAccessible = true }(null, emptyLongArray)
+                }
+            }
 
             val ipcInterface = PatcherProcess(appContext)
 

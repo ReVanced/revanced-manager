@@ -1,40 +1,42 @@
 [versions]
-ktx = "1.12.0"
-material3 = "1.2.1"
-ui-tooling = "1.6.4"
-viewmodel-lifecycle = "2.7.0"
+ktx = "1.16.0"
+material3 = "1.3.2"
+ui-tooling = "1.8.1"
+viewmodel-lifecycle = "2.9.0"
 splash-screen = "1.0.1"
-compose-activity = "1.8.2"
-paging = "3.2.1"
-preferences-datastore = "1.0.0"
-work-runtime = "2.9.0"
-compose-bom = "2024.03.00"
-accompanist = "0.34.0"
+activity = "1.10.1"
+appcompat = "1.7.0"
+preferences-datastore = "1.1.2"
+work-runtime = "2.10.1"
+compose-bom = "2025.05.00"
+navigation = "2.8.6"
+accompanist = "0.37.0"
 placeholder = "1.1.2"
-serialization = "1.6.3"
-collection = "0.3.7"
-room-version = "2.6.1"
-revanced-patcher = "19.3.1"
-revanced-library = "2.2.1"
-revanced-multidexlib2 = "3.0.3.r3"
-koin-version = "3.5.3"
-koin-version-compose = "3.5.3"
-reimagined-navigation = "1.5.0"
+reorderable = "2.4.3"
+serialization = "1.8.0"
+collection = "0.3.8"
+datetime = "0.6.1"
+room-version = "2.7.1"
+revanced-patcher = "21.0.0"
+revanced-library = "3.0.2"
+koin = "3.5.3"
 ktor = "2.3.9"
-markdown-renderer = "0.13.0"
+markdown-renderer = "0.30.0"
 fading-edges = "1.0.4"
-androidGradlePlugin = "8.3.0"
-kotlinGradlePlugin = "1.9.22"
-devToolsGradlePlugin = "1.9.22-1.0.17"
-aboutLibrariesGradlePlugin = "11.1.1"
-coil = "2.6.0"
+kotlin = "2.1.10"
+android-gradle-plugin = "8.9.1"
+dev-tools-gradle-plugin = "2.1.10-1.0.29"
+about-libraries-gradle-plugin = "12.1.2"
+coil = "2.7.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
-libsu = "5.2.2"
+libsu = "6.0.0"
 scrollbars = "1.0.4"
+enumutil = "1.1.1"
 compose-icons = "1.2.4"
-kotlin-process = "1.4.1"
+kotlin-process = "1.5.1"
 hidden-api-stub = "4.3.3"
+binary-compatibility-validator = "0.17.0"
 
 [libraries]
 # AndroidX Core
@@ -42,10 +44,10 @@ androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx"
 runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "viewmodel-lifecycle" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
-paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -53,8 +55,9 @@ compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3"}
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 # Coil
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
@@ -69,6 +72,7 @@ placeholder-material3 = { group = "io.github.fornewid", name = "placeholder-mate
 # Kotlinx
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-collection-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "collection" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-version" }
@@ -78,18 +82,15 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 # Patcher
 revanced-patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "revanced-patcher" }
 revanced-library = { group = "app.revanced", name = "revanced-library", version.ref = "revanced-library" }
-revanced-multidexlib2 = { group = "app.revanced", name = "multidexlib2", version.ref = "revanced-multidexlib2" }
 
 # Koin
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-version" }
-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-version-compose" }
-koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin-version" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
+koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
 
-# Compose Navigation
-reimagined-navigation = { group = "dev.olshevski.navigation", name = "reimagined", version.ref = "reimagined-navigation" }
-
-# about-libraries
-about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "aboutLibrariesGradlePlugin" }
+# About Libraries
+about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries-gradle-plugin" }
 
 # Ktor
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
@@ -122,12 +123,24 @@ libsu-nio = { group = "com.github.topjohnwu.libsu", name = "nio", version.ref = 
 # Scrollbars
 scrollbars = { group = "com.github.GIGAMOLE", name = "ComposeScrollbars", version.ref = "scrollbars" }
 
+# EnumUtil
+enumutil = { group = "io.github.materiiapps", name = "enumutil", version.ref = "enumutil" }
+enumutil-ksp = { group = "io.github.materiiapps", name = "enumutil-ksp", version.ref = "enumutil" }
+
+# Reorderable lists
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
+
 # Compose Icons
 # switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
 compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
-devtools = { id = "com.google.devtools.ksp", version.ref = "devToolsGradlePlugin" }
-about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibrariesGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
+about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }

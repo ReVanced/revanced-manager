@@ -22,11 +22,10 @@ class Session(
     cacheDir: String,
     frameworkDir: String,
     aaptPath: String,
-    multithreadingDexFileWriter: Boolean,
     private val androidContext: Context,
     private val logger: Logger,
     private val input: File,
-    private val onPatchCompleted: () -> Unit,
+    private val onPatchCompleted: suspend () -> Unit,
     private val onProgress: (name: String?, state: State?, message: String?) -> Unit
 ) : Closeable {
     private fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
@@ -38,8 +37,7 @@ class Session(
             apkFile = input,
             temporaryFilesPath = tempDir,
             frameworkFileDirectory = frameworkDir,
-            aaptBinaryPath = aaptPath,
-            multithreadingDexFileWriter = multithreadingDexFileWriter,
+            aaptBinaryPath = aaptPath
         )
     )
 
@@ -47,16 +45,16 @@ class Session(
         var nextPatchIndex = 0
 
         updateProgress(
-            name = androidContext.getString(R.string.applying_patch, selectedPatches[nextPatchIndex]),
+            name = androidContext.getString(R.string.executing_patch, selectedPatches[nextPatchIndex]),
             state = State.RUNNING
         )
 
-        this.apply(true).collect { (patch, exception) ->
+        this().collect { (patch, exception) ->
             if (patch !in selectedPatches) return@collect
 
             if (exception != null) {
                 updateProgress(
-                    name = androidContext.getString(R.string.failed_to_apply_patch, patch.name),
+                    name = androidContext.getString(R.string.failed_to_execute_patch, patch.name),
                     state = State.FAILED,
                     message = exception.stackTraceToString()
                 )
@@ -72,7 +70,7 @@ class Session(
 
             selectedPatches.getOrNull(nextPatchIndex)?.let { nextPatch ->
                 updateProgress(
-                    name = androidContext.getString(R.string.applying_patch, nextPatch.name)
+                    name = androidContext.getString(R.string.executing_patch, nextPatch.name)
                 )
             }
 
@@ -82,14 +80,14 @@ class Session(
         updateProgress(
             state = State.COMPLETED,
             name = androidContext.resources.getQuantityString(
-                R.plurals.patches_applied,
+                R.plurals.patches_executed,
                 selectedPatches.size,
                 selectedPatches.size
             )
         )
     }
 
-    suspend fun run(output: File, selectedPatches: PatchList, integrations: List<File>) {
+    suspend fun run(output: File, selectedPatches: PatchList) {
         updateProgress(state = State.COMPLETED) // Unpacking
 
         java.util.logging.Logger.getLogger("").apply {
@@ -103,9 +101,7 @@ class Session(
 
         with(patcher) {
             logger.info("Merging integrations")
-            acceptIntegrations(integrations.toSet())
-            acceptPatches(selectedPatches.toSet())
-            updateProgress(state = State.COMPLETED) // Merging
+            this += selectedPatches.toSet()
 
             logger.info("Applying patches...")
             applyPatchesVerbose(selectedPatches.sortedBy { it.name })

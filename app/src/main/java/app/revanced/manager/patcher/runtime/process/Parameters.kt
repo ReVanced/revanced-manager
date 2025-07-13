@@ -13,7 +13,6 @@ data class Parameters(
     val packageName: String,
     val inputFile: String,
     val outputFile: String,
-    val enableMultithrededDexWriter: Boolean,
     val configurations: List<PatchConfiguration>,
 ) : Parcelable
 

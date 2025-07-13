@@ -2,11 +2,7 @@ package app.revanced.manager.ui.component.patcher
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
+import app.revanced.manager.util.transparentListItemColors
 
 @Composable
 fun InstallPickerDialog(
@@ -27,7 +25,7 @@ fun InstallPickerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         dismissButton = {
-            Button(onClick = onDismiss) {
+            TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -44,16 +42,17 @@ fun InstallPickerDialog(
         title = { Text(stringResource(R.string.select_install_type)) },
         text = {
             Column {
-                InstallType.values().forEach {
+                InstallType.entries.forEach {
                     ListItem(
                         modifier = Modifier.clickable { selectedInstallType = it },
                         leadingContent = {
-                            RadioButton(
+                            HapticRadioButton(
                                 selected = selectedInstallType == it,
                                 onClick = null
                             )
                         },
-                        headlineContent = { Text(stringResource(it.stringResource)) }
+                        headlineContent = { Text(stringResource(it.stringResource)) },
+                        colors = transparentListItemColors
                     )
                 }
             }

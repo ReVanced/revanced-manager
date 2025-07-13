@@ -2,8 +2,6 @@ package app.revanced.manager.domain.bundles
 
 import androidx.compose.runtime.Stable
 import app.revanced.manager.patcher.patch.PatchBundle
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import java.io.File
 import java.io.OutputStream
@@ -12,17 +10,29 @@ import java.io.OutputStream
  * A [PatchBundle] source.
  */
 @Stable
-sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) {
+sealed class PatchBundleSource(
+    val name: String,
+    val uid: Int,
+    error: Throwable?,
+    protected val directory: File
+) {
     protected val patchesFile = directory.resolve("patches.jar")
-    protected val integrationsFile = directory.resolve("integrations.apk")
 
-    private val _state = MutableStateFlow(getPatchBundle())
-    val state = _state.asStateFlow()
+    val state = when {
+        error != null -> State.Failed(error)
+        !hasInstalled() -> State.Missing
+        else -> State.Available(PatchBundle(patchesFile.absolutePath))
+    }
 
-    /**
-     * Returns true if the bundle has been downloaded to local storage.
-     */
-    fun hasInstalled() = patchesFile.exists()
+    val patchBundle get() = (state as? State.Available)?.bundle
+    val version get() = patchBundle?.manifestAttributes?.version
+    val isNameOutOfDate get() = patchBundle?.manifestAttributes?.name?.let { it != name } == true
+    val error get() = (state as? State.Failed)?.throwable
+
+    abstract fun copy(error: Throwable? = this.error, name: String = this.name): PatchBundleSource
+
+    val versionFlow = flowOf(version)
+    protected fun hasInstalled() = patchesFile.exists()
 
     protected fun patchBundleOutputStream(): OutputStream = with(patchesFile) {
         // Android 14+ requires dex containers to be readonly.
@@ -34,31 +44,14 @@ sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) 
         }
     }
 
-    private fun getPatchBundle() =
-        if (!hasInstalled()) State.Missing
-        else State.Available(PatchBundle(patchesFile, integrationsFile.takeIf(File::exists)))
-
-    fun refresh() {
-        _state.value = getPatchBundle()
-    }
-
-    fun markAsFailed(e: Throwable) {
-        _state.value = State.Failed(e)
-    }
-
     sealed interface State {
-        fun patchBundleOrNull(): PatchBundle? = null
-
         data object Missing : State
         data class Failed(val throwable: Throwable) : State
-        data class Available(val bundle: PatchBundle) : State {
-            override fun patchBundleOrNull() = bundle
-        }
+        data class Available(val bundle: PatchBundle) : State
     }
 
-    companion object {
-        val PatchBundleSource.isDefault get() = uid == 0
-        val PatchBundleSource.asRemoteOrNull get() = this as? RemotePatchBundle
-        fun PatchBundleSource.propsOrNullFlow() = asRemoteOrNull?.propsFlow() ?: flowOf(null)
+    companion object Extensions {
+        val PatchBundleSource.isDefault inline get() = uid == 0
+        val PatchBundleSource.asRemoteOrNull inline get() = this as? RemotePatchBundle
     }
 }

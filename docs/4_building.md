@@ -1,8 +1,18 @@
-# 🛠️ Building from source
+# 🛠️ Build from source
 
 This page will guide you through building ReVanced Manager from source.
 
-1. Download Java SDK 17 ([Azul JDK](https://www.azul.com/downloads/?version=java-17-lts&package=jdk#zulu) or [OpenJDK](https://jdk.java.net/java-se-ri/17)) and add it to path
+1. Install Java Development Kit 17 (e.g. [Temurin JDK](https://adoptium.net/temurin/releases/?os=any&arch=any&version=17))
+
+   Using [WinGet](https://learn.microsoft.com/en-us/windows/package-manager/winget):
+   ``sh
+   winget install EclipseAdoptium.Temurin.17.JDK
+   ``
+   
+   Using [SDKMAN!](https://sdkman.io/):
+   ```sh
+   sdk install java 17.0.15-tem
+   ```
 
 2. Clone the repository
 
@@ -10,29 +20,19 @@ This page will guide you through building ReVanced Manager from source.
    git clone https://github.com/revanced/revanced-manager.git && cd revanced-manager
    ```
 
-3. Create a GitHub personal access token with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced)
+3. Build the APK
 
-4. Add your GitHub username and the token to `~/.gradle/gradle.properties`
-
-   ```properties
-   gpr.user = YourUsername
-   gpr.key = ghp_longrandomkey
-   ```
-
-5. Set the `sdk.dir` property in `local.properties` to your Android SDK location
-
-   ```properties
-   sdk.dir = /path/to/android/sdk
-   ```
-
-6. Build the APK
-
-   Debug:
    ```sh
-   ./gradlew assembleDebug
+   ./gradlew assembleRelease
    ```
 
-   Release:
-   ```sh
-   ./gradlew assembleRelease -Psign
-   ```
+> [!NOTE]
+> If the build fails due to authentication, you may need to authenticate to GitHub Packages.
+> Create a personal access tokens with the scope `read:packages` [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced) and add your token to ~/.gradle/gradle.properties. Create the file if it does not exist.
+>
+> Example `gradle.properties` file:
+>
+> ```properties
+> gpr.user = <GitHub username>
+> gpr.key = <Personal access token>
+> ```

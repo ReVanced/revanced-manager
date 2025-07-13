@@ -13,15 +13,28 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Key
-import androidx.compose.material3.*
+import androidx.compose.material.icons.outlined.WarningAmber
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -31,12 +44,16 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.PasswordField
 import app.revanced.manager.ui.component.bundle.BundleSelector
+import app.revanced.manager.ui.component.settings.ExpandableSettingListItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.ImportExportViewModel
+import app.revanced.manager.ui.viewmodel.ResetDialogState
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -47,6 +64,8 @@ fun ImportExportSettingsScreen(
     vm: ImportExportViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    var selectorDialog by rememberSaveable { mutableStateOf<(@Composable () -> Unit)?>(null) }
 
     val importKeystoreLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
@@ -58,6 +77,7 @@ fun ImportExportSettingsScreen(
         }
 
     val patchBundles by vm.patchBundles.collectAsStateWithLifecycle(initialValue = emptyList())
+    val packagesWithSelections by vm.packagesWithSelection.collectAsStateWithLifecycle(initialValue = emptySet())
     val packagesWithOptions by vm.packagesWithOptions.collectAsStateWithLifecycle(initialValue = emptySet())
 
     vm.selectionAction?.let { action ->
@@ -86,27 +106,49 @@ fun ImportExportSettingsScreen(
             onDismissRequest = vm::cancelKeystoreImport,
             onSubmit = { cn, pass ->
                 vm.viewModelScope.launch {
-                    val result = vm.tryKeystoreImport(cn, pass)
-                    if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                    uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
+                        val result = vm.tryKeystoreImport(cn, pass)
+                        if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                    }
                 }
             }
         )
     }
 
+    vm.resetDialogState?.let {
+        with(vm.resetDialogState!!) {
+            ConfirmDialog(
+                onDismiss = { vm.resetDialogState = null },
+                onConfirm = onConfirm,
+                title = stringResource(titleResId),
+                description = dialogOptionName?.let {
+                    stringResource(descriptionResId, it)
+                } ?: stringResource(descriptionResId),
+                icon = Icons.Outlined.WarningAmber
+            )
+        }
+    }
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.import_export),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick
             )
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            GroupHeader(stringResource(R.string.signing))
+            selectorDialog?.invoke()
+
+            GroupHeader(stringResource(R.string.import_))
             GroupItem(
                 onClick = {
                     importKeystoreLauncher.launch("*/*")
@@ -114,6 +156,13 @@ fun ImportExportSettingsScreen(
                 headline = R.string.import_keystore,
                 description = R.string.import_keystore_description
             )
+            GroupItem(
+                onClick = vm::importSelection,
+                headline = R.string.import_patch_selection,
+                description = R.string.import_patch_selection_description
+            )
+
+            GroupHeader(stringResource(R.string.export))
             GroupItem(
                 onClick = {
                     if (!vm.canExport()) {
@@ -126,67 +175,133 @@ fun ImportExportSettingsScreen(
                 description = R.string.export_keystore_description
             )
             GroupItem(
-                onClick = vm::regenerateKeystore,
-                headline = R.string.regenerate_keystore,
-                description = R.string.regenerate_keystore_description
-            )
-
-            GroupHeader(stringResource(R.string.patches))
-            GroupItem(
-                onClick = vm::importSelection,
-                headline = R.string.import_patch_selection,
-                description = R.string.import_patch_selection_description
-            )
-            GroupItem(
                 onClick = vm::exportSelection,
                 headline = R.string.export_patch_selection,
                 description = R.string.export_patch_selection_description
             )
-            // TODO: allow resetting selection for specific bundle or package name.
+
+            GroupHeader(stringResource(R.string.reset))
             GroupItem(
-                onClick = vm::resetSelection,
-                headline = R.string.reset_patch_selection,
-                description = R.string.reset_patch_selection_description
+                onClick = {
+                    vm.resetDialogState = ResetDialogState.Keystore {
+                        vm.regenerateKeystore()
+                    }
+                },
+                headline = R.string.regenerate_keystore,
+                description = R.string.regenerate_keystore_description
             )
 
-            var showPackageSelector by rememberSaveable {
-                mutableStateOf(false)
-            }
-            var showBundleSelector by rememberSaveable {
-                mutableStateOf(false)
-            }
+            ExpandableSettingListItem(
+                headlineContent = stringResource(R.string.reset_patch_selection),
+                supportingContent = stringResource(R.string.reset_patch_selection_description),
+                expandableContent = {
+                    GroupItem(
+                        onClick = {
+                            vm.resetDialogState = ResetDialogState.PatchSelectionAll {
+                                vm.resetSelection()
+                            }
+                        },
+                        headline = R.string.patch_selection_reset_all,
+                        description = R.string.patch_selection_reset_all_description
+                    )
 
-            if (showPackageSelector)
-                PackageSelector(packages = packagesWithOptions) { selected ->
-                    selected?.let(vm::resetOptionsForPackage)
+                    GroupItem(
+                        onClick = {
+                            selectorDialog = {
+                                PackageSelector(packages = packagesWithSelections) { packageName ->
+                                    packageName?.also {
+                                        vm.resetDialogState =
+                                            ResetDialogState.PatchSelectionPackage(packageName) {
+                                                vm.resetSelectionForPackage(packageName)
+                                            }
+                                    }
+                                    selectorDialog = null
+                                }
+                            }
+                        },
+                        headline = R.string.patch_selection_reset_package,
+                        description = R.string.patch_selection_reset_package_description
+                    )
 
-                    showPackageSelector = false
+                    if (patchBundles.isNotEmpty()) {
+                        GroupItem(
+                            onClick = {
+                                selectorDialog = {
+                                    BundleSelector(sources = patchBundles) { src ->
+                                        src?.also {
+                                            coroutineScope.launch {
+                                                vm.resetDialogState =
+                                                    ResetDialogState.PatchSelectionBundle(it.name) {
+                                                        vm.resetSelectionForPatchBundle(it)
+                                                    }
+                                            }
+                                        }
+                                        selectorDialog = null
+                                    }
+                                }
+                            },
+                            headline = R.string.patch_selection_reset_patches,
+                            description = R.string.patch_selection_reset_patches_description
+                        )
+                    }
                 }
+            )
 
-            if (showBundleSelector)
-                BundleSelector(bundles = patchBundles) { bundle ->
-                    bundle?.let(vm::clearOptionsForBundle)
+            ExpandableSettingListItem(
+                headlineContent = stringResource(R.string.reset_patch_options),
+                supportingContent = stringResource(R.string.reset_patch_options_description),
+                expandableContent = {
+                    GroupItem(
+                        onClick = {
+                            vm.resetDialogState = ResetDialogState.PatchOptionsAll {
+                                vm.resetOptions()
+                            }
+                        }, // TODO: patch options import/export.
+                        headline = R.string.patch_options_reset_all,
+                        description = R.string.patch_options_reset_all_description,
+                    )
 
-                    showBundleSelector = false
+                    GroupItem(
+                        onClick = {
+                            selectorDialog = {
+                                PackageSelector(packages = packagesWithOptions) { packageName ->
+                                    packageName?.also {
+                                        vm.resetDialogState =
+                                            ResetDialogState.PatchOptionPackage(packageName) {
+                                                vm.resetOptionsForPackage(packageName)
+                                            }
+                                    }
+                                    selectorDialog = null
+                                }
+                            }
+                        },
+                        headline = R.string.patch_options_reset_package,
+                        description = R.string.patch_options_reset_package_description
+                    )
+
+                    if (patchBundles.isNotEmpty()) {
+                        GroupItem(
+                            onClick = {
+                                selectorDialog = {
+                                    BundleSelector(sources = patchBundles) { src ->
+                                        src?.also {
+                                            coroutineScope.launch {
+                                                vm.resetDialogState =
+                                                    ResetDialogState.PatchOptionBundle(src.name) {
+                                                        vm.resetOptionsForBundle(src)
+                                                    }
+                                            }
+                                        }
+                                        selectorDialog = null
+                                    }
+                                }
+                            },
+                            headline = R.string.patch_options_reset,
+                            description = R.string.patch_options_reset_all,
+                        )
+                    }
                 }
-
-            // TODO: patch options import/export.
-            GroupItem(
-                onClick = vm::resetOptions,
-                headline = R.string.patch_options_reset_all,
-                description = R.string.patch_options_reset_all_description,
             )
-            GroupItem(
-                onClick = { showPackageSelector = true },
-                headline = R.string.patch_options_reset_package,
-                description = R.string.patch_options_reset_package_description
-            )
-            if (patchBundles.size > 1)
-                GroupItem(
-                    onClick = { showBundleSelector = true },
-                    headline = R.string.patch_options_reset_bundle,
-                    description = R.string.patch_options_reset_bundle_description,
-                )
         }
     }
 }
@@ -250,12 +365,17 @@ private fun PackageSelector(packages: Set<String>, onFinish: (String?) -> Unit) 
 }
 
 @Composable
-private fun GroupItem(onClick: () -> Unit, @StringRes headline: Int, @StringRes description: Int) =
+private fun GroupItem(
+    onClick: () -> Unit,
+    @StringRes headline: Int,
+    @StringRes description: Int? = null
+) {
     SettingsListItem(
         modifier = Modifier.clickable { onClick() },
         headlineContent = stringResource(headline),
-        supportingContent = stringResource(description)
+        supportingContent = description?.let { stringResource(it) }
     )
+}
 
 @Composable
 fun KeystoreCredentialsDialog(

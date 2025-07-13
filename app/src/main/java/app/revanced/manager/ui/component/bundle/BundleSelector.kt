@@ -14,19 +14,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSource?) -> Unit) {
-    LaunchedEffect(bundles) {
-        if (bundles.size == 1) {
-            onFinish(bundles[0])
+fun BundleSelector(sources: List<PatchBundleSource>, onFinish: (PatchBundleSource?) -> Unit) {
+    LaunchedEffect(sources) {
+        if (sources.size == 1) {
+            onFinish(sources[0])
         }
     }
 
-    if (bundles.size < 2) {
+    if (sources.size < 2) {
         return
     }
 
@@ -45,12 +47,12 @@ fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSourc
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "Select bundle",
+                    text = stringResource(R.string.select),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
-            bundles.forEach {
+            sources.forEach {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
@@ -62,7 +64,7 @@ fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSourc
                         }
                 ) {
                     Text(
-                        text = it.name,
+                        "${it.name} ${it.version}",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )

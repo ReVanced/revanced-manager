@@ -4,70 +4,98 @@ import app.revanced.manager.util.PatchSelection
 
 /**
  * A base class for storing [PatchBundle] metadata.
- *
- * @param name The name of the bundle.
- * @param uid The unique ID of the bundle.
- * @param patches The patch list.
  */
-sealed class PatchBundleInfo(val name: String, val uid: Int, val patches: List<PatchInfo>) {
+sealed class PatchBundleInfo {
+    /**
+     * The name of the bundle.
+     */
+    abstract val name: String
+
+    /**
+     * The version of the bundle.
+     */
+    abstract val version: String?
+
+    /**
+     * The unique ID of the bundle.
+     */
+    abstract val uid: Int
+
+    /**
+     * The patch list.
+     */
+    abstract val patches: List<PatchInfo>
+
     /**
      * Information about a bundle and all the patches it contains.
      *
      * @see [PatchBundleInfo]
      */
-    class Global(name: String, uid: Int, patches: List<PatchInfo>) :
-        PatchBundleInfo(name, uid, patches) {
-
+    data class Global(
+        override val name: String,
+        override val version: String?,
+        override val uid: Int,
+        override val patches: List<PatchInfo>
+    ) : PatchBundleInfo() {
         /**
          * Create a [PatchBundleInfo.Scoped] that only contains information about patches that are relevant for a specific [packageName].
          */
-        fun forPackage(packageName: String, version: String): Scoped {
+        fun forPackage(packageName: String, version: String?): Scoped {
             val relevantPatches = patches.filter { it.compatibleWith(packageName) }
-            val supported = mutableListOf<PatchInfo>()
-            val unsupported = mutableListOf<PatchInfo>()
+            val compatible = mutableListOf<PatchInfo>()
+            val incompatible = mutableListOf<PatchInfo>()
             val universal = mutableListOf<PatchInfo>()
 
             relevantPatches.forEach {
                 val targetList = when {
                     it.compatiblePackages == null -> universal
-                    it.supportsVersion(
+                    it.supports(
                         packageName,
                         version
-                    ) -> supported
+                    ) -> compatible
 
-                    else -> unsupported
+                    else -> incompatible
                 }
 
                 targetList.add(it)
             }
 
-            return Scoped(name, uid, relevantPatches, supported, unsupported, universal)
+            return Scoped(
+                name,
+                this.version,
+                uid,
+                relevantPatches,
+                compatible,
+                incompatible,
+                universal
+            )
         }
     }
 
     /**
      * Contains information about a bundle that is relevant for a specific package name.
      *
-     * @param supportedPatches Patches that are compatible with the specified package name and version.
-     * @param unsupportedPatches Patches that are compatible with the specified package name but not version.
-     * @param universalPatches Patches that are compatible with all packages.
+     * @param compatible Patches that are compatible with the specified package name and version.
+     * @param incompatible Patches that are compatible with the specified package name but not version.
+     * @param universal Patches that are compatible with all packages.
      * @see [PatchBundleInfo.Global.forPackage]
      * @see [PatchBundleInfo]
      */
-    class Scoped(
-        name: String,
-        uid: Int,
-        patches: List<PatchInfo>,
-        val supportedPatches: List<PatchInfo>,
-        val unsupportedPatches: List<PatchInfo>,
-        val universalPatches: List<PatchInfo>
-    ) : PatchBundleInfo(name, uid, patches) {
-        fun patchSequence(allowUnsupported: Boolean) = if (allowUnsupported) {
+    data class Scoped(
+        override val name: String,
+        override val version: String?,
+        override val uid: Int,
+        override val patches: List<PatchInfo>,
+        val compatible: List<PatchInfo>,
+        val incompatible: List<PatchInfo>,
+        val universal: List<PatchInfo>
+    ) : PatchBundleInfo() {
+        fun patchSequence(allowIncompatible: Boolean) = if (allowIncompatible) {
             patches.asSequence()
         } else {
             sequence {
-                yieldAll(supportedPatches)
-                yieldAll(universalPatches)
+                yieldAll(compatible)
+                yieldAll(universal)
             }
         }
     }
@@ -89,6 +117,29 @@ sealed class PatchBundleInfo(val name: String, val uid: Int, val patches: List<P
                     }
 
             bundle.uid to patches
+        }
+
+        /**
+         * Algorithm for determining whether all required options have been set.
+         */
+        inline fun Iterable<Scoped>.requiredOptionsSet(
+            allowIncompatible: Boolean,
+            crossinline isSelected: (Scoped, PatchInfo) -> Boolean,
+            crossinline optionsForPatch: (Scoped, PatchInfo) -> Map<String, Any?>?
+        ) = all bundle@{ bundle ->
+            bundle
+                .patchSequence(allowIncompatible)
+                .filter { isSelected(bundle, it) }
+                .all patch@{
+                    if (it.options.isNullOrEmpty()) return@patch true
+                    val opts by lazy { optionsForPatch(bundle, it).orEmpty() }
+
+                    it.options.all option@{ option ->
+                        if (!option.required || option.default != null) return@option true
+
+                        option.key in opts
+                    }
+                }
         }
     }
 }

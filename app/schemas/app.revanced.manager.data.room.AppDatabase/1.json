@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "802fa2fda94b930bf0ebb85d195f1022",
+    "identityHash": "d0119047505da435972c5247181de675",
     "entities": [
       {
         "tableName": "patch_bundles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, `version` TEXT, `integrations_version` TEXT, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `version` TEXT, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -21,6 +21,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "source",
             "columnName": "source",
             "affinity": "TEXT",
@@ -31,18 +37,6 @@
             "columnName": "auto_update",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "versionInfo.patches",
-            "columnName": "version",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "versionInfo.integrations",
-            "columnName": "integrations_version",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -51,17 +45,7 @@
             "uid"
           ]
         },
-        "indices": [
-          {
-            "name": "index_patch_bundles_name",
-            "unique": true,
-            "columnNames": [
-              "name"
-            ],
-            "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patch_bundles_name` ON `${TABLE_NAME}` (`name`)"
-          }
-        ],
+        "indices": [],
         "foreignKeys": []
       },
       {
@@ -160,7 +144,7 @@
       },
       {
         "tableName": "downloaded_app",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `directory` TEXT NOT NULL, PRIMARY KEY(`package_name`, `version`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `directory` TEXT NOT NULL, `last_used` INTEGER NOT NULL, PRIMARY KEY(`package_name`, `version`))",
         "fields": [
           {
             "fieldPath": "packageName",
@@ -178,6 +162,12 @@
             "fieldPath": "directory",
             "columnName": "directory",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUsed",
+            "columnName": "last_used",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -231,7 +221,7 @@
       },
       {
         "tableName": "applied_patch",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `bundle` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, PRIMARY KEY(`package_name`, `bundle`, `patch_name`), FOREIGN KEY(`package_name`) REFERENCES `installed_app`(`current_package_name`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `bundle` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, PRIMARY KEY(`package_name`, `bundle`, `patch_name`), FOREIGN KEY(`package_name`) REFERENCES `installed_app`(`current_package_name`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "packageName",
@@ -285,7 +275,7 @@
           },
           {
             "table": "patch_bundles",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "bundle"
@@ -402,12 +392,38 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "trusted_downloader_plugins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `signature` BLOB NOT NULL, PRIMARY KEY(`package_name`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "package_name"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '802fa2fda94b930bf0ebb85d195f1022')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0119047505da435972c5247181de675')"
     ]
   }
 }

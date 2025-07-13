@@ -1,11 +1,7 @@
 package app.revanced.manager.network.dto
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-@Serializable
-data class ReVancedInfoParent(
-    val info: ReVancedInfo,
-)
 
 @Serializable
 data class ReVancedInfo(
@@ -43,7 +39,8 @@ data class ReVancedDonation(
 @Serializable
 data class ReVancedWallet(
     val network: String,
-    val currency_code: String,
+    @SerialName("currency_code")
+    val currencyCode: String,
     val address: String,
     val preferred: Boolean
 )

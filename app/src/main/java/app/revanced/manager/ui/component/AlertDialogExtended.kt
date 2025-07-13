@@ -44,7 +44,7 @@ fun AlertDialogExtended(
     titleContentColor: Color = AlertDialogDefaults.titleContentColor,
     textContentColor: Color = AlertDialogDefaults.textContentColor,
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
-    textHorizontalPadding: PaddingValues = PaddingValues(horizontal = 24.dp)
+    textHorizontalPadding: PaddingValues = TextHorizontalPadding
 ) {
     BasicAlertDialog(onDismissRequest = onDismissRequest) {
         Surface(
@@ -55,7 +55,7 @@ fun AlertDialogExtended(
         ) {
             Column(modifier = Modifier.padding(vertical = 24.dp)) {
                 Column(
-                    modifier = Modifier.padding(horizontal = 24.dp)
+                    modifier = Modifier.padding(horizontal = 24.dp).fillMaxWidth()
                 ) {
                     icon?.let {
                         ContentStyle(color = iconContentColor) {
@@ -148,3 +148,5 @@ private fun ContentStyle(
         }
     }
 }
+
+val TextHorizontalPadding = PaddingValues(horizontal = 24.dp)

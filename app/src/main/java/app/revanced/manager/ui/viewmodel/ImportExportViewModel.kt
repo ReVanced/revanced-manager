@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +35,59 @@ import java.nio.file.StandardCopyOption
 import kotlin.io.path.deleteExisting
 import kotlin.io.path.inputStream
 
+sealed class ResetDialogState(
+    @StringRes val titleResId: Int,
+    @StringRes val descriptionResId: Int,
+    val onConfirm: () -> Unit,
+    val dialogOptionName: String? = null
+) {
+    class Keystore(onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.regenerate_keystore,
+        descriptionResId = R.string.regenerate_keystore_dialog_description,
+        onConfirm = onConfirm
+    )
+
+    class PatchSelectionAll(onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_all,
+        descriptionResId = R.string.patch_selection_reset_all_dialog_description,
+        onConfirm = onConfirm
+    )
+
+    class PatchSelectionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_package,
+        descriptionResId = R.string.patch_selection_reset_package_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchSelectionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_selection_reset_patches,
+        descriptionResId = R.string.patch_selection_reset_patches_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchOptionsAll(onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset_all,
+        descriptionResId = R.string.patch_options_reset_all_dialog_description,
+        onConfirm = onConfirm
+    )
+
+    class PatchOptionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset_package,
+        descriptionResId = R.string.patch_options_reset_package_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+
+    class PatchOptionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
+        titleResId = R.string.patch_options_reset,
+        descriptionResId = R.string.patch_options_reset_dialog_description,
+        onConfirm = onConfirm,
+        dialogOptionName = dialogOptionName
+    )
+}
+
 @OptIn(ExperimentalSerializationApi::class)
 class ImportExportViewModel(
     private val app: Application,
@@ -51,40 +105,48 @@ class ImportExportViewModel(
     private var keystoreImportPath by mutableStateOf<Path?>(null)
     val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
 
+    var resetDialogState by mutableStateOf<ResetDialogState?>(null)
+
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
+    val packagesWithSelection = selectionRepository.getPackagesWithSavedSelection()
 
     fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
-        optionsRepository.clearOptionsForPackage(packageName)
+        optionsRepository.resetOptionsForPackage(packageName)
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
-    fun clearOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
-        optionsRepository.clearOptionsForPatchBundle(patchBundle.uid)
+    fun resetOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
+        optionsRepository.resetOptionsForPatchBundle(patchBundle.uid)
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun resetOptions() = viewModelScope.launch {
         optionsRepository.reset()
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun startKeystoreImport(content: Uri) = viewModelScope.launch {
-        val path = withContext(Dispatchers.IO) {
-            File.createTempFile("signing", "ks", app.cacheDir).toPath().also {
-                Files.copy(
-                    contentResolver.openInputStream(content)!!,
-                    it,
-                    StandardCopyOption.REPLACE_EXISTING
-                )
-            }
-        }
-
-        aliases.forEach { alias ->
-            knownPasswords.forEach { pass ->
-                if (tryKeystoreImport(alias, pass, path)) {
-                    return@launch
+        uiSafe(app, R.string.failed_to_import_keystore, "Failed to import keystore") {
+            val path = withContext(Dispatchers.IO) {
+                File.createTempFile("signing", "ks", app.cacheDir).toPath().also {
+                    Files.copy(
+                        contentResolver.openInputStream(content)!!,
+                        it,
+                        StandardCopyOption.REPLACE_EXISTING
+                    )
                 }
             }
-        }
 
-        keystoreImportPath = path
+            aliases.forEach { alias ->
+                knownPasswords.forEach { pass ->
+                    if (tryKeystoreImport(alias, pass, path)) {
+                        return@launch
+                    }
+                }
+            }
+
+            keystoreImportPath = path
+        }
     }
 
     fun cancelKeystoreImport() {
@@ -98,6 +160,7 @@ class ImportExportViewModel(
     private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
         path.inputStream().use { stream ->
             if (keystoreManager.import(cn, pass, stream)) {
+                app.toast(app.getString(R.string.import_keystore_success))
                 cancelKeystoreImport()
                 return true
             }
@@ -116,6 +179,7 @@ class ImportExportViewModel(
 
     fun exportKeystore(target: Uri) = viewModelScope.launch {
         keystoreManager.export(contentResolver.openOutputStream(target)!!)
+        app.toast(app.getString(R.string.export_keystore_success))
     }
 
     fun regenerateKeystore() = viewModelScope.launch {
@@ -123,8 +187,19 @@ class ImportExportViewModel(
         app.toast(app.getString(R.string.regenerate_keystore_success))
     }
 
-    fun resetSelection() = viewModelScope.launch(Dispatchers.Default) {
-        selectionRepository.reset()
+    fun resetSelection() = viewModelScope.launch {
+        withContext(Dispatchers.Default) { selectionRepository.reset() }
+        app.toast(app.getString(R.string.reset_patch_selection_success))
+    }
+
+    fun resetSelectionForPackage(packageName: String) = viewModelScope.launch {
+        selectionRepository.resetSelectionForPackage(packageName)
+        app.toast(app.getString(R.string.reset_patch_selection_success))
+    }
+
+    fun resetSelectionForPatchBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
+        selectionRepository.resetSelectionForPatchBundle(patchBundle.uid)
+        app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 
     fun executeSelectionAction(target: Uri) = viewModelScope.launch {
@@ -173,6 +248,7 @@ class ImportExportViewModel(
             }
 
             selectionRepository.import(bundleUid, selection)
+            app.toast(app.getString(R.string.import_patch_selection_success))
         }
     }
 
@@ -191,6 +267,7 @@ class ImportExportViewModel(
                     Json.Default.encodeToStream(selection, it)
                 }
             }
+            app.toast(app.getString(R.string.export_patch_selection_success))
         }
     }
 

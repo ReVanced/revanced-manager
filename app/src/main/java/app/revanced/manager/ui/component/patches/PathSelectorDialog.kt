@@ -23,10 +23,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.util.saver.PathSaver
@@ -48,12 +47,8 @@ fun PathSelectorDialog(root: Path, onSelect: (Path?) -> Unit) {
         currentDirectory.listDirectoryEntries().filter(Path::isReadable).partition(Path::isDirectory)
     }
 
-    Dialog(
+    FullscreenDialog(
         onDismissRequest = { onSelect(null) },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            dismissOnBackPress = true
-        )
     ) {
         Scaffold(
             topBar = {

@@ -3,14 +3,27 @@ package app.revanced.manager.ui.screen
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +31,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,18 +47,20 @@ import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onAppClick: (packageName: String) -> Unit,
-    onStorageClick: (SelectedApp.Local) -> Unit,
+    onSelect: (String) -> Unit,
+    onStorageSelect: (SelectedApp.Local) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = koinViewModel()
 ) {
-    SideEffect {
-        vm.onStorageClick = onStorageClick
+    EventEffect(flow = vm.storageSelectionFlow) {
+        onStorageSelect(it)
     }
 
     val pickApkLauncher =
@@ -70,12 +86,11 @@ fun AppSelectorScreen(
     vm.nonSuggestedVersionDialogSubject?.let {
         NonSuggestedVersionDialog(
             suggestedVersion = suggestedVersions[it.packageName].orEmpty(),
-            onCancel = vm::dismissNonSuggestedVersionDialog,
-            onContinue = vm::continueWithNonSuggestedVersion,
+            onDismiss = vm::dismissNonSuggestedVersionDialog
         )
     }
 
-    if (search) {
+    if (search)
         SearchView(
             query = filterText,
             onQueryChange = { filterText = it },
@@ -83,15 +98,15 @@ fun AppSelectorScreen(
             placeholder = { Text(stringResource(R.string.search_apps)) }
         ) {
             if (appList.isNotEmpty() && filterText.isNotEmpty()) {
-                LazyColumnWithScrollbar(
-                    modifier = Modifier.fillMaxSize()
-                ) {
+                LazyColumnWithScrollbar(modifier = Modifier.fillMaxSize()) {
                     items(
                         items = filteredAppList,
                         key = { it.packageName }
                     ) { app ->
                         ListItem(
-                            modifier = Modifier.clickable { onAppClick(app.packageName) },
+                            modifier = Modifier.clickable {
+                                onSelect(app.packageName)
+                            },
                             leadingContent = {
                                 AppIcon(
                                     app.packageInfo,
@@ -111,9 +126,9 @@ fun AppSelectorScreen(
                                         )
                                     )
                                 }
-                            }
+                            },
+                            colors = transparentListItemColors
                         )
-
                     }
                 }
             } else {
@@ -125,22 +140,26 @@ fun AppSelectorScreen(
                     Icon(
                         imageVector = Icons.Outlined.Search,
                         contentDescription = stringResource(R.string.search),
-                        modifier = Modifier.size(64.dp)
+                        modifier = Modifier.size(64.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     Text(
                         text = stringResource(R.string.type_anything),
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
-    }
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.select_app),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackClick,
                 actions = {
                     IconButton(onClick = { search = true }) {
@@ -148,7 +167,8 @@ fun AppSelectorScreen(
                     }
                 }
             )
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         LazyColumnWithScrollbar(
             modifier = Modifier
@@ -184,7 +204,9 @@ fun AppSelectorScreen(
                     key = { it.packageName }
                 ) { app ->
                     ListItem(
-                        modifier = Modifier.clickable { onAppClick(app.packageName) },
+                        modifier = Modifier.clickable {
+                            onSelect(app.packageName)
+                        },
                         leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },
                         headlineContent = {
                             AppLabel(

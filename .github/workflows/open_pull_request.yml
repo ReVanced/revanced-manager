@@ -1,0 +1,26 @@
+name: Open a PR to main
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+env:
+  MESSAGE: Merge branch `${{ github.head_ref || github.ref_name }}` to `main`
+
+jobs:
+  pull-request:
+    name: Open pull request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Open pull request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: 'main'
+          pr_title: 'chore: ${{ env.MESSAGE }}'
+          pr_body: 'This pull request will ${{ env.MESSAGE }}.'
+          pr_draft: true

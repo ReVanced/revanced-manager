@@ -3,26 +3,33 @@ package app.revanced.manager.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.icu.number.Notation
-import android.icu.number.NumberFormatter
-import android.icu.number.Precision
-import android.icu.text.CompactDecimalFormat
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.MainThread
 import androidx.annotation.StringRes
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.revanced.manager.R
@@ -35,12 +42,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import java.time.Duration
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.char
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
+import kotlin.properties.PropertyDelegateProvider
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 typealias PatchSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
@@ -104,10 +116,10 @@ inline fun LifecycleOwner.launchAndRepeatWithViewLifecycle(
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 inline fun <T, reified R, C> Flow<Iterable<T>>.flatMapLatestAndCombine(
-    crossinline combiner: (Array<R>) -> C,
-    crossinline transformer: (T) -> Flow<R>,
+    crossinline combiner: suspend (Array<R>) -> C,
+    crossinline transformer: suspend (T) -> Flow<R>,
 ): Flow<C> = flatMapLatest { iterable ->
-    combine(iterable.map(transformer)) {
+    combine(iterable.map { transformer(it) }) {
         combiner(it)
     }
 }
@@ -129,51 +141,72 @@ suspend fun <T> Flow<Iterable<T>>.collectEach(block: suspend (T) -> Unit) {
     }
 }
 
-fun Int.formatNumber(): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        NumberFormatter.with()
-            .notation(Notation.compactShort())
-            .decimal(NumberFormatter.DecimalSeparatorDisplay.ALWAYS)
-            .precision(Precision.fixedFraction(1))
-            .locale(Locale.getDefault())
-            .format(this)
-            .toString()
-    } else {
-        val compact = CompactDecimalFormat.getInstance(
-            Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT
-        )
-        compact.maximumFractionDigits = 1
-        compact.format(this)
-    }
-}
-
-fun String.relativeTime(context: Context): String {
+fun LocalDateTime.relativeTime(context: Context): String {
     try {
-        val currentTime = ZonedDateTime.now(ZoneId.of("UTC"))
-        val inputDateTime = ZonedDateTime.parse(this)
-        val duration = Duration.between(inputDateTime, currentTime)
+        val now = Clock.System.now()
+        val duration = now - this.toInstant(TimeZone.UTC)
 
         return when {
-            duration.toMinutes() < 1 -> context.getString(R.string.just_now)
-            duration.toMinutes() < 60 -> context.getString(R.string.minutes_ago, duration.toMinutes().toString())
-            duration.toHours() < 24 -> context.getString(R.string.hours_ago, duration.toHours().toString())
-            duration.toDays() < 30 -> context.getString(R.string.days_ago, duration.toDays().toString())
-            else -> {
-                val formatter = DateTimeFormatter.ofPattern("MMM d")
-                val formattedDate = inputDateTime.format(formatter)
-                if (inputDateTime.year != currentTime.year) {
-                    val yearFormatter = DateTimeFormatter.ofPattern(", yyyy")
-                    val formattedYear = inputDateTime.format(yearFormatter)
-                    "$formattedDate$formattedYear"
-                } else {
-                    formattedDate
+            duration.inWholeMinutes < 1 -> context.getString(R.string.just_now)
+            duration.inWholeMinutes < 60 -> context.getString(
+                R.string.minutes_ago,
+                duration.inWholeMinutes.toString()
+            )
+
+            duration.inWholeHours < 24 -> context.getString(
+                R.string.hours_ago,
+                duration.inWholeHours.toString()
+            )
+
+            duration.inWholeHours < 30 -> context.getString(
+                R.string.days_ago,
+                duration.inWholeDays.toString()
+            )
+
+            else -> LocalDateTime.Format {
+                monthName(MonthNames.ENGLISH_ABBREVIATED)
+                char(' ')
+                dayOfMonth()
+                if (now.toLocalDateTime(TimeZone.UTC).year != this@relativeTime.year) {
+                    chars(", ")
+                    year()
                 }
-            }
+            }.format(this)
         }
-    } catch (e: DateTimeParseException) {
+    } catch (e: IllegalArgumentException) {
         return context.getString(R.string.invalid_date)
     }
 }
+
+private var transparentListItemColorsCached: ListItemColors? = null
+
+fun resetListItemColorsCached() {
+    transparentListItemColorsCached = null
+}
+
+/**
+ * The default ListItem colors, but with [ListItemColors.containerColor] set to [Color.Transparent].
+ */
+val transparentListItemColors
+    @Composable get() = transparentListItemColorsCached
+        ?: ListItemDefaults.colors(containerColor = Color.Transparent)
+            .also { transparentListItemColorsCached = it }
+
+@Composable
+fun <T> EventEffect(flow: Flow<T>, vararg keys: Any?, state: Lifecycle.State = Lifecycle.State.STARTED, block: suspend (T) -> Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val currentBlock by rememberUpdatedState(block)
+
+    LaunchedEffect(flow, state, *keys) {
+        lifecycleOwner.repeatOnLifecycle(state) {
+            flow.collect {
+                currentBlock(it)
+            }
+        }
+    }
+}
+
+const val isScrollingUpSensitivity = 10
 
 @Composable
 fun LazyListState.isScrollingUp(): State<Boolean> {
@@ -182,10 +215,16 @@ fun LazyListState.isScrollingUp(): State<Boolean> {
         var previousScrollOffset by mutableIntStateOf(firstVisibleItemScrollOffset)
 
         derivedStateOf {
-            if (previousIndex != firstVisibleItemIndex) {
+            val indexChanged = previousIndex != firstVisibleItemIndex
+            val offsetChanged =
+                kotlin.math.abs(previousScrollOffset - firstVisibleItemScrollOffset) > isScrollingUpSensitivity
+
+            if (indexChanged) {
                 previousIndex > firstVisibleItemIndex
+            } else if (offsetChanged) {
+                previousScrollOffset > firstVisibleItemScrollOffset
             } else {
-                previousScrollOffset >= firstVisibleItemScrollOffset
+                true
             }.also {
                 previousIndex = firstVisibleItemIndex
                 previousScrollOffset = firstVisibleItemScrollOffset
@@ -194,4 +233,59 @@ fun LazyListState.isScrollingUp(): State<Boolean> {
     }
 }
 
+// TODO: support sensitivity
+@Composable
+fun ScrollState.isScrollingUp(): State<Boolean> {
+    return remember(this) {
+        var previousScrollOffset by mutableIntStateOf(value)
+        derivedStateOf {
+            (previousScrollOffset >= value).also {
+                previousScrollOffset = value
+            }
+        }
+    }
+}
+
 val LazyListState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
+val ScrollState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
+
+@Composable
+@ReadOnlyComposable
+fun <R> (() -> R).withHapticFeedback(constant: Int): () -> R {
+    val view = LocalView.current
+    return {
+        view.performHapticFeedback(constant)
+        this()
+    }
+}
+
+@Composable
+@ReadOnlyComposable
+fun <T, R> ((T) -> R).withHapticFeedback(constant: Int): (T) -> R {
+    val view = LocalView.current
+    return {
+        view.performHapticFeedback(constant)
+        this(it)
+    }
+}
+
+fun Modifier.enabled(condition: Boolean) = if (condition) this else alpha(0.5f)
+
+@MainThread
+fun <T : Any> SavedStateHandle.saveableVar(init: () -> T): PropertyDelegateProvider<Any?, ReadWriteProperty<Any?, T>> =
+    PropertyDelegateProvider { _: Any?, property ->
+        val name = property.name
+        if (name !in this) this[name] = init()
+        object : ReadWriteProperty<Any?, T> {
+            override fun getValue(thisRef: Any?, property: KProperty<*>): T = get(name)!!
+            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) =
+                set(name, value)
+        }
+    }
+
+fun <T : Any> SavedStateHandle.saveableVar(): ReadWriteProperty<Any?, T?> =
+    object : ReadWriteProperty<Any?, T?> {
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T? = get(property.name)
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
+            set(property.name, value)
+    }
