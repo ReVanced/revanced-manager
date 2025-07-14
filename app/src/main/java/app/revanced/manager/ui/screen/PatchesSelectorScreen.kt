@@ -41,7 +41,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
@@ -73,6 +72,9 @@ import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
+import app.revanced.manager.ui.component.tooltip.TooltipFloatingActionButton
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
+import app.revanced.manager.ui.component.tooltip.TooltipSmallFloatingActionButton
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_INCOMPATIBLE
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
@@ -259,14 +261,16 @@ fun PatchesSelectorScreen(
                         animationSpec = tween(durationMillis = 400, easing = EaseInOut),
                         label = "SearchBar back button"
                     )
-                    IconButton(
+                    TooltipIconButton(
+                        modifier = Modifier.rotate(rotation),
                         onClick = {
                             if (searchExpanded) {
                                 setSearchExpanded(false)
                             } else {
                                 onBackClick()
                             }
-                        }
+                        },
+                        tooltip = stringResource(R.string.back),
                     ) {
                         Icon(
                             modifier = Modifier.rotate(rotation),
@@ -282,9 +286,11 @@ fun PatchesSelectorScreen(
                         transitionSpec = { fadeIn() togetherWith fadeOut() }
                     ) { searchExpanded ->
                         if (searchExpanded) {
-                            IconButton(
+                            TooltipIconButton(
+                                modifier = Modifier,
                                 onClick = { setQuery("") },
-                                enabled = query.isNotEmpty()
+                                enabled = query.isNotEmpty(),
+                                tooltip = stringResource(R.string.clear),
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.Close,
@@ -292,7 +298,11 @@ fun PatchesSelectorScreen(
                                 )
                             }
                         } else {
-                            IconButton(onClick = { showBottomSheet = true }) {
+                            TooltipIconButton(
+                                modifier = Modifier,
+                                onClick = { showBottomSheet = true },
+                                tooltip = stringResource(R.string.more),
+                            ) {
                                 Icon(
                                     imageVector = Icons.Outlined.FilterList,
                                     contentDescription = stringResource(R.string.more)
@@ -354,7 +364,20 @@ fun PatchesSelectorScreen(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    SmallFloatingActionButton(
+                    TooltipSmallFloatingActionButton(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.more),
+                        onClick = { showBottomSheet = true },
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.FilterList,
+                            contentDescription = stringResource(R.string.more)
+                        )
+                    }
+                    TooltipSmallFloatingActionButton(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.reset),
                         onClick = viewModel::reset,
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
                     ) {
@@ -517,6 +540,7 @@ private fun PatchItem(
     supportingContent = patch.description?.let { { Text(it) } },
     trailingContent = {
         if (patch.options?.isNotEmpty() == true) {
+            // TODO: Determine if this button should be [TooltipWrap]
             IconButton(onClick = onOptionsDialog, enabled = compatible) {
                 Icon(Icons.Outlined.Settings, null)
             }
@@ -540,7 +564,11 @@ fun ListHeader(
         },
         trailingContent = onHelpClick?.let {
             {
-                IconButton(onClick = it) {
+                TooltipIconButton(
+                    modifier = Modifier,
+                    tooltip = stringResource(R.string.help),
+                    onClick = it
+                ) {
                     Icon(
                         Icons.AutoMirrored.Outlined.HelpOutline,
                         stringResource(R.string.help)
@@ -619,7 +647,11 @@ private fun OptionsDialog(
                 title = patch.name,
                 onBackClick = onDismissRequest,
                 actions = {
-                    IconButton(onClick = reset) {
+                    TooltipIconButton(
+                        modifier = Modifier,
+                        tooltip = stringResource(R.string.reset),
+                        onClick = reset
+                    ) {
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
                 }

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -68,19 +67,18 @@ import app.revanced.manager.ui.component.LongInputDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.mutableStateSetOf
 import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyColumnState
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.io.Serializable
 import kotlin.random.Random
@@ -113,7 +111,11 @@ private interface OptionEditor<T : Any> {
 
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        IconButton(onClick = { clickAction(scope) }) {
+        TooltipIconButton(
+            modifier = Modifier,
+            tooltip = stringResource(R.string.edit),
+            onClick = { clickAction(scope) }
+        ) {
             Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
         }
     }
@@ -249,13 +251,12 @@ private object StringOptionEditor : OptionEditor<String> {
                     },
                     trailingIcon = {
                         var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
-                        IconButton(
+                        TooltipIconButton(
+                            modifier = Modifier,
+                            tooltip = stringResource(R.string.string_option_menu_description),
                             onClick = { showDropdownMenu = true }
                         ) {
-                            Icon(
-                                Icons.Outlined.MoreVert,
-                                stringResource(R.string.string_option_menu_description)
-                            )
+                            Icon(Icons.Outlined.MoreVert, stringResource(R.string.string_option_menu_description))
                         }
 
                         DropdownMenu(
@@ -551,7 +552,9 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                         },
                         actions = {
                             if (deleteMode) {
-                                IconButton(
+                                TooltipIconButton(
+                                    modifier = Modifier,
+                                    tooltip = stringResource(R.string.select_deselect_all),
                                     onClick = {
                                         if (items.size == deletionTargets.size) deletionTargets.clear()
                                         else deletionTargets.addAll(items.map { it.key })
@@ -562,7 +565,9 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                         stringResource(R.string.select_deselect_all)
                                     )
                                 }
-                                IconButton(
+                                TooltipIconButton(
+                                    modifier = Modifier,
+                                    tooltip = stringResource(R.string.delete),
                                     onClick = {
                                         items.removeIf { it.key in deletionTargets }
                                         deletionTargets.clear()
@@ -575,8 +580,15 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     )
                                 }
                             } else {
-                                IconButton(onClick = items::clear) {
-                                    Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                                TooltipIconButton(
+                                    modifier = Modifier,
+                                    tooltip = stringResource(R.string.reset),
+                                    onClick = items::clear
+                                ) {
+                                    Icon(
+                                        Icons.Outlined.Restore,
+                                        stringResource(R.string.reset)
+                                    )
                                 }
                             }
                         }
@@ -643,9 +655,10 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     ),
                                     tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
                                     leadingContent = {
-                                        IconButton(
+                                        TooltipIconButton(
                                             modifier = Modifier.draggableHandle(interactionSource = interactionSource),
-                                            onClick = {},
+                                            tooltip = stringResource(R.string.delete),
+                                            onClick = { }
                                         ) {
                                             Icon(
                                                 Icons.Filled.DragHandle,

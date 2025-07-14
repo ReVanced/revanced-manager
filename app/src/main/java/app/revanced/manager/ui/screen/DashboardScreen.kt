@@ -62,12 +62,13 @@ import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
-import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
+import app.revanced.manager.ui.component.tooltip.TooltipFloatingActionButton
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
@@ -183,21 +184,25 @@ fun DashboardScreen(
                         )
                     },
                     actions = {
-                        IconButton(
+                        TooltipIconButton(
+                            modifier = Modifier,
                             onClick = {
                                 showDeleteConfirmationDialog = true
-                            }
+                            },
+                            tooltip = stringResource(R.string.delete),
                         ) {
                             Icon(
                                 Icons.Outlined.DeleteOutline,
                                 stringResource(R.string.delete)
                             )
                         }
-                        IconButton(
+                        TooltipIconButton(
+                            modifier = Modifier,
                             onClick = {
                                 vm.selectedSources.forEach { vm.update(it) }
                                 vm.cancelSourceSelection()
-                            }
+                            },
+                            tooltip = stringResource(R.string.refresh),
                         ) {
                             Icon(
                                 Icons.Outlined.Refresh,
@@ -211,8 +216,10 @@ fun DashboardScreen(
                     title = stringResource(R.string.app_name),
                     actions = {
                         if (!vm.updatedManagerVersion.isNullOrEmpty()) {
-                            IconButton(
+                            TooltipIconButton(
+                                modifier = Modifier,
                                 onClick = onUpdateClick,
+                                tooltip = stringResource(R.string.update),
                             ) {
                                 BadgedBox(
                                     badge = {
@@ -223,8 +230,18 @@ fun DashboardScreen(
                                 }
                             }
                         }
-                        IconButton(onClick = onSettingsClick) {
-                            Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                        TooltipIconButton(
+                            modifier = Modifier,
+                            onClick = onSettingsClick,
+                            tooltip = stringResource(R.string.settings),
+                        ) {
+                            BadgedBox(
+                                badge = {
+                                    Badge(modifier = Modifier.size(6.dp))
+                                }
+                            ) {
+                                Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                            }
                         }
                     },
                     applyContainerColor = true
@@ -232,7 +249,9 @@ fun DashboardScreen(
             }
         },
         floatingActionButton = {
-            HapticFloatingActionButton(
+            TooltipFloatingActionButton(
+                modifier = Modifier,
+                tooltip = stringResource(R.string.add),
                 onClick = {
                     vm.cancelSourceSelection()
 
@@ -245,11 +264,11 @@ fun DashboardScreen(
                                         DashboardPage.BUNDLES.ordinal
                                     )
                                 }
-                                return@HapticFloatingActionButton
+                                return@TooltipFloatingActionButton
                             }
                             if (vm.android11BugActive) {
                                 showAndroid11Dialog = true
-                                return@HapticFloatingActionButton
+                                return@TooltipFloatingActionButton
                             }
 
                             onAppSelectorClick()

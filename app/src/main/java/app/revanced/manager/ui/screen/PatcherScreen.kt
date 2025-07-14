@@ -25,7 +25,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -51,6 +50,7 @@ import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
+import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
@@ -164,15 +164,19 @@ fun PatcherScreen(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(
+                    TooltipIconButton(
+                        modifier = Modifier,
                         onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
-                        enabled = patcherSucceeded == true
+                        enabled = patcherSucceeded == true,
+                        tooltip = stringResource(R.string.save_apk),
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
-                    IconButton(
+                    TooltipIconButton(
+                        modifier = Modifier,
                         onClick = { viewModel.exportLogs(context) },
-                        enabled = patcherSucceeded != null
+                        enabled = patcherSucceeded != null,
+                        tooltip = stringResource(R.string.save_logs),
                     ) {
                         Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
                     }
