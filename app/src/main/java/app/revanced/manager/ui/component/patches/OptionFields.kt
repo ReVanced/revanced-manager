@@ -98,7 +98,7 @@ private class OptionEditorScope<T : Any>(
         dismissDialog()
     }
 
-    fun showWarningOr(block: () -> Unit) {
+    fun showSelectionWarningDialogElse(block: () -> Unit) {
         if (!option.required && selectionWarningEnabled)
             showSelectionWarning()
         else
@@ -106,15 +106,13 @@ private class OptionEditorScope<T : Any>(
     }
 
     fun clickAction() {
-        showWarningOr {
+        showSelectionWarningDialogElse {
             editor.clickAction(this)
         }
     }
 
     @Composable
-    fun ListItemTrailingContent() {
-        editor.ListItemTrailingContent(this)
-    }
+    fun ListItemTrailingContent() = editor.ListItemTrailingContent(this)
 
     @Composable
     fun Dialog() = editor.Dialog(this)
@@ -128,7 +126,7 @@ private interface OptionEditor<T : Any> {
 
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        IconButton(onClick = { scope.showWarningOr { clickAction(scope) } }) {
+        IconButton(onClick = { scope.showSelectionWarningDialogElse { clickAction(scope) } }) {
             Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
         }
     }
@@ -379,7 +377,7 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
     @Composable
     override fun ListItemTrailingContent(scope: OptionEditorScope<Boolean>) {
         HapticSwitch(checked = scope.current, onCheckedChange = {
-            scope.showWarningOr { scope.setValue }
+            scope.showSelectionWarningDialogElse { scope.setValue }
         })
     }
 
