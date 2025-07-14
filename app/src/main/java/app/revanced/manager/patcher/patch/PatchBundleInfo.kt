@@ -102,11 +102,11 @@ sealed class PatchBundleInfo {
 
     companion object Extensions {
         inline fun Iterable<Scoped>.toPatchSelection(
-            allowUnsupported: Boolean,
+            allowIncompatible: Boolean,
             condition: (Int, PatchInfo) -> Boolean
         ): PatchSelection = this.associate { bundle ->
             val patches =
-                bundle.patchSequence(allowUnsupported)
+                bundle.patchSequence(allowIncompatible)
                     .mapNotNullTo(mutableSetOf()) { patch ->
                         patch.name.takeIf {
                             condition(

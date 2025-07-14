@@ -70,7 +70,7 @@ fun BundleInformationDialog(
     var viewCurrentBundlePatches by remember { mutableStateOf(false) }
     val isLocal = src is LocalPatchBundle
     val bundleManifestAttributes = src.patchBundle?.manifestAttributes
-    val autoUpdate = src.asRemoteOrNull?.autoUpdate == true
+    val (autoUpdate, endpoint) = src.asRemoteOrNull?.let { it.autoUpdate to it.endpoint } ?: (null to null)
 
     fun onAutoUpdateChange(new: Boolean) = composableScope.launch {
         with(bundleRepo) {
@@ -131,9 +131,7 @@ fun BundleInformationDialog(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    src.name?.let {
-                        Tag(Icons.Outlined.Sell, it)
-                    }
+                    Tag(Icons.Outlined.Sell, src.name)
                     bundleManifestAttributes?.description?.let {
                         Tag(Icons.Outlined.Description, it)
                     }
@@ -159,7 +157,7 @@ fun BundleInformationDialog(
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
 
-                if (src.asRemoteOrNull?.endpoint != null) {
+                if (autoUpdate != null) {
                     BundleListItem(
                         headlineText = stringResource(auto_update),
                         supportingText = stringResource(auto_update_description),
@@ -175,7 +173,7 @@ fun BundleInformationDialog(
                     )
                 }
 
-                src.asRemoteOrNull?.endpoint?.takeUnless { src.isDefault }?.let { url ->
+                endpoint?.takeUnless { src.isDefault }?.let { url ->
                     var showUrlInputDialog by rememberSaveable {
                         mutableStateOf(false)
                     }
