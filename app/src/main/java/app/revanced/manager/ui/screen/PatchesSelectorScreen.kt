@@ -73,6 +73,7 @@ import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
+import app.revanced.manager.ui.component.patches.SelectionWarningDialog
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_INCOMPATIBLE
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
@@ -469,17 +470,6 @@ fun PatchesSelectorScreen(
             )
         }
     }
-}
-
-@Composable
-internal fun SelectionWarningDialog(
-    onDismiss: () -> Unit
-) {
-    SafeguardDialog(
-        onDismiss = onDismiss,
-        title = R.string.warning,
-        body = stringResource(R.string.selection_warning_description),
-    )
 }
 
 @Composable
