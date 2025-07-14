@@ -1,5 +1,6 @@
 package app.revanced.manager.domain.bundles
 
+import app.revanced.manager.data.redux.ActionContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -11,7 +12,7 @@ class LocalPatchBundle(
     error: Throwable?,
     directory: File
 ) : PatchBundleSource(name, uid, error, directory) {
-    suspend fun replace(patches: InputStream) {
+    suspend fun ActionContext<*>.replace(patches: InputStream) {
         withContext(Dispatchers.IO) {
             patchBundleOutputStream().use { outputStream ->
                 patches.copyTo(outputStream)

@@ -30,6 +30,7 @@ import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import kotlinx.collections.immutable.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -289,11 +290,21 @@ class PatchBundleRepository(
             State(sources.toPersistentMap(), info.toPersistentMap())
         }
 
-    suspend fun createLocal(patches: InputStream) = dispatchAction("Add bundle") {
-        val uid = createEntity("", SourceInfo.Local).uid
-        val bundle = LocalPatchBundle("", uid, null, directoryOf(uid))
+    suspend fun createLocal(createStream: suspend () -> InputStream) = dispatchAction("Add bundle") {
+        with(createEntity("", SourceInfo.Local).load() as LocalPatchBundle) {
+            try {
+                createStream().use { patches -> replace(patches) }
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                Log.e(tag, "Got exception while importing bundle", e)
+                withContext(Dispatchers.Main) {
+                    app.toast(app.getString(R.string.patches_replace_fail, e.simpleMessage()))
+                }
 
-        bundle.replace(patches)
+                deleteLocalFile()
+            }
+        }
+
         doReload()
     }
 

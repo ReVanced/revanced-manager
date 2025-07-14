@@ -124,16 +124,19 @@ class SelectedAppInfoViewModel(
         suggestedVersions[input.app.packageName]
     }
 
+    val bundleInfoFlow by derivedStateOf {
+        bundleRepository.scopedBundleInfoFlow(packageName, selectedApp.version)
+    }
+
     var options: Options by savedStateHandle.saveable {
         val state = mutableStateOf<Options>(emptyMap())
 
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
+            val bundlePatches = bundleInfoFlow.first()
+                .associate { it.uid to it.patches.associateBy { patch -> patch.name } }
 
             options = withContext(Dispatchers.Default) {
-                val bundlePatches = bundleInfoFlow.first()
-                    .associate { it.uid to it.patches.associateBy { patch -> patch.name } }
-
                 optionsRepository.getOptions(packageName, bundlePatches)
             }
         }
@@ -173,10 +176,6 @@ class SelectedAppInfoViewModel(
             app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
             else -> null
         }
-    }
-
-    val bundleInfoFlow by derivedStateOf {
-        bundleRepository.scopedBundleInfoFlow(packageName, selectedApp.version)
     }
 
     fun showSourceSelector() {

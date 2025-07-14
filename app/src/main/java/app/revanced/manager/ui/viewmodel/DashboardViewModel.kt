@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
@@ -116,17 +117,17 @@ class DashboardViewModel(
     private fun sendEvent(event: BundleListViewModel.Event) {
         viewModelScope.launch { bundleListEventsChannel.send(event) }
     }
+
     fun cancelSourceSelection() = sendEvent(BundleListViewModel.Event.CANCEL)
     fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
     fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
 
-    fun createLocalSource(patchBundle: Uri) =
-        viewModelScope.launch {
-            contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
-                patchBundleRepository.createLocal(patchesStream)
-            }
-        }
+    @SuppressLint("Recycle")
+    fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
+        patchBundleRepository.createLocal { contentResolver.openInputStream(patchBundle)!! }
+    }
 
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) =
-        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, autoUpdate) }
+    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
+        patchBundleRepository.createRemote(apiUrl, autoUpdate)
+    }
 }

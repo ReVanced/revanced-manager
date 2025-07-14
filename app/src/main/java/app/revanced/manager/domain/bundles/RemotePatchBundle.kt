@@ -50,10 +50,6 @@ sealed class RemotePatchBundle(
         download(info)
     }
 
-    suspend fun ActionContext<*>.deleteLocalFile() = withContext(Dispatchers.IO) {
-        patchesFile.delete()
-    }
-
     companion object {
         const val updateFailMsg = "Failed to update patches"
     }

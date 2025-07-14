@@ -13,10 +13,11 @@ import kotlinx.coroutines.selects.whileSelect
 import kotlinx.coroutines.selects.onTimeout
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeoutOrNull
 
 // This file implements React Redux-like state management.
 
-class Store<S>(private val coroutineScope: CoroutineScope, initialState: S): ActionContext<S> {
+class Store<S>(private val coroutineScope: CoroutineScope, initialState: S) : ActionContext<S> {
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
 
@@ -26,6 +27,7 @@ class Store<S>(private val coroutineScope: CoroutineScope, initialState: S): Act
     private val lock = Mutex()
 
     override suspend fun dispatch(action: Action<S>) = lock.withLock {
+        Log.d(tag, "Dispatching $action")
         queueChannel.send(action)
 
         if (isRunningActions) return@withLock
@@ -36,8 +38,20 @@ class Store<S>(private val coroutineScope: CoroutineScope, initialState: S): Act
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private suspend fun runActions() = whileSelect {
-        queueChannel.onReceive { action ->
+    private suspend fun runActions() {
+        while (true) {
+            val action = withTimeoutOrNull(200L) { queueChannel.receive() }
+            if (action == null) {
+                Log.d(tag, "Stopping action runner")
+                lock.withLock {
+                    // New actions may be dispatched during the timeout.
+                    isRunningActions = !queueChannel.isEmpty
+                    if (!isRunningActions) return
+                }
+                continue
+            }
+
+            Log.d(tag, "Running $action")
             _state.value = try {
                 with(action) { this@Store.execute(_state.value) }
             } catch (c: CancellationException) {
@@ -46,16 +60,7 @@ class Store<S>(private val coroutineScope: CoroutineScope, initialState: S): Act
                 throw c
             } catch (e: Exception) {
                 action.catch(e)
-                return@onReceive true
-            }
-
-            true
-        }
-        onTimeout(200L) {
-            lock.withLock {
-                // New actions may be dispatched during the timeout.
-                isRunningActions = queueChannel.isEmpty
-                isRunningActions
+                continue
             }
         }
     }
