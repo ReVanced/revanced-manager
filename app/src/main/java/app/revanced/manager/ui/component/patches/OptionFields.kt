@@ -98,7 +98,7 @@ private class OptionEditorScope<T : Any>(
         dismissDialog()
     }
 
-    fun showSelectionWarningDialogElse(block: () -> Unit) {
+    fun checkSafeguard(block: () -> Unit) {
         if (!option.required && selectionWarningEnabled)
             showSelectionWarning()
         else
@@ -106,7 +106,7 @@ private class OptionEditorScope<T : Any>(
     }
 
     fun clickAction() {
-        showSelectionWarningDialogElse {
+        checkSafeguard {
             editor.clickAction(this)
         }
     }
@@ -116,9 +116,6 @@ private class OptionEditorScope<T : Any>(
 
     @Composable
     fun Dialog() = editor.Dialog(this)
-
-    @Composable
-    fun SelectionWarningDialog(onDismissDialog: () -> Unit) = SelectionWarningDialog(onDismiss = onDismissDialog)
 }
 
 private interface OptionEditor<T : Any> {
@@ -126,7 +123,7 @@ private interface OptionEditor<T : Any> {
 
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        IconButton(onClick = { scope.showSelectionWarningDialogElse { clickAction(scope) } }) {
+        IconButton(onClick = { scope.checkSafeguard { clickAction(scope) } }) {
             Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
         }
     }
@@ -159,10 +156,9 @@ private inline fun <T : Any> WithOptionEditor(
     block: OptionEditorScope<T>.() -> Unit
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
-    var selectionWarningEnabled by rememberSaveable { mutableStateOf(selectionWarningEnabled) }
     var showSelectionWarningDialog by rememberSaveable { mutableStateOf(false) }
 
-    val scope = remember(editor, option, value, setValue) {
+    val scope = remember(editor, option, value, setValue, selectionWarningEnabled) {
         OptionEditorScope(
             editor,
             option,
@@ -178,7 +174,10 @@ private inline fun <T : Any> WithOptionEditor(
         )
     }
 
-    if (showSelectionWarningDialog) scope.SelectionWarningDialog { showSelectionWarningDialog = false }
+    if (showSelectionWarningDialog)
+        SelectionWarningDialog(
+            onDismiss = { showSelectionWarningDialog = false }
+        )
 
     if (showDialog) scope.Dialog()
 
@@ -376,9 +375,14 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
 
     @Composable
     override fun ListItemTrailingContent(scope: OptionEditorScope<Boolean>) {
-        HapticSwitch(checked = scope.current, onCheckedChange = {
-            scope.showSelectionWarningDialogElse { scope.setValue }
-        })
+        HapticSwitch(
+            checked = scope.current,
+            onCheckedChange = { value ->
+                scope.checkSafeguard {
+                    scope.setValue(value)
+                }
+            }
+        )
     }
 
     @Composable
