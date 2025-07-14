@@ -70,6 +70,13 @@ fun BundleInformationDialog(
     var viewCurrentBundlePatches by remember { mutableStateOf(false) }
     val isLocal = src is LocalPatchBundle
     val bundleManifestAttributes = src.patchBundle?.manifestAttributes
+    val autoUpdate = src.asRemoteOrNull?.autoUpdate == true
+
+    fun onAutoUpdateChange(new: Boolean) = composableScope.launch {
+        with(bundleRepo) {
+            src.asRemoteOrNull?.setAutoUpdate(new)
+        }
+    }
 
     if (viewCurrentBundlePatches) {
         BundlePatchesDialog(
@@ -115,14 +122,6 @@ fun BundleInformationDialog(
                 )
             },
         ) { paddingValues ->
-            val autoUpdate = src.asRemoteOrNull?.autoUpdate == true
-
-            fun onAutoUpdateChange(new: Boolean) = composableScope.launch {
-                with(bundleRepo) {
-                    src.asRemoteOrNull?.setAutoUpdate(new)
-                }
-            }
-
             ColumnWithScrollbar(
                 modifier = Modifier
                     .fillMaxWidth()

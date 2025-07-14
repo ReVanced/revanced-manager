@@ -2,7 +2,7 @@ package app.revanced.manager.patcher.patch
 
 import kotlinx.parcelize.IgnoredOnParcel
 import android.os.Parcelable
-import app.revanced.patcher.patch.PatchLoader
+import app.revanced.patcher.patch.loadPatchesFromDex
 import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.io.IOException
@@ -55,7 +55,7 @@ data class PatchBundle(val patchesJar: String) : Parcelable {
 
     object Loader {
         private fun patches(bundles: Iterable<PatchBundle>) =
-            PatchLoader.Dex(
+            loadPatchesFromDex(
                 bundles.map { File(it.patchesJar) }.toSet()
             ).byPatchesFile.mapKeys { (file, _) ->
                 val absPath = file.absolutePath

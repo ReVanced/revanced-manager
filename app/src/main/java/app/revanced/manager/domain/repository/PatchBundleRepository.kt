@@ -102,10 +102,7 @@ class PatchBundleRepository(
         crossinline block: suspend ActionContext.(current: State) -> State
     ) {
         store.dispatch(object : Action<State> {
-            override suspend fun ActionContext.execute(current: State): State {
-                return block(current)
-            }
-
+            override suspend fun ActionContext.execute(current: State) = block(current)
             override fun toString() = name
         })
     }
