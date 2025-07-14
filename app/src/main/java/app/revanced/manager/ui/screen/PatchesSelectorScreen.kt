@@ -181,7 +181,8 @@ fun PatchesSelectorScreen(
             patch = patch,
             values = viewModel.getOptions(bundle, patch),
             reset = { viewModel.resetOptions(bundle, patch) },
-            set = { key, value -> viewModel.setOption(bundle, patch, key, value) }
+            set = { key, value -> viewModel.setOption(bundle, patch, key, value) },
+            selectionWarningEnabled = viewModel.selectionWarningEnabled
         )
     }
 
@@ -215,12 +216,7 @@ fun PatchesSelectorScreen(
             ) { patch ->
                 PatchItem(
                     patch = patch,
-                    onOptionsDialog = {
-                        if (viewModel.selectionWarningEnabled)
-                            showSelectionWarning = true
-                        else
-                            viewModel.optionsDialog = uid to patch
-                    },
+                    onOptionsDialog = { viewModel.optionsDialog = uid to patch },
                     selected = compatible && viewModel.isSelected(
                         uid,
                         patch
@@ -476,7 +472,7 @@ fun PatchesSelectorScreen(
 }
 
 @Composable
-private fun SelectionWarningDialog(
+internal fun SelectionWarningDialog(
     onDismiss: () -> Unit
 ) {
     SafeguardDialog(
@@ -615,6 +611,7 @@ private fun OptionsDialog(
     reset: () -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
+    selectionWarningEnabled: Boolean
 ) = FullscreenDialog(onDismissRequest = onDismissRequest) {
     Scaffold(
         topBar = {
@@ -645,7 +642,8 @@ private fun OptionsDialog(
                     value = value,
                     setValue = {
                         set(key, it)
-                    }
+                    },
+                    selectionWarningEnabled = selectionWarningEnabled
                 )
             }
         }
