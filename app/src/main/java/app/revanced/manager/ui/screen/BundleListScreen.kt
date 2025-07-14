@@ -46,8 +46,7 @@ fun BundleListScreen(
         ) {
             items(
                 sources,
-                key = { it.uid },
-                contentType = { 0 },
+                key = { it.uid }
             ) { source ->
                 BundleItem(
                     src = source,
