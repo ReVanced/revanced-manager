@@ -12,7 +12,7 @@ class LocalPatchBundle(
     error: Throwable?,
     directory: File
 ) : PatchBundleSource(name, uid, error, directory) {
-    suspend fun ActionContext<*>.replace(patches: InputStream) {
+    suspend fun ActionContext.replace(patches: InputStream) {
         withContext(Dispatchers.IO) {
             patchBundleOutputStream().use { outputStream ->
                 patches.copyTo(outputStream)

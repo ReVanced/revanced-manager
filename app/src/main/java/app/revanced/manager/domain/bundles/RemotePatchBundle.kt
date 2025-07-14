@@ -40,9 +40,9 @@ sealed class RemotePatchBundle(
     /**
      * Downloads the latest version regardless if there is a new update available.
      */
-    suspend fun ActionContext<*>.downloadLatest() = download(getLatestInfo())
+    suspend fun ActionContext.downloadLatest() = download(getLatestInfo())
 
-    suspend fun ActionContext<*>.update(): String? = withContext(Dispatchers.IO) {
+    suspend fun ActionContext.update(): String? = withContext(Dispatchers.IO) {
         val info = getLatestInfo()
         if (hasInstalled() && info.version == versionHash)
             return@withContext null

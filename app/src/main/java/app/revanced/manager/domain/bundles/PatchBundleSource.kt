@@ -31,7 +31,7 @@ sealed class PatchBundleSource(
     val isNameOutOfDate get() = patchBundle?.manifestAttributes?.name?.let { it != name } == true
     val error get() = (state as? State.Failed)?.throwable
 
-    suspend fun ActionContext<*>.deleteLocalFile() = withContext(Dispatchers.IO) {
+    suspend fun ActionContext.deleteLocalFile() = withContext(Dispatchers.IO) {
         patchesFile.delete()
     }
 

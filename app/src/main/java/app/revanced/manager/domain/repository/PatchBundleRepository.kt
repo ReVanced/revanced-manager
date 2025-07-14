@@ -53,8 +53,7 @@ class PatchBundleRepository(
     private val dao = db.patchBundleDao()
     private val bundlesDir = app.getDir("patch_bundles", Context.MODE_PRIVATE)
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Default)
-    private val store = Store(coroutineScope, State())
+    private val store = Store(CoroutineScope(Dispatchers.Default), State())
 
     val sources = store.state.map { it.sources.values.toList() }
     val bundles = store.state.map {
@@ -100,10 +99,10 @@ class PatchBundleRepository(
 
     private suspend inline fun dispatchAction(
         name: String,
-        crossinline block: suspend ActionContext<State>.(current: State) -> State
+        crossinline block: suspend ActionContext.(current: State) -> State
     ) {
         store.dispatch(object : Action<State> {
-            override suspend fun ActionContext<State>.execute(current: State): State {
+            override suspend fun ActionContext.execute(current: State): State {
                 return block(current)
             }
 
@@ -355,7 +354,7 @@ class PatchBundleRepository(
 
         override fun toString() = if (force) "Redownload remote bundles" else "Update check"
 
-        override suspend fun ActionContext<State>.execute(
+        override suspend fun ActionContext.execute(
             current: State
         ) = coroutineScope {
             if (!networkInfo.isSafe()) {

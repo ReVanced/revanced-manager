@@ -9,15 +9,13 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.whileSelect
-import kotlinx.coroutines.selects.onTimeout
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
 
 // This file implements React Redux-like state management.
 
-class Store<S>(private val coroutineScope: CoroutineScope, initialState: S) : ActionContext<S> {
+class Store<S>(private val coroutineScope: CoroutineScope, initialState: S) : ActionContext {
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
 
@@ -26,7 +24,7 @@ class Store<S>(private val coroutineScope: CoroutineScope, initialState: S) : Ac
     private val queueChannel = Channel<Action<S>>(capacity = 10)
     private val lock = Mutex()
 
-    override suspend fun dispatch(action: Action<S>) = lock.withLock {
+    suspend fun dispatch(action: Action<S>) = lock.withLock {
         Log.d(tag, "Dispatching $action")
         queueChannel.send(action)
 
@@ -66,12 +64,10 @@ class Store<S>(private val coroutineScope: CoroutineScope, initialState: S) : Ac
     }
 }
 
-interface ActionContext<S> {
-    suspend fun dispatch(action: Action<S>)
-}
+interface ActionContext
 
 interface Action<S> {
-    suspend fun ActionContext<S>.execute(current: S): S
+    suspend fun ActionContext.execute(current: S): S
     suspend fun catch(exception: Exception) {
         Log.e(tag, "Got exception while executing $this", exception)
     }
