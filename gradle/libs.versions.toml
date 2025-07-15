@@ -29,7 +29,6 @@ dev-tools-gradle-plugin = "2.1.10-1.0.29"
 about-libraries-gradle-plugin = "12.1.2"
 coil = "2.7.0"
 app-icon-loader-coil = "1.5.0"
-skrapeit = "1.2.2"
 libsu = "6.0.0"
 scrollbars = "1.0.4"
 enumutil = "1.1.1"
@@ -98,10 +97,6 @@ ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = 
 ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-
-# HTML Scraper
-skrapeit-dsl = { group = "it.skrape", name = "skrapeit-dsl", version.ref = "skrapeit" }
-skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.ref = "skrapeit" }
 
 # Markdown
 markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-m3", version.ref = "markdown-renderer" }
