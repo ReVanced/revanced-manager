@@ -1,3 +1,10 @@
+## app.revanced.manager.api [1.0.1](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager.api@1.0.0...app.revanced.manager.api@1.0.1) (2025-07-15)
+
+
+### Bug Fixes
+
+* test edit API (correct branch) ([95af06d](https://github.com/brosssh/revanced-manager/commit/95af06da1f9db9a9ab046e7afae64b9b4ee364a9))
+
 # app.revanced.manager.api 1.0.0 (2025-07-15)
 
 
