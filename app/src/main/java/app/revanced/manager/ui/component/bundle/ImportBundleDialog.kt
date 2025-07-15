@@ -23,9 +23,13 @@ import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.TextHorizontalPadding
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
-import app.revanced.manager.ui.model.BundleType
 import app.revanced.manager.util.BIN_MIMETYPE
 import app.revanced.manager.util.transparentListItemColors
+
+private enum class BundleType {
+    Local,
+    Remote
+}
 
 @Composable
 fun ImportPatchBundleDialog(
@@ -37,7 +41,7 @@ fun ImportPatchBundleDialog(
     var bundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
-    var autoUpdate by rememberSaveable { mutableStateOf(false) }
+    var autoUpdate by rememberSaveable { mutableStateOf(true) }
 
     val patchActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -77,7 +81,7 @@ fun ImportPatchBundleDialog(
     AlertDialogExtended(
         onDismissRequest = onDismiss,
         title = {
-            Text(stringResource(if (currentStep == 0) R.string.select else R.string.add_patch_bundle))
+            Text(stringResource(if (currentStep == 0) R.string.select else R.string.add_patches))
         },
         text = {
             steps[currentStep]()
@@ -117,7 +121,7 @@ fun ImportPatchBundleDialog(
 }
 
 @Composable
-fun SelectBundleTypeStep(
+private fun SelectBundleTypeStep(
     bundleType: BundleType,
     onBundleTypeSelected: (BundleType) -> Unit
 ) {
@@ -126,7 +130,7 @@ fun SelectBundleTypeStep(
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 24.dp),
-            text = stringResource(R.string.select_bundle_type_dialog_description)
+            text = stringResource(R.string.select_patches_type_dialog_description)
         )
         Column {
             ListItem(
@@ -136,7 +140,7 @@ fun SelectBundleTypeStep(
                 ),
                 headlineContent = { Text(stringResource(R.string.enter_url)) },
                 overlineContent = { Text(stringResource(R.string.recommended)) },
-                supportingContent = { Text(stringResource(R.string.remote_bundle_description)) },
+                supportingContent = { Text(stringResource(R.string.remote_patches_description)) },
                 leadingContent = {
                     HapticRadioButton(
                         selected = bundleType == BundleType.Remote,
@@ -152,7 +156,7 @@ fun SelectBundleTypeStep(
                     onClick = { onBundleTypeSelected(BundleType.Local) }
                 ),
                 headlineContent = { Text(stringResource(R.string.select_from_storage)) },
-                supportingContent = { Text(stringResource(R.string.local_bundle_description)) },
+                supportingContent = { Text(stringResource(R.string.local_patches_description)) },
                 overlineContent = { },
                 leadingContent = {
                     HapticRadioButton(
@@ -168,7 +172,7 @@ fun SelectBundleTypeStep(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ImportBundleStep(
+private fun ImportBundleStep(
     bundleType: BundleType,
     patchBundle: Uri?,
     remoteUrl: String,
@@ -185,7 +189,7 @@ fun ImportBundleStep(
                 ) {
                     ListItem(
                         headlineContent = {
-                            Text(stringResource(R.string.patch_bundle_field))
+                            Text(stringResource(R.string.patches))
                         },
                         supportingContent = { Text(stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set)) },
                         trailingContent = {
@@ -206,11 +210,11 @@ fun ImportBundleStep(
                     OutlinedTextField(
                         value = remoteUrl,
                         onValueChange = onRemoteUrlChange,
-                        label = { Text(stringResource(R.string.bundle_url)) }
+                        label = { Text(stringResource(R.string.patches_url)) }
                     )
                 }
                 Column(
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp)
                 ) {
                     ListItem(
                         modifier = Modifier.clickable(
