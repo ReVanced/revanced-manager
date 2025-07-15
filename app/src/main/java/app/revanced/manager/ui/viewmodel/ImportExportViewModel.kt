@@ -81,8 +81,8 @@ sealed class ResetDialogState(
     )
 
     class PatchOptionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.patch_options_reset,
-        descriptionResId = R.string.patch_options_reset_dialog_description,
+        titleResId = R.string.patch_options_reset_patches,
+        descriptionResId = R.string.patch_options_reset_patches_dialog_description,
         onConfirm = onConfirm,
         dialogOptionName = dialogOptionName
     )

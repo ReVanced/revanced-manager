@@ -296,8 +296,8 @@ fun ImportExportSettingsScreen(
                                     }
                                 }
                             },
-                            headline = R.string.patch_options_reset,
-                            description = R.string.patch_options_reset_all,
+                            headline = R.string.patch_options_reset_patches,
+                            description = R.string.patch_options_reset_patches_description,
                         )
                     }
                 }
