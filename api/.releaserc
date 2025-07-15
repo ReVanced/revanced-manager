@@ -16,12 +16,10 @@
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    "gradle-semantic-release-plugin",
     [
-        "@semantic-release/calver",
+        "gradle-semantic-release-plugin",
         {
-        "format": "YYYY.MM.MINOR",
-        "versionSource": "date"
+          "gradleCommand": "../gradlew"
         }
     ],
     [

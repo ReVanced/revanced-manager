@@ -16,7 +16,12 @@
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    "gradle-semantic-release-plugin",
+    [
+        "gradle-semantic-release-plugin",
+        {
+          "gradleCommand": "../../gradlew"
+        }
+    ],
     [
       "@semantic-release/git",
       {

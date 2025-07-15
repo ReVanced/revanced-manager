@@ -1,1 +1,11 @@
-{}
+{
+  "private": true,
+  "workspaces": [
+    "api",
+    "app"
+  ],
+  "devDependencies": {
+    "@anolilab/multi-semantic-release": "^1.1.12",
+    "semantic-release": "^22.0.12"
+  }
+}
