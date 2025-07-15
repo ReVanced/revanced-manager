@@ -95,8 +95,8 @@
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
     <string name="suggested_version_safeguard_confirmation">Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?</string>
-    <string name="patch_selection_safeguard">Allow changing patch selection</string>
-    <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches</string>
+    <string name="patch_selection_safeguard">Allow changing patch selection and options</string>
+    <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches and customization of options</string>
     <string name="patch_selection_safeguard_confirmation">Changing the selection of patches may cause unexpected issues.\n\nEnable anyways?</string>
     <string name="universal_patches_safeguard">Allow using universal patches</string>
     <string name="universal_patches_safeguard_description">Do not prevent using universal patches</string>

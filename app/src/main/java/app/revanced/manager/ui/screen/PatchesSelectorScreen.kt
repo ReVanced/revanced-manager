@@ -73,6 +73,7 @@ import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
+import app.revanced.manager.ui.component.patches.SelectionWarningDialog
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_INCOMPATIBLE
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
@@ -181,7 +182,8 @@ fun PatchesSelectorScreen(
             patch = patch,
             values = viewModel.getOptions(bundle, patch),
             reset = { viewModel.resetOptions(bundle, patch) },
-            set = { key, value -> viewModel.setOption(bundle, patch, key, value) }
+            set = { key, value -> viewModel.setOption(bundle, patch, key, value) },
+            selectionWarningEnabled = viewModel.selectionWarningEnabled
         )
     }
 
@@ -215,9 +217,7 @@ fun PatchesSelectorScreen(
             ) { patch ->
                 PatchItem(
                     patch = patch,
-                    onOptionsDialog = {
-                        viewModel.optionsDialog = uid to patch
-                    },
+                    onOptionsDialog = { viewModel.optionsDialog = uid to patch },
                     selected = compatible && viewModel.isSelected(
                         uid,
                         patch
@@ -473,17 +473,6 @@ fun PatchesSelectorScreen(
 }
 
 @Composable
-private fun SelectionWarningDialog(
-    onDismiss: () -> Unit
-) {
-    SafeguardDialog(
-        onDismiss = onDismiss,
-        title = R.string.warning,
-        body = stringResource(R.string.selection_warning_description),
-    )
-}
-
-@Composable
 private fun UniversalPatchWarningDialog(
     onDismiss: () -> Unit
 ) {
@@ -612,6 +601,7 @@ private fun OptionsDialog(
     reset: () -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
+    selectionWarningEnabled: Boolean
 ) = FullscreenDialog(onDismissRequest = onDismissRequest) {
     Scaffold(
         topBar = {
@@ -642,7 +632,8 @@ private fun OptionsDialog(
                     value = value,
                     setValue = {
                         set(key, it)
-                    }
+                    },
+                    selectionWarningEnabled = selectionWarningEnabled
                 )
             }
         }

@@ -154,7 +154,8 @@ fun RequiredOptionsScreen(
                                     value = value,
                                     setValue = { new ->
                                         vm.setOption(bundle.uid, it, key, new)
-                                    }
+                                    },
+                                    selectionWarningEnabled = vm.selectionWarningEnabled
                                 )
                             }
                         }
