@@ -24,38 +24,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
-import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BundleItem(
-    bundle: PatchBundleSource,
-    onDelete: () -> Unit,
-    onUpdate: () -> Unit,
+    src: PatchBundleSource,
+    patchCount: Int,
     selectable: Boolean,
-    onSelect: () -> Unit,
     isBundleSelected: Boolean,
     toggleSelection: (Boolean) -> Unit,
+    onSelect: () -> Unit,
+    onDelete: () -> Unit,
+    onUpdate: () -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    val state by bundle.state.collectAsStateWithLifecycle()
-
-    val version by bundle.versionFlow.collectAsStateWithLifecycle(null)
-    val patchCount by bundle.patchCountFlow.collectAsStateWithLifecycle(0)
-    val name by bundle.nameState
 
     if (viewBundleDialogPage) {
         BundleInformationDialog(
+            src = src,
+            patchCount = patchCount,
             onDismissRequest = { viewBundleDialogPage = false },
             onDeleteRequest = { showDeleteConfirmationDialog = true },
-            bundle = bundle,
             onUpdate = onUpdate,
         )
     }
@@ -68,7 +62,7 @@ fun BundleItem(
                 viewBundleDialogPage = false
             },
             title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_single_dialog_description, name),
+            description = stringResource(R.string.patches_delete_single_dialog_description, src.name),
             icon = Icons.Outlined.Delete
         )
     }
@@ -90,19 +84,19 @@ fun BundleItem(
             }
         } else null,
 
-        headlineContent = { Text(name) },
+        headlineContent = { Text(src.name) },
         supportingContent = {
-            if (state is PatchBundleSource.State.Loaded) {
+            if (src.state is PatchBundleSource.State.Available) {
                 Text(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
             }
         },
         trailingContent = {
             Row {
-                val icon = remember(state) {
-                    when (state) {
+                val icon = remember(src.state) {
+                    when (src.state) {
                         is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.patches_error
                         is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.patches_missing
-                        is PatchBundleSource.State.Loaded -> null
+                        is PatchBundleSource.State.Available -> null
                     }
                 }
 
@@ -115,7 +109,7 @@ fun BundleItem(
                     )
                 }
 
-                version?.let { Text(text = it) }
+                src.version?.let { Text(text = it) }
             }
         },
     )

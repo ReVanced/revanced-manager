@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
@@ -24,8 +25,10 @@ import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
@@ -38,13 +41,12 @@ class DashboardViewModel(
     private val pm: PM,
 ) : ViewModel() {
     val availablePatches =
-        patchBundleRepository.bundles.map { it.values.sumOf { bundle -> bundle.patches.size } }
+        patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
-    val sources = patchBundleRepository.sources
-    val selectedSources = mutableStateListOf<PatchBundleSource>()
 
-    val newDownloaderPluginsAvailable = downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
+    val newDownloaderPluginsAvailable =
+        downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
 
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
@@ -59,6 +61,9 @@ class DashboardViewModel(
     var showBatteryOptimizationsWarning by mutableStateOf(false)
         private set
 
+    private val bundleListEventsChannel = Channel<BundleListViewModel.Event>()
+    val bundleListEventsFlow = bundleListEventsChannel.receiveAsFlow()
+
     init {
         viewModelScope.launch {
             checkForManagerUpdates()
@@ -70,10 +75,6 @@ class DashboardViewModel(
         downloaderPluginRepository.acknowledgeAllNewPlugins()
     }
 
-    fun dismissUpdateDialog() {
-        updatedManagerVersion = null
-    }
-
     private suspend fun checkForManagerUpdates() {
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
@@ -83,7 +84,8 @@ class DashboardViewModel(
     }
 
     fun updateBatteryOptimizationsWarning() {
-        showBatteryOptimizationsWarning = !powerManager.isIgnoringBatteryOptimizations(app.packageName)
+        showBatteryOptimizationsWarning =
+            !powerManager.isIgnoringBatteryOptimizations(app.packageName)
     }
 
     fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
@@ -112,36 +114,20 @@ class DashboardViewModel(
         }
     }
 
-
-    fun cancelSourceSelection() {
-        selectedSources.clear()
+    private fun sendEvent(event: BundleListViewModel.Event) {
+        viewModelScope.launch { bundleListEventsChannel.send(event) }
     }
 
-    fun createLocalSource(patchBundle: Uri) =
-        viewModelScope.launch {
-            contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
-                patchBundleRepository.createLocal(patchesStream)
-            }
-        }
+    fun cancelSourceSelection() = sendEvent(BundleListViewModel.Event.CANCEL)
+    fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
+    fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
 
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) =
-        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, autoUpdate) }
+    @SuppressLint("Recycle")
+    fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
+        patchBundleRepository.createLocal { contentResolver.openInputStream(patchBundle)!! }
+    }
 
-    fun delete(bundle: PatchBundleSource) =
-        viewModelScope.launch { patchBundleRepository.remove(bundle) }
-
-    fun update(bundle: PatchBundleSource) = viewModelScope.launch {
-        if (bundle !is RemotePatchBundle) return@launch
-
-        uiSafe(
-            app,
-            R.string.patches_download_fail,
-            RemotePatchBundle.updateFailMsg
-        ) {
-            if (bundle.update())
-                app.toast(app.getString(R.string.patches_update_success, bundle.getName()))
-            else
-                app.toast(app.getString(R.string.patches_update_unavailable, bundle.getName()))
-        }
+    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
+        patchBundleRepository.createRemote(apiUrl, autoUpdate)
     }
 }

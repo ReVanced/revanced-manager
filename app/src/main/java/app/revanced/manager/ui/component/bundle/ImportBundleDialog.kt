@@ -23,9 +23,13 @@ import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.TextHorizontalPadding
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
-import app.revanced.manager.ui.model.BundleType
 import app.revanced.manager.util.BIN_MIMETYPE
 import app.revanced.manager.util.transparentListItemColors
+
+private enum class BundleType {
+    Local,
+    Remote
+}
 
 @Composable
 fun ImportPatchBundleDialog(
@@ -37,7 +41,7 @@ fun ImportPatchBundleDialog(
     var bundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
-    var autoUpdate by rememberSaveable { mutableStateOf(false) }
+    var autoUpdate by rememberSaveable { mutableStateOf(true) }
 
     val patchActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -117,7 +121,7 @@ fun ImportPatchBundleDialog(
 }
 
 @Composable
-fun SelectBundleTypeStep(
+private fun SelectBundleTypeStep(
     bundleType: BundleType,
     onBundleTypeSelected: (BundleType) -> Unit
 ) {
@@ -168,7 +172,7 @@ fun SelectBundleTypeStep(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ImportBundleStep(
+private fun ImportBundleStep(
     bundleType: BundleType,
     patchBundle: Uri?,
     remoteUrl: String,

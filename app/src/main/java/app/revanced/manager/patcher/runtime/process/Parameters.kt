@@ -1,6 +1,7 @@
 package app.revanced.manager.patcher.runtime.process
 
 import android.os.Parcelable
+import app.revanced.manager.patcher.patch.PatchBundle
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -17,7 +18,7 @@ data class Parameters(
 
 @Parcelize
 data class PatchConfiguration(
-    val bundlePath: String,
+    val bundle: PatchBundle,
     val patches: Set<String>,
     val options: @RawValue Map<String, Map<String, Any?>>
 ) : Parcelable

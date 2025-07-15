@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -25,20 +26,26 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import kotlinx.coroutines.flow.mapNotNull
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BundlePatchesDialog(
     onDismissRequest: () -> Unit,
-    bundle: PatchBundleSource,
+    src: PatchBundleSource,
 ) {
     var showAllVersions by rememberSaveable { mutableStateOf(false) }
     var showOptions by rememberSaveable { mutableStateOf(false) }
-    val state by bundle.state.collectAsStateWithLifecycle()
+    val patchBundleRepository: PatchBundleRepository = koinInject()
+    val patches by remember(src.uid) {
+        patchBundleRepository.bundleInfoFlow.mapNotNull { it[src.uid]?.patches }
+    }.collectAsStateWithLifecycle(emptyList())
 
     FullscreenDialog(
         onDismissRequest = onDismissRequest,
@@ -64,16 +71,14 @@ fun BundlePatchesDialog(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                state.patchBundleOrNull()?.let { bundle ->
-                    items(bundle.patches) { patch ->
-                        PatchItem(
-                            patch,
-                            showAllVersions,
-                            onExpandVersions = { showAllVersions = !showAllVersions },
-                            showOptions,
-                            onExpandOptions = { showOptions = !showOptions }
-                        )
-                    }
+                items(patches) { patch ->
+                    PatchItem(
+                        patch,
+                        showAllVersions,
+                        onExpandVersions = { showAllVersions = !showAllVersions },
+                        showOptions,
+                        onExpandOptions = { showOptions = !showOptions }
+                    )
                 }
             }
         }

@@ -227,12 +227,12 @@ fun ImportExportSettingsScreen(
                         GroupItem(
                             onClick = {
                                 selectorDialog = {
-                                    BundleSelector(bundles = patchBundles) { bundle ->
-                                        bundle?.also {
+                                    BundleSelector(sources = patchBundles) { src ->
+                                        src?.also {
                                             coroutineScope.launch {
                                                 vm.resetDialogState =
-                                                    ResetDialogState.PatchSelectionBundle(bundle.getName()) {
-                                                        vm.resetSelectionForPatchBundle(bundle)
+                                                    ResetDialogState.PatchSelectionBundle(it.name) {
+                                                        vm.resetSelectionForPatchBundle(it)
                                                     }
                                             }
                                         }
@@ -283,12 +283,12 @@ fun ImportExportSettingsScreen(
                         GroupItem(
                             onClick = {
                                 selectorDialog = {
-                                    BundleSelector(bundles = patchBundles) { bundle ->
-                                        bundle?.also {
+                                    BundleSelector(sources = patchBundles) { src ->
+                                        src?.also {
                                             coroutineScope.launch {
                                                 vm.resetDialogState =
-                                                    ResetDialogState.PatchOptionBundle(bundle.getName()) {
-                                                        vm.resetOptionsForBundle(bundle)
+                                                    ResetDialogState.PatchOptionBundle(src.name) {
+                                                        vm.resetOptionsForBundle(src)
                                                     }
                                             }
                                         }
