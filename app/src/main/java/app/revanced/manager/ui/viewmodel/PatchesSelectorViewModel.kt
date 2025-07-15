@@ -17,10 +17,9 @@ import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.ui.model.BundleInfo
-import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
-import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
@@ -63,7 +62,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     val allowIncompatiblePatches =
         get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
     val bundlesFlow =
-        get<PatchBundleRepository>().bundleInfoFlow(packageName, input.app.version)
+        get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.app.version)
 
     init {
         viewModelScope.launch {
@@ -76,11 +75,11 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
                 return@launch
             }
 
-            fun BundleInfo.hasDefaultPatches() =
+            fun PatchBundleInfo.Scoped.hasDefaultPatches() =
                 patchSequence(allowIncompatiblePatches).any { it.include }
 
             // Don't show the warning if there are no default patches.
-            selectionWarningEnabled = bundlesFlow.first().any(BundleInfo::hasDefaultPatches)
+            selectionWarningEnabled = bundlesFlow.first().any(PatchBundleInfo.Scoped::hasDefaultPatches)
         }
     }
 
@@ -123,7 +122,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     // This is for the required options screen.
     private val requiredOptsPatchesDeferred = viewModelScope.async(start = CoroutineStart.LAZY) {
         bundlesFlow.first().map { bundle ->
-            bundle to bundle.all.filter { patch ->
+            bundle to bundle.patchSequence(allowIncompatiblePatches).filter { patch ->
                 val opts by lazy {
                     getOptions(bundle.uid, patch).orEmpty()
                 }
@@ -136,14 +135,14 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     }
     val requiredOptsPatches = flow { emit(requiredOptsPatchesDeferred.await()) }
 
-    fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
+    fun selectionIsValid(bundles: List<PatchBundleInfo.Scoped>) = bundles.any { bundle ->
         bundle.patchSequence(allowIncompatiblePatches).any { patch ->
             isSelected(bundle.uid, patch)
         }
     }
 
     fun isSelected(bundle: Int, patch: PatchInfo) = customPatchSelection?.let { selection ->
-        selection[bundle]?.contains(patch.name) ?: false
+        selection[bundle]?.contains(patch.name) == true
     } ?: patch.include
 
     fun togglePatch(bundle: Int, patch: PatchInfo) = viewModelScope.launch {

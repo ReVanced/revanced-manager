@@ -413,7 +413,7 @@ fun PatchesSelectorScreen(
                                         style = MaterialTheme.typography.bodyMedium
                                     )
                                     Text(
-                                        text = bundle.version!!,
+                                        text = bundle.version.orEmpty(),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )

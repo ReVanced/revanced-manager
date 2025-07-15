@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
-import app.revanced.manager.ui.model.BundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
@@ -62,6 +62,7 @@ fun RequiredOptionsScreen(
     val showContinueButton by remember {
         derivedStateOf {
             bundles.requiredOptionsSet(
+                allowIncompatible = vm.allowIncompatiblePatches,
                 isSelected = { bundle, patch -> vm.isSelected(bundle.uid, patch) },
                 optionsForPatch = { bundle, patch -> vm.getOptions(bundle.uid, patch) }
             )

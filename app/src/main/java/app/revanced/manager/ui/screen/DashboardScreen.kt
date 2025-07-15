@@ -44,6 +44,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -56,7 +57,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
@@ -93,7 +93,8 @@ fun DashboardScreen(
     onDownloaderPluginClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
-    val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.isNotEmpty() } }
+    var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
+    val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
         false
@@ -160,10 +161,7 @@ fun DashboardScreen(
     if (showDeleteConfirmationDialog) {
         ConfirmDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
-            onConfirm = {
-                vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
-                vm.cancelSourceSelection()
-            },
+            onConfirm = vm::deleteSources,
             title = stringResource(R.string.delete),
             description = stringResource(R.string.patches_delete_multiple_dialog_description),
             icon = Icons.Outlined.Delete
@@ -174,7 +172,7 @@ fun DashboardScreen(
         topBar = {
             if (bundlesSelectable) {
                 BundleTopBar(
-                    title = stringResource(R.string.patches_selected, vm.selectedSources.size),
+                    title = stringResource(R.string.patches_selected, selectedSourceCount),
                     onBackClick = vm::cancelSourceSelection,
                     backIcon = {
                         Icon(
@@ -194,10 +192,7 @@ fun DashboardScreen(
                             )
                         }
                         IconButton(
-                            onClick = {
-                                vm.selectedSources.forEach { vm.update(it) }
-                                vm.cancelSourceSelection()
-                            }
+                            onClick = vm::updateSources
                         ) {
                             Icon(
                                 Icons.Outlined.Refresh,
@@ -349,18 +344,9 @@ fun DashboardScreen(
                                 }
                             }
 
-                            val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
-
                             BundleListScreen(
-                                onDelete = {
-                                    vm.delete(it)
-                                },
-                                onUpdate = {
-                                    vm.update(it)
-                                },
-                                sources = sources,
-                                selectedSources = vm.selectedSources,
-                                bundlesSelectable = bundlesSelectable
+                                eventsFlow = vm.bundleListEventsFlow,
+                                setSelectedSourceCount = { selectedSourceCount = it }
                             )
                         }
                     }
