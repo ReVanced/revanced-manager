@@ -1,3 +1,21 @@
+## @brosssh/app.revanced.revanced-manager-api [5.0.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@5.0.1...@brosssh/app.revanced.revanced-manager-api@5.0.2) (2025-07-16)
+
+
+### Bug Fixes
+
+* Test api again again ([a134eb8](https://github.com/brosssh/revanced-manager/commit/a134eb8f9d7959b244b94bac6d815d0992c8e945))
+
+
+
+
+
+## [5.0.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@5.0.1...@brosssh/app.revanced.revanced-manager-api@5.0.2) (2025-07-16)
+
+
+### Bug Fixes
+
+* Test api again again ([a134eb8](https://github.com/brosssh/revanced-manager/commit/a134eb8f9d7959b244b94bac6d815d0992c8e945))
+
 ## @brosssh/app.revanced.revanced-manager-api [5.0.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@5.0.0...@brosssh/app.revanced.revanced-manager-api@5.0.1) (2025-07-16)
 
 
