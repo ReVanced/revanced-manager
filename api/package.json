@@ -1,5 +1,5 @@
 {
-  "name": "@brosssh/app.revanced.manager.api",
+  "name": "@brosssh/app.revanced.revanced-manager-api",
   "private": false,
   "devDependencies": {
     "@anolilab/multi-semantic-release": "^1.1.10",
@@ -7,12 +7,5 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/brosssh/revanced-manager.git"
   }
 }

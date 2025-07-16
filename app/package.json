@@ -1,5 +1,5 @@
 {
-  "name": "app.revanced.manager.app",
+  "name": "app.revanced.manager",
   "private": false,
   "devDependencies": {
     "@anolilab/multi-semantic-release": "^1.1.10",
