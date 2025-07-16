@@ -7,5 +7,9 @@
   "devDependencies": {
     "@anolilab/multi-semantic-release": "^1.1.12",
     "semantic-release": "^22.0.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brosssh/revanced-manager.git"
   }
 }
