@@ -26,7 +26,7 @@
    [
          "@semantic-release/exec",
          {
-           "publishCmd": ".\..\gradlew build"
+           "publishCmd": ".\\..\\gradlew build"
          }
     ],
     [
