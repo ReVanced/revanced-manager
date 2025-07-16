@@ -1,3 +1,10 @@
+## @brosssh/app.revanced.manager.api [1.0.3-dev.4](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.3-dev.3...@brosssh/app.revanced.manager.api@1.0.3-dev.4) (2025-07-16)
+
+
+### Bug Fixes
+
+* Add ignore file ([c230b16](https://github.com/brosssh/revanced-manager/commit/c230b16a616b921132e65f553d5ab2de02d51f16))
+
 ## @brosssh/app.revanced.manager.api [1.0.3-dev.3](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.3-dev.2...@brosssh/app.revanced.manager.api@1.0.3-dev.3) (2025-07-16)
 
 
