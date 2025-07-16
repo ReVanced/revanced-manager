@@ -22,7 +22,7 @@
           "CHANGELOG.md",
           "gradle.properties",
         ],
-        "message": "chore: Release App v${nextRelease.version} [skip ci]\n\n"
+        "message": "chore: Release App v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
     [
