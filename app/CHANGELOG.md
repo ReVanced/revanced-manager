@@ -1,3 +1,10 @@
+# app.revanced.manager [5.1.0](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager@5.0.1...app.revanced.manager@5.1.0) (2025-07-16)
+
+
+### Features
+
+* release api feature ([3ce1109](https://github.com/brosssh/revanced-manager/commit/3ce11090e2babf06ecb35c23385b1f99f201aac0))
+
 ## app.revanced.manager [5.0.1](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager@5.0.0...app.revanced.manager@5.0.1) (2025-07-16)
 
 
