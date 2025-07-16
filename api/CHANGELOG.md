@@ -1,3 +1,21 @@
+# @brosssh/app.revanced.manager.api [1.2.0-dev.6](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.5...@brosssh/app.revanced.manager.api@1.2.0-dev.6) (2025-07-16)
+
+
+### Bug Fixes
+
+* Sed ([13f9fb6](https://github.com/brosssh/revanced-manager/commit/13f9fb6086d31fb66a09033cfccf496287422d1d))
+
+
+
+
+
+# [1.2.0-dev.6](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.5...@brosssh/app.revanced.manager.api@1.2.0-dev.6) (2025-07-16)
+
+
+### Bug Fixes
+
+* Sed ([13f9fb6](https://github.com/brosssh/revanced-manager/commit/13f9fb6086d31fb66a09033cfccf496287422d1d))
+
 # @brosssh/app.revanced.manager.api [1.2.0-dev.5](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.4...@brosssh/app.revanced.manager.api@1.2.0-dev.5) (2025-07-16)
 
 
