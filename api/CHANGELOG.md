@@ -1,3 +1,21 @@
+## @brosssh/app.revanced.revanced-manager-api [5.0.3](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@5.0.2...@brosssh/app.revanced.revanced-manager-api@5.0.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* idk why i get 403 ([043d8c2](https://github.com/brosssh/revanced-manager/commit/043d8c2e9461c7d5bfea7fe9fbe9c0d1a2a724dc))
+
+
+
+
+
+## [5.0.3](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@5.0.2...@brosssh/app.revanced.revanced-manager-api@5.0.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* idk why i get 403 ([043d8c2](https://github.com/brosssh/revanced-manager/commit/043d8c2e9461c7d5bfea7fe9fbe9c0d1a2a724dc))
+
 ## @brosssh/app.revanced.revanced-manager-api [5.0.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@5.0.1...@brosssh/app.revanced.revanced-manager-api@5.0.2) (2025-07-16)
 
 
