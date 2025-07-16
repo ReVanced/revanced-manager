@@ -1,3 +1,23 @@
+# @brosssh/app.revanced.revanced-manager-api [1.0.0-dev.4](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.3...@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.4) (2025-07-16)
+
+
+### Bug Fixes
+
+* Fix publish api ([efad163](https://github.com/brosssh/revanced-manager/commit/efad1636a339c1fac7105e3b6fbd7925be89f213))
+* Package ([e5d8c8a](https://github.com/brosssh/revanced-manager/commit/e5d8c8a9c7c8ff8180183f5a637e7b4fb04e6fad))
+
+
+
+
+
+# [1.0.0-dev.4](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.3...@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.4) (2025-07-16)
+
+
+### Bug Fixes
+
+* Fix publish api ([efad163](https://github.com/brosssh/revanced-manager/commit/efad1636a339c1fac7105e3b6fbd7925be89f213))
+* Package ([e5d8c8a](https://github.com/brosssh/revanced-manager/commit/e5d8c8a9c7c8ff8180183f5a637e7b4fb04e6fad))
+
 # @brosssh/app.revanced.revanced-manager-api [1.0.0-dev.3](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.2...@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.3) (2025-07-16)
 
 
