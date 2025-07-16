@@ -1,3 +1,47 @@
+# @brosssh/app.revanced.manager.api [1.1.0](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.2...@brosssh/app.revanced.manager.api@1.1.0) (2025-07-16)
+
+
+### Bug Fixes
+
+* Add ignore file ([c230b16](https://github.com/brosssh/revanced-manager/commit/c230b16a616b921132e65f553d5ab2de02d51f16))
+* Added back release notes ([8b06199](https://github.com/brosssh/revanced-manager/commit/8b061992565a04c981d0246b9b1fad7fbe9ad412))
+* Fix repo url ([d45754c](https://github.com/brosssh/revanced-manager/commit/d45754c6f2163764bb24d683daa980f8e8f4255a))
+* Force api ([96e5932](https://github.com/brosssh/revanced-manager/commit/96e593248bc161dc35bb1cf9d5de94c466533287))
+* Force public ([321eb6e](https://github.com/brosssh/revanced-manager/commit/321eb6e88e06b406a3afe45899336bc960185ed1))
+* Force release api ([b288faf](https://github.com/brosssh/revanced-manager/commit/b288faf1a89a5fc377930f7528edd908c94d691d))
+* Moved file ([c1abf6a](https://github.com/brosssh/revanced-manager/commit/c1abf6a4184a9c2b2274438a136ac09edbc94d24))
+* Temp remove ${nextRelease.notes} ([9b615b1](https://github.com/brosssh/revanced-manager/commit/9b615b1fb8c932d46f53fdbd519441fea190eb05))
+
+
+### Features
+
+* Added hacky sed replacement ([8526bc8](https://github.com/brosssh/revanced-manager/commit/8526bc8d1a66236a514216cec4ce0c2d54f56820))
+* API feature ([ed9a54a](https://github.com/brosssh/revanced-manager/commit/ed9a54a42f88d9e4f3ff3ce9b9b5110f342b4086))
+
+
+
+
+
+# [1.1.0](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.2...@brosssh/app.revanced.manager.api@1.1.0) (2025-07-16)
+
+
+### Bug Fixes
+
+* Add ignore file ([c230b16](https://github.com/brosssh/revanced-manager/commit/c230b16a616b921132e65f553d5ab2de02d51f16))
+* Added back release notes ([8b06199](https://github.com/brosssh/revanced-manager/commit/8b061992565a04c981d0246b9b1fad7fbe9ad412))
+* Fix repo url ([d45754c](https://github.com/brosssh/revanced-manager/commit/d45754c6f2163764bb24d683daa980f8e8f4255a))
+* Force api ([96e5932](https://github.com/brosssh/revanced-manager/commit/96e593248bc161dc35bb1cf9d5de94c466533287))
+* Force public ([321eb6e](https://github.com/brosssh/revanced-manager/commit/321eb6e88e06b406a3afe45899336bc960185ed1))
+* Force release api ([b288faf](https://github.com/brosssh/revanced-manager/commit/b288faf1a89a5fc377930f7528edd908c94d691d))
+* Moved file ([c1abf6a](https://github.com/brosssh/revanced-manager/commit/c1abf6a4184a9c2b2274438a136ac09edbc94d24))
+* Temp remove ${nextRelease.notes} ([9b615b1](https://github.com/brosssh/revanced-manager/commit/9b615b1fb8c932d46f53fdbd519441fea190eb05))
+
+
+### Features
+
+* Added hacky sed replacement ([8526bc8](https://github.com/brosssh/revanced-manager/commit/8526bc8d1a66236a514216cec4ce0c2d54f56820))
+* API feature ([ed9a54a](https://github.com/brosssh/revanced-manager/commit/ed9a54a42f88d9e4f3ff3ce9b9b5110f342b4086))
+
 # @brosssh/app.revanced.manager.api [1.1.0-dev.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.3-dev.8...@brosssh/app.revanced.manager.api@1.1.0-dev.1) (2025-07-16)
 
 
