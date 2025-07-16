@@ -1,3 +1,10 @@
+# @brosssh/app.revanced.manager.api [1.0.0-dev.3](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.0-dev.2...@brosssh/app.revanced.manager.api@1.0.0-dev.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* Added npmrc ([3d01b2d](https://github.com/brosssh/revanced-manager/commit/3d01b2d5d05a89f827c67f7be58feca66220163d))
+
 # @brosssh/app.revanced.manager.api [1.0.0-dev.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.0-dev.1...@brosssh/app.revanced.manager.api@1.0.0-dev.2) (2025-07-16)
 
 
