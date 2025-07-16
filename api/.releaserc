@@ -19,9 +19,9 @@
     [
         "@semantic-release/exec",
         {
-          "verifyConditionsCmd": "./../gradlew --version",
-          "prepareCmd": "./../gradlew publish",
-          "publishCmd": "./../gradlew publish"
+          "verifyConditionsCmd": ".\..\gradlew --version",
+          "prepareCmd": ".\..\gradlew publish",
+          "publishCmd": ".\..\gradlew publish"
         }
     ],
     [
