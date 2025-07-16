@@ -1,3 +1,10 @@
+## @brosssh/app.revanced.manager.api [1.0.3-dev.6](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.3-dev.5...@brosssh/app.revanced.manager.api@1.0.3-dev.6) (2025-07-16)
+
+
+### Bug Fixes
+
+* Force api ([96e5932](https://github.com/brosssh/revanced-manager/commit/96e593248bc161dc35bb1cf9d5de94c466533287))
+
 ## @brosssh/app.revanced.manager.api [1.0.3-dev.5](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.3-dev.4...@brosssh/app.revanced.manager.api@1.0.3-dev.5) (2025-07-16)
 
 
