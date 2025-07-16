@@ -8,7 +8,6 @@ plugins {
     signing
 }
 
-
 group = "app.revanced"
 
 dependencies {
