@@ -23,7 +23,7 @@
           "CHANGELOG.md",
           "gradle.properties",
         ],
-        "message": "chore: Release v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        "message": "chore: Release API v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
     [
