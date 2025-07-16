@@ -1,3 +1,10 @@
+## @brosssh/app.revanced.manager.api [1.0.3-dev.8](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.3-dev.7...@brosssh/app.revanced.manager.api@1.0.3-dev.8) (2025-07-16)
+
+
+### Bug Fixes
+
+* Force public ([321eb6e](https://github.com/brosssh/revanced-manager/commit/321eb6e88e06b406a3afe45899336bc960185ed1))
+
 ## @brosssh/app.revanced.manager.api [1.0.3-dev.7](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.3-dev.6...@brosssh/app.revanced.manager.api@1.0.3-dev.7) (2025-07-16)
 
 
