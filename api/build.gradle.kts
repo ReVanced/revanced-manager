@@ -7,7 +7,6 @@ plugins {
     `maven-publish`
     signing
 }
-
 group = "app.revanced"
 
 dependencies {
