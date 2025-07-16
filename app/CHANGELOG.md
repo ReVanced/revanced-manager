@@ -1,3 +1,10 @@
+# app.revanced.manager.app [1.1.0-dev.2](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager.app@1.1.0-dev.1...app.revanced.manager.app@1.1.0-dev.2) (2025-07-16)
+
+
+### Bug Fixes
+
+* Sed ([13f9fb6](https://github.com/brosssh/revanced-manager/commit/13f9fb6086d31fb66a09033cfccf496287422d1d))
+
 # app.revanced.manager.app [1.1.0-dev.1](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager.app@1.0.3-dev.3...app.revanced.manager.app@1.1.0-dev.1) (2025-07-16)
 
 
