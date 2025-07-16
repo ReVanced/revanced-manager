@@ -1,3 +1,10 @@
+## app.revanced.manager.app [1.0.3-dev.1](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager.app@1.0.2...app.revanced.manager.app@1.0.3-dev.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* Test app change ([f12037a](https://github.com/brosssh/revanced-manager/commit/f12037ae7373e4d0a6839fffbf07047e15f99e28))
+
 ## app.revanced.manager.app [1.0.2](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager.app@1.0.1...app.revanced.manager.app@1.0.2) (2025-07-16)
 
 
