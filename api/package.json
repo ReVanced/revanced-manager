@@ -1,5 +1,5 @@
 {
-  "name": "@brosssh/app.revanced.revanced-manager-api",
+  "name": "app.revanced.revanced-manager-api",
   "private": false,
   "devDependencies": {
     "@anolilab/multi-semantic-release": "^1.1.10",
