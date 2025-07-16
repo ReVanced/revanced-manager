@@ -20,7 +20,7 @@
         [
             "@semantic-release/exec",
             {
-                "prepareCmd": "bash -c 'sed -i \"s/^version=.*/version=${nextRelease.version}/\" gradle.properties'"
+                "prepareCmd": "powershell -Command \"(Get-Content gradle.properties) -replace '^version=.*', 'version=${nextRelease.version}' | Set-Content gradle.properties\""
             }
     ],
    [
