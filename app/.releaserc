@@ -25,7 +25,7 @@
     [
          "@semantic-release/exec",
          {
-           "publishCmd": "../gradlew app:publish"
+           "publishCmd": "../gradlew publish"
          }
     ],
     [
