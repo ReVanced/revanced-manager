@@ -1,3 +1,10 @@
+# app.revanced.manager [1.0.0-dev.3](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager@1.0.0-dev.2...app.revanced.manager@1.0.0-dev.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* Package ([e5d8c8a](https://github.com/brosssh/revanced-manager/commit/e5d8c8a9c7c8ff8180183f5a637e7b4fb04e6fad))
+
 # app.revanced.manager [1.0.0-dev.2](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager@1.0.0-dev.1...app.revanced.manager@1.0.0-dev.2) (2025-07-16)
 
 
