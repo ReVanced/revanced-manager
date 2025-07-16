@@ -23,13 +23,11 @@
                 "prepareCmd": "sed -i 's/^version=.*/version=${nextRelease.version}/' gradle.properties"
             }
     ],
-    [
-        "@semantic-release/npm",
-        {
-        "npmPublish": true,
-        "access": "public",
-        "tarballDir": "build/tarballs"
-        }
+   [
+         "@semantic-release/exec",
+         {
+           "publishCmd": "../gradlew build"
+         }
     ],
     [
       "@semantic-release/git",
