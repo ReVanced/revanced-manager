@@ -20,7 +20,7 @@
         "@semantic-release/npm",
         {
         "npmPublish": true,
-        "tarballDir": ".build/tarballs"
+        "tarballDir": "build/tarballs"
         }
     ],
     [
