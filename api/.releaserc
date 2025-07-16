@@ -20,7 +20,10 @@
         [
               "@semantic-release/exec",
               {
-                "prepareCmd": "node ../update-gradle-version.js"
+                "prepareCmd": "node ../semantic-release-update-gradle-version.js",
+                "env": {
+                      "VERSION": "${nextRelease.version}"
+                    }
               }
             ],
    [
