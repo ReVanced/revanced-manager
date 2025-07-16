@@ -19,7 +19,7 @@
     [
       "gradle-semantic-release-plugin",
       {
-        "gradleCommand": "../gradlew.bat"
+        "gradleCommand": "./../gradlew"
       }
     ],
     [
