@@ -1,3 +1,10 @@
+# app.revanced.manager [1.0.0-dev.4](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager@1.0.0-dev.3...app.revanced.manager@1.0.0-dev.4) (2025-07-16)
+
+
+### Features
+
+* Fantastic app feature ([7b69b9b](https://github.com/brosssh/revanced-manager/commit/7b69b9be8b113898baf906df152a7770e630a6ab))
+
 # app.revanced.manager [1.0.0-dev.3](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager@1.0.0-dev.2...app.revanced.manager@1.0.0-dev.3) (2025-07-16)
 
 
