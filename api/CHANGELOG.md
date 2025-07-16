@@ -1,3 +1,23 @@
+# @brosssh/app.revanced.manager.api [1.2.0-dev.3](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.2...@brosssh/app.revanced.manager.api@1.2.0-dev.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* Escape ([a788321](https://github.com/brosssh/revanced-manager/commit/a78832158453ae222c6f9ee10778cfd4d45c460e))
+* Gradlew fix ([b0f513e](https://github.com/brosssh/revanced-manager/commit/b0f513ee190bf9ed4fa86414621091b5a581cd51))
+
+
+
+
+
+# [1.2.0-dev.3](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.2...@brosssh/app.revanced.manager.api@1.2.0-dev.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* Escape ([a788321](https://github.com/brosssh/revanced-manager/commit/a78832158453ae222c6f9ee10778cfd4d45c460e))
+* Gradlew fix ([b0f513e](https://github.com/brosssh/revanced-manager/commit/b0f513ee190bf9ed4fa86414621091b5a581cd51))
+
 # @brosssh/app.revanced.manager.api [1.2.0-dev.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.1...@brosssh/app.revanced.manager.api@1.2.0-dev.2) (2025-07-16)
 
 
