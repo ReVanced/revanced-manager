@@ -17,15 +17,15 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
-        "@semantic-release/exec",
-        {
-        "prepareCmd": "sed -i 's/^version =.*/version = ${nextRelease.version}/' gradle.properties"
-        }
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "node ../update-gradle-version.js"
+      }
     ],
     [
          "@semantic-release/exec",
          {
-           "publishCmd": "../gradlew publish"
+           "publishCmd": "sh ../gradlew publish || ../gradlew.bat publish"
          }
     ],
     [
