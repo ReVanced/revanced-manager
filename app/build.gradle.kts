@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.about.libraries)
     signing
 }
+
 val outputApkFileName = "${rootProject.name}-$version.apk"
 
 dependencies {
