@@ -1,3 +1,21 @@
+# @brosssh/app.revanced.revanced-manager-api [1.0.0-dev.5](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.4...@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.5) (2025-07-16)
+
+
+### Features
+
+* Fantastic api feature ([4f06cbe](https://github.com/brosssh/revanced-manager/commit/4f06cbe05126b1d6ab7df0199f6b14174da47afa))
+
+
+
+
+
+# [1.0.0-dev.5](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.4...@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.5) (2025-07-16)
+
+
+### Features
+
+* Fantastic api feature ([4f06cbe](https://github.com/brosssh/revanced-manager/commit/4f06cbe05126b1d6ab7df0199f6b14174da47afa))
+
 # @brosssh/app.revanced.revanced-manager-api [1.0.0-dev.4](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.3...@brosssh/app.revanced.revanced-manager-api@1.0.0-dev.4) (2025-07-16)
 
 
