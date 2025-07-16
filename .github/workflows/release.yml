@@ -12,6 +12,7 @@ jobs:
     name: Release
     permissions:
       contents: write
+      packages: write
       id-token: write
       attestations: write
     runs-on: ubuntu-latest
