@@ -51,7 +51,6 @@ android {
     }
 }
 
-
 apiValidation {
     nonPublicMarkers += "app.revanced.manager.plugin.downloader.PluginHostApi"
 }
