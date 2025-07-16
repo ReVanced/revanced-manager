@@ -28,7 +28,7 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "gradle.properties",
+          "gradle.properties"
         ],
         "message": "chore: Release API v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
