@@ -16,7 +16,7 @@
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-        "@seamantic-release/release-notes-generator",
+        "@semantic-release/release-notes-generator",
         [
             "@semantic-release/exec",
             {
