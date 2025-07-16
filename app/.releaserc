@@ -15,6 +15,13 @@
       }
     ],
     "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+        "@semantic-release/exec",
+        {
+            "prepareCmd": "sed -i 's/^version=.*/version=${nextRelease.version}/' gradle.properties"
+        }
+    ],
     [
       "@semantic-release/git",
       {
