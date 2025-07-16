@@ -1,3 +1,17 @@
+## @brosssh/app.revanced.manager.api [1.0.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.1...@brosssh/app.revanced.manager.api@1.0.2) (2025-07-16)
+
+
+### Bug Fixes
+
+* Add gradle plugin ([0b017f8](https://github.com/brosssh/revanced-manager/commit/0b017f8f61735bfabb81985f252b25c563980f3d))
+* Again ([df1e432](https://github.com/brosssh/revanced-manager/commit/df1e432b490d059cf5281a611e00d6d1c0a91df4))
+* Fix ([6b9b50b](https://github.com/brosssh/revanced-manager/commit/6b9b50b18c94c34a767c58617f87f3665706319a))
+* Fix ([4911050](https://github.com/brosssh/revanced-manager/commit/49110505d4cb523065d975a35cc7f19f8fd091e2))
+* Test ([321e295](https://github.com/brosssh/revanced-manager/commit/321e2958e9b7de45f399439a9a488e00ba012065))
+* Test exec ([6fb3ef5](https://github.com/brosssh/revanced-manager/commit/6fb3ef52327217e9554de25d3a0f3e11bb1c98f4))
+* Test2 ([0654ce6](https://github.com/brosssh/revanced-manager/commit/0654ce65d4587fc0c9c3649ce534d67bff5f052b))
+* Whatever ([65bc852](https://github.com/brosssh/revanced-manager/commit/65bc852ee07680d24336854fea68b31f2cf56361))
+
 ## @brosssh/app.revanced.manager.api [1.0.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.0...@brosssh/app.revanced.manager.api@1.0.1) (2025-07-16)
 
 
