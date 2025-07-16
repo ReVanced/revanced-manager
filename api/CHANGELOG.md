@@ -1,3 +1,23 @@
+# @brosssh/app.revanced.manager.api [1.2.0-dev.8](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.7...@brosssh/app.revanced.manager.api@1.2.0-dev.8) (2025-07-16)
+
+
+### Bug Fixes
+
+* Correct maven repo ([faa478d](https://github.com/brosssh/revanced-manager/commit/faa478d662becd02deb690f047f866920d762ab5))
+* Test ci ([d0a40c6](https://github.com/brosssh/revanced-manager/commit/d0a40c6aef703575f1374bd797be4768fec6a2f9))
+
+
+
+
+
+# [1.2.0-dev.8](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.7...@brosssh/app.revanced.manager.api@1.2.0-dev.8) (2025-07-16)
+
+
+### Bug Fixes
+
+* Correct maven repo ([faa478d](https://github.com/brosssh/revanced-manager/commit/faa478d662becd02deb690f047f866920d762ab5))
+* Test ci ([d0a40c6](https://github.com/brosssh/revanced-manager/commit/d0a40c6aef703575f1374bd797be4768fec6a2f9))
+
 # @brosssh/app.revanced.manager.api [1.2.0-dev.7](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.2.0-dev.6...@brosssh/app.revanced.manager.api@1.2.0-dev.7) (2025-07-16)
 
 
