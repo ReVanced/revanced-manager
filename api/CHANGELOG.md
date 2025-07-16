@@ -1,3 +1,67 @@
+# @brosssh/app.revanced.manager.api [1.2.0-dev.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.1.0...@brosssh/app.revanced.manager.api@1.2.0-dev.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* RUn with bash ([1a8f564](https://github.com/brosssh/revanced-manager/commit/1a8f564a4570f435ea003313e5d16d69e908e26b))
+
+
+### Features
+
+* Fix line separator ([28f1007](https://github.com/brosssh/revanced-manager/commit/28f10070de899283da8411212ddeee7a43249156))
+
+
+
+
+
+# [1.2.0-dev.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.1.0...@brosssh/app.revanced.manager.api@1.2.0-dev.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* RUn with bash ([1a8f564](https://github.com/brosssh/revanced-manager/commit/1a8f564a4570f435ea003313e5d16d69e908e26b))
+
+
+### Features
+
+* Fix line separator ([28f1007](https://github.com/brosssh/revanced-manager/commit/28f10070de899283da8411212ddeee7a43249156))
+
+# @brosssh/app.revanced.manager.api [1.2.0-dev.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.1.0...@brosssh/app.revanced.manager.api@1.2.0-dev.1) (2025-07-16)
+
+
+### Features
+
+* Fix line separator ([28f1007](https://github.com/brosssh/revanced-manager/commit/28f10070de899283da8411212ddeee7a43249156))
+
+
+
+
+
+# [1.2.0-dev.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.1.0...@brosssh/app.revanced.manager.api@1.2.0-dev.1) (2025-07-16)
+
+
+### Features
+
+* Fix line separator ([28f1007](https://github.com/brosssh/revanced-manager/commit/28f10070de899283da8411212ddeee7a43249156))
+
+# @brosssh/app.revanced.manager.api [1.2.0-dev.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.1.0...@brosssh/app.revanced.manager.api@1.2.0-dev.1) (2025-07-16)
+
+
+### Features
+
+* Fix line separator ([28f1007](https://github.com/brosssh/revanced-manager/commit/28f10070de899283da8411212ddeee7a43249156))
+
+
+
+
+
+# [1.2.0-dev.1](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.1.0...@brosssh/app.revanced.manager.api@1.2.0-dev.1) (2025-07-16)
+
+
+### Features
+
+* Fix line separator ([28f1007](https://github.com/brosssh/revanced-manager/commit/28f10070de899283da8411212ddeee7a43249156))
+
 # @brosssh/app.revanced.manager.api [1.1.0](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.2...@brosssh/app.revanced.manager.api@1.1.0) (2025-07-16)
 
 
