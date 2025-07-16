@@ -3,6 +3,32 @@
 
 ### Bug Fixes
 
+* Added version ([41ab1e1](https://github.com/brosssh/revanced-manager/commit/41ab1e1fb358d84d78761f1ada5f93d56a5b42ce))
+* Release api to GH package ([7253aa4](https://github.com/brosssh/revanced-manager/commit/7253aa474735c9eb11008f742fab884c209b5184))
+* Removed version of api ([c8e43c8](https://github.com/brosssh/revanced-manager/commit/c8e43c8249ffea7fe042c410f7399faf2bab4866))
+
+# @brosssh/app.revanced.manager.api [1.0.0-dev.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.0-dev.1...@brosssh/app.revanced.manager.api@1.0.0-dev.2) (2025-07-16)
+
+
+### Bug Fixes
+
+* Added version ([41ab1e1](https://github.com/brosssh/revanced-manager/commit/41ab1e1fb358d84d78761f1ada5f93d56a5b42ce))
+* Release api to GH package ([7253aa4](https://github.com/brosssh/revanced-manager/commit/7253aa474735c9eb11008f742fab884c209b5184))
+* Removed version of api ([c8e43c8](https://github.com/brosssh/revanced-manager/commit/c8e43c8249ffea7fe042c410f7399faf2bab4866))
+
+# @brosssh/app.revanced.manager.api [1.0.0-dev.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.0-dev.1...@brosssh/app.revanced.manager.api@1.0.0-dev.2) (2025-07-16)
+
+
+### Bug Fixes
+
+* Release api to GH package ([7253aa4](https://github.com/brosssh/revanced-manager/commit/7253aa474735c9eb11008f742fab884c209b5184))
+* Removed version of api ([c8e43c8](https://github.com/brosssh/revanced-manager/commit/c8e43c8249ffea7fe042c410f7399faf2bab4866))
+
+# @brosssh/app.revanced.manager.api [1.0.0-dev.2](https://github.com/brosssh/revanced-manager/compare/@brosssh/app.revanced.manager.api@1.0.0-dev.1...@brosssh/app.revanced.manager.api@1.0.0-dev.2) (2025-07-16)
+
+
+### Bug Fixes
+
 * Release api to GH package ([7253aa4](https://github.com/brosssh/revanced-manager/commit/7253aa474735c9eb11008f742fab884c209b5184))
 * Removed version of api ([c8e43c8](https://github.com/brosssh/revanced-manager/commit/c8e43c8249ffea7fe042c410f7399faf2bab4866))
 
