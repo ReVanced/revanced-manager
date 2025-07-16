@@ -1,3 +1,16 @@
+# app.revanced.manager.app [1.1.0-dev.1](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager.app@1.0.3-dev.3...app.revanced.manager.app@1.1.0-dev.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* RUn with bash ([1a8f564](https://github.com/brosssh/revanced-manager/commit/1a8f564a4570f435ea003313e5d16d69e908e26b))
+* Windows test ([0c5e099](https://github.com/brosssh/revanced-manager/commit/0c5e0995744b7b6024f5f709fdcfcd8898e36683))
+
+
+### Features
+
+* Added hacky sed replacement ([8526bc8](https://github.com/brosssh/revanced-manager/commit/8526bc8d1a66236a514216cec4ce0c2d54f56820))
+
 ## app.revanced.manager.app [1.0.3-dev.1](https://github.com/brosssh/revanced-manager/compare/app.revanced.manager.app@1.0.2...app.revanced.manager.app@1.0.3-dev.1) (2025-07-16)
 
 
