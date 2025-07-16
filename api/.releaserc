@@ -17,18 +17,10 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
-        "@semantic-release/exec",
-        {
-          "verifyConditionsCmd": ".\..\gradlew --version",
-          "prepareCmd": ".\..\gradlew publish",
-          "publishCmd": ".\..\gradlew publish"
-        }
-    ],
-    [
         "@semantic-release/npm",
         {
         "npmPublish": true,
-        "tarballDir": "./release"
+        "tarballDir": ".build/tarballs"
         }
     ],
     [
