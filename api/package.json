@@ -10,5 +10,6 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
-  }
+  },
+  "version": "1.0.0-dev.2"
 }
