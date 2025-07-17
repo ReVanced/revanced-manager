@@ -16,7 +16,7 @@
   "showUpdateButton": "Pokaż aktualizację",
   "navigationView": {
     "dashboardTab": "Panel główny",
-    "patcherTab": "Łataj",
+    "patcherTab": "Łatki",
     "settingsTab": "Ustawienia"
   },
   "homeView": {
@@ -62,7 +62,7 @@
   "appSelectorCard": {
     "widgetTitle": "Wybierz aplikację",
     "widgetTitleSelected": "Wybrana aplikacja",
-    "widgetSubtitle": "Brak wybranej aplikacji",
+    "widgetSubtitle": "Nie wybrano aplikacji",
     "noAppsLabel": "Nie znaleziono aplikacji",
     "anyVersion": "Dowolna wersja"
   },
