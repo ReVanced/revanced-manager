@@ -36,6 +36,7 @@ compose-icons = "1.2.4"
 kotlin-process = "1.5.1"
 hidden-api-stub = "4.3.3"
 binary-compatibility-validator = "0.17.0"
+spotless-gradle-plugin = "7.0.4"
 
 [libraries]
 # AndroidX Core
@@ -139,3 +140,4 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless-gradle-plugin" }
