@@ -8,7 +8,6 @@ import app.revanced.manager.util.tag
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.get
 import io.ktor.client.request.prepareGet
 import io.ktor.client.request.request
 import io.ktor.client.statement.bodyAsText
@@ -91,10 +90,6 @@ class HttpService(
         saveLocation: File,
         builder: HttpRequestBuilder.() -> Unit
     ) = saveLocation.outputStream().use { streamTo(it, builder) }
-
-    suspend fun getHtml(builder: HttpRequestBuilder.() -> Unit) = htmlDocument(
-        html = http.get(builder).bodyAsText()
-    )
 
     class HttpException(status: HttpStatusCode) : Exception("Failed to fetch: http status: $status")
 }
