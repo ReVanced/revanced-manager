@@ -29,10 +29,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: Text(
             t.settingsView.themeModeLabel,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           ),
           trailing: FilledButton(
             onPressed: () => {showThemeDialog(context)},
@@ -45,19 +42,11 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
             title: Text(
               t.settingsView.dynamicThemeLabel,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             subtitle: Text(t.settingsView.dynamicThemeHint),
             value: getDynamicThemeStatus(),
-            onChanged: (value) => {
-              setUseDynamicTheme(
-                context,
-                value,
-              ),
-            },
+            onChanged: (value) => {setUseDynamicTheme(context, value)},
           ),
       ],
     );
@@ -81,11 +70,24 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
   Future<void> setThemeMode(BuildContext context, int value) async {
     await managerAPI.setThemeMode(value);
     final bool isDynamicTheme = DynamicTheme.of(context)!.themeId.isEven;
-    await DynamicTheme.of(context)!
-        .setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
-    final bool isLight = value != 2 &&
-        (value == 1 ||
-            DynamicTheme.of(context)!.theme.brightness == Brightness.light);
+
+    int themeId;
+    if (value == 3) {
+      themeId = 6; // AMOLED theme (index 6)
+    } else {
+      themeId = value * 2 + (isDynamicTheme ? 0 : 1);
+    }
+
+    await DynamicTheme.of(
+      context,
+    )!.setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
+    final bool isLight =
+        value != 2 &&
+        (value == 3 &&
+            (value == 1 ||
+                DynamicTheme.of(context)!.theme.brightness ==
+                    Brightness.light));
+
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         systemNavigationBarIconBrightness:
@@ -103,6 +105,8 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
         return Text(t.settingsView.lightThemeLabel);
       case 2:
         return Text(t.settingsView.darkThemeLabel);
+      case 3:
+        return Text(t.settingsView.blackAmoledThemeLabel);
       default:
         return Text(t.settingsView.systemThemeLabel);
     }
@@ -110,69 +114,86 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
 
   Future<void> showThemeDialog(BuildContext context) async {
     final ValueNotifier<int> newTheme = ValueNotifier(getThemeMode());
-
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.settingsView.themeModeLabel),
-        icon: const Icon(Icons.palette),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        content: SingleChildScrollView(
-          child: ValueListenableBuilder(
-            valueListenable: newTheme,
-            builder: (context, value, child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  HapticRadioListTile(
-                    title: Text(t.settingsView.systemThemeLabel),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    value: 0,
-                    groupValue: value,
-                    onChanged: (value) {
-                      newTheme.value = value!;
-                    },
-                  ),
-                  HapticRadioListTile(
-                    title: Text(t.settingsView.lightThemeLabel),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    value: 1,
-                    groupValue: value,
-                    onChanged: (value) {
-                      newTheme.value = value!;
-                    },
-                  ),
-                  HapticRadioListTile(
-                    title: Text(t.settingsView.darkThemeLabel),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    value: 2,
-                    groupValue: value,
-                    onChanged: (value) {
-                      newTheme.value = value!;
-                    },
-                  ),
-                ],
-              );
-            },
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.settingsView.themeModeLabel),
+            icon: const Icon(Icons.palette),
+            contentPadding: const EdgeInsets.symmetric(vertical: 16),
+            content: SingleChildScrollView(
+              child: ValueListenableBuilder(
+                valueListenable: newTheme,
+                builder: (context, value, child) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      HapticRadioListTile(
+                        title: Text(t.settingsView.systemThemeLabel),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        value: 0,
+                        groupValue: value,
+                        onChanged: (value) {
+                          newTheme.value = value!;
+                        },
+                      ),
+                      HapticRadioListTile(
+                        title: Text(t.settingsView.lightThemeLabel),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        value: 1,
+                        groupValue: value,
+                        onChanged: (value) {
+                          newTheme.value = value!;
+                        },
+                      ),
+                      HapticRadioListTile(
+                        title: Text(t.settingsView.darkThemeLabel),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        value: 2,
+                        groupValue: value,
+                        onChanged: (value) {
+                          newTheme.value = value!;
+                        },
+                      ),
+                      HapticRadioListTile(
+                        title: Text(t.settingsView.blackAmoledThemeLabel),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        value: 3, // NEW value
+                        groupValue: value,
+                        onChanged: (value) {
+                          newTheme.value = value!;
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(t.cancelButton),
+              ),
+              FilledButton(
+                onPressed: () {
+                  setThemeMode(context, newTheme.value);
+                  Navigator.of(context).pop();
+                },
+                child: Text(t.okButton),
+              ),
+            ],
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(t.cancelButton),
-          ),
-          FilledButton(
-            onPressed: () {
-              setThemeMode(context, newTheme.value);
-              Navigator.of(context).pop();
-            },
-            child: Text(t.okButton),
-          ),
-        ],
-      ),
     );
   }
 }

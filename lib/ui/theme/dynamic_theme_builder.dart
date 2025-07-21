@@ -75,36 +75,66 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
           colorScheme: darkColorScheme?.harmonized(),
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
         );
+        final ThemeData blackAmoledTheme = ThemeData(
+          brightness: Brightness.dark,
+          useMaterial3: true,
+          scaffoldBackgroundColor: Colors.black,
+          canvasColor: Colors.black,
+          colorScheme: const ColorScheme.dark(surface: Colors.black),
+          textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: Colors.black,
+            elevation: 0,
+            indicatorColor: Colors.grey[900],
+            labelTextStyle: WidgetStateProperty.all(
+              GoogleFonts.roboto(
+                color: darkColorScheme?.onSurface ?? Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            iconTheme: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const IconThemeData(color: Colors.white);
+              }
+              return const IconThemeData(color: Colors.grey);
+            }),
+          ),
+        );
         return DynamicTheme(
           themeCollection: ThemeCollection(
             themes: {
-              0: brightness == Brightness.light
-                  ? lightCustomTheme
-                  : darkCustomTheme,
-              1: brightness == Brightness.light
-                  ? lightDynamicTheme
-                  : darkDynamicTheme,
+              0:
+                  brightness == Brightness.light
+                      ? lightCustomTheme
+                      : darkCustomTheme,
+              1:
+                  brightness == Brightness.light
+                      ? lightDynamicTheme
+                      : darkDynamicTheme,
               2: lightCustomTheme,
               3: lightDynamicTheme,
               4: darkCustomTheme,
               5: darkDynamicTheme,
+              6: blackAmoledTheme,
             },
-            fallbackTheme: PlatformDispatcher.instance.platformBrightness ==
-                    Brightness.light
-                ? lightCustomTheme
-                : darkCustomTheme,
+            fallbackTheme:
+                PlatformDispatcher.instance.platformBrightness ==
+                        Brightness.light
+                    ? lightCustomTheme
+                    : darkCustomTheme,
           ),
-          builder: (context, theme) => MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: widget.title,
-            navigatorKey: StackedService.navigatorKey,
-            onGenerateRoute: StackedRouter().onGenerateRoute,
-            theme: theme,
-            home: widget.home,
-            localizationsDelegates: GlobalMaterialLocalizations.delegates,
-            locale: TranslationProvider.of(context).flutterLocale,
-            supportedLocales: AppLocaleUtils.supportedLocales,
-          ),
+          builder:
+              (context, theme) => MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: widget.title,
+                navigatorKey: StackedService.navigatorKey,
+                onGenerateRoute: StackedRouter().onGenerateRoute,
+                theme: theme,
+                home: widget.home,
+                localizationsDelegates: GlobalMaterialLocalizations.delegates,
+                locale: TranslationProvider.of(context).flutterLocale,
+                supportedLocales: AppLocaleUtils.supportedLocales,
+              ),
         );
       },
     );
