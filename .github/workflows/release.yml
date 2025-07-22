@@ -12,6 +12,7 @@ jobs:
     name: Release
     permissions:
       contents: write
+      packages: write
       id-token: write
       attestations: write
     runs-on: ubuntu-latest
@@ -29,11 +30,6 @@ jobs:
 
       - name: Cache Gradle
         uses: burrunan/gradle-cache-action@v1
-
-      - name: Build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew assembleRelease
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -55,10 +51,19 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
 
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
-        id: semantic
+      - name: Multi Semantic Release API
+        run: npx multi-semantic-release --tag-format 'api@v${version}' --ignore-packages app
         env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
+          KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
+
+      - name: Multi Semantic Release App
+        run: npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
