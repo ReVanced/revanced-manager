@@ -72,7 +72,6 @@ publishing {
             afterEvaluate {
                 from(components["release"])
             }
-
             groupId = "app.revanced"
             artifactId = "revanced-manager-api"
             version = project.version.toString()
