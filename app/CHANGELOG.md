@@ -1,3 +1,20 @@
+# app.revanced.manager [5.1.0-dev.1](https://github.com/brosssh/revanced-manager/compare/v5.0.0...v5.1.0-dev.1) (2025-07-22)
+
+
+### Bug Fixes
+
+* Bump app ([b77dd8d](https://github.com/brosssh/revanced-manager/commit/b77dd8d5f5e28b279874fe8a4a984f3c4d4f4f82))
+* Release app ([91d7ca9](https://github.com/brosssh/revanced-manager/commit/91d7ca997f86bc3555131ac00af184fb0c89074e))
+* Rollback to linux only ([7ebf758](https://github.com/brosssh/revanced-manager/commit/7ebf7587298ad17edb9e69e05bd977f380b05598))
+* Update release flow ([8b5bad3](https://github.com/brosssh/revanced-manager/commit/8b5bad30e8eaaad9cf4048e39219e2c295e8673e))
+* Update release flow to support wsl ([3c8c34e](https://github.com/brosssh/revanced-manager/commit/3c8c34e28da8420b0483e85285b9a99cd2d3e4a5))
+
+
+### Features
+
+* release api feature ([3ce1109](https://github.com/brosssh/revanced-manager/commit/3ce11090e2babf06ecb35c23385b1f99f201aac0))
+* Release both pre merge into main ([7b90d00](https://github.com/brosssh/revanced-manager/commit/7b90d00e83849fada890362f0b86a281ec0e4316))
+
 # app.revanced.manager 1.0.0 (2025-07-16)
 
 
