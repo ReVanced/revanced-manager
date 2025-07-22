@@ -51,16 +51,20 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
 
-      - name: Multi Semantic Release API
+      - name: Set latest tag before release
+        id: before
+        run: |
+          git fetch --tags
+          TAG=$(git tag --list 'v[0-9]*' --sort=-v:refname | head -n1)
+          echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Multi Semantic Release (API)
         run: npx multi-semantic-release --tag-format 'api@v${version}' --ignore-packages app
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
-          KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
-      - name: Multi Semantic Release App
+      - name: Multi Semantic Release (App)
         run: npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
         env:
           GITHUB_ACTOR: ${{ github.actor }}
@@ -69,9 +73,16 @@ jobs:
           KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
+      - name: Set latest tag after release
+        id: after
+        run: |
+          git fetch --tags
+          TAG=$(git tag --list 'v[0-9]*' --sort=-v:refname | head -n1)
+          echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
+
       - name: Attest
-        if: steps.semantic.outputs.new_release_published == 'true'
+        if: steps.before.outputs.LATEST_TAG != steps.after.outputs.LATEST_TAG
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: 'ReVanced Manager ${{ steps.release.outputs.new_release_git_tag }}'
+          subject-name: 'ReVanced Manager ${{ steps.after.outputs.LATEST_TAG }}'
           subject-path: app/build/outputs/apk/release/revanced-manager*.apk
