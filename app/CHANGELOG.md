@@ -1,3 +1,10 @@
+# app.revanced.manager [5.1.0-dev.2](https://github.com/brosssh/revanced-manager/compare/v5.1.0-dev.1...v5.1.0-dev.2) (2025-07-22)
+
+
+### Features
+
+* Test attesting ([e0babbd](https://github.com/brosssh/revanced-manager/commit/e0babbd7d360573fe86409be9716c453a645568d))
+
 # app.revanced.manager [5.1.0-dev.1](https://github.com/brosssh/revanced-manager/compare/v5.0.0...v5.1.0-dev.1) (2025-07-22)
 
 
