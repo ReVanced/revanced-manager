@@ -55,7 +55,7 @@ jobs:
         id: before
         run: |
           git fetch --tags
-          TAG=$(git tag --list 'v[0-9]*' --sort=-v:refname | head -n1)
+          TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*' $(git rev-parse HEAD))
           echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: Multi Semantic Release (API)
@@ -77,7 +77,7 @@ jobs:
         id: after
         run: |
           git fetch --tags
-          TAG=$(git tag --list 'v[0-9]*' --sort=-v:refname | head -n1)
+          TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*' $(git rev-parse HEAD))
           echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: Attest
