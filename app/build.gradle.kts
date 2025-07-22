@@ -11,7 +11,6 @@ plugins {
     signing
 }
 
-
 val outputApkFileName = "${rootProject.name}-$version.apk"
 
 dependencies {
@@ -227,7 +226,6 @@ android {
 kotlin {
     jvmToolchain(17)
 }
-
 
 tasks {
     // Needed by gradle-semantic-release-plugin.
