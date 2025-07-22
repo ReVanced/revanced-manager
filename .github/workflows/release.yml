@@ -51,8 +51,17 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
 
-      - name: Multi Semantic Release
-        run: npx multi-semantic-release --branches main,dev
+      - name: Multi Semantic Release API
+        run: npx multi-semantic-release --tag-format 'api@v${version}' --ignore-packages app
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
+          KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
+
+      - name: Multi Semantic Release App
+        run: npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
