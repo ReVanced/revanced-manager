@@ -51,20 +51,20 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
 
-      - name: Set latest tag before release
+      - name: Semantic Release (API)
+        run: npx multi-semantic-release --tag-format 'api@${version}' --ignore-packages app
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set latest App tag (before the new release)
         id: before
         run: |
           git fetch --tags
           TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*' $(git rev-parse HEAD))
           echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
 
-      - name: Multi Semantic Release (API)
-        run: npx multi-semantic-release --tag-format 'api@${version}' --ignore-packages app
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Multi Semantic Release (App)
+      - name: Semantic Release (App)
         run: npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
         env:
           GITHUB_ACTOR: ${{ github.actor }}
@@ -73,7 +73,7 @@ jobs:
           KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
-      - name: Set latest tag after release
+      - name: Set latest App tag (after the new release)
         id: after
         run: |
           git fetch --tags
