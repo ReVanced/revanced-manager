@@ -8,7 +8,8 @@
   ],
   "plugins": [
     [
-      "@semantic-release/commit-analyzer", {
+      "@semantic-release/commit-analyzer",
+      {
         "releaseRules": [
           { "type": "build", "scope": "Needs bump", "release": "patch" }
         ]
@@ -16,18 +17,18 @@
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-        "@semantic-release/release-notes-generator",
-        [
-            "@semantic-release/exec",
-            {
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
         "prepareCmd": "sed -i 's/^version =.*/version = ${nextRelease.version}/' gradle.properties"
-            }
+      }
     ],
-   [
-         "@semantic-release/exec",
-         {
-           "publishCmd": "../gradlew publish"
-         }
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "../gradlew publish"
+      }
     ],
     [
       "@semantic-release/git",
