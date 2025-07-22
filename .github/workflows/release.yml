@@ -59,7 +59,7 @@ jobs:
           echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: Multi Semantic Release (API)
-        run: npx multi-semantic-release --tag-format 'api@v${version}' --ignore-packages app
+        run: npx multi-semantic-release --tag-format 'api@${version}' --ignore-packages app
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
