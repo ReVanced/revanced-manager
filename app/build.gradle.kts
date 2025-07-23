@@ -60,7 +60,7 @@ dependencies {
     implementation(libs.revanced.library)
 
     // Downloader plugins
-    implementation(project(":api"))
+    implementation(libs.revanced.manager.api)
 
     // Native processes
     implementation(libs.kotlin.process)
