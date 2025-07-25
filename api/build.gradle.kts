@@ -1,5 +1,3 @@
-import java.io.IOException
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -17,43 +15,6 @@ dependencies {
     implementation(libs.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(libs.appcompat)
-}
-
-fun String.runCommand(): String {
-    val process = ProcessBuilder(split("\\s".toRegex()))
-        .redirectErrorStream(true)
-        .directory(rootDir)
-        .start()
-
-    val output = StringBuilder()
-    val reader = process.inputStream.bufferedReader()
-
-    val thread = Thread {
-        reader.forEachLine {
-            output.appendLine(it)
-        }
-    }
-    thread.start()
-
-    if (!process.waitFor(10, TimeUnit.SECONDS)) {
-        process.destroy()
-        throw IOException("Command timed out: $this")
-    }
-
-    thread.join()
-    return output.toString().trim()
-}
-
-val projectPath: String = projectDir.relativeTo(rootDir).path
-val lastTag = "git describe --tags --abbrev=0".runCommand()
-val hasChangesInThisModule = "git diff --name-only $lastTag..HEAD".runCommand().lineSequence().any {
-    it.startsWith(projectPath)
-}
-
-tasks.matching { it.name.startsWith("publish") }.configureEach {
-    onlyIf {
-        hasChangesInThisModule
-    }
 }
 
 android {

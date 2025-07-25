@@ -8,7 +8,8 @@
   ],
   "plugins": [
     [
-      "@semantic-release/commit-analyzer", {
+      "@semantic-release/commit-analyzer",
+      {
         "releaseRules": [
           { "type": "build", "scope": "Needs bump", "release": "patch" }
         ]
@@ -16,15 +17,26 @@
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    "gradle-semantic-release-plugin",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "sed -i 's/^version =.*/version = ${nextRelease.version}/' gradle.properties"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "../gradlew publish"
+      }
+    ],
     [
       "@semantic-release/git",
       {
         "assets": [
           "CHANGELOG.md",
-          "gradle.properties",
+          "gradle.properties"
         ],
-        "message": "chore: Release v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        "message": "chore: Release App v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
     [
@@ -32,10 +44,10 @@
       {
         "assets": [
           {
-            "path": "app/build/outputs/apk/release/revanced-manager*.apk?(.asc)"
-          },
+            "path": "build/outputs/apk/release/revanced-manager*.apk?(.asc)"
+          }
         ],
-        successComment: false
+        "successComment": false
       }
     ],
     [
