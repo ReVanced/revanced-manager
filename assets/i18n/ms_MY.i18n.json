@@ -51,7 +51,8 @@
   },
   "patcherView": {
     "widgetTitle": "Pemodifikasi",
-    "patchButton": "Modifikasi"
+    "patchButton": "Modifikasi",
+    "addedPatchesDialogText": "Tampalan tambahan sejak kali terakhir anda menampal apl ini:\n\n${addedPatches}\n\n"
   },
   "appSelectorCard": {
     "noAppsLabel": "Tiada aplikasi ditemui"

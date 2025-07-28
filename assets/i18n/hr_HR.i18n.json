@@ -22,9 +22,14 @@
     "refreshSuccess": "Uspješno osvježeno",
     "widgetTitle": "Nadzorna ploča",
     "updatesSubtitle": "Ažuriranja",
+    "patchedSubtitle": "Instalirane aplikacije",
     "noInstallations": "Nema instaliranih zakrpanih aplikacija",
     "installUpdate": "Nastaviti s instalacijom ažuriranja?",
+    "updateSheetTitle": "Ažuriraj ReVanced Manager",
     "updateChangelogTitle": "Zapisnik promjena",
+    "updateDialogText": "Novo ažuriranje je dostupno za ${file}.\n\nTrenutna verzija je ${version}.",
+    "downloadConsentDialogTitle": "Skinuti potrebne datoteke?",
+    "downloadConsentDialogText": "ReVanced Manager treba da skine potrebne datoteke da radi pravilno.",
     "downloadingMessage": "Preuzimanje ažuriranja...",
     "downloadedMessage": "Ažuriranje je preuzeto",
     "installingMessage": "Instaliranje ažuriranja...",
@@ -44,6 +49,8 @@
     "patchButton": "Zakrpi"
   },
   "appSelectorCard": {
+    "widgetTitle": "Izaberite aplikaciju",
+    "widgetTitleSelected": "Izabrana aplikacija",
     "noAppsLabel": "Nije pronađena nijedna aplikacija"
   },
   "patchSelectorCard": {
@@ -57,6 +64,8 @@
     "widgetSubtitle": "Pronađite nas ovdje!"
   },
   "appSelectorView": {
+    "viewTitle": "Izaberite aplikaciju",
+    "searchBarHint": "Traži aplikaciju",
     "storageButton": "Pohrana",
     "selectFromStorageButton": "Odaberi iz pohrane",
     "errorMessage": "Nije moguće koristiti odabranu aplikaciju",
@@ -72,6 +81,9 @@
     "noneChip": "Ništa",
     "noneTooltip": "Poništi odabir svih zakrpa",
     "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
+  },
+  "patchOptionsView": {
+    "saveOptions": "Sačuvaj"
   },
   "patchItem": {
     "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti greške pri krpanju.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}"
@@ -89,6 +101,7 @@
     "teamSectionTitle": "Naš tim",
     "advancedSectionTitle": "Napredno",
     "exportSectionTitle": "Uvezi / izvezi",
+    "lightThemeLabel": "Svjetla",
     "darkThemeLabel": "Tamni način",
     "dynamicThemeHint": "Uživajte u iskustvu prilagođenom vašem uređaju",
     "languageLabel": "Jezik",
@@ -118,6 +131,8 @@
     "openButton": "Otvori",
     "installButton": "Instaliraj",
     "uninstallButton": "Deinstaliraj",
+    "exportButton": "Izvezi",
+    "deleteButton": "Izbrisati",
     "rootDialogTitle": "Greška",
     "rootDialogText": "Aplikacija je bila instalirana s superkorisničkom dopuštenosti, ali trenutno ReVanced Upravitelj nema dopuštenja.\nPrvo dodijelite superkorisničko dopuštenje.",
     "packageNameLabel": "Naziv paketa",
