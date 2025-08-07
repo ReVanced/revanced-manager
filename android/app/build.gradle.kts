@@ -64,7 +64,7 @@ android {
                 resValue("string", "app_name", "ReVanced Manager")
             } else {
                 applicationIdSuffix = ".development"
-                resValue("string", "app_name", "ReVanced Manager (Development)")
+                resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs["debug"]
             }
         }
