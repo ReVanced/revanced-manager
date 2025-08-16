@@ -110,6 +110,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   void selectPatch(Patch patch, bool isSelected, BuildContext context) {
+    if (locator<PatcherViewModel>().selectedApp?.apkFilePath.isEmpty ?? false) {
+      return; // Just return early, do nothing
+    }
+
     if (_managerAPI.isPatchesChangeEnabled()) {
       if (isSelected && !selectedPatches.contains(patch)) {
         selectedPatches.add(patch);

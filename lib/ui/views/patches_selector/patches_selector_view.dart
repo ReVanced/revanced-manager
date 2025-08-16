@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide SearchBar;
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
@@ -36,7 +37,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
-          visible: model.patches.isNotEmpty,
+          visible: model.patches.isNotEmpty &&
+              locator<PatcherViewModel>().selectedApp!.apkFilePath.isNotEmpty,
           child: HapticFloatingActionButtonExtended(
             label: Row(
               children: <Widget>[

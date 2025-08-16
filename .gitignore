@@ -61,4 +61,5 @@ android/app/.cxx
 node_modules/
 .vscode/
 
-
+# FVM Version Cache
+.fvm/
