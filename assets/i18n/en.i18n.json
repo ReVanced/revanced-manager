@@ -82,7 +82,7 @@
     "storageButton": "Storage",
     "selectFromStorageButton": "Select from storage",
     "errorMessage": "Unable to use selected application",
-    "downloadToast": "Download function is not available yet",
+    "tapToViewPatches": "Tap to view patches",
     "requireSuggestedAppVersionDialogText": "The version of the app you have selected does not match the suggested version which can lead to unexpected issues. Please use the suggested version.\n\nSelected version: ${selected}\nSuggested version: ${suggested}\n\nTo continue anyway, disable \"Require suggested app version\" in the settings.",
     "featureNotAvailable": "Feature not implemented",
     "featureNotAvailableText": "This app is a split APK and can only be patched and installed reliably by mounting with root permissions. However, you can patch and install a full APK by selecting it from storage."

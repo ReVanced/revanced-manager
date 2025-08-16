@@ -117,7 +117,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                       suggestedVersion:
                                           model.getSuggestedVersion(app),
                                       onTap: () {
-                                        model.showDownloadToast();
+                                        model.showPatches(context, app);
                                       },
                                       onLinkTap: () =>
                                           model.searchSuggestedVersionOnWeb(

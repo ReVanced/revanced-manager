@@ -73,6 +73,14 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                       ),
                     ],
                   ),
+                  Text(
+                    t.appSelectorView.tapToViewPatches, // Use your localization
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.primary,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,

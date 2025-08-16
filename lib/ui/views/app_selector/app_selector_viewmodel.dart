@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -16,8 +17,10 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
+  final NavigationService _navigationService = locator<NavigationService>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
@@ -316,6 +319,18 @@ class AppSelectorViewModel extends BaseViewModel {
         .toList();
   }
 
-  void showDownloadToast() =>
-      _toast.showBottom(t.appSelectorView.downloadToast);
+  void showPatches(BuildContext context, String packageName) {
+    locator<PatcherViewModel>().selectedApp = PatchedApplication(
+      name: packageName,
+      packageName: packageName, 
+      version: getSuggestedVersion(packageName).isNotEmpty ? getSuggestedVersion(packageName) : '0.0.0',
+      apkFilePath: '',
+      icon: Uint8List.fromList([]),
+      patchDate: DateTime.now(),
+      isFromStorage: false,
+    );
+    
+    // Navigate to existing patches selector
+    _navigationService.navigateTo(Routes.patchesSelectorView);
+  }
 }
