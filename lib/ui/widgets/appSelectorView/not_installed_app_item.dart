@@ -74,7 +74,7 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                     ],
                   ),
                   Text(
-                    t.appSelectorView.tapToViewPatches, // Use your localization
+                    t.appSelectorView.tapToViewPatches,
                     style: TextStyle(
                       fontSize: 12,
                       color: Theme.of(context).colorScheme.primary,
