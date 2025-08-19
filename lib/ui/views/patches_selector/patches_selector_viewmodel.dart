@@ -20,10 +20,12 @@ class PatchesSelectorViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final List<Patch> patches = [];
   final List<Patch> currentSelection = [];
-  final List<Patch> selectedPatches =
-      locator<PatcherViewModel>().selectedPatches;
+  final List<Patch> selectedPatches = locator<PatcherViewModel>().selectedPatches;
   PatchedApplication? selectedApp = locator<PatcherViewModel>().selectedApp;
   String? patchesVersion = '';
+  final bool isReadOnly;
+
+  PatchesSelectorViewModel({this.isReadOnly = false});
 
   bool isDefaultPatchesRepo() {
     return _managerAPI.getPatchesRepo() == 'revanced/revanced-patches';
@@ -31,16 +33,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     getPatchesVersion().whenComplete(() => notifyListeners());
-    patches.addAll(
-      _patcherAPI.getFilteredPatches(
-        selectedApp!.packageName,
-      ),
-    );
-    final List<Option> requiredNullOptions =
-        getNullRequiredOptions(patches, selectedApp!.packageName);
+    patches.addAll(_patcherAPI.getFilteredPatches(selectedApp!.packageName));
+    final List<Option> requiredNullOptions = getNullRequiredOptions(patches, selectedApp!.packageName);
     patches.sort((a, b) {
-      if (b.options.any((option) => requiredNullOptions.contains(option)) &&
-          a.options.isEmpty) {
+      if (b.options.any((option) => requiredNullOptions.contains(option)) && a.options.isEmpty) {
         return 1;
       } else {
         return a.name.compareTo(b.name);
@@ -53,9 +49,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   bool isSelected(Patch patch) {
-    return selectedPatches.any(
-      (element) => element.name == patch.name,
-    );
+    return selectedPatches.any((element) => element.name == patch.name);
   }
 
   void navigateToPatchOptions(List<Option> setOptions, Patch patch) {
@@ -66,8 +60,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   bool areRequiredOptionsNull(BuildContext context) {
     final List<String> patchesWithNullRequiredOptions = [];
-    final List<Option> requiredNullOptions =
-        getNullRequiredOptions(selectedPatches, selectedApp!.packageName);
+    final List<Option> requiredNullOptions = getNullRequiredOptions(selectedPatches, selectedApp!.packageName);
     if (requiredNullOptions.isNotEmpty) {
       for (final patch in selectedPatches) {
         for (final patchOption in patch.options) {
@@ -83,35 +76,24 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return false;
   }
 
-  Future<void> showSetRequiredOption(
-    BuildContext context,
-    List<String> patches,
-  ) async {
+  Future<void> showSetRequiredOption(BuildContext context, List<String> patches) async {
     return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.notice),
-        content: Text(
-          t.patchesSelectorView.setRequiredOption(
-            patches: patches.map((patch) => '• $patch').join('\n'),
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.notice),
+            content: Text(t.patchesSelectorView.setRequiredOption(patches: patches.map((patch) => '• $patch').join('\n'))),
+            actions: <Widget>[
+              FilledButton(onPressed: () => {Navigator.of(context).pop()}, child: Text(t.okButton)),
+            ],
           ),
-        ),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () => {
-              Navigator.of(context).pop(),
-            },
-            child: Text(t.okButton),
-          ),
-        ],
-      ),
     );
   }
 
   void selectPatch(Patch patch, bool isSelected, BuildContext context) {
-    if (locator<PatcherViewModel>().selectedApp?.apkFilePath.isEmpty ?? false) {
-      return; // Just return early, do nothing
+    if (isReadOnly) {
+      return;
     }
 
     if (_managerAPI.isPatchesChangeEnabled()) {
@@ -129,30 +111,22 @@ class PatchesSelectorViewModel extends BaseViewModel {
   Future<void> showPatchesChangeDialog(BuildContext context) async {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.warning),
-        content: Text(
-          t.patchItem.patchesChangeWarningDialogText,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.warning),
+            content: Text(t.patchItem.patchesChangeWarningDialogText, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            actions: [
+              TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(t.okButton)),
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                },
+                child: Text(t.patchItem.patchesChangeWarningDialogButton),
+              ),
+            ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.okButton),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(context)
-                ..pop()
-                ..pop();
-            },
-            child: Text(t.patchItem.patchesChangeWarningDialogButton),
-          ),
-        ],
-      ),
     );
   }
 
@@ -161,15 +135,8 @@ class PatchesSelectorViewModel extends BaseViewModel {
     if (locator<PatcherViewModel>().selectedApp?.packageName != null) {
       selectedPatches.addAll(
         _patcherAPI
-            .getFilteredPatches(
-              locator<PatcherViewModel>().selectedApp!.packageName,
-            )
-            .where(
-              (element) =>
-                  !element.excluded &&
-                  (!_managerAPI.isVersionCompatibilityCheckEnabled() ||
-                      isPatchSupported(element)),
-            ),
+            .getFilteredPatches(locator<PatcherViewModel>().selectedApp!.packageName)
+            .where((element) => !element.excluded && (!_managerAPI.isVersionCompatibilityCheckEnabled() || isPatchSupported(element))),
       );
     }
     notifyListeners();
@@ -197,24 +164,20 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   List<Patch> getQueriedPatches(String query) {
-    final List<Patch> patch = patches
-        .where(
-          (patch) =>
-              query.isEmpty ||
-              query.length < 2 ||
-              patch.name.toLowerCase().contains(query.toLowerCase()) ||
-              patch.name
-                  .replaceAll(RegExp(r'[^\w\s]+'), '')
-                  .toLowerCase()
-                  .contains(query.toLowerCase()),
-        )
-        .toList();
+    final List<Patch> patch =
+        patches
+            .where(
+              (patch) =>
+                  query.isEmpty ||
+                  query.length < 2 ||
+                  patch.name.toLowerCase().contains(query.toLowerCase()) ||
+                  patch.name.replaceAll(RegExp(r'[^\w\s]+'), '').toLowerCase().contains(query.toLowerCase()),
+            )
+            .toList();
     if (_managerAPI.areUniversalPatchesEnabled()) {
       return patch;
     } else {
-      return patch
-          .where((patch) => patch.compatiblePackages.isNotEmpty)
-          .toList();
+      return patch.where((patch) => patch.compatiblePackages.isNotEmpty).toList();
     }
   }
 
@@ -227,41 +190,21 @@ class PatchesSelectorViewModel extends BaseViewModel {
       supportedPackageVersions: getSupportedVersions(patch),
       isUnsupported: !isPatchSupported(patch),
       isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
-      hasUnsupportedPatchOption: hasUnsupportedRequiredOption(
-        patch.options,
-        patch,
-      ),
+      hasUnsupportedPatchOption: hasUnsupportedRequiredOption(patch.options, patch),
       options: patch.options,
       isSelected: isSelected(patch),
-      navigateToOptions: (options) => navigateToPatchOptions(
-        options,
-        patch,
-      ),
-      onChanged: (value) => selectPatch(
-        patch,
-        value,
-        context,
-      ),
+      isReadOnly: isReadOnly,
+      navigateToOptions: (options) => navigateToPatchOptions(options, patch),
+      onChanged: (value) => selectPatch(patch, value, context),
     );
   }
 
   Widget getPatchCategory(BuildContext context, String category) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10.0,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
-        padding: const EdgeInsets.only(
-          top: 10.0,
-          bottom: 10.0,
-          left: 5.0,
-        ),
-        child: Text(
-          category,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
+        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 5.0),
+        child: Text(category, style: TextStyle(color: Theme.of(context).colorScheme.primary)),
       ),
     );
   }
@@ -276,9 +219,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   List<String> getSupportedVersions(Patch patch) {
     final PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
-    final Package? package = patch.compatiblePackages.firstWhereOrNull(
-      (pack) => pack.name == app.packageName,
-    );
+    final Package? package = patch.compatiblePackages.firstWhereOrNull((pack) => pack.name == app.packageName);
     if (package != null) {
       return package.versions;
     } else {
@@ -295,31 +236,18 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> saveSelectedPatches() async {
-    final List<String> selectedPatches =
-        this.selectedPatches.map((patch) => patch.name).toList();
-    await _managerAPI.setSelectedPatches(
-      locator<PatcherViewModel>().selectedApp!.packageName,
-      selectedPatches,
-    );
+    final List<String> selectedPatches = this.selectedPatches.map((patch) => patch.name).toList();
+    await _managerAPI.setSelectedPatches(locator<PatcherViewModel>().selectedApp!.packageName, selectedPatches);
   }
 
   Future<void> loadSelectedPatches(BuildContext context) async {
     if (_managerAPI.isPatchesChangeEnabled()) {
-      final List<String>? appliedPatches = _managerAPI
-          .getPatchedApps()
-          .firstWhereOrNull(
-            (app) => app.packageName == selectedApp!.packageName,
-          )
-          ?.appliedPatches;
-      final List<String> selectedPatches = appliedPatches ??
-          await _managerAPI.getSelectedPatches(
-            selectedApp!.packageName,
-          );
+      final List<String>? appliedPatches =
+          _managerAPI.getPatchedApps().firstWhereOrNull((app) => app.packageName == selectedApp!.packageName)?.appliedPatches;
+      final List<String> selectedPatches = appliedPatches ?? await _managerAPI.getSelectedPatches(selectedApp!.packageName);
       if (selectedPatches.isNotEmpty) {
         this.selectedPatches.clear();
-        this.selectedPatches.addAll(
-              patches.where((patch) => selectedPatches.contains(patch.name)),
-            );
+        this.selectedPatches.addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
         if (_managerAPI.isVersionCompatibilityCheckEnabled()) {
           this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
         }

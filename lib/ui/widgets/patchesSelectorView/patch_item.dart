@@ -23,6 +23,7 @@ class PatchItem extends StatefulWidget {
     required this.onChanged,
     required this.navigateToOptions,
     required this.isChangeEnabled,
+    this.isReadOnly = false,
   });
   final String name;
   final String simpleName;
@@ -36,6 +37,7 @@ class PatchItem extends StatefulWidget {
   final Function(bool) onChanged;
   final void Function(List<Option>) navigateToOptions;
   final bool isChangeEnabled;
+  final bool isReadOnly;
   final toast = locator<Toast>();
   final _managerAPI = locator<ManagerAPI>();
 
@@ -46,65 +48,23 @@ class PatchItem extends StatefulWidget {
 class _PatchItemState extends State<PatchItem> {
   @override
   Widget build(BuildContext context) {
-    widget.isSelected = widget.isSelected &&
-        (!widget.isUnsupported ||
-            !widget._managerAPI.isVersionCompatibilityCheckEnabled()) &&
+    widget.isSelected =
+        widget.isSelected &&
+        (!widget.isUnsupported || !widget._managerAPI.isVersionCompatibilityCheckEnabled()) &&
         !widget.hasUnsupportedPatchOption;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Opacity(
-        opacity: widget.isUnsupported &&
-                widget._managerAPI.isVersionCompatibilityCheckEnabled() == true
-            ? 0.5
-            : 1,
+        opacity: widget.isUnsupported && widget._managerAPI.isVersionCompatibilityCheckEnabled() == true ? 0.5 : 1,
         child: HapticCustomCard(
-          padding: EdgeInsets.only(
-            top: 12,
-            bottom: 16,
-            left: 8.0,
-            right: widget.options.isNotEmpty ? 4.0 : 8.0,
-          ),
-          onTap: () {
-            if (widget.isUnsupported &&
-                widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
-              widget.isSelected = false;
-              widget.toast.showBottom(t.patchItem.unsupportedPatchVersion);
-            } else if (widget.isChangeEnabled) {
-              if (!widget.isSelected) {
-                if (widget.hasUnsupportedPatchOption) {
-                  _showUnsupportedRequiredOptionDialog();
-                  return;
-                }
-              }
-              widget.isSelected = !widget.isSelected;
-              setState(() {});
-            }
-            if (!widget.isUnsupported ||
-                !widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
-              widget.onChanged(widget.isSelected);
-            }
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Transform.scale(
-                scale: 1.2,
-                child: HapticCheckbox(
-                  value: widget.isSelected,
-                  activeColor: Theme.of(context).colorScheme.primary,
-                  checkColor: Theme.of(context).colorScheme.secondaryContainer,
-                  side: BorderSide(
-                    width: 2.0,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  onChanged: (newValue) {
-                    if (widget.isUnsupported &&
-                        widget._managerAPI
-                            .isVersionCompatibilityCheckEnabled()) {
+          padding: EdgeInsets.only(top: 12, bottom: 16, left: 8.0, right: widget.options.isNotEmpty ? 4.0 : 8.0),
+          onTap:
+              widget.isReadOnly
+                  ? null
+                  : () {
+                    if (widget.isUnsupported && widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
                       widget.isSelected = false;
-                      widget.toast.showBottom(
-                        t.patchItem.unsupportedPatchVersion,
-                      );
+                      widget.toast.showBottom(t.patchItem.unsupportedPatchVersion);
                     } else if (widget.isChangeEnabled) {
                       if (!widget.isSelected) {
                         if (widget.hasUnsupportedPatchOption) {
@@ -112,17 +72,47 @@ class _PatchItemState extends State<PatchItem> {
                           return;
                         }
                       }
-                      widget.isSelected = newValue!;
+                      widget.isSelected = !widget.isSelected;
                       setState(() {});
                     }
-                    if (!widget.isUnsupported ||
-                        !widget._managerAPI
-                            .isVersionCompatibilityCheckEnabled()) {
+                    if (!widget.isUnsupported || !widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
                       widget.onChanged(widget.isSelected);
                     }
                   },
-                ),
-              ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!widget.isReadOnly)
+                Transform.scale(
+                  scale: 1.2,
+                  child: HapticCheckbox(
+                    value: widget.isSelected,
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    checkColor: Theme.of(context).colorScheme.secondaryContainer,
+                    side: BorderSide(width: 2.0, color: Theme.of(context).colorScheme.primary),
+                    onChanged: (newValue) {
+                      if (widget.isUnsupported && widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
+                        widget.isSelected = false;
+                        widget.toast.showBottom(t.patchItem.unsupportedPatchVersion);
+                      } else if (widget.isChangeEnabled) {
+                        if (!widget.isSelected) {
+                          if (widget.hasUnsupportedPatchOption) {
+                            _showUnsupportedRequiredOptionDialog();
+                            return;
+                          }
+                        }
+                        widget.isSelected = newValue!;
+                        setState(() {});
+                      }
+                      if (!widget.isUnsupported || !widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
+                        widget.onChanged(widget.isSelected);
+                      }
+                    },
+                  ),
+                )
+              else
+                // Add padding when checkbox is hidden otherwise it looks weird
+                const SizedBox(width: 24),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
@@ -133,20 +123,16 @@ class _PatchItemState extends State<PatchItem> {
                         widget.simpleName,
                         maxLines: 2,
                         overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        widget.description,
+                        widget.description.isEmpty ? 'No description' : widget.description,
                         softWrap: true,
                         overflow: TextOverflow.visible,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
+                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                          fontStyle: widget.description.isEmpty ? FontStyle.italic : FontStyle.normal,
                         ),
                       ),
                       if (widget.description.isNotEmpty)
@@ -156,37 +142,22 @@ class _PatchItemState extends State<PatchItem> {
                             spacing: 8,
                             runSpacing: 4,
                             children: [
-                              if (widget.isUnsupported &&
-                                  !widget._managerAPI
-                                      .isVersionCompatibilityCheckEnabled())
+                              if (widget.isUnsupported && !widget._managerAPI.isVersionCompatibilityCheckEnabled())
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: TextButton.icon(
                                     label: Text(t.warning),
-                                    icon: const Icon(
-                                      Icons.warning_amber_outlined,
-                                      size: 20.0,
-                                    ),
-                                    onPressed: () =>
-                                        _showUnsupportedWarningDialog(),
+                                    icon: const Icon(Icons.warning_amber_outlined, size: 20.0),
+                                    onPressed: () => _showUnsupportedWarningDialog(),
                                     style: ButtonStyle(
                                       shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          side: BorderSide(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                          ),
+                                          borderRadius: BorderRadius.circular(8),
+                                          side: BorderSide(color: Theme.of(context).colorScheme.secondary),
                                         ),
                                       ),
-                                      backgroundColor: WidgetStateProperty.all(
-                                        Colors.transparent,
-                                      ),
-                                      foregroundColor: WidgetStateProperty.all(
-                                        Theme.of(context).colorScheme.secondary,
-                                      ),
+                                      backgroundColor: WidgetStateProperty.all(Colors.transparent),
+                                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.secondary),
                                     ),
                                   ),
                                 ),
@@ -197,11 +168,8 @@ class _PatchItemState extends State<PatchItem> {
                   ),
                 ),
               ),
-              if (widget.options.isNotEmpty)
-                IconButton(
-                  icon: const Icon(Icons.settings_outlined),
-                  onPressed: () => widget.navigateToOptions(widget.options),
-                ),
+              if (widget.options.isNotEmpty && !widget.isReadOnly)
+                IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () => widget.navigateToOptions(widget.options)),
             ],
           ),
         ),
@@ -212,40 +180,29 @@ class _PatchItemState extends State<PatchItem> {
   Future<void> _showUnsupportedWarningDialog() {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.warning),
-        content: Text(
-          t.patchItem.unsupportedDialogText(
-            packageVersion: widget.packageVersion,
-            supportedVersions:
-                '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.warning),
+            content: Text(
+              t.patchItem.unsupportedDialogText(
+                packageVersion: widget.packageVersion,
+                supportedVersions: '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
+              ),
+            ),
+            actions: <Widget>[FilledButton(onPressed: () => Navigator.of(context).pop(), child: Text(t.okButton))],
           ),
-        ),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.okButton),
-          ),
-        ],
-      ),
     );
   }
 
   Future<void> _showUnsupportedRequiredOptionDialog() {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.notice),
-        content: Text(
-          t.patchItem.unsupportedRequiredOption,
-        ),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.okButton),
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.notice),
+            content: Text(t.patchItem.unsupportedRequiredOption),
+            actions: <Widget>[FilledButton(onPressed: () => Navigator.of(context).pop(), child: Text(t.okButton))],
           ),
-        ],
-      ),
     );
   }
 }

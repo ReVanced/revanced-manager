@@ -9,7 +9,9 @@ import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorView extends StatefulWidget {
-  const PatchesSelectorView({super.key});
+  const PatchesSelectorView({super.key, this.isReadOnly = false});
+
+  final bool isReadOnly;
 
   @override
   State<PatchesSelectorView> createState() => _PatchesSelectorViewState();
@@ -34,11 +36,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(),
-      viewModelBuilder: () => PatchesSelectorViewModel(),
+      viewModelBuilder: () => PatchesSelectorViewModel(isReadOnly: widget.isReadOnly),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
-          visible: model.patches.isNotEmpty &&
-              locator<PatcherViewModel>().selectedApp!.apkFilePath.isNotEmpty,
+          visible: model.patches.isNotEmpty && !widget.isReadOnly,
           child: HapticFloatingActionButtonExtended(
             label: Row(
               children: <Widget>[
@@ -144,33 +145,34 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       ),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              ActionChip(
-                                label: Text(t.patchesSelectorView.defaultChip),
-                                tooltip: t.patchesSelectorView.defaultTooltip,
-                                onPressed: () {
-                                  if (_managerAPI.isPatchesChangeEnabled()) {
-                                    model.selectDefaultPatches();
-                                  } else {
-                                    model.showPatchesChangeDialog(context);
-                                  }
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              ActionChip(
-                                label: Text(t.patchesSelectorView.noneChip),
-                                tooltip: t.patchesSelectorView.noneTooltip,
-                                onPressed: () {
-                                  if (_managerAPI.isPatchesChangeEnabled()) {
-                                    model.clearPatches();
-                                  } else {
-                                    model.showPatchesChangeDialog(context);
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
+                          if (!widget.isReadOnly)
+                            Row(
+                              children: [
+                                ActionChip(
+                                  label: Text(t.patchesSelectorView.defaultChip),
+                                  tooltip: t.patchesSelectorView.defaultTooltip,
+                                  onPressed: () {
+                                    if (_managerAPI.isPatchesChangeEnabled()) {
+                                      model.selectDefaultPatches();
+                                    } else {
+                                      model.showPatchesChangeDialog(context);
+                                    }
+                                  },
+                                ),
+                                const SizedBox(width: 8),
+                                ActionChip(
+                                  label: Text(t.patchesSelectorView.noneChip),
+                                  tooltip: t.patchesSelectorView.noneTooltip,
+                                  onPressed: () {
+                                    if (_managerAPI.isPatchesChangeEnabled()) {
+                                      model.clearPatches();
+                                    } else {
+                                      model.showPatchesChangeDialog(context);
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
                           if (model
                               .getQueriedPatches(_query)
                               .any((patch) => model.isPatchNew(patch)))

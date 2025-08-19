@@ -73,12 +73,22 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                       ),
                     ],
                   ),
-                  Text(
-                    t.appSelectorView.tapToViewPatches,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.primary,
-                      fontStyle: FontStyle.italic,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: TextButton.icon(
+                      onPressed: widget.onTap,
+                      icon: Icon(
+                        Icons.visibility_outlined,
+                        size: 16,
+                      ),
+                      label: Text(t.appSelectorView.tapToViewPatches),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        foregroundColor: Theme.of(context).colorScheme.secondary,
+                        textStyle: const TextStyle(fontSize: 14),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 4),

@@ -38,26 +38,21 @@ class AppSelectorViewModel extends BaseViewModel {
     patches = await _managerAPI.getPatches();
     isRooted = _managerAPI.isRooted;
 
-    apps.addAll(
-      await _patcherAPI
-          .getFilteredInstalledApps(_managerAPI.areUniversalPatchesEnabled()),
-    );
+    apps.addAll(await _patcherAPI.getFilteredInstalledApps(_managerAPI.areUniversalPatchesEnabled()));
     apps.sort(
-      (a, b) => _patcherAPI
-          .getFilteredPatches(b.packageName)
-          .length
-          .compareTo(_patcherAPI.getFilteredPatches(a.packageName).length),
+      (a, b) => _patcherAPI.getFilteredPatches(b.packageName).length.compareTo(_patcherAPI.getFilteredPatches(a.packageName).length),
     );
     getAllApps();
     notifyListeners();
   }
 
   List<String> getAllApps() {
-    allApps = patches
-        .expand((e) => e.compatiblePackages.map((p) => p.name))
-        .toSet()
-        .where((name) => !apps.any((app) => app.packageName == name))
-        .toList();
+    allApps =
+        patches
+            .expand((e) => e.compatiblePackages.map((p) => p.name))
+            .toSet()
+            .where((name) => !apps.any((app) => app.packageName == name))
+            .toList();
     noApps = allApps.isEmpty && apps.isEmpty;
     return allApps;
   }
@@ -74,9 +69,7 @@ class AppSelectorViewModel extends BaseViewModel {
     return true;
   }
 
-  Future<void> searchSuggestedVersionOnWeb({
-    required String packageName,
-  }) async {
+  Future<void> searchSuggestedVersionOnWeb({required String packageName}) async {
     final String suggestedVersion = getSuggestedVersion(packageName);
     final String architecture = await AboutInfo.getInfo().then((info) {
       return info['supportedArch'][0];
@@ -104,23 +97,12 @@ class AppSelectorViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> selectApp(
-    BuildContext context,
-    ApplicationWithIcon application, [
-    bool isFromStorage = false,
-  ]) async {
-    final String suggestedVersion =
-        getSuggestedVersion(application.packageName);
-    if (application.versionName != suggestedVersion &&
-        suggestedVersion.isNotEmpty) {
+  Future<void> selectApp(BuildContext context, ApplicationWithIcon application, [bool isFromStorage = false]) async {
+    final String suggestedVersion = getSuggestedVersion(application.packageName);
+    if (application.versionName != suggestedVersion && suggestedVersion.isNotEmpty) {
       _managerAPI.suggestedAppVersionSelected = false;
-      if (_managerAPI.isRequireSuggestedAppVersionEnabled() &&
-          context.mounted) {
-        return showRequireSuggestedAppVersionDialog(
-          context,
-          application.versionName!,
-          suggestedVersion,
-        );
+      if (_managerAPI.isRequireSuggestedAppVersionEnabled() && context.mounted) {
+        return showRequireSuggestedAppVersionDialog(context, application.versionName!, suggestedVersion);
       }
     } else {
       _managerAPI.suggestedAppVersionSelected = true;
@@ -140,22 +122,15 @@ class AppSelectorViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> canSelectInstalled(
-    BuildContext context,
-    String packageName,
-  ) async {
-    final app =
-        await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
+  Future<void> canSelectInstalled(BuildContext context, String packageName) async {
+    final app = await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
     if (app != null) {
       final bool isSplitApk = await checkSplitApk(packageName);
       if (isRooted || !isSplitApk) {
         if (context.mounted) {
           await selectApp(context, app);
         }
-        final List<Option> requiredNullOptions = getNullRequiredOptions(
-          locator<PatcherViewModel>().selectedPatches,
-          packageName,
-        );
+        final List<Option> requiredNullOptions = getNullRequiredOptions(locator<PatcherViewModel>().selectedPatches, packageName);
         if (requiredNullOptions.isNotEmpty) {
           locator<PatcherViewModel>().showRequiredOptionDialog();
         }
@@ -167,123 +142,79 @@ class AppSelectorViewModel extends BaseViewModel {
     }
   }
 
-  Future showRequireSuggestedAppVersionDialog(
-    BuildContext context,
-    String selectedVersion,
-    String suggestedVersion,
-  ) async {
+  Future showRequireSuggestedAppVersionDialog(BuildContext context, String selectedVersion, String suggestedVersion) async {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.warning),
-        content: Text(
-          t.appSelectorView.requireSuggestedAppVersionDialogText(
-            suggested: suggestedVersion,
-            selected: selectedVersion,
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.warning),
+            content: Text(
+              t.appSelectorView.requireSuggestedAppVersionDialogText(suggested: suggestedVersion, selected: selectedVersion),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            actions: [FilledButton(onPressed: () => Navigator.of(context).pop(), child: Text(t.okButton))],
           ),
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        actions: [
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.okButton),
-          ),
-        ],
-      ),
     );
   }
 
   Future showSelectFromStorageDialog(BuildContext context) async {
     return showDialog(
       context: context,
-      builder: (innerContext) => SimpleDialog(
-        alignment: Alignment.center,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        children: [
-          const SizedBox(height: 10),
-          Icon(
-            Icons.block,
-            size: 28,
-            color: Theme.of(innerContext).colorScheme.primary,
+      builder:
+          (innerContext) => SimpleDialog(
+            alignment: Alignment.center,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            children: [
+              const SizedBox(height: 10),
+              Icon(Icons.block, size: 28, color: Theme.of(innerContext).colorScheme.primary),
+              const SizedBox(height: 20),
+              Text(
+                t.appSelectorView.featureNotAvailable,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600, wordSpacing: 1.5),
+              ),
+              const SizedBox(height: 20),
+              Text(t.appSelectorView.featureNotAvailableText, style: const TextStyle(fontSize: 14)),
+              const SizedBox(height: 30),
+              FilledButton(
+                onPressed: () async {
+                  Navigator.pop(innerContext);
+                  await selectAppFromStorage(context);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [const Icon(Icons.sd_card), const SizedBox(width: 10), Text(t.appSelectorView.selectFromStorageButton)],
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(innerContext);
+                },
+                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [const SizedBox(width: 10), Text(t.cancelButton)]),
+              ),
+            ],
           ),
-          const SizedBox(height: 20),
-          Text(
-            t.appSelectorView.featureNotAvailable,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              wordSpacing: 1.5,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            t.appSelectorView.featureNotAvailableText,
-            style: const TextStyle(
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 30),
-          FilledButton(
-            onPressed: () async {
-              Navigator.pop(innerContext);
-              await selectAppFromStorage(context);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.sd_card),
-                const SizedBox(width: 10),
-                Text(t.appSelectorView.selectFromStorageButton),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(innerContext);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(width: 10),
-                Text(t.cancelButton),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 
   Future<void> selectAppFromStorage(BuildContext context) async {
     try {
       final String? result = await FlutterFileDialog.pickFile(
-        params: const OpenFileDialogParams(
-          mimeTypesFilter: ['application/vnd.android.package-archive'],
-        ),
+        params: const OpenFileDialogParams(mimeTypesFilter: ['application/vnd.android.package-archive']),
       );
       if (result != null) {
         final File apkFile = File(result);
         final List<String> pathSplit = result.split('/');
         pathSplit.removeLast();
         final Directory filePickerCacheDir = Directory(pathSplit.join('/'));
-        final Iterable<File> deletableFiles =
-            (await filePickerCacheDir.list().toList()).whereType<File>();
+        final Iterable<File> deletableFiles = (await filePickerCacheDir.list().toList()).whereType<File>();
         for (final file in deletableFiles) {
           if (file.path != apkFile.path && file.path.endsWith('.apk')) {
             file.delete();
           }
         }
-        final ApplicationWithIcon? application =
-            await DeviceApps.getAppFromStorage(
-          apkFile.path,
-          true,
-        ) as ApplicationWithIcon?;
+        final ApplicationWithIcon? application = await DeviceApps.getAppFromStorage(apkFile.path, true) as ApplicationWithIcon?;
         if (application != null && context.mounted) {
           await selectApp(context, application, true);
         }
@@ -309,28 +240,20 @@ class AppSelectorViewModel extends BaseViewModel {
   }
 
   List<String> getFilteredAppsNames(String query) {
-    return allApps
-        .where(
-          (app) =>
-              query.isEmpty ||
-              query.length < 2 ||
-              app.toLowerCase().contains(query.toLowerCase()),
-        )
-        .toList();
+    return allApps.where((app) => query.isEmpty || query.length < 2 || app.toLowerCase().contains(query.toLowerCase())).toList();
   }
 
   void showPatches(BuildContext context, String packageName) {
     locator<PatcherViewModel>().selectedApp = PatchedApplication(
       name: packageName,
-      packageName: packageName, 
+      packageName: packageName,
       version: getSuggestedVersion(packageName).isNotEmpty ? getSuggestedVersion(packageName) : '0.0.0',
       apkFilePath: '',
-      icon: Uint8List.fromList([]),
+      icon: Uint8List(0), // Empty but valid Uint8List
       patchDate: DateTime.now(),
       isFromStorage: false,
     );
-    
-    // Navigate to existing patches selector
-    _navigationService.navigateTo(Routes.patchesSelectorView);
+
+    _navigationService.navigateToPatchesSelectorView(isReadOnly: true);
   }
 }
