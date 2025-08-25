@@ -66,13 +66,8 @@ jobs:
       - name: Release
         id: release
         run: |
-          get_version() {
-              [ -f "app/gradle.properties" ] && grep '^version=' "app/gradle.properties" | cut -d '=' -f2 || echo ""
-          }
-          
-          echo "OLD_TAG=$(get_version)" >> $GITHUB_OUTPUT
-          npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
-          echo "NEW_TAG=$(get_version)" >> $GITHUB_OUTPUT
+          npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api | tee result.log
+          echo "new_release_published=$(grep -q 'Published release' result.log && echo true || echo false)" >> $GITHUB_OUTPUT
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -81,7 +76,7 @@ jobs:
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
       - name: Attest
-        if: steps.release.outputs.OLD_TAG != steps.release.outputs.NEW_TAG
+        if: steps.release.outputs.new_release_published == 'true'
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: 'ReVanced Manager ${{ steps.release.outputs.NEW_TAG }}'
