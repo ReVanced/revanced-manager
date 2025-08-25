@@ -67,12 +67,12 @@ jobs:
         id: release
         run: |
           ./gradlew :app:writeVersionEnv
-          echo "OLD_TAG=$(grep APP_TAG app/build/outputs/version.env | cut -d'=' -f2)" >> $GITHUB_OUTPUT
-      
+          sed "s/APP/OLD/" app/build/outputs/version.env >> $GITHUB_OUTPUT
+
           npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
-      
+
           ./gradlew :app:writeVersionEnv
-          echo "APP_TAG=$(grep APP_TAG app/build/outputs/version.env | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+          cat app/build/outputs/version.env >> $GITHUB_OUTPUT
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
