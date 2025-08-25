@@ -277,16 +277,4 @@ tasks {
             }
         }
     }
-
-    // This task is used by CI to get the version.
-    val writeVersionEnv by registering {
-        group = "publishing"
-        description = "Writes current version to an environment file"
-
-        val target = project.layout.buildDirectory.file("outputs/version.env")
-
-        doLast {
-            target.get().asFile.writeText(version.toString())
-        }
-    }
 }
