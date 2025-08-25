@@ -31,6 +31,12 @@ jobs:
       - name: Cache Gradle
         uses: burrunan/gradle-cache-action@v1
 
+      - name: Build
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew assembleRelease
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -57,15 +63,16 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set latest App tag (before the new release)
-        id: before
-        run: |
-          git fetch --tags
-          TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*' $(git rev-parse HEAD))
-          echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
-
       - name: Release
-        run: npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
+        id: release
+        run: |
+          ./gradlew :app:writeVersionEnv
+          echo "OLD_TAG=$(grep APP_TAG app/build/outputs/version.env | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+      
+          npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
+      
+          ./gradlew :app:writeVersionEnv
+          echo "APP_TAG=$(grep APP_TAG app/build/outputs/version.env | cut -d'=' -f2)" >> $GITHUB_OUTPUT
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,16 +80,9 @@ jobs:
           KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
-      - name: Set latest App tag (after the new release)
-        id: after
-        run: |
-          git fetch --tags
-          TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*' $(git rev-parse HEAD))
-          echo "LATEST_TAG=$TAG" >> $GITHUB_OUTPUT
-
       - name: Attest
-        if: steps.before.outputs.LATEST_TAG != steps.after.outputs.LATEST_TAG
+        if: steps.release.outputs.OLD_TAG != steps.release.outputs.APP_TAG
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: 'ReVanced Manager ${{ steps.after.outputs.LATEST_TAG }}'
+          subject-name: 'ReVanced Manager ${{ steps.release.outputs.APP_TAG }}'
           subject-path: app/build/outputs/apk/release/revanced-manager*.apk

@@ -1,4 +1,5 @@
 import kotlin.random.Random
+import java.io.IOException
 
 plugins {
     alias(libs.plugins.android.application)
@@ -12,6 +13,33 @@ plugins {
 }
 
 val outputApkFileName = "${rootProject.name}-$version.apk"
+
+fun String.runCommand(): String {
+    val process = ProcessBuilder(split("\\s".toRegex()))
+        .redirectErrorStream(true)
+        .directory(rootDir)
+        .start()
+
+    val output = StringBuilder()
+    val reader = process.inputStream.bufferedReader()
+
+    val thread = Thread {
+        reader.forEachLine {
+            output.appendLine(it)
+        }
+    }
+    thread.start()
+
+    if (!process.waitFor(10, TimeUnit.SECONDS)) {
+        process.destroy()
+        throw IOException("Command timed out: $this")
+    }
+
+    thread.join()
+    return output.toString().trim()
+}
+
+val tagCount = "git tag --list v*".runCommand().lineSequence().count()
 
 dependencies {
     // AndroidX Core
@@ -118,8 +146,8 @@ android {
         applicationId = "app.revanced.manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = tagCount
+        versionName = version.toString()
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -131,6 +159,7 @@ android {
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
+
 
         release {
             if (!project.hasProperty("noProguard")) {
@@ -247,6 +276,18 @@ tasks {
                 useGpgCmd()
                 sign(apk.get().asFile)
             }
+        }
+    }
+
+    // This task is used by CI to get the version.
+    val writeVersionEnv by registering {
+        group = "publishing"
+        description = "Writes current version to an environment file"
+
+        val target = project.layout.buildDirectory.file("outputs/version.env")
+
+        doLast {
+            target.get().asFile.writeText("APP_TAG=v${version}\n")
         }
     }
 }

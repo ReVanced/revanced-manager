@@ -1,8 +1,1 @@
-#!/bin/sh
-
-## This script exists because gradle-semantic-release-plugin expects gradlew to be in the directory it was executed in.
-
-# Get directory of current script.
-script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-
-exec "$script_dir"/../gradlew $@
+../gradlew
