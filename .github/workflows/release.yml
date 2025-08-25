@@ -67,12 +67,12 @@ jobs:
         id: release
         run: |
           ./gradlew :app:writeVersionEnv
-          sed "s/APP/OLD/" app/build/outputs/version.env >> $GITHUB_OUTPUT
+          echo "OLD_TAG=$(cat app/build/outputs/version.env)" >> $GITHUB_OUTPUT
 
           npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
 
           ./gradlew :app:writeVersionEnv
-          cat app/build/outputs/version.env >> $GITHUB_OUTPUT
+          echo "NEW_TAG=$(cat app/build/outputs/version.env)" >> $GITHUB_OUTPUT
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -81,8 +81,8 @@ jobs:
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
       - name: Attest
-        if: steps.release.outputs.OLD_TAG != steps.release.outputs.APP_TAG
+        if: steps.release.outputs.OLD_TAG != steps.release.outputs.NEW_TAG
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: 'ReVanced Manager ${{ steps.release.outputs.APP_TAG }}'
+          subject-name: 'ReVanced Manager ${{ steps.release.outputs.NEW_TAG }}'
           subject-path: app/build/outputs/apk/release/revanced-manager*.apk

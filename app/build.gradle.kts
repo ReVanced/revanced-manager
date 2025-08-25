@@ -286,7 +286,7 @@ tasks {
         val target = project.layout.buildDirectory.file("outputs/version.env")
 
         doLast {
-            target.get().asFile.writeText("APP_TAG=v${version}\n")
+            target.get().asFile.writeText(version.toString())
         }
     }
 }
