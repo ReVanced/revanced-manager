@@ -66,13 +66,9 @@ jobs:
       - name: Release
         id: release
         run: |
-          ./gradlew :app:writeVersionEnv
-          echo "OLD_TAG=$(cat app/build/outputs/version.env)" >> $GITHUB_OUTPUT
-
-          npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
-
-          ./gradlew :app:writeVersionEnv
-          echo "NEW_TAG=$(cat app/build/outputs/version.env)" >> $GITHUB_OUTPUT
+          echo "OLD_TAG=$( [ -f gradle.properties ] && grep '^version=' gradle.properties | cut -d '=' -f2 )" >> $GITHUB_OUTPUT
+          npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api         
+          echo "NEW_TAG=$( [ -f gradle.properties ] && grep '^version=' gradle.properties | cut -d '=' -f2)" >> $GITHUB_OUTPUT
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
