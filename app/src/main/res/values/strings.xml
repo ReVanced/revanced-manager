@@ -32,10 +32,6 @@
     <string name="patches_not_downloaded">Patches has not been downloaded. Click here to download it</string>
     <string name="patches_name_default">Patches</string>
     <string name="patches_name_fallback">Unnamed</string>
-
-    <string name="android_11_bug_dialog_title">Android 11 bug</string>
-    <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
-
     <string name="no_network_toast">No internet connection available</string>
 
     <string name="selected_app_meta_any_version">Any available version</string>
@@ -314,8 +310,12 @@
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched APK file</string>
     <string name="patcher_step_sign_apk">Sign patched APK file</string>
-    <string name="patcher_notification_title">Patching in progress…</string>
-    <string name="patcher_notification_text">Tap to return to the patcher</string>
+    <string name="patcher_notification_running_title">Patching in progress…</string>
+    <string name="patcher_notification_running_text">Tap to return to the patcher</string>
+    <string name="patcher_notification_success_title">Patching completed</string>
+    <string name="patcher_notification_success_text">Patching completed! Tap to return to the patcher</string>
+    <string name="patcher_notification_failure_title">Failure while patching</string>
+    <string name="patcher_notification_failure_text">Patching completed with errors. Tap to return to the patcher</string>
     <string name="patcher_stop_confirm_title">Stop patcher</string>
     <string name="patcher_stop_confirm_description">Are you sure you want to stop the patching process?</string>
     <string name="execute_patches">Execute patches</string>
@@ -445,6 +445,8 @@
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
-    <string name="patcher_ask_notification">Monitor the patching process</string>
-    <string name="patcher_ask_notification_description">You can give ReVanced will send you a notification when a bundle was updated.</string>
+    <string name="ask_permission_notification">Monitor the patching process</string>
+    <string name="ask_permission_notification_description">You can give ReVanced will send you a notification when a bundle was updated.</string>
+    <string name="ask_permission_installation">Android 11 bug</string>
+    <string name="ask_permission_installation_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
 </resources>

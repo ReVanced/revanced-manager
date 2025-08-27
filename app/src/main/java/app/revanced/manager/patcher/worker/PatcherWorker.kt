@@ -1,14 +1,12 @@
 package app.revanced.manager.patcher.worker
 
 import android.app.Activity
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Parcelable
 import android.os.PowerManager
@@ -81,33 +79,37 @@ class PatcherWorker(
         val packageName get() = input.packageName
     }
 
-    override suspend fun getForegroundInfo() =
-        ForegroundInfo(
-            1,
-            createNotification(),
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0
-        )
+    val notificationChannelPatching = NotificationChannel(
+        "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_LOW
+    )
 
-    private fun createNotification(): Notification {
-        val notificationIntent = Intent(applicationContext, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-        val pendingIntent = PendingIntent.getActivity(
-            applicationContext, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
+    val notificationChannelPatcherResult = NotificationChannel(
+        "revanced-patcher-patcher-result", "Patching result", NotificationManager.IMPORTANCE_HIGH
+    )
+
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        val patcherRunningNotification = workerRepository.createNotification(
+            applicationContext,
+            notificationChannelPatching,
+            PendingIntent.getActivity(
+                applicationContext,
+                0,
+                Intent(applicationContext, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                },
+                PendingIntent.FLAG_IMMUTABLE
+            ),
+            applicationContext.getString(R.string.patcher_notification_running_title),
+            applicationContext.getString(R.string.patcher_notification_running_text),
+            autoCancel = false
+        ).first
+
+        return ForegroundInfo(
+                1,
+                patcherRunningNotification,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0
         )
-        val channel = NotificationChannel(
-            "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_LOW
-        )
-        val notificationManager =
-            applicationContext.getSystemService(NotificationManager::class.java)
-        notificationManager.createNotificationChannel(channel)
-        return Notification.Builder(applicationContext, channel.id)
-            .setContentTitle(applicationContext.getText(R.string.patcher_notification_title))
-            .setContentText(applicationContext.getText(R.string.patcher_notification_text))
-            .setSmallIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
-            .setContentIntent(pendingIntent)
-            .setCategory(Notification.CATEGORY_SERVICE)
-            .build()
     }
 
     override suspend fun doWork(): Result {
@@ -115,9 +117,7 @@ class PatcherWorker(
             Log.d(tag, "Android requested retrying but retrying is disabled.".logFmt())
             return Result.failure()
         }
-        var rej = applicationContext.hasNotificationPermission()
-        Log.i("testtt", "hasNotificationPermission: $rej")
-        if (rej) {
+        if (applicationContext.hasNotificationPermission()) {
             try {
                 // This does not always show up for some reason.
                 setForeground(getForegroundInfo())
@@ -143,7 +143,41 @@ class PatcherWorker(
         }
     }
 
+    fun sendPatchingResultNotification(success: Boolean) {
+        workerRepository.createNotification(
+            applicationContext,
+            notificationChannelPatcherResult,
+            PendingIntent.getActivity(
+                applicationContext,
+                0,
+                Intent(applicationContext, MainActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE
+            ),
+            applicationContext.getString(
+                if (success) R.string.patcher_notification_success_title
+                else R.string.patcher_notification_failure_title
+            ),
+            applicationContext.getString(
+                if (success) R.string.patcher_notification_success_text
+                else R.string.patcher_notification_failure_text
+            )
+        ).also { (notification, notificationManager) ->
+            if (applicationContext.hasNotificationPermission())
+                notificationManager.notify(
+                    System.currentTimeMillis()
+                        .toInt(), // An unique ID, each patch process should show a notification
+                    notification
+                )
+        }
+    }
+
+
+    enum class PatcherResult {
+        SUCCESS, FAILURE, STOPPED
+    }
+
     private suspend fun runPatcher(args: Args): Result {
+        var patcherResult: PatcherResult = PatcherResult.FAILURE
 
         fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
             args.onProgress(name, state, message)
@@ -239,7 +273,12 @@ class PatcherWorker(
             updateProgress(state = State.COMPLETED) // Signing
 
             Log.i(tag, "Patching succeeded".logFmt())
+            patcherResult = PatcherResult.SUCCESS
+
             Result.success()
+        } catch (_: kotlinx.coroutines.CancellationException) {
+            patcherResult = PatcherResult.STOPPED
+            Result.failure()
         } catch (e: ProcessRuntime.RemoteFailureException) {
             Log.e(
                 tag,
@@ -252,6 +291,12 @@ class PatcherWorker(
             updateProgress(state = State.FAILED, message = e.stackTraceToString())
             Result.failure()
         } finally {
+            when (patcherResult) {
+                PatcherResult.SUCCESS -> sendPatchingResultNotification(success = true)
+                PatcherResult.FAILURE -> sendPatchingResultNotification(success = false)
+                else -> {}
+            }
+
             patchedApk.delete()
             if (args.input is SelectedApp.Local && args.input.temporary) {
                 args.input.file.delete()

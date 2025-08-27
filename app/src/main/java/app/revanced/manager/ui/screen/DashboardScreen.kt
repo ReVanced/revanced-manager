@@ -384,13 +384,13 @@ fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
             }
         },
         title = {
-            Text(stringResource(R.string.android_11_bug_dialog_title))
+            Text(stringResource(R.string.ask_permission_installation))
         },
         icon = {
             Icon(Icons.Outlined.BugReport, null)
         },
         text = {
-            Text(stringResource(R.string.android_11_bug_dialog_description))
+            Text(stringResource(R.string.ask_permission_installation_description))
         }
     )
 }

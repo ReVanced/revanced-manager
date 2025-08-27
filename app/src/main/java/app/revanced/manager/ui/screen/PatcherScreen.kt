@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -68,22 +69,24 @@ fun PatcherScreen(
     viewModel: PatcherViewModel
 ) {
     val context = LocalContext.current
-    var askNotificationPermission by rememberSaveable { mutableStateOf(true) }
+    var askNotificationPermission by remember { mutableStateOf(true) }
 
     if (askNotificationPermission) {
-        if (!context.shouldAskNotificationPermission()) askNotificationPermission = false
+        LaunchedEffect(Unit) {
+            if (!context.shouldAskNotificationPermission()) askNotificationPermission = false
+        }
         PermissionRequestHandler(
             contract = ActivityResultContracts.RequestPermission(),
             input = Manifest.permission.POST_NOTIFICATIONS,
-            title = stringResource(R.string.patcher_ask_notification),
-            description = stringResource(R.string.patcher_ask_notification_description),
+            title = stringResource(R.string.ask_permission_notification),
+            description = stringResource(R.string.ask_permission_notification_description),
             icon = Icons.Outlined.Notifications,
             onDismissRequest = { askNotificationPermission = false },
             onResult = { _ -> askNotificationPermission = false }
         )
-    } else {
-        PatcherMainScreen(onBackClick, viewModel)
     }
+
+    PatcherMainScreen(onBackClick, viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,10 +1,17 @@
 package app.revanced.manager.domain.worker
 
 import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.graphics.drawable.Icon
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
+import app.revanced.manager.R
 import java.util.UUID
 
 class WorkerRepository(app: Application) {
@@ -32,5 +39,27 @@ class WorkerRepository(app: Application) {
         workerInputs[request.id] = input
         workManager.enqueueUniqueWork(name, ExistingWorkPolicy.REPLACE, request)
         return request.id
+    }
+
+    fun createNotification(
+        context: Context,
+        notificationChannel: NotificationChannel,
+        pendingIntent: PendingIntent,
+        title: String,
+        description: String,
+        autoCancel: Boolean = true
+    ): Pair<Notification, NotificationManager> {
+        val notificationManager = (context
+            .getSystemService(NotificationManager::class.java) as NotificationManager)
+            .also { it.createNotificationChannel(notificationChannel) }
+
+        return Notification.Builder(context, notificationChannel.id)
+            .setContentTitle(title)
+            .setContentText(description)
+            .setSmallIcon(Icon.createWithResource(context, R.drawable.ic_notification))
+            .setContentIntent(pendingIntent)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .setAutoCancel(autoCancel)
+            .build() to notificationManager
     }
 }

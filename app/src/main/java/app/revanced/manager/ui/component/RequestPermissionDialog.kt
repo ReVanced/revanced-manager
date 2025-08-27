@@ -1,13 +1,13 @@
 package app.revanced.manager.ui.component
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -26,17 +26,18 @@ fun PermissionRequestHandler(
     icon: ImageVector
 ) {
     val context = LocalContext.current
-    val activity = context as? Activity ?: return
+    val activity = context as Activity
     val permissionHelper = PermissionHelper(context)
 
     val launcher = rememberLauncherForActivityResult(contract) { result ->
-        Log.d("testtt", "rememberLauncherForActivityResult $result")
         onResult(result)
     }
 
     when (permissionHelper.getPermissionState(activity, input)) {
         PermissionHelper.PermissionState.Granted -> {
-            onResult(true)
+            LaunchedEffect(Unit) {
+                onResult(true)
+            }
         }
         PermissionHelper.PermissionState.FirstTime,
         PermissionHelper.PermissionState.DeniedWithRationale -> {
@@ -52,7 +53,9 @@ fun PermissionRequestHandler(
             )
         }
         PermissionHelper.PermissionState.DeniedPermanently -> {
-            onResult(false)
+            LaunchedEffect(Unit) {
+                onResult(false)
+            }
         }
     }
 }
