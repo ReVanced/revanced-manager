@@ -116,10 +116,10 @@ inline fun LifecycleOwner.launchAndRepeatWithViewLifecycle(
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 inline fun <T, reified R, C> Flow<Iterable<T>>.flatMapLatestAndCombine(
-    crossinline combiner: (Array<R>) -> C,
-    crossinline transformer: (T) -> Flow<R>,
+    crossinline combiner: suspend (Array<R>) -> C,
+    crossinline transformer: suspend (T) -> Flow<R>,
 ): Flow<C> = flatMapLatest { iterable ->
-    combine(iterable.map(transformer)) {
+    combine(iterable.map { transformer(it) }) {
         combiner(it)
     }
 }

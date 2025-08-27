@@ -56,11 +56,10 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
 
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
+            val allPatches = PatchBundle.Loader.patches(parameters.configurations.map { it.bundle }, parameters.packageName)
             val patchList = parameters.configurations.flatMap { config ->
-                val bundle = PatchBundle(File(config.bundlePath))
-
-                val patches =
-                    bundle.patches(parameters.packageName).filter { it.name in config.patches }
+                val patches = (allPatches[config.bundle] ?: return@flatMap emptyList())
+                        .filter { it.name in config.patches }
                         .associateBy { it.name }
 
                 config.options.forEach { (patchName, opts) ->

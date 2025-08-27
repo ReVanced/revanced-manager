@@ -3,6 +3,7 @@ package app.revanced.manager.patcher.runtime
 import android.content.Context
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.patcher.worker.ProgressEventHandler
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
@@ -23,14 +24,17 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
         onPatchCompleted: suspend () -> Unit,
         onProgress: ProgressEventHandler,
     ) {
-        val bundles = bundles()
-
         val selectedBundles = selectedPatches.keys
-        val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
-            .mapValues { (_, bundle) -> bundle.patches(packageName) }
+        val bundles = bundles()
+        val uids = bundles.entries.associate { (key, value) -> value to key }
+
+        val allPatches =
+            PatchBundle.Loader.patches(bundles.values, packageName)
+                .mapKeys { (b, _) -> uids[b]!! }
+                .filterKeys { it in selectedBundles }
 
         val patchList = selectedPatches.flatMap { (bundle, selected) ->
-            allPatches[bundle]?.filter { selected.contains(it.name) }
+            allPatches[bundle]?.filter { it.name in selected }
                 ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
         }
 

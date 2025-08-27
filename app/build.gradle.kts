@@ -40,10 +40,6 @@ dependencies {
     // Placeholder
     implementation(libs.placeholder.material3)
 
-    // HTML Scraper
-    implementation(libs.skrapeit.dsl)
-    implementation(libs.skrapeit.parser)
-
     // Coil (async image loading, network image)
     implementation(libs.coil.compose)
     implementation(libs.coil.appiconloader)

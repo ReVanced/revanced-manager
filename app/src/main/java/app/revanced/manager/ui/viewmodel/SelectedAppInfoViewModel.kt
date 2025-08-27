@@ -28,15 +28,14 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
+import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderData
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
-import app.revanced.manager.ui.model.BundleInfo
-import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
-import app.revanced.manager.ui.model.BundleInfo.Extensions.requiredOptionsSet
-import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
@@ -125,16 +124,19 @@ class SelectedAppInfoViewModel(
         suggestedVersions[input.app.packageName]
     }
 
+    val bundleInfoFlow by derivedStateOf {
+        bundleRepository.scopedBundleInfoFlow(packageName, selectedApp.version)
+    }
+
     var options: Options by savedStateHandle.saveable {
         val state = mutableStateOf<Options>(emptyMap())
 
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
+            val bundlePatches = bundleInfoFlow.first()
+                .associate { it.uid to it.patches.associateBy { patch -> patch.name } }
 
             options = withContext(Dispatchers.Default) {
-                val bundlePatches = bundleRepository.bundles.first()
-                    .mapValues { (_, bundle) -> bundle.patches.associateBy { it.name } }
-
                 optionsRepository.getOptions(packageName, bundlePatches)
             }
         }
@@ -174,10 +176,6 @@ class SelectedAppInfoViewModel(
             app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
             else -> null
         }
-    }
-
-    val bundleInfoFlow by derivedStateOf {
-        bundleRepository.bundleInfoFlow(packageName, selectedApp.version)
     }
 
     fun showSourceSelector() {
@@ -266,9 +264,11 @@ class SelectedAppInfoViewModel(
         selectedAppInfo = info
     }
 
+    fun getOptionsFiltered(bundles: List<PatchBundleInfo.Scoped>) = options.filtered(bundles)
     suspend fun hasSetRequiredOptions(patchSelection: PatchSelection) = bundleInfoFlow
         .first()
         .requiredOptionsSet(
+            allowIncompatible = prefs.disablePatchVersionCompatCheck.get(),
             isSelected = { bundle, patch -> patch.name in patchSelection[bundle.uid]!! },
             optionsForPatch = { bundle, patch -> options[bundle.uid]?.get(patch.name) },
         )
@@ -283,23 +283,23 @@ class SelectedAppInfoViewModel(
         )
     }
 
-    fun getOptionsFiltered(bundles: List<BundleInfo>) = options.filtered(bundles)
-
-    fun getPatches(bundles: List<BundleInfo>, allowIncompatible: Boolean) =
+    fun getPatches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
         selectionState.patches(bundles, allowIncompatible)
 
     fun getCustomPatches(
-        bundles: List<BundleInfo>,
+        bundles: List<PatchBundleInfo.Scoped>,
         allowIncompatible: Boolean
     ): PatchSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowIncompatible)
 
-    fun updateConfiguration(selection: PatchSelection?, options: Options) = viewModelScope.launch {
-        val bundles = bundleInfoFlow.first()
 
+    fun updateConfiguration(
+        selection: PatchSelection?,
+        options: Options
+    ) = viewModelScope.launch {
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
 
-        val filteredOptions = options.filtered(bundles)
+        val filteredOptions = options.filtered(bundleInfoFlow.first())
         this@SelectedAppInfoViewModel.options = filteredOptions
 
         if (!persistConfiguration) return@launch
@@ -319,34 +319,35 @@ class SelectedAppInfoViewModel(
         /**
          * Returns a copy with all nonexistent options removed.
          */
-        private fun Options.filtered(bundles: List<BundleInfo>): Options = buildMap options@{
-            bundles.forEach bundles@{ bundle ->
-                val bundleOptions = this@filtered[bundle.uid] ?: return@bundles
+        private fun Options.filtered(bundles: List<PatchBundleInfo.Scoped>): Options =
+            buildMap options@{
+                bundles.forEach bundles@{ bundle ->
+                    val bundleOptions = this@filtered[bundle.uid] ?: return@bundles
 
-                val patches = bundle.all.associateBy { it.name }
+                    val patches = bundle.patches.associateBy { it.name }
 
-                this@options[bundle.uid] = buildMap bundleOptions@{
-                    bundleOptions.forEach patch@{ (patchName, values) ->
-                        // Get all valid option keys for the patch.
-                        val validOptionKeys =
-                            patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
+                    this@options[bundle.uid] = buildMap bundleOptions@{
+                        bundleOptions.forEach patch@{ (patchName, values) ->
+                            // Get all valid option keys for the patch.
+                            val validOptionKeys =
+                                patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
 
-                        this@bundleOptions[patchName] = values.filterKeys { key ->
-                            key in validOptionKeys
+                            this@bundleOptions[patchName] = values.filterKeys { key ->
+                                key in validOptionKeys
+                            }
                         }
                     }
                 }
             }
-        }
     }
 }
 
 private sealed interface SelectionState : Parcelable {
-    fun patches(bundles: List<BundleInfo>, allowIncompatible: Boolean): PatchSelection
+    fun patches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean): PatchSelection
 
     @Parcelize
     data class Customized(val patchSelection: PatchSelection) : SelectionState {
-        override fun patches(bundles: List<BundleInfo>, allowIncompatible: Boolean) =
+        override fun patches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
             bundles.toPatchSelection(
                 allowIncompatible
             ) { uid, patch ->
@@ -356,7 +357,7 @@ private sealed interface SelectionState : Parcelable {
 
     @Parcelize
     data object Default : SelectionState {
-        override fun patches(bundles: List<BundleInfo>, allowIncompatible: Boolean) =
+        override fun patches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
             bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
     }
 }

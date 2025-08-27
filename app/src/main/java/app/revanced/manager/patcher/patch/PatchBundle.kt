@@ -1,80 +1,84 @@
 package app.revanced.manager.patcher.patch
 
-import android.util.Log
-import app.revanced.manager.util.tag
-import app.revanced.patcher.patch.Patch
-import app.revanced.patcher.patch.PatchLoader
+import kotlinx.parcelize.IgnoredOnParcel
+import android.os.Parcelable
+import app.revanced.patcher.patch.loadPatchesFromDex
+import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.io.IOException
 import java.util.jar.JarFile
+import kotlin.collections.filter
 
-class PatchBundleManifestAttributes(
-    val name: String?,
-    val version: String?,
-    val description: String?,
-    val source: String?,
-    val author: String?,
-    val contact: String?,
-    val website: String?,
-    val license: String?
-)
-
-class PatchBundle(val patchesJar: File) {
-    private val loader = object : Iterable<Patch<*>> {
-        private fun load(): Iterable<Patch<*>> {
-            patchesJar.setReadOnly()
-            return PatchLoader.Dex(setOf(patchesJar))
-        }
-
-        override fun iterator(): Iterator<Patch<*>> = load().iterator()
-    }
-
-    init {
-        Log.d(tag, "Loaded patch bundle: $patchesJar")
-    }
-
-    /**
-     * A list containing the metadata of every patch inside this bundle.
-     */
-    val patches = loader.map(::PatchInfo)
-
+@Parcelize
+data class PatchBundle(val patchesJar: String) : Parcelable {
     /**
      * The [java.util.jar.Manifest] of [patchesJar].
      */
-    private val manifest = try {
-        JarFile(patchesJar).use { it.manifest }
-    } catch (_: IOException) {
-        null
+    @IgnoredOnParcel
+    private val manifest by lazy {
+        try {
+            JarFile(patchesJar).use { it.manifest }
+        } catch (_: IOException) {
+            null
+        }
     }
 
-    val patchBundleManifestAttributes = if(manifest != null)
-        PatchBundleManifestAttributes(
-            name = readManifestAttribute("name"),
-            version = readManifestAttribute("version"),
-            description = readManifestAttribute("description"),
-            source = readManifestAttribute("source"),
-            author = readManifestAttribute("author"),
-            contact = readManifestAttribute("contact"),
-            website = readManifestAttribute("website"),
-            license = readManifestAttribute("license")
-        ) else
+    @IgnoredOnParcel
+    val manifestAttributes by lazy {
+        if (manifest != null)
+            ManifestAttributes(
+                name = readManifestAttribute("name"),
+                version = readManifestAttribute("version"),
+                description = readManifestAttribute("description"),
+                source = readManifestAttribute("source"),
+                author = readManifestAttribute("author"),
+                contact = readManifestAttribute("contact"),
+                website = readManifestAttribute("website"),
+                license = readManifestAttribute("license")
+            ) else
             null
+    }
 
-    private fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)?.takeIf { it.isNotBlank() } // If empty, set it to null instead.
+    private fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)
+        ?.takeIf { it.isNotBlank() } // If empty, set it to null instead.
 
-    /**
-     * Load all patches compatible with the specified package.
-     */
-    fun patches(packageName: String) = loader.filter { patch ->
-        val compatiblePackages = patch.compatiblePackages
-            ?: // The patch has no compatibility constraints, which means it is universal.
-            return@filter true
+    data class ManifestAttributes(
+        val name: String?,
+        val version: String?,
+        val description: String?,
+        val source: String?,
+        val author: String?,
+        val contact: String?,
+        val website: String?,
+        val license: String?
+    )
 
-        if (!compatiblePackages.any { (name, _) -> name == packageName }) {
-            // Patch is not compatible with this package.
-            return@filter false
-        }
+    object Loader {
+        private fun patches(bundles: Iterable<PatchBundle>) =
+            loadPatchesFromDex(
+                bundles.map { File(it.patchesJar) }.toSet()
+            ).byPatchesFile.mapKeys { (file, _) ->
+                val absPath = file.absolutePath
+                bundles.single { absPath == it.patchesJar }
+            }
 
-        true
+        fun metadata(bundles: Iterable<PatchBundle>) =
+            patches(bundles).mapValues { (_, patches) -> patches.map(::PatchInfo) }
+
+        fun patches(bundles: Iterable<PatchBundle>, packageName: String) =
+            patches(bundles).mapValues { (_, patches) ->
+                patches.filter { patch ->
+                    val compatiblePackages = patch.compatiblePackages
+                        ?: // The patch has no compatibility constraints, which means it is universal.
+                        return@filter true
+
+                    if (!compatiblePackages.any { (name, _) -> name == packageName }) {
+                        // Patch is not compatible with this package.
+                        return@filter false
+                    }
+
+                    true
+                }.toSet()
+            }
     }
 }

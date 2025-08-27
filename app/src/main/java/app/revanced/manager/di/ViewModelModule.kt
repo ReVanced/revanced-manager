@@ -23,4 +23,5 @@ val viewModelModule = module {
     viewModelOf(::InstalledAppsViewModel)
     viewModelOf(::InstalledAppInfoViewModel)
     viewModelOf(::UpdatesSettingsViewModel)
+    viewModelOf(::BundleListViewModel)
 }

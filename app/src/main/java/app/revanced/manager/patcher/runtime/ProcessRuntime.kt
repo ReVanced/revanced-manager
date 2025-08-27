@@ -142,8 +142,6 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
                 }
             }
 
-            val bundles = bundles()
-
             val parameters = Parameters(
                 aaptPath = aaptPath,
                 frameworkDir = frameworkPath,
@@ -151,13 +149,11 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
                 packageName = packageName,
                 inputFile = inputFile,
                 outputFile = outputFile,
-                configurations = selectedPatches.map { (id, patches) ->
-                    val bundle = bundles[id]!!
-
+                configurations = bundles().map { (uid, bundle) ->
                     PatchConfiguration(
-                        bundle.patchesJar.absolutePath,
-                        patches,
-                        options[id].orEmpty()
+                        bundle,
+                        selectedPatches[uid].orEmpty(),
+                        options[uid].orEmpty()
                     )
                 }
             )

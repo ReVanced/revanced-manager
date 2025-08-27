@@ -15,7 +15,6 @@ val repositoryModule = module {
         createdAtStart()
     }
     singleOf(::NetworkInfo)
-    singleOf(::PatchBundlePersistenceRepository)
     singleOf(::PatchSelectionRepository)
     singleOf(::PatchOptionsRepository)
     singleOf(::PatchBundleRepository) {
