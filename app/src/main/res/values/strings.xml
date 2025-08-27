@@ -445,8 +445,8 @@
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
-    <string name="ask_permission_notification">Monitor the patching process</string>
-    <string name="ask_permission_notification_description">You can give ReVanced will send you a notification when a bundle was updated.</string>
+    <string name="ask_permission_notification">Get notified</string>
+    <string name="ask_permission_notification_description">ReVanced will send you a notification when the patching process is completed.</string>
     <string name="ask_permission_installation">Android 11 bug</string>
     <string name="ask_permission_installation_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
 </resources>
