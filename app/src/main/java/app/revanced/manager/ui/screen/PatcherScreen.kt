@@ -63,17 +63,19 @@ import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.permissions.shouldAskNotificationPermission
 
 @SuppressLint("InlinedApi")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatcherScreen(
     onBackClick: () -> Unit,
     viewModel: PatcherViewModel
 ) {
     val context = LocalContext.current
+    val activity = context as Activity
     var askNotificationPermission by remember { mutableStateOf(true) }
 
     if (askNotificationPermission) {
         LaunchedEffect(Unit) {
-            if (!context.shouldAskNotificationPermission()) askNotificationPermission = false
+            if (!activity.shouldAskNotificationPermission()) askNotificationPermission = false
         }
         PermissionRequestHandler(
             contract = ActivityResultContracts.RequestPermission(),
@@ -86,21 +88,11 @@ fun PatcherScreen(
         )
     }
 
-    PatcherMainScreen(onBackClick, viewModel)
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun PatcherMainScreen(
-    onBackClick: () -> Unit,
-    viewModel: PatcherViewModel
-) {
     fun onLeave() {
         viewModel.onBack()
         onBackClick()
     }
 
-    val context = LocalContext.current
     val exportApkLauncher =
         rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
 
@@ -126,7 +118,7 @@ private fun PatcherMainScreen(
 
     if (patcherSucceeded == null) {
         DisposableEffect(Unit) {
-            val window = (context as Activity).window
+            val window = context.window
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             onDispose {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

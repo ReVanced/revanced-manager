@@ -88,7 +88,7 @@ class PatcherWorker(
     )
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
-        val patcherRunningNotification = workerRepository.createNotification(
+        val (patcherRunningNotification, _) = workerRepository.createNotification(
             applicationContext,
             notificationChannelPatching,
             PendingIntent.getActivity(
@@ -102,7 +102,7 @@ class PatcherWorker(
             applicationContext.getString(R.string.patcher_notification_running_title),
             applicationContext.getString(R.string.patcher_notification_running_text),
             autoCancel = false
-        ).first
+        )
 
         return ForegroundInfo(
                 1,
@@ -119,7 +119,6 @@ class PatcherWorker(
         }
         if (applicationContext.hasNotificationPermission()) {
             try {
-                // This does not always show up for some reason.
                 setForeground(getForegroundInfo())
             } catch (e: Exception) {
                 Log.d(tag, "Failed to set foreground info:", e)
@@ -276,9 +275,9 @@ class PatcherWorker(
             patcherResult = PatcherResult.SUCCESS
 
             Result.success()
-        } catch (_: kotlinx.coroutines.CancellationException) {
+        } catch (e: kotlinx.coroutines.CancellationException) {
             patcherResult = PatcherResult.STOPPED
-            Result.failure()
+            throw e
         } catch (e: ProcessRuntime.RemoteFailureException) {
             Log.e(
                 tag,

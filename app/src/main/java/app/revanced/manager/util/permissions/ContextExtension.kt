@@ -13,11 +13,11 @@ fun Context.hasNotificationPermission(): Boolean {
         true
 }
 
-fun Context.shouldAskNotificationPermission(): Boolean {
+fun Activity.shouldAskNotificationPermission(): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         !PermissionHelper(this).isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS) &&
                 PermissionHelper(this).getPermissionState(
-                    this as Activity, Manifest.permission.POST_NOTIFICATIONS
+                    this, Manifest.permission.POST_NOTIFICATIONS
                 ) != PermissionState.DeniedPermanently
     else
         false
