@@ -24,7 +24,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout PR
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: refs/pull/${{ inputs.pr-number }}/merge
 
