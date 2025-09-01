@@ -60,7 +60,7 @@ jobs:
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "android/app/keystore.jks"
 
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@v5
         id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
