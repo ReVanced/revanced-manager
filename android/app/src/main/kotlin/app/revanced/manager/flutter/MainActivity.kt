@@ -424,4 +424,33 @@ class MainActivity : FlutterActivity() {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
     }
+    override fun onCreate(savedInstanceState: Bundle?) { //function to check if handleApkIntent ran correctly
+        if(handleApkIntent(intent)) return
+
+        super.onCreate(savedInstanceState)
+    }
+    private fun handleApkIntent(intent: Intent?): Boolean { // function to check if app was opened from tapping on an APK file
+        if(intent?.action == Intent.ACTION_VIEW && intent.data != null){
+            Thread {
+                try{
+                    val apkUri = intent.data!!
+                    val inputStream = contentResolver.openInputStream(apkUri)
+                    val tempFile = File(cacheDir, "temp_apk.apk")
+
+                    inputStream?.use{ input ->
+                        FileOutputStream(tempFile).use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    installApk(tempFile.absolutePath)
+                    tempFile.delete()
+                } catch(e: Exception){
+                    Log.e("APK_HANDLER","Error", e)
+                }
+            }.start()
+            return true
+        }
+        return false
+    }
+    
 }
