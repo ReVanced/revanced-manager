@@ -34,7 +34,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -52,7 +51,7 @@ import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.InstallerStatusDialog
-import app.revanced.manager.ui.component.PermissionRequestHandler
+import app.revanced.manager.ui.component.PermissionRequestDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
@@ -60,7 +59,8 @@ import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
-import app.revanced.manager.util.permissions.shouldAskNotificationPermission
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @SuppressLint("InlinedApi")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,23 +70,13 @@ fun PatcherScreen(
     viewModel: PatcherViewModel
 ) {
     val context = LocalContext.current
-    val activity = context as Activity
-    var askNotificationPermission by remember { mutableStateOf(true) }
 
-    if (askNotificationPermission) {
-        LaunchedEffect(Unit) {
-            if (!activity.shouldAskNotificationPermission()) askNotificationPermission = false
-        }
-        PermissionRequestHandler(
-            contract = ActivityResultContracts.RequestPermission(),
-            input = Manifest.permission.POST_NOTIFICATIONS,
-            title = stringResource(R.string.ask_permission_notification),
-            description = stringResource(R.string.ask_permission_notification_description),
-            icon = Icons.Outlined.Notifications,
-            onDismissRequest = { askNotificationPermission = false },
-            onResult = { _ -> askNotificationPermission = false }
-        )
-    }
+    PermissionRequestDialog(
+        vm = koinViewModel { parametersOf(Manifest.permission.POST_NOTIFICATIONS) },
+        title = stringResource(R.string.ask_permission_notification),
+        description = stringResource(R.string.ask_permission_notification_description),
+        icon = Icons.Outlined.Notifications
+    )
 
     fun onLeave() {
         viewModel.onBack()
@@ -118,7 +108,7 @@ fun PatcherScreen(
 
     if (patcherSucceeded == null) {
         DisposableEffect(Unit) {
-            val window = context.window
+            val window = (context as Activity).window
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             onDispose {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

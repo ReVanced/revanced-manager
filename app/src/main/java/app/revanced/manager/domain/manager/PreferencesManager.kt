@@ -31,4 +31,6 @@ class PreferencesManager(
     val acknowledgedDownloaderPlugins = stringSetPreference("acknowledged_downloader_plugins", emptySet())
 
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
+
+    val askedPermissions = stringSetPreference("asked_permissions", emptySet())
 }

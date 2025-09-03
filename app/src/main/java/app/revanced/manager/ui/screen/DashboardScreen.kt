@@ -143,6 +143,7 @@ fun DashboardScreen(
     }
 
     var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
+    //TODO refactor with permission component
     val installAppsPermissionLauncher =
         rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
             showAndroid11Dialog = false

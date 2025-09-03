@@ -1,32 +1,46 @@
 package app.revanced.manager.util.permissions
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import androidx.annotation.StringDef
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.edit
+import app.revanced.manager.domain.manager.PreferencesManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 
-class PermissionHelper(private val context: Context) {
-    private val prefs by lazy {
-        context.getSharedPreferences("permissions_pref", Context.MODE_PRIVATE)
-    }
+@StringDef(
+    Manifest.permission.POST_NOTIFICATIONS
+)
+@Retention(AnnotationRetention.SOURCE)
+annotation class AndroidPermission
+
+class PermissionHelper : KoinComponent {
+    private val context: Context by inject()
+    private val prefs: PreferencesManager = get()
 
     fun isPermissionGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun isFirstTimeAsking(permission: String): Boolean {
-        val firstTime = prefs.getBoolean(permission, true)
-        if (firstTime) prefs.edit { putBoolean(permission, false) }
-        return firstTime
+    suspend fun isFirstTimeAsking(permission: String): Boolean {
+       with(prefs) {
+           val firstTimeAsking = permission !in askedPermissions.get()
+           if (firstTimeAsking) edit {
+               askedPermissions += permission
+           }
+           return firstTimeAsking
+       }
     }
 
     fun shouldShowRationale(activity: Activity, permission: String): Boolean {
         return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
     }
 
-    fun getPermissionState(activity: Activity, permission: String): PermissionState {
+    suspend fun getPermissionState(activity: Activity, permission: String): PermissionState {
         return when {
             isPermissionGranted(permission) -> PermissionState.Granted
             shouldShowRationale(activity, permission) -> PermissionState.DeniedWithRationale
