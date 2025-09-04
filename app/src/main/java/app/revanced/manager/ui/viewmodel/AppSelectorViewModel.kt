@@ -3,6 +3,7 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.net.Uri
+import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -49,6 +50,14 @@ class AppSelectorViewModel(
 
     var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
         private set
+
+    /**
+     * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
+     * This value is true when the conditions that trigger the bug are met.
+     *
+     * See: https://github.com/ReVanced/revanced-manager/issues/2138
+     */
+    val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 

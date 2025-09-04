@@ -73,6 +73,7 @@ fun PatcherScreen(
 
     PermissionRequestDialog(
         vm = koinViewModel { parametersOf(Manifest.permission.POST_NOTIFICATIONS) },
+        contract = ActivityResultContracts.RequestPermission(),
         title = stringResource(R.string.ask_permission_notification),
         description = stringResource(R.string.ask_permission_notification_description),
         icon = Icons.Outlined.Notifications

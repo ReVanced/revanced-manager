@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Download
@@ -58,18 +57,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.aapt.Aapt
-import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
-import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -141,22 +138,6 @@ fun DashboardScreen(
             newVersion = version
         )
     }
-
-    var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
-    //TODO refactor with permission component
-    val installAppsPermissionLauncher =
-        rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
-            showAndroid11Dialog = false
-            if (granted) onAppSelectorClick()
-        }
-    if (showAndroid11Dialog) Android11Dialog(
-        onDismissRequest = {
-            showAndroid11Dialog = false
-        },
-        onContinue = {
-            installAppsPermissionLauncher.launch(androidContext.packageName)
-        }
-    )
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {
@@ -241,10 +222,6 @@ fun DashboardScreen(
                                         DashboardPage.BUNDLES.ordinal
                                     )
                                 }
-                                return@HapticFloatingActionButton
-                            }
-                            if (vm.android11BugActive) {
-                                showAndroid11Dialog = true
                                 return@HapticFloatingActionButton
                             }
 
@@ -373,25 +350,4 @@ fun Notifications(
             }
         }
     }
-}
-
-@Composable
-fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
-    AlertDialogExtended(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onContinue) {
-                Text(stringResource(R.string.continue_))
-            }
-        },
-        title = {
-            Text(stringResource(R.string.ask_permission_installation))
-        },
-        icon = {
-            Icon(Icons.Outlined.BugReport, null)
-        },
-        text = {
-            Text(stringResource(R.string.ask_permission_installation_description))
-        }
-    )
 }

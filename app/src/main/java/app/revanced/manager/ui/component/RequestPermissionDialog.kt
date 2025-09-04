@@ -2,7 +2,7 @@ package app.revanced.manager.ui.component
 
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,6 +13,7 @@ import app.revanced.manager.ui.viewmodel.PermissionViewModel
 @Composable
 fun PermissionRequestDialog(
     vm: PermissionViewModel,
+    contract: ActivityResultContract<String, Boolean>,
     title: String,
     description: String,
     icon: ImageVector
@@ -24,10 +25,8 @@ fun PermissionRequestDialog(
         vm.refreshPermissionState(activity)
     }
 
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { permissionGranted ->
-        vm.refreshPermissionState(activity)
+    val launcher = rememberLauncherForActivityResult(contract) {
+        _ -> vm.refreshPermissionState(activity)
     }
 
     if (shouldShowDialog)
