@@ -36,7 +36,7 @@
             "path": "build/outputs/apk/release/revanced-manager*.apk?(.asc)"
           }
         ],
-        "successCommentCondition": "<% return false; %>"
+        "successComment": false
       }
     ],
     [
