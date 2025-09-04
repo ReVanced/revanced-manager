@@ -170,7 +170,6 @@ class PatcherWorker(
         }
     }
 
-
     enum class PatcherResult {
         SUCCESS, FAILURE, STOPPED
     }
@@ -273,16 +272,14 @@ class PatcherWorker(
 
             Log.i(tag, "Patching succeeded".logFmt())
             patcherResult = PatcherResult.SUCCESS
-
             Result.success()
         } catch (e: kotlinx.coroutines.CancellationException) {
             patcherResult = PatcherResult.STOPPED
             throw e
         } catch (e: ProcessRuntime.RemoteFailureException) {
-            Log.e(
-                tag,
-                "An exception occurred in the remote process while patching. ${e.originalStackTrace}".logFmt()
-            )
+            Log.e(tag,
+                ("An exception occurred in the remote process while patching." +
+                        " ${e.originalStackTrace}").logFmt())
             updateProgress(state = State.FAILED, message = e.originalStackTrace)
             Result.failure()
         } catch (e: Exception) {
