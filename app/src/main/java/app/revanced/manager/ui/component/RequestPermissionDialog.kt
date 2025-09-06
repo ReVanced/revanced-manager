@@ -4,8 +4,9 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.ui.viewmodel.PermissionViewModel
@@ -19,14 +20,16 @@ fun PermissionRequestDialog(
     icon: ImageVector
 ) {
     val activity = LocalActivity.current!!
-    val shouldShowDialog by vm.shouldShowDialog.collectAsStateWithLifecycle(false)
+    val permissionState by vm.permissionState.collectAsStateWithLifecycle(null)
 
-    LaunchedEffect(Unit) {
-        vm.refreshPermissionState(activity)
+    val shouldShowDialog by remember {
+        derivedStateOf {
+            permissionState?.shouldShowDialog(activity, vm.permission) == true
+        }
     }
 
     val launcher = rememberLauncherForActivityResult(contract) {
-        _ -> vm.refreshPermissionState(activity)
+        vm.refreshPermissionState()
     }
 
     if (shouldShowDialog)
@@ -34,7 +37,7 @@ fun PermissionRequestDialog(
             title = title,
             description = description,
             icon = icon,
-            onDismiss = { vm.refreshPermissionState(activity) },
+            onDismiss = vm::refreshPermissionState,
             onConfirm = { launcher.launch(vm.permission) }
         )
 }

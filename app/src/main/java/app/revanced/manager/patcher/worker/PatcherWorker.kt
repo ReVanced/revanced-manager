@@ -38,7 +38,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
-import app.revanced.manager.util.permissions.hasNotificationPermission
+import app.revanced.manager.util.PermissionHelper
 import app.revanced.manager.util.tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -63,6 +63,7 @@ class PatcherWorker(
     private val fs: Filesystem by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
+    private val permissionHelper: PermissionHelper by inject()
 
     class Args(
         val input: SelectedApp,
@@ -117,7 +118,7 @@ class PatcherWorker(
             Log.d(tag, "Android requested retrying but retrying is disabled.".logFmt())
             return Result.failure()
         }
-        if (applicationContext.hasNotificationPermission()) {
+        if (permissionHelper.hasNotificationPermission()) {
             try {
                 setForeground(getForegroundInfo())
             } catch (e: Exception) {
@@ -161,10 +162,10 @@ class PatcherWorker(
                 else R.string.patcher_notification_failure_text
             )
         ).also { (notification, notificationManager) ->
-            if (applicationContext.hasNotificationPermission())
+            if (permissionHelper.hasNotificationPermission())
                 notificationManager.notify(
                     System.currentTimeMillis()
-                        .toInt(), // An unique ID, each patch process should show a notification
+                        .toInt(), // A unique ID, each patch process should show a notification
                     notification
                 )
         }

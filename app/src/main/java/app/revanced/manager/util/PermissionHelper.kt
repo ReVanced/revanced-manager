@@ -1,9 +1,10 @@
-package app.revanced.manager.util.permissions
+package app.revanced.manager.util
 
 import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.annotation.StringDef
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -36,23 +37,30 @@ class PermissionHelper : KoinComponent {
        }
     }
 
-    fun shouldShowRationale(activity: Activity, permission: String): Boolean {
-        return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
-    }
-
-    suspend fun getPermissionState(activity: Activity, permission: String): PermissionState {
+    suspend fun getPermissionState(permission: String): PermissionState {
         return when {
             isPermissionGranted(permission) -> PermissionState.Granted
-            shouldShowRationale(activity, permission) -> PermissionState.DeniedWithRationale
             isFirstTimeAsking(permission) -> PermissionState.FirstTime
-            else -> PermissionState.DeniedPermanently
+            else -> PermissionState.Denied
         }
+    }
+
+    fun hasNotificationPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            PermissionHelper().isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)
+        else
+            true
     }
 
     enum class PermissionState {
         Granted,
         FirstTime,
-        DeniedWithRationale,
-        DeniedPermanently
+        Denied;
+
+        fun shouldShowDialog(activity: Activity, permission: String) = when (this) {
+            Granted -> false
+            FirstTime -> true
+            Denied -> ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+        }
     }
 }
