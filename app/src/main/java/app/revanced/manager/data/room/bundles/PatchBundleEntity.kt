@@ -35,12 +35,14 @@ data class PatchBundleEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "version") val versionHash: String? = null,
     @ColumnInfo(name = "source") val source: Source,
-    @ColumnInfo(name = "auto_update") val autoUpdate: Boolean
+    @ColumnInfo(name = "auto_update") val autoUpdate: Boolean,
+    @ColumnInfo(name = "enabled") val enabled: Boolean
 )
 
 data class PatchBundleProperties(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "version") val versionHash: String? = null,
     @ColumnInfo(name = "source") val source: Source,
-    @ColumnInfo(name = "auto_update") val autoUpdate: Boolean
+    @ColumnInfo(name = "auto_update") val autoUpdate: Boolean,
+    @ColumnInfo(name = "enabled") val enabled: Boolean
 )

@@ -54,6 +54,9 @@ fun BundleListScreen(
                     onDelete = {
                         viewModel.delete(source)
                     },
+                    onDisable = {
+                        viewModel.disable(source)
+                    },
                     onUpdate = {
                         viewModel.update(source)
                     },

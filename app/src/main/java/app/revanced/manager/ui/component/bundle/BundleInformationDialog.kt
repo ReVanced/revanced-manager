@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Commit
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Description
@@ -61,7 +62,8 @@ fun BundleInformationDialog(
     patchCount: Int,
     onDismissRequest: () -> Unit,
     onDeleteRequest: () -> Unit,
-    onUpdate: () -> Unit,
+    onDisableRequest: () -> Unit,
+    onUpdate: () -> Unit
 ) {
     val bundleRepo = koinInject<PatchBundleRepository>()
     val networkInfo = koinInject<NetworkInfo>()
@@ -102,6 +104,12 @@ fun BundleInformationDialog(
                         )
                     },
                     actions = {
+                        IconButton(onClick = onDisableRequest) {
+                            Icon(
+                                Icons.Outlined.Block,
+                                stringResource(R.string.disable)
+                            )
+                        }
                         if (!src.isDefault) {
                             IconButton(onClick = onDeleteRequest) {
                                 Icon(

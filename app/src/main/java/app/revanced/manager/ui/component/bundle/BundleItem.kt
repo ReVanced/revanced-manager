@@ -40,6 +40,7 @@ fun BundleItem(
     onSelect: () -> Unit,
     onDelete: () -> Unit,
     onUpdate: () -> Unit,
+    onDisable: () -> Unit
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
@@ -50,6 +51,7 @@ fun BundleItem(
             patchCount = patchCount,
             onDismissRequest = { viewBundleDialogPage = false },
             onDeleteRequest = { showDeleteConfirmationDialog = true },
+            onDisableRequest = onDisable,
             onUpdate = onUpdate,
         )
     }

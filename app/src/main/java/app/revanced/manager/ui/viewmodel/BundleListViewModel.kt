@@ -62,6 +62,9 @@ class BundleListViewModel : ViewModel(), KoinComponent {
     fun delete(src: PatchBundleSource) =
         viewModelScope.launch { patchBundleRepository.remove(src) }
 
+    fun disable(src: PatchBundleSource) =
+        viewModelScope.launch { patchBundleRepository.disable(src) }
+
     fun update(src: PatchBundleSource) = viewModelScope.launch {
         if (src !is RemotePatchBundle) return@launch
 

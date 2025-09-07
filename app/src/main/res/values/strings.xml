@@ -220,6 +220,7 @@
     <string name="tab_apps">Apps</string>
     <string name="tab_patches">Patches</string>
     <string name="delete">Delete</string>
+    <string name="disable">Disable</string>
     <string name="refresh">Refresh</string>
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d0119047505da435972c5247181de675",
+    "identityHash": "7958de1a61fedc06f37e42b2f22b7e5f",
     "entities": [
       {
         "tableName": "patch_bundles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `version` TEXT, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `version` TEXT, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, `enabled` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -21,10 +21,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "version",
+            "fieldPath": "versionHash",
             "columnName": "version",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source",
@@ -37,6 +36,12 @@
             "columnName": "auto_update",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -44,9 +49,7 @@
           "columnNames": [
             "uid"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "patch_selections",
@@ -127,7 +130,6 @@
             "patch_name"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "patch_selections",
@@ -177,9 +179,7 @@
             "package_name",
             "version"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "installed_app",
@@ -215,9 +215,7 @@
           "columnNames": [
             "current_package_name"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "applied_patch",
@@ -378,7 +376,6 @@
             "key"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "option_groups",
@@ -415,15 +412,12 @@
           "columnNames": [
             "package_name"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0119047505da435972c5247181de675')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7958de1a61fedc06f37e42b2f22b7e5f')"
     ]
   }
 }

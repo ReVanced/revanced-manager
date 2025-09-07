@@ -239,7 +239,8 @@ class PatchBundleRepository(
             name = name,
             versionHash = null,
             source = source,
-            autoUpdate = autoUpdate
+            autoUpdate = autoUpdate,
+            enabled = true
         ).also {
             dao.upsert(it)
         }
@@ -260,6 +261,7 @@ class PatchBundleRepository(
                 versionHash = new.versionHash,
                 source = new.source,
                 autoUpdate = new.autoUpdate,
+                enabled = new.enabled,
             )
         )
     }
@@ -269,6 +271,14 @@ class PatchBundleRepository(
         state.sources.keys.forEach { directoryOf(it).deleteRecursively() }
         doReload()
     }
+
+    suspend fun disable(vararg bundles: PatchBundleSource) =
+        dispatchAction("Disable (${bundles.map { it.uid }.joinToString(",")})") { state ->
+            this@PatchBundleRepository.sources.first().forEach {
+                updateDb(it.uid) { it.copy(enabled = !it.enabled) }
+            }
+            doReload()
+        }
 
     suspend fun remove(vararg bundles: PatchBundleSource) =
         dispatchAction("Remove (${bundles.map { it.uid }.joinToString(",")})") { state ->
@@ -410,7 +420,8 @@ class PatchBundleRepository(
             name = "",
             versionHash = null,
             source = Source.API,
-            autoUpdate = false
+            autoUpdate = false,
+            enabled = true
         )
     }
 }
