@@ -66,8 +66,7 @@ jobs:
       - name: Release
         id: release
         run: |
-          npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api | tee result.log
-          echo "new_release_published=$(grep -q 'Published release' result.log && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "NEW_TAG=$(npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api | tee | grep 'Created tag ' | sed -E 's/.*Created tag (v[0-9.]+).*/\1/')" >> $GITHUB_OUTPUT
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +75,7 @@ jobs:
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
       - name: Attest
-        if: steps.release.outputs.new_release_published == 'true'
+        if: steps.release.outputs.NEW_TAG != ''
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: 'ReVanced Manager ${{ steps.release.outputs.NEW_TAG }}'
