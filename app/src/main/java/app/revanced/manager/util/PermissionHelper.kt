@@ -47,7 +47,7 @@ class PermissionHelper : KoinComponent {
 
     fun hasNotificationPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            PermissionHelper().isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)
+            isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)
         else
             true
     }
