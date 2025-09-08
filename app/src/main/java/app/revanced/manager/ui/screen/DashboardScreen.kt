@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
@@ -181,6 +182,17 @@ fun DashboardScreen(
                         )
                     },
                     actions = {
+                        IconButton(
+                            onClick = {
+                                vm.disableSources()
+                                vm.cancelSourceSelection()
+                            }
+                        ) {
+                            Icon(
+                                Icons.Outlined.Block,
+                                stringResource(R.string.disable)
+                            )
+                        }
                         IconButton(
                             onClick = {
                                 showDeleteConfirmationDialog = true

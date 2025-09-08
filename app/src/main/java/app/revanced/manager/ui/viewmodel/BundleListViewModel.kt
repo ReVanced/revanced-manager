@@ -49,11 +49,15 @@ class BundleListViewModel : ViewModel(), KoinComponent {
             Event.DELETE_SELECTED -> viewModelScope.launch {
                 patchBundleRepository.remove(*getSelectedSources().toTypedArray())
             }
-
             Event.UPDATE_SELECTED -> viewModelScope.launch {
                 patchBundleRepository.update(
                     *getSelectedSources().filterIsInstance<RemotePatchBundle>().toTypedArray(),
                     showToast = true,
+                )
+            }
+            Event.DISABLE_SELECTED -> viewModelScope.launch {
+                patchBundleRepository.disable(
+                    *getSelectedSources().toTypedArray(),
                 )
             }
         }
@@ -74,6 +78,7 @@ class BundleListViewModel : ViewModel(), KoinComponent {
     enum class Event {
         DELETE_SELECTED,
         UPDATE_SELECTED,
-        CANCEL,
+        DISABLE_SELECTED,
+        CANCEL
     }
 }

@@ -117,6 +117,7 @@ class DashboardViewModel(
     fun cancelSourceSelection() = sendEvent(BundleListViewModel.Event.CANCEL)
     fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
     fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
+    fun disableSources() = sendEvent(BundleListViewModel.Event.DISABLE_SELECTED)
 
     @SuppressLint("Recycle")
     fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
