@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Download
@@ -62,14 +63,18 @@ import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.PermissionRequestDialog
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
+import org.koin.core.parameter.parametersOf
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -136,6 +141,20 @@ fun DashboardScreen(
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
             newVersion = version
+        )
+    }
+
+    var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    if (showAndroid11Dialog) {
+        PermissionRequestDialog(
+            vm = getKoin().get {
+                parametersOf(androidContext.packageName, scope)
+            },
+            contract = RequestInstallAppsContract,
+            title = stringResource(R.string.ask_permission_installation),
+            description = stringResource(R.string.ask_permission_installation_description),
+            icon = Icons.Outlined.BugReport
         )
     }
 
@@ -224,7 +243,10 @@ fun DashboardScreen(
                                 }
                                 return@HapticFloatingActionButton
                             }
-
+                            if (vm.android11BugActive) {
+                                showAndroid11Dialog = true
+                                return@HapticFloatingActionButton
+                            }
                             onAppSelectorClick()
                         }
 
