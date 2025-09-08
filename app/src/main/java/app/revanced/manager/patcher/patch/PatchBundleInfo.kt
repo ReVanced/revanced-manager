@@ -22,7 +22,7 @@ sealed class PatchBundleInfo {
     abstract val uid: Int
 
     /**
-     * Tells if the bundle is enabled or disabled.
+     * The state indicating whether the bundle is enabled or disabled.
      */
     abstract val enabled: Boolean
 
