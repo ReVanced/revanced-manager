@@ -39,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -59,7 +60,7 @@ import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
 import org.koin.core.parameter.parametersOf
 
 @SuppressLint("InlinedApi")
@@ -70,9 +71,12 @@ fun PatcherScreen(
     viewModel: PatcherViewModel
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     PermissionRequestDialog(
-        vm = koinViewModel { parametersOf(Manifest.permission.POST_NOTIFICATIONS) },
+        vm = getKoin().get {
+            parametersOf(Manifest.permission.POST_NOTIFICATIONS, scope)
+        },
         contract = ActivityResultContracts.RequestPermission(),
         title = stringResource(R.string.ask_permission_notification),
         description = stringResource(R.string.ask_permission_notification_description),

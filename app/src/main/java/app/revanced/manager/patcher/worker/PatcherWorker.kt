@@ -40,6 +40,7 @@ import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.PermissionHelper
 import app.revanced.manager.util.tag
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -121,6 +122,8 @@ class PatcherWorker(
         if (permissionHelper.hasNotificationPermission()) {
             try {
                 setForeground(getForegroundInfo())
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Log.d(tag, "Failed to set foreground info:", e)
             }
@@ -274,7 +277,7 @@ class PatcherWorker(
             Log.i(tag, "Patching succeeded".logFmt())
             patcherResult = PatcherResult.SUCCESS
             Result.success()
-        } catch (e: kotlinx.coroutines.CancellationException) {
+        } catch (e: CancellationException) {
             patcherResult = PatcherResult.STOPPED
             throw e
         } catch (e: ProcessRuntime.RemoteFailureException) {

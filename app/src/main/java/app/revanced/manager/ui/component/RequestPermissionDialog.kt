@@ -9,11 +9,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.revanced.manager.ui.viewmodel.PermissionViewModel
+import app.revanced.manager.ui.viewmodel.PermissionStateHolder
 
 @Composable
 fun PermissionRequestDialog(
-    vm: PermissionViewModel,
+    vm: PermissionStateHolder,
     contract: ActivityResultContract<String, Boolean>,
     title: String,
     description: String,

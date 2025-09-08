@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -54,6 +55,7 @@ import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
 import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,10 +67,13 @@ fun AppSelectorScreen(
     vm: AppSelectorViewModel = koinViewModel()
 ) {
     val androidContext = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     if (vm.android11BugActive)
         PermissionRequestDialog(
-            vm = koinViewModel { parametersOf(androidContext.packageName) },
+            vm = getKoin().get {
+                parametersOf(androidContext.packageName, scope)
+            },
             contract = RequestInstallAppsContract,
             title = stringResource(R.string.ask_permission_installation),
             description = stringResource(R.string.ask_permission_installation_description),
