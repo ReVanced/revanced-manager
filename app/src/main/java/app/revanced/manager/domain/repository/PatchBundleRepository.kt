@@ -61,9 +61,13 @@ class PatchBundleRepository(
             uid to (src.patchBundle ?: return@mapNotNull null)
         }.toMap()
     }
-    val bundleInfoFlow = store.state.map { it.info }
+    val allBundlesInfoFlow = store.state.map { it.info }
 
-    fun scopedBundleInfoFlow(packageName: String, version: String?) = bundleInfoFlow.map {
+    val enabledBundlesInfoFlow = allBundlesInfoFlow.map {
+        it.filter { it.value.enabled == true }
+    }
+
+    fun scopedBundleInfoFlow(packageName: String, version: String?) = enabledBundlesInfoFlow.map {
         it.map { (_, bundleInfo) ->
             bundleInfo.forPackage(
                 packageName,
@@ -72,9 +76,9 @@ class PatchBundleRepository(
         }
     }
 
-    val patchCountsFlow = bundleInfoFlow.map { it.mapValues { (_, info) -> info.patches.size } }
+    val patchCountsFlow = allBundlesInfoFlow.map { it.mapValues { (_, info) -> info.patches.size } }
 
-    val suggestedVersions = bundleInfoFlow.map {
+    val suggestedVersions = enabledBundlesInfoFlow.map {
         val allPatches =
             it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toPatcherPatch) }.toSet()
 
@@ -186,6 +190,7 @@ class PatchBundleRepository(
                 src.name,
                 bundle.manifestAttributes?.version,
                 src.uid,
+                src.enabled,
                 patches
             )
         }
@@ -210,7 +215,7 @@ class PatchBundleRepository(
             name.ifEmpty { app.getString(if (uid == 0) R.string.patches_name_default else R.string.patches_name_fallback) }
 
         return when (source) {
-            is SourceInfo.Local -> LocalPatchBundle(actualName, uid, null, dir)
+            is SourceInfo.Local -> LocalPatchBundle(actualName, uid, null, dir, enabled)
             is SourceInfo.API -> APIPatchBundle(
                 actualName,
                 uid,
@@ -219,6 +224,7 @@ class PatchBundleRepository(
                 dir,
                 SourceInfo.API.SENTINEL,
                 autoUpdate,
+                enabled
             )
 
             is SourceInfo.Remote -> JsonPatchBundle(
@@ -229,6 +235,7 @@ class PatchBundleRepository(
                 dir,
                 source.url.toString(),
                 autoUpdate,
+                enabled
             )
         }
     }
@@ -274,7 +281,7 @@ class PatchBundleRepository(
 
     suspend fun disable(vararg bundles: PatchBundleSource) =
         dispatchAction("Disable (${bundles.map { it.uid }.joinToString(",")})") { state ->
-            this@PatchBundleRepository.sources.first().forEach {
+            bundles.forEach {
                 updateDb(it.uid) { it.copy(enabled = !it.enabled) }
             }
             doReload()

@@ -20,7 +20,8 @@ sealed class RemotePatchBundle(
     directory: File,
     val endpoint: String,
     val autoUpdate: Boolean,
-) : PatchBundleSource(name, uid, error, directory), KoinComponent {
+    enabled: Boolean
+) : PatchBundleSource(name, uid, error, directory, enabled), KoinComponent {
     protected val http: HttpService by inject()
 
     protected abstract suspend fun getLatestInfo(): ReVancedAsset
@@ -63,7 +64,8 @@ class JsonPatchBundle(
     directory: File,
     endpoint: String,
     autoUpdate: Boolean,
-) : RemotePatchBundle(name, uid, versionHash, error, directory, endpoint, autoUpdate) {
+    enabled: Boolean
+) : RemotePatchBundle(name, uid, versionHash, error, directory, endpoint, autoUpdate, enabled) {
     override suspend fun getLatestInfo() = withContext(Dispatchers.IO) {
         http.request<ReVancedAsset> {
             url(endpoint)
@@ -78,6 +80,7 @@ class JsonPatchBundle(
         directory,
         endpoint,
         autoUpdate,
+        enabled
     )
 }
 
@@ -89,7 +92,8 @@ class APIPatchBundle(
     directory: File,
     endpoint: String,
     autoUpdate: Boolean,
-) : RemotePatchBundle(name, uid, versionHash, error, directory, endpoint, autoUpdate) {
+    enabled: Boolean
+) : RemotePatchBundle(name, uid, versionHash, error, directory, endpoint, autoUpdate, enabled) {
     private val api: ReVancedAPI by inject()
 
     override suspend fun getLatestInfo() = api.getPatchesUpdate().getOrThrow()
@@ -101,5 +105,6 @@ class APIPatchBundle(
         directory,
         endpoint,
         autoUpdate,
+        enabled
     )
 }

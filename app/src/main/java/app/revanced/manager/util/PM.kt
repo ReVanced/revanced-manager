@@ -44,7 +44,7 @@ class PM(
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    val appList = patchBundleRepository.bundleInfoFlow.map { bundles ->
+    val appList = patchBundleRepository.enabledBundlesInfoFlow.map { bundles ->
         val compatibleApps = scope.async {
             val compatiblePackages = bundles
                 .flatMap { (_, bundle) -> bundle.patches }

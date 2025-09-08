@@ -69,6 +69,12 @@ fun BundleItem(
         )
     }
 
+    val textColor = if (src.enabled) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    }
+
     ListItem(
         modifier = Modifier
             .height(64.dp)
@@ -86,10 +92,10 @@ fun BundleItem(
             }
         } else null,
 
-        headlineContent = { Text(src.name) },
+        headlineContent = { Text(src.name, color = textColor) },
         supportingContent = {
             if (src.state is PatchBundleSource.State.Available) {
-                Text(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
+                Text(pluralStringResource(R.plurals.patch_count, patchCount, patchCount), color = textColor)
             }
         },
         trailingContent = {
@@ -111,7 +117,7 @@ fun BundleItem(
                     )
                 }
 
-                src.version?.let { Text(text = it) }
+                src.version?.let { Text(text = it, color = textColor) }
             }
         },
     )

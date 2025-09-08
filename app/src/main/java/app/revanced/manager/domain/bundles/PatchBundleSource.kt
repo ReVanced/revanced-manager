@@ -16,7 +16,8 @@ sealed class PatchBundleSource(
     val name: String,
     val uid: Int,
     error: Throwable?,
-    protected val directory: File
+    protected val directory: File,
+    val enabled: Boolean
 ) {
     protected val patchesFile = directory.resolve("patches.jar")
 

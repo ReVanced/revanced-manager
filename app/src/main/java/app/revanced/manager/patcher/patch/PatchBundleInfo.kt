@@ -22,6 +22,11 @@ sealed class PatchBundleInfo {
     abstract val uid: Int
 
     /**
+     * Tells if the bundle is enabled or disabled.
+     */
+    abstract val enabled: Boolean
+
+    /**
      * The patch list.
      */
     abstract val patches: List<PatchInfo>
@@ -35,7 +40,8 @@ sealed class PatchBundleInfo {
         override val name: String,
         override val version: String?,
         override val uid: Int,
-        override val patches: List<PatchInfo>
+        override val enabled: Boolean,
+        override val patches: List<PatchInfo>,
     ) : PatchBundleInfo() {
         /**
          * Create a [PatchBundleInfo.Scoped] that only contains information about patches that are relevant for a specific [packageName].
@@ -64,6 +70,7 @@ sealed class PatchBundleInfo {
                 name,
                 this.version,
                 uid,
+                enabled,
                 relevantPatches,
                 compatible,
                 incompatible,
@@ -85,6 +92,7 @@ sealed class PatchBundleInfo {
         override val name: String,
         override val version: String?,
         override val uid: Int,
+        override val enabled: Boolean,
         override val patches: List<PatchInfo>,
         val compatible: List<PatchInfo>,
         val incompatible: List<PatchInfo>,

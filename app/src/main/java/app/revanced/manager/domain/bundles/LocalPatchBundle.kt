@@ -10,8 +10,9 @@ class LocalPatchBundle(
     name: String,
     uid: Int,
     error: Throwable?,
-    directory: File
-) : PatchBundleSource(name, uid, error, directory) {
+    directory: File,
+    enabled: Boolean
+) : PatchBundleSource(name, uid, error, directory, enabled) {
     suspend fun ActionContext.replace(patches: InputStream) {
         withContext(Dispatchers.IO) {
             patchBundleOutputStream().use { outputStream ->
@@ -24,6 +25,7 @@ class LocalPatchBundle(
         name,
         uid,
         error,
-        directory
+        directory,
+        enabled
     )
 }
