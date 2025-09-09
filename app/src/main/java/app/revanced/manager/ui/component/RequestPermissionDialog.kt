@@ -13,23 +13,26 @@ import app.revanced.manager.ui.viewmodel.PermissionStateHolder
 
 @Composable
 fun PermissionRequestDialog(
-    vm: PermissionStateHolder,
+    stateHolder: PermissionStateHolder,
     contract: ActivityResultContract<String, Boolean>,
     title: String,
     description: String,
-    icon: ImageVector
+    icon: ImageVector,
+    shouldShowDialogOverride: (() -> Boolean)? = null,
+    onDismiss: () -> Unit
 ) {
     val activity = LocalActivity.current!!
-    val permissionState by vm.permissionState.collectAsStateWithLifecycle(null)
+    val permissionState by stateHolder.permissionState.collectAsStateWithLifecycle(null)
 
     val shouldShowDialog by remember {
         derivedStateOf {
-            permissionState?.shouldShowDialog(activity, vm.permission) == true
+            (shouldShowDialogOverride?.invoke()) ?:
+                (permissionState?.shouldShowDialog(activity, stateHolder.permission) == true)
         }
     }
 
     val launcher = rememberLauncherForActivityResult(contract) {
-        vm.refreshPermissionState()
+        stateHolder.refreshPermissionState()
     }
 
     if (shouldShowDialog)
@@ -37,7 +40,10 @@ fun PermissionRequestDialog(
             title = title,
             description = description,
             icon = icon,
-            onDismiss = vm::refreshPermissionState,
-            onConfirm = { launcher.launch(vm.permission) }
+            onDismiss = {
+                stateHolder.refreshPermissionState()
+                onDismiss()
+            },
+            onConfirm = { launcher.launch(stateHolder.permission) }
         )
 }

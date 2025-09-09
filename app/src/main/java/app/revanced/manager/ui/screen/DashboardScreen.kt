@@ -146,17 +146,18 @@ fun DashboardScreen(
 
     var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    if (showAndroid11Dialog) {
-        PermissionRequestDialog(
-            vm = getKoin().get {
-                parametersOf(androidContext.packageName, scope)
-            },
-            contract = RequestInstallAppsContract,
-            title = stringResource(R.string.ask_permission_installation),
-            description = stringResource(R.string.ask_permission_installation_description),
-            icon = Icons.Outlined.BugReport
-        )
-    }
+
+    PermissionRequestDialog(
+        stateHolder = getKoin().get {
+            parametersOf(androidContext.packageName, scope)
+        },
+        contract = RequestInstallAppsContract,
+        title = stringResource(R.string.ask_permission_installation),
+        description = stringResource(R.string.ask_permission_installation_description),
+        icon = Icons.Outlined.BugReport,
+        shouldShowDialogOverride = { showAndroid11Dialog },
+        onDismiss = { showAndroid11Dialog = false }
+    )
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {

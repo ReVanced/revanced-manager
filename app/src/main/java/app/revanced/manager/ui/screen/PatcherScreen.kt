@@ -74,13 +74,14 @@ fun PatcherScreen(
     val scope = rememberCoroutineScope()
 
     PermissionRequestDialog(
-        vm = getKoin().get {
+        stateHolder = getKoin().get {
             parametersOf(Manifest.permission.POST_NOTIFICATIONS, scope)
         },
         contract = ActivityResultContracts.RequestPermission(),
         title = stringResource(R.string.ask_permission_notification),
         description = stringResource(R.string.ask_permission_notification_description),
-        icon = Icons.Outlined.Notifications
+        icon = Icons.Outlined.Notifications,
+        onDismiss = {}
     )
 
     fun onLeave() {
