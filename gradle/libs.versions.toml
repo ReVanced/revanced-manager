@@ -36,6 +36,7 @@ compose-icons = "1.2.4"
 kotlin-process = "1.5.1"
 hidden-api-stub = "4.3.3"
 binary-compatibility-validator = "0.17.0"
+semver-parser = "3.0.0"
 
 [libraries]
 # AndroidX Core
@@ -128,6 +129,9 @@ reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reo
 # Compose Icons
 # switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
 compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
+
+# Semantic versioning parser
+semver-parser = { module = "io.github.z4kn4fein:semver", version.ref = "semver-parser" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

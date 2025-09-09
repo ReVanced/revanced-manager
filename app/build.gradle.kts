@@ -1,5 +1,5 @@
+import io.github.z4kn4fein.semver.toVersion
 import kotlin.random.Random
-import java.io.IOException
 
 plugins {
     alias(libs.plugins.android.application)
@@ -13,33 +13,6 @@ plugins {
 }
 
 val outputApkFileName = "${rootProject.name}-$version.apk"
-
-fun String.runCommand(): String {
-    val process = ProcessBuilder(split("\\s".toRegex()))
-        .redirectErrorStream(true)
-        .directory(rootDir)
-        .start()
-
-    val output = StringBuilder()
-    val reader = process.inputStream.bufferedReader()
-
-    val thread = Thread {
-        reader.forEachLine {
-            output.appendLine(it)
-        }
-    }
-    thread.start()
-
-    if (!process.waitFor(10, TimeUnit.SECONDS)) {
-        process.destroy()
-        throw IOException("Command timed out: $this")
-    }
-
-    thread.join()
-    return output.toString().trim()
-}
-
-val tagCount = "git tag --list v*".runCommand().lineSequence().count()
 
 dependencies {
     // AndroidX Core
@@ -137,6 +110,16 @@ dependencies {
     implementation(libs.compose.icons.fontawesome)
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // Semantic versioning string parser
+        classpath(libs.semver.parser)
+    }
+}
+
 android {
     namespace = "app.revanced.manager"
     compileSdk = 35
@@ -146,8 +129,13 @@ android {
         applicationId = "app.revanced.manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = tagCount
-        versionName = version.toString()
+        versionName = if (version == "unspecified") "1.0.0" else version.toString()
+        versionCode = with(versionName!!.toVersion()) {
+            major * 1_000_000 +
+                    minor * 10_000 +
+                    patch * 100 +
+                    (preRelease?.substringAfterLast('.')?.toInt() ?: 99)
+        }
         vectorDrawables.useSupportLibrary = true
     }
 
