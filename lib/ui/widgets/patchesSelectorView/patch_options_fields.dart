@@ -339,15 +339,21 @@ class PatchOption extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              patchOption.description,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onSecondaryContainer,
+                            Visibility(
+                              visible:
+                                  (patchOption.description ?? '').isNotEmpty,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: Text(
+                                  patchOption.description ?? '',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSecondaryContainer,
+                                  ),
+                                ),
                               ),
                             ),
                           ],

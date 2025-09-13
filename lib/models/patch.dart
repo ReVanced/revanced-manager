@@ -98,7 +98,7 @@ class Option {
 
   final String key;
   final String title;
-  final String description;
+  final String? description;
   final dynamic value;
   final Map<String, dynamic>? values;
   final bool required;
