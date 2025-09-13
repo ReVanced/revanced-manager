@@ -121,18 +121,18 @@ class PatcherAPI {
     }
 
     final List<Patch> patches = _patches
-        .where(
-          (patch) =>
-              patch.compatiblePackages.isEmpty ||
-              !patch.name.contains('settings') &&
+            .where(
+              (patch) =>
+                  patch.compatiblePackages.isEmpty ||
+                  !patch.name.contains('settings') &&
                   patch.compatiblePackages
                       .any((pack) => pack.name == packageName),
-        )
-        .toList();
+            )
+            .toList();
     if (!_managerAPI.areUniversalPatchesEnabled()) {
       filteredPatches[packageName] = patches
-          .where((patch) => patch.compatiblePackages.isNotEmpty)
-          .toList();
+              .where((patch) => patch.compatiblePackages.isNotEmpty)
+              .toList();
     } else {
       filteredPatches[packageName] = patches;
     }
@@ -184,13 +184,13 @@ class PatcherAPI {
       await patcherChannel.invokeMethod(
         'runPatcher',
         {
-          'inFilePath': inApkFile.path,
-          'outFilePath': outFile!.path,
-          'selectedPatches': selectedPatches.map((p) => p.name).toList(),
-          'options': options,
-          'tmpDirPath': tmpDir.path,
-          'keyStoreFilePath': _keyStoreFile.path,
-          'keystorePassword': _managerAPI.getKeystorePassword(),
+        'inFilePath': inApkFile.path,
+        'outFilePath': outFile!.path,
+        'selectedPatches': selectedPatches.map((p) => p.name).toList(),
+        'options': options,
+        'tmpDirPath': tmpDir.path,
+        'keyStoreFilePath': _keyStoreFile.path,
+        'keystorePassword': _managerAPI.getKeystorePassword(),
         },
       );
     } on Exception catch (e) {
@@ -227,10 +227,10 @@ class PatcherAPI {
             installErrorDialog(1.2);
           } else if (packageVersion == patchedApp.version) {
             return await _rootAPI.install(
-              patchedApp.packageName,
-              patchedApp.apkFilePath,
-              patchedApp.patchedFilePath,
-            )
+                  patchedApp.packageName,
+                  patchedApp.apkFilePath,
+                  patchedApp.patchedFilePath,
+                )
                 ? 0
                 : 1;
           } else {
@@ -268,7 +268,7 @@ class PatcherAPI {
       final String message = status['message'];
       final bool hasExtra =
           message.contains('INSTALL_FAILED_VERIFICATION_FAILURE') ||
-              message.contains('INSTALL_FAILED_VERSION_DOWNGRADE');
+          message.contains('INSTALL_FAILED_VERSION_DOWNGRADE');
       if (statusCode == 0 || (statusCode == 3 && !hasExtra)) {
         return statusCode;
       } else {
@@ -305,78 +305,80 @@ class PatcherAPI {
             ? {
                 'packageName': status['otherPackageName'],
               }
-            : null,
+                : null,
       );
     }
 
     await showDialog(
       context: _managerAPI.ctx!,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        title: Text(t['installErrorDialog.$statusValue']),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            title: Text(t['installErrorDialog.$statusValue']),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
           children: [
             Text(description),
           ],
-        ),
+            ),
         actions: (status == null)
-            ? <Widget>[
-                FilledButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                  },
-                  child: Text(t.okButton),
-                ),
-              ]
-            : <Widget>[
-                if (!isFixable)
-                  FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(t.cancelButton),
-                  )
-                else
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(t.cancelButton),
-                  ),
-                if (isFixable)
-                  FilledButton(
-                    onPressed: () async {
+                    ? <Widget>[
+                      FilledButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
+                        child: Text(t.okButton),
+                      ),
+                    ]
+                    : <Widget>[
+                      if (!isFixable)
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(t.cancelButton),
+                        )
+                      else
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(t.cancelButton),
+                        ),
+                      if (isFixable)
+                        FilledButton(
+                          onPressed: () async {
                       final int response = await patcherChannel.invokeMethod(
                         'uninstallApp',
                         {'packageName': status['packageName']},
                       );
-                      if (response == 0 && context.mounted) {
-                        cleanInstall = true;
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Text(t.okButton),
-                  ),
-              ],
-      ),
+                            if (response == 0 && context.mounted) {
+                              cleanInstall = true;
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Text(t.okButton),
+                        ),
+                    ],
+          ),
     );
     return cleanInstall ? 10 : 1;
   }
 
-  void exportPatchedFile(PatchedApplication app) {
+  Future<void> exportPatchedFile(PatchedApplication app) async {
     try {
-      if (outFile != null) {
-        final String newName = _getFileName(app.name, app.version);
-        FlutterFileDialog.saveFile(
-          params: SaveFileDialogParams(
-            sourceFilePath: app.patchedFilePath,
-            fileName: newName,
-            mimeTypesFilter: ['application/vnd.android.package-archive'],
-          ),
-        );
+      if (outFile == null) {
+        final Directory workDir = await _tmpDir.createTemp('tmp-');
+        outFile = File('${workDir.path}/out.apk');
       }
+      final String newName = _getFileName(app.name, app.version);
+      FlutterFileDialog.saveFile(
+        params: SaveFileDialogParams(
+          sourceFilePath: app.patchedFilePath,
+          fileName: newName,
+          mimeTypesFilter: ['application/vnd.android.package-archive'],
+        ),
+      );
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
