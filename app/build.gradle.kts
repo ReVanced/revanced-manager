@@ -129,9 +129,11 @@ android {
         applicationId = "app.revanced.manager"
         minSdk = 26
         targetSdk = 35
-        versionName = if (version == "unspecified") "1.0.0" else version.toString()
-        versionCode = with(versionName!!.toVersion()) {
-            major * 1_000_000 +
+
+        val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
+        versionName = versionStr
+        versionCode = with(versionStr.toVersion()) {
+            major * 10_000_000 +
                     minor * 10_000 +
                     patch * 100 +
                     (preRelease?.substringAfterLast('.')?.toInt() ?: 99)
