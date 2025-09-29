@@ -1,19 +1,19 @@
 {
   "okButton": "OK",
   "cancelButton": "Cancelar",
-  "dismissButton": "Descartar",
+  "dismissButton": "Dispensar",
   "quitButton": "Sair",
   "updateButton": "Atualizar",
   "suggested": "Sugerida: ${version}",
   "yesButton": "Sim",
   "noButton": "Não",
   "warning": "Atenção",
-  "notice": "Nota",
-  "noShowAgain": "Não mostrar isso novamente",
+  "notice": "Aviso",
+  "noShowAgain": "Não exibir isso novamente",
   "add": "Adicionar",
   "remove": "Remover",
-  "showChangelogButton": "Mostrar alterações",
-  "showUpdateButton": "Mostrar atualização",
+  "showChangelogButton": "Exibir registro de alterações",
+  "showUpdateButton": "Exibir atualização",
   "navigationView": {
     "dashboardTab": "Painel",
     "patcherTab": "Patcher",
@@ -25,14 +25,14 @@
     "updatesSubtitle": "Atualizações",
     "lastPatchedAppSubtitle": "Último app patcheado",
     "patchedSubtitle": "Apps instalados",
-    "changeLaterSubtitle": "Você pode ajustar essa opção nas configurações mais tarde.",
+    "changeLaterSubtitle": "Você pode alterar isso nas configurações mais tarde.",
     "noSavedAppFound": "Nenhum app encontrado",
     "noInstallations": "Nenhum app patcheado instalado",
-    "installUpdate": "Continuar a instalação da atualização?",
+    "installUpdate": "Continuar a instalar a atualização?",
     "updateSheetTitle": "Atualizar o ReVanced Manager",
     "updateDialogTitle": "Nova atualização disponível",
     "updatePatchesSheetTitle": "Atualizar os Patches ReVanced",
-    "updateChangelogTitle": "Alterações",
+    "updateChangelogTitle": "Registro de alterações",
     "updateDialogText": "Uma nova atualização está disponível para ${file}.\n\nA versão atualmente instalada é a ${version}.",
     "downloadConsentDialogTitle": "Baixar os arquivos necessários?",
     "downloadConsentDialogText": "O ReVanced Manager precisa baixar os arquivos necessários para funcionar corretamente.",
@@ -40,7 +40,7 @@
     "downloadingMessage": "Baixando atualização...",
     "downloadedMessage": "Atualização baixada",
     "installingMessage": "Instalando atualização...",
-    "errorDownloadMessage": "Não é possível baixar a atualização",
+    "errorDownloadMessage": "Não foi possível baixar a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
     "noConnection": "Sem conexão com a internet"
   },
@@ -60,16 +60,16 @@
     "requiredOptionDialogText": "Algumas opções de patch precisam ser definidas."
   },
   "appSelectorCard": {
-    "widgetTitle": "Selecione um app",
-    "widgetTitleSelected": "App selecionado",
-    "widgetSubtitle": "Nenhum app selecionado",
-    "noAppsLabel": "Nenhum app foi encontrado",
+    "widgetTitle": "Selecione um aplicativo",
+    "widgetTitleSelected": "Aplicativo selecionado",
+    "widgetSubtitle": "Nenhum aplicativo selecionado",
+    "noAppsLabel": "Nenhum aplicativo foi encontrado",
     "anyVersion": "Qualquer versão"
   },
   "patchSelectorCard": {
     "widgetTitle": "Selecionar patches",
     "widgetTitleSelected": "Patches selecionados",
-    "widgetSubtitle": "Selecione um app primeiro",
+    "widgetSubtitle": "Selecione um aplicativo primeiro",
     "widgetEmptySubtitle": "Nenhum patch selecionado"
   },
   "socialMediaCard": {
@@ -77,10 +77,10 @@
     "widgetSubtitle": "Estamos online!"
   },
   "appSelectorView": {
-    "viewTitle": "Selecione um app",
-    "searchBarHint": "Buscar app",
+    "viewTitle": "Selecione um aplicativo",
+    "searchBarHint": "Pesquisar aplicativo",
     "storageButton": "Armazenamento",
-    "selectFromStorageButton": "Selecione no armazenamento",
+    "selectFromStorageButton": "Selecionar do armazenamento",
     "errorMessage": "Não foi possível usar o app selecionado",
     "downloadToast": "A função de download não está disponível ainda",
     "requireSuggestedAppVersionDialogText": "A versão do app selecionada não corresponde à versão sugerida, o que pode causar problemas inesperados. Por favor, use a versão sugerida.\n\nVersão selecionada: ${selected} \nVersão sugerida: ${suggested}\n\nPara continuar mesmo assim, desative \"Exigir versão sugerida do app\" nas configurações.",
@@ -89,7 +89,7 @@
   },
   "patchesSelectorView": {
     "viewTitle": "Selecionar patches",
-    "searchBarHint": "Buscar patches",
+    "searchBarHint": "Pesquisar patches",
     "universalPatches": "Patches universais",
     "newPatches": "Novos patches",
     "patches": "Patches",
@@ -100,7 +100,7 @@
     "noneTooltip": "Desmarcar todos os patches",
     "loadPatchesSelection": "Carregar o patch selecionado",
     "noSavedPatches": "Não há patches salvos para esse app selecionado.\nAperte \"Concluir\" para salvar a seleção atual.",
-    "noPatchesFound": "Nenhum patch encontrado para o app selecionado",
+    "noPatchesFound": "Nenhum patch encontrado para o aplicativo selecionado.",
     "setRequiredOption": "Alguns patches precisam das seguintes opções:\n\n${patches}\n\nPor gentileza defina-as antes de continuar."
   },
   "patchOptionsView": {

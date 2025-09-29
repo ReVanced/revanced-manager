@@ -38,7 +38,7 @@
     "downloadConsentDialogText": "Damit ReVanced-Manager ordnungsgemäß funktioniert, müssen notwendige Dateien heruntergeladen werden.",
     "downloadConsentDialogText2": "Dadurch wirst du mit ${url} verbunden.",
     "downloadingMessage": "Aktualisierung wird heruntergeladen...",
-    "downloadedMessage": "Update heruntergeladen",
+    "downloadedMessage": "Aktualisierung heruntergeladen",
     "installingMessage": "Update wird installiert...",
     "errorDownloadMessage": "Aktualisierung konnte nicht heruntergeladen werden",
     "errorInstallMessage": "Aktualisierung konnte nicht installiert werden",

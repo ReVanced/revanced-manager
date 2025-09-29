@@ -16,7 +16,7 @@
   "showUpdateButton": "Pokaż aktualizację",
   "navigationView": {
     "dashboardTab": "Panel główny",
-    "patcherTab": "Łataj",
+    "patcherTab": "Łatanie",
     "settingsTab": "Ustawienia"
   },
   "homeView": {
@@ -74,7 +74,7 @@
   },
   "socialMediaCard": {
     "widgetTitle": "Media społecznościowe",
-    "widgetSubtitle": "Jesteśmy online!"
+    "widgetSubtitle": "Znajdziesz nas tutaj!"
   },
   "appSelectorView": {
     "viewTitle": "Wybierz aplikację",
@@ -154,7 +154,7 @@
     "lightThemeLabel": "Jasny",
     "darkThemeLabel": "Ciemny",
     "dynamicThemeLabel": "Material You",
-    "dynamicThemeHint": "Ciesz się wyglądem dopasowanym do twojego urządzenia",
+    "dynamicThemeHint": "Wygląd dopasowany do twojego urządzenia",
     "languageLabel": "Język",
     "languageUpdated": "Zmieniono język",
     "sourcesLabel": "Alternatywne źródło",
@@ -183,12 +183,12 @@
     "usePrereleasesLabel": "Używaj wersji wstępnych",
     "usePrereleasesHint": "Używaj wersji wstępnych ReVanced Manager i ReVanced Patches",
     "usePrereleasesWarningText": "Używanie wersji przedpremierowych może powodować nieoczekiwane problemy.\\n\\nWłączyć mimo to?",
-    "showUpdateDialogLabel": "Pokaż powiadomienie o aktualizacji",
-    "showUpdateDialogHint": "Pokaż powiadomienie, gdy nowa wersja jest dostępna",
-    "universalPatchesLabel": "Pokaż uniwersalne łatki",
-    "universalPatchesHint": "Wyświetl wszystkie aplikacje i uniwersalne łatki (może spowolnić wczytywane listy aplikacji)",
-    "lastPatchedAppLabel": "Zapisz zaktualizowaną aplikację",
-    "lastPatchedAppHint": "Zapisz ostatnią aktualizację, aby zainstalować lub wyeksportować później",
+    "showUpdateDialogLabel": "Pokazuj powiadomienie o aktualizacji",
+    "showUpdateDialogHint": "Pokazuje powiadomienie, gdy nowa wersja będzie dostępna",
+    "universalPatchesLabel": "Pokazuj uniwersalne łatki",
+    "universalPatchesHint": "Wyświetla wszystkie aplikacje i uniwersalne łatki (może spowolnić wczytywane listy aplikacji)",
+    "lastPatchedAppLabel": "Zapisuj załataną aplikację",
+    "lastPatchedAppHint": "Zapisuje ostatnią modyfikację, aby zainstalować lub wyeksportować później",
     "versionCompatibilityCheckLabel": "Sprawdzanie zgodności wersji",
     "versionCompatibilityCheckHint": "Zapobiegaj wybieraniu łatek, które nie są kompatybilne z wybraną wersją aplikacji",
     "requireSuggestedAppVersionLabel": "Wymagaj sugerowanej wersji aplikacji",
