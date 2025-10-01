@@ -1,0 +1,11 @@
+{
+  "name": "app",
+  "private": false,
+  "devDependencies": {
+    "@anolilab/multi-semantic-release": "^1.1.10",
+    "@saithodev/semantic-release-backmerge": "^4.0.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "gradle-semantic-release-plugin": "^1.10.1"
+  }
+}

@@ -8,7 +8,8 @@
   ],
   "plugins": [
     [
-      "@semantic-release/commit-analyzer", {
+      "@semantic-release/commit-analyzer",
+      {
         "releaseRules": [
           { "type": "build", "scope": "Needs bump", "release": "patch" }
         ]
@@ -22,7 +23,7 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "gradle.properties",
+          "gradle.properties"
         ],
         "message": "chore: Release v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
@@ -32,17 +33,17 @@
       {
         "assets": [
           {
-            "path": "app/build/outputs/apk/release/revanced-manager*.apk?(.asc)"
-          },
+            "path": "build/outputs/apk/release/revanced-manager*.apk?(.asc)"
+          }
         ],
-        successComment: false
+        "successComment": false
       }
     ],
     [
       "@saithodev/semantic-release-backmerge",
       {
-        backmergeBranches: [{"from": "main", "to": "dev"}],
-        clearWorkspace: true
+        "backmergeBranches": [{"from": "main", "to": "dev"}],
+        "clearWorkspace": true
       }
     ]
   ]

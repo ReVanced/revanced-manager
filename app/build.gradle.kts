@@ -1,3 +1,4 @@
+import io.github.z4kn4fein.semver.toVersion
 import kotlin.random.Random
 
 plugins {
@@ -109,6 +110,16 @@ dependencies {
     implementation(libs.compose.icons.fontawesome)
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // Semantic versioning string parser
+        classpath(libs.semver.parser)
+    }
+}
+
 android {
     namespace = "app.revanced.manager"
     compileSdk = 35
@@ -118,8 +129,15 @@ android {
         applicationId = "app.revanced.manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.0.1"
+
+        val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
+        versionName = versionStr
+        versionCode = with(versionStr.toVersion()) {
+            major * 10_000_000 +
+                    minor * 10_000 +
+                    patch * 100 +
+                    (preRelease?.substringAfterLast('.')?.toInt() ?: 99)
+        }
         vectorDrawables.useSupportLibrary = true
     }
 

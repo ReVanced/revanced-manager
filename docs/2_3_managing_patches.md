@@ -16,7 +16,7 @@ Learn how to add new, manage existing or remove patches.
 
 ## ⏭️ What's next
 
-The next page will explain how to update ReVanced Manager.
+The next page will explain how to manage downloaders.
 
-Continue: [🔄 Updating ReVanced Manager](2_4_updating.md)
+Continue: [🔄 Updating ReVanced Manager](2_4_managing_downloaders.md)
 

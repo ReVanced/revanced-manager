@@ -1,10 +1,11 @@
 {
+  "private": true,
+  "workspaces": [
+    "api",
+    "app"
+  ],
   "devDependencies": {
-    "@anolilab/multi-semantic-release": "^1.1.10",
-    "gradle-semantic-release-plugin": "^1.10.1",
-    "@saithodev/semantic-release-backmerge": "^4.0.1",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1"
+    "@anolilab/multi-semantic-release": "^2.0.3",
+    "semantic-release": "^24.2.7"
   }
 }

@@ -12,6 +12,7 @@ jobs:
     name: Release
     permissions:
       contents: write
+      packages: write
       id-token: write
       attestations: write
     runs-on: ubuntu-latest
@@ -26,10 +27,11 @@ jobs:
           java-version: '17'
 
       - name: Cache Gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v3
 
       - name: Build
         env:
+          GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleRelease
 
@@ -53,18 +55,26 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
 
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
-        id: semantic
+      - name: Release API
+        run: npx multi-semantic-release --tag-format 'api@${version}' --ignore-packages app
         env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release
+        id: release
+        run: |
+          echo "NEW_TAG=$(npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api | tee | grep 'Created tag ' | sed -E 's/.*Created tag ([^ ]+).*/\1/')" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
       - name: Attest
-        if: steps.semantic.outputs.new_release_published == 'true'
+        if: steps.release.outputs.NEW_TAG != ''
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: 'ReVanced Manager ${{ steps.release.outputs.new_release_git_tag }}'
+          subject-name: 'ReVanced Manager ${{ steps.release.outputs.NEW_TAG }}'
           subject-path: app/build/outputs/apk/release/revanced-manager*.apk
