@@ -154,12 +154,12 @@ class ImportExportViewModel(
         keystoreImportPath = null
     }
 
-    suspend fun tryKeystoreImport(cn: String, pass: String) =
-        tryKeystoreImport(cn, pass, keystoreImportPath!!)
+    suspend fun tryKeystoreImport(alias: String, pass: String) =
+        tryKeystoreImport(alias, pass, keystoreImportPath!!)
 
-    private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
+    private suspend fun tryKeystoreImport(alias: String, pass: String, path: Path): Boolean {
         path.inputStream().use { stream ->
-            if (keystoreManager.import(cn, pass, stream)) {
+            if (keystoreManager.import(alias, pass, stream)) {
                 app.toast(app.getString(R.string.import_keystore_success))
                 cancelKeystoreImport()
                 return true

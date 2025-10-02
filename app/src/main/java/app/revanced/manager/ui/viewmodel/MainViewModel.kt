@@ -143,7 +143,7 @@ class MainViewModel(
         settings.keystore?.let { keystore ->
             val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
             keystoreManager.import(
-                "ReVanced",
+                "alias",
                 settings.keystorePassword,
                 keystoreBytes.inputStream()
             )

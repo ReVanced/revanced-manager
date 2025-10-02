@@ -16,7 +16,7 @@ class PreferencesManager(
     val useProcessRuntime = booleanPreference("use_process_runtime", false)
     val patcherProcessMemoryLimit = intPreference("process_runtime_memory_limit", 700)
 
-    val keystoreCommonName = stringPreference("keystore_cn", KeystoreManager.DEFAULT)
+    val keystoreAlias = stringPreference("keystore_alias", KeystoreManager.DEFAULT)
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)
 
     val firstLaunch = booleanPreference("first_launch", true)

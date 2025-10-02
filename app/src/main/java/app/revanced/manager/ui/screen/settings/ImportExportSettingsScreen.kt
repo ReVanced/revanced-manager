@@ -104,10 +104,10 @@ fun ImportExportSettingsScreen(
     if (vm.showCredentialsDialog) {
         KeystoreCredentialsDialog(
             onDismissRequest = vm::cancelKeystoreImport,
-            onSubmit = { cn, pass ->
+            onSubmit = { alias, pass ->
                 vm.viewModelScope.launch {
                     uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
-                        val result = vm.tryKeystoreImport(cn, pass)
+                        val result = vm.tryKeystoreImport(alias, pass)
                         if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
                     }
                 }
@@ -382,7 +382,7 @@ fun KeystoreCredentialsDialog(
     onDismissRequest: () -> Unit,
     onSubmit: (String, String) -> Unit
 ) {
-    var cn by rememberSaveable { mutableStateOf("") }
+    var alias by rememberSaveable { mutableStateOf("") }
     var pass by rememberSaveable { mutableStateOf("") }
 
     AlertDialog(
@@ -390,7 +390,7 @@ fun KeystoreCredentialsDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    onSubmit(cn, pass)
+                    onSubmit(alias, pass)
                 }
             ) {
                 Text(stringResource(R.string.import_keystore_dialog_button))
@@ -422,8 +422,8 @@ fun KeystoreCredentialsDialog(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 OutlinedTextField(
-                    value = cn,
-                    onValueChange = { cn = it },
+                    value = alias,
+                    onValueChange = { alias = it },
                     label = { Text(stringResource(R.string.import_keystore_dialog_alias_field)) }
                 )
                 PasswordField(
