@@ -92,6 +92,12 @@ fun UpdatesSettingsScreen(
                 headline = R.string.show_manager_update_dialog_on_launch,
                 description = R.string.show_manager_update_dialog_on_launch_description
             )
+
+            BooleanItem(
+                preference = vm.useManagerPrereleases,
+                headline = R.string.manager_prereleases,
+                description = R.string.manager_prereleases_description
+            )
         }
     }
 }

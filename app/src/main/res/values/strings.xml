@@ -368,6 +368,8 @@
     <string name="manual_update_check_description">Manually check for updates</string>
     <string name="update_checking_manager">Check for updates on launch</string>
     <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
+    <string name="manager_prereleases">Use pre-releases</string>
+    <string name="manager_prereleases_description">Use pre-release versions of ReVanced Manager</string>
     <string name="changelog">View changelogs</string>
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
