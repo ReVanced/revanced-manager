@@ -437,8 +437,8 @@
     <string name="auto_update">Auto update</string>
     <string name="add_patches">Add patches</string>
     <string name="auto_update_description">Automatically update when a new version is available</string>
-    <string name="patches_prereleases">Prereleases</string>
-    <string name="patches_prereleases_description">Use prerelease versions</string>
+    <string name="patches_prereleases">Use pre-releases</string>
+    <string name="patches_prereleases_description">Use pre-release version of %s</string>
     <string name="patches_url">Patches URL</string>
     <string name="incompatible_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
     <string name="incompatible_patch">Incompatible patch</string>

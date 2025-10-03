@@ -177,14 +177,14 @@ fun BundleInformationDialog(
                 }
 
                 if (src.isDefault) {
-                    val usePrereleases by prefs.usePatchesPrereleases.getAsState()
+                    val useBundlePrerelease by prefs.usePatchesPrereleases.getAsState()
 
                     BundleListItem(
                         headlineText = stringResource(R.string.patches_prereleases),
-                        supportingText = stringResource(R.string.patches_prereleases_description),
+                        supportingText = stringResource(R.string.patches_prereleases_description, src.name),
                         trailingContent = {
                             HapticSwitch(
-                                checked = usePrereleases,
+                                checked = useBundlePrerelease,
                                 onCheckedChange = {
                                     composableScope.launch {
                                         prefs.usePatchesPrereleases.update(
@@ -196,7 +196,7 @@ fun BundleInformationDialog(
                         },
                         modifier = Modifier.clickable {
                             composableScope.launch {
-                                prefs.usePatchesPrereleases.update(!usePrereleases)
+                                prefs.usePatchesPrereleases.update(!useBundlePrerelease)
                             }
                         }
                     )

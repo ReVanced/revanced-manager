@@ -1,3 +1,10 @@
+# app [1.26.0-dev.7](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.6...v1.26.0-dev.7) (2025-10-03)
+
+
+### Bug Fixes
+
+* Improve consistency between pre-release toggles ([e1b768c](https://github.com/ReVanced/revanced-manager/commit/e1b768c4679ecae8bff8007bdab56ff6544b12b6))
+
 # app [1.26.0-dev.6](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.5...v1.26.0-dev.6) (2025-10-03)
 
 
