@@ -12,7 +12,7 @@ Learn how to configure ReVanced Manager.
     Disabling this will allow patching versions of apps the patches are not explicitly compatible with
     >   ⚠️ Warning  
     >   Patches may fail on app versions they are not explicitly compatible with.
-    >   Unless you know what you are doing, it is recommended to keep this enabled.
+    >   Unless you know what you are doing, it is recommended to keep this disabled.
   - **Require suggested app version**: Specific versions of apps is enforced based on the patch selection automatically.
     Disabling this will allow you to patch any version of apps
     >   ⚠️ Warning  
