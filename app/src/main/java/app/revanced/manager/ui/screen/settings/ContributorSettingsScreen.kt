@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screen.settings
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -34,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,6 +60,7 @@ fun ContributorSettingsScreen(
 ) {
     val repositories = viewModel.repositories
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val uriHandler = LocalUriHandler.current
 
     Scaffold(
         topBar = {
@@ -93,7 +97,8 @@ fun ContributorSettingsScreen(
                     ) {
                         ContributorsCard(
                             title = it.name,
-                            contributors = it.contributors
+                            contributors = it.contributors,
+                            uriHandler = uriHandler
                         )
                     }
                 }
@@ -115,7 +120,8 @@ fun ContributorsCard(
     title: String,
     contributors: List<ReVancedContributor>,
     itemsPerPage: Int = 12,
-    numberOfRows: Int = 2
+    numberOfRows: Int = 2,
+    uriHandler: UriHandler
 ) {
     val itemsPerRow = (itemsPerPage / numberOfRows)
 
@@ -172,7 +178,11 @@ fun ContributorsCard(
                         contributorsByPage[page].forEach {
                             if (itemSize > 100.dp) {
                                 Row(
-                                    modifier = Modifier.width(itemSize - 1.dp), // we delete 1.dp to account for not-so divisible numbers
+                                    modifier = Modifier
+                                        .width(itemSize - 1.dp)
+                                        .clickable {
+                                            uriHandler.openUri("https://github.com/${it.username}")
+                                        }, // we delete 1.dp to account for not-so divisible numbers
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
@@ -203,6 +213,9 @@ fun ContributorsCard(
                                         modifier = Modifier
                                             .size(size = (itemSize - 1.dp).coerceAtMost(50.dp)) // we delete 1.dp to account for not-so divisible numbers
                                             .clip(CircleShape)
+                                            .clickable {
+                                                uriHandler.openUri("https://github.com/${it.username}")
+                                            }
                                     )
                                 }
                             }
