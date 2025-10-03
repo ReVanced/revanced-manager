@@ -158,7 +158,7 @@
     <string name="downloader_plugin_trust_dialog_body">Package name: %1$s\nSignature (SHA-256): %2$s</string>
     <string name="downloader_plugin_delete_apps_title">Delete selected apps</string>
     <string name="downloader_plugin_delete_apps_description">Are you sure you want to delete the selected apps?</string>
-    <string name="downloader_settings_no_apps">No downloaded apps found</string>
+    <string name="downloader_settings_no_apps">No downloaded apps found.</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -199,7 +199,7 @@
     <string name="debug_logs_export_failed">Failed to export logs</string>
     <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
-    <string name="api_url_description">The API used to download necessary files.</string>
+    <string name="api_url_description">The API used to download necessary files</string>
     <string name="api_url_dialog_title">Change API URL</string>
     <string name="api_url_dialog_description">Change the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
     <string name="api_url_dialog_warning">ReVanced Manager connects to the API to download patches and updates. Make sure that you trust it.</string>
@@ -445,7 +445,7 @@
     <string name="any_version">Any</string>
     <string name="never_show_again">Never show again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
-    <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
+    <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
