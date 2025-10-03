@@ -5,8 +5,8 @@
         <item quantity="other">%d patches</item>
     </plurals>
     <plurals name="patches_executed">
-        <item quantity="one">Executed %d patch</item>
-        <item quantity="other">Executed %d patches</item>
+        <item quantity="one">Execute %d patch</item>
+        <item quantity="other">Execute %d patches</item>
     </plurals>
     <plurals name="selected_count">
         <item quantity="other">%d selected</item>
