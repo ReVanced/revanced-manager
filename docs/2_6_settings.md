@@ -17,12 +17,12 @@ Learn how to configure ReVanced Manager.
     Disabling this will allow you to patch any version of apps
     >   ⚠️ Warning  
     >   Patches not compatible with the selected version of the app will not be used.
+    >   Unless you know what you are doing, it is recommended to keep this enabled.
   - **Allow changing patch selection and options**: The default selection of patches is enforced.
     Enabling this will allow you to change the patch selection
     >   ⚠️ Warning  
     >   Changing the selection may cause unexpected issues.
     >   Unless you know what you are doing, it is recommended to keep this disabled.
-    >   Unless you know what you are doing, it is recommended to keep this enabled.
   - **Allow using universal patches**: Patches that do not specify compatibility with an app are forcibly disabled.
     Enabling this will allow selecting such patches
     >   ⚠️ Warning  
