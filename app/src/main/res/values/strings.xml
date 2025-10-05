@@ -237,7 +237,7 @@
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s\n\nTo continue anyway, disable \"Require suggested app version\" in the advanced settings.</string>
     <string name="selection_warning_title">Stop using defaults?</string>
-    <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou need to turn on \"Allow changing patch selection\" in the advanced settings before toggling patches.</string>
+    <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou need to turn on \"Allow changing patch selection and options\" in the advanced settings before toggling patches.</string>
     <string name="universal_patch_warning_description">Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.\n\nYou need to turn on \"Allow using universal patches\" in the advanced settings before using universal patches.</string>
     <string name="this_version">This version</string>
     <string name="universal">Any app</string>
