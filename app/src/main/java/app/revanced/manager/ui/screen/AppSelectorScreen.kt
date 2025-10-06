@@ -176,7 +176,7 @@ fun AppSelectorScreen(
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
+            stickyHeader {
                 ListItem(
                     modifier = Modifier.clickable {
                         pickApkLauncher.launch(APK_MIMETYPE)
