@@ -213,7 +213,10 @@ fun PatcherScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            LinearProgressIndicator(
+
+            var expandedCategory by rememberSaveable { mutableStateOf<StepCategory?>(StepCategory.PREPARING) }
+
+                LinearProgressIndicator(
                 progress = { viewModel.progress },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -227,11 +230,14 @@ fun PatcherScreen(
                     items = steps.toList(),
                     key = { it.first }
                 ) { (category, steps) ->
+
                     Steps(
                         category = category,
                         steps = steps,
                         stepCount = if (category == StepCategory.PATCHING) viewModel.patchesProgress else null,
-                        stepProgressProvider = viewModel
+                        stepProgressProvider = viewModel,
+                        isExpanded = expandedCategory == category,
+                        onExpand = { expandedCategory = category },
                     )
                 }
             }
