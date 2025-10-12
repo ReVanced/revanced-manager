@@ -104,6 +104,7 @@ class PatcherWorker(
             .setContentTitle(applicationContext.getText(R.string.patcher_notification_title))
             .setContentText(applicationContext.getText(R.string.patcher_notification_text))
             .setSmallIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
+            .setColor(applicationContext.getColor(R.color.black))
             .setContentIntent(pendingIntent)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
