@@ -24,9 +24,9 @@
                 android:endX="400"
                 android:endY="800"
                 android:type="linear">
-                <item android:color="#FFF04E98" android:offset="0"/>
-                <item android:color="#FF5F65D4" android:offset="0.5"/>
-                <item android:color="#FF4E98F0" android:offset="1"/>
+                <item android:offset="0" android:color="#FFF04E98"/>
+                <item android:offset="0.5" android:color="#FF5F65D4"/>
+                <item android:offset="1" android:color="#FF4E98F0"/>
             </gradient>
         </aapt:attr>
     </path>
@@ -39,7 +39,7 @@
 
     <path
         android:fillType="evenOdd"
-        android:pathData="M408.12,395.31c-1.67,2.9 -4.77,4.69 -8.12,4.69s-6.44,-1.79 -8.12,-4.69c-17,-29.44 -56.16,-97.26 -73.15,-126.7 -1.67,-2.9 -1.67,-6.47 0,-9.38s4.77,-4.69 8.12,-4.69h146.31c3.35,0 6.44,1.79 8.12,4.69s1.67,6.47 -0,9.38c-17,29.44 -56.16,97.26 -73.15,126.7z"
+        android:pathData="M408.12,395.31c-1.67,2.9 -4.77,4.69 -8.12,4.69s-6.44,-1.79 -8.12,-4.69c-17,-29.44 -56.16,-97.26 -73.15,-126.7 -1.67,-2.9 -1.67,-6.47 0,-9.38s4.77,-4.69 8.12,-4.69h146.31c3.35,0 6.44,1.79 8.12,4.69s1.67,6.47 0,9.38c-17,29.44 -56.16,97.26 -73.15,126.7z"
         android:strokeLineJoin="round">
         <aapt:attr name="android:fillColor">
             <gradient
@@ -48,9 +48,9 @@
                 android:endX="400"
                 android:endY="543.86"
                 android:type="linear">
-                <item android:color="#FFF04E98" android:offset="0"/>
-                <item android:color="#FF5F65D4" android:offset="0.5"/>
-                <item android:color="#FF4E98F0" android:offset="1"/>
+                <item android:offset="0" android:color="#FFF04E98"/>
+                <item android:offset="0.5" android:color="#FF5F65D4"/>
+                <item android:offset="1" android:color="#FF4E98F0"/>
             </gradient>
         </aapt:attr>
     </path>
