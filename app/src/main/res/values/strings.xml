@@ -86,6 +86,8 @@
     <string name="contributors_description">View the contributors of ReVanced</string>
     <string name="dynamic_color">Dynamic color</string>
     <string name="dynamic_color_description">Adapt colors to the wallpaper</string>
+    <string name="amoled_theme">AMOLED theme</string>
+    <string name="amoled_theme_description">Use pure black backgrounds for dark theme</string>
     <string name="theme">Theme</string>
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="safeguards">Safeguards</string>

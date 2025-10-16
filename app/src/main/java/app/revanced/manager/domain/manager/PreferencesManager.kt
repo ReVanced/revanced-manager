@@ -9,6 +9,7 @@ class PreferencesManager(
     context: Context
 ) : BasePreferencesManager(context, "settings") {
     val dynamicColor = booleanPreference("dynamic_color", true)
+    val amoledTheme = booleanPreference("amoled_theme", false)
     val theme = enumPreference("theme", Theme.SYSTEM)
 
     val api = stringPreference("api_url", "https://api.revanced.app")
