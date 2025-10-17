@@ -267,7 +267,7 @@ To continue anyway, disable \"Require suggested app version\" in the advanced se
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">"It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.
 
-You need to turn on \"Allow changing patch selection\" in the advanced settings before toggling patches."</string>
+You need to turn on \"Allow changing patch selection and options\" in the advanced settings before toggling patches."</string>
     <string name="universal_patch_warning_description">"Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.
 
 You need to turn on \"Allow using universal patches\" in the advanced settings before using universal patches."</string>
@@ -352,6 +352,7 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="patcher_notification_text">Tap to return to the patcher</string>
     <string name="patcher_stop_confirm_title">Stop patcher</string>
     <string name="patcher_stop_confirm_description">Are you sure you want to stop the patching process?</string>
+    <string name="patcher_install_in_progress">Installation is in progress. Please wait</string>
     <string name="execute_patches">Execute patches</string>
     <string name="executing_patch">Execute %s</string>
     <string name="failed_to_execute_patch">Failed to execute %s</string>
@@ -475,7 +476,7 @@ Do you still want to continue?"</string>
     <string name="add_patches">Add patches</string>
     <string name="auto_update_description">Automatically update when a new version is available</string>
     <string name="patches_prereleases">Use pre-releases</string>
-    <string name="patches_prereleases_description">Use pre-release version of %s</string>
+    <string name="patches_prereleases_description">Use pre-release versions of %s</string>
     <string name="patches_url">Patches URL</string>
     <string name="incompatible_patches_dialog">"These patches are not compatible with the selected app version (%1$s).
 

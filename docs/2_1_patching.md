@@ -13,9 +13,9 @@ Learn how to use ReVanced Manager to patch apps.
 7. Tap on the `Install` button to install the patched app[^4]
 
 [^1]: Here you can see all the apps that are supported by ReVanced.
-You can also add custom apps by tapping on the `+` button in the top right corner.
+You can also add custom apps by tapping on the `Select from storage` button at the top.
 [^2]: It is recommended to use the default set of patches by tapping on the `Reset` button in the bottom right corner.
-[^3]: By default, all available downloader will be used to download the app.
+[^3]: By default, all available downloaders will be used to download the app.
 If you want to use a specific downloader, you can change it here.
 [^4]: You can export the patched app or the patch logs in the bottom left corner.
 

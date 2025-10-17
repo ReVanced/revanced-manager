@@ -234,7 +234,13 @@ fun AppSelectorScreen(
 
                 }
             } else {
-                item { LoadingIndicator() }
+                item {
+                    Box(
+                        modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center
+                    ) {
+                        LoadingIndicator()
+                    }
+                }
             }
         }
     }

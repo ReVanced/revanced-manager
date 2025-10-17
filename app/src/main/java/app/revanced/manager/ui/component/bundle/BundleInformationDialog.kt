@@ -190,6 +190,7 @@ fun BundleInformationDialog(
                                         prefs.usePatchesPrereleases.update(
                                             it
                                         )
+                                        onUpdate()
                                     }
                                 }
                             )
@@ -197,6 +198,7 @@ fun BundleInformationDialog(
                         modifier = Modifier.clickable {
                             composableScope.launch {
                                 prefs.usePatchesPrereleases.update(!useBundlePrerelease)
+                                onUpdate()
                             }
                         }
                     )
