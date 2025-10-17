@@ -318,6 +318,7 @@
     <string name="patcher_notification_text">Tap to return to the patcher</string>
     <string name="patcher_stop_confirm_title">Stop patcher</string>
     <string name="patcher_stop_confirm_description">Are you sure you want to stop the patching process?</string>
+    <string name="patcher_install_in_progress">Installation is in progress. Please wait</string>
     <string name="execute_patches">Execute patches</string>
     <string name="executing_patch">Execute %s</string>
     <string name="failed_to_execute_patch">Failed to execute %s</string>
