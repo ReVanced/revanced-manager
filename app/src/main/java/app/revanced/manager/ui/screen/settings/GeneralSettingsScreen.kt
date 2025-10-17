@@ -99,10 +99,10 @@ fun GeneralSettingsScreen(
             }
             AnimatedVisibility(theme != Theme.LIGHT) {
                 BooleanItem(
-                    preference = prefs.amoledTheme,
+                    preference = prefs.pitchBlackTheme,
                     coroutineScope = coroutineScope,
-                    headline = R.string.amoled_theme,
-                    description = R.string.amoled_theme_description
+                    headline = R.string.pitch_black_theme,
+                    description = R.string.pitch_black_theme_description
                 )
             }
         }
