@@ -80,7 +80,7 @@ private val LightColorScheme = lightColorScheme(
 fun ReVancedManagerTheme(
     darkTheme: Boolean,
     dynamicColor: Boolean,
-    pitchBlackTheme: Boolean,
+    pureBlackTheme: Boolean,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -95,7 +95,7 @@ fun ReVancedManagerTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }.let {
-        if (darkTheme && pitchBlackTheme)
+        if (darkTheme && pureBlackTheme)
             it.copy(background = Color.Black, surface = Color.Black)
         else it
     }

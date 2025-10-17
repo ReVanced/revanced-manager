@@ -9,7 +9,7 @@ class PreferencesManager(
     context: Context
 ) : BasePreferencesManager(context, "settings") {
     val dynamicColor = booleanPreference("dynamic_color", true)
-    val pitchBlackTheme = booleanPreference("pitch_black_theme", false)
+    val pureBlackTheme = booleanPreference("pure_black_theme", false)
     val theme = enumPreference("theme", Theme.SYSTEM)
 
     val api = stringPreference("api_url", "https://api.revanced.app")
