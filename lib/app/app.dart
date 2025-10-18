@@ -2,6 +2,7 @@ import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/plugin_detector.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
@@ -45,6 +46,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: RevancedAPI),
     LazySingleton(classType: GithubAPI),
     LazySingleton(classType: DownloadManager),
+    LazySingleton(classType: PluginDetector),
     LazySingleton(classType: Toast),
   ],
 )

@@ -9,6 +9,7 @@ import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_advanced_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_data_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_debug_section.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_downloads_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_export_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_team_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
@@ -51,6 +52,8 @@ class SettingsView extends StatelessWidget {
                       SAdvancedSection(),
                       _settingsDivider,
                       SDataSection(),
+                      _settingsDivider,
+                      SDownloadsSection(),
                       _settingsDivider,
                       SExportSection(),
                       _settingsDivider,
