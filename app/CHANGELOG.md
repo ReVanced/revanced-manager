@@ -1,3 +1,10 @@
+# app [1.26.0-dev.11](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.10...v1.26.0-dev.11) (2025-10-25)
+
+
+### Features
+
+* Add pure black theme ([#2824](https://github.com/ReVanced/revanced-manager/issues/2824)) ([3d75ffe](https://github.com/ReVanced/revanced-manager/commit/3d75ffe6a7a39efdebe13dbd07c937c1de409ead))
+
 # app [1.26.0-dev.10](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.9...v1.26.0-dev.10) (2025-10-06)
 
 
