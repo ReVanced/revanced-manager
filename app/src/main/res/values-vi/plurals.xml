@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="patch_count">
+        <item quantity="one">%d bản vá</item>
+        <item quantity="other">%d bản vá</item>
+    </plurals>
+    <plurals name="patches_executed">
+        <item quantity="one">Thực thi %d bản vá</item>
+        <item quantity="other">Thực thi %d bản vá</item>
+    </plurals>
+    <plurals name="selected_count">
+        <item quantity="other">đã chọn %d</item>
+    </plurals>
+</resources>
