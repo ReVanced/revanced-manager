@@ -6,6 +6,6 @@
   ],
   "devDependencies": {
     "@anolilab/multi-semantic-release": "^2.0.3",
-    "semantic-release": "^24.2.7"
+    "semantic-release": "^25.0.2"
   }
 }
