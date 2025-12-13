@@ -12,7 +12,7 @@ until [ "$(getprop sys.boot_completed)" = 1 ]; do sleep 5; done
 sleep 5
 
 base_path="$DIR/$package_name.apk"
-stock_path="$(pm path "$package_name" | grep base | sed 's/package://g')"
+stock_path="$(pm path "$package_name" 2>&1 | grep base | sed 's/package://g')"
 stock_version="$(dumpsys package "$package_name" | grep versionName | cut -d "=" -f2)"
 
 echo "base_path: $base_path"
