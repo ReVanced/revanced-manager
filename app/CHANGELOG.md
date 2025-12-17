@@ -1,3 +1,10 @@
+# app [1.26.0-dev.12](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.11...v1.26.0-dev.12) (2025-12-17)
+
+
+### Features
+
+* Improve trust plugin dialog design ([#2420](https://github.com/ReVanced/revanced-manager/issues/2420)) ([0300da9](https://github.com/ReVanced/revanced-manager/commit/0300da9eac6c0fc29dbbb66622c0d52f4cf68934))
+
 # app [1.26.0-dev.11](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.10...v1.26.0-dev.11) (2025-10-25)
 
 
