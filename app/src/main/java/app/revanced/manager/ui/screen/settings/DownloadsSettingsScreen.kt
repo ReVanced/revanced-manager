@@ -254,7 +254,7 @@ private fun TrustDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.dismiss))
+                Text(stringResource(R.string.cancel))
             }
         },
         title = { Text(stringResource(title)) },

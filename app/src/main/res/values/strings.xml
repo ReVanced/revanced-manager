@@ -181,7 +181,7 @@ You will not be able to update the previously installed apps from this source."<
     <string name="downloader_plugin_state_untrusted">Untrusted</string>
     <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
     <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_plugin_trust_dialog_body">By continuing you\'ve agreed to running external plugins.\n\nDo not allow any suspicious plugin(s) to be installed as they can run arbitrary code.</string>
+    <string name="downloader_plugin_trust_dialog_body">Continuing will allow this plugin to run on your system.\n\nOnly enable this plugin if you trust it. Plugins can execute arbitrary code and may compromise your device.</string>
     <string name="downloader_plugin_trust_dialog_signature">Signature:\n\n%s</string>
     <string name="downloader_plugin_trust_dialog_plugin">Plugin:\n%s</string>
     <string name="downloader_plugin_delete_apps_title">Delete selected apps</string>
