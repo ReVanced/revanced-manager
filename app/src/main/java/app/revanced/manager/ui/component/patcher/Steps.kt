@@ -56,7 +56,7 @@ fun Steps(
     stepProgressProvider: StepProgressProvider,
     isExpanded: Boolean = false,
     onExpand: () -> Unit,
-    onClick : () -> Unit
+    onClick: () -> Unit
 ) {
     val state = remember(steps) {
         when {
@@ -86,35 +86,33 @@ fun Steps(
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-                StepIcon(state = state, size = 24.dp)
+            StepIcon(state = state, size = 24.dp)
 
-                Text(stringResource(category.displayName))
+            Text(stringResource(category.displayName))
 
-                Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(1f))
 
-                val stepProgress = remember(stepCount, steps) {
-                    stepCount?.let { (current, total) -> "$current/$total" }
-                        ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}"
-                }
+            val stepProgress = remember(stepCount, steps) {
+                stepCount?.let { (current, total) -> "$current/$total" }
+                    ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}"
+            }
 
-                Text(
-                    text = stepProgress,
-                    style = MaterialTheme.typography.labelSmall
-                )
+            Text(
+                text = stepProgress,
+                style = MaterialTheme.typography.labelSmall
+            )
 
-                ArrowButton(modifier = Modifier.size(24.dp), expanded = isExpanded, onClick = null)
+            ArrowButton(modifier = Modifier.size(24.dp), expanded = isExpanded, onClick = null)
         }
 
         AnimatedVisibility(visible = isExpanded) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background.copy(0.6f))
                     .fillMaxWidth()
-                    .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 20.dp)
-                    .padding(start = 4.dp)
+                    .padding(top = 10.dp)
             ) {
-                steps.forEach { step ->
+                steps.forEachIndexed { index, step ->
                     val (progress, progressText) = when (step.progressKey) {
                         null -> null
                         ProgressKey.DOWNLOAD -> stepProgressProvider.downloadProgress?.let { (downloaded, total) ->
@@ -128,7 +126,9 @@ fun Steps(
                         state = step.state,
                         message = step.message,
                         progress = progress,
-                        progressText = progressText
+                        progressText = progressText,
+                        isFirst = index == 0,
+                        isLast = index == steps.lastIndex,
                     )
                 }
             }
@@ -142,7 +142,9 @@ fun SubStep(
     state: State,
     message: String? = null,
     progress: Float? = null,
-    progressText: String? = null
+    progressText: String? = null,
+    isFirst: Boolean = false,
+    isLast: Boolean = false,
 ) {
     var messageExpanded by rememberSaveable { mutableStateOf(true) }
 
@@ -153,6 +155,8 @@ fun SubStep(
                     clickable { messageExpanded = !messageExpanded }
                 else this
             }
+            .padding(top = if (isFirst) 10.dp else 8.dp, bottom = if (isLast) 20.dp else 8.dp)
+            .padding(horizontal = 20.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -196,7 +200,7 @@ fun SubStep(
                 text = message.orEmpty(),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(horizontal = 52.dp, vertical = 8.dp)
+                modifier = Modifier.padding(horizontal = 36.dp, vertical = 8.dp)
             )
         }
     }
