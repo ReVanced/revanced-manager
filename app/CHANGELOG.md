@@ -1,3 +1,10 @@
+# app [1.26.0-dev.13](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.12...v1.26.0-dev.13) (2025-12-17)
+
+
+### Features
+
+* Make patcher screen design more consistent with inspiration ([#2805](https://github.com/ReVanced/revanced-manager/issues/2805)) ([dbb6c01](https://github.com/ReVanced/revanced-manager/commit/dbb6c01e89a5e710185ff4304de0ac9e19bed053))
+
 # app [1.26.0-dev.12](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.11...v1.26.0-dev.12) (2025-12-17)
 
 
