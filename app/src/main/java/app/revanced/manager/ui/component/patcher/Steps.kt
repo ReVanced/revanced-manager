@@ -55,7 +55,8 @@ fun Steps(
     stepCount: Pair<Int, Int>? = null,
     stepProgressProvider: StepProgressProvider,
     isExpanded: Boolean = false,
-    onExpand: () -> Unit
+    onExpand: () -> Unit,
+    onClick : () -> Unit
 ) {
     val state = remember(steps) {
         when {
@@ -81,7 +82,7 @@ fun Steps(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier
-                .clickable(true, onClick = onExpand)
+                .clickable(true, onClick = onClick)
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
@@ -151,7 +152,7 @@ fun SubStep(
                 if (message != null)
                     clickable { messageExpanded = !messageExpanded }
                 else this
-            }.add
+            }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
