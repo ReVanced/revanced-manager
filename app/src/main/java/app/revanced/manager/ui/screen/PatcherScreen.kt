@@ -55,6 +55,7 @@ import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,11 +77,10 @@ fun PatcherScreen(
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
     var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
-    fun onPageBack() {
-        if(patcherSucceeded == null)
-            showDismissConfirmationDialog = true
-        else
-            onLeave()
+    fun onPageBack() = when {
+        patcherSucceeded == null -> showDismissConfirmationDialog = true
+        viewModel.isInstalling -> context.toast(context.getString(R.string.patcher_install_in_progress))
+        else -> onLeave()
     }
 
     BackHandler(onBack = ::onPageBack)

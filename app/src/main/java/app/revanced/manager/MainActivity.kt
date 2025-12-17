@@ -81,6 +81,7 @@ class MainActivity : ComponentActivity() {
             )
             val theme by vm.prefs.theme.getAsState()
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
+            val pureBlackTheme by vm.prefs.pureBlackTheme.getAsState()
 
             EventEffect(vm.legacyImportActivityFlow) {
                 try {
@@ -91,7 +92,8 @@ class MainActivity : ComponentActivity() {
 
             ReVancedManagerTheme(
                 darkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK,
-                dynamicColor = dynamicColor
+                dynamicColor = dynamicColor,
+                pureBlackTheme = pureBlackTheme
             ) {
                 ReVancedManager(vm)
             }

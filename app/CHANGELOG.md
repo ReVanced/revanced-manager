@@ -1,3 +1,31 @@
+# app [1.26.0-dev.11](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.10...v1.26.0-dev.11) (2025-10-25)
+
+
+### Features
+
+* Add pure black theme ([#2824](https://github.com/ReVanced/revanced-manager/issues/2824)) ([3d75ffe](https://github.com/ReVanced/revanced-manager/commit/3d75ffe6a7a39efdebe13dbd07c937c1de409ead))
+
+# app [1.26.0-dev.10](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.9...v1.26.0-dev.10) (2025-10-06)
+
+
+### Bug Fixes
+
+* prevent back presses during installation ([2ff7072](https://github.com/ReVanced/revanced-manager/commit/2ff70728b490b92f212a82dcf599bc0c23f589e7))
+
+# app [1.26.0-dev.9](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.8...v1.26.0-dev.9) (2025-10-06)
+
+
+### Bug Fixes
+
+* Instantly re-fetch patch bundle on pre-release preference update ([d5671db](https://github.com/ReVanced/revanced-manager/commit/d5671db3a77541c07bbbb4c3baca02f3ba0703f2)), closes [#2784](https://github.com/ReVanced/revanced-manager/issues/2784)
+
+# app [1.26.0-dev.8](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.7...v1.26.0-dev.8) (2025-10-06)
+
+
+### Bug Fixes
+
+* Offcenter loading indicator in AppSelector ([12d92ba](https://github.com/ReVanced/revanced-manager/commit/12d92ba8110f5d1ac78aeecfa575444b5c53f561))
+
 # app [1.26.0-dev.7](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.6...v1.26.0-dev.7) (2025-10-03)
 
 

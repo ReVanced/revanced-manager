@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screen.settings
 
 import android.os.Build
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -94,6 +95,14 @@ fun GeneralSettingsScreen(
                     coroutineScope = coroutineScope,
                     headline = R.string.dynamic_color,
                     description = R.string.dynamic_color_description
+                )
+            }
+            AnimatedVisibility(theme != Theme.LIGHT) {
+                BooleanItem(
+                    preference = prefs.pureBlackTheme,
+                    coroutineScope = coroutineScope,
+                    headline = R.string.pure_black_theme,
+                    description = R.string.pure_black_theme_description
                 )
             }
         }
