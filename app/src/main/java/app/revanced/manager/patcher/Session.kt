@@ -1,8 +1,8 @@
 package app.revanced.manager.patcher
 
-import android.content.Context
 import app.revanced.library.ApkUtils.applyTo
-import app.revanced.manager.R
+import app.revanced.manager.patcher.Session.Companion.component1
+import app.revanced.manager.patcher.Session.Companion.component2
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.ui.model.State
 import app.revanced.patcher.Patcher
@@ -22,10 +22,8 @@ class Session(
     cacheDir: String,
     frameworkDir: String,
     aaptPath: String,
-    private val androidContext: Context,
     private val logger: Logger,
     private val input: File,
-    private val onPatchCompleted: suspend () -> Unit,
     private val onProgress: (name: String?, state: State?, message: String?) -> Unit
 ) : Closeable {
     private fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
@@ -44,17 +42,11 @@ class Session(
     private suspend fun Patcher.applyPatchesVerbose(selectedPatches: PatchList) {
         var nextPatchIndex = 0
 
-        updateProgress(
-            name = androidContext.getString(R.string.executing_patch, selectedPatches[nextPatchIndex]),
-            state = State.RUNNING
-        )
-
         this().collect { (patch, exception) ->
             if (patch !in selectedPatches) return@collect
 
             if (exception != null) {
                 updateProgress(
-                    name = androidContext.getString(R.string.failed_to_execute_patch, patch.name),
                     state = State.FAILED,
                     message = exception.stackTraceToString()
                 )
@@ -66,25 +58,10 @@ class Session(
 
             nextPatchIndex++
 
-            onPatchCompleted()
-
-            selectedPatches.getOrNull(nextPatchIndex)?.let { nextPatch ->
-                updateProgress(
-                    name = androidContext.getString(R.string.executing_patch, nextPatch.name)
-                )
-            }
+            updateProgress(state = State.COMPLETED)
 
             logger.info("${patch.name} succeeded")
         }
-
-        updateProgress(
-            state = State.COMPLETED,
-            name = androidContext.resources.getQuantityString(
-                R.plurals.patches_executed,
-                selectedPatches.size,
-                selectedPatches.size
-            )
-        )
     }
 
     suspend fun run(output: File, selectedPatches: PatchList) {

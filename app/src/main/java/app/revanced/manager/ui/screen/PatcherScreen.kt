@@ -236,7 +236,6 @@ fun PatcherScreen(
                     Steps(
                         category = category,
                         steps = steps,
-                        stepCount = if (category == StepCategory.PATCHING) viewModel.patchesProgress else null,
                         stepProgressProvider = viewModel,
                         isExpanded = expandedCategory == category,
                         onExpand = { expandCategory(category) },

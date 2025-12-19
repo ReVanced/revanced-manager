@@ -48,6 +48,7 @@ import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.StepProgressProvider
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.util.PM
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.saveableVar
 import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.simpleMessage
@@ -138,14 +139,6 @@ class PatcherViewModel(
         }
     }
 
-    private val patchCount = input.selectedPatches.values.sumOf { it.size }
-    private var completedPatchCount by savedStateHandle.saveable {
-        // SavedStateHandle.saveable only supports the boxed version.
-        @Suppress("AutoboxingStateCreation") mutableStateOf(
-            0
-        )
-    }
-    val patchesProgress get() = completedPatchCount to patchCount
     override var downloadProgress by savedStateHandle.saveable(
         key = "downloadProgress",
         stateSaver = autoSaver()
@@ -156,17 +149,15 @@ class PatcherViewModel(
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
         generateSteps(
             app,
-            input.selectedApp
+            input.selectedApp,
+            input.selectedPatches
         ).toMutableStateList()
     }
     private var currentStepIndex = 0
 
     val progress by derivedStateOf {
-        val current = steps.count {
-            it.state == State.COMPLETED && it.category != StepCategory.PATCHING
-        } + completedPatchCount
-
-        val total = steps.size - 1 + patchCount
+        val current = steps.count { it.state == State.COMPLETED }
+        val total = steps.size
 
         current.toFloat() / total.toFloat()
     }
@@ -186,7 +177,6 @@ class PatcherViewModel(
                         downloadProgress = it
                     }
                 },
-                onPatchCompleted = { withContext(Dispatchers.Main) { completedPatchCount += 1 } },
                 setInputFile = { withContext(Dispatchers.Main) { inputFile = it } },
                 handleStartActivityRequest = { plugin, intent ->
                     withContext(Dispatchers.Main) {
@@ -497,9 +487,12 @@ class PatcherViewModel(
             LogLevel.ERROR -> Log.e(TAG, msg)
         }
 
-        fun generateSteps(context: Context, selectedApp: SelectedApp): List<Step> {
+        fun generateSteps(context: Context, selectedApp: SelectedApp, patchSelection: PatchSelection): List<Step> {
             val needsDownload =
                 selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search
+
+            val patchSteps = patchSelection.values.flatten().sortedBy { it }
+                .map { Step(it, StepCategory.PATCHING) }.toTypedArray()
 
             return listOfNotNull(
                 Step(
@@ -518,10 +511,7 @@ class PatcherViewModel(
                     StepCategory.PREPARING
                 ),
 
-                Step(
-                    context.getString(R.string.execute_patches),
-                    StepCategory.PATCHING
-                ),
+                *patchSteps,
 
                 Step(context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
                 Step(context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)

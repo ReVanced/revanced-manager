@@ -13,7 +13,7 @@ import java.io.File
 /**
  * Simple [Runtime] implementation that runs the patcher using coroutines.
  */
-class CoroutineRuntime(private val context: Context) : Runtime(context) {
+class CoroutineRuntime(context: Context) : Runtime(context) {
     override suspend fun execute(
         inputFile: String,
         outputFile: String,
@@ -21,7 +21,6 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        onPatchCompleted: suspend () -> Unit,
         onProgress: ProgressEventHandler,
     ) {
         val selectedBundles = selectedPatches.keys
@@ -55,10 +54,8 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
             cacheDir,
             frameworkPath,
             aaptPath,
-            context,
             logger,
             File(inputFile),
-            onPatchCompleted = onPatchCompleted,
             onProgress
         ).use { session ->
             session.run(

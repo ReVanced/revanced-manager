@@ -24,7 +24,7 @@ import kotlin.system.exitProcess
 /**
  * The main class that runs inside the runner process launched by [ProcessRuntime].
  */
-class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
+class PatcherProcess() : IPatcherProcess.Stub() {
     private var eventBinder: IPatcherEvents? = null
 
     private val scope =
@@ -80,10 +80,8 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
                 cacheDir = parameters.cacheDir,
                 aaptPath = parameters.aaptPath,
                 frameworkDir = parameters.frameworkDir,
-                androidContext = context,
                 logger = logger,
                 input = File(parameters.inputFile),
-                onPatchCompleted = { events.patchSucceeded() },
                 onProgress = { name, state, message ->
                     events.progress(name, state?.name, message)
                 }
@@ -119,7 +117,7 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
                 }
             }
 
-            val ipcInterface = PatcherProcess(appContext)
+            val ipcInterface = PatcherProcess()
 
             appContext.sendBroadcast(Intent().apply {
                 action = ProcessRuntime.CONNECT_TO_APP_ACTION

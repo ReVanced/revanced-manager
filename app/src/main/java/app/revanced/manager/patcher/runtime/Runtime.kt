@@ -34,7 +34,6 @@ sealed class Runtime(context: Context) : KoinComponent {
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        onPatchCompleted: suspend () -> Unit,
         onProgress: ProgressEventHandler,
     )
 }

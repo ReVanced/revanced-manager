@@ -72,7 +72,6 @@ class PatcherWorker(
         val options: Options,
         val logger: Logger,
         val onDownloadProgress: suspend (Pair<Long, Long?>?) -> Unit,
-        val onPatchCompleted: suspend () -> Unit,
         val handleStartActivityRequest: suspend (LoadedDownloaderPlugin, Intent) -> ActivityResult,
         val setInputFile: suspend (File) -> Unit,
         val onProgress: ProgressEventHandler
@@ -227,7 +226,6 @@ class PatcherWorker(
                 args.selectedPatches,
                 args.options,
                 args.logger,
-                args.onPatchCompleted,
                 args.onProgress
             )
 

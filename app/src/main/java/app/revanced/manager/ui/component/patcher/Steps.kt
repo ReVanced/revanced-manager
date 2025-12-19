@@ -52,7 +52,6 @@ import kotlin.math.floor
 fun Steps(
     category: StepCategory,
     steps: List<Step>,
-    stepCount: Pair<Int, Int>? = null,
     stepProgressProvider: StepProgressProvider,
     isExpanded: Boolean = false,
     onExpand: () -> Unit,
@@ -92,13 +91,8 @@ fun Steps(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            val stepProgress = remember(stepCount, steps) {
-                stepCount?.let { (current, total) -> "$current/$total" }
-                    ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}"
-            }
-
             Text(
-                text = stepProgress,
+                text = "${steps.count { it.state == State.COMPLETED }}/${steps.size}",
                 style = MaterialTheme.typography.labelSmall
             )
 
