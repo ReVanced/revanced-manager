@@ -491,7 +491,7 @@ class PatcherViewModel(
             val needsDownload =
                 selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search
 
-            val patchSteps = patchSelection.values.flatten().sortedBy { it }
+            val patchSteps = patchSelection.values.flatten().sorted()
                 .map { Step(it, StepCategory.PATCHING) }.toTypedArray()
 
             return listOfNotNull(
