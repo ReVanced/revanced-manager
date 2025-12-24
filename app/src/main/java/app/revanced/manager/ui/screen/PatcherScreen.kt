@@ -87,7 +87,7 @@ fun PatcherScreen(
 
     val steps by remember {
         derivedStateOf {
-            viewModel.steps.groupBy { it.category }
+            viewModel.steps.groupBy { it.category }.toList()
         }
     }
 
@@ -230,13 +230,12 @@ fun PatcherScreen(
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(
-                    items = steps.toList(),
+                    items = steps,
                     key = { it.first }
                 ) { (category, steps) ->
                     Steps(
                         category = category,
                         steps = steps,
-                        stepProgressProvider = viewModel,
                         isExpanded = expandedCategory == category,
                         onExpand = { expandCategory(category) },
                         onClick = {

@@ -10,12 +10,13 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.patcher.runtime.process.IPatcherEvents
 import app.revanced.manager.patcher.runtime.process.IPatcherProcess
 import app.revanced.manager.patcher.LibraryResolver
+import app.revanced.manager.patcher.ProgressEvent
+import app.revanced.manager.patcher.ProgressEventParcel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.runtime.process.Parameters
 import app.revanced.manager.patcher.runtime.process.PatchConfiguration
 import app.revanced.manager.patcher.runtime.process.PatcherProcess
-import app.revanced.manager.patcher.worker.ProgressEventHandler
-import app.revanced.manager.ui.model.State
+import app.revanced.manager.patcher.toEvent
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
@@ -66,7 +67,7 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        onProgress: ProgressEventHandler,
+        onEvent: (ProgressEvent) -> Unit,
     ) = coroutineScope {
         // Get the location of our own Apk.
         val managerBaseApk = pm.getPackageInfo(context.packageName)!!.applicationInfo!!.sourceDir
@@ -122,8 +123,9 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
             val eventHandler = object : IPatcherEvents.Stub() {
                 override fun log(level: String, msg: String) = logger.log(enumValueOf(level), msg)
 
-                override fun progress(name: String?, state: String?, msg: String?) =
-                    onProgress(name, state?.let { enumValueOf<State>(it) }, msg)
+                override fun event(event: ProgressEventParcel?) {
+                    event?.let { onEvent(it.toEvent()) }
+                }
 
                 override fun finished(exceptionStackTrace: String?) {
                     binder.exit()

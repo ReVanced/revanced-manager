@@ -8,12 +8,15 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import app.revanced.manager.BuildConfig
+import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.Session
+import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.patch.PatchBundle
+import app.revanced.manager.patcher.runStep
 import app.revanced.manager.patcher.runtime.ProcessRuntime
-import app.revanced.manager.ui.model.State
+import app.revanced.manager.patcher.toParcel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +49,8 @@ class PatcherProcess() : IPatcherProcess.Stub() {
     override fun exit() = exitProcess(0)
 
     override fun start(parameters: Parameters, events: IPatcherEvents) {
+        fun onEvent(event: ProgressEvent) = events.event(event.toParcel())
+
         eventBinder = events
 
         scope.launch {
@@ -56,36 +61,43 @@ class PatcherProcess() : IPatcherProcess.Stub() {
 
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
-            val allPatches = PatchBundle.Loader.patches(parameters.configurations.map { it.bundle }, parameters.packageName)
-            val patchList = parameters.configurations.flatMap { config ->
-                val patches = (allPatches[config.bundle] ?: return@flatMap emptyList())
+            val patchList = runStep(StepId.LoadPatches, ::onEvent) {
+                val allPatches = PatchBundle.Loader.patches(
+                    parameters.configurations.map { it.bundle },
+                    parameters.packageName
+                )
+                val patchList = parameters.configurations.flatMap { config ->
+                    val patches = (allPatches[config.bundle] ?: return@flatMap emptyList())
                         .filter { it.name in config.patches }
                         .associateBy { it.name }
 
-                config.options.forEach { (patchName, opts) ->
-                    val patchOptions = patches[patchName]?.options
-                        ?: throw Exception("Patch with name $patchName does not exist.")
+                    config.options.forEach { (patchName, opts) ->
+                        val patchOptions = patches[patchName]?.options
+                            ?: throw Exception("Patch with name $patchName does not exist.")
 
-                    opts.forEach { (key, value) ->
-                        patchOptions[key] = value
+                        opts.forEach { (key, value) ->
+                            patchOptions[key] = value
+                        }
                     }
+
+                    patches.values
                 }
 
-                patches.values
+                patchList
             }
 
-            events.progress(null, State.COMPLETED.name, null) // Loading patches
+            val session = runStep(StepId.ReadAPK, ::onEvent) {
+                Session(
+                    cacheDir = parameters.cacheDir,
+                    aaptPath = parameters.aaptPath,
+                    frameworkDir = parameters.frameworkDir,
+                    logger = logger,
+                    input = File(parameters.inputFile),
+                    onEvent = ::onEvent,
+                )
+            }
 
-            Session(
-                cacheDir = parameters.cacheDir,
-                aaptPath = parameters.aaptPath,
-                frameworkDir = parameters.frameworkDir,
-                logger = logger,
-                input = File(parameters.inputFile),
-                onProgress = { name, state, message ->
-                    events.progress(name, state?.name, message)
-                }
-            ).use {
+            session.use {
                 it.run(File(parameters.outputFile), patchList)
             }
 

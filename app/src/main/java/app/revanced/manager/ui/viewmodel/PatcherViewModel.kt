@@ -32,6 +32,8 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
+import app.revanced.manager.patcher.ProgressEvent
+import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
@@ -40,13 +42,12 @@ import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.ui.model.InstallerModel
-import app.revanced.manager.ui.model.ProgressKey
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
-import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
-import app.revanced.manager.ui.model.StepProgressProvider
+import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.navigation.Patcher
+import app.revanced.manager.ui.model.withState
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.saveableVar
@@ -74,7 +75,7 @@ import java.time.Duration
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class PatcherViewModel(
     private val input: Patcher.ViewModelParams
-) : ViewModel(), KoinComponent, StepProgressProvider, InstallerModel {
+) : ViewModel(), KoinComponent, InstallerModel {
     private val app: Application by inject()
     private val fs: Filesystem by inject()
     private val pm: PM by inject()
@@ -139,23 +140,13 @@ class PatcherViewModel(
         }
     }
 
-    override var downloadProgress by savedStateHandle.saveable(
-        key = "downloadProgress",
-        stateSaver = autoSaver()
-    ) {
-        mutableStateOf<Pair<Long, Long?>?>(null)
-    }
-        private set
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
-        generateSteps(
-            app,
-            input.selectedApp,
-            input.selectedPatches
-        ).toMutableStateList()
+        generateSteps(app, input.selectedApp, input.selectedPatches).toMutableStateList()
     }
-    private var currentStepIndex = 0
 
     val progress by derivedStateOf {
+        val steps = steps.filter { it.id != StepId.ExecutePatches }
+
         val current = steps.count { it.state == State.COMPLETED }
         val total = steps.size
 
@@ -172,11 +163,6 @@ class PatcherViewModel(
                 input.selectedPatches,
                 input.options,
                 logger,
-                onDownloadProgress = {
-                    withContext(Dispatchers.Main) {
-                        downloadProgress = it
-                    }
-                },
                 setInputFile = { withContext(Dispatchers.Main) { inputFile = it } },
                 handleStartActivityRequest = { plugin, intent ->
                     withContext(Dispatchers.Main) {
@@ -205,24 +191,7 @@ class PatcherViewModel(
                         }
                     }
                 },
-                onProgress = { name, state, message ->
-                    viewModelScope.launch {
-                        steps[currentStepIndex] = steps[currentStepIndex].run {
-                            copy(
-                                name = name ?: this.name,
-                                state = state ?: this.state,
-                                message = message ?: this.message
-                            )
-                        }
-
-                        if (state == State.COMPLETED && currentStepIndex != steps.lastIndex) {
-                            currentStepIndex++
-
-                            steps[currentStepIndex] =
-                                steps[currentStepIndex].copy(state = State.RUNNING)
-                        }
-                    }
-                }
+                onEvent = ::handleProgressEvent,
             )
         ))
     }
@@ -312,6 +281,35 @@ class PatcherViewModel(
                     withTimeout(Duration.ofMinutes(1L)) {
                         rootInstaller.mount(packageName)
                     }
+                }
+            }
+        }
+    }
+
+    private fun handleProgressEvent(event: ProgressEvent) {
+        val stepIndex = steps.indexOfFirst {
+            event.stepId?.let { id -> id == it.id }
+                ?: (it.state == State.RUNNING || it.state == State.WAITING)
+        }
+
+        if (stepIndex != -1) steps[stepIndex] = steps[stepIndex].run {
+            when (event) {
+                is ProgressEvent.Started -> withState(State.RUNNING)
+
+                is ProgressEvent.Progress -> withState(
+                    message = event.message ?: message,
+                    progress = event.done?.let { done -> done to event.total } ?: progress
+                )
+
+                is ProgressEvent.Completed -> withState(State.COMPLETED, progress = null)
+
+                is ProgressEvent.Failed -> {
+                    if (event.stepId == null && steps.any { it.state == State.FAILED }) return
+                    withState(
+                        State.FAILED,
+                        message = event.error.stackTrace,
+                        progress = null
+                    )
                 }
             }
         }
@@ -487,34 +485,43 @@ class PatcherViewModel(
             LogLevel.ERROR -> Log.e(TAG, msg)
         }
 
-        fun generateSteps(context: Context, selectedApp: SelectedApp, patchSelection: PatchSelection): List<Step> {
+        fun generateSteps(context: Context, selectedApp: SelectedApp, selectedPatches: PatchSelection): List<Step> {
             val needsDownload =
                 selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search
 
-            val patchSteps = patchSelection.values.flatten().sorted()
-                .map { Step(it, StepCategory.PATCHING) }.toTypedArray()
+            val patchSteps = selectedPatches.values.flatMap { it }.sorted()
+                .mapIndexed { index, name -> Step(
+                    StepId.ExecutePatch(index),
+                    name,
+                    StepCategory.PATCHING
+                    )
+                }.toTypedArray()
 
             return listOfNotNull(
                 Step(
+                    StepId.DownloadAPK,
                     context.getString(R.string.download_apk),
                     StepCategory.PREPARING,
-                    state = State.RUNNING,
-                    progressKey = ProgressKey.DOWNLOAD,
                 ).takeIf { needsDownload },
                 Step(
+                    StepId.LoadPatches,
                     context.getString(R.string.patcher_step_load_patches),
                     StepCategory.PREPARING,
-                    state = if (needsDownload) State.WAITING else State.RUNNING,
                 ),
                 Step(
+                    StepId.ReadAPK,
                     context.getString(R.string.patcher_step_unpack),
                     StepCategory.PREPARING
                 ),
-
+                Step(
+                    StepId.ExecutePatches,
+                    context.getString(R.string.execute_patches),
+                    StepCategory.PATCHING,
+                    hide = true,
+                ),
                 *patchSteps,
-
-                Step(context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
-                Step(context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
+                Step(StepId.WriteAPK, context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
+                Step(StepId.SignAPK, context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
             )
         }
     }

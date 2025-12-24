@@ -4,7 +4,6 @@ import app.revanced.library.ApkUtils.applyTo
 import app.revanced.manager.patcher.Session.Companion.component1
 import app.revanced.manager.patcher.Session.Companion.component2
 import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.ui.model.State
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherConfig
 import app.revanced.patcher.patch.Patch
@@ -24,11 +23,8 @@ class Session(
     aaptPath: String,
     private val logger: Logger,
     private val input: File,
-    private val onProgress: (name: String?, state: State?, message: String?) -> Unit
+    private val onEvent: (ProgressEvent) -> Unit,
 ) : Closeable {
-    private fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
-        onProgress(name, state, message)
-
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
     private val patcher = Patcher(
         PatcherConfig(
@@ -40,65 +36,68 @@ class Session(
     )
 
     private suspend fun Patcher.applyPatchesVerbose(selectedPatches: PatchList) {
-        var nextPatchIndex = 0
-
         this().collect { (patch, exception) ->
-            if (patch !in selectedPatches) return@collect
+            val index = selectedPatches.indexOf(patch)
+            if (index == -1) return@collect
 
             if (exception != null) {
-                updateProgress(
-                    state = State.FAILED,
-                    message = exception.stackTraceToString()
+                onEvent(
+                    ProgressEvent.Failed(
+                        StepId.ExecutePatch(index),
+                        exception.toRemoteError(),
+                    )
                 )
-
                 logger.error("${patch.name} failed:")
                 logger.error(exception.stackTraceToString())
                 throw exception
             }
 
-            nextPatchIndex++
-
-            updateProgress(state = State.COMPLETED)
+            onEvent(
+                ProgressEvent.Completed(
+                    StepId.ExecutePatch(index),
+                )
+            )
 
             logger.info("${patch.name} succeeded")
         }
     }
 
     suspend fun run(output: File, selectedPatches: PatchList) {
-        updateProgress(state = State.COMPLETED) // Unpacking
+        runStep(StepId.ExecutePatches, onEvent) {
+            java.util.logging.Logger.getLogger("").apply {
+                handlers.forEach {
+                    it.close()
+                    removeHandler(it)
+                }
 
-        java.util.logging.Logger.getLogger("").apply {
-            handlers.forEach {
-                it.close()
-                removeHandler(it)
+                addHandler(logger.handler)
             }
 
-            addHandler(logger.handler)
+            with(patcher) {
+                logger.info("Merging integrations")
+                this += selectedPatches.toSet()
+
+                logger.info("Applying patches...")
+                applyPatchesVerbose(selectedPatches.sortedBy { it.name })
+            }
         }
 
-        with(patcher) {
-            logger.info("Merging integrations")
-            this += selectedPatches.toSet()
+        runStep(StepId.WriteAPK, onEvent) {
+            logger.info("Writing patched files...")
+            val result = patcher.get()
 
-            logger.info("Applying patches...")
-            applyPatchesVerbose(selectedPatches.sortedBy { it.name })
+            val patched = tempDir.resolve("result.apk")
+            withContext(Dispatchers.IO) {
+                Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            }
+            result.applyTo(patched)
+
+            logger.info("Patched apk saved to $patched")
+
+            withContext(Dispatchers.IO) {
+                Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            }
         }
-
-        logger.info("Writing patched files...")
-        val result = patcher.get()
-
-        val patched = tempDir.resolve("result.apk")
-        withContext(Dispatchers.IO) {
-            Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
-        }
-        result.applyTo(patched)
-
-        logger.info("Patched apk saved to $patched")
-
-        withContext(Dispatchers.IO) {
-            Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
-        }
-        updateProgress(state = State.COMPLETED) // Saving
     }
 
     override fun close() {
