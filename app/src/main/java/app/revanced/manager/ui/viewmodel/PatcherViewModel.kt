@@ -286,7 +286,7 @@ class PatcherViewModel(
         }
     }
 
-    private fun handleProgressEvent(event: ProgressEvent) {
+    private fun handleProgressEvent(event: ProgressEvent) = viewModelScope.launch {
         val stepIndex = steps.indexOfFirst {
             event.stepId?.let { id -> id == it.id }
                 ?: (it.state == State.RUNNING || it.state == State.WAITING)
@@ -304,7 +304,7 @@ class PatcherViewModel(
                 is ProgressEvent.Completed -> withState(State.COMPLETED, progress = null)
 
                 is ProgressEvent.Failed -> {
-                    if (event.stepId == null && steps.any { it.state == State.FAILED }) return
+                    if (event.stepId == null && steps.any { it.state == State.FAILED }) return@launch
                     withState(
                         State.FAILED,
                         message = event.error.stackTrace,

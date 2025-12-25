@@ -51,13 +51,12 @@ sealed class StepId : Parcelable {
 
 @Parcelize
 data class RemoteError(
-    val type: String? = null,
-    val message: String? = null,
-    val stackTrace: String? = null,
-    val code: Int? = null,
+    val type: String,
+    val message: String?,
+    val stackTrace: String,
 ) : Parcelable
 
-fun Exception.toRemoteError(): RemoteError = RemoteError(
+fun Exception.toRemoteError() = RemoteError(
     type = this::class.java.name,
     message = this.message,
     stackTrace = this.stackTraceToString(),
