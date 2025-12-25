@@ -485,43 +485,66 @@ class PatcherViewModel(
             LogLevel.ERROR -> Log.e(TAG, msg)
         }
 
-        fun generateSteps(context: Context, selectedApp: SelectedApp, selectedPatches: PatchSelection): List<Step> {
-            val needsDownload =
-                selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search
-
-            val patchSteps = selectedPatches.values.flatMap { it }.sorted()
-                .mapIndexed { index, name -> Step(
-                    StepId.ExecutePatch(index),
-                    name,
-                    StepCategory.PATCHING
+        fun generateSteps(
+            context: Context,
+            selectedApp: SelectedApp,
+            selectedPatches: PatchSelection
+        ): List<Step> = buildList {
+            if (selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search)
+                add(
+                    Step(
+                        StepId.DownloadAPK,
+                        context.getString(R.string.download_apk),
+                        StepCategory.PREPARING
                     )
-                }.toTypedArray()
+                )
 
-            return listOfNotNull(
-                Step(
-                    StepId.DownloadAPK,
-                    context.getString(R.string.download_apk),
-                    StepCategory.PREPARING,
-                ).takeIf { needsDownload },
+            add(
                 Step(
                     StepId.LoadPatches,
                     context.getString(R.string.patcher_step_load_patches),
-                    StepCategory.PREPARING,
-                ),
+                    StepCategory.PREPARING
+                )
+            )
+            add(
                 Step(
                     StepId.ReadAPK,
                     context.getString(R.string.patcher_step_unpack),
                     StepCategory.PREPARING
-                ),
+                )
+            )
+            add(
                 Step(
                     StepId.ExecutePatches,
                     context.getString(R.string.execute_patches),
                     StepCategory.PATCHING,
-                    hide = true,
-                ),
-                *patchSteps,
-                Step(StepId.WriteAPK, context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
-                Step(StepId.SignAPK, context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
+                    hide = true
+                )
+            )
+
+            selectedPatches.values.asSequence().flatten().sorted().forEachIndexed { index, name ->
+                add(
+                    Step(
+                        StepId.ExecutePatch(index),
+                        name,
+                        StepCategory.PATCHING
+                    )
+                )
+            }
+
+            add(
+                Step(
+                    StepId.WriteAPK,
+                    context.getString(R.string.patcher_step_write_patched),
+                    StepCategory.SAVING
+                )
+            )
+            add(
+                Step(
+                    StepId.SignAPK,
+                    context.getString(R.string.patcher_step_sign_apk),
+                    StepCategory.SAVING
+                )
             )
         }
     }

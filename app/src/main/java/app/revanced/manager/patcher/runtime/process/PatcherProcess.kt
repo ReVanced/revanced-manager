@@ -66,7 +66,8 @@ class PatcherProcess() : IPatcherProcess.Stub() {
                     parameters.configurations.map { it.bundle },
                     parameters.packageName
                 )
-                val patchList = parameters.configurations.flatMap { config ->
+
+                parameters.configurations.flatMap { config ->
                     val patches = (allPatches[config.bundle] ?: return@flatMap emptyList())
                         .filter { it.name in config.patches }
                         .associateBy { it.name }
@@ -82,8 +83,6 @@ class PatcherProcess() : IPatcherProcess.Stub() {
 
                     patches.values
                 }
-
-                patchList
             }
 
             val session = runStep(StepId.ReadAPK, ::onEvent) {
