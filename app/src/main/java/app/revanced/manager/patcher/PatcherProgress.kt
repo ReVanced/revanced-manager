@@ -8,10 +8,8 @@ import kotlinx.parcelize.Parcelize
 sealed class ProgressEvent : Parcelable {
     abstract val stepId: StepId?
 
-    @Parcelize
     data class Started(override val stepId: StepId) : ProgressEvent()
 
-    @Parcelize
     data class Progress(
         override val stepId: StepId,
         val current: Long? = null,
@@ -19,18 +17,21 @@ sealed class ProgressEvent : Parcelable {
         val message: String? = null,
     ) : ProgressEvent()
 
-    @Parcelize
     data class Completed(
         override val stepId: StepId,
     ) : ProgressEvent()
 
-    @Parcelize
     data class Failed(
         override val stepId: StepId?,
         val error: RemoteError,
     ) : ProgressEvent()
 }
 
+/**
+ * Parcelable wrapper for [ProgressEvent].
+ *
+ * Required because AIDL does not support sealed classes.
+ */
 @Parcelize
 data class ProgressEventParcel(val event: ProgressEvent) : Parcelable
 
@@ -39,19 +40,12 @@ fun ProgressEvent.toParcel(): ProgressEventParcel = ProgressEventParcel(this)
 
 @Parcelize
 sealed class StepId : Parcelable {
-    @Parcelize
     data object DownloadAPK : StepId()
-    @Parcelize
     data object LoadPatches : StepId()
-    @Parcelize
     data object ReadAPK : StepId()
-    @Parcelize
     data object ExecutePatches : StepId()
-    @Parcelize
     data class ExecutePatch(val index: Int) : StepId()
-    @Parcelize
     data object WriteAPK : StepId()
-    @Parcelize
     data object SignAPK : StepId()
 }
 
