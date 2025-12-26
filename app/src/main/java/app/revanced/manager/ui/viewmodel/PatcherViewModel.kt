@@ -377,22 +377,22 @@ class PatcherViewModel(
         try {
             isInstalling = true
 
-            val currentPackageInfo = pm.getPackageInfo(outputFile)
-                ?: throw Exception("Failed to load application info")
-
-            // If the app is currently installed
-            val existingPackageInfo = pm.getPackageInfo(currentPackageInfo.packageName)
-            if (existingPackageInfo != null) {
-                // Check if the app version is less than the installed version
-                if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
-                    // Exit if the selected app version is less than the installed version
-                    packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
-                    return@launch
-                }
-            }
-
             when (installType) {
                 InstallType.DEFAULT -> {
+                    val currentPackageInfo = pm.getPackageInfo(outputFile)
+                        ?: throw Exception("Failed to load application info")
+
+                    // If the app is currently installed
+                    val existingPackageInfo = pm.getPackageInfo(currentPackageInfo.packageName)
+                    if (existingPackageInfo != null) {
+                        // Check if the app version is less than the installed version
+                        if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
+                            // Exit if the selected app version is less than the installed version
+                            packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
+                            return@launch
+                        }
+                    }
+
                     // Check if the app is mounted as root
                     // If it is, unmount it first, silently
                     if (rootInstaller.hasRootAccess() && rootInstaller.isAppMounted(packageName)) {
@@ -410,16 +410,6 @@ class PatcherViewModel(
                             ?: throw Exception("Failed to load application info")
                         val label = with(pm) {
                             packageInfo.label()
-                        }
-
-                        // Check for base APK, first check if the app is already installed
-                        if (existingPackageInfo == null) {
-                            // If the app is not installed, check if the output file is a base apk
-                            if (currentPackageInfo.splitNames.isNotEmpty()) {
-                                // Exit if there is no base APK package
-                                packageInstallerStatus = PackageInstaller.STATUS_FAILURE_INVALID
-                                return@launch
-                            }
                         }
 
                         val inputVersion = input.selectedApp.version
