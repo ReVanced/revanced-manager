@@ -298,7 +298,7 @@ class PatcherViewModel(
 
                 is ProgressEvent.Progress -> withState(
                     message = event.message ?: message,
-                    progress = event.done?.let { done -> done to event.total } ?: progress
+                    progress = event.current?.let { event.current to event.total } ?: progress
                 )
 
                 is ProgressEvent.Completed -> withState(State.COMPLETED, progress = null)

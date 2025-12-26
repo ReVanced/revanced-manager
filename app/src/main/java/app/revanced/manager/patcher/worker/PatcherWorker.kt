@@ -162,7 +162,7 @@ class PatcherWorker(
                         args.onEvent(
                             ProgressEvent.Progress(
                                 stepId = StepId.DownloadAPK,
-                                done = progress.first,
+                                current = progress.first,
                                 total = progress.second
                             )
                         )

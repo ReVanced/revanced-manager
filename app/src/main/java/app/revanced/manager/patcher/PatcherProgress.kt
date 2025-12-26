@@ -14,7 +14,7 @@ sealed class ProgressEvent : Parcelable {
     @Parcelize
     data class Progress(
         override val stepId: StepId,
-        val done: Long? = null,
+        val current: Long? = null,
         val total: Long? = null,
         val message: String? = null,
     ) : ProgressEvent()
@@ -30,6 +30,12 @@ sealed class ProgressEvent : Parcelable {
         val error: RemoteError,
     ) : ProgressEvent()
 }
+
+@Parcelize
+data class ProgressEventParcel(val event: ProgressEvent) : Parcelable
+
+fun ProgressEventParcel.toEvent(): ProgressEvent = event
+fun ProgressEvent.toParcel(): ProgressEventParcel = ProgressEventParcel(this)
 
 @Parcelize
 sealed class StepId : Parcelable {
