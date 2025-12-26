@@ -67,14 +67,12 @@ inline fun <T> runStep(
     stepId: StepId,
     onEvent: (ProgressEvent) -> Unit,
     block: () -> T,
-): T {
+): T = try {
     onEvent(ProgressEvent.Started(stepId))
-    try {
-        val value = block()
-        onEvent(ProgressEvent.Completed(stepId))
-        return value
-    } catch (error: Exception) {
-        onEvent(ProgressEvent.Failed(stepId, error.toRemoteError()))
-        throw error
-    }
+    val value = block()
+    onEvent(ProgressEvent.Completed(stepId))
+    value
+} catch (error: Exception) {
+    onEvent(ProgressEvent.Failed(stepId, error.toRemoteError()))
+    throw error
 }
