@@ -31,8 +31,8 @@ jobs:
 
       - name: Build
         env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ env.GITHUB_ACTOR }}
+          ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleRelease
 
       - name: Setup Node.js
