@@ -1,3 +1,10 @@
+# app [1.26.0-dev.14](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.13...v1.26.0-dev.14) (2025-12-28)
+
+
+### Bug Fixes
+
+* Update selected patch count when SelectionState changes ([#2896](https://github.com/ReVanced/revanced-manager/issues/2896)) ([0d26df0](https://github.com/ReVanced/revanced-manager/commit/0d26df03f463195dae550240c7f652680763079c))
+
 # app [1.26.0-dev.13](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.12...v1.26.0-dev.13) (2025-12-17)
 
 
