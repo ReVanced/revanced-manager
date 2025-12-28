@@ -8,7 +8,6 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.annotation.StringRes
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -129,8 +128,6 @@ class SelectedAppInfoViewModel(
     }
 
     var options: Options by savedStateHandle.saveable {
-        val state = mutableStateOf<Options>(emptyMap())
-
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
             val bundlePatches = bundleInfoFlow.first()
@@ -141,15 +138,13 @@ class SelectedAppInfoViewModel(
             }
         }
 
-        state
+        mutableStateOf(emptyMap())
     }
         private set
 
     private var selectionState: SelectionState by savedStateHandle.saveable {
         if (input.patches != null)
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
-
-        val selection: MutableState<SelectionState> = mutableStateOf(SelectionState.Default)
 
         // Try to get the previous selection if customization is enabled.
         viewModelScope.launch {
@@ -160,7 +155,7 @@ class SelectedAppInfoViewModel(
             selectionState = SelectionState.Customized(previous)
         }
 
-        selection
+        mutableStateOf(SelectionState.Default)
     }
 
     var showSourceSelector by mutableStateOf(false)
@@ -311,7 +306,7 @@ class SelectedAppInfoViewModel(
         }
     }
 
-    enum class Error(@StringRes val resourceId: Int) {
+    enum class Error(@param:StringRes val resourceId: Int) {
         NoPlugins(R.string.downloader_no_plugins_available)
     }
 
