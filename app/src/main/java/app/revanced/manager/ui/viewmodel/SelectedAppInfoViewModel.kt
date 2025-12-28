@@ -128,8 +128,6 @@ class SelectedAppInfoViewModel(
     }
 
     var options: Options by savedStateHandle.saveable {
-        val state = mutableStateOf<Options>(emptyMap())
-
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
             val bundlePatches = bundleInfoFlow.first()
@@ -140,11 +138,11 @@ class SelectedAppInfoViewModel(
             }
         }
 
-        state
+        mutableStateOf(emptyMap())
     }
         private set
 
-    var selectionState: SelectionState by savedStateHandle.saveable {
+    private var selectionState: SelectionState by savedStateHandle.saveable {
         if (input.patches != null)
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
 
@@ -339,7 +337,7 @@ class SelectedAppInfoViewModel(
     }
 }
 
-sealed interface SelectionState : Parcelable {
+private sealed interface SelectionState : Parcelable {
     fun patches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean): PatchSelection
 
     @Parcelize

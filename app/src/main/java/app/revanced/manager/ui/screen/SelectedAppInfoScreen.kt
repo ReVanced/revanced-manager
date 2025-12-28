@@ -79,7 +79,7 @@ fun SelectedAppInfoScreen(
     val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
     val patches by remember {
         derivedStateOf {
-            vm.selectionState.patches(bundles, allowIncompatiblePatches)
+            vm.getPatches(bundles, allowIncompatiblePatches)
         }
     }
     val selectedPatchCount = patches.values.sumOf { it.size }
