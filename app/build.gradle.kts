@@ -123,7 +123,6 @@ buildscript {
 android {
     namespace = "app.revanced.manager"
     compileSdk = 35
-    buildToolsVersion = "35.0.1"
 
     defaultConfig {
         applicationId = "app.revanced.manager"
@@ -178,6 +177,9 @@ android {
         }
     }
 
+    // Migrate this to androidComponents
+    // otherwise we can't remove android.newDsl=false in gradle.properties
+    // Good luck trying to migrate it...
     applicationVariants.all {
         outputs.all {
             this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
@@ -217,20 +219,15 @@ android {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
         aidl = true
         buildConfig = true
+        resValues = true
     }
 
-    android {
-        androidResources {
-            generateLocaleConfig = true
-        }
+    androidResources {
+        generateLocaleConfig = true
     }
 
     externalNativeBuild {
@@ -243,6 +240,9 @@ android {
 
 kotlin {
     jvmToolchain(17)
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
 
 tasks {
