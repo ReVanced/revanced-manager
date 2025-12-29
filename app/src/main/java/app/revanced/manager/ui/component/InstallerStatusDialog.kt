@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.component
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageInstaller
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
@@ -79,7 +80,7 @@ private fun installerStatusDialogButton(
 enum class DialogKind(
     val flag: Int,
     val title: Int,
-    @StringRes val contentStringResId: Int,
+    @param:StringRes val contentStringResId: Int,
     val icon: ImageVector = Icons.Outlined.ErrorOutline,
     val confirmButton: InstallerStatusDialogButton = installerStatusDialogButton(R.string.ok),
     val dismissButton: InstallerStatusDialogButton? = null,
@@ -133,10 +134,8 @@ enum class DialogKind(
         title = R.string.installation_storage_issue_dialog_title,
         contentStringResId = R.string.installation_storage_issue_description,
     ),
-
-    @RequiresApi(34)
     FAILURE_TIMEOUT(
-        flag = PackageInstaller.STATUS_FAILURE_TIMEOUT,
+        flag = @SuppressLint("InlinedApi") PackageInstaller.STATUS_FAILURE_TIMEOUT,
         title = R.string.installation_timeout_dialog_title,
         contentStringResId = R.string.installation_timeout_description,
         confirmButton = installerStatusDialogButton(R.string.install_app) { model ->
