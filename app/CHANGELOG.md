@@ -1,3 +1,10 @@
+# app [1.26.0-dev.15](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.14...v1.26.0-dev.15) (2025-12-29)
+
+
+### Bug Fixes
+
+* install dialog getting stuck ([#2900](https://github.com/ReVanced/revanced-manager/issues/2900)) ([18a4df9](https://github.com/ReVanced/revanced-manager/commit/18a4df9af9cac120fdb8e4ff7aadd2e2a8d5c1a6))
+
 # app [1.26.0-dev.14](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.13...v1.26.0-dev.14) (2025-12-28)
 
 
