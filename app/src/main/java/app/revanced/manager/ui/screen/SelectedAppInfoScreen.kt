@@ -25,6 +25,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -76,12 +77,12 @@ fun SelectedAppInfoScreen(
     val bundles by vm.bundleInfoFlow.collectAsStateWithLifecycle(emptyList())
 
     val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
-    val patches = remember(bundles, allowIncompatiblePatches) {
-        vm.getPatches(bundles, allowIncompatiblePatches)
+    val patches by remember {
+        derivedStateOf {
+            vm.getPatches(bundles, allowIncompatiblePatches)
+        }
     }
-    val selectedPatchCount = remember(patches) {
-        patches.values.sumOf { it.size }
-    }
+    val selectedPatchCount = patches.values.sumOf { it.size }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),

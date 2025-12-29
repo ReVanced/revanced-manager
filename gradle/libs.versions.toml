@@ -37,6 +37,7 @@ kotlin-process = "1.5.1"
 hidden-api-stub = "4.3.3"
 binary-compatibility-validator = "0.17.0"
 semver-parser = "3.0.0"
+ackpine = "0.18.5"
 
 [libraries]
 # AndroidX Core
@@ -132,6 +133,10 @@ compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", 
 
 # Semantic versioning parser
 semver-parser = { module = "io.github.z4kn4fein:semver", version.ref = "semver-parser" }
+
+# Ackpine
+ackpine-core = { module = "ru.solrudev.ackpine:ackpine-core", version.ref = "ackpine" }
+ackpine-ktx = { module = "ru.solrudev.ackpine:ackpine-ktx", version.ref = "ackpine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

@@ -48,7 +48,8 @@ class ManagerApplication : Application() {
                 workerModule,
                 viewModelModule,
                 databaseModule,
-                rootModule
+                rootModule,
+                ackpineModule
             )
         }
 
