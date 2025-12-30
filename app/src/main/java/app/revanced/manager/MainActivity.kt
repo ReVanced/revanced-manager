@@ -243,12 +243,13 @@ private fun ReVancedManager() {
                             )
                         )
                     },
-                    onSourceClick = { packageName, version ->
+                    onSourceClick = { packageName, version, selectedSource ->
                         navController.navigateComplex(
                             SelectedAppInfo.SourceSelector,
                             SelectedAppInfo.SourceSelector.ViewModelParams(
                                 packageName,
                                 version,
+                                selectedSource,
                             )
                         )
                     },

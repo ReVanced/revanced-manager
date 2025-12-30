@@ -17,7 +17,6 @@ class VersionSelectorViewModel(
 ) : ViewModel(), KoinComponent {
     val patchBundleRepository: PatchBundleRepository = get()
 
-
     val patchCount = input.patchSelection.patchCount
 
     val availableVersions = patchBundleRepository.suggestedVersions(input.packageName, input.patchSelection)
@@ -37,6 +36,4 @@ class VersionSelectorViewModel(
     fun selectVersion(version: SelectedVersion) {
         selectedVersion = version
     }
-
-
 }

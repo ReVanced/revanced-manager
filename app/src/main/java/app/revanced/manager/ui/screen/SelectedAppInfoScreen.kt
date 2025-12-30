@@ -53,7 +53,7 @@ fun SelectedAppInfoScreen(
     onRequiredOptions: (packageName: String, version: String?, PatchSelection?, Options) -> Unit,
     onPatchClick: () -> Unit,
     onVersionClick: (packageName: String, patchSelection: PatchSelection, selectedVersion: SelectedVersion) -> Unit,
-    onSourceClick: (packageName: String, version: String?) -> Unit,
+    onSourceClick: (packageName: String, version: String?, SelectedSource) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
@@ -173,7 +173,7 @@ fun SelectedAppInfoScreen(
                 when (selectedSource) {
                     else -> "Sourcing the source"
                 },
-                onClick = { onSourceClick(packageName, versionText) },
+                onClick = { onSourceClick(packageName, versionText, selectedSource) },
             )
 
             error?.let {
