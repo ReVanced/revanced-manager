@@ -26,6 +26,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -36,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -73,6 +75,17 @@ class PatchBundleRepository(
     }
 
     val patchCountsFlow = bundleInfoFlow.map { it.mapValues { (_, info) -> info.patches.size } }
+
+    fun suggestedVersions(packageName: String, patchSelection: PatchSelection) =
+        bundleInfoFlow.map {
+            val allPatches = patchSelection.flatMap { (uid, patches) ->
+                val bundle = it[uid] ?: return@flatMap emptyList()
+                bundle.patches.filter { patch -> patches.contains(patch.name) }
+                    .map(PatchInfo::toPatcherPatch)
+            }.toSet()
+
+            allPatches.mostCommonCompatibleVersions(countUnusedPatches = false)[packageName]
+        }
 
     val suggestedVersions = bundleInfoFlow.map {
         val allPatches =

@@ -115,8 +115,7 @@ fun AppSelectorScreen(
                                 )
                             },
                             headlineContent = { AppLabel(app.packageInfo) },
-                            supportingContent = { Text(app.packageName) },
-                            trailingContent = app.patches?.let {
+                            supportingContent = app.patches?.let {
                                 {
                                     Text(
                                         pluralStringResource(
@@ -214,12 +213,7 @@ fun AppSelectorScreen(
                                 defaultText = app.packageName
                             )
                         },
-                        supportingContent = {
-                            suggestedVersions[app.packageName]?.let {
-                                Text(stringResource(R.string.suggested_version_info, it))
-                            }
-                        },
-                        trailingContent = app.patches?.let {
+                        supportingContent = app.patches?.let {
                             {
                                 Text(
                                     pluralStringResource(

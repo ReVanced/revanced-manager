@@ -57,6 +57,9 @@ import kotlin.reflect.KProperty
 typealias PatchSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
 
+val PatchSelection.patchCount
+    get() = this.values.sumOf { it.size }
+
 val Context.isDebuggable get() = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
 
 fun Context.openUrl(url: String) {

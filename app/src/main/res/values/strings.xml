@@ -61,14 +61,15 @@ Second \"item\" text"</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
 
     <string name="patch_item_description">Start patching the application</string>
-    <string name="patch_selector_item">Select patches</string>
-    <string name="patch_selector_item_description">%d patches selected</string>
+    <string name="patch_selector_item">Patches</string>
+    <string name="patch_selector_item_description">%d selected</string>
     <string name="no_patches_selected">No patches selected</string>
+    <string name="version_selector_item">Version</string>
 
     <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
     <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
-    <string name="apk_source_selector_item">Select APK source</string>
+    <string name="apk_source_selector_item">APK source</string>
     <string name="apk_source_auto">Using all APK downloaders</string>
     <string name="apk_source_downloader">Using %s</string>
     <string name="apk_source_installed">Using installed APK</string>
@@ -202,7 +203,7 @@ You will not be able to update the previously installed apps from this source."<
     <string name="share">Share</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
-    <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
+    <string name="select_from_storage_description">Select an APK file from storage</string>
     <string name="suggested_version_info">Suggested version: %s</string>
     <string name="type_anything">Type anything to continue</string>
     <string name="search">Search patches…</string>

@@ -20,7 +20,7 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
+import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.saver.Nullable
@@ -45,7 +45,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.ViewModelParams) :
+class PatchesSelectorViewModel(input: SelectedAppInfo.PatchesSelector.ViewModelParams) :
     ViewModel(), KoinComponent {
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()

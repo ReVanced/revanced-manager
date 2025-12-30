@@ -30,6 +30,8 @@ class DownloadedAppRepository(
 
     fun getAll() = dao.getAllApps().distinctUntilChanged()
 
+    fun get(packageName: String) = dao.get(packageName)
+
     fun getApkFileForApp(app: DownloadedApp): File =
         getApkFileForDir(dir.resolve(app.directory))
 

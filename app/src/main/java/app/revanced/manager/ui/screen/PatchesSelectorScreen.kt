@@ -498,7 +498,7 @@ private fun PatchItem(
     leadingContent = {
         HapticCheckbox(
             checked = selected,
-            onCheckedChange = { onToggle() },
+            onCheckedChange = null,
             enabled = compatible
         )
     },

@@ -2,6 +2,7 @@ package app.revanced.manager.ui.model.navigation
 
 import android.os.Parcelable
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import kotlinx.parcelize.Parcelize
@@ -23,7 +24,7 @@ data class InstalledApplicationInfo(val packageName: String)
 data class Update(val downloadOnScreenEntry: Boolean = false)
 
 @Serializable
-data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.ViewModelParams> {
+data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> {
     @Parcelize
     data class ViewModelParams(
         val app: SelectedApp,
@@ -40,6 +41,25 @@ data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.V
             val app: SelectedApp,
             val currentSelection: PatchSelection?,
             val options: @RawValue Options,
+        ) : Parcelable
+    }
+
+    @Serializable
+    data object VersionSelector : ComplexParameter<VersionSelector.ViewModelParams> {
+        @Parcelize
+        data class ViewModelParams(
+            val packageName: String,
+            val patchSelection: PatchSelection,
+            val currentSelection: SelectedVersion,
+        ) : Parcelable
+    }
+
+    @Serializable
+    data object SourceSelector : ComplexParameter<SourceSelector.ViewModelParams> {
+        @Parcelize
+        data class ViewModelParams(
+            val packageName: String,
+            val version: String?,
         ) : Parcelable
     }
 

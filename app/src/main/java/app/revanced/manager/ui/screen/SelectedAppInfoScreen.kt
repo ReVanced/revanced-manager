@@ -1,16 +1,11 @@
 package app.revanced.manager.ui.screen
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
@@ -21,7 +16,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -37,24 +31,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.data.room.apps.installed.InstalledApp
-import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
-import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
-import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.enabled
 import app.revanced.manager.util.toast
-import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -64,6 +52,8 @@ fun SelectedAppInfoScreen(
     onPatchSelectorClick: (SelectedApp, PatchSelection?, Options) -> Unit,
     onRequiredOptions: (SelectedApp, PatchSelection?, Options) -> Unit,
     onPatchClick: () -> Unit,
+    onVersionClick: (packageName: String, patchSelection: PatchSelection, currentSelection: SelectedVersion) -> Unit,
+    onSourceClick: (packageName: String, version: String?) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
@@ -84,13 +74,12 @@ fun SelectedAppInfoScreen(
     }
     val selectedPatchCount = patches.values.sumOf { it.size }
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = vm::handlePluginActivityResult
-    )
-    EventEffect(flow = vm.launchActivityFlow) { intent ->
-        launcher.launch(intent)
-    }
+//    val patches2 by remember {
+//        derivedStateOf {
+//            vm.patchSelection(bundles, allowIncompatiblePatches).collectAsStateWithLifecycle()
+//        }
+//    }
+
     val composableScope = rememberCoroutineScope()
 
     val error by vm.errorFlow.collectAsStateWithLifecycle(null)
@@ -142,39 +131,19 @@ fun SelectedAppInfoScreen(
     ) { paddingValues ->
         val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
 
-        if (vm.showSourceSelector) {
-            val requiredVersion by vm.requiredVersion.collectAsStateWithLifecycle(null)
-
-            AppSourceSelectorDialog(
-                plugins = plugins,
-                installedApp = vm.installedAppData,
-                searchApp = SelectedApp.Search(
-                    vm.packageName,
-                    vm.desiredVersion
-                ),
-                activeSearchJob = vm.activePluginAction,
-                hasRoot = vm.hasRoot,
-                onDismissRequest = vm::dismissSourceSelector,
-                onSelectPlugin = vm::searchUsingPlugin,
-                requiredVersion = requiredVersion,
-                onSelect = {
-                    vm.selectedApp = it
-                    vm.dismissSourceSelector()
-                }
-            )
-        }
-
         ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
             AppInfo(vm.selectedAppInfo, placeholderLabel = packageName) {
-                Text(
-                    version ?: stringResource(R.string.selected_app_meta_any_version),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+                vm.selectedAppInfo?.let {
+                    Text(
+                        it.packageName,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             }
 
             PageItem(
@@ -182,7 +151,7 @@ fun SelectedAppInfoScreen(
                 stringResource(
                     R.string.patch_selector_item_description,
                     selectedPatchCount
-                ),
+                ) + "\n⚠\uFE0F 3 incompatible",
                 onClick = {
                     onPatchSelectorClick(
                         vm.selectedApp,
@@ -194,33 +163,55 @@ fun SelectedAppInfoScreen(
                     )
                 }
             )
+
+            if (vm.selectedApp !is SelectedApp.Local || !(vm.selectedApp as SelectedApp.Local).temporary) {
+                val selectedVersion by vm.selectedVersion.collectAsStateWithLifecycle(SelectedVersion.Auto)
+                val resolvedVersion by vm.resolvedVersion.collectAsStateWithLifecycle(null)
+
+                val version = resolvedVersion ?: "Any available version"
+
+                val description = if (selectedVersion is SelectedVersion.Auto)
+                    "Auto ($version)" // stringResource(R.string.selected_app_meta_auto_version, actualVersion)
+                    else version
+
+
+                PageItem(
+                    R.string.version_selector_item,
+                    description,
+//                    "Auto (${requiredVersion ?: stringResource(R.string.selected_app_meta_any_version)})", // ⚠️ 1 Patch incompatible
+                    onClick = { onVersionClick(packageName, patches, selectedVersion) },
+                )
+            }
+
             PageItem(
                 R.string.apk_source_selector_item,
                 when (val app = vm.selectedApp) {
-                    is SelectedApp.Search -> stringResource(R.string.apk_source_auto)
-                    is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
-                    is SelectedApp.Download -> stringResource(
-                        R.string.apk_source_downloader,
-                        plugins.find { it.packageName == app.data.pluginPackageName }?.name
-                            ?: app.data.pluginPackageName
-                    )
+                    is SelectedApp.Search -> "Auto (Downloaded APK)" // stringResource(R.string.apk_source_auto)
+                    is SelectedApp.Installed -> app.version + " (Installed)" // stringResource(R.string.apk_source_installed)
+                    is SelectedApp.Download -> plugins.find { it.packageName == app.data.pluginPackageName }?.name ?: app.data.pluginPackageName
+                    is SelectedApp.Local -> if (app.temporary) "${app.version} (Local File)" else "Downloaded APK"
 
-                    is SelectedApp.Local -> stringResource(R.string.apk_source_local)
+
+//                        stringResource(
+//                        R.string.apk_source_downloader,
+//                        plugins.find { it.packageName == app.data.pluginPackageName }?.name
+//                            ?: app.data.pluginPackageName
+//                    )
+                    // stringResource(R.string.apk_source_local)
                 },
-                onClick = {
-                    vm.showSourceSelector()
-                }
+                onClick = { onSourceClick(packageName, version) },
+                enabled = !vm.selectedApp.let { it is SelectedApp.Local && it.temporary }, // Disable for APK from storage
             )
             error?.let {
                 Text(
                     stringResource(it.resourceId),
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(horizontal = 24.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
 
             Column(
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 val needsInternet =
@@ -252,11 +243,11 @@ fun SelectedAppInfoScreen(
 }
 
 @Composable
-private fun PageItem(@StringRes title: Int, description: String, onClick: () -> Unit) {
+private fun PageItem(@StringRes title: Int, description: String, onClick: () -> Unit, enabled: Boolean = true) {
     ListItem(
         modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(start = 8.dp),
+            .clickable(enabled, onClick = onClick)
+            .enabled(enabled),
         headlineContent = {
             Text(
                 stringResource(title),
@@ -273,91 +264,6 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
         },
         trailingContent = {
             Icon(Icons.AutoMirrored.Outlined.ArrowRight, null)
-        }
-    )
-}
-
-@Composable
-private fun AppSourceSelectorDialog(
-    plugins: List<LoadedDownloaderPlugin>,
-    installedApp: Pair<SelectedApp.Installed, InstalledApp?>?,
-    searchApp: SelectedApp.Search,
-    activeSearchJob: String?,
-    hasRoot: Boolean,
-    requiredVersion: String?,
-    onDismissRequest: () -> Unit,
-    onSelectPlugin: (LoadedDownloaderPlugin) -> Unit,
-    onSelect: (SelectedApp) -> Unit,
-) {
-    val canSelect = activeSearchJob == null
-
-    AlertDialogExtended(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        title = { Text(stringResource(R.string.app_source_dialog_title)) },
-        textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-        text = {
-            LazyColumn {
-                item(key = "auto") {
-                    val hasPlugins = plugins.isNotEmpty()
-                    ListItem(
-                        modifier = Modifier
-                            .clickable(enabled = canSelect && hasPlugins) { onSelect(searchApp) }
-                            .enabled(hasPlugins),
-                        headlineContent = { Text(stringResource(R.string.app_source_dialog_option_auto)) },
-                        supportingContent = {
-                            Text(
-                                if (hasPlugins)
-                                    stringResource(R.string.app_source_dialog_option_auto_description)
-                                else
-                                    stringResource(R.string.app_source_dialog_option_auto_unavailable)
-                            )
-                        },
-                        colors = transparentListItemColors
-                    )
-                }
-
-                installedApp?.let { (app, meta) ->
-                    item(key = "installed") {
-                        val (usable, text) = when {
-                            // Mounted apps must be unpatched before patching, which cannot be done without root access.
-                            meta?.installType == InstallType.MOUNT && !hasRoot -> false to stringResource(
-                                R.string.app_source_dialog_option_installed_no_root
-                            )
-                            // Patching already patched apps is not allowed because patches expect unpatched apps.
-                            meta?.installType == InstallType.DEFAULT -> false to stringResource(R.string.already_patched)
-                            // Version does not match suggested version.
-                            requiredVersion != null && app.version != requiredVersion -> false to stringResource(
-                                R.string.app_source_dialog_option_installed_version_not_suggested,
-                                app.version
-                            )
-
-                            else -> true to app.version
-                        }
-                        ListItem(
-                            modifier = Modifier
-                                .clickable(enabled = canSelect && usable) { onSelect(app) }
-                                .enabled(usable),
-                            headlineContent = { Text(stringResource(R.string.installed)) },
-                            supportingContent = { Text(text) },
-                            colors = transparentListItemColors
-                        )
-                    }
-                }
-
-                items(plugins, key = { "plugin_${it.packageName}" }) { plugin ->
-                    ListItem(
-                        modifier = Modifier.clickable(enabled = canSelect) { onSelectPlugin(plugin) },
-                        headlineContent = { Text(plugin.name) },
-                        trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == plugin.packageName },
-                        colors = transparentListItemColors
-                    )
-                }
-            }
         }
     )
 }

@@ -12,11 +12,9 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -31,43 +29,13 @@ import kotlinx.serialization.json.Json
 class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
-    private val downloadedAppRepository: DownloadedAppRepository,
     private val keystoreManager: KeystoreManager,
     private val app: Application,
     val prefs: PreferencesManager,
     private val json: Json
 ) : ViewModel() {
-    private val appSelectChannel = Channel<SelectedApp>()
-    val appSelectFlow = appSelectChannel.receiveAsFlow()
     private val legacyImportActivityChannel = Channel<Intent>()
     val legacyImportActivityFlow = legacyImportActivityChannel.receiveAsFlow()
-
-    private suspend fun suggestedVersion(packageName: String) =
-        patchBundleRepository.suggestedVersions.first()[packageName]
-
-    private suspend fun findDownloadedApp(app: SelectedApp): SelectedApp.Local? {
-        if (app !is SelectedApp.Search) return null
-
-        val suggestedVersion = suggestedVersion(app.packageName) ?: return null
-
-        val downloadedApp =
-            downloadedAppRepository.get(app.packageName, suggestedVersion, markUsed = true)
-                ?: return null
-        return SelectedApp.Local(
-            downloadedApp.packageName,
-            downloadedApp.version,
-            downloadedAppRepository.getApkFileForApp(downloadedApp),
-            false
-        )
-    }
-
-    fun selectApp(app: SelectedApp) = viewModelScope.launch {
-        appSelectChannel.send(findDownloadedApp(app) ?: app)
-    }
-
-    fun selectApp(packageName: String) = viewModelScope.launch {
-        selectApp(SelectedApp.Search(packageName, suggestedVersion(packageName)))
-    }
 
     init {
         viewModelScope.launch {
