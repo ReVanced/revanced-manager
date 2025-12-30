@@ -88,7 +88,7 @@ class PatchesSelectorViewModel(input: SelectedAppInfo.PatchesSelector.ViewModelP
         key = "selection",
         stateSaver = selectionSaver,
     ) {
-        mutableStateOf(input.currentSelection?.toPersistentPatchSelection())
+        mutableStateOf(input.patchSelection?.toPersistentPatchSelection())
     }
 
     private val patchOptions: PersistentOptions by savedStateHandle.saveable(

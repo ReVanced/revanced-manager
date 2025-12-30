@@ -42,8 +42,7 @@ data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> 
         data class ViewModelParams(
             val packageName: String,
             val version: String?,
-            val restrictToVersion: Boolean = false,
-            val currentSelection: PatchSelection?,
+            val patchSelection: PatchSelection?,
             val options: @RawValue Options,
         ) : Parcelable
     }
@@ -54,7 +53,7 @@ data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> 
         data class ViewModelParams(
             val packageName: String,
             val patchSelection: PatchSelection,
-            val currentSelection: SelectedVersion,
+            val selectedVersion: SelectedVersion,
         ) : Parcelable
     }
 

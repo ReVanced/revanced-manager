@@ -211,35 +211,35 @@ private fun ReVancedManager() {
                             )
                         }
                     },
-                    onPatchSelectorClick = { packageName, version, patches, options ->
+                    onPatchSelectorClick = { packageName, version, patchSelection, options ->
                         navController.navigateComplex(
                             SelectedAppInfo.PatchesSelector,
                             SelectedAppInfo.PatchesSelector.ViewModelParams(
                                 packageName,
                                 version,
-                                currentSelection = patches,
-                                options = options,
+                                patchSelection,
+                                options,
                             )
                         )
                     },
-                    onRequiredOptions = { packageName, version, patches, options ->
+                    onRequiredOptions = { packageName, version, patchSelection, options ->
                         navController.navigateComplex(
                             SelectedAppInfo.RequiredOptions,
                             SelectedAppInfo.PatchesSelector.ViewModelParams(
                                 packageName,
                                 version,
-                                currentSelection = patches,
-                                options = options,
+                                patchSelection,
+                                options,
                             )
                         )
                     },
-                    onVersionClick = { packageName, patchSelection, currentSelection ->
+                    onVersionClick = { packageName, patchSelection, selectedVersion ->
                         navController.navigateComplex(
                             SelectedAppInfo.VersionSelector,
                             SelectedAppInfo.VersionSelector.ViewModelParams(
                                 packageName,
                                 patchSelection,
-                                currentSelection,
+                                selectedVersion,
                             )
                         )
                     },

@@ -60,35 +60,33 @@ fun VersionSelectorScreen(
                 title = { Text("Auto (Recommended)") },
                 description = { Text("Automatically select the best available version") }
             )
-
-            if (versions.isNotEmpty())
-                HorizontalDivider()
-
-            LazyColumn {
-                items(versions, key = { it.first.version }) { version ->
-                    VersionOption(
-                        version = version.first,
-                        isSelected = viewModel.selectedVersion == version.first,
-                        onSelect = viewModel::selectVersion,
-                        title = { Text(version.first.version) },
-                        description = { Text(
-                            "${version.second.let { if (it == 0) "No" else it }} incompatible patches")
-                        }
-                    )
-                }
-            }
-
             HorizontalDivider()
 
-            VersionOption(
-                version = SelectedVersion.Any,
-                isSelected = viewModel.selectedVersion is SelectedVersion.Any,
-                onSelect = viewModel::selectVersion,
-                title = { Text("Any available version") },
-                description = { Text("Use any available version regardless of compatibility") }
-            )
-
-
+            if (versions.isNotEmpty()) {
+                LazyColumn {
+                    items(versions, key = { it.first.version }) { version ->
+                        VersionOption(
+                            version = version.first,
+                            isSelected = viewModel.selectedVersion == version.first,
+                            onSelect = viewModel::selectVersion,
+                            title = { Text(version.first.version) },
+                            description = {
+                                Text(
+                                    "${version.second.let { if (it == 0) "No" else it }} incompatible patches"
+                                )
+                            }
+                        )
+                    }
+                }
+            } else {
+                VersionOption(
+                    version = SelectedVersion.Any,
+                    isSelected = viewModel.selectedVersion is SelectedVersion.Any,
+                    onSelect = viewModel::selectVersion,
+                    title = { Text("Any available version") },
+                    description = { Text("Use any available version regardless of compatibility") }
+                )
+            }
         }
     }
 }

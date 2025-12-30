@@ -42,6 +42,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
@@ -59,7 +60,7 @@ class SelectedAppInfoViewModel(
     private val installedAppRepository: InstalledAppRepository = get()
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
-    val prefs: PreferencesManager = get()
+    private val prefs: PreferencesManager = get()
     val plugins = pluginsRepository.loadedPluginsFlow
     val packageName = input.packageName
     private val persistConfiguration = input.patches == null
@@ -67,8 +68,8 @@ class SelectedAppInfoViewModel(
 
     // User selection
     private var selectionFlow = MutableStateFlow(
-        input.patches?.let {
-            SelectionState.Customized(input.patches)
+        input.patches?.let { selection ->
+            SelectionState.Customized(selection)
         } ?: SelectionState.Default
     )
 
@@ -106,7 +107,7 @@ class SelectedAppInfoViewModel(
 
     // All patches for package
     @OptIn(ExperimentalCoroutinesApi::class)
-    val bundles = selectedVersion.flatMapLatest { selectedVersion ->
+    val bundles = _selectedVersion.flatMapLatest { selectedVersion ->
         val version = if (selectedVersion is SelectedVersion.Specific)
             selectedVersion.version
         else null
@@ -119,6 +120,13 @@ class SelectedAppInfoViewModel(
         bundles,
     ) { selection, bundles ->
         selection.patches(bundles, allowIncompatible = true)
+    }
+
+    val customSelection = combine(
+        selectionFlow,
+        bundles,
+    ) { selection, bundles ->
+        (selection as? SelectionState.Customized)?.patches(bundles, allowIncompatible = true)
     }
 
     // Most compatible versions based on patch selection
@@ -144,6 +152,19 @@ class SelectedAppInfoViewModel(
         }
     }
 
+    // Resolve actual source from user selection
+    val resolvedSource = _selectedSource.map { source ->
+//        TODO
+//        when (source) {
+//            is SelectedSource.Auto -> null
+//            is SelectedSource.Installed -> null
+//            is SelectedSource.Downloaded -> null
+//            is SelectedSource.Plugin -> null
+//        }
+
+        source
+    }
+
 
 
     val bundleInfoFlow by derivedStateOf {
@@ -164,7 +185,6 @@ class SelectedAppInfoViewModel(
         mutableStateOf(emptyMap())
     }
         private set
-
 
 
 
@@ -222,7 +242,7 @@ class SelectedAppInfoViewModel(
         val bundles = bundleInfoFlow.first()
         return Patcher.ViewModelParams(
             SelectedApp.Installed(packageName, version = "123"), // TODO
-            getPatches(bundles, allowIncompatible),
+            patchSelection.first(),
             getOptionsFiltered(bundles)
         )
     }

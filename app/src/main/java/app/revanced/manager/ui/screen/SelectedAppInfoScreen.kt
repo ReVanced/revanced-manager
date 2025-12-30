@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,11 +35,13 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.enabled
+import app.revanced.manager.util.patchCount
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -51,7 +52,7 @@ fun SelectedAppInfoScreen(
     onPatchSelectorClick: (packageName: String, version: String?, PatchSelection?, Options) -> Unit,
     onRequiredOptions: (packageName: String, version: String?, PatchSelection?, Options) -> Unit,
     onPatchClick: () -> Unit,
-    onVersionClick: (packageName: String, patchSelection: PatchSelection, currentSelection: SelectedVersion) -> Unit,
+    onVersionClick: (packageName: String, patchSelection: PatchSelection, selectedVersion: SelectedVersion) -> Unit,
     onSourceClick: (packageName: String, version: String?) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
@@ -61,18 +62,7 @@ fun SelectedAppInfoScreen(
     val networkConnected = remember { networkInfo.isConnected() }
     val networkMetered = remember { !networkInfo.isUnmetered() }
 
-    val packageName = vm.input.packageName
-    val version = "123" // TODO
-    val bundles by vm.bundleInfoFlow.collectAsStateWithLifecycle(emptyList())
-
-    val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
-    val patches by remember {
-        derivedStateOf {
-            vm.getPatches(bundles, allowIncompatiblePatches)
-        }
-    }
-    val selectedPatchCount = patches.values.sumOf { it.size }
-
+    val packageName = vm.packageName
     val composableScope = rememberCoroutineScope()
 
     val error by vm.errorFlow.collectAsStateWithLifecycle(null)
@@ -81,9 +71,14 @@ fun SelectedAppInfoScreen(
     val resolvedVersion by vm.resolvedVersion.collectAsStateWithLifecycle(null)
 
     val selectedSource by vm.selectedSource.collectAsStateWithLifecycle()
+    val resolvedSource by vm.resolvedSource.collectAsStateWithLifecycle(null)
 
+    val customSelection by vm.customSelection.collectAsStateWithLifecycle(null)
+    val fullPatchSelection by vm.patchSelection.collectAsStateWithLifecycle(emptyMap())
+    val patchCount = fullPatchSelection.patchCount
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
 
     Scaffold(
         topBar = {
@@ -105,19 +100,18 @@ fun SelectedAppInfoScreen(
                     )
                 },
                 onClick = patchClick@{
-                    if (selectedPatchCount == 0) {
+                    if (patchCount == 0) {
                         context.toast(context.getString(R.string.no_patches_selected))
-
                         return@patchClick
                     }
 
                     composableScope.launch {
-                        if (!vm.hasSetRequiredOptions(patches)) {
+                        if (!vm.hasSetRequiredOptions(fullPatchSelection)) {
                             onRequiredOptions(
                                 vm.packageName,
-                                version,
-                                vm.getCustomPatches(bundles, allowIncompatiblePatches),
-                                vm.options
+                                resolvedVersion,
+                                customSelection,
+                                vm.options,
                             )
                             return@launch
                         }
@@ -129,8 +123,6 @@ fun SelectedAppInfoScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
-        val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
-
         ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
@@ -148,57 +140,42 @@ fun SelectedAppInfoScreen(
 
             PageItem(
                 R.string.patch_selector_item,
-                stringResource(
-                    R.string.patch_selector_item_description,
-                    selectedPatchCount
-                ),
+                stringResource(R.string.patch_selector_item_description, patchCount),
                 onClick = {
                     onPatchSelectorClick(
                         vm.packageName,
-                        version,
-                        vm.getCustomPatches(
-                            bundles,
-                            allowIncompatiblePatches
-                        ),
+                        resolvedVersion,
+                        customSelection,
                         vm.options
                     )
                 }
             )
 
-            if (vm.input.localFile == null) {
-                val version = resolvedVersion ?: "Any available version"
+            val versionText = resolvedVersion ?: "Any available version"
+            val versionDescription = if (selectedVersion is SelectedVersion.Auto)
+                "Auto ($versionText)" // stringResource(R.string.selected_app_meta_auto_version, actualVersion)
+            else versionText
 
-                val description = if (selectedVersion is SelectedVersion.Auto)
-                    "Auto ($version)" // stringResource(R.string.selected_app_meta_auto_version, actualVersion)
-                    else version
-
-                PageItem(
-                    R.string.version_selector_item,
-                    description,
-                    onClick = { onVersionClick(packageName, patches, selectedVersion) },
-                )
-            }
+            PageItem(
+                R.string.version_selector_item,
+                versionDescription,
+                onClick = {
+                    onVersionClick(
+                        packageName,
+                        fullPatchSelection,
+                        selectedVersion,
+                    )
+                },
+            )
 
             PageItem(
                 R.string.apk_source_selector_item,
-//                when (val app = vm.input.app) {
-//                    is SelectedApp.Search -> "Auto (Downloaded APK)" // stringResource(R.string.apk_source_auto)
-//                    is SelectedApp.Installed -> app.version + " (Installed)" // stringResource(R.string.apk_source_installed)
-//                    is SelectedApp.Download -> plugins.find { it.packageName == app.data.pluginPackageName }?.name ?: app.data.pluginPackageName
-//                    is SelectedApp.Local -> if (app.temporary) "${app.version} (Local File)" else "Downloaded APK"
-//
-//
-////                        stringResource(
-////                        R.string.apk_source_downloader,
-////                        plugins.find { it.packageName == app.data.pluginPackageName }?.name
-////                            ?: app.data.pluginPackageName
-////                    )
-//                    // stringResource(R.string.apk_source_local)
-//                },
-                "Sourcing the source",
-                onClick = { onSourceClick(packageName, version) },
-                enabled = vm.input.localFile == null, // Disable for APK from storage
+                when (selectedSource) {
+                    else -> "Sourcing the source"
+                },
+                onClick = { onSourceClick(packageName, versionText) },
             )
+
             error?.let {
                 Text(
                     stringResource(it.resourceId),
@@ -211,8 +188,7 @@ fun SelectedAppInfoScreen(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val needsInternet = false
-//                    vm.input.app.let { it is SelectedApp.Search || it is SelectedApp.Download }
+                val needsInternet = resolvedSource is SelectedSource.Plugin
 
                 when {
                     !needsInternet -> {}
@@ -240,7 +216,12 @@ fun SelectedAppInfoScreen(
 }
 
 @Composable
-private fun PageItem(@StringRes title: Int, description: String, onClick: () -> Unit, enabled: Boolean = true) {
+private fun PageItem(
+    @StringRes title: Int,
+    description: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true
+) {
     ListItem(
         modifier = Modifier
             .clickable(enabled, onClick = onClick)

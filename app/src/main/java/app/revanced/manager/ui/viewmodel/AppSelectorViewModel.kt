@@ -66,6 +66,7 @@ class AppSelectorViewModel(
             return@launch
         }
 
+        // TODO: Disallow if 0 patches are compatible
         storageSelectionChannel.send(selectedApp)
     }
 
