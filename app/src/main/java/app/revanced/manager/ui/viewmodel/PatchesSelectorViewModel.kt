@@ -51,8 +51,8 @@ class PatchesSelectorViewModel(input: SelectedAppInfo.PatchesSelector.ViewModelP
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
 
-    private val packageName = input.app.packageName
-    val appVersion = input.app.version
+    private val packageName = input.packageName
+    val appVersion = input.version
 
     var selectionWarningEnabled by mutableStateOf(true)
         private set
@@ -62,7 +62,7 @@ class PatchesSelectorViewModel(input: SelectedAppInfo.PatchesSelector.ViewModelP
     val allowIncompatiblePatches =
         get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
     val bundlesFlow =
-        get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.app.version)
+        get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.version)
 
     init {
         viewModelScope.launch {

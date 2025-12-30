@@ -44,23 +44,23 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.component.SearchView
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onSelect: (String) -> Unit,
-    onStorageSelect: (SelectedApp.Local) -> Unit,
+    onSelect: (packageName: String) -> Unit,
+    onStorageSelect: (packageName: String, File) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = koinViewModel()
 ) {
     EventEffect(flow = vm.storageSelectionFlow) {
-        onStorageSelect(it)
+        onStorageSelect(it.first, it.second)
     }
 
     val pickApkLauncher =

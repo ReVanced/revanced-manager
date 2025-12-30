@@ -31,7 +31,7 @@ class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
     fs: Filesystem,
-    private val patchBundleRepository: PatchBundleRepository,
+    patchBundleRepository: PatchBundleRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val inputFile = savedStateHandle.saveable(key = "inputFile") {
@@ -42,7 +42,7 @@ class AppSelectorViewModel(
     }
     val appList = pm.appList
 
-    private val storageSelectionChannel = Channel<SelectedApp.Local>()
+    private val storageSelectionChannel = Channel<Pair<String, File>>()
     val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
@@ -66,11 +66,7 @@ class AppSelectorViewModel(
             return@launch
         }
 
-        if (patchBundleRepository.isVersionAllowed(selectedApp.packageName, selectedApp.version)) {
-            storageSelectionChannel.send(selectedApp)
-        } else {
-            nonSuggestedVersionDialogSubject = selectedApp
-        }
+        storageSelectionChannel.send(selectedApp)
     }
 
     private fun loadSelectedFile(uri: Uri) =
@@ -80,12 +76,7 @@ class AppSelectorViewModel(
                 Files.copy(stream, toPath())
 
                 pm.getPackageInfo(this)?.let { packageInfo ->
-                    SelectedApp.Local(
-                        packageName = packageInfo.packageName,
-                        version = packageInfo.versionName!!,
-                        file = this,
-                        temporary = true
-                    )
+                    Pair(packageInfo.packageName, this)
                 }
             }
         }

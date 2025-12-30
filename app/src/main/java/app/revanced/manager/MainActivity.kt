@@ -25,7 +25,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.AppSelector
 import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
@@ -141,9 +140,7 @@ private fun ReVancedManager() {
                 onPatchClick = { packageName ->
                     navController.navigateComplex(
                         SelectedAppInfo,
-                        SelectedAppInfo.ViewModelParams(
-                            SelectedApp.Search(packageName, null) // TODO
-                        )
+                        SelectedAppInfo.ViewModelParams(packageName)
                     )
                 },
                 onBackClick = navController::popBackStack,
@@ -156,15 +153,15 @@ private fun ReVancedManager() {
                 onSelect = { packageName ->
                     navController.navigateComplex(
                         SelectedAppInfo,
-                        SelectedAppInfo.ViewModelParams(
-                            SelectedApp.Search(packageName, null) // TODO
-                        )
+                        SelectedAppInfo.ViewModelParams(packageName)
                     )
                 },
-                onStorageSelect = { app ->
+                onStorageSelect = { packageName, localFile ->
                     navController.navigateComplex(
                         SelectedAppInfo,
-                        SelectedAppInfo.ViewModelParams(app)
+                        SelectedAppInfo.ViewModelParams(
+                            packageName, localFile
+                        )
                     )
                 },
                 onBackClick = navController::popBackStack
@@ -214,23 +211,25 @@ private fun ReVancedManager() {
                             )
                         }
                     },
-                    onPatchSelectorClick = { app, patches, options ->
+                    onPatchSelectorClick = { packageName, version, patches, options ->
                         navController.navigateComplex(
                             SelectedAppInfo.PatchesSelector,
                             SelectedAppInfo.PatchesSelector.ViewModelParams(
-                                app,
-                                patches,
-                                options
+                                packageName,
+                                version,
+                                currentSelection = patches,
+                                options = options,
                             )
                         )
                     },
-                    onRequiredOptions = { app, patches, options ->
+                    onRequiredOptions = { packageName, version, patches, options ->
                         navController.navigateComplex(
                             SelectedAppInfo.RequiredOptions,
                             SelectedAppInfo.PatchesSelector.ViewModelParams(
-                                app,
-                                patches,
-                                options
+                                packageName,
+                                version,
+                                currentSelection = patches,
+                                options = options,
                             )
                         )
                     },

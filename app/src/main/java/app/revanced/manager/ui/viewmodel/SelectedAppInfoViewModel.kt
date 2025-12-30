@@ -50,7 +50,7 @@ import org.koin.core.component.get
 
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class SelectedAppInfoViewModel(
-    input: SelectedAppInfo.ViewModelParams
+    val input: SelectedAppInfo.ViewModelParams
 ) : ViewModel(), KoinComponent {
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
@@ -61,7 +61,7 @@ class SelectedAppInfoViewModel(
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
     val plugins = pluginsRepository.loadedPluginsFlow
-    val packageName = input.app.packageName
+    val packageName = input.packageName
     private val persistConfiguration = input.patches == null
 
 
@@ -105,7 +105,13 @@ class SelectedAppInfoViewModel(
 
 
     // All patches for package
-    val bundles = bundleRepository.scopedBundleInfoFlow(packageName, null)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val bundles = selectedVersion.flatMapLatest { selectedVersion ->
+        val version = if (selectedVersion is SelectedVersion.Specific)
+            selectedVersion.version
+        else null
+        bundleRepository.scopedBundleInfoFlow(packageName, version)
+    }
 
     // Selection derived from selectionFlow
     val patchSelection = combine(
@@ -139,6 +145,98 @@ class SelectedAppInfoViewModel(
     }
 
 
+
+    val bundleInfoFlow by derivedStateOf {
+        bundleRepository.scopedBundleInfoFlow(packageName, null)
+    }
+
+    var options: Options by savedStateHandle.saveable {
+        viewModelScope.launch {
+            if (!persistConfiguration) return@launch // TODO: save options for patched apps.
+            val bundlePatches = bundleInfoFlow.first()
+                .associate { it.uid to it.patches.associateBy { patch -> patch.name } }
+
+            options = withContext(Dispatchers.Default) {
+                optionsRepository.getOptions(packageName, bundlePatches)
+            }
+        }
+
+        mutableStateOf(emptyMap())
+    }
+        private set
+
+
+
+
+
+    var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
+        private set
+
+    private var _selectedApp by savedStateHandle.saveable {
+        mutableStateOf(null)
+    }
+
+    var selectedAppInfo: PackageInfo? by mutableStateOf(null)
+        private set
+
+    var selectedApp
+        get() = _selectedApp
+        set(value) {
+            _selectedApp = value
+            invalidateSelectedAppInfo()
+        }
+
+
+
+
+
+
+
+    // TODO: Remove
+    private var oldSelectionState: SelectionState by savedStateHandle.saveable { mutableStateOf(SelectionState.Default) }
+
+    val errorFlow = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
+        when {
+            app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
+            else -> null
+        }
+    }
+
+
+    // TODO: Load from local file or downloaded app
+    private fun invalidateSelectedAppInfo() = viewModelScope.launch {
+        selectedAppInfo = pm.getPackageInfo(packageName)
+    }
+
+    fun getOptionsFiltered(bundles: List<PatchBundleInfo.Scoped>) = options.filtered(bundles)
+    suspend fun hasSetRequiredOptions(patchSelection: PatchSelection) = bundleInfoFlow
+        .first()
+        .requiredOptionsSet(
+            allowIncompatible = prefs.disablePatchVersionCompatCheck.get(),
+            isSelected = { bundle, patch -> patch.name in patchSelection[bundle.uid]!! },
+            optionsForPatch = { bundle, patch -> options[bundle.uid]?.get(patch.name) },
+        )
+
+    suspend fun getPatcherParams(): Patcher.ViewModelParams {
+        val allowIncompatible = prefs.disablePatchVersionCompatCheck.get()
+        val bundles = bundleInfoFlow.first()
+        return Patcher.ViewModelParams(
+            SelectedApp.Installed(packageName, version = "123"), // TODO
+            getPatches(bundles, allowIncompatible),
+            getOptionsFiltered(bundles)
+        )
+    }
+
+    fun getPatches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
+        oldSelectionState.patches(bundles, allowIncompatible)
+
+    fun getCustomPatches(
+        bundles: List<PatchBundleInfo.Scoped>,
+        allowIncompatible: Boolean
+    ): PatchSelection? =
+        (oldSelectionState as? SelectionState.Customized)?.patches(bundles, allowIncompatible)
+
+
     init {
         invalidateSelectedAppInfo()
 
@@ -166,100 +264,6 @@ class SelectedAppInfoViewModel(
                 }
         }
     }
-
-    var options: Options by savedStateHandle.saveable {
-        viewModelScope.launch {
-            if (!persistConfiguration) return@launch // TODO: save options for patched apps.
-            val bundlePatches = bundleInfoFlow.first()
-                .associate { it.uid to it.patches.associateBy { patch -> patch.name } }
-
-            options = withContext(Dispatchers.Default) {
-                optionsRepository.getOptions(packageName, bundlePatches)
-            }
-        }
-
-        mutableStateOf(emptyMap())
-    }
-        private set
-
-
-
-
-
-
-    var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
-        private set
-
-    private var _selectedApp by savedStateHandle.saveable {
-        mutableStateOf(input.app)
-    }
-
-    var selectedAppInfo: PackageInfo? by mutableStateOf(null)
-        private set
-
-    var selectedApp
-        get() = _selectedApp
-        set(value) {
-            _selectedApp = value
-            invalidateSelectedAppInfo()
-        }
-
-
-    val bundleInfoFlow by derivedStateOf {
-        bundleRepository.scopedBundleInfoFlow(packageName, selectedApp.version)
-    }
-
-
-
-
-
-    // TODO: Remove
-    private var oldSelectionState: SelectionState by savedStateHandle.saveable { mutableStateOf(SelectionState.Default) }
-
-    val errorFlow = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
-        when {
-            app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
-            else -> null
-        }
-    }
-
-
-    private fun invalidateSelectedAppInfo() = viewModelScope.launch {
-        selectedAppInfo = when (val app = selectedApp) {
-            is SelectedApp.Local -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.file) }
-            else -> withContext(Dispatchers.IO) { pm.getPackageInfo(packageName) }
-//            else -> null
-        }
-    }
-
-    fun getOptionsFiltered(bundles: List<PatchBundleInfo.Scoped>) = options.filtered(bundles)
-    suspend fun hasSetRequiredOptions(patchSelection: PatchSelection) = bundleInfoFlow
-        .first()
-        .requiredOptionsSet(
-            allowIncompatible = prefs.disablePatchVersionCompatCheck.get(),
-            isSelected = { bundle, patch -> patch.name in patchSelection[bundle.uid]!! },
-            optionsForPatch = { bundle, patch -> options[bundle.uid]?.get(patch.name) },
-        )
-
-    suspend fun getPatcherParams(): Patcher.ViewModelParams {
-        val allowIncompatible = prefs.disablePatchVersionCompatCheck.get()
-        val bundles = bundleInfoFlow.first()
-        return Patcher.ViewModelParams(
-            selectedApp,
-            getPatches(bundles, allowIncompatible),
-            getOptionsFiltered(bundles)
-        )
-    }
-
-    fun getPatches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
-        oldSelectionState.patches(bundles, allowIncompatible)
-
-    fun getCustomPatches(
-        bundles: List<PatchBundleInfo.Scoped>,
-        allowIncompatible: Boolean
-    ): PatchSelection? =
-        (oldSelectionState as? SelectionState.Customized)?.patches(bundles, allowIncompatible)
-
 
     enum class Error(@param:StringRes val resourceId: Int) {
         NoPlugins(R.string.downloader_no_plugins_available)
