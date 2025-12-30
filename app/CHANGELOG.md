@@ -1,3 +1,10 @@
+# app [1.26.0-dev.16](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.15...v1.26.0-dev.16) (2025-12-30)
+
+
+### Features
+
+* Show patches as individual steps in patcher screen ([#2889](https://github.com/ReVanced/revanced-manager/issues/2889)) ([11dd6e4](https://github.com/ReVanced/revanced-manager/commit/11dd6e4064099427a8c9bc6f225a19412e5c70e2))
+
 # app [1.26.0-dev.15](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.14...v1.26.0-dev.15) (2025-12-29)
 
 
