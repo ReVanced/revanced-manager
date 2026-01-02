@@ -1,0 +1,26 @@
+name: Push strings
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - dev
+        paths:
+            - app/src/main/res/values/strings.xml
+
+jobs:
+    push:
+        name: Push strings
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Push strings
+              uses: crowdin/github-action@v2
+              with:
+                  config: crowdin.yml
+                  upload_sources: true
+              env:
+                  CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+                  CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
