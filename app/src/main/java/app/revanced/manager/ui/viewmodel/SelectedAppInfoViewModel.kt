@@ -146,9 +146,21 @@ class SelectedAppInfoViewModel(
         when (selected) {
             is SelectedVersion.Specific -> selected.version
             is SelectedVersion.Any -> null
-            is SelectedVersion.Auto -> {
-                mostCompatible?.maxByOrNull { it.value }?.key
-            }
+            is SelectedVersion.Auto -> mostCompatible?.maxWithOrNull(
+                compareBy<Map.Entry<String, Int>> { it.value }
+                    .thenBy { it.key }
+            )?.key
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val scopedBundles = resolvedVersion.flatMapLatest { version ->
+        bundleRepository.scopedBundleInfoFlow(packageName, version)
+    }
+
+    val incompatiblePatchCount = scopedBundles.map { bundles ->
+        bundles.sumOf { bundle ->
+            bundle.incompatible.size
         }
     }
 

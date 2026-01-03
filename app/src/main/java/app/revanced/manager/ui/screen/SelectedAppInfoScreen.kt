@@ -77,6 +77,8 @@ fun SelectedAppInfoScreen(
     val fullPatchSelection by vm.patchSelection.collectAsStateWithLifecycle(emptyMap())
     val patchCount = fullPatchSelection.patchCount
 
+    val incompatibleCount by vm.incompatiblePatchCount.collectAsStateWithLifecycle(0)
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
 
@@ -151,6 +153,15 @@ fun SelectedAppInfoScreen(
                 }
             )
 
+            if (incompatibleCount > 0) {
+                Text(
+                    "$incompatibleCount incompatible",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+
             val versionText = resolvedVersion ?: "Any available version"
             val versionDescription = if (selectedVersion is SelectedVersion.Auto)
                 "Auto ($versionText)" // stringResource(R.string.selected_app_meta_auto_version, actualVersion)
@@ -170,9 +181,7 @@ fun SelectedAppInfoScreen(
 
             PageItem(
                 R.string.apk_source_selector_item,
-                when (selectedSource) {
-                    else -> "Sourcing the source"
-                },
+                selectedSource.toString(),
                 onClick = { onSourceClick(packageName, versionText, selectedSource) },
             )
 

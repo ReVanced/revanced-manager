@@ -36,6 +36,7 @@ fun VersionSelectorScreen(
     viewModel: VersionSelectorViewModel,
 ) {
     val versions by viewModel.availableVersions.collectAsStateWithLifecycle(emptyList())
+    val downloadedVersions by viewModel.downloadedVersions.collectAsStateWithLifecycle(emptyList())
 
     Scaffold(
         topBar = {
@@ -64,24 +65,35 @@ fun VersionSelectorScreen(
                 version = SelectedVersion.Auto,
                 isSelected = viewModel.selectedVersion is SelectedVersion.Auto,
                 onSelect = viewModel::selectVersion,
-                title = { Text("Auto (Recommended)") },
-                description = { Text("Automatically select the best available version") }
+                headlineContent = { Text("Auto (Recommended)") },
+                supportingContent = { Text("Automatically select the best available version") }
             )
             HorizontalDivider()
 
             if (versions.isNotEmpty()) {
                 LazyColumn {
                     items(versions, key = { it.first.version }) { version ->
+                        val isDownloaded = downloadedVersions.contains(version.first.version)
+                        val isInstalled = viewModel.installedAppVersion == version.first.version
+
+                        val overlineText = when {
+                            isDownloaded && isInstalled -> "Downloaded, Installed"
+                            isDownloaded -> "Downloaded"
+                            isInstalled -> "Installed"
+                            else -> null
+                        }
+
                         VersionOption(
                             version = version.first,
                             isSelected = viewModel.selectedVersion == version.first,
                             onSelect = viewModel::selectVersion,
-                            title = { Text(version.first.version) },
-                            description = {
+                            headlineContent = { Text(version.first.version) },
+                            supportingContent = {
                                 Text(
                                     "${version.second.let { if (it == 0) "No" else it }} incompatible patches"
                                 )
-                            }
+                            },
+                            overlineContent = overlineText?.let { { Text(it) } }
                         )
                     }
                 }
@@ -90,8 +102,8 @@ fun VersionSelectorScreen(
                     version = SelectedVersion.Any,
                     isSelected = viewModel.selectedVersion is SelectedVersion.Any,
                     onSelect = viewModel::selectVersion,
-                    title = { Text("Any available version") },
-                    description = { Text("Use any available version regardless of compatibility") }
+                    headlineContent = { Text("Any available version") },
+                    supportingContent = { Text("Use any available version regardless of compatibility") }
                 )
             }
         }
@@ -103,8 +115,9 @@ private fun VersionOption(
     version: SelectedVersion,
     isSelected: Boolean,
     onSelect: (SelectedVersion) -> Unit,
-    title: @Composable (() -> Unit),
-    description: @Composable (() -> Unit)? = null,
+    headlineContent: @Composable (() -> Unit),
+    supportingContent: @Composable (() -> Unit)? = null,
+    overlineContent: @Composable (() -> Unit)? = null,
 ) {
     ListItem(
         modifier = Modifier
@@ -115,8 +128,9 @@ private fun VersionOption(
                 onClick = null
             )
         },
-        headlineContent = title,
-        supportingContent = description,
+        headlineContent = headlineContent,
+        supportingContent = supportingContent,
+        trailingContent = overlineContent,
         colors = transparentListItemColors
     )
 }

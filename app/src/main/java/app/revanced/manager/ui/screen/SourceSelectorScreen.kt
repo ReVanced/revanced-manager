@@ -3,6 +3,8 @@ package app.revanced.manager.ui.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,7 +15,9 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedSource
@@ -28,6 +32,8 @@ fun SourceSelectorScreen(
     onSave: (source: SelectedSource) -> Unit,
     viewModel: SourceSelectorViewModel,
 ) {
+    val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -47,45 +53,61 @@ fun SourceSelectorScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             SourceOption(
-                source = SelectedSource.Auto,
                 isSelected = viewModel.selectedSource == SelectedSource.Auto,
-                onSelect = viewModel::selectSource,
+                onSelect = { viewModel.selectSource(SelectedSource.Auto) },
                 headlineContent = { Text("Auto (Recommended)") },
                 supportingContent = { Text("Automatically select the best available source") }
             )
 
-            HorizontalDivider()
-
             SourceOption(
-                source = SelectedSource.Installed,
-                isSelected = viewModel.selectedSource == SelectedSource.Installed,
-                onSelect = viewModel::selectSource,
-                headlineContent = { Text("20.14.43") },
-                supportingContent = { Text("Split APK's are not supported") },
-                overlineContent = { Text("Installed") },
-                enabled = false,
+                isSelected = viewModel.selectedSource == SelectedSource.Plugin("any"),
+                onSelect = { viewModel.selectSource(SelectedSource.Plugin("any")) },
+                headlineContent = { Text("Any available downloader") },
             )
 
+            viewModel.installedVersion?.let { installedVersion ->
+                HorizontalDivider()
+
+                SourceOption(
+                    isSelected = viewModel.selectedSource == SelectedSource.Installed,
+                    onSelect = { viewModel.selectSource(SelectedSource.Installed) },
+                    headlineContent = { Text(installedVersion) },
+                    overlineContent = { Text("Installed") },
+                    enabled = viewModel.input.version?.let { it == installedVersion } ?: true
+                )
+            }
+
+            if (downloadedApps.isNotEmpty()) {
+                HorizontalDivider()
+
+                LazyColumn {
+                    items(downloadedApps, key = { it.version }) { app ->
+                        SourceOption(
+                            isSelected = (viewModel.selectedSource as? SelectedSource.Downloaded)?.version == app.version,
+                            onSelect = { viewModel.selectDownloadedApp(app) },
+                            headlineContent = { Text(app.version) },
+                            overlineContent = { Text("Downloaded") },
+                        )
+                    }
+                }
+            }
+
             HorizontalDivider()
 
             SourceOption(
-                source = SelectedSource.Downloaded("path"),
-                isSelected = viewModel.selectedSource == SelectedSource.Downloaded("path"),
-                onSelect = viewModel::selectSource,
-                headlineContent = { Text("20.14.43") },
-//                supportingContent = { Text("") },
-                overlineContent = { Text("Downloaded") },
-
-            )
-
-            HorizontalDivider()
-
-            SourceOption(
-                source = SelectedSource.Plugin("plugin-id"),
                 isSelected = viewModel.selectedSource == SelectedSource.Plugin("plugin-id"),
-                onSelect = viewModel::selectSource,
+                onSelect = { viewModel.selectSource(SelectedSource.Plugin("plugin-id")) },
                 headlineContent = { Text("APKMirror Downloader") },
                 overlineContent = { Text("Plugin") },
+            )
+
+            SourceOption(
+                isSelected = viewModel.selectedSource == SelectedSource.Plugin("another-plugin-id"),
+                onSelect = { viewModel.selectSource(SelectedSource.Plugin("another-plugin-id")) },
+                headlineContent = { Text("Another Plugin") },
+                overlineContent = { Text("Plugin") },
+                supportingContent = { Text("Untrusted") },
+                enabled = false,
             )
 
         }
@@ -94,9 +116,8 @@ fun SourceSelectorScreen(
 
 @Composable
 private fun SourceOption(
-    source: SelectedSource,
     isSelected: Boolean,
-    onSelect: (SelectedSource) -> Unit,
+    onSelect: () -> Unit,
     headlineContent: @Composable (() -> Unit),
     supportingContent: @Composable (() -> Unit)? = null,
     overlineContent: @Composable (() -> Unit)? = null,
@@ -104,7 +125,7 @@ private fun SourceOption(
 ) {
     ListItem(
         modifier = Modifier
-            .clickable(enabled) { onSelect(source) }
+            .clickable(enabled) { onSelect() }
             .enabled(enabled),
         leadingContent = {
             RadioButton(
