@@ -1,9 +1,6 @@
 package app.revanced.manager.ui.screen.settings
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
-import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -30,9 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -54,23 +49,10 @@ fun GeneralSettingsScreen(
     onBackClick: () -> Unit,
     viewModel: GeneralSettingsViewModel = koinViewModel()
 ) {
-    val context = LocalContext.current
     val prefs = viewModel.prefs
     val coroutineScope = viewModel.viewModelScope
     var showThemePicker by rememberSaveable { mutableStateOf(false) }
     var showLanguagePicker by rememberSaveable { mutableStateOf(false) }
-
-    val openLanguageSettings = {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.startActivity(
-                Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
-                    data = "package:${context.packageName}".toUri()
-                }
-            )
-        } else {
-            showLanguagePicker = true
-        }
-    }
 
     if (showThemePicker) {
         ThemePicker(
@@ -113,11 +95,11 @@ fun GeneralSettingsScreen(
                 currentLocale?.let { viewModel.getLocaleDisplayName(it) }
             }
             SettingsListItem(
-                modifier = Modifier.clickable { openLanguageSettings() },
+                modifier = Modifier.clickable { showLanguagePicker = true },
                 headlineContent = stringResource(R.string.language),
                 supportingContent = stringResource(R.string.language_description),
                 trailingContent = {
-                    FilledTonalButton(onClick = openLanguageSettings) {
+                    FilledTonalButton(onClick = { showLanguagePicker = true }) {
                         Text(
                             currentLanguageDisplay
                                 ?: stringResource(R.string.language_system_default)

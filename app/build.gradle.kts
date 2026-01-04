@@ -145,7 +145,6 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (Debug)")
-            isPseudoLocalesEnabled = true
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
@@ -276,7 +275,7 @@ tasks {
                 |object GeneratedLocales {
                 |    val SUPPORTED_LOCALES = listOf(
                 |        Locale.ENGLISH,
-                |        $locales
+                |        $locales,
                 |    )
                 |}
                 """.trimMargin()

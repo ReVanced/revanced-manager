@@ -9,15 +9,13 @@ import java.util.Locale
 
 object SupportedLocales {
     fun getSupportedLocales(context: Context): List<Locale> {
-        val locales = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             runCatching {
                 android.app.LocaleConfig(context).supportedLocales?.toList()
             }.getOrNull() ?: GeneratedLocales.SUPPORTED_LOCALES
         } else {
             GeneratedLocales.SUPPORTED_LOCALES
         }
-
-        return locales.filterNot { it.country.run { length == 2 && startsWith("X") } }
     }
 
     fun getCurrentLocale(): Locale? =
