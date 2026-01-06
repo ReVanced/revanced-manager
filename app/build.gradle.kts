@@ -108,6 +108,10 @@ dependencies {
 
     // Compose Icons
     implementation(libs.compose.icons.fontawesome)
+
+    // Ackpine
+    implementation(libs.ackpine.core)
+    implementation(libs.ackpine.ktx)
 }
 
 buildscript {
