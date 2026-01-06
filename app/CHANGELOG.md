@@ -1,3 +1,10 @@
+# app [1.26.0-dev.17](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.16...v1.26.0-dev.17) (2026-01-06)
+
+
+### Bug Fixes
+
+* allow updating patches on metered networks ([9d9a0e8](https://github.com/ReVanced/revanced-manager/commit/9d9a0e81dbc9e73e6e3181f6bea9cabb69e49ea8))
+
 # app [1.26.0-dev.16](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.15...v1.26.0-dev.16) (2025-12-30)
 
 
