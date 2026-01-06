@@ -286,28 +286,29 @@ class PatchBundleRepository(
             State(sources.toPersistentMap(), info.toPersistentMap())
         }
 
-    suspend fun createLocal(createStream: suspend () -> InputStream) = dispatchAction("Add bundle") {
-        with(createEntity("", SourceInfo.Local).load() as LocalPatchBundle) {
-            try {
-                createStream().use { patches -> replace(patches) }
-            } catch (e: Exception) {
-                if (e is CancellationException) throw e
-                Log.e(tag, "Got exception while importing bundle", e)
-                withContext(Dispatchers.Main) {
-                    app.toast(app.getString(R.string.patches_replace_fail, e.simpleMessage()))
+    suspend fun createLocal(createStream: suspend () -> InputStream) =
+        dispatchAction("Add bundle") {
+            with(createEntity("", SourceInfo.Local).load() as LocalPatchBundle) {
+                try {
+                    createStream().use { patches -> replace(patches) }
+                } catch (e: Exception) {
+                    if (e is CancellationException) throw e
+                    Log.e(tag, "Got exception while importing bundle", e)
+                    withContext(Dispatchers.Main) {
+                        app.toast(app.getString(R.string.patches_replace_fail, e.simpleMessage()))
+                    }
+
+                    deleteLocalFile()
                 }
-
-                deleteLocalFile()
             }
-        }
 
-        doReload()
-    }
+            doReload()
+        }
 
     suspend fun createRemote(url: String, autoUpdate: Boolean) =
         dispatchAction("Add bundle ($url)") { state ->
             val src = createEntity("", SourceInfo.from(url), autoUpdate).load() as RemotePatchBundle
-            update(src)
+            update(src, force = true)
             state.copy(sources = state.sources.put(src.uid, src))
         }
 
@@ -329,32 +330,38 @@ class PatchBundleRepository(
             state.copy(sources = state.sources.put(uid, newSrc))
         }
 
-    suspend fun update(vararg sources: RemotePatchBundle, showToast: Boolean = false) {
+    suspend fun update(
+        vararg sources: RemotePatchBundle,
+        showToast: Boolean = false,
+        force: Boolean = false
+    ) {
         val uids = sources.map { it.uid }.toSet()
-        store.dispatch(Update(showToast = showToast) { it.uid in uids })
+        store.dispatch(Update(showToast = showToast, force = force) { it.uid in uids })
     }
 
-    suspend fun redownloadRemoteBundles() = store.dispatch(Update(force = true))
+    suspend fun redownloadRemoteBundles() = store.dispatch(Update(force = true, redownload = true))
 
     /**
      * Updates all bundles that should be automatically updated.
      */
-    suspend fun updateCheck() = store.dispatch(Update { it.autoUpdate })
+    suspend fun updateCheck() =
+        store.dispatch(Update(force = prefs.allowMeteredNetworks.get()) { it.autoUpdate })
 
     private inner class Update(
         private val force: Boolean = false,
+        private val redownload: Boolean = false,
         private val showToast: Boolean = false,
         private val predicate: (bundle: RemotePatchBundle) -> Boolean = { true },
     ) : Action<State> {
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
 
-        override fun toString() = if (force) "Redownload remote bundles" else "Update check"
+        override fun toString() = if (redownload) "Redownload remote bundles" else "Update check"
 
         override suspend fun ActionContext.execute(
             current: State
         ) = coroutineScope {
-            if (!networkInfo.isSafe()) {
+            if (!networkInfo.isSafe(force)) {
                 Log.d(tag, "Skipping update check because the network is down or metered.")
                 return@coroutineScope current
             }
@@ -367,7 +374,7 @@ class PatchBundleRepository(
                         Log.d(tag, "Updating patch bundle: ${it.name}")
 
                         val newVersion = with(it) {
-                            if (force) downloadLatest() else update()
+                            if (redownload) downloadLatest() else update()
                         } ?: return@async null
 
                         it to newVersion

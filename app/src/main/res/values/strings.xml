@@ -217,6 +217,10 @@ You will not be able to update the previously installed apps from this source."<
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
+    <string name="networking">Networking</string>
+    <string name="allow_metered_networks">Allow metered networks</string>
+    <string name="allow_metered_networks_description">Permits automatic updates on metered networks.
+    The application might still warn about metered networks for manual operations.</string>
     <string name="downloaded_apps">Downloaded apps</string>
     <string name="process_runtime">Run Patcher in another process (experimental)</string>
     <string name="process_runtime_description">This is faster and allows Patcher to use more memory</string>

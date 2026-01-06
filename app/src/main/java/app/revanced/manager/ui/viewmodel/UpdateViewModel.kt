@@ -82,7 +82,7 @@ class UpdateViewModel(
         uiSafe(app, R.string.failed_to_download_update, "Failed to download update") {
             val release = releaseInfo!!
             withContext(Dispatchers.IO) {
-                if (!networkInfo.isSafe() && !ignoreInternetCheck) {
+                if (!networkInfo.isSafe(false) && !ignoreInternetCheck) {
                     showInternetCheckDialog = true
                 } else {
                     state = State.DOWNLOADING

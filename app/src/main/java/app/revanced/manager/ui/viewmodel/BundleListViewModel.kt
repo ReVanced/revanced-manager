@@ -54,6 +54,7 @@ class BundleListViewModel : ViewModel(), KoinComponent {
                 patchBundleRepository.update(
                     *getSelectedSources().filterIsInstance<RemotePatchBundle>().toTypedArray(),
                     showToast = true,
+                    force = true
                 )
             }
         }
@@ -65,7 +66,7 @@ class BundleListViewModel : ViewModel(), KoinComponent {
     fun update(src: PatchBundleSource) = viewModelScope.launch {
         if (src !is RemotePatchBundle) return@launch
 
-        patchBundleRepository.update(src, showToast = true)
+        patchBundleRepository.update(src, showToast = true, force = true)
     }
 
     enum class Event {

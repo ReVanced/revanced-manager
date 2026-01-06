@@ -105,6 +105,14 @@ fun GeneralSettingsScreen(
                     description = R.string.pure_black_theme_description
                 )
             }
+
+            GroupHeader(stringResource(R.string.networking))
+            BooleanItem(
+                preference = prefs.allowMeteredNetworks,
+                coroutineScope = coroutineScope,
+                headline = R.string.allow_metered_networks,
+                description = R.string.allow_metered_networks_description
+            )
         }
     }
 }
