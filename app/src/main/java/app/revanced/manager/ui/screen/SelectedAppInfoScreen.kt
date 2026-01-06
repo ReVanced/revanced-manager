@@ -182,25 +182,22 @@ fun SelectedAppInfoScreen(
             PageItem(
                 R.string.apk_source_selector_item,
                 selectedSource.toString(),
-                onClick = { onSourceClick(packageName, versionText, selectedSource) },
+                onClick = { onSourceClick(packageName, resolvedVersion, selectedSource) },
             )
 
-            error?.let {
-                Text(
-                    stringResource(it.resourceId),
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
+//            error?.let {
+//                Text(
+//                    stringResource(it.resourceId),
+//                    color = MaterialTheme.colorScheme.error,
+//                    modifier = Modifier.padding(horizontal = 16.dp)
+//                )
+//            }
 
-            Column(
+            if (resolvedSource is SelectedSource.Plugin) Column(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val needsInternet = resolvedSource is SelectedSource.Plugin
-
                 when {
-                    !needsInternet -> {}
                     !networkConnected -> {
                         NotificationCard(
                             isWarning = true,
@@ -209,7 +206,6 @@ fun SelectedAppInfoScreen(
                             onDismiss = null
                         )
                     }
-
                     networkMetered -> {
                         NotificationCard(
                             isWarning = true,

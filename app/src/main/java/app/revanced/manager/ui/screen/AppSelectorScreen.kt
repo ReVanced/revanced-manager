@@ -83,12 +83,12 @@ fun AppSelectorScreen(
         }
     }
 
-    vm.nonSuggestedVersionDialogSubject?.let {
-        NonSuggestedVersionDialog(
-            suggestedVersion = suggestedVersions[it.packageName].orEmpty(),
-            onDismiss = vm::dismissNonSuggestedVersionDialog
-        )
-    }
+//    vm.nonSuggestedVersionDialogSubject?.let {
+//        NonSuggestedVersionDialog(
+//            suggestedVersion = suggestedVersions[it.packageName].orEmpty(),
+//            onDismiss = vm::dismissNonSuggestedVersionDialog
+//        )
+//    }
 
     if (search)
         SearchView(

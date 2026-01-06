@@ -3,9 +3,6 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +11,6 @@ import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
@@ -47,14 +43,14 @@ class AppSelectorViewModel(
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
 
-    var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
-        private set
+//    var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
+//        private set
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 
-    fun dismissNonSuggestedVersionDialog() {
-        nonSuggestedVersionDialogSubject = null
-    }
+//    fun dismissNonSuggestedVersionDialog() {
+//        nonSuggestedVersionDialogSubject = null
+//    }
 
     fun handleStorageResult(uri: Uri) = viewModelScope.launch {
         val selectedApp = withContext(Dispatchers.IO) {

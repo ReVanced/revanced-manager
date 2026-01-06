@@ -39,7 +39,7 @@ import app.revanced.manager.patcher.toRemoteError
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
-import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
@@ -67,7 +67,9 @@ class PatcherWorker(
     private val rootInstaller: RootInstaller by inject()
 
     class Args(
-        val input: SelectedApp,
+        val packageName: String,
+        val version: String?,
+        val source: SelectedSource,
         val output: String,
         val selectedPatches: PatchSelection,
         val options: Options,
@@ -75,9 +77,7 @@ class PatcherWorker(
         val handleStartActivityRequest: suspend (LoadedDownloaderPlugin, Intent) -> ActivityResult,
         val setInputFile: suspend (File) -> Unit,
         val onEvent: (ProgressEvent) -> Unit,
-    ) {
-        val packageName get() = input.packageName
-    }
+    )
 
     override suspend fun getForegroundInfo() =
         ForegroundInfo(
@@ -142,7 +142,7 @@ class PatcherWorker(
         val patchedApk = fs.tempDir.resolve("patched.apk")
 
         return try {
-            if (args.input is SelectedApp.Installed) {
+            if (args.source is SelectedSource.Installed) {
                 installedAppRepository.get(args.packageName)?.let {
                     if (it.installType == InstallType.MOUNT) {
                         rootInstaller.unmount(args.packageName)
@@ -155,7 +155,7 @@ class PatcherWorker(
                     plugin,
                     data,
                     args.packageName,
-                    args.input.version,
+                    args.version,
                     prefs.suggestedVersionSafeguard.get(),
                     !prefs.disablePatchVersionCompatCheck.get(),
                     onDownload = { progress ->
@@ -169,18 +169,10 @@ class PatcherWorker(
                     }
                 ).also { args.setInputFile(it) }
 
-            val inputFile = when (val selectedApp = args.input) {
-                is SelectedApp.Download -> {
-                    runStep(StepId.DownloadAPK, args.onEvent) {
-                        val (plugin, data) = downloaderPluginRepository.unwrapParceledData(
-                            selectedApp.data
-                        )
+            val inputFile = when (val source = args.source) {
+                is SelectedSource.Auto -> throw Exception("Auto source is not supported in worker.")
 
-                        download(plugin, data)
-                    }
-                }
-
-                is SelectedApp.Search -> {
+                is SelectedSource.Plugin -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
                         downloaderPluginRepository.loadedPluginsFlow.first()
                             .firstNotNullOfOrNull { plugin ->
@@ -206,10 +198,10 @@ class PatcherWorker(
                                     withContext(Dispatchers.IO) {
                                         plugin.get(
                                             getScope,
-                                            selectedApp.packageName,
-                                            selectedApp.version
+                                            args.packageName,
+                                            args.version
                                         )
-                                    }?.takeIf { (_, version) -> selectedApp.version == null || version == selectedApp.version }
+                                    }?.takeIf { (_, version) -> args.version == null || version == args.version }
                                 } catch (e: UserInteractionException.Activity.NotCompleted) {
                                     throw e
                                 } catch (_: UserInteractionException) {
@@ -219,8 +211,9 @@ class PatcherWorker(
                     }
                 }
 
-                is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
-                is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo!!.sourceDir)
+                is SelectedSource.Downloaded -> File(source.path)
+
+                is SelectedSource.Installed -> File(pm.getPackageInfo(args.packageName)!!.applicationInfo!!.sourceDir)
             }
 
             val runtime = if (prefs.useProcessRuntime.get()) {
@@ -258,9 +251,10 @@ class PatcherWorker(
             Result.failure()
         } finally {
             patchedApk.delete()
-            if (args.input is SelectedApp.Local && args.input.temporary) {
-                args.input.file.delete()
-            }
+            // TODO
+//            if (args.source is SelectedApp.Local && args.source.temporary) {
+//                args.source.file.delete()
+//            }
         }
     }
 

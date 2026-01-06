@@ -37,7 +37,7 @@ import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.ui.model.InstallerModel
-import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.Step
@@ -93,9 +93,8 @@ class PatcherViewModel(
     private val ackpineInstaller: PackageInstaller = get()
 
     private var installedApp: InstalledApp? = null
-    private val selectedApp = input.selectedApp
-    val packageName = selectedApp.packageName
-    val version = selectedApp.version
+    val packageName = input.packageName
+    val version = input.version
 
     var installedPackageName by savedStateHandle.saveable(
         key = "installedPackageName",
@@ -160,7 +159,7 @@ class PatcherViewModel(
     }
 
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
-        generateSteps(app, input.selectedApp, input.selectedPatches).toMutableStateList()
+        generateSteps(app, input.selectedSource, input.selectedPatches).toMutableStateList()
     }
 
     val progress by derivedStateOf {
@@ -178,7 +177,9 @@ class PatcherViewModel(
         ParcelUuid(
             workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
                 "patching", PatcherWorker.Args(
-                    input.selectedApp,
+                    input.packageName,
+                    input.version,
+                    input.selectedSource,
                     outputFile.path,
                     input.selectedPatches,
                     input.options,
@@ -257,7 +258,7 @@ class PatcherViewModel(
         super.onCleared()
         workManager.cancelWorkById(patcherWorkerId.uuid)
 
-        if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.MOUNT) {
+        if (input.selectedSource is SelectedSource.Installed && installedApp?.installType == InstallType.MOUNT) {
             GlobalScope.launch(Dispatchers.Main) {
                 uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
                     withTimeout(Duration.ofMinutes(1L)) {
@@ -381,7 +382,7 @@ class PatcherViewModel(
                 installedAppRepository.addOrUpdate(
                     installerPkgName,
                     packageName,
-                    input.selectedApp.version
+                    input.version
                         ?: withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile)?.versionName!! },
                     InstallType.DEFAULT,
                     input.selectedPatches
@@ -443,7 +444,7 @@ class PatcherViewModel(
                             }
                         }
 
-                        val inputVersion = input.selectedApp.version
+                        val inputVersion = input.version
                             ?: withContext(Dispatchers.IO) { inputFile?.let(pm::getPackageInfo)?.versionName }
                             ?: throw Exception("Failed to determine input APK version")
 
@@ -535,10 +536,10 @@ class PatcherViewModel(
 
         fun generateSteps(
             context: Context,
-            selectedApp: SelectedApp,
+            selectedSource: SelectedSource,
             selectedPatches: PatchSelection
         ): List<Step> = buildList {
-            if (selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search)
+            if (selectedSource is SelectedSource.Plugin)
                 add(
                     Step(
                         StepId.DownloadAPK,

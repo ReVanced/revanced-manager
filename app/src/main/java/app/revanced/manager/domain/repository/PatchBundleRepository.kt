@@ -37,7 +37,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -84,7 +83,7 @@ class PatchBundleRepository(
                     .map(PatchInfo::toPatcherPatch)
             }.toSet()
 
-            allPatches.mostCommonCompatibleVersions(countUnusedPatches = false)[packageName]
+            allPatches.mostCommonCompatibleVersions(countUnusedPatches = true)[packageName]
         }
 
     val suggestedVersions = bundleInfoFlow.map {

@@ -14,7 +14,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
-import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
@@ -25,7 +24,6 @@ import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.plugin.downloader.PluginHostApi
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.ui.model.navigation.Patcher
@@ -201,8 +199,8 @@ class SelectedAppInfoViewModel(
 
 
 
-    var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
-        private set
+//    var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
+//        private set
 
     private var _selectedApp by savedStateHandle.saveable {
         mutableStateOf(null)
@@ -229,7 +227,7 @@ class SelectedAppInfoViewModel(
 
     val errorFlow = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
         when {
-            app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
+//            app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
             else -> null
         }
     }
@@ -253,7 +251,9 @@ class SelectedAppInfoViewModel(
         val allowIncompatible = prefs.disablePatchVersionCompatCheck.get()
         val bundles = bundleInfoFlow.first()
         return Patcher.ViewModelParams(
-            SelectedApp.Installed(packageName, version = "123"), // TODO
+            input.packageName,
+            resolvedVersion.first(),
+            resolvedSource.first(),
             patchSelection.first(),
             getOptionsFiltered(bundles)
         )
@@ -287,13 +287,13 @@ class SelectedAppInfoViewModel(
             val installedAppDeferred =
                 async(Dispatchers.IO) { installedAppRepository.get(packageName) }
 
-            installedAppData =
-                packageInfo.await()?.let {
-                    SelectedApp.Installed(
-                        packageName,
-                        it.versionName!!
-                    ) to installedAppDeferred.await()
-                }
+//            installedAppData =
+//                packageInfo.await()?.let {
+//                    SelectedApp.Installed(
+//                        packageName,
+//                        it.versionName!!
+//                    ) to installedAppDeferred.await()
+//                }
         }
     }
 

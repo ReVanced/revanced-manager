@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.model.navigation
 
 import android.os.Parcelable
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.util.Options
@@ -76,7 +75,9 @@ data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> 
 data object Patcher : ComplexParameter<Patcher.ViewModelParams> {
     @Parcelize
     data class ViewModelParams(
-        val selectedApp: SelectedApp,
+        val packageName: String,
+        val version: String?,
+        val selectedSource: SelectedSource,
         val selectedPatches: PatchSelection,
         val options: @RawValue Options
     ) : Parcelable

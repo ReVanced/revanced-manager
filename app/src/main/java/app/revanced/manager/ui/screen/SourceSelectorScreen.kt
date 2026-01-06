@@ -1,8 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -16,8 +14,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedSource
@@ -32,7 +34,10 @@ fun SourceSelectorScreen(
     onSave: (source: SelectedSource) -> Unit,
     viewModel: SourceSelectorViewModel,
 ) {
+    val context = LocalContext.current
+
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
+    val plugins by viewModel.plugins.collectAsStateWithLifecycle(emptyList())
 
     Scaffold(
         topBar = {
@@ -49,67 +54,72 @@ fun SourceSelectorScreen(
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier.padding(paddingValues)
+        LazyColumn (
+            contentPadding = paddingValues,
         ) {
-            SourceOption(
-                isSelected = viewModel.selectedSource == SelectedSource.Auto,
-                onSelect = { viewModel.selectSource(SelectedSource.Auto) },
-                headlineContent = { Text("Auto (Recommended)") },
-                supportingContent = { Text("Automatically select the best available source") }
-            )
-
-            SourceOption(
-                isSelected = viewModel.selectedSource == SelectedSource.Plugin("any"),
-                onSelect = { viewModel.selectSource(SelectedSource.Plugin("any")) },
-                headlineContent = { Text("Any available downloader") },
-            )
-
-            viewModel.installedVersion?.let { installedVersion ->
-                HorizontalDivider()
-
+            item {
                 SourceOption(
-                    isSelected = viewModel.selectedSource == SelectedSource.Installed,
-                    onSelect = { viewModel.selectSource(SelectedSource.Installed) },
-                    headlineContent = { Text(installedVersion) },
-                    overlineContent = { Text("Installed") },
-                    enabled = viewModel.input.version?.let { it == installedVersion } ?: true
+                    isSelected = viewModel.selectedSource == SelectedSource.Auto,
+                    onSelect = { viewModel.selectSource(SelectedSource.Auto) },
+                    headlineContent = { Text("Auto (Recommended)") },
+                    supportingContent = { Text("Automatically select the best available source") }
+                )
+            }
+            item {
+                SourceOption(
+                    isSelected = viewModel.selectedSource == SelectedSource.Plugin(null),
+                    onSelect = { viewModel.selectSource(SelectedSource.Plugin(null)) },
+                    headlineContent = { Text("Any available downloader") },
                 )
             }
 
-            if (downloadedApps.isNotEmpty()) {
-                HorizontalDivider()
+            viewModel.installedVersion?.let { installedVersion ->
+                item {
+                    HorizontalDivider()
 
-                LazyColumn {
-                    items(downloadedApps, key = { it.version }) { app ->
-                        SourceOption(
-                            isSelected = (viewModel.selectedSource as? SelectedSource.Downloaded)?.version == app.version,
-                            onSelect = { viewModel.selectDownloadedApp(app) },
-                            headlineContent = { Text(app.version) },
-                            overlineContent = { Text("Downloaded") },
-                        )
-                    }
+                    SourceOption(
+                        isSelected = viewModel.selectedSource == SelectedSource.Installed,
+                        onSelect = { viewModel.selectSource(SelectedSource.Installed) },
+                        headlineContent = { Text(installedVersion) },
+                        overlineContent = { Text("Installed") },
+                        enabled = viewModel.input.version?.let { it == installedVersion } ?: true
+                    )
                 }
             }
 
-            HorizontalDivider()
+            if (downloadedApps.isNotEmpty()) item { HorizontalDivider() }
 
-            SourceOption(
-                isSelected = viewModel.selectedSource == SelectedSource.Plugin("plugin-id"),
-                onSelect = { viewModel.selectSource(SelectedSource.Plugin("plugin-id")) },
-                headlineContent = { Text("APKMirror Downloader") },
-                overlineContent = { Text("Plugin") },
-            )
+            items(downloadedApps, key = { it.version }) { app ->
+                SourceOption(
+                    isSelected = (viewModel.selectedSource as? SelectedSource.Downloaded)?.version == app.version,
+                    onSelect = { viewModel.selectDownloadedApp(app) },
+                    headlineContent = { Text(app.version) },
+                    overlineContent = { Text("Downloaded") },
+                )
+            }
 
-            SourceOption(
-                isSelected = viewModel.selectedSource == SelectedSource.Plugin("another-plugin-id"),
-                onSelect = { viewModel.selectSource(SelectedSource.Plugin("another-plugin-id")) },
-                headlineContent = { Text("Another Plugin") },
-                overlineContent = { Text("Plugin") },
-                supportingContent = { Text("Untrusted") },
-                enabled = false,
-            )
+            if (plugins.isNotEmpty()) item { HorizontalDivider() }
 
+            items(plugins, key = { it.first }) {
+                val packageInfo = remember {
+                    viewModel.getPackageInfo(it.first)
+                }
+
+                val label = remember {
+                    packageInfo?.applicationInfo?.loadLabel(context.packageManager).toString()
+                }
+
+                SourceOption(
+                    isSelected = viewModel.selectedSource == SelectedSource.Plugin(it.first),
+                    onSelect = { viewModel.selectSource(SelectedSource.Plugin(it.first)) },
+                    headlineContent = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    overlineContent = { Text("Plugin") },
+                    enabled = it.second is DownloaderPluginState.Loaded,
+                    supportingContent = (it.second as? DownloaderPluginState.Untrusted)?.let { {
+                        Text("Not trusted")
+                    } }
+                )
+            }
         }
     }
 }

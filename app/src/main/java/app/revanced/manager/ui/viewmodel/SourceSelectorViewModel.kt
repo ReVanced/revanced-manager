@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.repository.DownloadedAppRepository
+import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.util.PM
@@ -19,10 +21,17 @@ class SourceSelectorViewModel(
     val input: SelectedAppInfo.SourceSelector.ViewModelParams
 ) : ViewModel(), KoinComponent {
     private val downloadedAppRepository: DownloadedAppRepository = get()
+    private val pluginRepository: DownloaderPluginRepository = get()
     private val pm: PM = get()
 
     val downloadedApps = downloadedAppRepository.get(input.packageName)
         .map { it.sortedByDescending { app -> app.version } }
+
+    val plugins = pluginRepository.pluginStates.map { plugins ->
+        plugins.toList().sortedByDescending { it.second is DownloaderPluginState.Loaded }
+    }
+
+    fun getPackageInfo(packageName: String) = pm.getPackageInfo(packageName)
 
     var selectedSource by mutableStateOf(input.selectedSource)
         private set
