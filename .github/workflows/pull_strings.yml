@@ -25,6 +25,7 @@ jobs:
           config: crowdin.yml
           upload_sources: false
           download_translations: true
+          download_sources_args: --dest manager.xml
           skip_ref_checkout: true
           localization_branch_name: feat/translations
           create_pull_request: false
