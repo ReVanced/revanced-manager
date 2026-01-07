@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -49,13 +50,14 @@ import org.koin.core.component.get
 
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class SelectedAppInfoViewModel(
-    val input: SelectedAppInfo.ViewModelParams
+    private val input: SelectedAppInfo.ViewModelParams
 ) : ViewModel(), KoinComponent {
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
     private val pluginsRepository: DownloaderPluginRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
+    private val downloadedAppRepository: DownloadedAppRepository = get()
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
@@ -101,16 +103,8 @@ class SelectedAppInfoViewModel(
     }
 
 
-
-
     // All patches for package
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val bundles = _selectedVersion.flatMapLatest { selectedVersion ->
-        val version = if (selectedVersion is SelectedVersion.Specific)
-            selectedVersion.version
-        else null
-        bundleRepository.scopedBundleInfoFlow(packageName, version)
-    }
+    val bundles = bundleRepository.scopedBundleInfoFlow(packageName, null)
 
     // Selection derived from selectionFlow
     val patchSelection = combine(
@@ -163,19 +157,28 @@ class SelectedAppInfoViewModel(
     }
 
     // Resolve actual source from user selection
-    val resolvedSource = _selectedSource.map { source ->
-//        TODO
-//        when (source) {
-//            is SelectedSource.Auto -> null
-//            is SelectedSource.Installed -> null
-//            is SelectedSource.Downloaded -> null
-//            is SelectedSource.Plugin -> null
-//        }
+    val resolvedSource = combine(
+        _selectedSource,
+        resolvedVersion
+    ) { source, version ->
+        when (source) {
+            is SelectedSource.Installed -> source
+            is SelectedSource.Local -> source
+            is SelectedSource.Downloaded -> source
+            is SelectedSource.Plugin -> source
+            is SelectedSource.Auto -> {
+                val app = version?.let {
+                    downloadedAppRepository.get(packageName, it)
+                }
+                val file = app?.let {
+                    downloadedAppRepository.getApkFileForApp(it)
+                }
 
-        source
+                file?.let { SelectedSource.Downloaded(it.path, version) }
+                    ?: SelectedSource.Plugin(null)
+            }
+        }
     }
-
-
 
     val bundleInfoFlow by derivedStateOf {
         bundleRepository.scopedBundleInfoFlow(packageName, null)
@@ -197,6 +200,16 @@ class SelectedAppInfoViewModel(
         private set
 
 
+    val errorFlow = combine(
+        plugins,
+        resolvedSource,
+    ) { pluginsList, source ->
+        when {
+            source is SelectedSource.Plugin && pluginsList.isEmpty() -> Error.NoPlugins
+            else -> null
+        }
+    }
+
 
 
 //    var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
@@ -217,20 +230,6 @@ class SelectedAppInfoViewModel(
         }
 
 
-
-
-
-
-
-    // TODO: Remove
-    private var oldSelectionState: SelectionState by savedStateHandle.saveable { mutableStateOf(SelectionState.Default) }
-
-    val errorFlow = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
-        when {
-//            app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
-            else -> null
-        }
-    }
 
 
     // TODO: Load from local file or downloaded app
@@ -258,16 +257,6 @@ class SelectedAppInfoViewModel(
             getOptionsFiltered(bundles)
         )
     }
-
-    fun getPatches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
-        oldSelectionState.patches(bundles, allowIncompatible)
-
-    fun getCustomPatches(
-        bundles: List<PatchBundleInfo.Scoped>,
-        allowIncompatible: Boolean
-    ): PatchSelection? =
-        (oldSelectionState as? SelectionState.Customized)?.patches(bundles, allowIncompatible)
-
 
     init {
         invalidateSelectedAppInfo()

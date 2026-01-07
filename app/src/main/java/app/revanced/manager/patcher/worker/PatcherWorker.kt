@@ -158,16 +158,15 @@ class PatcherWorker(
                     args.version,
                     prefs.suggestedVersionSafeguard.get(),
                     !prefs.disablePatchVersionCompatCheck.get(),
-                    onDownload = { progress ->
-                        args.onEvent(
-                            ProgressEvent.Progress(
-                                stepId = StepId.DownloadAPK,
-                                current = progress.first,
-                                total = progress.second
-                            )
+                ) { progress ->
+                    args.onEvent(
+                        ProgressEvent.Progress(
+                            stepId = StepId.DownloadAPK,
+                            current = progress.first,
+                            total = progress.second
                         )
-                    }
-                ).also { args.setInputFile(it) }
+                    )
+                }.also { args.setInputFile(it) }
 
             val inputFile = when (val source = args.source) {
                 is SelectedSource.Auto -> throw Exception("Auto source is not supported in worker.")
@@ -212,6 +211,7 @@ class PatcherWorker(
                 }
 
                 is SelectedSource.Downloaded -> File(source.path)
+                is SelectedSource.Local -> File(source.path)
 
                 is SelectedSource.Installed -> File(pm.getPackageInfo(args.packageName)!!.applicationInfo!!.sourceDir)
             }
@@ -251,10 +251,7 @@ class PatcherWorker(
             Result.failure()
         } finally {
             patchedApk.delete()
-            // TODO
-//            if (args.source is SelectedApp.Local && args.source.temporary) {
-//                args.source.file.delete()
-//            }
+            if (args.source is SelectedSource.Local) File(args.source.path).delete()
         }
     }
 

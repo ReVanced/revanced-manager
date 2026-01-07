@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -80,7 +81,6 @@ fun SelectedAppInfoScreen(
     val incompatibleCount by vm.incompatiblePatchCount.collectAsStateWithLifecycle(0)
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
 
     Scaffold(
         topBar = {
@@ -150,17 +150,15 @@ fun SelectedAppInfoScreen(
                         customSelection,
                         vm.options
                     )
-                }
+                },
+                extraDescription = if (incompatibleCount > 0) { {
+                    Text(
+                        "$incompatibleCount incompatible",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                } } else null,
             )
-
-            if (incompatibleCount > 0) {
-                Text(
-                    "$incompatibleCount incompatible",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
 
             val versionText = resolvedVersion ?: "Any available version"
             val versionDescription = if (selectedVersion is SelectedVersion.Auto)
@@ -179,19 +177,32 @@ fun SelectedAppInfoScreen(
                 },
             )
 
+            val sourceText = when (val source = resolvedSource) {
+                is SelectedSource.Installed -> "Installed APK"
+                is SelectedSource.Downloaded -> "Downloaded APK"
+                is SelectedSource.Local -> "Local APK"
+                is SelectedSource.Plugin -> {
+                    source.packageName ?: "Any available downloader"
+                }
+                else -> "Auto"
+            }
+            val sourceDescription = if (selectedSource is SelectedSource.Auto)
+                "Auto ($sourceText)" // stringResource(R.string.selected_app_meta_auto_version, actualVersion)
+            else sourceText
+
             PageItem(
                 R.string.apk_source_selector_item,
-                selectedSource.toString(),
+                sourceDescription,
                 onClick = { onSourceClick(packageName, resolvedVersion, selectedSource) },
             )
 
-//            error?.let {
-//                Text(
-//                    stringResource(it.resourceId),
-//                    color = MaterialTheme.colorScheme.error,
-//                    modifier = Modifier.padding(horizontal = 16.dp)
-//                )
-//            }
+            error?.let {
+                Text(
+                    stringResource(it.resourceId),
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
 
             if (resolvedSource is SelectedSource.Plugin) Column(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
@@ -225,7 +236,8 @@ private fun PageItem(
     @StringRes title: Int,
     description: String,
     onClick: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    extraDescription: @Composable (ColumnScope.() -> Unit)? = null,
 ) {
     ListItem(
         modifier = Modifier
@@ -239,11 +251,14 @@ private fun PageItem(
             )
         },
         supportingContent = {
-            Text(
-                description,
-                color = MaterialTheme.colorScheme.outline,
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Column {
+                Text(
+                    description,
+                    color = MaterialTheme.colorScheme.outline,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                extraDescription?.invoke(this)
+            }
         },
         trailingContent = {
             Icon(Icons.AutoMirrored.Outlined.ArrowRight, null)

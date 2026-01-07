@@ -39,6 +39,9 @@ fun SourceSelectorScreen(
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val plugins by viewModel.plugins.collectAsStateWithLifecycle(emptyList())
 
+    val version = viewModel.input.version
+    fun matchesVersion(appVersion: String) = version == null || version == appVersion
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -82,7 +85,7 @@ fun SourceSelectorScreen(
                         onSelect = { viewModel.selectSource(SelectedSource.Installed) },
                         headlineContent = { Text(installedVersion) },
                         overlineContent = { Text("Installed") },
-                        enabled = viewModel.input.version?.let { it == installedVersion } ?: true
+                        enabled = matchesVersion(installedVersion)
                     )
                 }
             }
@@ -95,6 +98,7 @@ fun SourceSelectorScreen(
                     onSelect = { viewModel.selectDownloadedApp(app) },
                     headlineContent = { Text(app.version) },
                     overlineContent = { Text("Downloaded") },
+                    enabled = matchesVersion(app.version)
                 )
             }
 
