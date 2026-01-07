@@ -149,7 +149,6 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (Debug)")
-            isPseudoLocalesEnabled = true
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
@@ -243,6 +242,8 @@ android {
             version = "3.22.1"
         }
     }
+
+    sourceSets["main"].kotlin.srcDir(layout.buildDirectory.dir("generated/source/locales"))
 }
 
 kotlin {
@@ -250,6 +251,47 @@ kotlin {
 }
 
 tasks {
+    val generateSupportedLocales by registering {
+        description = "Generate list of supported locales from resource directories"
+
+        val resDir = file("src/main/res")
+        val outputDir = layout.buildDirectory.dir("generated/source/locales")
+
+        inputs.dir(resDir)
+        outputs.dir(outputDir)
+
+        doLast {
+            val locales = resDir.listFiles()
+                .orEmpty()
+                .filter { it.isDirectory && it.name.matches(Regex("values-[a-z]{2}(-r[A-Z]{2})?")) }
+                .map { it.name.removePrefix("values-").replace("-r", "-") }
+                .sorted()
+                .joinToString(",\n        ") { "Locale.forLanguageTag(\"$it\")" }
+
+            val output = outputDir.get().asFile.resolve("app/revanced/manager/util/GeneratedLocales.kt")
+            output.parentFile.mkdirs()
+            output.writeText(
+                """
+                |package app.revanced.manager.util
+                |
+                |import java.util.Locale
+                |
+                |object GeneratedLocales {
+                |    val SUPPORTED_LOCALES = listOf(
+                |        Locale.ENGLISH,
+                |        $locales,
+                |    )
+                |}
+                """.trimMargin()
+            )
+        }
+    }
+
+    preBuild {
+        dependsOn(generateSupportedLocales)
+    }
+
+
     // Needed by gradle-semantic-release-plugin.
     // Tracking: https://github.com/KengoTODA/gradle-semantic-release-plugin/issues/435.
     val publish by registering {

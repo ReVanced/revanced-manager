@@ -83,7 +83,7 @@ Second \"item\" text"</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="general">General</string>
-    <string name="general_description">Theme, dynamic color</string>
+    <string name="general_description">Language, theme, dynamic color</string>
     <string name="updates">Updates</string>
     <string name="updates_description">Check for updates and view changelogs</string>
     <string name="downloads">Downloads</string>
@@ -104,6 +104,9 @@ Second \"item\" text"</string>
     <string name="pure_black_theme_description">Use pure black backgrounds for dark theme</string>
     <string name="theme">Theme</string>
     <string name="theme_description">Choose between light or dark theme</string>
+    <string name="language">Language</string>
+    <string name="language_description">Choose the app display language</string>
+    <string name="language_system_default">System default</string>
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">Do not restrict patches to compatible app versions</string>

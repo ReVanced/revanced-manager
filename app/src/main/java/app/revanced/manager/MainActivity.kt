@@ -3,11 +3,11 @@ package app.revanced.manager
 import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -63,7 +63,7 @@ import org.koin.androidx.compose.navigation.koinNavViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
