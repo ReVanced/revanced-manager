@@ -266,7 +266,7 @@ tasks {
                 .filter { it.isDirectory && it.name.matches(Regex("values-[a-z]{2}(-r[A-Z]{2})?")) }
                 .map { it.name.removePrefix("values-").replace("-r", "-") }
                 .sorted()
-                .joinToString(",\n        ") { "Locale.forLanguageTag(\"$it\")" }
+                .joinToString("\n        ") { "Locale.forLanguageTag(\"$it\")," }
 
             val output = outputDir.get().asFile.resolve("app/revanced/manager/util/GeneratedLocales.kt")
             output.parentFile.mkdirs()
@@ -278,8 +278,7 @@ tasks {
                 |
                 |object GeneratedLocales {
                 |    val SUPPORTED_LOCALES = listOf(
-                |        Locale.ENGLISH,
-                |        $locales,
+                |        Locale.ENGLISH,$locales
                 |    )
                 |}
                 """.trimMargin()
