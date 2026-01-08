@@ -1,3 +1,15 @@
+# app [1.26.0-dev.18](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.17...v1.26.0-dev.18) (2026-01-08)
+
+
+### Bug Fixes
+
+* Prevent trailing comma when no locales are generated ([b16931c](https://github.com/ReVanced/revanced-manager/commit/b16931ca79d5ce4d17c75f6dd3bf6f976b8ff7be))
+
+
+### Features
+
+* Add language settings ([#2913](https://github.com/ReVanced/revanced-manager/issues/2913)) ([df31b39](https://github.com/ReVanced/revanced-manager/commit/df31b39cc8c1fbf00bc3301468e8e7e4b283caf2))
+
 # app [1.26.0-dev.17](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.16...v1.26.0-dev.17) (2026-01-06)
 
 
