@@ -1,4 +1,4 @@
-package app.revanced.manager.plugin.downloader
+package app.revanced.manager.downloader
 
 import android.app.Activity
 import android.app.Service
@@ -28,7 +28,7 @@ fun <T : Parcelable> DownloaderScope<T>.download(block: suspend OutputDownloadSc
  */
 suspend inline fun <reified ACTIVITY : Activity> GetScope.requestStartActivity() =
     requestStartActivity(
-        Intent().apply { setClassName(pluginPackageName, ACTIVITY::class.qualifiedName!!) }
+        Intent().apply { setClassName(downloaderPackageName, ACTIVITY::class.qualifiedName!!) }
     )
 
 /**
@@ -38,5 +38,5 @@ suspend inline fun <reified ACTIVITY : Activity> GetScope.requestStartActivity()
 suspend inline fun <reified SERVICE : Service, R : Any?> DownloaderScope<*>.useService(
     noinline block: suspend (IBinder) -> R
 ) = useService(
-    Intent().apply { setClassName(pluginPackageName, SERVICE::class.qualifiedName!!) }, block
+    Intent().apply { setClassName(downloaderPackageName, SERVICE::class.qualifiedName!!) }, block
 )

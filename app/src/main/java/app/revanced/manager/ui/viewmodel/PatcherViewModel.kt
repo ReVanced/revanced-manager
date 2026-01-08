@@ -34,8 +34,8 @@ import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.plugin.downloader.PluginHostApi
-import app.revanced.manager.plugin.downloader.UserInteractionException
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
@@ -79,7 +79,7 @@ import java.io.File
 import java.nio.file.Files
 import java.time.Duration
 
-@OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
+@OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
 class PatcherViewModel(
     private val input: Patcher.ViewModelParams
 ) : ViewModel(), KoinComponent, InstallerModel {
@@ -184,13 +184,13 @@ class PatcherViewModel(
                     input.options,
                     logger,
                     setInputFile = { withContext(Dispatchers.Main) { inputFile = it } },
-                    handleStartActivityRequest = { plugin, intent ->
+                    handleStartActivityRequest = { downloader, intent ->
                         withContext(Dispatchers.Main) {
                             if (currentActivityRequest != null) throw Exception("Another request is already pending.")
                             try {
                                 // Wait for the dialog interaction.
                                 val accepted = with(CompletableDeferred<Boolean>()) {
-                                    currentActivityRequest = this to plugin.name
+                                    currentActivityRequest = this to downloader.name
 
                                     await()
                                 }

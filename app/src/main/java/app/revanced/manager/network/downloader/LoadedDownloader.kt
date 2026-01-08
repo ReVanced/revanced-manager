@@ -1,11 +1,11 @@
 package app.revanced.manager.network.downloader
 
 import android.os.Parcelable
-import app.revanced.manager.plugin.downloader.OutputDownloadScope
-import app.revanced.manager.plugin.downloader.GetScope
+import app.revanced.manager.downloader.OutputDownloadScope
+import app.revanced.manager.downloader.GetScope
 import java.io.OutputStream
 
-class LoadedDownloaderPlugin(
+class LoadedDownloader(
     val packageName: String,
     val name: String,
     val version: String,

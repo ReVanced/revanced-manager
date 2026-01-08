@@ -148,7 +148,7 @@ fun PatcherScreen(
             },
             title = { Text(title) },
             text = {
-                Text(stringResource(R.string.plugin_activity_dialog_body))
+                Text(stringResource(R.string.downloader_activity_dialog_body))
             }
         )
     }

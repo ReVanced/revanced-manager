@@ -1,12 +1,14 @@
-package app.revanced.manager.plugin.downloader.webview
+package app.revanced.manager.downloader.webview
 
 import android.content.Intent
-import app.revanced.manager.plugin.downloader.DownloadUrl
-import app.revanced.manager.plugin.downloader.DownloaderScope
-import app.revanced.manager.plugin.downloader.GetScope
-import app.revanced.manager.plugin.downloader.Scope
-import app.revanced.manager.plugin.downloader.Downloader
-import app.revanced.manager.plugin.downloader.PluginHostApi
+import app.revanced.manager.downloader.DownloadUrl
+import app.revanced.manager.downloader.DownloaderScope
+import app.revanced.manager.downloader.GetScope
+import app.revanced.manager.downloader.Scope
+import app.revanced.manager.downloader.Downloader
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.webview.IWebView
+import app.revanced.manager.downloader.webview.IWebViewEvents
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,7 +34,7 @@ interface WebViewCallbackScope<T> : Scope {
     suspend fun load(url: String)
 }
 
-@OptIn(PluginHostApi::class)
+@OptIn(DownloaderHostApi::class)
 class WebViewScope<T> internal constructor(
     coroutineScope: CoroutineScope,
     private val scopeImpl: Scope,
@@ -110,7 +112,7 @@ private value class Container<U>(val value: U)
  * @param title The string displayed in the action bar.
  * @param block The control block.
  */
-@OptIn(PluginHostApi::class)
+@OptIn(DownloaderHostApi::class)
 suspend fun <T> GetScope.runWebView(
     title: String,
     block: suspend WebViewScope<T>.() -> InitialUrl
