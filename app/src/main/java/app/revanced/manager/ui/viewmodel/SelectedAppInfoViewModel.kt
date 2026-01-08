@@ -7,7 +7,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,6 +46,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import java.io.File
 
 @OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
 class SelectedAppInfoViewModel(
@@ -63,6 +63,7 @@ class SelectedAppInfoViewModel(
     private val prefs: PreferencesManager = get()
     val plugins = pluginsRepository.loadedPluginsFlow
     val packageName = input.packageName
+    val localPath = input.localPath
     private val persistConfiguration = input.patches == null
 
 
@@ -260,6 +261,17 @@ class SelectedAppInfoViewModel(
 
     init {
         invalidateSelectedAppInfo()
+
+        input.localPath?.let { local ->
+            viewModelScope.launch {
+                val packageInfo = pm.getPackageInfo(File(local))
+
+                _selectedVersion.value = SelectedVersion.Specific(
+                    packageInfo?.versionName ?: return@launch
+                )
+                _selectedSource.value = SelectedSource.Local(local)
+            }
+        }
 
         // Get the previous selection if customization is enabled.
         viewModelScope.launch {

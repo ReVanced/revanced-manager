@@ -12,10 +12,14 @@ import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.patchCount
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import java.io.File
 
 class VersionSelectorViewModel(
     val input: SelectedAppInfo.VersionSelector.ViewModelParams
@@ -32,15 +36,25 @@ class VersionSelectorViewModel(
             apps.map { it.version }
         }
 
-    val availableVersions = patchBundleRepository.suggestedVersions(input.packageName, input.patchSelection)
-        .map { versions ->
-            versions.orEmpty()
-                .map { (key, value) -> SelectedVersion.Specific(key) to patchCount - value }
-                .sortedWith(
-                    compareBy<Pair<SelectedVersion.Specific, Int>>{ it.second }
-                        .thenByDescending { it.first.version }
-                )
-        }
+    private val _localVersion = MutableStateFlow<String?>(null)
+    val localVersion: StateFlow<String?> = _localVersion
+
+    val availableVersions = combine(
+        patchBundleRepository.suggestedVersions(input.packageName, input.patchSelection),
+        _localVersion,
+    ) { versions, local ->
+        versions.orEmpty()
+            .let { versions ->
+                local?.let {
+                    versions.toMutableMap().also { it.putIfAbsent(local, 0) }
+                } ?: versions
+            }
+            .map { (key, value) -> SelectedVersion.Specific(key) to patchCount - value }
+            .sortedWith(
+                compareBy<Pair<SelectedVersion.Specific, Int>>{ it.second }
+                    .thenByDescending { it.first.version }
+            )
+    }
 
     var installedAppVersion by mutableStateOf<String?>(null)
 
@@ -53,6 +67,12 @@ class VersionSelectorViewModel(
             if (patchedApp?.currentPackageName == input.packageName) return@launch
 
             installedAppVersion = currentApp?.versionName
+        }
+        input.localPath?.let { local ->
+            viewModelScope.launch {
+                val packageInfo = pm.getPackageInfo(File(local))
+                _localVersion.value = packageInfo?.versionName
+            }
         }
     }
 

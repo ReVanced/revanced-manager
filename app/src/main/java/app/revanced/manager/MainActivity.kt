@@ -156,11 +156,11 @@ private fun ReVancedManager() {
                         SelectedAppInfo.ViewModelParams(packageName)
                     )
                 },
-                onStorageSelect = { packageName, localFile ->
+                onStorageSelect = { packageName, localPath ->
                     navController.navigateComplex(
                         SelectedAppInfo,
                         SelectedAppInfo.ViewModelParams(
-                            packageName, localFile
+                            packageName, localPath
                         )
                     )
                 },
@@ -233,23 +233,25 @@ private fun ReVancedManager() {
                             )
                         )
                     },
-                    onVersionClick = { packageName, patchSelection, selectedVersion ->
+                    onVersionClick = { packageName, patchSelection, selectedVersion, local ->
                         navController.navigateComplex(
                             SelectedAppInfo.VersionSelector,
                             SelectedAppInfo.VersionSelector.ViewModelParams(
                                 packageName,
                                 patchSelection,
                                 selectedVersion,
+                                local,
                             )
                         )
                     },
-                    onSourceClick = { packageName, version, selectedSource ->
+                    onSourceClick = { packageName, version, selectedSource, local ->
                         navController.navigateComplex(
                             SelectedAppInfo.SourceSelector,
                             SelectedAppInfo.SourceSelector.ViewModelParams(
                                 packageName,
                                 version,
                                 selectedSource,
+                                local,
                             )
                         )
                     },

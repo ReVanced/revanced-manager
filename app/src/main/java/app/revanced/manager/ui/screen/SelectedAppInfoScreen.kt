@@ -53,8 +53,8 @@ fun SelectedAppInfoScreen(
     onPatchSelectorClick: (packageName: String, version: String?, PatchSelection?, Options) -> Unit,
     onRequiredOptions: (packageName: String, version: String?, PatchSelection?, Options) -> Unit,
     onPatchClick: () -> Unit,
-    onVersionClick: (packageName: String, patchSelection: PatchSelection, selectedVersion: SelectedVersion) -> Unit,
-    onSourceClick: (packageName: String, version: String?, SelectedSource) -> Unit,
+    onVersionClick: (packageName: String, patchSelection: PatchSelection, selectedVersion: SelectedVersion, localPath: String?) -> Unit,
+    onSourceClick: (packageName: String, version: String?, SelectedSource, localPath: String?) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
@@ -173,6 +173,7 @@ fun SelectedAppInfoScreen(
                         packageName,
                         fullPatchSelection,
                         selectedVersion,
+                        vm.localPath,
                     )
                 },
             )
@@ -193,7 +194,12 @@ fun SelectedAppInfoScreen(
             PageItem(
                 R.string.apk_source_selector_item,
                 sourceDescription,
-                onClick = { onSourceClick(packageName, resolvedVersion, selectedSource) },
+                onClick = { onSourceClick(
+                    packageName,
+                    resolvedVersion,
+                    selectedSource,
+                    vm.localPath,
+                ) },
             )
 
             error?.let {

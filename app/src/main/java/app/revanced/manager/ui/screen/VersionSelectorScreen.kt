@@ -37,6 +37,7 @@ fun VersionSelectorScreen(
 ) {
     val versions by viewModel.availableVersions.collectAsStateWithLifecycle(emptyList())
     val downloadedVersions by viewModel.downloadedVersions.collectAsStateWithLifecycle(emptyList())
+    val localVersion by viewModel.localVersion.collectAsStateWithLifecycle(null)
 
     Scaffold(
         topBar = {
@@ -75,8 +76,10 @@ fun VersionSelectorScreen(
                     items(versions, key = { it.first.version }) { version ->
                         val isDownloaded = downloadedVersions.contains(version.first.version)
                         val isInstalled = viewModel.installedAppVersion == version.first.version
+                        val isLocal = localVersion == version.first.version
 
                         val overlineText = when {
+                            isLocal -> "Local"
                             isDownloaded && isInstalled -> "Downloaded, Installed"
                             isDownloaded -> "Downloaded"
                             isInstalled -> "Installed"

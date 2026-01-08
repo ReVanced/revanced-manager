@@ -49,13 +49,12 @@ import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
-import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
     onSelect: (packageName: String) -> Unit,
-    onStorageSelect: (packageName: String, File) -> Unit,
+    onStorageSelect: (packageName: String, path: String) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = koinViewModel()
 ) {

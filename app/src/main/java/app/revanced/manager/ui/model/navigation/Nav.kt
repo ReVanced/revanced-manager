@@ -8,7 +8,6 @@ import app.revanced.manager.util.PatchSelection
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 import kotlinx.serialization.Serializable
-import java.io.File
 
 interface ComplexParameter<T : Parcelable>
 
@@ -29,7 +28,7 @@ data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> 
     @Parcelize
     data class ViewModelParams(
         val packageName: String,
-        val localFile: File? = null,
+        val localPath: String? = null,
         val patches: PatchSelection? = null
     ) : Parcelable
 
@@ -54,6 +53,7 @@ data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> 
             val packageName: String,
             val patchSelection: PatchSelection,
             val selectedVersion: SelectedVersion,
+            val localPath: String? = null,
         ) : Parcelable
     }
 
@@ -64,6 +64,7 @@ data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> 
             val packageName: String,
             val version: String?,
             val selectedSource: SelectedSource,
+            val localPath: String? = null,
         ) : Parcelable
     }
 

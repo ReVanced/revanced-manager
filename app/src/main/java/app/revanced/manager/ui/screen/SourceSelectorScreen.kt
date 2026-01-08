@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Save
@@ -14,13 +13,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.revanced.manager.network.downloader.DownloaderPluginState
+import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.viewmodel.SourceSelectorViewModel
@@ -34,13 +33,8 @@ fun SourceSelectorScreen(
     onSave: (source: SelectedSource) -> Unit,
     viewModel: SourceSelectorViewModel,
 ) {
-    val context = LocalContext.current
-
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val plugins by viewModel.plugins.collectAsStateWithLifecycle(emptyList())
-
-    val version = viewModel.input.version
-    fun matchesVersion(appVersion: String) = version == null || version == appVersion
 
     Scaffold(
         topBar = {
@@ -51,13 +45,13 @@ fun SourceSelectorScreen(
         },
         floatingActionButton = {
             HapticExtendedFloatingActionButton(
-                text = { Text("Save") },
+                text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = { onSave(viewModel.selectedSource) },
             )
         }
     ) { paddingValues ->
-        LazyColumn (
+        LazyColumnWithScrollbar (
             contentPadding = paddingValues,
         ) {
             item {
@@ -76,57 +70,62 @@ fun SourceSelectorScreen(
                 )
             }
 
-            viewModel.installedVersion?.let { installedVersion ->
+            viewModel.localApp?.let { option ->
                 item {
                     HorizontalDivider()
-
                     SourceOption(
-                        isSelected = viewModel.selectedSource == SelectedSource.Installed,
-                        onSelect = { viewModel.selectSource(SelectedSource.Installed) },
-                        headlineContent = { Text(installedVersion) },
-                        overlineContent = { Text("Installed") },
-                        enabled = matchesVersion(installedVersion)
+                        sourceOption = option,
+                        isSelected = viewModel.selectedSource == option.source,
+                        onSelect = viewModel::selectSource,
+                    )
+                }
+            }
+
+            viewModel.installedSource?.let { option ->
+                item {
+                    HorizontalDivider()
+                    SourceOption(
+                        sourceOption = option,
+                        isSelected = viewModel.selectedSource == option.source,
+                        onSelect = viewModel::selectSource,
                     )
                 }
             }
 
             if (downloadedApps.isNotEmpty()) item { HorizontalDivider() }
-
-            items(downloadedApps, key = { it.version }) { app ->
+            items(downloadedApps, key = { it.key }) { option ->
                 SourceOption(
-                    isSelected = (viewModel.selectedSource as? SelectedSource.Downloaded)?.version == app.version,
-                    onSelect = { viewModel.selectDownloadedApp(app) },
-                    headlineContent = { Text(app.version) },
-                    overlineContent = { Text("Downloaded") },
-                    enabled = matchesVersion(app.version)
+                    sourceOption = option,
+                    isSelected = viewModel.selectedSource == option.source,
+                    onSelect = viewModel::selectSource,
                 )
             }
 
             if (plugins.isNotEmpty()) item { HorizontalDivider() }
-
-            items(plugins, key = { it.first }) {
-                val packageInfo = remember {
-                    viewModel.getPackageInfo(it.first)
-                }
-
-                val label = remember {
-                    packageInfo?.applicationInfo?.loadLabel(context.packageManager).toString()
-                }
-
+            items(plugins, key = { it.key }) { option ->
                 SourceOption(
-                    isSelected = viewModel.selectedSource == SelectedSource.Plugin(it.first),
-                    onSelect = { viewModel.selectSource(SelectedSource.Plugin(it.first)) },
-                    headlineContent = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                    overlineContent = { Text("Plugin") },
-                    enabled = it.second is DownloaderPluginState.Loaded,
-                    supportingContent = (it.second as? DownloaderPluginState.Untrusted)?.let { {
-                        Text("Not trusted")
-                    } }
+                    sourceOption = option,
+                    isSelected = viewModel.selectedSource == option.source,
+                    onSelect = viewModel::selectSource,
                 )
             }
         }
     }
 }
+
+@Composable
+private fun SourceOption(
+    sourceOption: SourceSelectorViewModel.SourceOption,
+    isSelected: Boolean,
+    onSelect: (SelectedSource) -> Unit,
+) = SourceOption(
+    isSelected = isSelected,
+    onSelect = { onSelect(sourceOption.source) },
+    overlineContent = sourceOption.category?.let {{ Text(it) }},
+    headlineContent = { Text(sourceOption.title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+    supportingContent = sourceOption.disableReason?.let {{ Text(it.message) }},
+    enabled = sourceOption.disableReason == null,
+)
 
 @Composable
 private fun SourceOption(

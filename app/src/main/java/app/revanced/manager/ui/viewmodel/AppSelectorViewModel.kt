@@ -38,7 +38,7 @@ class AppSelectorViewModel(
     }
     val appList = pm.appList
 
-    private val storageSelectionChannel = Channel<Pair<String, File>>()
+    private val storageSelectionChannel = Channel<Pair<String, String>>()
     val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
@@ -73,7 +73,7 @@ class AppSelectorViewModel(
                 Files.copy(stream, toPath())
 
                 pm.getPackageInfo(this)?.let { packageInfo ->
-                    Pair(packageInfo.packageName, this)
+                    Pair(packageInfo.packageName, path)
                 }
             }
         }
