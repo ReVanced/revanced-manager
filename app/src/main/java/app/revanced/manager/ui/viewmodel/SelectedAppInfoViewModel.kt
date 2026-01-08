@@ -73,7 +73,7 @@ class SelectedAppInfoViewModel(
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
-    val downloader = downloaderRepository.loadedDownloaderFlow
+    val downloader = downloaderRepository.loadedDownloaderPackageFlow
     val desiredVersion = input.app.version
     val packageName = input.app.packageName
 

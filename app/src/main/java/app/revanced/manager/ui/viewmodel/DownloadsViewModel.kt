@@ -21,7 +21,7 @@ class DownloadsViewModel(
     private val downloaderRepository: DownloaderRepository,
     val pm: PM
 ) : ViewModel() {
-    val downloaderStates = downloaderRepository.downloaderStates
+    val downloaderStates = downloaderRepository.downloaderPackageStates
     val downloadedApps = downloadedAppRepository.getAll().map { downloadedApps ->
         downloadedApps.sortedWith(
             compareBy<DownloadedApp> {

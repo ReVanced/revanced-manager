@@ -176,7 +176,7 @@ You will not be able to update the previously installed apps from this source."<
     <string name="patch_options_reset_all_dialog_description">You are about to reset all patch options. You will have to reapply each option again.</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="downloader">Downloader</string>
-    <string name="downloader_state_trusted">Trusted</string>
+    <string name="downloader_state_trusted">Trusted%s</string>
     <string name="downloader_state_failed">Failed to load. Click for more details</string>
     <string name="downloader_state_untrusted">Untrusted</string>
     <string name="downloader_trust_dialog_title">Trust downloader?</string>

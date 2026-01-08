@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import android.R.attr.name
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -201,7 +202,7 @@ fun SelectedAppInfoScreen(
                     is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
                     is SelectedApp.Download -> stringResource(
                         R.string.apk_source_downloader,
-                        downloader.find { it.packageName == app.data.downloaderPackageName }?.name
+                        downloader.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderName }?.let { "${it.packageName} ${it.name}" }
                             ?: app.data.downloaderPackageName
                     )
 

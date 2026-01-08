@@ -7,7 +7,7 @@ import android.util.Log
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.downloader.TrustedDownloader
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.network.downloader.DownloaderState
+import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.downloader.DownloaderBuilder
@@ -33,93 +33,98 @@ class DownloaderRepository(
     db: AppDatabase
 ) {
     private val trustDao = db.trustedDownloaderDao()
-    private val _downloaderStates = MutableStateFlow(emptyMap<String, DownloaderState>())
-    val downloaderStates = _downloaderStates.asStateFlow()
-    val loadedDownloaderFlow = downloaderStates.map { states ->
-        states.values.filterIsInstance<DownloaderState.Loaded>().map { it.downloader }
+    private val _downloaderPackageStates = MutableStateFlow(emptyMap<String, DownloaderPackageState>())
+    val downloaderPackageStates = _downloaderPackageStates.asStateFlow()
+    val loadedDownloaderPackageFlow = downloaderPackageStates.map { states ->
+        states.values.filterIsInstance<DownloaderPackageState.Loaded>().flatMap { it.downloader }
     }
 
-    private val acknowledgedDownloader = prefs.acknowledgedDownloader
+    private val acknowledgedPackageDownloader = prefs.acknowledgedDownloader
     private val installedDownloaderPackageNames = MutableStateFlow(emptySet<String>())
     val newDownloaderPackageNames = combine(
         installedDownloaderPackageNames,
-        acknowledgedDownloader.flow
+        acknowledgedPackageDownloader.flow
     ) { installed, acknowledged ->
         installed subtract acknowledged
     }
 
     suspend fun reload() {
-        val downloader =
+        val downloaderPackages =
             withContext(Dispatchers.IO) {
                 pm.getPackagesWithFeature(DOWNLOADER_FEATURE)
                     .associate { it.packageName to loadDownloader(it.packageName) }
             }
 
-        _downloaderStates.value = downloader
-        installedDownloaderPackageNames.value = downloader.keys
+        _downloaderPackageStates.value = downloaderPackages
+        installedDownloaderPackageNames.value = downloaderPackages.keys
 
-        val acknowledgedDownloader = this@DownloaderRepository.acknowledgedDownloader.get()
+        val acknowledgedDownloader = this@DownloaderRepository.acknowledgedPackageDownloader.get()
         val uninstalledDownloader = acknowledgedDownloader subtract installedDownloaderPackageNames.value
         if (uninstalledDownloader.isNotEmpty()) {
             Log.d(tag, "Uninstalled downloader: ${uninstalledDownloader.joinToString(", ")}")
-            this@DownloaderRepository.acknowledgedDownloader.update(acknowledgedDownloader subtract uninstalledDownloader)
+            this@DownloaderRepository.acknowledgedPackageDownloader.update(acknowledgedDownloader subtract uninstalledDownloader)
             trustDao.removeAll(uninstalledDownloader)
         }
     }
 
     fun unwrapParceledData(data: ParceledDownloaderData): Pair<LoadedDownloader, Parcelable> {
         val downloader =
-            (_downloaderStates.value[data.downloaderPackageName] as? DownloaderState.Loaded)?.downloader
-                ?: throw Exception("Downloader with name ${data.downloaderPackageName} is not available")
+            (_downloaderPackageStates.value[data.downloaderPackageName] as? DownloaderPackageState.Loaded)
+                ?.downloader?.first { it.name == data.downloaderName }
+                ?: throw Exception("Downloader package name ${data.downloaderPackageName} is not available")
 
         return downloader to data.unwrapWith(downloader)
     }
 
-    private suspend fun loadDownloader(packageName: String): DownloaderState {
+    private suspend fun loadDownloader(packageName: String): DownloaderPackageState {
         try {
-            if (!verify(packageName)) return DownloaderState.Untrusted
+            if (!verify(packageName)) return DownloaderPackageState.Untrusted
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
             Log.e(tag, "Got exception while verifying downloader $packageName", e)
-            return DownloaderState.Failed(e)
+            return DownloaderPackageState.Failed(e)
         }
 
         return try {
             val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
-            val className = packageInfo.applicationInfo!!.metaData.getString(METADATA_DOWNLOADER_CLASS)
-                ?: throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASS")
+            val classNames = packageInfo.applicationInfo!!.metaData.getStringArray(METADATA_DOWNLOADER_CLASSES)
+                ?: throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASSES")
 
             val classLoader =
                 PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
             val downloaderContext = app.createPackageContext(packageName, 0)
 
-            val downloader = classLoader
-                .loadClass(className)
-                .getDownloaderBuilder()
-                .build(
-                    scopeImpl = object : Scope {
-                        override val hostPackageName = app.packageName
-                        override val downloaderPackageName = downloaderContext.packageName
-                    },
-                    context = downloaderContext
-                )
+            val scopeImpl = object : Scope {
+                override val hostPackageName = app.packageName
+                override val downloaderPackageName = downloaderContext.packageName
+            }
 
-            DownloaderState.Loaded(
-                LoadedDownloader(
-                    packageName,
-                    with(pm) { packageInfo.label() },
-                    packageInfo.versionName!!,
-                    downloader.get,
-                    downloader.download,
-                    classLoader
-                )
+            DownloaderPackageState.Loaded(
+                classNames.map { className ->
+                    val downloader = classLoader
+                        .loadClass(className)
+                        .getDownloaderBuilder()
+                        .build(
+                            scopeImpl = scopeImpl,
+                            context = downloaderContext
+                        )
+
+                    LoadedDownloader(
+                        packageName,
+                        with(pm) { packageInfo.label() },
+                        packageInfo.versionName!!,
+                        downloader.get,
+                        downloader.download,
+                        classLoader
+                    )
+                }
             )
         } catch (e: CancellationException) {
             throw e
         } catch (t: Throwable) {
             Log.e(tag, "Failed to load downloader $packageName", t)
-            DownloaderState.Failed(t)
+            DownloaderPackageState.Failed(t)
         }
     }
 
@@ -133,7 +138,7 @@ class DownloaderRepository(
 
         reload()
         prefs.edit {
-            acknowledgedDownloader += packageName
+            acknowledgedPackageDownloader += packageName
         }
     }
 
@@ -141,7 +146,7 @@ class DownloaderRepository(
         trustDao.remove(packageName).also { reload() }
 
     suspend fun acknowledgeAllNewDownloader() =
-        acknowledgedDownloader.update(installedDownloaderPackageNames.value)
+        acknowledgedPackageDownloader.update(installedDownloaderPackageNames.value)
 
     private suspend fun verify(packageName: String): Boolean {
         val expectedSignature =
@@ -152,7 +157,7 @@ class DownloaderRepository(
 
     private companion object {
         const val DOWNLOADER_FEATURE = "app.revanced.manager.downloader"
-        const val METADATA_DOWNLOADER_CLASS = "app.revanced.manager.downloader.class"
+        const val METADATA_DOWNLOADER_CLASSES = "app.revanced.manager.downloader.classes"
 
         const val PUBLIC_STATIC = Modifier.PUBLIC or Modifier.STATIC
         val Int.isPublicStatic get() = (this and PUBLIC_STATIC) == PUBLIC_STATIC

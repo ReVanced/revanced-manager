@@ -7,8 +7,6 @@ import app.revanced.manager.downloader.GetScope
 import app.revanced.manager.downloader.Scope
 import app.revanced.manager.downloader.Downloader
 import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.downloader.webview.IWebView
-import app.revanced.manager.downloader.webview.IWebViewEvents
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

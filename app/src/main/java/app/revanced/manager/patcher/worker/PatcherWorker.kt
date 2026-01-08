@@ -182,7 +182,7 @@ class PatcherWorker(
 
                 is SelectedApp.Search -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
-                        downloaderRepository.loadedDownloaderFlow.first()
+                        downloaderRepository.loadedDownloaderPackageFlow.first()
                             .firstNotNullOfOrNull { downloader ->
                                 try {
                                     val getScope = object : GetScope {
@@ -250,11 +250,21 @@ class PatcherWorker(
                 tag,
                 "An exception occurred in the remote process while patching. ${e.originalStackTrace}".logFmt()
             )
-            args.onEvent(ProgressEvent.Failed(null, e.toRemoteError())) // Fallback if exception doesn't occur within step
+            args.onEvent(
+                ProgressEvent.Failed(
+                    null,
+                    e.toRemoteError()
+                )
+            ) // Fallback if exception doesn't occur within step
             Result.failure()
         } catch (e: Exception) {
             Log.e(tag, "An exception occurred while patching".logFmt(), e)
-            args.onEvent(ProgressEvent.Failed(null, e.toRemoteError())) // Fallback if exception doesn't occur within step
+            args.onEvent(
+                ProgressEvent.Failed(
+                    null,
+                    e.toRemoteError()
+                )
+            ) // Fallback if exception doesn't occur within step
             Result.failure()
         } finally {
             patchedApk.delete()
