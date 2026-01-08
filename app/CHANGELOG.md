@@ -1,3 +1,10 @@
+# app [1.26.0-dev.19](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.18...v1.26.0-dev.19) (2026-01-08)
+
+
+### Bug Fixes
+
+* **locales:** use buildconfig instead of generating kt file ([72b1db9](https://github.com/ReVanced/revanced-manager/commit/72b1db9a2f33ab5d5fffd8ba83c05901eff19bea))
+
 # app [1.26.0-dev.18](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.17...v1.26.0-dev.18) (2026-01-08)
 
 
