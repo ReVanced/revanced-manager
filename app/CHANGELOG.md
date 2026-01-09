@@ -1,3 +1,10 @@
+# app [1.26.0-dev.20](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.19...v1.26.0-dev.20) (2026-01-09)
+
+
+### Bug Fixes
+
+* Save FAB freaking out in select patches screen ([4c0b6b0](https://github.com/ReVanced/revanced-manager/commit/4c0b6b02e95a8d6f655bcf5c25493b1f9a4a4dcd))
+
 # app [1.26.0-dev.19](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.18...v1.26.0-dev.19) (2026-01-08)
 
 
