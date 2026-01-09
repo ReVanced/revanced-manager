@@ -90,8 +90,10 @@ class UpdateViewModel(
                     http.download(location) {
                         url(release.downloadUrl)
                         onDownload { bytesSentTotal, contentLength ->
-                            downloadedSize = bytesSentTotal
-                            totalSize = contentLength
+                            withContext(Dispatchers.Main) {
+                                downloadedSize = bytesSentTotal
+                                contentLength?.let { totalSize = it }
+                            }
                         }
                     }
                     installUpdate()

@@ -1,4 +1,7 @@
+import com.mikepenz.aboutlibraries.plugin.DuplicateMode
+import com.mikepenz.aboutlibraries.plugin.DuplicateRule
 import io.github.z4kn4fein.semver.toVersion
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import kotlin.random.Random
 
 plugins {
@@ -9,6 +12,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.devtools)
     alias(libs.plugins.about.libraries)
+    alias(libs.plugins.about.libraries.android)
     signing
 }
 
@@ -81,7 +85,8 @@ dependencies {
     implementation(libs.koin.workmanager)
 
     // Licenses
-    implementation(libs.about.libraries)
+    implementation(libs.about.libraries.core)
+    implementation(libs.about.libraries.m3)
 
     // Ktor
     implementation(libs.ktor.core)
@@ -126,7 +131,7 @@ buildscript {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 35
+    compileSdk = 36
     buildToolsVersion = "35.0.1"
 
     defaultConfig {
@@ -233,10 +238,6 @@ android {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
         aidl = true
@@ -257,6 +258,18 @@ android {
 
 kotlin {
     jvmToolchain(17)
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+    }
+}
+
+aboutLibraries {
+    library {
+        // Enable the duplication mode, allows to merge, or link dependencies which relate
+        duplicationMode = DuplicateMode.MERGE
+        // Configure the duplication rule, to match "duplicates" with
+        duplicationRule = DuplicateRule.EXACT
+    }
 }
 
 tasks {

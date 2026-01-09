@@ -59,7 +59,6 @@ import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.androidx.compose.navigation.koinNavViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
@@ -185,7 +184,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                 val data =
                     parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
                 val viewModel =
-                    koinNavViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
+                    koinViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
                         parametersOf(data)
                     }
 
@@ -226,7 +225,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<SelectedApplicationInfo.PatchesSelector> {
                 val data =
                     it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
-                val selectedAppInfoVm = koinNavViewModel<SelectedAppInfoViewModel>(
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
 
@@ -243,7 +242,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<SelectedApplicationInfo.RequiredOptions> {
                 val data =
                     it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
-                val selectedAppInfoVm = koinNavViewModel<SelectedAppInfoViewModel>(
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
 
