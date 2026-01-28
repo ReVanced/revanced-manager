@@ -292,3 +292,26 @@ fun <T : Any> SavedStateHandle.saveableVar(): ReadWriteProperty<Any?, T?> =
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
             set(property.name, value)
     }
+
+fun androidx.navigation.NavController.navigateSafe(route: Any) {
+    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        navigate(route)
+    }
+}
+
+fun androidx.navigation.NavController.navigateSafe(
+    route: Any,
+    builder: androidx.navigation.NavOptionsBuilder.() -> Unit
+) {
+    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        navigate(route, builder)
+    }
+}
+
+fun androidx.navigation.NavController.popBackStackSafe(): Boolean {
+    return if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        popBackStack()
+    } else {
+        false
+    }
+}

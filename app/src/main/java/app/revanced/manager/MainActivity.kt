@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -57,6 +58,8 @@ import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.navigateSafe
+import app.revanced.manager.util.popBackStackSafe
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -121,18 +124,18 @@ private fun ReVancedManager(vm: MainViewModel) {
     ) {
         composable<Dashboard> {
             DashboardScreen(
-                onSettingsClick = { navController.navigate(Settings) },
+                onSettingsClick = { navController.navigateSafe(Settings) },
                 onAppSelectorClick = {
-                    navController.navigate(AppSelector)
+                    navController.navigateSafe(AppSelector)
                 },
                 onUpdateClick = {
-                    navController.navigate(Update())
+                    navController.navigateSafe(Update())
                 },
                 onDownloaderPluginClick = {
-                    navController.navigate(Settings.Downloads)
+                    navController.navigateSafe(Settings.Downloads)
                 },
                 onAppClick = { packageName ->
-                    navController.navigate(InstalledApplicationInfo(packageName))
+                    navController.navigateSafe(InstalledApplicationInfo(packageName))
                 }
             )
         }
@@ -142,7 +145,7 @@ private fun ReVancedManager(vm: MainViewModel) {
 
             InstalledAppInfoScreen(
                 onPatchClick = vm::selectApp,
-                onBackClick = navController::popBackStack,
+                onBackClick = navController::popBackStackSafe,
                 viewModel = koinViewModel { parametersOf(data.packageName) }
             )
         }
@@ -151,14 +154,14 @@ private fun ReVancedManager(vm: MainViewModel) {
             AppSelectorScreen(
                 onSelect = vm::selectApp,
                 onStorageSelect = vm::selectApp,
-                onBackClick = navController::popBackStack
+                onBackClick = navController::popBackStackSafe
             )
         }
 
         composable<Patcher> {
             PatcherScreen(
                 onBackClick = {
-                    navController.navigate(route = Dashboard) {
+                    navController.navigateSafe(route = Dashboard) {
                         launchSingleTop = true
                         popUpTo<Dashboard> {
                             inclusive = false
@@ -173,7 +176,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             val data = it.toRoute<Update>()
 
             UpdateScreen(
-                onBackClick = navController::popBackStack,
+                onBackClick = navController::popBackStackSafe,
                 vm = koinViewModel { parametersOf(data.downloadOnScreenEntry) }
             )
         }
@@ -189,7 +192,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                     }
 
                 SelectedAppInfoScreen(
-                    onBackClick = navController::popBackStack,
+                    onBackClick = navController::popBackStackSafe,
                     onPatchClick = {
                         it.lifecycleScope.launch {
                             navController.navigateComplex(
@@ -230,10 +233,10 @@ private fun ReVancedManager(vm: MainViewModel) {
                 )
 
                 PatchesSelectorScreen(
-                    onBackClick = navController::popBackStack,
+                    onBackClick = navController::popBackStackSafe,
                     onSave = { patches, options ->
                         selectedAppInfoVm.updateConfiguration(patches, options)
-                        navController.popBackStack()
+                        navController.popBackStackSafe()
                     },
                     viewModel = koinViewModel { parametersOf(data) }
                 )
@@ -247,7 +250,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                 )
 
                 RequiredOptionsScreen(
-                    onBackClick = navController::popBackStack,
+                    onBackClick = navController::popBackStackSafe,
                     onContinue = { patches, options ->
                         selectedAppInfoVm.updateConfiguration(patches, options)
                         it.lifecycleScope.launch {
@@ -265,56 +268,56 @@ private fun ReVancedManager(vm: MainViewModel) {
         navigation<Settings>(startDestination = Settings.Main) {
             composable<Settings.Main> {
                 SettingsScreen(
-                    onBackClick = navController::popBackStack,
-                    navigate = navController::navigate
+                    onBackClick = navController::popBackStackSafe,
+                    navigate = navController::navigateSafe
                 )
             }
 
             composable<Settings.General> {
-                GeneralSettingsScreen(onBackClick = navController::popBackStack)
+                GeneralSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.Advanced> {
-                AdvancedSettingsScreen(onBackClick = navController::popBackStack)
+                AdvancedSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.Developer> {
-                DeveloperSettingsScreen(onBackClick = navController::popBackStack)
+                DeveloperSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.Updates> {
                 UpdatesSettingsScreen(
-                    onBackClick = navController::popBackStack,
-                    onChangelogClick = { navController.navigate(Settings.Changelogs) },
-                    onUpdateClick = { navController.navigate(Update()) }
+                    onBackClick = navController::popBackStackSafe,
+                    onChangelogClick = { navController.navigateSafe(Settings.Changelogs) },
+                    onUpdateClick = { navController.navigateSafe(Update()) }
                 )
             }
 
             composable<Settings.Downloads> {
-                DownloadsSettingsScreen(onBackClick = navController::popBackStack)
+                DownloadsSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.ImportExport> {
-                ImportExportSettingsScreen(onBackClick = navController::popBackStack)
+                ImportExportSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.About> {
                 AboutSettingsScreen(
-                    onBackClick = navController::popBackStack,
-                    navigate = navController::navigate
+                    onBackClick = navController::popBackStackSafe,
+                    navigate = navController::navigateSafe
                 )
             }
 
             composable<Settings.Changelogs> {
-                ChangelogsSettingsScreen(onBackClick = navController::popBackStack)
+                ChangelogsSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.Contributors> {
-                ContributorSettingsScreen(onBackClick = navController::popBackStack)
+                ContributorSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.Licenses> {
-                LicensesSettingsScreen(onBackClick = navController::popBackStack)
+                LicensesSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
         }
@@ -330,8 +333,10 @@ private fun <T : Parcelable, R : ComplexParameter<T>> NavController.navigateComp
     route: R,
     data: T
 ) {
-    navigate(route)
-    getBackStackEntry(route).savedStateHandle["args"] = data
+    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        navigate(route)
+        getBackStackEntry(route).savedStateHandle["args"] = data
+    }
 }
 
 private fun <T : Parcelable> NavBackStackEntry.getComplexArg() = savedStateHandle.get<T>("args")!!
