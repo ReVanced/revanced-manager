@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -17,6 +16,7 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.model.navigation.Settings
 import org.koin.compose.koinInject
@@ -94,13 +94,15 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            settingsSections.forEach { (name, description, icon, destination) ->
-                SettingsListItem(
-                    modifier = Modifier.clickable { navigate(destination) },
-                    headlineContent = stringResource(name),
-                    supportingContent = stringResource(description),
-                    leadingContent = { Icon(icon, null) }
-                )
+            ListSection {
+                settingsSections.forEach { (name, description, icon, destination) ->
+                    SettingsListItem(
+                        headlineContent = stringResource(name),
+                        supportingContent = stringResource(description),
+                        leadingContent = { Icon(icon, null) },
+                        onClick = { navigate(destination) }
+                    )
+                }
             }
         }
     }

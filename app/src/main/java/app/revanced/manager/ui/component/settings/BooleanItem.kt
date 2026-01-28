@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.component.settings
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,11 +38,10 @@ fun BooleanItem(
     @StringRes headline: Int,
     @StringRes description: Int
 ) = SettingsListItem(
-    modifier = Modifier
-        .clickable { onValueChange(!value) }
-        .then(modifier),
+    modifier = modifier,
     headlineContent = stringResource(headline),
     supportingContent = stringResource(description),
+    onClick = { onValueChange(!value) },
     trailingContent = {
         HapticSwitch(
             checked = value,

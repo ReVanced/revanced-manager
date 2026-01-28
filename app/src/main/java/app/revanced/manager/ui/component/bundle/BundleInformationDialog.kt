@@ -50,6 +50,7 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.FullscreenDialog
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import kotlinx.coroutines.launch
@@ -160,131 +161,122 @@ fun BundleInformationDialog(
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
 
-                if (autoUpdate != null) {
-                    BundleListItem(
-                        headlineText = stringResource(auto_update),
-                        supportingText = stringResource(auto_update_description),
-                        trailingContent = {
-                            HapticSwitch(
-                                checked = autoUpdate,
-                                onCheckedChange = ::onAutoUpdateChange
-                            )
-                        },
-                        modifier = Modifier.clickable {
-                            onAutoUpdateChange(!autoUpdate)
-                        }
-                    )
-                }
+                ListSection {
+                    if (autoUpdate != null) {
+                        BundleListItem(
+                            headlineText = stringResource(auto_update),
+                            supportingText = stringResource(auto_update_description),
+                            trailingContent = {
+                                HapticSwitch(
+                                    checked = autoUpdate,
+                                    onCheckedChange = ::onAutoUpdateChange
+                                )
+                            },
+                            onClick = { onAutoUpdateChange(!autoUpdate) }
+                        )
+                    }
 
-                if (src.isDefault) {
-                    val useBundlePrerelease by prefs.usePatchesPrereleases.getAsState()
+                    if (src.isDefault) {
+                        val useBundlePrerelease by prefs.usePatchesPrereleases.getAsState()
 
-                    BundleListItem(
-                        headlineText = stringResource(R.string.patches_prereleases),
-                        supportingText = stringResource(R.string.patches_prereleases_description, src.name),
-                        trailingContent = {
-                            HapticSwitch(
-                                checked = useBundlePrerelease,
-                                onCheckedChange = {
-                                    composableScope.launch {
-                                        prefs.usePatchesPrereleases.update(
-                                            it
-                                        )
-                                        onUpdate()
+                        BundleListItem(
+                            headlineText = stringResource(R.string.patches_prereleases),
+                            supportingText = stringResource(R.string.patches_prereleases_description, src.name),
+                            trailingContent = {
+                                HapticSwitch(
+                                    checked = useBundlePrerelease,
+                                    onCheckedChange = {
+                                        composableScope.launch {
+                                            prefs.usePatchesPrereleases.update(it)
+                                            onUpdate()
+                                        }
                                     }
+                                )
+                            },
+                            onClick = {
+                                composableScope.launch {
+                                    prefs.usePatchesPrereleases.update(!useBundlePrerelease)
+                                    onUpdate()
+                                }
+                            }
+                        )
+                    }
+
+                    endpoint?.takeUnless { src.isDefault }?.let { url ->
+                        var showUrlInputDialog by rememberSaveable {
+                            mutableStateOf(false)
+                        }
+                        if (showUrlInputDialog) {
+                            TextInputDialog(
+                                initial = url,
+                                title = stringResource(patches_url),
+                                onDismissRequest = { showUrlInputDialog = false },
+                                onConfirm = {
+                                    showUrlInputDialog = false
+                                    TODO("Not implemented.")
+                                },
+                                validator = {
+                                    if (it.isEmpty()) return@TextInputDialog false
+                                    isValidUrl(it)
                                 }
                             )
-                        },
-                        modifier = Modifier.clickable {
-                            composableScope.launch {
-                                prefs.usePatchesPrereleases.update(!useBundlePrerelease)
-                                onUpdate()
-                            }
                         }
-                    )
-                }
 
-                endpoint?.takeUnless { src.isDefault }?.let { url ->
-                    var showUrlInputDialog by rememberSaveable {
-                        mutableStateOf(false)
-                    }
-                    if (showUrlInputDialog) {
-                        TextInputDialog(
-                            initial = url,
-                            title = stringResource(patches_url),
-                            onDismissRequest = { showUrlInputDialog = false },
-                            onConfirm = {
-                                showUrlInputDialog = false
-                                TODO("Not implemented.")
+                        BundleListItem(
+                            headlineText = stringResource(patches_url),
+                            supportingText = url.ifEmpty {
+                                stringResource(field_not_set)
                             },
-                            validator = {
-                                if (it.isEmpty()) return@TextInputDialog false
-
-                                isValidUrl(it)
-                            }
+                            onClick = null
                         )
                     }
 
+                    val patchesClickable = patchCount > 0
                     BundleListItem(
-                        modifier = Modifier.clickable(
-                            enabled = false,
-                            onClick = {
-                                showUrlInputDialog = true
+                        headlineText = stringResource(patches),
+                        supportingText = stringResource(view_patches),
+                        onClick = if (patchesClickable) {
+                            { viewCurrentBundlePatches = true }
+                        } else null,
+                        trailingContent = if (patchesClickable) {
+                            {
+                                Icon(
+                                    Icons.AutoMirrored.Outlined.ArrowRight,
+                                    stringResource(patches)
+                                )
                             }
-                        ),
-                        headlineText = stringResource(patches_url),
-                        supportingText = url.ifEmpty {
-                            stringResource(field_not_set)
-                        }
+                        } else null
                     )
-                }
 
-                val patchesClickable = patchCount > 0
-                BundleListItem(
-                    headlineText = stringResource(patches),
-                    supportingText = stringResource(view_patches),
-                    modifier = Modifier.clickable(
-                        enabled = patchesClickable,
-                        onClick = {
-                            viewCurrentBundlePatches = true
+                    src.error?.let {
+                        var showDialog by rememberSaveable {
+                            mutableStateOf(false)
                         }
-                    )
-                ) {
-                    if (patchesClickable) {
-                        Icon(
-                            Icons.AutoMirrored.Outlined.ArrowRight,
-                            stringResource(patches)
+                        if (showDialog) ExceptionViewerDialog(
+                            onDismiss = { showDialog = false },
+                            text = remember(it) { it.stackTraceToString() }
+                        )
+
+                        BundleListItem(
+                            headlineText = stringResource(R.string.patches_error),
+                            supportingText = stringResource(R.string.patches_error_description),
+                            trailingContent = {
+                                Icon(
+                                    Icons.AutoMirrored.Outlined.ArrowRight,
+                                    null
+                                )
+                            },
+                            onClick = { showDialog = true }
                         )
                     }
-                }
 
-                src.error?.let {
-                    var showDialog by rememberSaveable {
-                        mutableStateOf(false)
+                    if (src.state is PatchBundleSource.State.Missing && !isLocal) {
+                        BundleListItem(
+                            headlineText = stringResource(R.string.patches_error),
+                            supportingText = stringResource(R.string.patches_not_downloaded),
+                            onClick = onUpdate
+                        )
                     }
-                    if (showDialog) ExceptionViewerDialog(
-                        onDismiss = { showDialog = false },
-                        text = remember(it) { it.stackTraceToString() }
-                    )
-
-                    BundleListItem(
-                        headlineText = stringResource(R.string.patches_error),
-                        supportingText = stringResource(R.string.patches_error_description),
-                        trailingContent = {
-                            Icon(
-                                Icons.AutoMirrored.Outlined.ArrowRight,
-                                null
-                            )
-                        },
-                        modifier = Modifier.clickable { showDialog = true }
-                    )
-                }
-                if (src.state is PatchBundleSource.State.Missing && !isLocal) {
-                    BundleListItem(
-                        headlineText = stringResource(R.string.patches_error),
-                        supportingText = stringResource(R.string.patches_not_downloaded),
-                        modifier = Modifier.clickable(onClick = onUpdate)
-                    )
                 }
             }
         }

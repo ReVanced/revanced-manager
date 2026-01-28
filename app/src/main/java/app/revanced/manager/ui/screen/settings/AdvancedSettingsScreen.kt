@@ -7,9 +7,6 @@ import android.os.Build
 import android.view.HapticFeedbackConstants
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,7 +45,7 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
@@ -58,7 +55,7 @@ import app.revanced.manager.util.toast
 import app.revanced.manager.util.withHapticFeedback
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
@@ -91,30 +88,28 @@ fun AdvancedSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            GroupHeader(stringResource(R.string.manager))
+            ListSection(title = stringResource(R.string.manager)) {
+                val apiUrl by viewModel.prefs.api.getAsState()
+                var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
-            val apiUrl by viewModel.prefs.api.getAsState()
-            var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
-
-            if (showApiUrlDialog) {
-                APIUrlDialog(
-                    currentUrl = apiUrl,
-                    defaultUrl = viewModel.prefs.api.default,
-                    onSubmit = {
-                        showApiUrlDialog = false
-                        it?.let(viewModel::setApiUrl)
-                    }
+                if (showApiUrlDialog) {
+                    APIUrlDialog(
+                        currentUrl = apiUrl,
+                        defaultUrl = viewModel.prefs.api.default,
+                        onSubmit = {
+                            showApiUrlDialog = false
+                            it?.let(viewModel::setApiUrl)
+                        }
+                    )
+                }
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_url),
+                    supportingContent = stringResource(R.string.api_url_description),
+                    onClick = { showApiUrlDialog = true }
                 )
             }
-            SettingsListItem(
-                headlineContent = stringResource(R.string.api_url),
-                supportingContent = stringResource(R.string.api_url_description),
-                modifier = Modifier.clickable {
-                    showApiUrlDialog = true
-                }
-            )
 
-            GroupHeader(stringResource(R.string.safeguards))
+            ListSection(title = stringResource(R.string.safeguards)) {
             SafeguardBooleanItem(
                 preference = viewModel.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = viewModel.viewModelScope,
@@ -136,39 +131,37 @@ fun AdvancedSettingsScreen(
                 description = R.string.patch_selection_safeguard_description,
                 confirmationText = R.string.patch_selection_safeguard_confirmation
             )
-            SafeguardBooleanItem(
-                preference = viewModel.prefs.disableUniversalPatchCheck,
-                coroutineScope = viewModel.viewModelScope,
-                headline = R.string.universal_patches_safeguard,
-                description = R.string.universal_patches_safeguard_description,
-                confirmationText = R.string.universal_patches_safeguard_confirmation
-            )
+                SafeguardBooleanItem(
+                    preference = viewModel.prefs.disableUniversalPatchCheck,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.universal_patches_safeguard,
+                    description = R.string.universal_patches_safeguard_description,
+                    confirmationText = R.string.universal_patches_safeguard_confirmation
+                )
+            }
 
-            GroupHeader(stringResource(R.string.patcher))
-            BooleanItem(
-                preference = viewModel.prefs.useProcessRuntime,
-                coroutineScope = viewModel.viewModelScope,
-                headline = R.string.process_runtime,
-                description = R.string.process_runtime_description,
-            )
-            IntegerItem(
-                preference = viewModel.prefs.patcherProcessMemoryLimit,
-                coroutineScope = viewModel.viewModelScope,
-                headline = R.string.process_runtime_memory_limit,
-                description = R.string.process_runtime_memory_limit_description,
-            )
+            ListSection(title = stringResource(R.string.patcher)) {
+                BooleanItem(
+                    preference = viewModel.prefs.useProcessRuntime,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.process_runtime,
+                    description = R.string.process_runtime_description,
+                )
+                IntegerItem(
+                    preference = viewModel.prefs.patcherProcessMemoryLimit,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.process_runtime_memory_limit,
+                    description = R.string.process_runtime_memory_limit_description,
+                )
+            }
 
-            GroupHeader(stringResource(R.string.debugging))
-            val exportDebugLogsLauncher =
-                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    it?.let(viewModel::exportDebugLogs)
-                }
-            SettingsListItem(
-                headlineContent = stringResource(R.string.debug_logs_export),
-                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(viewModel.debugLogFileName) }
-            )
-            val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
-            val deviceContent = """
+            ListSection(title = stringResource(R.string.debugging)) {
+                val exportDebugLogsLauncher =
+                    rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
+                        it?.let(viewModel::exportDebugLogs)
+                    }
+                val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
+                val deviceContent = """
                     Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
                     Build type: ${BuildConfig.BUILD_TYPE}
                     Model: ${Build.MODEL}
@@ -176,21 +169,22 @@ fun AdvancedSettingsScreen(
                     Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
                     Memory limit: $memoryLimit
                 """.trimIndent()
-            SettingsListItem(
-                modifier = Modifier.combinedClickable(
-                    onClick = { },
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.debug_logs_export),
+                    onClick = { exportDebugLogsLauncher.launch(viewModel.debugLogFileName) }
+                )
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.about_device),
+                    supportingContent = deviceContent,
                     onLongClickLabel = stringResource(R.string.copy_to_clipboard),
                     onLongClick = {
                         clipboard.setPrimaryClip(
                             ClipData.newPlainText("Device Information", deviceContent)
                         )
-
                         context.toast(resources.getString(R.string.toast_copied_to_clipboard))
                     }.withHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                ),
-                headlineContent = stringResource(R.string.about_device),
-                supportingContent = deviceContent
-            )
+                )
+            }
         }
     }
 }

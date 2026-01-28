@@ -33,7 +33,7 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -88,65 +88,62 @@ fun GeneralSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            GroupHeader(stringResource(R.string.appearance))
-
-            val currentLocale = viewModel.getCurrentLocale()
-            val currentLanguageDisplay = remember(currentLocale) {
-                currentLocale?.let { viewModel.getLocaleDisplayName(it) }
-            }
-            SettingsListItem(
-                modifier = Modifier.clickable { showLanguagePicker = true },
-                headlineContent = stringResource(R.string.language),
-                supportingContent = stringResource(R.string.language_description),
-                trailingContent = {
-                    FilledTonalButton(onClick = { showLanguagePicker = true }) {
-                        Text(
-                            currentLanguageDisplay
-                                ?: stringResource(R.string.language_system_default)
-                        )
-                    }
+            ListSection(title = stringResource(R.string.appearance)) {
+                val currentLocale = viewModel.getCurrentLocale()
+                val currentLanguageDisplay = remember(currentLocale) {
+                    currentLocale?.let { viewModel.getLocaleDisplayName(it) }
                 }
-            )
-
-            val theme by prefs.theme.getAsState()
-            SettingsListItem(
-                modifier = Modifier.clickable { showThemePicker = true },
-                headlineContent = stringResource(R.string.theme),
-                supportingContent = stringResource(R.string.theme_description),
-                trailingContent = {
-                    FilledTonalButton(
-                        onClick = {
-                            showThemePicker = true
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.language),
+                    supportingContent = stringResource(R.string.language_description),
+                    onClick = { showLanguagePicker = true },
+                    trailingContent = {
+                        FilledTonalButton(onClick = { showLanguagePicker = true }) {
+                            Text(
+                                currentLanguageDisplay
+                                    ?: stringResource(R.string.language_system_default)
+                            )
                         }
-                    ) {
-                        Text(stringResource(theme.displayName))
                     }
+                )
+
+                val theme by prefs.theme.getAsState()
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.theme),
+                    supportingContent = stringResource(R.string.theme_description),
+                    onClick = { showThemePicker = true },
+                    trailingContent = {
+                        FilledTonalButton(onClick = { showThemePicker = true }) {
+                            Text(stringResource(theme.displayName))
+                        }
+                    }
+                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    BooleanItem(
+                        preference = prefs.dynamicColor,
+                        coroutineScope = coroutineScope,
+                        headline = R.string.dynamic_color,
+                        description = R.string.dynamic_color_description
+                    )
                 }
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                BooleanItem(
-                    preference = prefs.dynamicColor,
-                    coroutineScope = coroutineScope,
-                    headline = R.string.dynamic_color,
-                    description = R.string.dynamic_color_description
-                )
-            }
-            AnimatedVisibility(theme != Theme.LIGHT) {
-                BooleanItem(
-                    preference = prefs.pureBlackTheme,
-                    coroutineScope = coroutineScope,
-                    headline = R.string.pure_black_theme,
-                    description = R.string.pure_black_theme_description
-                )
+                AnimatedVisibility(theme != Theme.LIGHT) {
+                    BooleanItem(
+                        preference = prefs.pureBlackTheme,
+                        coroutineScope = coroutineScope,
+                        headline = R.string.pure_black_theme,
+                        description = R.string.pure_black_theme_description
+                    )
+                }
             }
 
-            GroupHeader(stringResource(R.string.networking))
-            BooleanItem(
-                preference = prefs.allowMeteredNetworks,
-                coroutineScope = coroutineScope,
-                headline = R.string.allow_metered_networks,
-                description = R.string.allow_metered_networks_description
-            )
+            ListSection(title = stringResource(R.string.networking)) {
+                BooleanItem(
+                    preference = prefs.allowMeteredNetworks,
+                    coroutineScope = coroutineScope,
+                    headline = R.string.allow_metered_networks,
+                    description = R.string.allow_metered_networks_description
+                )
+            }
         }
     }
 }

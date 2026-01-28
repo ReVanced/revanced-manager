@@ -1,7 +1,5 @@
 package app.revanced.manager.ui.screen.settings
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -14,7 +12,8 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DeveloperOptionsViewModel
@@ -40,23 +39,25 @@ fun DeveloperSettingsScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            GroupHeader(stringResource(R.string.manager))
-            BooleanItem(
-                preference = prefs.showDeveloperSettings,
-                headline = R.string.developer_options,
-                description = R.string.developer_options_description,
-            )
+        ColumnWithScrollbar(modifier = Modifier.padding(paddingValues)) {
+            ListSection(title = stringResource(R.string.manager)) {
+                BooleanItem(
+                    preference = prefs.showDeveloperSettings,
+                    headline = R.string.developer_options,
+                    description = R.string.developer_options_description,
+                )
+            }
 
-            GroupHeader(stringResource(R.string.patches))
-            SettingsListItem(
-                headlineContent = stringResource(R.string.patches_force_download),
-                modifier = Modifier.clickable(onClick = vm::redownloadBundles)
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.patches_reset),
-                modifier = Modifier.clickable(onClick = vm::redownloadBundles)
-            )
+            ListSection(title = stringResource(R.string.patches)) {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.patches_force_download),
+                    onClick = vm::redownloadBundles
+                )
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.patches_reset),
+                    onClick = vm::redownloadBundles
+                )
+            }
         }
     }
 }

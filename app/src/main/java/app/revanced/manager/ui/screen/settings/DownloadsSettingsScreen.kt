@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Delete
@@ -44,8 +43,8 @@ import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
-import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -100,140 +99,150 @@ fun DownloadsSettingsScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item {
-                    GroupHeader(stringResource(R.string.downloader_plugins))
-                }
-                pluginStates.forEach { (packageName, state) ->
-                    item(key = packageName) {
-                        var showDialog by rememberSaveable {
-                            mutableStateOf(false)
-                        }
-
-                        fun dismiss() {
-                            showDialog = false
-                        }
-
-                        val packageInfo =
-                            remember(packageName) {
-                                viewModel.pm.getPackageInfo(
-                                    packageName
-                                )
-                            } ?: return@item
-
-                        if (showDialog) {
-                            val signature =
-                                remember(packageName) {
-                                    val androidSignature =
-                                        viewModel.pm.getSignature(packageName)
-                                    val hash = MessageDigest.getInstance("SHA-256")
-                                        .digest(androidSignature.toByteArray())
-                                    hash.toHexString(format = HexFormat.UpperCase)
-                                }
-                            val appName = remember {
-                                packageInfo.applicationInfo?.loadLabel(context.packageManager)
-                                    ?.toString()
-                                    ?: packageName
-                            }
-
-                            when (state) {
-                                is DownloaderPluginState.Loaded -> TrustDialog(
-                                    title = R.string.downloader_plugin_revoke_trust_dialog_title,
-                                    body = stringResource(
-                                        R.string.downloader_plugin_trust_dialog_body,
-                                        packageName,
-                                        signature
-                                    ),
-                                    pluginName = appName,
-                                    signature = signature,
-                                    onDismiss = ::dismiss,
-                                    onConfirm = {
-                                        viewModel.revokePluginTrust(packageName)
-                                        dismiss()
-                                    }
-                                )
-
-                                is DownloaderPluginState.Failed -> ExceptionViewerDialog(
-                                    text = remember(state.throwable) {
-                                        state.throwable.stackTraceToString()
-                                    },
-                                    onDismiss = ::dismiss
-                                )
-
-                                is DownloaderPluginState.Untrusted -> TrustDialog(
-                                    title = R.string.downloader_plugin_trust_dialog_title,
-                                    body = stringResource(
-                                        R.string.downloader_plugin_trust_dialog_body
-                                    ),
-                                    pluginName = appName,
-                                    signature = signature,
-                                    onDismiss = ::dismiss,
-                                    onConfirm = {
-                                        viewModel.trustPlugin(packageName)
-                                        dismiss()
-                                    }
+                    ListSection(title = stringResource(R.string.downloader_plugins)) {
+                        if (pluginStates.isEmpty()) {
+                            Text(
+                                stringResource(R.string.downloader_no_plugins_installed),
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        } else {
+                            pluginStates.forEach { (packageName, state) ->
+                                DownloaderPluginItem(
+                                    context = context,
+                                    viewModel = viewModel,
+                                    packageName = packageName,
+                                    state = state
                                 )
                             }
                         }
-
-                        SettingsListItem(
-                            modifier = Modifier.clickable { showDialog = true },
-                            headlineContent = {
-                                AppLabel(
-                                    packageInfo = packageInfo,
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                            },
-                            supportingContent = stringResource(
-                                when (state) {
-                                    is DownloaderPluginState.Loaded -> R.string.downloader_plugin_state_trusted
-                                    is DownloaderPluginState.Failed -> R.string.downloader_plugin_state_failed
-                                    is DownloaderPluginState.Untrusted -> R.string.downloader_plugin_state_untrusted
-                                }
-                            ),
-                            trailingContent = { Text(packageInfo.versionName!!) }
-                        )
-                    }
-                }
-                if (pluginStates.isEmpty()) {
-                    item {
-                        Text(
-                            stringResource(R.string.downloader_no_plugins_installed),
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
                     }
                 }
 
                 item {
-                    GroupHeader(stringResource(R.string.downloaded_apps))
-                }
-                items(downloadedApps, key = { it.packageName to it.version }) { app ->
-                    val selected = app in viewModel.appSelection
-
-                    SettingsListItem(
-                        modifier = Modifier.clickable { viewModel.toggleApp(app) },
-                        headlineContent = app.packageName,
-                        leadingContent = (@Composable {
-                            HapticCheckbox(
-                                checked = selected,
-                                onCheckedChange = { viewModel.toggleApp(app) }
+                    ListSection(title = stringResource(R.string.downloaded_apps)) {
+                        if (downloadedApps.isEmpty()) {
+                            Text(
+                                stringResource(R.string.downloader_settings_no_apps),
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
                             )
-                        }).takeIf { viewModel.appSelection.isNotEmpty() },
-                        supportingContent = app.version,
-                        tonalElevation = if (selected) 8.dp else 0.dp
-                    )
-                }
-                if (downloadedApps.isEmpty()) {
-                    item {
-                        Text(
-                            stringResource(R.string.downloader_settings_no_apps),
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
+                        } else {
+                            downloadedApps.forEach { app ->
+                                val selected = app in viewModel.appSelection
+
+                                SettingsListItem(
+                                    onClick = { viewModel.toggleApp(app) },
+                                    headlineContent = app.packageName,
+                                    leadingContent = (@Composable {
+                                        HapticCheckbox(
+                                            checked = selected,
+                                            onCheckedChange = { viewModel.toggleApp(app) }
+                                        )
+                                    }).takeIf { viewModel.appSelection.isNotEmpty() },
+                                    supportingContent = app.version,
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
     }
+}
+
+@OptIn(ExperimentalStdlibApi::class)
+@Composable
+private fun DownloaderPluginItem(
+    context: android.content.Context,
+    viewModel: DownloadsViewModel,
+    packageName: String,
+    state: DownloaderPluginState
+) {
+    var showDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    fun dismiss() {
+        showDialog = false
+    }
+
+    val packageInfo =
+        remember(packageName) {
+            viewModel.pm.getPackageInfo(packageName)
+        } ?: return
+
+    if (showDialog) {
+        val signature =
+            remember(packageName) {
+                val androidSignature = viewModel.pm.getSignature(packageName)
+                val hash = MessageDigest.getInstance("SHA-256")
+                    .digest(androidSignature.toByteArray())
+                hash.toHexString(format = HexFormat.UpperCase)
+            }
+        val appName = remember {
+            packageInfo.applicationInfo?.loadLabel(context.packageManager)
+                ?.toString()
+                ?: packageName
+        }
+
+        when (state) {
+            is DownloaderPluginState.Loaded -> TrustDialog(
+                title = R.string.downloader_plugin_revoke_trust_dialog_title,
+                body = stringResource(
+                    R.string.downloader_plugin_trust_dialog_body,
+                    packageName,
+                    signature
+                ),
+                pluginName = appName,
+                signature = signature,
+                onDismiss = ::dismiss,
+                onConfirm = {
+                    viewModel.revokePluginTrust(packageName)
+                    dismiss()
+                }
+            )
+
+            is DownloaderPluginState.Failed -> ExceptionViewerDialog(
+                text = remember(state.throwable) {
+                    state.throwable.stackTraceToString()
+                },
+                onDismiss = ::dismiss
+            )
+
+            is DownloaderPluginState.Untrusted -> TrustDialog(
+                title = R.string.downloader_plugin_trust_dialog_title,
+                body = stringResource(
+                    R.string.downloader_plugin_trust_dialog_body
+                ),
+                pluginName = appName,
+                signature = signature,
+                onDismiss = ::dismiss,
+                onConfirm = {
+                    viewModel.trustPlugin(packageName)
+                    dismiss()
+                }
+            )
+        }
+    }
+
+    SettingsListItem(
+        onClick = { showDialog = true },
+        headlineContent = {
+            AppLabel(
+                packageInfo = packageInfo,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        },
+        supportingContent = stringResource(
+            when (state) {
+                is DownloaderPluginState.Loaded -> R.string.downloader_plugin_state_trusted
+                is DownloaderPluginState.Failed -> R.string.downloader_plugin_state_failed
+                is DownloaderPluginState.Untrusted -> R.string.downloader_plugin_state_untrusted
+            }
+        ),
+        trailingContent = { Text(packageInfo.versionName!!) }
+    )
 }
 
 @Composable

@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.component.settings
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
@@ -59,9 +58,7 @@ fun IntegerItem(
     }
 
     SettingsListItem(
-        modifier = Modifier
-            .clickable { dialogOpen = true }
-            .then(modifier),
+        modifier = modifier,
         headlineContent = stringResource(headline),
         supportingContent = stringResource(description),
         trailingContent = {
@@ -71,6 +68,7 @@ fun IntegerItem(
                     contentDescription = stringResource(R.string.edit)
                 )
             }
-        }
+        },
+        onClick = { dialogOpen = true }
     )
 }

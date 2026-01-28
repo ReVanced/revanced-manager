@@ -46,10 +46,10 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
-import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.PasswordField
 import app.revanced.manager.ui.component.bundle.BundleSelector
-import app.revanced.manager.ui.component.settings.ExpandableSettingListItem
+import app.revanced.manager.ui.component.settings.ExpandableSettingsListItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.ui.viewmodel.ResetDialogState
@@ -150,21 +150,22 @@ fun ImportExportSettingsScreen(
         ) {
             selectorDialog?.invoke()
 
-            GroupHeader(stringResource(R.string.import_))
-            GroupItem(
-                onClick = {
-                    importKeystoreLauncher.launch("*/*")
-                },
-                headline = R.string.import_keystore,
-                description = R.string.import_keystore_description
-            )
-            GroupItem(
-                onClick = vm::importSelection,
-                headline = R.string.import_patch_selection,
-                description = R.string.import_patch_selection_description
-            )
+            ListSection(title = stringResource(R.string.import_)) {
+                GroupItem(
+                    onClick = {
+                        importKeystoreLauncher.launch("*/*")
+                    },
+                    headline = R.string.import_keystore,
+                    description = R.string.import_keystore_description
+                )
+                GroupItem(
+                    onClick = vm::importSelection,
+                    headline = R.string.import_patch_selection,
+                    description = R.string.import_patch_selection_description
+                )
+            }
 
-            GroupHeader(stringResource(R.string.export))
+            ListSection(title = stringResource(R.string.export)) {
             GroupItem(
                 onClick = {
                     if (!vm.canExport()) {
@@ -176,24 +177,25 @@ fun ImportExportSettingsScreen(
                 headline = R.string.export_keystore,
                 description = R.string.export_keystore_description
             )
-            GroupItem(
-                onClick = vm::exportSelection,
-                headline = R.string.export_patch_selection,
-                description = R.string.export_patch_selection_description
-            )
+                GroupItem(
+                    onClick = vm::exportSelection,
+                    headline = R.string.export_patch_selection,
+                    description = R.string.export_patch_selection_description
+                )
+            }
 
-            GroupHeader(stringResource(R.string.reset))
-            GroupItem(
-                onClick = {
-                    vm.resetDialogState = ResetDialogState.Keystore {
-                        vm.regenerateKeystore()
-                    }
-                },
-                headline = R.string.regenerate_keystore,
-                description = R.string.regenerate_keystore_description
-            )
+            ListSection(title = stringResource(R.string.reset)) {
+                GroupItem(
+                    onClick = {
+                        vm.resetDialogState = ResetDialogState.Keystore {
+                            vm.regenerateKeystore()
+                        }
+                    },
+                    headline = R.string.regenerate_keystore,
+                    description = R.string.regenerate_keystore_description
+                )
 
-            ExpandableSettingListItem(
+                ExpandableSettingsListItem(
                 headlineContent = stringResource(R.string.reset_patch_selection),
                 supportingContent = stringResource(R.string.reset_patch_selection_description),
                 expandableContent = {
@@ -249,7 +251,7 @@ fun ImportExportSettingsScreen(
                 }
             )
 
-            ExpandableSettingListItem(
+            ExpandableSettingsListItem(
                 headlineContent = stringResource(R.string.reset_patch_options),
                 supportingContent = stringResource(R.string.reset_patch_options_description),
                 expandableContent = {
@@ -304,6 +306,7 @@ fun ImportExportSettingsScreen(
                     }
                 }
             )
+            }
         }
     }
 }
@@ -373,7 +376,7 @@ private fun GroupItem(
     @StringRes description: Int? = null
 ) {
     SettingsListItem(
-        modifier = Modifier.clickable { onClick() },
+        onClick = onClick,
         headlineContent = stringResource(headline),
         supportingContent = description?.let { stringResource(it) }
     )

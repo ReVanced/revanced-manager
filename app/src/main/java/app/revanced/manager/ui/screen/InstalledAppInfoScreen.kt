@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +40,7 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
@@ -148,11 +148,10 @@ fun InstalledAppInfoScreen(
                 )
             }
 
-            Column(
+            ListSection(
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
                 SettingsListItem(
-                    modifier = Modifier.clickable { context.toast("Not implemented yet!") },
                     headlineContent = stringResource(R.string.applied_patches),
                     supportingContent = 
                             (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {
@@ -162,7 +161,8 @@ fun InstalledAppInfoScreen(
                                     it
                                 )
                             },
-                    trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
+                    trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) },
+                    onClick = { context.toast("Not implemented yet!") }
                 )
 
                 SettingsListItem(

@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen.settings.update
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
@@ -53,53 +52,51 @@ fun UpdatesSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            GroupHeader(stringResource(R.string.manager))
+            ListSection(title = stringResource(R.string.manager)) {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.manual_update_check),
+                    supportingContent = stringResource(R.string.manual_update_check_description),
+                    onClick = {
+                        coroutineScope.launch {
+                            if (!vm.isConnected) {
+                                context.toast(resources.getString(R.string.no_network_toast))
+                                return@launch
+                            }
+                            if (vm.checkForUpdates()) onUpdateClick()
+                        }
+                    }
+                )
 
-            SettingsListItem(
-                modifier = Modifier.clickable {
-                    coroutineScope.launch {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.changelog),
+                    supportingContent = stringResource(R.string.changelog_description),
+                    onClick = {
                         if (!vm.isConnected) {
                             context.toast(resources.getString(R.string.no_network_toast))
-                            return@launch
+                            return@SettingsListItem
                         }
-                        if (vm.checkForUpdates()) onUpdateClick()
+                        onChangelogClick()
                     }
-                },
-                headlineContent = stringResource(R.string.manual_update_check),
-                supportingContent = stringResource(R.string.manual_update_check_description)
-            )
-
-            SettingsListItem(
-                modifier = Modifier.clickable {
-                    if (!vm.isConnected) {
-                        context.toast(resources.getString(R.string.no_network_toast))
-                        return@clickable
-                    }
-                    onChangelogClick()
-                },
-                headlineContent = stringResource(R.string.changelog),
-                supportingContent = stringResource(
-                    R.string.changelog_description
                 )
-            )
 
-            BooleanItem(
-                preference = vm.managerAutoUpdates,
-                headline = R.string.update_checking_manager,
-                description = R.string.update_checking_manager_description
-            )
+                BooleanItem(
+                    preference = vm.managerAutoUpdates,
+                    headline = R.string.update_checking_manager,
+                    description = R.string.update_checking_manager_description
+                )
 
-            BooleanItem(
-                preference = vm.showManagerUpdateDialogOnLaunch,
-                headline = R.string.show_manager_update_dialog_on_launch,
-                description = R.string.show_manager_update_dialog_on_launch_description
-            )
+                BooleanItem(
+                    preference = vm.showManagerUpdateDialogOnLaunch,
+                    headline = R.string.show_manager_update_dialog_on_launch,
+                    description = R.string.show_manager_update_dialog_on_launch_description
+                )
 
-            BooleanItem(
-                preference = vm.useManagerPrereleases,
-                headline = R.string.manager_prereleases,
-                description = R.string.manager_prereleases_description
-            )
+                BooleanItem(
+                    preference = vm.useManagerPrereleases,
+                    headline = R.string.manager_prereleases,
+                    description = R.string.manager_prereleases_description
+                )
+            }
         }
     }
 }
