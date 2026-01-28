@@ -27,7 +27,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -72,6 +74,21 @@ fun AdvancedSettingsScreen(
         )
     }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    val showDeveloperSettings by viewModel.prefs.showDeveloperSettings.getAsState()
+    var developerTaps by rememberSaveable { mutableIntStateOf(0) }
+
+    LaunchedEffect(developerTaps) {
+        if (developerTaps < 10) return@LaunchedEffect
+
+        if (showDeveloperSettings) {
+            context.toast(context.getString(R.string.developer_options_already_enabled))
+        } else {
+            viewModel.prefs.showDeveloperSettings.update(true)
+            context.toast(context.getString(R.string.developer_options_enabled))
+        }
+        developerTaps = 0
+    }
 
     Scaffold(
         topBar = {
@@ -176,6 +193,7 @@ fun AdvancedSettingsScreen(
                 SettingsListItem(
                     headlineContent = stringResource(R.string.about_device),
                     supportingContent = deviceContent,
+                    onClick = { developerTaps++ },
                     onLongClickLabel = stringResource(R.string.copy_to_clipboard),
                     onLongClick = {
                         clipboard.setPrimaryClip(
