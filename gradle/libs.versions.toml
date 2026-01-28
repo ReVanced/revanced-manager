@@ -1,6 +1,6 @@
 [versions]
 ktx = "1.17.0"
-material3 = "1.4.0"
+material3 = "1.5.0-alpha12"
 ui-tooling = "1.10.0"
 viewmodel-lifecycle = "2.10.0"
 splash-screen = "1.2.0"
