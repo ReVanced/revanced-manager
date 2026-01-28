@@ -37,6 +37,7 @@ import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.component.settings.ThemeSelector
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.GeneralSettingsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -51,15 +52,7 @@ fun GeneralSettingsScreen(
 ) {
     val prefs = viewModel.prefs
     val coroutineScope = viewModel.viewModelScope
-    var showThemePicker by rememberSaveable { mutableStateOf(false) }
     var showLanguagePicker by rememberSaveable { mutableStateOf(false) }
-
-    if (showThemePicker) {
-        ThemePicker(
-            onDismiss = { showThemePicker = false },
-            onConfirm = { viewModel.setTheme(it) }
-        )
-    }
 
     if (showLanguagePicker) {
         LanguagePicker(
@@ -93,6 +86,13 @@ fun GeneralSettingsScreen(
                 val currentLanguageDisplay = remember(currentLocale) {
                     currentLocale?.let { viewModel.getLocaleDisplayName(it) }
                 }
+                val theme by prefs.theme.getAsState()
+                
+                ThemeSelector(
+                    currentTheme = theme,
+                    onThemeSelected = { viewModel.setTheme(it) }
+                )
+
                 SettingsListItem(
                     headlineContent = stringResource(R.string.language),
                     supportingContent = stringResource(R.string.language_description),
@@ -107,17 +107,6 @@ fun GeneralSettingsScreen(
                     }
                 )
 
-                val theme by prefs.theme.getAsState()
-                SettingsListItem(
-                    headlineContent = stringResource(R.string.theme),
-                    supportingContent = stringResource(R.string.theme_description),
-                    onClick = { showThemePicker = true },
-                    trailingContent = {
-                        FilledTonalButton(onClick = { showThemePicker = true }) {
-                            Text(stringResource(theme.displayName))
-                        }
-                    }
-                )
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     BooleanItem(
                         preference = prefs.dynamicColor,
@@ -146,47 +135,6 @@ fun GeneralSettingsScreen(
             }
         }
     }
-}
-
-@Composable
-private fun ThemePicker(
-    onDismiss: () -> Unit,
-    onConfirm: (Theme) -> Unit,
-    prefs: PreferencesManager = koinInject()
-) {
-    var selectedTheme by rememberSaveable { mutableStateOf(prefs.theme.getBlocking()) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.theme)) },
-        text = {
-            Column {
-                Theme.entries.forEach {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedTheme = it },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        HapticRadioButton(
-                            selected = selectedTheme == it,
-                            onClick = { selectedTheme = it })
-                        Text(stringResource(it.displayName))
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirm(selectedTheme)
-                    onDismiss()
-                }
-            ) {
-                Text(stringResource(R.string.apply))
-            }
-        }
-    )
 }
 
 @Composable
