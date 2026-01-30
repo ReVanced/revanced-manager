@@ -640,17 +640,17 @@ private fun OptionsDialog(
         ) {
             if (patch.options == null) return@LazyColumnWithScrollbar
 
-            items(patch.options, key = { it.key }) { option ->
-                val key = option.key
+            items(patch.options, key = { it.name }) { option ->
+                val name = option.name
                 val value =
-                    if (values == null || !values.contains(key)) option.default else values[key]
+                    if (values == null || !values.contains(name)) option.default else values[name]
 
                 @Suppress("UNCHECKED_CAST")
                 OptionItem(
                     option = option as Option<Any>,
                     value = value,
                     setValue = {
-                        set(key, it)
+                        set(name, it)
                     },
                     selectionWarningEnabled = selectionWarningEnabled
                 )

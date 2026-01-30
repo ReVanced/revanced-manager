@@ -325,7 +325,7 @@ class SelectedAppInfoViewModel(
                         bundleOptions.forEach patch@{ (patchName, values) ->
                             // Get all valid option keys for the patch.
                             val validOptionKeys =
-                                patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
+                                patches[patchName]?.options?.map { it.name }?.toSet() ?: return@patch
 
                             this@bundleOptions[patchName] = values.filterKeys { key ->
                                 key in validOptionKeys
