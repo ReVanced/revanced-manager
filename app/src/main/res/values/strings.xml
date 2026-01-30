@@ -30,6 +30,9 @@ Second \"item\" text"</string>
     <string name="select_app">Select an app</string>
     <string name="patches_count_selected">%1$d/%2$d selected</string>
 
+    <string name="fab_patch_app">Patch an app</string>
+    <string name="fab_add_patches">Add patches</string>
+
     <string name="new_downloader_plugins_notification">New downloader plugins available. Click here to configure them.</string>
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 

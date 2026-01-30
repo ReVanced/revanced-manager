@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -65,6 +66,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
@@ -83,12 +85,14 @@ import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
-import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.util.lerp
+import androidx.compose.ui.layout.Layout
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -295,35 +299,28 @@ fun DashboardScreen(
             },
             containerColor = Color.Transparent,
             floatingActionButton = {
-                HapticFloatingActionButton(
-                    onClick = {
+                DashboardFab(
+                    pagerState = pagerState,
+                    onPatchAppClick = {
                         vm.cancelSourceSelection()
-
-                        when (pagerState.currentPage) {
-                            DashboardPage.DASHBOARD.ordinal -> {
-                                if (availablePatches < 1) {
-                                    androidContext.toast(resources.getString(R.string.no_patch_found))
-                                    composableScope.launch {
-                                        pagerState.animateScrollToPage(
-                                            DashboardPage.BUNDLES.ordinal
-                                        )
-                                    }
-                                    return@HapticFloatingActionButton
-                                }
-                                if (vm.android11BugActive) {
-                                    showAndroid11Dialog = true
-                                    return@HapticFloatingActionButton
-                                }
-
-                                onAppSelectorClick()
+                        if (availablePatches < 1) {
+                            androidContext.toast(resources.getString(R.string.no_patch_found))
+                            composableScope.launch {
+                                pagerState.animateScrollToPage(DashboardPage.BUNDLES.ordinal)
                             }
-
-                            DashboardPage.BUNDLES.ordinal -> {
-                                showAddBundleDialog = true
-                            }
+                            return@DashboardFab
                         }
+                        if (vm.android11BugActive) {
+                            showAndroid11Dialog = true
+                            return@DashboardFab
+                        }
+                        onAppSelectorClick()
+                    },
+                    onAddBundleClick = {
+                        vm.cancelSourceSelection()
+                        showAddBundleDialog = true
                     }
-                ) { Icon(Icons.Default.Add, stringResource(R.string.add)) }
+                )
             }
         ) { paddingValues ->
             Column(Modifier.padding(paddingValues)) {
@@ -424,6 +421,59 @@ fun DashboardScreen(
                 )
             }
         }
+        }
+    }
+}
+
+@Composable
+private fun DashboardFab(
+    pagerState: PagerState,
+    onPatchAppClick: () -> Unit,
+    onAddBundleClick: () -> Unit
+) {
+    val swipeProgress = (pagerState.currentPage + pagerState.currentPageOffsetFraction).coerceIn(0f, 1f)
+
+    HapticExtendedFloatingActionButton(
+        onClick = {
+            when (pagerState.currentPage) {
+                DashboardPage.DASHBOARD.ordinal -> onPatchAppClick()
+                DashboardPage.BUNDLES.ordinal -> onAddBundleClick()
+            }
+        },
+        icon = { Icon(Icons.Default.Add, contentDescription = null) },
+        text = { FabTextCrossfade(swipeProgress) }
+    )
+}
+
+@Composable
+private fun FabTextCrossfade(progress: Float) {
+    val texts = listOf(
+        stringResource(R.string.fab_patch_app),
+        stringResource(R.string.fab_add_patches)
+    )
+
+    Layout(
+        content = {
+            texts.forEachIndexed { index, text ->
+                val textProgress = if (index == 0) 1f - progress else progress
+                val direction = if (index == 0) 1f else -1f
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.graphicsLayer {
+                        alpha = textProgress
+                        translationX = (1f - textProgress) * direction * -50f
+                    }
+                )
+            }
+        }
+    ) { measurables, constraints ->
+        val placeables = measurables.map { it.measure(constraints) }
+        val width = lerp(placeables[0].width.toFloat(), placeables[1].width.toFloat(), progress).toInt()
+        val height = placeables.maxOf { it.height }
+
+        layout(width, height) {
+            placeables.forEach { it.placeRelative(0, 0) }
         }
     }
 }
