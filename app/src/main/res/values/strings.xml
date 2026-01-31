@@ -110,6 +110,8 @@ Second \"item\" text"</string>
     <string name="language">Language</string>
     <string name="language_description">Choose the app display language</string>
     <string name="language_system_default">System default</string>
+    <string name="search_languages">Search languages…</string>
+    
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">Do not restrict patches to compatible app versions</string>

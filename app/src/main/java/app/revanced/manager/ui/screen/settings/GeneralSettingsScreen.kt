@@ -4,21 +4,30 @@ import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeFlexibleTopAppBar
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -31,11 +40,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.FullscreenDialog
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SearchView as SearchViewComponent
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
@@ -43,8 +55,8 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.component.settings.ThemeSelector
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.GeneralSettingsViewModel
+import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -62,8 +74,7 @@ fun GeneralSettingsScreen(
             supportedLocales = viewModel.getSupportedLocales(),
             currentLocale = viewModel.getCurrentLocale(),
             onDismiss = { showLanguagePicker = false },
-            onConfirm = { viewModel.setLocale(it) },
-            getDisplayName = { viewModel.getLocaleDisplayName(it) }
+            onSelect = { viewModel.setLocale(it) }
         )
     }
 
@@ -102,10 +113,20 @@ fun GeneralSettingsScreen(
                     supportingContent = stringResource(R.string.language_description),
                     onClick = { showLanguagePicker = true },
                     trailingContent = {
-                        FilledTonalButton(onClick = { showLanguagePicker = true }) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Text(
-                                currentLanguageDisplay
-                                    ?: stringResource(R.string.language_system_default)
+                                text = currentLanguageDisplay
+                                    ?: stringResource(R.string.language_system_default),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Icon(
+                                Icons.AutoMirrored.Outlined.ArrowRight,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -141,62 +162,181 @@ fun GeneralSettingsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun LanguagePicker(
     supportedLocales: List<Locale>,
     currentLocale: Locale?,
     onDismiss: () -> Unit,
-    onConfirm: (Locale?) -> Unit,
-    getDisplayName: (Locale) -> String
+    onSelect: (Locale?) -> Unit
 ) {
-    var selectedLocale by remember { mutableStateOf(currentLocale) }
     val systemDefaultString = stringResource(R.string.language_system_default)
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+    var isSearchActive by rememberSaveable { mutableStateOf(false) }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.language)) },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
+    val filteredLocales = remember(searchQuery, supportedLocales, currentLocale) {
+        if (searchQuery.isEmpty()) {
+            supportedLocales
+        } else {
+            supportedLocales.filter { locale ->
+                val currentAppLocale = currentLocale ?: Locale.getDefault()
+                val localizedName = locale.getDisplayName(currentAppLocale)
+                val nativeName = locale.getDisplayName(locale)
+
+                localizedName.contains(searchQuery, ignoreCase = true) ||
+                nativeName.contains(searchQuery, ignoreCase = true)
+            }
+        }
+    }
+
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+
+    FullscreenDialog(onDismissRequest = onDismiss) {
+        if (isSearchActive) {
+            SearchViewComponent(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                onActiveChange = { isSearchActive = it },
+                placeholder = { Text(stringResource(R.string.search_languages)) },
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { selectedLocale = null },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    HapticRadioButton(
-                        selected = selectedLocale == null,
-                        onClick = { selectedLocale = null }
-                    )
-                    Text(systemDefaultString)
-                }
-
-                supportedLocales.forEach { locale ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedLocale = locale },
-                        verticalAlignment = Alignment.CenterVertically
+                if (searchQuery.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        HapticRadioButton(
-                            selected = selectedLocale == locale,
-                            onClick = { selectedLocale = locale }
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = stringResource(R.string.search_languages),
+                            modifier = Modifier.size(64.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Text(getDisplayName(locale))
+
+                        Text(
+                            text = stringResource(R.string.type_anything),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                } else {
+                    LazyColumnWithScrollbar(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(vertical = 8.dp)
+                    ) {
+                        items(filteredLocales) { locale ->
+                            val currentAppLocale = currentLocale ?: Locale.getDefault()
+                            val localizedName = locale.getDisplayName(currentAppLocale)
+                            val nativeName = locale.getDisplayName(locale)
+
+                            ListItem(
+                                modifier = Modifier.clickable {
+                                    onSelect(locale)
+                                    onDismiss()
+                                },
+                                leadingContent = {
+                                    HapticRadioButton(
+                                        selected = currentLocale == locale,
+                                        onClick = {
+                                            onSelect(locale)
+                                            onDismiss()
+                                        }
+                                    )
+                                },
+                                headlineContent = { Text(localizedName) },
+                                supportingContent = if (nativeName != localizedName) {
+                                    { Text(nativeName) }
+                                } else null,
+                                colors = transparentListItemColors
+                            )
+                        }
                     }
                 }
             }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirm(selectedLocale)
-                    onDismiss()
+        } else {
+            Scaffold(
+                topBar = {
+                    LargeFlexibleTopAppBar(
+                        title = { Text(stringResource(R.string.language)) },
+                        navigationIcon = {
+                            IconButton(onClick = onDismiss) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.back)
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = { isSearchActive = true }) {
+                                Icon(
+                                    Icons.Outlined.Search,
+                                    contentDescription = stringResource(R.string.search)
+                                )
+                            }
+                        },
+                        scrollBehavior = scrollBehavior
+                    )
+                },
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            ) { paddingValues ->
+                LazyColumnWithScrollbar(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(vertical = 8.dp)
+                ) {
+                    item {
+                        ListItem(
+                            modifier = Modifier.clickable {
+                                onSelect(null)
+                                onDismiss()
+                            },
+                            leadingContent = {
+                                HapticRadioButton(
+                                    selected = currentLocale == null,
+                                    onClick = {
+                                        onSelect(null)
+                                        onDismiss()
+                                    }
+                                )
+                            },
+                            headlineContent = { Text(systemDefaultString) }
+                        )
+                    }
+
+                    item {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+                        )
+                    }
+
+                    items(supportedLocales) { locale ->
+                        val currentAppLocale = currentLocale ?: Locale.getDefault()
+                        val localizedName = locale.getDisplayName(currentAppLocale)
+                        val nativeName = locale.getDisplayName(locale)
+
+                        ListItem(
+                            modifier = Modifier.clickable {
+                                onSelect(locale)
+                                onDismiss()
+                            },
+                            leadingContent = {
+                                HapticRadioButton(
+                                    selected = currentLocale == locale,
+                                    onClick = {
+                                        onSelect(locale)
+                                        onDismiss()
+                                    }
+                                )
+                            },
+                            headlineContent = { Text(localizedName) },
+                            supportingContent = if (nativeName != localizedName) {
+                                { Text(nativeName) }
+                            } else null
+                        )
+                    }
                 }
-            ) {
-                Text(stringResource(R.string.apply))
             }
         }
-    )
+    }
 }
+
