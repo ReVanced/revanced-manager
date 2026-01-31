@@ -1,8 +1,10 @@
 package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,6 +29,7 @@ fun SearchView(
     onQueryChange: (String) -> Unit,
     onActiveChange: (Boolean) -> Unit,
     placeholder: (@Composable () -> Unit)? = null,
+    trailingContent: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val colors = SearchBarColors(
@@ -54,6 +57,20 @@ fun SearchView(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             stringResource(R.string.back)
                         )
+                    }
+                },
+                trailingIcon = {
+                    Row {
+                        trailingContent?.invoke()
+
+                        if (query.isNotEmpty()) {
+                            IconButton(onClick = { onQueryChange("") }) {
+                                Icon(
+                                    Icons.Filled.Close,
+                                    contentDescription = stringResource(R.string.clear)
+                                )
+                            }
+                        }
                     }
                 }
             )
