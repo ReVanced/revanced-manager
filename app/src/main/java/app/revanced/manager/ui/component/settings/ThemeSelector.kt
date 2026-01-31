@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.component.settings
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.theme.Theme
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ThemeSelector(
     currentTheme: Theme,
@@ -45,7 +48,7 @@ fun ThemeSelector(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(4.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLow
+        color = animateColorAsState(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.motionScheme.defaultEffectsSpec(), "surfaceContainerLow").value,
     ) {
         Row(
             modifier = Modifier
@@ -82,6 +85,7 @@ fun ThemeSelector(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ThemeOption(
     icon: ImageVector,
@@ -91,16 +95,24 @@ private fun ThemeOption(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val containerColor = if (isSelected) {
-        MaterialTheme.colorScheme.primaryContainer
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerHighest
-    }
-    val contentColor = if (isSelected) {
-        MaterialTheme.colorScheme.onPrimaryContainer
-    } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
-    }
+    val containerColor = animateColorAsState(
+        if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surfaceContainerHighest
+        },
+        MaterialTheme.motionScheme.defaultEffectsSpec(),
+        if (isSelected) "primaryContainer" else "surfaceContainerHighest"
+    ).value
+    val contentColor = animateColorAsState(
+        if (isSelected) {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        },
+        MaterialTheme.motionScheme.defaultEffectsSpec(),
+        if (isSelected) "onPrimaryContainer" else "onSurfaceVariant"
+    ).value
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
