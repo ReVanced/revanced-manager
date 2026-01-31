@@ -111,7 +111,8 @@ fun DashboardScreen(
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
     onDownloaderPluginClick: () -> Unit,
-    onAppClick: (String) -> Unit
+    onAppClick: (String) -> Unit,
+    onBundleClick: (Int) -> Unit
 ) {
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
@@ -411,10 +412,11 @@ fun DashboardScreen(
                                     }
                                 }
 
-                                BundleListScreen(
-                                    eventsFlow = vm.bundleListEventsFlow,
-                                    setSelectedSourceCount = { selectedSourceCount = it }
-                                )
+                            BundleListScreen(
+                                eventsFlow = vm.bundleListEventsFlow,
+                                setSelectedSourceCount = { selectedSourceCount = it },
+                                onBundleClick = onBundleClick
+                            )
                             }
                         }
                     }
@@ -438,7 +440,7 @@ private fun DashboardFab(
             when (pagerState.currentPage) {
                 DashboardPage.DASHBOARD.ordinal -> onPatchAppClick()
                 DashboardPage.BUNDLES.ordinal -> onAddBundleClick()
-            }
+                        }
         },
         icon = { Icon(Icons.Default.Add, contentDescription = null) },
         text = { FabTextCrossfade(swipeProgress) }

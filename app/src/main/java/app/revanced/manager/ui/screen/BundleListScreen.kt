@@ -23,7 +23,8 @@ import org.koin.androidx.compose.koinViewModel
 fun BundleListScreen(
     viewModel: BundleListViewModel = koinViewModel(),
     eventsFlow: Flow<BundleListViewModel.Event>,
-    setSelectedSourceCount: (Int) -> Unit
+    setSelectedSourceCount: (Int) -> Unit,
+    onBundleClick: (Int) -> Unit
 ) {
     val patchCounts by viewModel.patchCounts.collectAsStateWithLifecycle(emptyMap())
     val sources by viewModel.sources.collectAsStateWithLifecycle(emptyList())
@@ -51,12 +52,6 @@ fun BundleListScreen(
                 BundleItem(
                     src = source,
                     patchCount = patchCounts[source.uid] ?: 0,
-                    onDelete = {
-                        viewModel.delete(source)
-                    },
-                    onUpdate = {
-                        viewModel.update(source)
-                    },
                     selectable = viewModel.selectedSources.size > 0,
                     onSelect = {
                         viewModel.selectedSources.add(source.uid)
@@ -68,7 +63,8 @@ fun BundleListScreen(
                         } else {
                             viewModel.selectedSources.remove(source.uid)
                         }
-                    }
+                    },
+                    onClick = { onBundleClick(source.uid) }
                 )
             }
         }

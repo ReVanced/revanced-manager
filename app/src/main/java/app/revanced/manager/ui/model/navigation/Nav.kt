@@ -20,6 +20,9 @@ object AppSelector
 data class InstalledApplicationInfo(val packageName: String)
 
 @Serializable
+data class BundleInformation(val uid: Int)
+
+@Serializable
 data class Update(val downloadOnScreenEntry: Boolean = false)
 
 @Serializable

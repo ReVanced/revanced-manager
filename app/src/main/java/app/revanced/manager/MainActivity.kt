@@ -28,6 +28,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import app.revanced.manager.ui.model.navigation.AppSelector
+import app.revanced.manager.ui.model.navigation.BundleInformation
 import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
 import app.revanced.manager.ui.model.navigation.InstalledApplicationInfo
@@ -36,6 +37,7 @@ import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
 import app.revanced.manager.ui.screen.AppSelectorScreen
+import app.revanced.manager.ui.screen.BundleInformationScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
 import app.revanced.manager.ui.screen.PatcherScreen
@@ -142,7 +144,17 @@ private fun ReVancedManager(vm: MainViewModel) {
                 },
                 onAppClick = { packageName ->
                     navController.navigateSafe(InstalledApplicationInfo(packageName))
+                },
+                onBundleClick = { uid ->
+                    navController.navigateSafe(BundleInformation(uid))
                 }
+            )
+        }
+
+        composable<BundleInformation> {
+            BundleInformationScreen(
+                onBackClick = navController::popBackStackSafe,
+                viewModel = koinViewModel()
             )
         }
 
