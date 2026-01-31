@@ -41,6 +41,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:configChanges="layoutDirection|locale"
             android:theme="@style/Theme.ReVancedManager">
 
             <intent-filter>
