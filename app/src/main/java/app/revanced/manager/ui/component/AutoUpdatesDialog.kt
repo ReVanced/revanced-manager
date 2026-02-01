@@ -4,6 +4,8 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Update
@@ -42,6 +44,7 @@ fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
         title = { Text(text = stringResource(R.string.auto_updates_dialog_title)) },
         text = {
             Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(text = stringResource(R.string.auto_updates_dialog_description))

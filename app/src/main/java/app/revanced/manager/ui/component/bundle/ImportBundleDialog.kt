@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material3.*
@@ -126,6 +128,7 @@ private fun SelectBundleTypeStep(
     onBundleTypeSelected: (BundleType) -> Unit
 ) {
     Column(
+        modifier = Modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Text(
@@ -181,7 +184,7 @@ private fun ImportBundleStep(
     onRemoteUrlChange: (String) -> Unit,
     onAutoUpdateChange: (Boolean) -> Unit
 ) {
-    Column {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         when (bundleType) {
             BundleType.Local -> {
                 Column(
