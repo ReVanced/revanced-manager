@@ -2,6 +2,7 @@ package app.revanced.manager.patcher.patch
 
 import kotlinx.parcelize.IgnoredOnParcel
 import android.os.Parcelable
+import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.loadPatches
 import kotlinx.parcelize.Parcelize
 import java.io.File
@@ -54,34 +55,46 @@ data class PatchBundle(val patchesJar: String) : Parcelable {
     )
 
     object Loader {
-        private fun patches(bundles: Iterable<PatchBundle>) =
+
+        private fun patches(bundles: Iterable<PatchBundle>) = buildMap {
+            val bundleMap = bundles.associateBy { it.patchesJar }
+
             loadPatches(
-                *bundles.map { File(it.patchesJar) }.toTypedArray(),
+                *bundleMap.keys.map(::File).toTypedArray(),
                 onFailedToLoad = { file, throwable ->
-                    // TODO: handle error
+                    this[bundleMap[file.absolutePath]!!] = Result.failure(throwable)
                 }
-            ).patchesByFile.mapKeys { (file, _) ->
-                val absPath = file.absolutePath
-                bundles.single { absPath == it.patchesJar }
+            ).patchesByFile.forEach { (file, patches) ->
+                putIfAbsent(bundleMap[file.absolutePath]!!, Result.success(patches))
+            }
+        }
+
+        fun metadata(bundles: Iterable<PatchBundle>): Map<PatchBundle, Result<Set<PatchInfo>>> =
+            patches(bundles).mapValues { (_, result) ->
+                result.map { patches ->
+                    patches.mapTo(
+                        HashSet(patches.size),
+                        ::PatchInfo
+                    )
+                }
             }
 
-        fun metadata(bundles: Iterable<PatchBundle>) =
-            patches(bundles).mapValues { (_, patches) -> patches.map(::PatchInfo) }
+        fun patches(bundles: Iterable<PatchBundle>, packageName: String): Map<PatchBundle, Set<Patch>> =
+            patches(bundles).mapValues { (_, result) ->
+                val patches = result.getOrDefault(emptySet())
 
-        fun patches(bundles: Iterable<PatchBundle>, packageName: String) =
-            patches(bundles).mapValues { (_, patches) ->
-                patches.filter { patch ->
+                patches.filterTo(HashSet(patches.size)) { patch ->
                     val compatiblePackages = patch.compatiblePackages
                         ?: // The patch has no compatibility constraints, which means it is universal.
-                        return@filter true
+                        return@filterTo true
 
                     if (!compatiblePackages.any { (name, _) -> name == packageName }) {
                         // Patch is not compatible with this package.
-                        return@filter false
+                        return@filterTo false
                     }
 
                     true
-                }.toSet()
+                }
             }
     }
 }

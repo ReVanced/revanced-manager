@@ -160,35 +160,52 @@ class PatchBundleRepository(
     private suspend fun loadMetadata(sources: Map<Int, PatchBundleSource>): Map<Int, PatchBundleInfo.Global> {
         // Map bundles -> sources
         val map = sources.mapNotNull { (_, src) ->
+            // HACK (must remove before merge): disable official bundle to prevent it from sabotaging the updated version.
+            if (src.uid == 0) return@mapNotNull null
+
             (src.patchBundle ?: return@mapNotNull null) to src
         }.toMap()
+
+        val failedBundles = mutableMapOf<Int, Throwable>()
 
         val metadata = try {
             PatchBundle.Loader.metadata(map.keys)
         } catch (error: Throwable) {
-            val uids = map.values.map { it.uid }
-
-            dispatchAction("Mark bundles as failed") { state ->
-                state.copy(sources = state.sources.mutate {
-                    uids.forEach { uid ->
-                        it[uid] = it[uid]?.copy(error = error) ?: return@forEach
-                    }
-                })
+            map.values.forEach {
+                failedBundles[it.uid] = error
             }
 
             Log.e(tag, "Failed to load bundles", error)
             emptyMap()
         }
 
-        return metadata.entries.associate { (bundle, patches) ->
-            val src = map[bundle]!!
-            src.uid to PatchBundleInfo.Global(
-                src.name,
-                bundle.manifestAttributes?.version,
-                src.uid,
-                patches
-            )
+        val output = buildMap {
+            metadata.forEach { (bundle, result) ->
+                val src = map[bundle]!!
+                val error = result.exceptionOrNull()
+                if (error != null) {
+                    failedBundles[src.uid] = error
+                    return@forEach
+                }
+
+                this[src.uid] = PatchBundleInfo.Global(
+                    src.name,
+                    bundle.manifestAttributes?.version,
+                    src.uid,
+                    result.getOrThrow().toList()
+                )
+            }
         }
+
+        if (failedBundles.isNotEmpty()) dispatchAction("Mark bundles as failed") { state ->
+            state.copy(sources = state.sources.mutate {
+                failedBundles.forEach { (uid, error) ->
+                    it[uid] = it[uid]?.copy(error = error) ?: return@forEach
+                }
+            })
+        }
+
+        return output
     }
 
     suspend fun isVersionAllowed(packageName: String, version: String) =

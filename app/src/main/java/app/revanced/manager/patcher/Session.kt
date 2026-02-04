@@ -16,6 +16,7 @@ import java.io.Closeable
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import kotlin.collections.set
 
 internal typealias PatchList = List<Patch>
 private typealias Patcher = (emit: (PatchResult) -> Unit) -> PatchesResult
@@ -30,7 +31,8 @@ class Session(
 ) : Closeable {
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
 
-    private suspend fun applyPatchesVerbose(patcher: Patcher, selectedPatches: PatchList) =
+
+    private suspend fun applyPatchesVerbose(patcher: Patcher, indices: Map<Patch, Int>) =
         withContext(
             Dispatchers.Default
         ) {
@@ -39,8 +41,7 @@ class Session(
                 // Make the patching process cancelable.
                 context.ensureActive()
 
-                val index = selectedPatches.indexOf(patch)
-                if (index == -1) return@patcher
+                val index = indices[patch] ?: return@patcher
 
                 if (exception != null) {
                     onEvent(
@@ -65,6 +66,9 @@ class Session(
         }
 
     suspend fun run(output: File, selectedPatches: PatchList) {
+        val indices = HashMap<Patch, Int>(selectedPatches.size)
+        selectedPatches.forEachIndexed { idx, patch -> indices[patch] = idx }
+
         val result = runStep(StepId.ExecutePatches, onEvent) {
             java.util.logging.Logger.getLogger("").apply {
                 handlers.forEach {
@@ -85,7 +89,7 @@ class Session(
             }
 
             logger.info("Applying patches...")
-            applyPatchesVerbose(patcher, selectedPatches.sortedBy { it.name })
+            applyPatchesVerbose(patcher, indices)
         }
 
         runStep(StepId.WriteAPK, onEvent) {

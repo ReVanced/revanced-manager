@@ -267,6 +267,13 @@ kotlin {
     }
 }
 
+configurations {
+    all {
+        // ReVanced Library has a dependency which conflicts with whatever this is. We don't use protobuf, so it should be fine.
+        exclude(group = "com.google.api.grpc", module = "proto-google-common-protos")
+    }
+}
+
 aboutLibraries {
     library {
         // Enable the duplication mode, allows to merge, or link dependencies which relate
