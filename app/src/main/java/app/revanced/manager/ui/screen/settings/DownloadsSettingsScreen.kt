@@ -92,7 +92,7 @@ fun DownloadsSettingsScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         PullToRefreshBox(
-            onRefresh = viewModel::refreshDownloader,
+            onRefresh = viewModel::refreshDownloaders,
             isRefreshing = viewModel.isRefreshingDownloaders,
             modifier = Modifier.padding(paddingValues)
         ) {
@@ -103,104 +103,107 @@ fun DownloadsSettingsScreen(
                     GroupHeader(stringResource(R.string.downloaders))
                 }
 
-                if (downloaderStates.isNotEmpty()) {
-                    downloaderStates.forEach { (packageName, state) ->
-                        item(key = packageName) {
-                            var showDialog by rememberSaveable {
-                                mutableStateOf(false)
-                            }
-
-                            fun dismiss() {
-                                showDialog = false
-                            }
-
-                            val packageInfo =
-                                remember(packageName) {
-                                    viewModel.pm.getPackageInfo(
-                                        packageName
-                                    )
-                                } ?: return@item
-
-                            if (showDialog) {
-                                val signature =
-                                    remember(packageName) {
-                                        val androidSignature =
-                                            viewModel.pm.getSignature(packageName)
-                                        val hash = MessageDigest.getInstance("SHA-256")
-                                            .digest(androidSignature.toByteArray())
-                                        hash.toHexString(format = HexFormat.UpperCase)
-                                    }
-                                val appName = remember {
-                                    packageInfo.applicationInfo?.loadLabel(context.packageManager)
-                                        ?.toString()
-                                        ?: packageName
-                                }
-
-                                when (state) {
-                                    is DownloaderPackageState.Loaded -> TrustDialog(
-                                        title = R.string.downloader_revoke_trust_dialog_title,
-                                        body = stringResource(
-                                            R.string.downloader_trust_dialog_body,
-                                            packageName,
-                                            signature
-                                        ),
-                                        downloaderName = appName,
-                                        signature = signature,
-                                        onDismiss = ::dismiss,
-                                        onConfirm = {
-                                            viewModel.revokeDownloaderTrust(packageName)
-                                            dismiss()
-                                        }
-                                    )
-
-                                    is DownloaderPackageState.Failed -> ExceptionViewerDialog(
-                                        text = remember(state.throwable) {
-                                            state.throwable.stackTraceToString()
-                                        },
-                                        onDismiss = ::dismiss
-                                    )
-
-                                    is DownloaderPackageState.Untrusted -> TrustDialog(
-                                        title = R.string.downloader_trust_dialog_title,
-                                        body = stringResource(
-                                            R.string.downloader_trust_dialog_body
-                                        ),
-                                        downloaderName = appName,
-                                        signature = signature,
-                                        onDismiss = ::dismiss,
-                                        onConfirm = {
-                                            viewModel.trustDownloader(packageName)
-                                            dismiss()
-                                        }
-                                    )
-                                }
-                            }
-
-                            SettingsListItem(
-                                modifier = Modifier.clickable { showDialog = true },
-                                headlineContent = {
-                                    AppLabel(
-                                        packageInfo = packageInfo,
-                                        style = MaterialTheme.typography.titleLarge
-                                    )
-                                },
-                                supportingContent = when (state) {
-                                    is DownloaderPackageState.Loaded -> {
-                                        val names = state.downloader.joinToString("\n") { it.name }
-                                        if (names.isNotEmpty())
-                                            stringResource(R.string.downloader_state_trusted, "\n\n$names")
-                                        else
-                                            stringResource(R.string.downloader_state_trusted)
-                                    }
-
-                                    is DownloaderPackageState.Failed -> stringResource(R.string.downloader_state_failed)
-                                    is DownloaderPackageState.Untrusted -> stringResource(R.string.downloader_state_untrusted)
-                                },
-                                trailingContent = { Text(packageInfo.versionName!!) }
-                            )
+                downloaderStates.forEach { (packageName, state) ->
+                    item(key = packageName) {
+                        var showDialog by rememberSaveable {
+                            mutableStateOf(false)
                         }
+
+                        fun dismiss() {
+                            showDialog = false
+                        }
+
+                        val packageInfo =
+                            remember(packageName) {
+                                viewModel.pm.getPackageInfo(
+                                    packageName
+                                )
+                            } ?: return@item
+
+                        if (showDialog) {
+                            val signature =
+                                remember(packageName) {
+                                    val androidSignature =
+                                        viewModel.pm.getSignature(packageName)
+                                    val hash = MessageDigest.getInstance("SHA-256")
+                                        .digest(androidSignature.toByteArray())
+                                    hash.toHexString(format = HexFormat.UpperCase)
+                                }
+                            val appName = remember {
+                                packageInfo.applicationInfo?.loadLabel(context.packageManager)
+                                    ?.toString()
+                                    ?: packageName
+                            }
+
+                            when (state) {
+                                is DownloaderPackageState.Loaded -> TrustDialog(
+                                    title = R.string.downloader_revoke_trust_dialog_title,
+                                    body = stringResource(
+                                        R.string.downloader_trust_dialog_body,
+                                        packageName,
+                                        signature
+                                    ),
+                                    downloaderName = appName,
+                                    signature = signature,
+                                    onDismiss = ::dismiss,
+                                    onConfirm = {
+                                        viewModel.revokeDownloaderTrust(packageName)
+                                        dismiss()
+                                    }
+                                )
+
+                                is DownloaderPackageState.Failed -> ExceptionViewerDialog(
+                                    text = remember(state.throwable) {
+                                        state.throwable.stackTraceToString()
+                                    },
+                                    onDismiss = ::dismiss
+                                )
+
+                                is DownloaderPackageState.Untrusted -> TrustDialog(
+                                    title = R.string.downloader_trust_dialog_title,
+                                    body = stringResource(
+                                        R.string.downloader_trust_dialog_body
+                                    ),
+                                    downloaderName = appName,
+                                    signature = signature,
+                                    onDismiss = ::dismiss,
+                                    onConfirm = {
+                                        viewModel.trustDownloader(packageName)
+                                        dismiss()
+                                    }
+                                )
+                            }
+                        }
+
+                        SettingsListItem(
+                            modifier = Modifier.clickable { showDialog = true },
+                            headlineContent = {
+                                AppLabel(
+                                    packageInfo = packageInfo,
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            },
+                            supportingContent = when (state) {
+                                is DownloaderPackageState.Loaded -> {
+                                    val names = state.downloader.joinToString("\n") { it.name }
+                                    if (names.isNotEmpty())
+                                        stringResource(
+                                            R.string.downloader_state_trusted,
+                                            "\n\n$names"
+                                        )
+                                    else
+                                        stringResource(R.string.downloader_state_trusted)
+                                }
+
+                                is DownloaderPackageState.Failed -> stringResource(R.string.downloader_state_failed)
+                                is DownloaderPackageState.Untrusted -> stringResource(R.string.downloader_state_untrusted)
+                            },
+                            trailingContent = { Text(packageInfo.versionName!!) }
+                        )
                     }
-                } else {
+                }
+
+                if (downloaderStates.isEmpty()) {
                     item {
                         Text(
                             stringResource(R.string.no_downloader_installed),

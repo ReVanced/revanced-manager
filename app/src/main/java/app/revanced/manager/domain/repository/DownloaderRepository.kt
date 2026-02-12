@@ -33,7 +33,8 @@ class DownloaderRepository(
     db: AppDatabase
 ) {
     private val trustDao = db.trustedDownloaderDao()
-    private val _downloaderPackageStates = MutableStateFlow(emptyMap<String, DownloaderPackageState>())
+    private val _downloaderPackageStates =
+        MutableStateFlow(emptyMap<String, DownloaderPackageState>())
     val downloaderPackageStates = _downloaderPackageStates.asStateFlow()
     val loadedDownloadersFlow = downloaderPackageStates.map { states ->
         states.values.filterIsInstance<DownloaderPackageState.Loaded>().flatMap { it.downloader }
@@ -59,7 +60,8 @@ class DownloaderRepository(
         installedDownloaderPackageNames.value = downloaderPackages.keys
 
         val acknowledgedDownloader = this@DownloaderRepository.acknowledgedPackageNames.get()
-        val uninstalledDownloader = acknowledgedDownloader subtract installedDownloaderPackageNames.value
+        val uninstalledDownloader =
+            acknowledgedDownloader subtract installedDownloaderPackageNames.value
         if (uninstalledDownloader.isNotEmpty()) {
             Log.d(tag, "Uninstalled downloader: ${uninstalledDownloader.joinToString(", ")}")
             this@DownloaderRepository.acknowledgedPackageNames.update(acknowledgedDownloader subtract uninstalledDownloader)
@@ -68,12 +70,13 @@ class DownloaderRepository(
     }
 
     fun unwrapParceledData(data: ParceledDownloaderData): Pair<LoadedDownloader, Parcelable> {
-        val downloader =
+        val state =
             (_downloaderPackageStates.value[data.downloaderPackageName] as? DownloaderPackageState.Loaded)
-                ?.downloader?.first { it.name == data.downloaderName }
                 ?: throw Exception("Downloader package name ${data.downloaderPackageName} is not available")
+        val downloader = state.downloader.firstOrNull { it.name == data.downloaderName }
+            ?: throw Exception("No downloader with name ${data.downloaderName} found in ${data.downloaderPackageName}")
 
-        return downloader to data.unwrapWith(downloader)
+        return downloader to data.unwrapWith(state.classLoader)
     }
 
     private suspend fun loadPackage(packageName: String): DownloaderPackageState {
@@ -88,8 +91,9 @@ class DownloaderRepository(
 
         return try {
             val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
-            val classNames = packageInfo.applicationInfo!!.metaData.getStringArray(METADATA_DOWNLOADER_CLASSES)
-                ?: throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASSES")
+            val classNames =
+                packageInfo.applicationInfo!!.metaData.getStringArray(METADATA_DOWNLOADER_CLASSES)
+                    ?: throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASSES")
 
             val classLoader =
                 PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
@@ -115,10 +119,10 @@ class DownloaderRepository(
                         with(pm) { packageInfo.label() },
                         packageInfo.versionName!!,
                         downloader.get,
-                        downloader.download,
-                        classLoader
+                        downloader.download
                     )
-                }
+                },
+                classLoader
             )
         } catch (e: CancellationException) {
             throw e

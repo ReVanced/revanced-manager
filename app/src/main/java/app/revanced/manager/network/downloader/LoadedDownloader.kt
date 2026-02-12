@@ -10,6 +10,5 @@ class LoadedDownloader(
     val name: String,
     val version: String,
     val get: suspend GetScope.(packageName: String, version: String?) -> Pair<Parcelable, String?>?,
-    val download: suspend OutputDownloadScope.(data: Parcelable, outputStream: OutputStream) -> Unit,
-    val classLoader: ClassLoader
+    val download: suspend OutputDownloadScope.(data: Parcelable, outputStream: OutputStream) -> Unit
 )

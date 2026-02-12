@@ -51,7 +51,7 @@ class DownloadsViewModel(
         }
     }
 
-    fun refreshDownloader() = viewModelScope.launch {
+    fun refreshDownloaders() = viewModelScope.launch {
         isRefreshingDownloaders = true
         downloaderRepository.reload()
         isRefreshingDownloaders = false

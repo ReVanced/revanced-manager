@@ -20,12 +20,12 @@ class ParceledDownloaderData private constructor(
         createBundle(data)
     )
 
-    fun unwrapWith(downloader: LoadedDownloader): Parcelable {
-        bundle.classLoader = downloader.classLoader
+    fun unwrapWith(classLoader: ClassLoader): Parcelable {
+        bundle.classLoader = classLoader
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val className = bundle.getString(CLASS_NAME_KEY)!!
-            val clazz = downloader.classLoader.loadClass(className)
+            val clazz = classLoader.loadClass(className)
 
             bundle.getParcelable(DATA_KEY, clazz)!! as Parcelable
         } else @Suppress("Deprecation") bundle.getParcelable(DATA_KEY)!!
