@@ -96,7 +96,7 @@ fun DashboardScreen(
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
-    val showNewDownloaderNotification by vm.newDownloaderAvailable.collectAsStateWithLifecycle(
+    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
         false
     )
     val androidContext = LocalContext.current
@@ -314,7 +314,7 @@ fun DashboardScreen(
                             icon = Icons.Outlined.Download,
                             modifier = Modifier.clickable(onClick = onDownloaderClick),
                             actions = {
-                                TextButton(onClick = vm::ignoreNewDownloader) {
+                                TextButton(onClick = vm::ignoreNewDownloaders) {
                                     Text(stringResource(R.string.dismiss))
                                 }
                             }

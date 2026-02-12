@@ -7,16 +7,16 @@ import androidx.room.Upsert
 
 @Dao
 interface TrustedDownloaderDao {
-    @Query("SELECT signature FROM trusted_downloader WHERE package_name = :packageName")
+    @Query("SELECT signature FROM trusted_downloaders WHERE package_name = :packageName")
     suspend fun getTrustedSignature(packageName: String): ByteArray?
 
     @Upsert
     suspend fun upsertTrust(downloader: TrustedDownloader)
 
-    @Query("DELETE FROM trusted_downloader WHERE package_name = :packageName")
+    @Query("DELETE FROM trusted_downloaders WHERE package_name = :packageName")
     suspend fun remove(packageName: String)
 
     @Transaction
-    @Query("DELETE FROM trusted_downloader WHERE package_name IN (:packageNames)")
+    @Query("DELETE FROM trusted_downloaders WHERE package_name IN (:packageNames)")
     suspend fun removeAll(packageNames: Set<String>)
 }

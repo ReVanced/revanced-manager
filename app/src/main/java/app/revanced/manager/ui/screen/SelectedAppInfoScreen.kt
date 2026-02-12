@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import android.R.attr.name
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -141,13 +140,13 @@ fun SelectedAppInfoScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
-        val downloader by vm.downloader.collectAsStateWithLifecycle(emptyList())
+        val downladers by vm.downloaders.collectAsStateWithLifecycle(emptyList())
 
         if (vm.showSourceSelector) {
             val requiredVersion by vm.requiredVersion.collectAsStateWithLifecycle(null)
 
             AppSourceSelectorDialog(
-                downloader = downloader,
+                downloaders = downladers,
                 installedApp = vm.installedAppData,
                 searchApp = SelectedApp.Search(
                     vm.packageName,
@@ -202,7 +201,7 @@ fun SelectedAppInfoScreen(
                     is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
                     is SelectedApp.Download -> stringResource(
                         R.string.apk_source_downloader,
-                        downloader.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderName }?.let { "${it.packageName} ${it.name}" }
+                        downladers.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderName }?.let { "${it.packageName} ${it.name}" }
                             ?: app.data.downloaderPackageName
                     )
 
@@ -280,7 +279,7 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
 
 @Composable
 private fun AppSourceSelectorDialog(
-    downloader: List<LoadedDownloader>,
+    downloaders: List<LoadedDownloader>,
     installedApp: Pair<SelectedApp.Installed, InstalledApp?>?,
     searchApp: SelectedApp.Search,
     activeSearchJob: String?,
@@ -304,7 +303,7 @@ private fun AppSourceSelectorDialog(
         text = {
             LazyColumn {
                 item(key = "auto") {
-                    val hasDownloader = downloader.isNotEmpty()
+                    val hasDownloader = downloaders.isNotEmpty()
                     ListItem(
                         modifier = Modifier
                             .clickable(enabled = canSelect && hasDownloader) { onSelect(searchApp) }
@@ -350,7 +349,7 @@ private fun AppSourceSelectorDialog(
                     }
                 }
 
-                items(downloader, key = { "downloader_${it.packageName}" }) { downloader ->
+                items(downloaders, key = { "downloader_${it.packageName}" }) { downloader ->
                     ListItem(
                         modifier = Modifier.clickable(enabled = canSelect) { onSelectDownloader(downloader) },
                         headlineContent = { Text(downloader.name) },

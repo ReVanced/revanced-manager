@@ -73,7 +73,7 @@ class SelectedAppInfoViewModel(
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
-    val downloader = downloaderRepository.loadedDownloaderPackageFlow
+    val downloaders = downloaderRepository.loadedDownloadersFlow
     val desiredVersion = input.app.version
     val packageName = input.app.packageName
 
@@ -166,9 +166,9 @@ class SelectedAppInfoViewModel(
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
-    val errorFlow = combine(downloader, snapshotFlow { selectedApp }) { downloaderList, app ->
+    val errorFlow = combine(downloaders, snapshotFlow { selectedApp }) { downloaderList, app ->
         when {
-            app is SelectedApp.Search && downloaderList.isEmpty() -> Error.NoDownloader
+            app is SelectedApp.Search && downloaderList.isEmpty() -> Error.NoDownloaders
             else -> null
         }
     }
@@ -307,7 +307,7 @@ class SelectedAppInfoViewModel(
     }
 
     enum class Error(@param:StringRes val resourceId: Int) {
-        NoDownloader(R.string.no_downloader_available)
+        NoDownloaders(R.string.no_downloader_available)
     }
 
     private companion object {

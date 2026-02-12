@@ -31,7 +31,7 @@ class DownloadsViewModel(
     }
     val appSelection = mutableStateSetOf<DownloadedApp>()
 
-    var isRefreshingDownloader by mutableStateOf(false)
+    var isRefreshingDownloaders by mutableStateOf(false)
         private set
 
     fun toggleApp(downloadedApp: DownloadedApp) {
@@ -52,9 +52,9 @@ class DownloadsViewModel(
     }
 
     fun refreshDownloader() = viewModelScope.launch {
-        isRefreshingDownloader = true
+        isRefreshingDownloaders = true
         downloaderRepository.reload()
-        isRefreshingDownloader = false
+        isRefreshingDownloaders = false
     }
 
     fun trustDownloader(packageName: String) = viewModelScope.launch {

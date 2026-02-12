@@ -35,15 +35,15 @@ class DownloaderRepository(
     private val trustDao = db.trustedDownloaderDao()
     private val _downloaderPackageStates = MutableStateFlow(emptyMap<String, DownloaderPackageState>())
     val downloaderPackageStates = _downloaderPackageStates.asStateFlow()
-    val loadedDownloaderPackageFlow = downloaderPackageStates.map { states ->
+    val loadedDownloadersFlow = downloaderPackageStates.map { states ->
         states.values.filterIsInstance<DownloaderPackageState.Loaded>().flatMap { it.downloader }
     }
 
-    private val acknowledgedPackageDownloader = prefs.acknowledgedDownloader
+    private val acknowledgedPackageNames = prefs.acknowledgedDownloaders
     private val installedDownloaderPackageNames = MutableStateFlow(emptySet<String>())
     val newDownloaderPackageNames = combine(
         installedDownloaderPackageNames,
-        acknowledgedPackageDownloader.flow
+        acknowledgedPackageNames.flow
     ) { installed, acknowledged ->
         installed subtract acknowledged
     }
@@ -52,17 +52,17 @@ class DownloaderRepository(
         val downloaderPackages =
             withContext(Dispatchers.IO) {
                 pm.getPackagesWithFeature(DOWNLOADER_FEATURE)
-                    .associate { it.packageName to loadDownloader(it.packageName) }
+                    .associate { it.packageName to loadPackage(it.packageName) }
             }
 
         _downloaderPackageStates.value = downloaderPackages
         installedDownloaderPackageNames.value = downloaderPackages.keys
 
-        val acknowledgedDownloader = this@DownloaderRepository.acknowledgedPackageDownloader.get()
+        val acknowledgedDownloader = this@DownloaderRepository.acknowledgedPackageNames.get()
         val uninstalledDownloader = acknowledgedDownloader subtract installedDownloaderPackageNames.value
         if (uninstalledDownloader.isNotEmpty()) {
             Log.d(tag, "Uninstalled downloader: ${uninstalledDownloader.joinToString(", ")}")
-            this@DownloaderRepository.acknowledgedPackageDownloader.update(acknowledgedDownloader subtract uninstalledDownloader)
+            this@DownloaderRepository.acknowledgedPackageNames.update(acknowledgedDownloader subtract uninstalledDownloader)
             trustDao.removeAll(uninstalledDownloader)
         }
     }
@@ -76,7 +76,7 @@ class DownloaderRepository(
         return downloader to data.unwrapWith(downloader)
     }
 
-    private suspend fun loadDownloader(packageName: String): DownloaderPackageState {
+    private suspend fun loadPackage(packageName: String): DownloaderPackageState {
         try {
             if (!verify(packageName)) return DownloaderPackageState.Untrusted
         } catch (e: CancellationException) {
@@ -138,15 +138,15 @@ class DownloaderRepository(
 
         reload()
         prefs.edit {
-            acknowledgedPackageDownloader += packageName
+            acknowledgedPackageNames += packageName
         }
     }
 
     suspend fun revokeTrustForPackage(packageName: String) =
         trustDao.remove(packageName).also { reload() }
 
-    suspend fun acknowledgeAllNewDownloader() =
-        acknowledgedPackageDownloader.update(installedDownloaderPackageNames.value)
+    suspend fun acknowledgeAll() =
+        acknowledgedPackageNames.update(installedDownloaderPackageNames.value)
 
     private suspend fun verify(packageName: String): Boolean {
         val expectedSignature =

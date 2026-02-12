@@ -41,7 +41,7 @@ class DashboardViewModel(
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
-    val newDownloaderAvailable =
+    val newDownloadersAvailable =
         downloaderRepository.newDownloaderPackageNames.map { it.isNotEmpty() }
 
     /**
@@ -67,8 +67,8 @@ class DashboardViewModel(
         }
     }
 
-    fun ignoreNewDownloader() = viewModelScope.launch {
-        downloaderRepository.acknowledgeAllNewDownloader()
+    fun ignoreNewDownloaders() = viewModelScope.launch {
+        downloaderRepository.acknowledgeAll()
     }
 
     private suspend fun checkForManagerUpdates() {

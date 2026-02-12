@@ -67,8 +67,8 @@ class DownloaderScope<T : Parcelable> internal constructor(
     private val scopeImpl: Scope,
     internal val context: Context
 ) : Scope by scopeImpl {
-    // Returning an InputStream is the primary way for downloader to implement the download function, but we also want to offer an OutputStream API since using InputStream might not be convenient in all cases.
-    // It is much easier to implement the main InputStream API on top of OutputStreams compared to doing it the other way around, which is why we are using OutputStream here. This detail is not visible to downloader.
+    // Returning an InputStream is the primary way for a downloader to implement the download function, but we also want to offer an OutputStream API since using InputStream might not be convenient in all cases.
+    // It is much easier to implement the main InputStream API on top of OutputStreams compared to doing it the other way around, which is why we are using OutputStream here.
     internal var download: (suspend OutputDownloadScope.(T, OutputStream) -> Unit)? = null
     internal var get: (suspend GetScope.(String, String?) -> GetResult<T>?)? = null
     private val inputDownloadScopeImpl = object : InputDownloadScope, Scope by scopeImpl {}

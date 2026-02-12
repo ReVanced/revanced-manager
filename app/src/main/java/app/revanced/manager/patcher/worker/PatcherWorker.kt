@@ -182,7 +182,7 @@ class PatcherWorker(
 
                 is SelectedApp.Search -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
-                        downloaderRepository.loadedDownloaderPackageFlow.first()
+                        downloaderRepository.loadedDownloadersFlow.first()
                             .firstNotNullOfOrNull { downloader ->
                                 try {
                                     val getScope = object : GetScope {

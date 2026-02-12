@@ -93,14 +93,14 @@ fun DownloadsSettingsScreen(
     ) { paddingValues ->
         PullToRefreshBox(
             onRefresh = viewModel::refreshDownloader,
-            isRefreshing = viewModel.isRefreshingDownloader,
+            isRefreshing = viewModel.isRefreshingDownloaders,
             modifier = Modifier.padding(paddingValues)
         ) {
             LazyColumnWithScrollbar(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item {
-                    GroupHeader(stringResource(R.string.downloader))
+                    GroupHeader(stringResource(R.string.downloaders))
                 }
 
                 if (downloaderStates.isNotEmpty()) {

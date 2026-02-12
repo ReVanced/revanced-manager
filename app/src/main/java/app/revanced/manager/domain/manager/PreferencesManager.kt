@@ -31,7 +31,7 @@ class PreferencesManager(
     val disableUniversalPatchCheck = booleanPreference("disable_patch_universal_check", false)
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
 
-    val acknowledgedDownloader = stringSetPreference("acknowledged_downloader", emptySet())
+    val acknowledgedDownloaders = stringSetPreference("acknowledged_downloaders", emptySet())
 
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
 

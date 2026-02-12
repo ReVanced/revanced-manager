@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9a937123afc782978d185d00c35d20e0",
+    "identityHash": "c0060d66d8afa086f2632c4eb145ffc4",
     "entities": [
       {
         "tableName": "patch_bundles",
@@ -385,7 +385,7 @@
         ]
       },
       {
-        "tableName": "trusted_downloader",
+        "tableName": "trusted_downloaders",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `signature` BLOB NOT NULL, PRIMARY KEY(`package_name`))",
         "fields": [
           {
@@ -411,7 +411,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9a937123afc782978d185d00c35d20e0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0060d66d8afa086f2632c4eb145ffc4')"
     ]
   }
 }
