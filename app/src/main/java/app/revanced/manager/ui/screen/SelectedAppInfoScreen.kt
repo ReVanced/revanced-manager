@@ -140,13 +140,13 @@ fun SelectedAppInfoScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
-        val downladers by vm.downloaders.collectAsStateWithLifecycle(emptyList())
+        val downloaders by vm.downloaders.collectAsStateWithLifecycle(emptyList())
 
         if (vm.showSourceSelector) {
             val requiredVersion by vm.requiredVersion.collectAsStateWithLifecycle(null)
 
             AppSourceSelectorDialog(
-                downloaders = downladers,
+                downloaders = downloaders,
                 installedApp = vm.installedAppData,
                 searchApp = SelectedApp.Search(
                     vm.packageName,
@@ -201,7 +201,7 @@ fun SelectedAppInfoScreen(
                     is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
                     is SelectedApp.Download -> stringResource(
                         R.string.apk_source_downloader,
-                        downladers.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderName }?.let { "${it.packageName} ${it.name}" }
+                        downloaders.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderName }?.let { "${it.packageName} ${it.name}" }
                             ?: app.data.downloaderPackageName
                     )
 
