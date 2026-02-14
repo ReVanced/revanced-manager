@@ -390,6 +390,10 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="website">Website</string>
     <string name="github">GitHub</string>
     <string name="contact">Contact</string>
+    <string name="license">License</string>
+    <string name="source">Source</string>
+    <string name="repository">Repository</string>
+    <string name="bundle_information_by_author">By %1$s</string>
     <string name="version">Version</string>
     <string name="submit_feedback">Submit issue or feedback</string>
     <string name="submit_feedback_description">Help us improve this application</string>
