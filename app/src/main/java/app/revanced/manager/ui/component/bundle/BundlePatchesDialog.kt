@@ -40,8 +40,6 @@ fun BundlePatchesDialog(
     onDismissRequest: () -> Unit,
     src: PatchBundleSource,
 ) {
-    var showAllVersions by rememberSaveable { mutableStateOf(false) }
-    var showOptions by rememberSaveable { mutableStateOf(false) }
     val patchBundleRepository: PatchBundleRepository = koinInject()
     val patches by remember(src.uid) {
         patchBundleRepository.bundleInfoFlow.mapNotNull { it[src.uid]?.patches }
@@ -71,14 +69,10 @@ fun BundlePatchesDialog(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(patches) { patch ->
-                    PatchItem(
-                        patch,
-                        showAllVersions,
-                        onExpandVersions = { showAllVersions = !showAllVersions },
-                        showOptions,
-                        onExpandOptions = { showOptions = !showOptions }
-                    )
+                items(
+                    items = patches
+                ) { patch ->
+                    PatchItem(patch)
                 }
             }
         }
@@ -88,19 +82,18 @@ fun BundlePatchesDialog(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PatchItem(
-    patch: PatchInfo,
-    expandVersions: Boolean,
-    onExpandVersions: () -> Unit,
-    expandOptions: Boolean,
-    onExpandOptions: () -> Unit
+    patch: PatchInfo
 ) {
+    var expandedVersionPackages by rememberSaveable { mutableStateOf(setOf<String>()) }
+    var expandOptions by rememberSaveable { mutableStateOf(false) }
+
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .then(
                 if (patch.options.isNullOrEmpty()) Modifier else Modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable(onClick = onExpandOptions),
+                    .clickable { expandOptions = !expandOptions },
             )
     ) {
         Column(
@@ -148,6 +141,7 @@ fun PatchItem(
                     patch.compatiblePackages.forEach { compatiblePackage ->
                         val packageName = compatiblePackage.packageName
                         val versions = compatiblePackage.versions.orEmpty().reversed()
+                        val expandVersions = packageName in expandedVersionPackages
 
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -174,7 +168,13 @@ fun PatchItem(
                                 }
                                 if (versions.size > 1) {
                                     PatchInfoChip(
-                                        onClick = onExpandVersions,
+                                        onClick = {
+                                            expandedVersionPackages = if (expandVersions) {
+                                                expandedVersionPackages - packageName
+                                            } else {
+                                                expandedVersionPackages + packageName
+                                            }
+                                        },
                                         text = if (expandVersions) stringResource(R.string.less) else "+${versions.size - 1}"
                                     )
                                 }
