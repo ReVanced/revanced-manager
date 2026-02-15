@@ -11,10 +11,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.Key
+import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -152,7 +156,10 @@ fun ImportExportSettingsScreen(
         ) {
             selectorDialog?.invoke()
 
-            ListSection(title = stringResource(R.string.import_)) {
+            ListSection(
+                title = stringResource(R.string.import_),
+                leadingContent = { Icon(Icons.Outlined.FileDownload, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 GroupItem(
                     onClick = {
                         importKeystoreLauncher.launch("*/*")
@@ -167,7 +174,10 @@ fun ImportExportSettingsScreen(
                 )
             }
 
-            ListSection(title = stringResource(R.string.export)) {
+            ListSection(
+                title = stringResource(R.string.export),
+                leadingContent = { Icon(Icons.Outlined.Save, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
             GroupItem(
                 onClick = {
                     if (!vm.canExport()) {
@@ -186,7 +196,10 @@ fun ImportExportSettingsScreen(
                 )
             }
 
-            ListSection(title = stringResource(R.string.reset)) {
+            ListSection(
+                title = stringResource(R.string.reset),
+                leadingContent = { Icon(Icons.Outlined.Restore, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 GroupItem(
                     onClick = {
                         vm.resetDialogState = ResetDialogState.Keystore {

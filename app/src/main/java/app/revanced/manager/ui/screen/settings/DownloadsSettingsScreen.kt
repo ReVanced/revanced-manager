@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -101,7 +104,10 @@ fun DownloadsSettingsScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item {
-                    ListSection(title = stringResource(R.string.downloader_plugins)) {
+                    ListSection(
+                        title = stringResource(R.string.downloader_plugins),
+                        leadingContent = { Icon(Icons.Outlined.Source, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                    ) {
                         if (pluginStates.isEmpty()) {
                             Text(
                                 stringResource(R.string.downloader_no_plugins_installed),
@@ -122,7 +128,10 @@ fun DownloadsSettingsScreen(
                 }
 
                 item {
-                    ListSection(title = stringResource(R.string.downloaded_apps)) {
+                    ListSection(
+                        title = stringResource(R.string.downloaded_apps),
+                        leadingContent = { Icon(Icons.Outlined.Download, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                    ) {
                         if (downloadedApps.isEmpty()) {
                             Text(
                                 stringResource(R.string.downloader_settings_no_apps),

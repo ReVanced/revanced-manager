@@ -12,11 +12,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Api
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -107,7 +112,10 @@ fun AdvancedSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            ListSection(title = stringResource(R.string.manager)) {
+            ListSection(
+                title = stringResource(R.string.manager),
+                leadingContent = { Icon(Icons.Outlined.WorkOutline, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 val apiUrl by viewModel.prefs.api.getAsState()
                 var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -128,7 +136,10 @@ fun AdvancedSettingsScreen(
                 )
             }
 
-            ListSection(title = stringResource(R.string.safeguards)) {
+            ListSection(
+                title = stringResource(R.string.safeguards),
+                leadingContent = { Icon(Icons.Outlined.Security, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
             SafeguardBooleanItem(
                 preference = viewModel.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = viewModel.viewModelScope,
@@ -159,7 +170,10 @@ fun AdvancedSettingsScreen(
                 )
             }
 
-            ListSection(title = stringResource(R.string.patcher)) {
+            ListSection(
+                title = stringResource(R.string.patcher),
+                leadingContent = { Icon(Icons.Outlined.Tune, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 BooleanItem(
                     preference = viewModel.prefs.useProcessRuntime,
                     coroutineScope = viewModel.viewModelScope,
@@ -174,7 +188,10 @@ fun AdvancedSettingsScreen(
                 )
             }
 
-            ListSection(title = stringResource(R.string.debugging)) {
+            ListSection(
+                title = stringResource(R.string.debugging),
+                leadingContent = { Icon(Icons.Outlined.BugReport, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 val exportDebugLogsLauncher =
                     rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
                         it?.let(viewModel::exportDebugLogs)

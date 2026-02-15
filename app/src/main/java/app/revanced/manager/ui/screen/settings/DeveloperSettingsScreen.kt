@@ -1,7 +1,12 @@
 package app.revanced.manager.ui.screen.settings
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PostAdd
+import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -9,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
@@ -40,7 +46,10 @@ fun DeveloperSettingsScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         ColumnWithScrollbar(modifier = Modifier.padding(paddingValues)) {
-            ListSection(title = stringResource(R.string.manager)) {
+            ListSection(
+                title = stringResource(R.string.manager),
+                leadingContent = { Icon(Icons.Outlined.WorkOutline, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 BooleanItem(
                     preference = prefs.showDeveloperSettings,
                     headline = R.string.developer_options,
@@ -48,7 +57,10 @@ fun DeveloperSettingsScreen(
                 )
             }
 
-            ListSection(title = stringResource(R.string.patches)) {
+            ListSection(
+                title = stringResource(R.string.patches),
+                leadingContent = { Icon(Icons.Outlined.PostAdd, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 SettingsListItem(
                     headlineContent = stringResource(R.string.patches_force_download),
                     onClick = vm::redownloadBundles

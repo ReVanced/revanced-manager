@@ -18,6 +18,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -97,7 +99,10 @@ fun GeneralSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            ListSection(title = stringResource(R.string.appearance)) {
+            ListSection(
+                title = stringResource(R.string.appearance),
+                leadingContent = { Icon(Icons.Outlined.Palette, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 val currentLocale = viewModel.getCurrentLocale()
                 val currentLanguageDisplay = remember(currentLocale) {
                     currentLocale?.let { viewModel.getLocaleDisplayName(it) }
@@ -151,7 +156,10 @@ fun GeneralSettingsScreen(
                 }
             }
 
-            ListSection(title = stringResource(R.string.networking)) {
+            ListSection(
+                title = stringResource(R.string.networking),
+                leadingContent = { Icon(Icons.Outlined.Public, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 BooleanItem(
                     preference = prefs.allowMeteredNetworks,
                     coroutineScope = coroutineScope,

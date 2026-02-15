@@ -2,7 +2,11 @@ package app.revanced.manager.ui.screen.settings.update
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -13,6 +17,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -52,7 +57,10 @@ fun UpdatesSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            ListSection(title = stringResource(R.string.manager)) {
+            ListSection(
+                title = stringResource(R.string.manager),
+                leadingContent = { Icon(Icons.Outlined.WorkOutline, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
                 SettingsListItem(
                     headlineContent = stringResource(R.string.manual_update_check),
                     supportingContent = stringResource(R.string.manual_update_check_description),
