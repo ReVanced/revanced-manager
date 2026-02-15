@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -34,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -182,6 +184,12 @@ private fun LanguagePicker(
     val systemDefaultString = stringResource(R.string.language_system_default)
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
+    val languageListState = rememberLazyListState()
+    val isLanguageListScrollable by remember {
+        derivedStateOf {
+            languageListState.canScrollBackward || languageListState.canScrollForward
+        }
+    }
 
     val filteredLocales = remember(searchQuery, supportedLocales, currentLocale) {
         if (searchQuery.isEmpty()) {
@@ -198,7 +206,11 @@ private fun LanguagePicker(
         }
     }
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = if (isLanguageListScrollable) {
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    } else {
+        null
+    }
 
     FullscreenDialog(onDismissRequest = onDismiss) {
         if (isSearchActive) {
@@ -285,12 +297,16 @@ private fun LanguagePicker(
                         scrollBehavior = scrollBehavior
                     )
                 },
-                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                modifier = Modifier.then(
+                    scrollBehavior?.let { Modifier.nestedScroll(it.nestedScrollConnection) }
+                        ?: Modifier
+                )
             ) { paddingValues ->
                 LazyColumnWithScrollbar(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
+                    state = languageListState,
                     contentPadding = PaddingValues(vertical = 8.dp)
                 ) {
                     item {
