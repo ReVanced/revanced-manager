@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.app.Activity
 import android.os.Parcelable
+import androidx.annotation.StringRes
 import kotlinx.coroutines.withTimeout
 import java.io.InputStream
 import java.io.OutputStream
@@ -122,7 +123,10 @@ class DownloaderScope<T : Parcelable> internal constructor(
     }
 }
 
-class DownloaderBuilder<T : Parcelable> internal constructor(private val block: DownloaderScope<T>.() -> Unit) {
+class DownloaderBuilder<T : Parcelable> internal constructor(
+    @param:StringRes private val name: Int,
+    private val block: DownloaderScope<T>.() -> Unit
+) {
     @DownloaderHostApi
     fun build(scopeImpl: Scope, context: Context) =
         with(DownloaderScope<T>(scopeImpl, context)) {
@@ -130,20 +134,23 @@ class DownloaderBuilder<T : Parcelable> internal constructor(private val block: 
 
             Downloader(
                 download = download!!,
-                get = get!!
+                get = get!!,
+                name = name,
             )
         }
 }
 
 class Downloader<T : Parcelable> internal constructor(
     @property:DownloaderHostApi val get: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?,
-    @property:DownloaderHostApi val download: suspend OutputDownloadScope.(data: T, outputStream: OutputStream) -> Unit
+    @property:DownloaderHostApi val download: suspend OutputDownloadScope.(data: T, outputStream: OutputStream) -> Unit,
+    @property:DownloaderHostApi @param:StringRes val name: Int,
 )
 
 /**
  * Define a downloader.
  */
-fun <T : Parcelable> Downloader(block: DownloaderScope<T>.() -> Unit) = DownloaderBuilder(block)
+fun <T : Parcelable> Downloader(@StringRes name: Int, block: DownloaderScope<T>.() -> Unit) =
+    DownloaderBuilder(name, block)
 
 /**
  * @see GetScope.requestStartActivity
@@ -159,7 +166,10 @@ sealed class UserInteractionException(message: String) : Exception(message) {
          * @param resultCode The result code of the activity.
          * @param intent The [Intent] of the activity.
          */
-        class NotCompleted @DownloaderHostApi constructor(val resultCode: Int, val intent: Intent?) :
+        class NotCompleted @DownloaderHostApi constructor(
+            val resultCode: Int,
+            val intent: Intent?
+        ) :
             Activity("Unexpected activity result code: $resultCode")
     }
 }

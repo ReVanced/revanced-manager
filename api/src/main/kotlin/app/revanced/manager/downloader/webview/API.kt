@@ -1,6 +1,7 @@
 package app.revanced.manager.downloader.webview
 
 import android.content.Intent
+import androidx.annotation.StringRes
 import app.revanced.manager.downloader.DownloadUrl
 import app.revanced.manager.downloader.DownloaderScope
 import app.revanced.manager.downloader.GetScope
@@ -143,11 +144,9 @@ suspend fun <T> GetScope.runWebView(
  *
  * @see runWebView
  */
-fun WebViewDownloader(block: suspend WebViewScope<DownloadUrl>.(packageName: String, version: String?) -> InitialUrl?) =
-    Downloader<DownloadUrl> {
-        val label = context.applicationInfo.loadLabel(
-            context.packageManager
-        ).toString()
+fun WebViewDownloader(@StringRes name: Int, block: suspend WebViewScope<DownloadUrl>.(packageName: String, version: String?) -> InitialUrl?) =
+    Downloader(name) {
+        val label = context.getString(name)
 
         get { packageName, version ->
             class ReturnNull : Exception()

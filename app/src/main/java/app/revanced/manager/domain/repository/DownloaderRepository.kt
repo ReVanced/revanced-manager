@@ -73,8 +73,8 @@ class DownloaderRepository(
         val state =
             (_downloaderPackageStates.value[data.downloaderPackageName] as? DownloaderPackageState.Loaded)
                 ?: throw Exception("Downloader package name ${data.downloaderPackageName} is not available")
-        val downloader = state.downloader.firstOrNull { it.name == data.downloaderName }
-            ?: throw Exception("No downloader with name ${data.downloaderName} found in ${data.downloaderPackageName}")
+        val downloader = state.downloader.firstOrNull { it.className == data.downloaderClassName }
+            ?: throw Exception("No downloader with name ${data.downloaderClassName} found in ${data.downloaderPackageName}")
 
         return downloader to data.unwrapWith(state.classLoader)
     }
@@ -106,23 +106,25 @@ class DownloaderRepository(
 
             DownloaderPackageState.Loaded(
                 classNames.map { className ->
-                    val downloader = classLoader
+                    val builder = classLoader
                         .loadClass(className)
                         .getDownloaderBuilder()
-                        .build(
-                            scopeImpl = scopeImpl,
-                            context = downloaderContext
-                        )
+                    val downloader = builder.build(
+                        scopeImpl = scopeImpl,
+                        context = downloaderContext
+                    )
 
                     LoadedDownloader(
                         packageName,
-                        with(pm) { packageInfo.label() },
+                        className,
+                        downloaderContext.getString(builder.name),
                         packageInfo.versionName!!,
                         downloader.get,
                         downloader.download
                     )
                 },
-                classLoader
+                classLoader,
+                with(pm) { packageInfo.label() }
             )
         } catch (e: CancellationException) {
             throw e

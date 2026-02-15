@@ -5,7 +5,8 @@ sealed interface DownloaderPackageState {
 
     data class Loaded(
         val downloader: List<LoadedDownloader>,
-        val classLoader: ClassLoader
+        val classLoader: ClassLoader,
+        val name: String
     ) : DownloaderPackageState
 
     data class Failed(val throwable: Throwable) : DownloaderPackageState

@@ -152,7 +152,7 @@ fun SelectedAppInfoScreen(
                     vm.packageName,
                     vm.desiredVersion
                 ),
-                activeSearchJob = vm.activeDownloaderAction,
+                activeSearchJob = vm.activeDownloader,
                 hasRoot = vm.hasRoot,
                 onDismissRequest = vm::dismissSourceSelector,
                 onSelectDownloader = vm::searchUsingDownloader,
@@ -201,7 +201,7 @@ fun SelectedAppInfoScreen(
                     is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
                     is SelectedApp.Download -> stringResource(
                         R.string.apk_source_downloader,
-                        downloaders.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderName }?.let { "${it.packageName} ${it.name}" }
+                        downloaders.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderClassName }?.name
                             ?: app.data.downloaderPackageName
                     )
 
@@ -282,7 +282,7 @@ private fun AppSourceSelectorDialog(
     downloaders: List<LoadedDownloader>,
     installedApp: Pair<SelectedApp.Installed, InstalledApp?>?,
     searchApp: SelectedApp.Search,
-    activeSearchJob: String?,
+    activeSearchJob: LoadedDownloader?,
     hasRoot: Boolean,
     requiredVersion: String?,
     onDismissRequest: () -> Unit,
@@ -349,11 +349,17 @@ private fun AppSourceSelectorDialog(
                     }
                 }
 
-                items(downloaders, key = { "downloader_${it.packageName}" }) { downloader ->
+                items(
+                    downloaders,
+                    key = { "downloader_${it.packageName}_${it.className}" }) { downloader ->
                     ListItem(
-                        modifier = Modifier.clickable(enabled = canSelect) { onSelectDownloader(downloader) },
+                        modifier = Modifier.clickable(enabled = canSelect) {
+                            onSelectDownloader(
+                                downloader
+                            )
+                        },
                         headlineContent = { Text(downloader.name) },
-                        trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == downloader.packageName },
+                        trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == downloader },
                         colors = transparentListItemColors
                     )
                 }

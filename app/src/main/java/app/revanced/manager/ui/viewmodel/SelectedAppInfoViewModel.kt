@@ -161,7 +161,7 @@ class SelectedAppInfoViewModel(
     var showSourceSelector by mutableStateOf(false)
         private set
     private var downloaderAction: Pair<LoadedDownloader, Job>? by mutableStateOf(null)
-    val activeDownloaderAction get() = downloaderAction?.first?.packageName
+    val activeDownloader get() = downloaderAction?.first
     private var launchedActivity by mutableStateOf<CompletableDeferred<ActivityResult>?>(null)
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()

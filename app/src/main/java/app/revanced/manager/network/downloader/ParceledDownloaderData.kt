@@ -11,12 +11,12 @@ import kotlinx.parcelize.Parcelize
  */
 class ParceledDownloaderData private constructor(
     val downloaderPackageName: String,
-    val downloaderName: String,
+    val downloaderClassName: String,
     private val bundle: Bundle
 ) : Parcelable {
     constructor(downloader: LoadedDownloader, data: Parcelable) : this(
         downloader.packageName,
-        downloader.name,
+        downloader.className,
         createBundle(data)
     )
 

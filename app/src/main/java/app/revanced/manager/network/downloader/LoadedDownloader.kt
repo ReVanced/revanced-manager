@@ -7,6 +7,7 @@ import java.io.OutputStream
 
 class LoadedDownloader(
     val packageName: String,
+    val className: String,
     val name: String,
     val version: String,
     val get: suspend GetScope.(packageName: String, version: String?) -> Pair<Parcelable, String?>?,

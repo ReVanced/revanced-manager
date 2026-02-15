@@ -184,16 +184,10 @@ fun DownloadsSettingsScreen(
                                 )
                             },
                             supportingContent = when (state) {
-                                is DownloaderPackageState.Loaded -> {
+                                is DownloaderPackageState.Loaded -> StringBuilder(stringResource(R.string.downloader_state_trusted)).apply {
                                     val names = state.downloader.joinToString("\n") { it.name }
-                                    if (names.isNotEmpty())
-                                        stringResource(
-                                            R.string.downloader_state_trusted,
-                                            "\n\n$names"
-                                        )
-                                    else
-                                        stringResource(R.string.downloader_state_trusted)
-                                }
+                                    if (names.isNotEmpty()) append("\n\n$names")
+                                }.toString()
 
                                 is DownloaderPackageState.Failed -> stringResource(R.string.downloader_state_failed)
                                 is DownloaderPackageState.Untrusted -> stringResource(R.string.downloader_state_untrusted)

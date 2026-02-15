@@ -44,7 +44,7 @@ public abstract interface annotation class app/revanced/manager/downloader/Downl
 }
 
 public final class app/revanced/manager/downloader/DownloaderKt {
-	public static final fun Downloader (Lkotlin/jvm/functions/Function1;)Lapp/revanced/manager/downloader/DownloaderBuilder;
+	public static final fun Downloader (ILkotlin/jvm/functions/Function1;)Lapp/revanced/manager/downloader/DownloaderBuilder;
 }
 
 public final class app/revanced/manager/downloader/DownloaderScope : app/revanced/manager/downloader/Scope {
@@ -126,7 +126,7 @@ public final class app/revanced/manager/downloader/UserInteractionException$Requ
 }
 
 public final class app/revanced/manager/downloader/webview/APIKt {
-	public static final fun WebViewDownloader (Lkotlin/jvm/functions/Function4;)Lapp/revanced/manager/downloader/DownloaderBuilder;
+	public static final fun WebViewDownloader (ILkotlin/jvm/functions/Function4;)Lapp/revanced/manager/downloader/DownloaderBuilder;
 	public static final fun runWebView (Lapp/revanced/manager/downloader/GetScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
