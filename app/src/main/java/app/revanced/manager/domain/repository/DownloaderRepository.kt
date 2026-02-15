@@ -92,7 +92,7 @@ class DownloaderRepository(
         return try {
             val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
             val classNames =
-                packageInfo.applicationInfo!!.metaData.getStringArray(METADATA_DOWNLOADER_CLASSES)
+                packageInfo.applicationInfo!!.metaData.getStringArray(METADATA_DOWNLOADER_CLASSES) // TODO: why is metadata null????
                     ?: throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASSES")
 
             val classLoader =
@@ -106,18 +106,18 @@ class DownloaderRepository(
 
             DownloaderPackageState.Loaded(
                 classNames.map { className ->
-                    val builder = classLoader
+                    val downloader = classLoader
                         .loadClass(className)
                         .getDownloaderBuilder()
-                    val downloader = builder.build(
-                        scopeImpl = scopeImpl,
-                        context = downloaderContext
-                    )
+                        .build(
+                            scopeImpl = scopeImpl,
+                            context = downloaderContext
+                        )
 
                     LoadedDownloader(
                         packageName,
                         className,
-                        downloaderContext.getString(builder.name),
+                        downloaderContext.getString(downloader.name),
                         packageInfo.versionName!!,
                         downloader.get,
                         downloader.download
