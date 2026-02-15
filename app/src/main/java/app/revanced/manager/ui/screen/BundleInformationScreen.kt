@@ -18,12 +18,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Source
-import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -154,7 +154,7 @@ fun BundleInformationScreen(
                     if (!src.isDefault) {
                         IconButton(onClick = { showDeleteConfirmationDialog = true }) {
                             Icon(
-                                Icons.Outlined.DeleteOutline,
+                                Icons.Filled.Delete,
                                 stringResource(R.string.delete)
                             )
                         }
@@ -163,7 +163,7 @@ fun BundleInformationScreen(
                     if (!isLocal && hasNetwork) {
                         IconButton(onClick = viewModel::refresh) {
                             Icon(
-                                Icons.Outlined.Update,
+                                Icons.Filled.Update,
                                 stringResource(R.string.refresh)
                             )
                         }

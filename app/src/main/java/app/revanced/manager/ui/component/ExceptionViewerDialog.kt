@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -55,7 +55,7 @@ fun ExceptionViewerDialog(text: String, onDismiss: () -> Unit) {
                             }
                         ) {
                             Icon(
-                                Icons.Outlined.Share,
+                                Icons.Filled.Share,
                                 contentDescription = stringResource(R.string.share)
                             )
                         }

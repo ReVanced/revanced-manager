@@ -30,15 +30,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
-import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -247,7 +247,7 @@ fun DashboardScreen(
                                 }
                             ) {
                                 Icon(
-                                    Icons.Outlined.DeleteOutline,
+                                    Icons.Filled.Delete,
                                     stringResource(R.string.delete)
                                 )
                             }
@@ -255,7 +255,7 @@ fun DashboardScreen(
                                 onClick = vm::updateSources
                             ) {
                                 Icon(
-                                    Icons.Outlined.Refresh,
+                                    Icons.Filled.Refresh,
                                     stringResource(R.string.refresh)
                                 )
                             }
@@ -284,12 +284,12 @@ fun DashboardScreen(
                                             Badge(modifier = Modifier.size(6.dp))
                                         }
                                     ) {
-                                        Icon(Icons.Outlined.Update, stringResource(R.string.update))
+                                        Icon(Icons.Filled.Update, stringResource(R.string.update))
                                     }
                                 }
                             }
                             IconButton(onClick = onSettingsClick) {
-                                Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                                Icon(Icons.Filled.Settings, stringResource(R.string.settings))
                             }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(

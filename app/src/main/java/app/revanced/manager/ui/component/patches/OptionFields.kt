@@ -20,14 +20,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DragHandle
+import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -587,7 +587,7 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     }
                                 ) {
                                     Icon(
-                                        Icons.Outlined.SelectAll,
+                                        Icons.Filled.SelectAll,
                                         stringResource(R.string.select_deselect_all)
                                     )
                                 }
@@ -599,13 +599,13 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     }
                                 ) {
                                     Icon(
-                                        Icons.Outlined.Delete,
+                                        Icons.Filled.Delete,
                                         stringResource(R.string.delete)
                                     )
                                 }
                             } else {
                                 IconButton(onClick = items::clear) {
-                                    Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                                    Icon(Icons.Filled.Restore, stringResource(R.string.reset))
                                 }
                             }
                         }

@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
@@ -629,7 +630,7 @@ private fun OptionsDialog(
                 onBackClick = onDismissRequest,
                 actions = {
                     IconButton(onClick = reset) {
-                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                        Icon(Icons.Filled.Restore, stringResource(R.string.reset))
                     }
                 }
             )
