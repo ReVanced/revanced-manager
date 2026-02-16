@@ -61,6 +61,7 @@ import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.deepLinkedComposable
 import app.revanced.manager.util.navigateSafe
 import app.revanced.manager.util.popBackStackSafe
 import app.revanced.manager.util.resetListItemColorsCached
@@ -284,26 +285,26 @@ private fun ReVancedManager(vm: MainViewModel) {
         }
 
         navigation<Settings>(startDestination = Settings.Main) {
-            composable<Settings.Main> {
+            deepLinkedComposable<Settings.Main>("settings") {
                 SettingsScreen(
                     onBackClick = navController::popBackStackSafe,
                     navigate = navController::navigateSafe
                 )
             }
 
-            composable<Settings.General> {
+            deepLinkedComposable<Settings.General>("settings/general") {
                 GeneralSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
-            composable<Settings.Advanced> {
+            deepLinkedComposable<Settings.Advanced>("settings/advanced") {
                 AdvancedSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
-            composable<Settings.Developer> {
+            deepLinkedComposable<Settings.Developer>("settings/developer") {
                 DeveloperSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
-            composable<Settings.Updates> {
+            deepLinkedComposable<Settings.Updates>("settings/updates") {
                 UpdatesSettingsScreen(
                     onBackClick = navController::popBackStackSafe,
                     onChangelogClick = { navController.navigateSafe(Settings.Changelogs) },
@@ -311,15 +312,15 @@ private fun ReVancedManager(vm: MainViewModel) {
                 )
             }
 
-            composable<Settings.Downloads> {
+            deepLinkedComposable<Settings.Downloads>("settings/downloads") {
                 DownloadsSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
-            composable<Settings.ImportExport> {
+            deepLinkedComposable<Settings.ImportExport>("settings/import-export") {
                 ImportExportSettingsScreen(onBackClick = navController::popBackStackSafe)
             }
 
-            composable<Settings.About> {
+            deepLinkedComposable<Settings.About>("about") {
                 AboutSettingsScreen(
                     onBackClick = navController::popBackStackSafe,
                     navigate = navController::navigateSafe

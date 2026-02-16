@@ -30,6 +30,11 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -292,6 +297,18 @@ fun <T : Any> SavedStateHandle.saveableVar(): ReadWriteProperty<Any?, T?> =
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
             set(property.name, value)
     }
+
+inline fun <reified T : Any> NavGraphBuilder.deepLinkedComposable(
+    path: String,
+    noinline content: @Composable (NavBackStackEntry) -> Unit
+) {
+    val uri = "${BuildConfig.DEEP_LINK_SCHEME}://${path.trim('/')}"
+    composable<T>(
+        deepLinks = setOf(uri, "$uri/").map { navDeepLink<T>(basePath = it) }
+    ) {
+        content(it)
+    }
+}
 
 fun androidx.navigation.NavController.navigateSafe(route: Any) {
     if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {

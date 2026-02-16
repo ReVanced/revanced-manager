@@ -161,6 +161,11 @@ android {
             .joinToString(prefix = "{", separator = ",", postfix = "}") { "\"$it\"" }
 
         buildConfigField("String[]", "SUPPORTED_LOCALES", locales)
+
+        val deepLinkScheme = "revanced-manager"
+        manifestPlaceholders["deepLinkScheme"] = deepLinkScheme
+
+        buildConfigField("String", "DEEP_LINK_SCHEME", "\"$deepLinkScheme\"")
     }
 
     buildTypes {
