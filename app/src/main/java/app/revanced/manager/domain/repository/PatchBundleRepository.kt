@@ -38,6 +38,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import kotlin.collections.joinToString
@@ -115,32 +116,18 @@ class PatchBundleRepository(
             Log.d(tag, "Bundle: $it")
         }
 
-        val sources = entities.associate { it.uid to it.load() }.toPersistentMap()
+        val sources = entities
+            .associateTo(mutableMapOf()) { it.uid to it.load() }
+        sources.forEach syncName@{ (uid, src) ->
+            val newName = src.patchBundle?.manifestAttributes?.name?.takeIf { it != src.name }
+                ?: return@syncName
 
-        val hasOutOfDateNames = sources.values.any { it.isNameOutOfDate }
-        if (hasOutOfDateNames) dispatchAction(
-            "Sync names"
-        ) { state ->
-            val nameChanges = state.sources.mapNotNull { (_, src) ->
-                if (!src.isNameOutOfDate) return@mapNotNull null
-                val newName = src.patchBundle?.manifestAttributes?.name?.takeIf { it != src.name }
-                    ?: return@mapNotNull null
-
-                src.uid to newName
-            }
-            val sources = state.sources.toMutableMap()
-            val info = state.info.toMutableMap()
-            nameChanges.forEach { (uid, name) ->
-                updateDb(uid) { it.copy(name = name) }
-                sources[uid] = sources[uid]!!.copy(name = name)
-                info[uid] = info[uid]?.copy(name = name) ?: return@forEach
-            }
-
-            State(sources.toPersistentMap(), info.toPersistentMap())
+            updateDb(uid) { it.copy(name = newName) }
+            sources[uid] = src.copy(name = newName)
         }
-        val info = loadMetadata(sources).toPersistentMap()
 
-        return State(sources, info)
+        val info = loadMetadata(sources).toPersistentMap()
+        return State(sources.toPersistentMap(), info)
     }
 
     suspend fun reload() = dispatchAction("Full reload") {
@@ -157,7 +144,7 @@ class PatchBundleRepository(
         return all
     }
 
-    private suspend fun loadMetadata(sources: Map<Int, PatchBundleSource>): Map<Int, PatchBundleInfo.Global> {
+    private suspend fun loadMetadata(sources: MutableMap<Int, PatchBundleSource>): Map<Int, PatchBundleInfo.Global> {
         // Map bundles -> sources
         val map = sources.mapNotNull { (_, src) ->
             // HACK (must remove before merge): disable official bundle to prevent it from sabotaging the updated version.
@@ -166,13 +153,15 @@ class PatchBundleRepository(
             (src.patchBundle ?: return@mapNotNull null) to src
         }.toMap()
 
-        val failedBundles = mutableMapOf<Int, Throwable>()
-
         val metadata = try {
-            PatchBundle.Loader.metadata(map.keys)
+            runInterruptible(Dispatchers.Default) {
+                PatchBundle.Loader.metadata(map.keys)
+            }
+        } catch (e: CancellationException) {
+            throw e
         } catch (error: Throwable) {
-            map.values.forEach {
-                failedBundles[it.uid] = error
+            sources.entries.forEach { entry ->
+                entry.setValue(entry.value.copy(error = error))
             }
 
             Log.e(tag, "Failed to load bundles", error)
@@ -184,7 +173,7 @@ class PatchBundleRepository(
                 val src = map[bundle]!!
                 val error = result.exceptionOrNull()
                 if (error != null) {
-                    failedBundles[src.uid] = error
+                    sources[src.uid] = src.copy(error = error)
                     return@forEach
                 }
 
@@ -195,14 +184,6 @@ class PatchBundleRepository(
                     result.getOrThrow().toList()
                 )
             }
-        }
-
-        if (failedBundles.isNotEmpty()) dispatchAction("Mark bundles as failed") { state ->
-            state.copy(sources = state.sources.mutate {
-                failedBundles.forEach { (uid, error) ->
-                    it[uid] = it[uid]?.copy(error = error) ?: return@forEach
-                }
-            })
         }
 
         return output
@@ -330,9 +311,9 @@ class PatchBundleRepository(
         }
 
     suspend fun reloadApiBundles() = dispatchAction("Reload API bundles") {
-        this@PatchBundleRepository.sources.first().filterIsInstance<APIPatchBundle>().forEach {
-            with(it) { deleteLocalFile() }
-            updateDb(it.uid) { it.copy(versionHash = null) }
+        this@PatchBundleRepository.sources.first().filterIsInstance<APIPatchBundle>().forEach { src ->
+            with(src) { deleteLocalFile() }
+            updateDb(src.uid) { it.copy(versionHash = null) }
         }
 
         doReload()
