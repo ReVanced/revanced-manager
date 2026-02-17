@@ -90,14 +90,16 @@ class DownloaderRepository(
         }
 
         return try {
+            val downloaderContext = app.createPackageContext(packageName, 0)
             val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
-            val classNames =
-                packageInfo.applicationInfo!!.metaData.getStringArray(METADATA_DOWNLOADER_CLASSES) // TODO: why is metadata null????
-                    ?: throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASSES")
+            val appInfo = packageInfo.applicationInfo!!
+
+            val classNamesResId = appInfo.metaData.getInt(METADATA_DOWNLOADER_CLASSES)
+            if (classNamesResId == 0) throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASSES")
+            val classNames = downloaderContext.resources.getStringArray(classNamesResId)
 
             val classLoader =
-                PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
-            val downloaderContext = app.createPackageContext(packageName, 0)
+                PathClassLoader(appInfo.sourceDir, app.classLoader)
 
             val scopeImpl = object : Scope {
                 override val hostPackageName = app.packageName
