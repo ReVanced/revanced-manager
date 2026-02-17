@@ -117,10 +117,8 @@ class SelectedAppInfoViewModel(
     val requiredVersion = combine(
         prefs.suggestedVersionSafeguard.flow,
         bundleRepository.suggestedVersions
-    ) { suggestedVersionSafeguard, suggestedVersions ->
-        if (!suggestedVersionSafeguard) return@combine null
-
-        suggestedVersions[input.app.packageName]
+    ) { _, _ ->
+        null
     }
 
     val bundleInfoFlow by derivedStateOf {
@@ -146,10 +144,8 @@ class SelectedAppInfoViewModel(
         if (input.patches != null)
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
 
-        // Try to get the previous selection if customization is enabled.
+        // Try to get the previous selection.
         viewModelScope.launch {
-            if (!prefs.disableSelectionWarning.get()) return@launch
-
             val previous = selectionRepository.getSelection(packageName)
             if (previous.values.sumOf { it.size } == 0) return@launch
             selectionState = SelectionState.Customized(previous)
@@ -263,13 +259,13 @@ class SelectedAppInfoViewModel(
     suspend fun hasSetRequiredOptions(patchSelection: PatchSelection) = bundleInfoFlow
         .first()
         .requiredOptionsSet(
-            allowIncompatible = prefs.disablePatchVersionCompatCheck.get(),
+            allowIncompatible = true,
             isSelected = { bundle, patch -> patch.name in patchSelection[bundle.uid]!! },
             optionsForPatch = { bundle, patch -> options[bundle.uid]?.get(patch.name) },
         )
 
     suspend fun getPatcherParams(): Patcher.ViewModelParams {
-        val allowIncompatible = prefs.disablePatchVersionCompatCheck.get()
+        val allowIncompatible = true
         val bundles = bundleInfoFlow.first()
         return Patcher.ViewModelParams(
             selectedApp,

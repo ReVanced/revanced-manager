@@ -54,34 +54,14 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     private val packageName = input.app.packageName
     val appVersion = input.app.version
 
-    var selectionWarningEnabled by mutableStateOf(true)
+    var selectionWarningEnabled by mutableStateOf(false)
         private set
-    var universalPatchWarningEnabled by mutableStateOf(true)
+    var universalPatchWarningEnabled by mutableStateOf(false)
         private set
 
-    val allowIncompatiblePatches =
-        get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
+    val allowIncompatiblePatches = true
     val bundlesFlow =
         get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.app.version)
-
-    init {
-        viewModelScope.launch {
-            if (prefs.disableUniversalPatchCheck.get()) {
-                universalPatchWarningEnabled = false
-            }
-
-            if (prefs.disableSelectionWarning.get()) {
-                selectionWarningEnabled = false
-                return@launch
-            }
-
-            fun PatchBundleInfo.Scoped.hasDefaultPatches() =
-                patchSequence(allowIncompatiblePatches).any { it.include }
-
-            // Don't show the warning if there are no default patches.
-            selectionWarningEnabled = bundlesFlow.first().any(PatchBundleInfo.Scoped::hasDefaultPatches)
-        }
-    }
 
     private var hasModifiedSelection = false
     var customPatchSelection: PersistentPatchSelection? by savedStateHandle.saveable(
