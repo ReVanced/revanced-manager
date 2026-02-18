@@ -1,20 +1,20 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Base64
 import android.util.Log
-import androidx.activity.result.ActivityResult
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
+import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromJsonElement
 import org.json.JSONObject
 import java.io.File
 
@@ -37,6 +36,7 @@ class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
     private val downloadedAppRepository: DownloadedAppRepository,
+    private val installedAppRepository: InstalledAppRepository,
     private val keystoreManager: KeystoreManager,
     private val app: Application,
     val prefs: PreferencesManager,
@@ -173,8 +173,29 @@ class MainViewModel(
         settings.patches?.let { selection ->
             patchSelectionRepository.import(0, selection)
         }
+        settings.patchedApps?.let { apps ->
+            val LIST_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu!"
+            json.decodeFromString<List<String>>(apps.removePrefix(LIST_PREFIX)).forEach { appJson ->
+                val patchedApp = json.decodeFromString<LegacyPatchedApp>(appJson)
+                installedAppRepository.addOrUpdate(
+                    patchedApp.packageName,
+                    patchedApp.packageName,
+                    patchedApp.version,
+                    if (patchedApp.isRooted) InstallType.MOUNT else InstallType.DEFAULT,
+                    mapOf(0 to patchedApp.appliedPatches.toSet())
+                )
+            }
+        }
         Log.d(tag, "Imported legacy settings")
     }
+
+    @Serializable
+    private data class LegacyPatchedApp(
+        val packageName: String,
+        val version: String,
+        val isRooted: Boolean,
+        val appliedPatches: List<String>,
+    )
 
     @Serializable
     private data class LegacySettings(
@@ -188,5 +209,6 @@ class MainViewModel(
         val patchesChangeEnabled: Boolean? = null,
         val keystore: String? = null,
         val patches: SerializedSelection? = null,
+        val patchedApps: String? = null,
     )
 }
