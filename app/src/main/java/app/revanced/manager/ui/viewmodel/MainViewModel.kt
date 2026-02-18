@@ -3,9 +3,11 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Base64
 import android.util.Log
 import androidx.activity.result.ActivityResult
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
@@ -27,6 +29,9 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
+import org.json.JSONObject
+import java.io.File
 
 class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
@@ -81,9 +86,37 @@ class MainViewModel(
         }
     }
 
-    fun applyLegacySettings(jsonStr: String) {
+    fun applyLegacySettings(flutterPrefs: SharedPreferences) {
+        Log.d(tag, "Migrating flutter preferences")
+        val data = JSONObject().apply {
+            put("keystorePassword", "s3cur3p@ssw0rd")
+
+            val allEntries: Map<String, *> = flutterPrefs.all
+            for ((key, value) in allEntries) {
+                put(key.replace("flutter.", ""), value)
+            }
+
+            File(app.getExternalFilesDir(null), "/revanced-manager.keystore").apply {
+                if (exists()) {
+                    val keystoreBase64 = Base64.encodeToString(readBytes(), Base64.DEFAULT)
+                    put("keystore", keystoreBase64)
+                    delete()
+                }
+            }
+
+            File(app.filesDir.parentFile.absolutePath, "/app_flutter/selected-patches.json").apply {
+                if (exists())
+                {
+                    val patches = String(readBytes(), Charsets.UTF_8)
+                    put("patches", JSONObject(patches))
+                }
+            }
+        }
+
+        flutterPrefs.edit(commit = true) { clear() }
+
         val settings = try {
-            json.decodeFromString<LegacySettings>(jsonStr)
+            json.decodeFromString<LegacySettings>(data.toString())
         } catch (e: SerializationException) {
             app.toast(app.getString(R.string.legacy_import_failed))
             Log.e(tag, "Legacy settings data could not be deserialized", e)
