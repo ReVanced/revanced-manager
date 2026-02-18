@@ -135,7 +135,7 @@ class OnboardingViewModel(
     }
 
     suspend fun completeOnboarding() {
-        prefs.firstLaunch.update(false)
+        prefs.completedOnboarding.update(true)
     }
 
     private fun nextStep(from: OnboardingStep) = when (from) {

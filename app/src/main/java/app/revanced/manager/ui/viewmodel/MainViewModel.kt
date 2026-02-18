@@ -71,7 +71,7 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            if (!prefs.firstLaunch.get()) return@launch
+            if (prefs.completedOnboarding.get()) return@launch
             legacyImportActivityChannel.send(Intent().apply {
                 setClassName(
                     "app.revanced.manager.flutter",

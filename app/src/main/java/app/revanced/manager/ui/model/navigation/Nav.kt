@@ -11,6 +11,9 @@ import kotlinx.serialization.Serializable
 interface ComplexParameter<T : Parcelable>
 
 @Serializable
+object Onboarding
+
+@Serializable
 object Dashboard
 
 @Serializable

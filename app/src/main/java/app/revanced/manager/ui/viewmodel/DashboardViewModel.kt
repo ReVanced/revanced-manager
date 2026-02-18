@@ -94,26 +94,6 @@ class DashboardViewModel(
         }
     }
 
-    fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
-        prefs.firstLaunch.update(false)
-
-        prefs.managerAutoUpdates.update(manager)
-
-        if (manager) checkForManagerUpdates()
-
-        if (patches) {
-            with(patchBundleRepository) {
-                sources
-                    .first()
-                    .find { it.uid == 0 }
-                    ?.asRemoteOrNull
-                    ?.setAutoUpdate(true)
-
-                updateCheck()
-            }
-        }
-    }
-
     private fun sendEvent(event: BundleListViewModel.Event) {
         viewModelScope.launch { bundleListEventsChannel.send(event) }
     }
