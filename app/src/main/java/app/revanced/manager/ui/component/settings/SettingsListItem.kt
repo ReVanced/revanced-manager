@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -53,8 +55,15 @@ fun SettingsListItem(
         modifier = modifier,
         overlineContent = overlineContent,
         leadingContent = leadingContent,
-        trailingContent = trailingContent,
+        trailingContent = trailingContent?.let {
+            {
+                Box(modifier = Modifier.padding(start = 4.dp)) {
+                    trailingContent()
+                }
+            }
+        },
         supportingContent = supportingContent?.let { { Text(it) } },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(headlineContent)
     }
