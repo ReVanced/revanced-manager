@@ -47,7 +47,7 @@ class AdvancedSettingsViewModel(
                 app.contentResolver.openOutputStream(target)!!.bufferedWriter().use { writer ->
                     val consumer = Redirect.Consume { flow ->
                         flow.onEach {
-                            writer.write(it)
+                            writer.write("${it}\n")
                         }.flowOn(Dispatchers.IO).collect()
                     }
 

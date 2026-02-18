@@ -2,6 +2,8 @@ package app.revanced.manager.ui.screen.settings
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,10 +12,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,10 +42,10 @@ import app.revanced.manager.R
 import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
-import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -52,6 +58,7 @@ fun DownloadsSettingsScreen(
     onBackClick: () -> Unit,
     viewModel: DownloadsViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val pluginStates by viewModel.downloaderPluginStates.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -75,7 +82,7 @@ fun DownloadsSettingsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
+                        IconButton(onClick = { viewModel.deleteApps() }) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }
@@ -121,6 +128,11 @@ fun DownloadsSettingsScreen(
                                         .digest(androidSignature.toByteArray())
                                     hash.toHexString(format = HexFormat.UpperCase)
                                 }
+                            val appName = remember {
+                                packageInfo.applicationInfo?.loadLabel(context.packageManager)
+                                    ?.toString()
+                                    ?: packageName
+                            }
 
                             when (state) {
                                 is DownloaderPluginState.Loaded -> TrustDialog(
@@ -130,6 +142,8 @@ fun DownloadsSettingsScreen(
                                         packageName,
                                         signature
                                     ),
+                                    pluginName = appName,
+                                    signature = signature,
                                     onDismiss = ::dismiss,
                                     onConfirm = {
                                         viewModel.revokePluginTrust(packageName)
@@ -147,10 +161,10 @@ fun DownloadsSettingsScreen(
                                 is DownloaderPluginState.Untrusted -> TrustDialog(
                                     title = R.string.downloader_plugin_trust_dialog_title,
                                     body = stringResource(
-                                        R.string.downloader_plugin_trust_dialog_body,
-                                        packageName,
-                                        signature
+                                        R.string.downloader_plugin_trust_dialog_body
                                     ),
+                                    pluginName = appName,
+                                    signature = signature,
                                     onDismiss = ::dismiss,
                                     onConfirm = {
                                         viewModel.trustPlugin(packageName)
@@ -226,6 +240,8 @@ fun DownloadsSettingsScreen(
 private fun TrustDialog(
     @StringRes title: Int,
     body: String,
+    pluginName: String,
+    signature: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -238,10 +254,39 @@ private fun TrustDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.dismiss))
+                Text(stringResource(R.string.cancel))
             }
         },
         title = { Text(stringResource(title)) },
-        text = { Text(body) }
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(body)
+                Card {
+                    Column(
+                        Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            stringResource(
+                                R.string.downloader_plugin_trust_dialog_plugin,
+                                pluginName
+                            ),
+                        )
+                        OutlinedCard(
+                            colors = CardDefaults.outlinedCardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
+                            )
+                        ) {
+                            Text(
+                                stringResource(
+                                    R.string.downloader_plugin_trust_dialog_signature,
+                                    signature.chunked(2).joinToString(" ")
+                                ), modifier = Modifier.padding(12.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
     )
 }

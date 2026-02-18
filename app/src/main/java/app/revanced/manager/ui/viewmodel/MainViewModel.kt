@@ -120,6 +120,10 @@ class MainViewModel(
         settings.useDynamicTheme?.let { dynamicColor ->
             prefs.dynamicColor.update(dynamicColor)
         }
+        settings.usePrereleases?.let { prereleases ->
+            prefs.useManagerPrereleases.update(prereleases)
+            prefs.usePatchesPrereleases.update(prereleases)
+        }
         settings.apiUrl?.let { api ->
             prefs.api.update(api.removeSuffix("/"))
         }
@@ -143,7 +147,7 @@ class MainViewModel(
         settings.keystore?.let { keystore ->
             val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
             keystoreManager.import(
-                "ReVanced",
+                "alias",
                 settings.keystorePassword,
                 keystoreBytes.inputStream()
             )
@@ -159,6 +163,7 @@ class MainViewModel(
         val keystorePassword: String,
         val themeMode: Int? = null,
         val useDynamicTheme: Boolean? = null,
+        val usePrereleases: Boolean? = null,
         val apiUrl: String? = null,
         val experimentalPatchesEnabled: Boolean? = null,
         val patchesAutoUpdate: Boolean? = null,

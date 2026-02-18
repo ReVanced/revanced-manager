@@ -17,6 +17,8 @@ class UpdatesSettingsViewModel(
 ) : ViewModel() {
     val managerAutoUpdates = prefs.managerAutoUpdates
     val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
+    val useManagerPrereleases = prefs.useManagerPrereleases
+
 
     val isConnected: Boolean
         get() = network.isConnected()

@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,6 +65,7 @@ fun ImportExportSettingsScreen(
     vm: ImportExportViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val coroutineScope = rememberCoroutineScope()
     var selectorDialog by rememberSaveable { mutableStateOf<(@Composable () -> Unit)?>(null) }
 
@@ -104,11 +106,11 @@ fun ImportExportSettingsScreen(
     if (vm.showCredentialsDialog) {
         KeystoreCredentialsDialog(
             onDismissRequest = vm::cancelKeystoreImport,
-            onSubmit = { cn, pass ->
+            onSubmit = { alias, pass ->
                 vm.viewModelScope.launch {
                     uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
-                        val result = vm.tryKeystoreImport(cn, pass)
-                        if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                        val result = vm.tryKeystoreImport(alias, pass)
+                        if (!result) context.toast(resources.getString(R.string.import_keystore_wrong_credentials))
                     }
                 }
             }
@@ -166,7 +168,7 @@ fun ImportExportSettingsScreen(
             GroupItem(
                 onClick = {
                     if (!vm.canExport()) {
-                        context.toast(context.getString(R.string.export_keystore_unavailable))
+                        context.toast(resources.getString(R.string.export_keystore_unavailable))
                         return@GroupItem
                     }
                     exportKeystoreLauncher.launch("Manager.keystore")
@@ -382,7 +384,7 @@ fun KeystoreCredentialsDialog(
     onDismissRequest: () -> Unit,
     onSubmit: (String, String) -> Unit
 ) {
-    var cn by rememberSaveable { mutableStateOf("") }
+    var alias by rememberSaveable { mutableStateOf("") }
     var pass by rememberSaveable { mutableStateOf("") }
 
     AlertDialog(
@@ -390,7 +392,7 @@ fun KeystoreCredentialsDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    onSubmit(cn, pass)
+                    onSubmit(alias, pass)
                 }
             ) {
                 Text(stringResource(R.string.import_keystore_dialog_button))
@@ -422,8 +424,8 @@ fun KeystoreCredentialsDialog(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 OutlinedTextField(
-                    value = cn,
-                    onValueChange = { cn = it },
+                    value = alias,
+                    onValueChange = { alias = it },
                     label = { Text(stringResource(R.string.import_keystore_dialog_alias_field)) }
                 )
                 PasswordField(

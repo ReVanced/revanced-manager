@@ -1,6 +1,6 @@
 package app.revanced.manager.network.api
 
-import android.os.Build
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.network.dto.ReVancedAnnouncementTag
@@ -38,11 +38,12 @@ class ReVancedAPI(
     suspend fun getAnnouncementTags() = request<List<ReVancedAnnouncementTag>>("announcements/tags")
 
     suspend fun getAppUpdate() =
-        getLatestAppInfo().getOrThrow().takeIf { it.version != Build.VERSION.RELEASE }
+        getLatestAppInfo().getOrThrow().takeIf { it.version.removePrefix("v") != BuildConfig.VERSION_NAME }
 
-    suspend fun getLatestAppInfo() = request<ReVancedAsset>("manager")
+    suspend fun getLatestAppInfo() =
+        request<ReVancedAsset>("manager?prerelease=${prefs.useManagerPrereleases.get()}")
 
-    suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches")
+    suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches?prerelease=${prefs.usePatchesPrereleases.get()}")
 
     suspend fun getContributors() = request<List<ReVancedGitRepository>>("contributors")
 

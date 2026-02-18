@@ -38,7 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TabRow
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
@@ -55,6 +55,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -104,6 +105,7 @@ fun DashboardScreen(
         false
     )
     val androidContext = LocalContext.current
+    val resources = LocalResources.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         initialPage = DashboardPage.DASHBOARD.ordinal,
@@ -249,7 +251,7 @@ fun DashboardScreen(
                     when (pagerState.currentPage) {
                         DashboardPage.DASHBOARD.ordinal -> {
                             if (availablePatches < 1) {
-                                androidContext.toast(androidContext.getString(R.string.no_patch_found))
+                                androidContext.toast(resources.getString(R.string.no_patch_found))
                                 composableScope.launch {
                                     pagerState.animateScrollToPage(
                                         DashboardPage.BUNDLES.ordinal
@@ -274,7 +276,7 @@ fun DashboardScreen(
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
-            TabRow(
+            SecondaryTabRow(
                 selectedTabIndex = pagerState.currentPage,
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {

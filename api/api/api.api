@@ -24,14 +24,6 @@ public final class app/revanced/manager/plugin/downloader/DownloadUrl : android/
 	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
-public final class app/revanced/manager/plugin/downloader/DownloadUrl$Creator : android/os/Parcelable$Creator {
-	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lapp/revanced/manager/plugin/downloader/DownloadUrl;
-	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lapp/revanced/manager/plugin/downloader/DownloadUrl;
-	public synthetic fun newArray (I)[Ljava/lang/Object;
-}
-
 public final class app/revanced/manager/plugin/downloader/Downloader {
 	public static final field $stable I
 }
@@ -83,14 +75,6 @@ public final class app/revanced/manager/plugin/downloader/Package : android/os/P
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public final fun writeToParcel (Landroid/os/Parcel;I)V
-}
-
-public final class app/revanced/manager/plugin/downloader/Package$Creator : android/os/Parcelable$Creator {
-	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lapp/revanced/manager/plugin/downloader/Package;
-	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lapp/revanced/manager/plugin/downloader/Package;
-	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
 public abstract interface annotation class app/revanced/manager/plugin/downloader/PluginHostApi : java/lang/annotation/Annotation {
@@ -157,14 +141,6 @@ public abstract class app/revanced/manager/plugin/downloader/webview/IWebViewEve
 	public fun asBinder ()Landroid/os/IBinder;
 	public static fun asInterface (Landroid/os/IBinder;)Lapp/revanced/manager/plugin/downloader/webview/IWebViewEvents;
 	public fun onTransact (ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-}
-
-public final class app/revanced/manager/plugin/downloader/webview/WebViewActivity$Parameters$Creator : android/os/Parcelable$Creator {
-	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lapp/revanced/manager/plugin/downloader/webview/WebViewActivity$Parameters;
-	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lapp/revanced/manager/plugin/downloader/webview/WebViewActivity$Parameters;
-	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
 public abstract interface class app/revanced/manager/plugin/downloader/webview/WebViewCallbackScope : app/revanced/manager/plugin/downloader/Scope {

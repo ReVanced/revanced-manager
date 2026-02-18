@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,9 +65,10 @@ fun AdvancedSettingsScreen(
     viewModel: AdvancedSettingsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
-    val memoryLimit = remember {
+    val resources = LocalResources.current
+    val memoryLimit = remember(resources) {
         val activityManager = context.getSystemService<ActivityManager>()!!
-        context.getString(
+        resources.getString(
             R.string.device_memory_limit_format,
             activityManager.memoryClass,
             activityManager.largeMemoryClass
@@ -183,7 +185,7 @@ fun AdvancedSettingsScreen(
                             ClipData.newPlainText("Device Information", deviceContent)
                         )
 
-                        context.toast(context.getString(R.string.toast_copied_to_clipboard))
+                        context.toast(resources.getString(R.string.toast_copied_to_clipboard))
                     }.withHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                 ),
                 headlineContent = stringResource(R.string.about_device),

@@ -40,6 +40,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
@@ -55,6 +56,7 @@ import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,6 +70,7 @@ fun PatcherScreen(
     }
 
     val context = LocalContext.current
+    val resources = LocalResources.current
     val exportApkLauncher =
         rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
 
@@ -76,18 +79,17 @@ fun PatcherScreen(
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
     var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
-    fun onPageBack() {
-        if(patcherSucceeded == null)
-            showDismissConfirmationDialog = true
-        else
-            onLeave()
+    fun onPageBack() = when {
+        patcherSucceeded == null -> showDismissConfirmationDialog = true
+        viewModel.isInstalling -> context.toast(resources.getString(R.string.patcher_install_in_progress))
+        else -> onLeave()
     }
 
     BackHandler(onBack = ::onPageBack)
 
     val steps by remember {
         derivedStateOf {
-            viewModel.steps.groupBy { it.category }
+            viewModel.steps.groupBy { it.category }.toList()
         }
     }
 
@@ -213,6 +215,12 @@ fun PatcherScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
+            var expandedCategory by rememberSaveable { mutableStateOf<StepCategory?>(null) }
+
+            val expandCategory: (StepCategory?) -> Unit = { category ->
+                expandedCategory = category
+            }
+
             LinearProgressIndicator(
                 progress = { viewModel.progress },
                 modifier = Modifier.fillMaxWidth()
@@ -224,14 +232,17 @@ fun PatcherScreen(
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(
-                    items = steps.toList(),
+                    items = steps,
                     key = { it.first }
                 ) { (category, steps) ->
                     Steps(
                         category = category,
                         steps = steps,
-                        stepCount = if (category == StepCategory.PATCHING) viewModel.patchesProgress else null,
-                        stepProgressProvider = viewModel
+                        isExpanded = expandedCategory == category,
+                        onExpand = { expandCategory(category) },
+                        onClick = {
+                            expandCategory(if (expandedCategory == category) null else category)
+                        }
                     )
                 }
             }

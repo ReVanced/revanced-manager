@@ -3,11 +3,11 @@ package app.revanced.manager
 import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -63,11 +63,10 @@ import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.androidx.compose.navigation.koinNavViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +84,7 @@ class MainActivity : ComponentActivity() {
             )
             val theme by vm.prefs.theme.getAsState()
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
+            val pureBlackTheme by vm.prefs.pureBlackTheme.getAsState()
 
             EventEffect(vm.legacyImportActivityFlow) {
                 try {
@@ -95,7 +95,8 @@ class MainActivity : ComponentActivity() {
 
             ReVancedManagerTheme(
                 darkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK,
-                dynamicColor = dynamicColor
+                dynamicColor = dynamicColor,
+                pureBlackTheme = pureBlackTheme
             ) {
                 ReVancedManager(vm)
             }
@@ -211,7 +212,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                 val data =
                     parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
                 val viewModel =
-                    koinNavViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
+                    koinViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
                         parametersOf(data)
                     }
 
@@ -252,7 +253,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<SelectedApplicationInfo.PatchesSelector> {
                 val data =
                     it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
-                val selectedAppInfoVm = koinNavViewModel<SelectedAppInfoViewModel>(
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
 
@@ -269,7 +270,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<SelectedApplicationInfo.RequiredOptions> {
                 val data =
                     it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
-                val selectedAppInfoVm = koinNavViewModel<SelectedAppInfoViewModel>(
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
 

@@ -25,12 +25,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -67,6 +69,7 @@ fun SelectedAppInfoScreen(
     vm: SelectedAppInfoViewModel
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val networkInfo = koinInject<NetworkInfo>()
     val networkConnected = remember { networkInfo.isConnected() }
     val networkMetered = remember { !networkInfo.isUnmetered() }
@@ -76,12 +79,12 @@ fun SelectedAppInfoScreen(
     val bundles by vm.bundleInfoFlow.collectAsStateWithLifecycle(emptyList())
 
     val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
-    val patches = remember(bundles, allowIncompatiblePatches) {
-        vm.getPatches(bundles, allowIncompatiblePatches)
+    val patches by remember {
+        derivedStateOf {
+            vm.getPatches(bundles, allowIncompatiblePatches)
+        }
     }
-    val selectedPatchCount = remember(patches) {
-        patches.values.sumOf { it.size }
-    }
+    val selectedPatchCount = patches.values.sumOf { it.size }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -117,7 +120,7 @@ fun SelectedAppInfoScreen(
                 },
                 onClick = patchClick@{
                     if (selectedPatchCount == 0) {
-                        context.toast(context.getString(R.string.no_patches_selected))
+                        context.toast(resources.getString(R.string.no_patches_selected))
 
                         return@patchClick
                     }
