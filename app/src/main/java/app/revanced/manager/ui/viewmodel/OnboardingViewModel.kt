@@ -122,6 +122,10 @@ class OnboardingViewModel(
         currentStep = nextStep(currentStep)
     }
 
+    fun retreat() {
+        currentStep = previousStep(currentStep)
+    }
+
     fun trustPlugin(packageName: String) = viewModelScope.launch {
         downloaderPluginRepository.trustPackage(packageName)
     }
@@ -153,6 +157,13 @@ class OnboardingViewModel(
         OnboardingStep.Updates -> if (plugins.value.isNotEmpty()) OnboardingStep.Sources else OnboardingStep.Apps
         OnboardingStep.Sources -> OnboardingStep.Apps
         OnboardingStep.Apps -> OnboardingStep.Apps
+    }
+
+    private fun previousStep(from: OnboardingStep) = when (from) {
+        OnboardingStep.Permissions -> OnboardingStep.Permissions
+        OnboardingStep.Updates -> OnboardingStep.Permissions
+        OnboardingStep.Sources -> OnboardingStep.Updates
+        OnboardingStep.Apps -> if (plugins.value.isNotEmpty()) OnboardingStep.Sources else OnboardingStep.Updates
     }
 
     private companion object {

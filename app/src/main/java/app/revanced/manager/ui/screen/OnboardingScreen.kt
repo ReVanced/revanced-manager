@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -136,6 +137,10 @@ fun OnboardingScreen(
                 onFinish()
             }
         }
+    }
+
+    BackHandler(enabled = currentStep != OnboardingStep.Permissions) {
+        vm.retreat()
     }
 
     val stepTitle = when (currentStep) {
