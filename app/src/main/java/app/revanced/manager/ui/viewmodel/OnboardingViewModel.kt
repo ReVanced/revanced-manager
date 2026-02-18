@@ -76,20 +76,6 @@ class OnboardingViewModel(
     }.flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), emptyList())
 
-    val managerAutoUpdates = prefs.managerAutoUpdates.flow.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-        prefs.managerAutoUpdates.default
-    )
-
-    val patchesAutoUpdates = patchBundleRepository.sources.map { sources ->
-        sources.find { it.uid == 0 }?.asRemoteOrNull?.autoUpdate ?: false
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-        false
-    )
-
     var canInstallUnknownApps by mutableStateOf(false)
         private set
     var isNotificationsEnabled by mutableStateOf(false)

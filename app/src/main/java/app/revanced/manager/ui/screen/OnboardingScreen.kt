@@ -75,17 +75,11 @@ fun OnboardingScreen(
     val apps by vm.apps.collectAsStateWithLifecycle()
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle()
     val plugins by vm.plugins.collectAsStateWithLifecycle()
-    val managerAutoUpdates by vm.managerAutoUpdates.collectAsStateWithLifecycle()
-    val patchesAutoUpdates by vm.patchesAutoUpdates.collectAsStateWithLifecycle()
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
-    var managerUpdatesEnabled by rememberSaveable(managerAutoUpdates) {
-        mutableStateOf(managerAutoUpdates)
-    }
-    var patchesUpdatesEnabled by rememberSaveable(patchesAutoUpdates) {
-        mutableStateOf(patchesAutoUpdates)
-    }
+    var managerUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
+    var patchesUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var isNavigating by remember { mutableStateOf(false) }
     var showSkipPermissionsDialog by remember { mutableStateOf(false) }
 
