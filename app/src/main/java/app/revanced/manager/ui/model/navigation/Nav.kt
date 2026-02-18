@@ -23,6 +23,12 @@ data class InstalledApplicationInfo(val packageName: String)
 data class Update(val downloadOnScreenEntry: Boolean = false)
 
 @Serializable
+data object Announcements
+
+@Serializable
+data class Announcement(val id: Long)
+
+@Serializable
 data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.ViewModelParams> {
     @Parcelize
     data class ViewModelParams(

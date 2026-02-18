@@ -2,6 +2,8 @@ package app.revanced.manager.network.api
 
 import android.os.Build
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.network.dto.ReVancedAnnouncement
+import app.revanced.manager.network.dto.ReVancedAnnouncementTag
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedGitRepository
 import app.revanced.manager.network.dto.ReVancedInfo
@@ -28,6 +30,12 @@ class ReVancedAPI(
         }
 
     private suspend inline fun <reified T> request(route: String) = request<T>(apiUrl(), route)
+
+    suspend fun getAnnouncements() = request<List<ReVancedAnnouncement>>("announcements")
+
+    suspend fun getAnnouncement(id: Long) = request<ReVancedAnnouncement>("announcements/$id")
+
+    suspend fun getAnnouncementTags() = request<List<ReVancedAnnouncementTag>>("announcements/tags")
 
     suspend fun getAppUpdate() =
         getLatestAppInfo().getOrThrow().takeIf { it.version != Build.VERSION.RELEASE }

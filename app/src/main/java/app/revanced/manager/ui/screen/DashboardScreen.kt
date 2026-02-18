@@ -19,11 +19,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
@@ -90,6 +92,8 @@ fun DashboardScreen(
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
+    onAnnouncementsClick: () -> Unit,
+    onAnnouncementClick: (Long) -> Unit,
     onDownloaderPluginClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
@@ -218,6 +222,17 @@ fun DashboardScreen(
                                 }
                             }
                         }
+                        IconButton(onClick = onAnnouncementsClick) {
+                            BadgedBox(
+                                badge = {
+                                    if (vm.unreadAnnouncement != null) {
+                                        Badge(modifier = Modifier.size(6.dp))
+                                    }
+                                }
+                            ) {
+                                Icon(Icons.Outlined.Notifications, stringResource(R.string.announcements))
+                            }
+                        }
                         IconButton(onClick = onSettingsClick) {
                             Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                         }
@@ -320,7 +335,29 @@ fun DashboardScreen(
                             }
                         )
                     }
-                } else null
+                } else null,
+                vm.unreadAnnouncement?.let { announcement ->
+                    {
+                        NotificationCard(
+                            text = announcement.title,
+                            icon = Icons.Filled.Notifications,
+                            actions = {
+                                TextButton(onClick = vm::markUnreadAnnouncementRead) {
+                                    Text(stringResource(R.string.dismiss))
+                                }
+                                TextButton(
+                                    onClick = {
+                                        vm.markUnreadAnnouncementRead()
+                                        onAnnouncementClick(announcement.id)
+                                    }
+                                ) {
+                                    Text(stringResource(R.string.view_announcement))
+                                }
+                            },
+                            isWarning = announcement.level > 0
+                        )
+                    }
+                }
             )
 
             HorizontalPager(

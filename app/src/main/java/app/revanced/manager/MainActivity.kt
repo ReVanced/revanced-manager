@@ -25,6 +25,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import app.revanced.manager.ui.model.navigation.Announcement
+import app.revanced.manager.ui.model.navigation.Announcements
 import app.revanced.manager.ui.model.navigation.AppSelector
 import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
@@ -33,6 +35,8 @@ import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
+import app.revanced.manager.ui.screen.AnnouncementScreen
+import app.revanced.manager.ui.screen.AnnouncementsScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
@@ -132,6 +136,12 @@ private fun ReVancedManager(vm: MainViewModel) {
                 },
                 onAppClick = { packageName ->
                     navController.navigate(InstalledApplicationInfo(packageName))
+                },
+                onAnnouncementsClick = {
+                    navController.navigate(Announcements)
+                },
+                onAnnouncementClick = {
+                    navController.navigate(Announcement(it))
                 }
             )
         }
@@ -174,6 +184,24 @@ private fun ReVancedManager(vm: MainViewModel) {
             UpdateScreen(
                 onBackClick = navController::popBackStack,
                 vm = koinViewModel { parametersOf(data.downloadOnScreenEntry) }
+            )
+        }
+
+        composable<Announcements> {
+            AnnouncementsScreen(
+                onBackClick = navController::popBackStack,
+                onAnnouncementClick = { id ->
+                    navController.navigate(Announcement(id))
+                }
+            )
+        }
+
+        composable<Announcement> {
+            val data = it.toRoute<Announcement>()
+
+            AnnouncementScreen(
+                onBackClick = navController::popBackStack,
+                vm = koinViewModel { parametersOf(data.id) }
             )
         }
 

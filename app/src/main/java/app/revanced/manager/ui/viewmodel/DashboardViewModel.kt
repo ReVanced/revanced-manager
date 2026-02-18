@@ -22,14 +22,18 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.network.dto.ReVancedAnnouncement
+import app.revanced.manager.network.utils.getOrNull
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DashboardViewModel(
     private val app: Application,
@@ -61,12 +65,16 @@ class DashboardViewModel(
     var showBatteryOptimizationsWarning by mutableStateOf(false)
         private set
 
+    var unreadAnnouncement by mutableStateOf<ReVancedAnnouncement?>(null)
+        private set
+
     private val bundleListEventsChannel = Channel<BundleListViewModel.Event>()
     val bundleListEventsFlow = bundleListEventsChannel.receiveAsFlow()
 
     init {
         viewModelScope.launch {
             checkForManagerUpdates()
+            checkForAnnouncements()
             updateBatteryOptimizationsWarning()
         }
     }
@@ -80,6 +88,36 @@ class DashboardViewModel(
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
             updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
+        }
+    }
+
+    private suspend fun checkForAnnouncements() {
+        val announcements = withContext(Dispatchers.IO) {
+            reVancedAPI.getAnnouncements().getOrNull()
+        } ?: return
+
+        val readAnnouncements = prefs.readAnnouncements.get()
+        if (readAnnouncements.isEmpty()) {
+            val announcementIds = announcements.mapTo(mutableSetOf()) { it.id.toString() }
+            prefs.readAnnouncements.update(announcementIds)
+            return
+        }
+
+        unreadAnnouncement = announcements.firstOrNull {
+            if (!it.tags.contains("✨ ReVanced") && !it.tags.contains("manager"))
+                return@firstOrNull false
+
+            it.id.toString() !in readAnnouncements
+        }
+    }
+
+    fun markUnreadAnnouncementRead() {
+        viewModelScope.launch {
+            unreadAnnouncement?.let {
+                val readAnnouncements = prefs.readAnnouncements.get()
+                prefs.readAnnouncements.update(readAnnouncements + it.id.toString())
+            }
+            unreadAnnouncement = null
         }
     }
 
