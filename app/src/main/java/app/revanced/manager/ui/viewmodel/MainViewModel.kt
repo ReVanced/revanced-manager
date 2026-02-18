@@ -81,22 +81,7 @@ class MainViewModel(
         }
     }
 
-    fun applyLegacySettings(result: ActivityResult) {
-        if (result.resultCode != Activity.RESULT_OK) {
-            app.toast(app.getString(R.string.legacy_import_failed))
-            Log.e(
-                tag,
-                "Got unknown result code while importing legacy settings: ${result.resultCode}"
-            )
-            return
-        }
-
-        val jsonStr = result.data?.getStringExtra("data")
-        if (jsonStr == null) {
-            app.toast(app.getString(R.string.legacy_import_failed))
-            Log.e(tag, "Legacy settings data is null")
-            return
-        }
+    fun applyLegacySettings(jsonStr: String) {
         val settings = try {
             json.decodeFromString<LegacySettings>(jsonStr)
         } catch (e: SerializationException) {

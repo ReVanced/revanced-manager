@@ -3,10 +3,10 @@ package app.revanced.manager
 import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.activity.compose.rememberLauncherForActivityResult
+import android.util.Base64
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
@@ -57,10 +57,14 @@ import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.tag
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import java.io.File
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
+
 
 class MainActivity : AppCompatActivity() {
     @ExperimentalAnimationApi
@@ -74,18 +78,36 @@ class MainActivity : AppCompatActivity() {
         val vm: MainViewModel = getActivityViewModel()
 
         setContent {
-            val launcher = rememberLauncherForActivityResult(
-                ActivityResultContracts.StartActivityForResult(),
-                onResult = vm::applyLegacySettings
-            )
             val theme by vm.prefs.theme.getAsState()
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
             val pureBlackTheme by vm.prefs.pureBlackTheme.getAsState()
 
             EventEffect(vm.legacyImportActivityFlow) {
-                try {
-                    launcher.launch(it)
-                } catch (_: ActivityNotFoundException) {
+                val flutterPrefs = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
+                if (flutterPrefs.all.isNotEmpty())
+                {
+                    Log.d(tag, "Migrating flutter preferences")
+                    val json = JSONObject()
+                    json.put("keystorePassword", "s3cur3p@ssw0rd")
+                    val allEntries: Map<String, *> = flutterPrefs.all
+                    for ((key, value) in allEntries.entries) {
+                        json.put(key.replace("flutter.", ""), value)
+                    }
+                    val keystoreFile = File(getExternalFilesDir(null), "/revanced-manager.keystore")
+                    if (keystoreFile.exists()) {
+                        val keystoreBytes = keystoreFile.readBytes()
+                        val keystoreBase64 = Base64.encodeToString(keystoreBytes, Base64.DEFAULT)
+                        json.put("keystore", keystoreBase64)
+                    }
+
+                    val storedPatchesFile = File(filesDir.parentFile.absolutePath, "/app_flutter/selected-patches.json")
+                    if (storedPatchesFile.exists()) {
+                        val patchesBytes = storedPatchesFile.readBytes()
+                        val patches = String(patchesBytes, Charsets.UTF_8)
+                        json.put("patches", JSONObject(patches))
+                    }
+
+                    vm.applyLegacySettings(json.toString())
                 }
             }
 
