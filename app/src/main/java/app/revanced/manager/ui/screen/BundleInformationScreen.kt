@@ -62,7 +62,8 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
-import app.revanced.manager.ui.component.bundle.BundleListItem
+import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.component.bundle.BundlePatchesDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
@@ -231,9 +232,9 @@ fun BundleInformationScreen(
 
             ListSection {
                 if (autoUpdate != null) {
-                    BundleListItem(
-                        headlineText = stringResource(R.string.auto_update),
-                        supportingText = stringResource(R.string.auto_update_description),
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.auto_update),
+                        supportingContent = stringResource(R.string.auto_update_description),
                         trailingContent = {
                             HapticSwitch(
                                 checked = autoUpdate,
@@ -245,18 +246,12 @@ fun BundleInformationScreen(
                 }
 
                 if (src.isDefault) {
-                    val useBundlePrerelease by viewModel.prefs.usePatchesPrereleases.getAsState()
-
-                    BundleListItem(
-                        headlineText = stringResource(R.string.patches_prereleases),
-                        supportingText = stringResource(R.string.patches_prereleases_description, src.name),
-                        trailingContent = {
-                            HapticSwitch(
-                                checked = useBundlePrerelease,
-                                onCheckedChange = viewModel::updateUsePrereleases
-                            )
-                        },
-                        onClick = { viewModel.updateUsePrereleases(!useBundlePrerelease) }
+                    SafeguardBooleanItem(
+                        preference = viewModel.prefs.usePatchesPrereleases,
+                        headline = R.string.patches_prereleases,
+                        description = stringResource(R.string.patches_prereleases_description, src.name),
+                        confirmationText = R.string.prereleases_warning,
+                        onValueChange = viewModel::updateUsePrereleases
                     )
                 }
 
@@ -279,9 +274,9 @@ fun BundleInformationScreen(
                         )
                     }
 
-                    BundleListItem(
-                        headlineText = stringResource(R.string.patches_url),
-                        supportingText = url.ifEmpty {
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.patches_url),
+                        supportingContent = url.ifEmpty {
                             stringResource(R.string.field_not_set)
                         },
                         onClick = null
@@ -289,9 +284,9 @@ fun BundleInformationScreen(
                 }
 
                 val patchesClickable = patchCount > 0
-                BundleListItem(
-                    headlineText = stringResource(R.string.patches),
-                    supportingText = stringResource(R.string.view_patches),
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.patches),
+                    supportingContent = stringResource(R.string.view_patches),
                     onClick = if (patchesClickable) {
                         { viewCurrentBundlePatches = true }
                     } else null,
@@ -315,9 +310,9 @@ fun BundleInformationScreen(
                         )
                     }
 
-                    BundleListItem(
-                        headlineText = stringResource(R.string.patches_error),
-                        supportingText = stringResource(R.string.patches_error_description),
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.patches_error),
+                        supportingContent = stringResource(R.string.patches_error_description),
                         trailingContent = {
                             Icon(
                                 Icons.AutoMirrored.Outlined.ArrowRight,
@@ -329,9 +324,9 @@ fun BundleInformationScreen(
                 }
 
                 if (src.state is PatchBundleSource.State.Missing && !isLocal) {
-                    BundleListItem(
-                        headlineText = stringResource(R.string.patches_error),
-                        supportingText = stringResource(R.string.patches_not_downloaded),
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.patches_error),
+                        supportingContent = stringResource(R.string.patches_not_downloaded),
                         onClick = viewModel::refresh
                     )
                 }

@@ -37,10 +37,25 @@ fun BooleanItem(
     onValueChange: (Boolean) -> Unit,
     @StringRes headline: Int,
     @StringRes description: Int
+) = BooleanItem(
+    modifier = modifier,
+    value = value,
+    onValueChange = onValueChange,
+    headline = headline,
+    description = stringResource(description)
+)
+
+@Composable
+fun BooleanItem(
+    modifier: Modifier = Modifier,
+    value: Boolean,
+    onValueChange: (Boolean) -> Unit,
+    @StringRes headline: Int,
+    description: String
 ) = SettingsListItem(
     modifier = modifier,
     headlineContent = stringResource(headline),
-    supportingContent = stringResource(description),
+    supportingContent = description,
     onClick = { onValueChange(!value) },
     trailingContent = {
         HapticSwitch(

@@ -45,6 +45,7 @@ import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.BooleanItem
+import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
 import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -175,10 +176,11 @@ fun UpdatesSettingsScreen(
                     description = R.string.show_manager_update_dialog_on_launch_description
                 )
 
-                BooleanItem(
+                SafeguardBooleanItem(
                     preference = vm.useManagerPrereleases,
                     headline = R.string.manager_prereleases,
-                    description = R.string.manager_prereleases_description
+                    description = R.string.manager_prereleases_description,
+                    confirmationText = R.string.prereleases_warning
                 )
             }
         }
