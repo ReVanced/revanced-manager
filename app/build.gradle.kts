@@ -135,15 +135,15 @@ android {
     buildToolsVersion = "35.0.1"
 
     defaultConfig {
-        applicationId = "app.revanced.manager"
+        applicationId = "app.revanced.manager.flutter"
         minSdk = 26
         targetSdk = 35
 
         val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
         versionName = versionStr
         versionCode = with(versionStr.toVersion()) {
-            major * 10_000_000 +
-                    minor * 10_000 +
+            major * 100_000_000 +
+                    minor * 100_000 +
                     patch * 100 +
                     (preRelease?.substringAfterLast('.')?.toInt() ?: 99)
         }
