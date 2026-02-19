@@ -1,3 +1,10 @@
+# app [1.26.0-dev.23](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.22...v1.26.0-dev.23) (2026-02-19)
+
+
+### Bug Fixes
+
+* Flutter migration ([#2946](https://github.com/ReVanced/revanced-manager/issues/2946)) ([31a0f75](https://github.com/ReVanced/revanced-manager/commit/31a0f751aaff3233f50821963f28454d239318b2))
+
 # app [1.26.0-dev.22](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.21...v1.26.0-dev.22) (2026-02-19)
 
 
