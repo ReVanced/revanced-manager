@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 fun ExpressiveListIcon(
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    iconColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    iconColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     size: Dp = 42.dp,
     iconSize: Dp = 24.dp,
     contentDescription: String? = null,

@@ -97,21 +97,21 @@ private fun ThemeOption(
 ) {
     val containerColor = animateColorAsState(
         if (isSelected) {
-            MaterialTheme.colorScheme.primaryContainer
+            MaterialTheme.colorScheme.secondaryContainer
         } else {
             MaterialTheme.colorScheme.surfaceContainerHighest
         },
         MaterialTheme.motionScheme.defaultEffectsSpec(),
-        if (isSelected) "primaryContainer" else "surfaceContainerHighest"
+        if (isSelected) "secondaryContainer" else "surfaceContainerHighest"
     ).value
     val contentColor = animateColorAsState(
         if (isSelected) {
-            MaterialTheme.colorScheme.onPrimaryContainer
+            MaterialTheme.colorScheme.onSecondaryContainer
         } else {
             MaterialTheme.colorScheme.onSurfaceVariant
         },
         MaterialTheme.motionScheme.defaultEffectsSpec(),
-        if (isSelected) "onPrimaryContainer" else "onSurfaceVariant"
+        if (isSelected) "onSecondaryContainer" else "onSurfaceVariant"
     ).value
 
     Column(
