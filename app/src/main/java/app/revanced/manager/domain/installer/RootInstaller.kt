@@ -121,7 +121,7 @@ class RootInstaller(
             execute("pm install \"${stockApp.absolutePath}\"").assertSuccess("Failed to install stock app")
         }
 
-        remoteFS.getFile(modulePath).mkdir()
+        remoteFS.getFile(modulePath).mkdirs()
 
         listOf(
             "service.sh",
