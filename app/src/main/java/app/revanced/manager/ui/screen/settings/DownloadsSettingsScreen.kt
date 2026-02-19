@@ -185,7 +185,7 @@ fun DownloadsSettingsScreen(
                             },
                             supportingContent = when (state) {
                                 is DownloaderPackageState.Loaded -> StringBuilder(stringResource(R.string.downloader_state_trusted)).apply {
-                                    val names = state.downloader.joinToString("\n") { it.name }
+                                    val names = state.downloaders.joinToString("\n") { it.name }
                                     if (names.isNotEmpty()) append("\n\n$names")
                                 }.toString()
 

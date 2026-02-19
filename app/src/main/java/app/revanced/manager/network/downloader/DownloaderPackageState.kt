@@ -4,7 +4,7 @@ sealed interface DownloaderPackageState {
     data object Untrusted : DownloaderPackageState
 
     data class Loaded(
-        val downloader: List<LoadedDownloader>,
+        val downloaders: List<LoadedDownloader>,
         val classLoader: ClassLoader,
         val name: String
     ) : DownloaderPackageState

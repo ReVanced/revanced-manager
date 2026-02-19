@@ -1,7 +1,8 @@
 package app.revanced.manager.domain.repository
 
+import android.annotation.SuppressLint
 import android.app.Application
-import android.content.pm.PackageManager
+import android.content.pm.PackageInfo
 import android.os.Parcelable
 import android.util.Log
 import app.revanced.manager.data.room.AppDatabase
@@ -37,7 +38,7 @@ class DownloaderRepository(
         MutableStateFlow(emptyMap<String, DownloaderPackageState>())
     val downloaderPackageStates = _downloaderPackageStates.asStateFlow()
     val loadedDownloadersFlow = downloaderPackageStates.map { states ->
-        states.values.filterIsInstance<DownloaderPackageState.Loaded>().flatMap { it.downloader }
+        states.values.filterIsInstance<DownloaderPackageState.Loaded>().flatMap { it.downloaders }
     }
 
     private val acknowledgedPackageNames = prefs.acknowledgedDownloaders
@@ -53,7 +54,7 @@ class DownloaderRepository(
         val downloaderPackages =
             withContext(Dispatchers.IO) {
                 pm.getPackagesWithFeature(DOWNLOADER_FEATURE)
-                    .associate { it.packageName to loadPackage(it.packageName) }
+                    .associate { it.packageName to loadPackage(it) }
             }
 
         _downloaderPackageStates.value = downloaderPackages
@@ -73,13 +74,14 @@ class DownloaderRepository(
         val state =
             (_downloaderPackageStates.value[data.downloaderPackageName] as? DownloaderPackageState.Loaded)
                 ?: throw Exception("Downloader package name ${data.downloaderPackageName} is not available")
-        val downloader = state.downloader.firstOrNull { it.className == data.downloaderClassName }
+        val downloader = state.downloaders.firstOrNull { it.className == data.downloaderClassName }
             ?: throw Exception("No downloader with name ${data.downloaderClassName} found in ${data.downloaderPackageName}")
 
         return downloader to data.unwrapWith(state.classLoader)
     }
 
-    private suspend fun loadPackage(packageName: String): DownloaderPackageState {
+    private suspend fun loadPackage(packageInfo: PackageInfo): DownloaderPackageState {
+        val packageName = packageInfo.packageName
         try {
             if (!verify(packageName)) return DownloaderPackageState.Untrusted
         } catch (e: CancellationException) {
@@ -91,15 +93,18 @@ class DownloaderRepository(
 
         return try {
             val downloaderContext = app.createPackageContext(packageName, 0)
-            val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
-            val appInfo = packageInfo.applicationInfo!!
 
-            val classNamesResId = appInfo.metaData.getInt(METADATA_DOWNLOADER_CLASSES)
-            if (classNamesResId == 0) throw Exception("Missing metadata attribute $METADATA_DOWNLOADER_CLASSES")
+            val classNamesResId =
+                @SuppressLint("DiscouragedApi") downloaderContext.resources.getIdentifier(
+                    CLASSES_RESOURCE_NAME,
+                    "array",
+                    downloaderContext.packageName
+                )
+            if (classNamesResId == 0) throw Exception("Class names resource not found (array/$CLASSES_RESOURCE_NAME)")
             val classNames = downloaderContext.resources.getStringArray(classNamesResId)
 
             val classLoader =
-                PathClassLoader(appInfo.sourceDir, app.classLoader)
+                PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
 
             val scopeImpl = object : Scope {
                 override val hostPackageName = app.packageName
@@ -165,7 +170,7 @@ class DownloaderRepository(
 
     private companion object {
         const val DOWNLOADER_FEATURE = "app.revanced.manager.downloader"
-        const val METADATA_DOWNLOADER_CLASSES = "app.revanced.manager.downloader.classes"
+        const val CLASSES_RESOURCE_NAME = "app.revanced.manager.downloader.classes"
 
         const val PUBLIC_STATIC = Modifier.PUBLIC or Modifier.STATIC
         val Int.isPublicStatic get() = (this and PUBLIC_STATIC) == PUBLIC_STATIC
