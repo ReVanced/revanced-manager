@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -74,7 +74,7 @@ fun AnnouncementsScreen(
                     if (vm.tags != null) {
                         IconButton(onClick = { showFilterSheet = true }) {
                             Icon(
-                                imageVector = Icons.Filled.FilterAlt,
+                                imageVector = Icons.Outlined.FilterAlt,
                                 contentDescription = stringResource(R.string.announcements_filter_tag)
                             )
                         }
