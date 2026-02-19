@@ -1,13 +1,8 @@
 package app.revanced.manager.ui.component.patches
 
 import android.app.Application
-import android.content.ContentResolver
-import android.net.Uri
 import android.os.Parcelable
-import android.provider.OpenableColumns
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
@@ -60,12 +55,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContentResolverCompat
 import androidx.documentfile.provider.DocumentFile
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
@@ -289,16 +282,16 @@ private object StringOptionEditor : OptionEditor<String> {
             }
         }
 
-        val folderPathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
+        val filePathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) {
             it?.let { uri ->
-                fs.openFolderDocument(uri)?.let { documentFile ->
+                fs.openFileDocument(uri)?.let { documentFile ->
                     fieldValue = copyFile(documentFile)
                 }
             }
         }
-        val filePathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) {
+        val folderPathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
             it?.let { uri ->
-                fs.openFileDocument(uri)?.let { documentFile ->
+                fs.openFolderDocument(uri)?.let { documentFile ->
                     fieldValue = copyFile(documentFile)
                 }
             }
@@ -345,18 +338,6 @@ private object StringOptionEditor : OptionEditor<String> {
                             ) {
                                 DropdownMenuItem(
                                     leadingIcon = {
-                                        Icon(Icons.Outlined.Folder, null)
-                                    },
-                                    text = {
-                                        Text(stringResource(R.string.path_selector_dir))
-                                    },
-                                    onClick = {
-                                        showDropdownMenu = false
-                                        folderPathLauncher.launch(null)
-                                    }
-                                )
-                                DropdownMenuItem(
-                                    leadingIcon = {
                                         // InsertDriveFile is the only icon that actually represents a file.
                                         // I don't think we need automirroring here as suggested by a warning.
                                         Icon(Icons.Outlined.InsertDriveFile, null)
@@ -367,6 +348,18 @@ private object StringOptionEditor : OptionEditor<String> {
                                     onClick = {
                                         showDropdownMenu = false
                                         filePathLauncher.launch(arrayOf("*/*"))
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(Icons.Outlined.Folder, null)
+                                    },
+                                    text = {
+                                        Text(stringResource(R.string.path_selector_dir))
+                                    },
+                                    onClick = {
+                                        showDropdownMenu = false
+                                        folderPathLauncher.launch(null)
                                     }
                                 )
                             }
