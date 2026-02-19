@@ -60,7 +60,7 @@ fun AnnouncementsScreen(
     if (showFilterSheet) {
         FilterBottomSheet(
             onDismissRequest = { showFilterSheet = false },
-            tags = vm.tags ?: emptyList(),
+            tags = vm.tags.orEmpty()
             selectedTags = vm.selectedTags
         )
     }
