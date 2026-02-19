@@ -51,6 +51,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
@@ -78,6 +79,9 @@ import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
@@ -242,57 +246,70 @@ private object StringOptionEditor : OptionEditor<String> {
 
         val fs: Filesystem = koinInject()
 
-        fun copyFile(documentFile: DocumentFile): String {
+        val coroutineScope = rememberCoroutineScope()
+
+        suspend fun copyFile(documentFile: DocumentFile): String {
             val filename = documentFile.name ?: UUID.randomUUID().toString()
-            copyingDataToCache = true
+            withContext(Dispatchers.Main) {
+                copyingDataToCache = true
+            }
             try {
-                val tempDir = File(fs.tempDir, "options")
-                val tempFile = File(tempDir, filename)
-                if (tempFile.exists()) {
-                    tempFile.deleteRecursively()
-                }
-                if (documentFile.isDirectory) {
-                    tempFile.mkdirs()
-                    documentFile.listFiles().forEach { documentFile ->
-                        val filename = documentFile.name ?: return@forEach
-                        val tempFile = File(tempFile, filename).apply {
-                            createNewFile()
+                return withContext(Dispatchers.IO) {
+                    val tempDir = File(fs.tempDir, "options")
+                    val tempFile = File(tempDir, filename)
+                    if (tempFile.exists()) {
+                        tempFile.deleteRecursively()
+                    }
+                    if (documentFile.isDirectory) {
+                        tempFile.mkdirs()
+                        documentFile.listFiles().forEach { documentFile ->
+                            val filename = documentFile.name ?: return@forEach
+                            val tempFile = File(tempFile, filename).apply {
+                                createNewFile()
+                            }
+                            fs.contentResolver.openInputStream(documentFile.uri)?.use { input ->
+                                tempFile.outputStream().use { output ->
+                                    input.copyTo(output)
+                                }
+                            }
                         }
+                    } else {
+                        tempDir.mkdirs()
+                        tempFile.createNewFile()
                         fs.contentResolver.openInputStream(documentFile.uri)?.use { input ->
                             tempFile.outputStream().use { output ->
                                 input.copyTo(output)
                             }
                         }
                     }
-                } else {
-                    tempDir.mkdirs()
-                    tempFile.createNewFile()
-                    fs.contentResolver.openInputStream(documentFile.uri)?.use { input ->
-                        tempFile.outputStream().use { output ->
-                            input.copyTo(output)
-                        }
-                    }
+
+                    return@withContext tempFile.path
                 }
-                return tempFile.path
             } catch (e: Exception) {
                 e.printStackTrace()
                 return ""
             } finally {
-                copyingDataToCache = false
+                withContext(Dispatchers.Main) {
+                    copyingDataToCache = false
+                }
             }
         }
 
         val filePathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) {
             it?.let { uri ->
                 fs.openFileDocument(uri)?.let { documentFile ->
-                    fieldValue = copyFile(documentFile)
+                    coroutineScope.launch {
+                        fieldValue = copyFile(documentFile)
+                    }
                 }
             }
         }
         val folderPathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
             it?.let { uri ->
                 fs.openFolderDocument(uri)?.let { documentFile ->
-                    fieldValue = copyFile(documentFile)
+                    coroutineScope.launch {
+                        fieldValue = copyFile(documentFile)
+                    }
                 }
             }
         }
