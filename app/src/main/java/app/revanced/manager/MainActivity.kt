@@ -76,14 +76,6 @@ class MainActivity : AppCompatActivity() {
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
             val pureBlackTheme by vm.prefs.pureBlackTheme.getAsState()
 
-            EventEffect(vm.legacyImportActivityFlow) {
-                val flutterPrefs = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
-                if (flutterPrefs.all.isNotEmpty())
-                {
-                    vm.applyLegacySettings(flutterPrefs)
-                }
-            }
-
             ReVancedManagerTheme(
                 darkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK,
                 dynamicColor = dynamicColor,

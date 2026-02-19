@@ -1,9 +1,8 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
-import android.content.Intent
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.util.Base64
 import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
@@ -44,8 +43,6 @@ class MainViewModel(
 ) : ViewModel() {
     private val appSelectChannel = Channel<SelectedApp>()
     val appSelectFlow = appSelectChannel.receiveAsFlow()
-    private val legacyImportActivityChannel = Channel<Intent>()
-    val legacyImportActivityFlow = legacyImportActivityChannel.receiveAsFlow()
 
     private suspend fun suggestedVersion(packageName: String) =
         patchBundleRepository.suggestedVersions.first()[packageName]
@@ -77,12 +74,8 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             if (!prefs.firstLaunch.get()) return@launch
-            legacyImportActivityChannel.send(Intent().apply {
-                setClassName(
-                    "app.revanced.manager.flutter",
-                    "app.revanced.manager.flutter.ExportSettingsActivity"
-                )
-            })
+            val flutterPrefs = app.getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
+            if (flutterPrefs.all.isNotEmpty()) applyLegacySettings(flutterPrefs)
         }
     }
 
@@ -95,22 +88,25 @@ class MainViewModel(
             for ((key, value) in allEntries) {
                 put(key.replace("flutter.", ""), value)
             }
+        }
 
-            File(app.getExternalFilesDir(null), "/revanced-manager.keystore").apply {
-                if (exists()) {
-                    val keystoreBase64 = Base64.encodeToString(readBytes(), Base64.DEFAULT)
-                    put("keystore", keystoreBase64)
-                    delete()
-                }
+        val storedPatchesFile = File(app.filesDir.parentFile.absolutePath, "/app_flutter/selected-patches.json")
+        val patches: SerializedSelection? =
+            if (storedPatchesFile.exists()) {
+                json.decodeFromString<SerializedSelection>(storedPatchesFile.readText())
+            } else {
+                null
             }
 
-            File(app.filesDir.parentFile.absolutePath, "/app_flutter/selected-patches.json").apply {
-                if (exists())
-                {
-                    val patches = String(readBytes(), Charsets.UTF_8)
-                    put("patches", JSONObject(patches))
-                }
-            }
+        val keystoreFile = File(app.getExternalFilesDir(null), "/revanced-manager.keystore")
+        val keystore: ByteArray? = if (keystoreFile.exists()) {
+            val bytes = keystoreFile.readBytes()
+
+            keystoreFile.delete()
+
+            bytes
+        } else {
+            null
         }
 
         flutterPrefs.edit(commit = true) { clear() }
@@ -123,10 +119,10 @@ class MainViewModel(
             return
         }
 
-        applyLegacySettings(settings)
+        applyLegacySettings(settings, patches, keystore)
     }
 
-    private fun applyLegacySettings(settings: LegacySettings) = viewModelScope.launch {
+    private fun applyLegacySettings(settings: LegacySettings, patches: SerializedSelection?, keystore: ByteArray?) = viewModelScope.launch {
         settings.themeMode?.let { theme ->
             val themeMap = mapOf(
                 0 to Theme.SYSTEM,
@@ -162,15 +158,14 @@ class MainViewModel(
         settings.patchesChangeEnabled?.let { disableSelectionWarning ->
             prefs.disableSelectionWarning.update(disableSelectionWarning)
         }
-        settings.keystore?.let { keystore ->
-            val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
+        keystore?.let { keystoreBytes ->
             keystoreManager.import(
                 "alias",
                 settings.keystorePassword,
                 keystoreBytes.inputStream()
             )
         }
-        settings.patches?.let { selection ->
+        patches?.let { selection ->
             patchSelectionRepository.import(0, selection)
         }
         settings.patchedApps?.let { apps ->
@@ -207,8 +202,6 @@ class MainViewModel(
         val experimentalPatchesEnabled: Boolean? = null,
         val patchesAutoUpdate: Boolean? = null,
         val patchesChangeEnabled: Boolean? = null,
-        val keystore: String? = null,
-        val patches: SerializedSelection? = null,
         val patchedApps: String? = null,
     )
 }
