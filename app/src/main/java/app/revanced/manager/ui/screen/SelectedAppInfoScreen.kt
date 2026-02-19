@@ -32,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -68,6 +69,7 @@ fun SelectedAppInfoScreen(
     vm: SelectedAppInfoViewModel
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val networkInfo = koinInject<NetworkInfo>()
     val networkConnected = remember { networkInfo.isConnected() }
     val networkMetered = remember { !networkInfo.isUnmetered() }
@@ -118,7 +120,7 @@ fun SelectedAppInfoScreen(
                 },
                 onClick = patchClick@{
                     if (selectedPatchCount == 0) {
-                        context.toast(context.getString(R.string.no_patches_selected))
+                        context.toast(resources.getString(R.string.no_patches_selected))
 
                         return@patchClick
                     }

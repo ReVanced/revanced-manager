@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
@@ -33,6 +34,7 @@ fun UpdatesSettingsScreen(
     vm: UpdatesSettingsViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -57,7 +59,7 @@ fun UpdatesSettingsScreen(
                 modifier = Modifier.clickable {
                     coroutineScope.launch {
                         if (!vm.isConnected) {
-                            context.toast(context.getString(R.string.no_network_toast))
+                            context.toast(resources.getString(R.string.no_network_toast))
                             return@launch
                         }
                         if (vm.checkForUpdates()) onUpdateClick()
@@ -70,7 +72,7 @@ fun UpdatesSettingsScreen(
             SettingsListItem(
                 modifier = Modifier.clickable {
                     if (!vm.isConnected) {
-                        context.toast(context.getString(R.string.no_network_toast))
+                        context.toast(resources.getString(R.string.no_network_toast))
                         return@clickable
                     }
                     onChangelogClick()

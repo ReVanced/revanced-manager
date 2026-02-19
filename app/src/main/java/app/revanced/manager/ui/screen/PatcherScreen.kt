@@ -40,6 +40,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
@@ -69,6 +70,7 @@ fun PatcherScreen(
     }
 
     val context = LocalContext.current
+    val resources = LocalResources.current
     val exportApkLauncher =
         rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
 
@@ -79,7 +81,7 @@ fun PatcherScreen(
 
     fun onPageBack() = when {
         patcherSucceeded == null -> showDismissConfirmationDialog = true
-        viewModel.isInstalling -> context.toast(context.getString(R.string.patcher_install_in_progress))
+        viewModel.isInstalling -> context.toast(resources.getString(R.string.patcher_install_in_progress))
         else -> onLeave()
     }
 

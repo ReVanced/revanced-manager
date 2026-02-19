@@ -22,8 +22,8 @@ import app.revanced.manager.ui.model.navigation.Settings
 import org.koin.compose.koinInject
 
 private data class Section(
-    @StringRes val name: Int,
-    @StringRes val description: Int,
+    @param:StringRes val name: Int,
+    @param:StringRes val description: Int,
     val image: ImageVector,
     val destination: Settings.Destination,
 )

@@ -14,7 +14,7 @@ fun LoadingIndicator(
     progress: () -> Float? = { null },
     color: Color = ProgressIndicatorDefaults.circularColor,
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
-    trackColor: Color = ProgressIndicatorDefaults.circularTrackColor,
+    trackColor: Color = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
     strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
 ) {
     progress()?.let {

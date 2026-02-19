@@ -24,14 +24,6 @@ public final class app/revanced/manager/downloader/DownloadUrl : android/os/Parc
 	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
-public final class app/revanced/manager/downloader/DownloadUrl$Creator : android/os/Parcelable$Creator {
-	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lapp/revanced/manager/downloader/DownloadUrl;
-	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lapp/revanced/manager/downloader/DownloadUrl;
-	public synthetic fun newArray (I)[Ljava/lang/Object;
-}
-
 public final class app/revanced/manager/downloader/Downloader {
 	public static final field $stable I
 }
@@ -86,14 +78,6 @@ public final class app/revanced/manager/downloader/Package : android/os/Parcelab
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public final fun writeToParcel (Landroid/os/Parcel;I)V
-}
-
-public final class app/revanced/manager/downloader/Package$Creator : android/os/Parcelable$Creator {
-	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lapp/revanced/manager/downloader/Package;
-	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lapp/revanced/manager/downloader/Package;
-	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
 public abstract interface class app/revanced/manager/downloader/Scope {
@@ -157,14 +141,6 @@ public abstract class app/revanced/manager/downloader/webview/IWebViewEvents$Stu
 	public fun asBinder ()Landroid/os/IBinder;
 	public static fun asInterface (Landroid/os/IBinder;)Lapp/revanced/manager/downloader/webview/IWebViewEvents;
 	public fun onTransact (ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
-}
-
-public final class app/revanced/manager/downloader/webview/WebViewActivity$Parameters$Creator : android/os/Parcelable$Creator {
-	public fun <init> ()V
-	public final fun createFromParcel (Landroid/os/Parcel;)Lapp/revanced/manager/downloader/webview/WebViewActivity$Parameters;
-	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
-	public final fun newArray (I)[Lapp/revanced/manager/downloader/webview/WebViewActivity$Parameters;
-	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
 public abstract interface class app/revanced/manager/downloader/webview/WebViewCallbackScope : app/revanced/manager/downloader/Scope {

@@ -40,7 +40,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -49,10 +49,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -81,9 +83,11 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, FlowPreview::class)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -231,7 +235,8 @@ fun PatchesSelectorScreen(
                             viewModel.selectionWarningEnabled -> showSelectionWarning = true
 
                             // Show universal warning if universal patch is selected and the toggle is off
-                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
+                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning =
+                                true
 
                             // Toggle the patch otherwise
                             else -> viewModel.togglePatch(uid, patch)
@@ -360,6 +365,21 @@ fun PatchesSelectorScreen(
                     ) {
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
+
+                    val isScrollingUp =
+                        patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp()
+                    val expanded by produceState(true, isScrollingUp) {
+                        val state = isScrollingUp ?: return@produceState
+                        value = state.value
+
+                        // Use snapshotFlow and sample to prevent the value from changing too often.
+                        snapshotFlow { state.value }
+                            .sample(333L)
+                            .collect {
+                                value = it
+                            }
+                    }
+
                     HapticExtendedFloatingActionButton(
                         text = {
                             Text(
@@ -375,8 +395,7 @@ fun PatchesSelectorScreen(
                                 contentDescription = stringResource(R.string.save)
                             )
                         },
-                        expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp
-                            ?: true,
+                        expanded = expanded,
                         onClick = {
                             onSave(viewModel.getCustomSelection(), viewModel.getOptions())
                         }
@@ -392,7 +411,7 @@ fun PatchesSelectorScreen(
                 .padding(top = 16.dp)
         ) {
             if (bundles.size > 1) {
-                ScrollableTabRow(
+                SecondaryScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
                 ) {
