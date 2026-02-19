@@ -256,7 +256,7 @@ private object StringOptionEditor : OptionEditor<String> {
                 val tempDir = File(fs.tempDir, "options")
                 val tempFile = File(tempDir, filename)
                 if (tempFile.exists()) {
-                    tempFile.delete()
+                    tempFile.deleteRecursively()
                 }
                 if (documentFile.isDirectory) {
                     tempFile.mkdirs()
