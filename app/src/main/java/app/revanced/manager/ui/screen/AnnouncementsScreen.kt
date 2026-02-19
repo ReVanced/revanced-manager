@@ -28,7 +28,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -85,6 +84,7 @@ fun AnnouncementsScreen(
             )
         }
     ) { paddingValues ->
+        val readAnnouncements by vm.preferences.readAnnouncements.getAsState()
         LazyColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
@@ -117,14 +117,14 @@ fun AnnouncementsScreen(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             onClick = {
-                                vm.markUnreadAnnouncementRead(announcement.id)
+                                vm.markAnnouncementRead(announcement.id)
                                 onAnnouncementClick(announcement)
                             },
                             title = announcement.title,
                             date = announcement.createdAt.relativeTime(LocalContext.current),
                             author = announcement.author,
                             content = announcement.content,
-                            unread = announcement.id !in vm.readAnnouncements
+                            unread = announcement.id.toString() !in readAnnouncements
                         )
                     }
                 }

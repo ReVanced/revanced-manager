@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 class AnnouncementsViewModel(
     private val announcementRepository: AnnouncementRepository,
     private val network: NetworkInfo,
-    private val preferences: PreferencesManager
+    val preferences: PreferencesManager
 ) : ViewModel() {
 
     private var allAnnouncements by mutableStateOf<List<ReVancedAnnouncement>?>(null)
@@ -29,22 +29,18 @@ class AnnouncementsViewModel(
     var tags by mutableStateOf<List<String>?>(null)
         private set
 
-    val readAnnouncements = mutableStateListOf<Long>()
-
     val selectedTags = mutableStateListOf<String>()
 
     init {
         loadData()
         observeSelectedTags()
-        observeReadAnnouncements()
     }
 
-    fun markUnreadAnnouncementRead(id: Long) {
-        if (id in readAnnouncements) return
-        readAnnouncements.add(id)
+    fun markAnnouncementRead(id: Long) {
         viewModelScope.launch {
-            val current = preferences.readAnnouncements.get()
-            preferences.readAnnouncements.update(current + id.toString())
+            preferences.edit {
+                preferences.readAnnouncements += id.toString()
+            }
         }
     }
 
@@ -93,15 +89,6 @@ class AnnouncementsViewModel(
             snapshotFlow { selectedTags.toList() }.collect { _ ->
                 saveSelectedTags()
                 applyTagFilter()
-            }
-        }
-    }
-
-    private fun observeReadAnnouncements() {
-        viewModelScope.launch {
-            preferences.readAnnouncements.flow.collect { ids ->
-                readAnnouncements.clear()
-                readAnnouncements.addAll(ids.map { it.toLong() })
             }
         }
     }
