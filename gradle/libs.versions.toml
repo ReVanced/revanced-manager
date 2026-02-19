@@ -38,6 +38,7 @@ hidden-api-stub = "4.4.0"
 binary-compatibility-validator = "0.18.1"
 semver-parser = "3.0.0"
 ackpine = "0.19.1"
+documentfile = "1.1.0"
 
 [libraries]
 # AndroidX Core
@@ -49,6 +50,7 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref="documentfile" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }

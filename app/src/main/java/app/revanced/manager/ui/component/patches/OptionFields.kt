@@ -1,10 +1,13 @@
 package app.revanced.manager.ui.component.patches
 
 import android.app.Application
+import android.content.ContentResolver
 import android.net.Uri
-import android.os.Environment
 import android.os.Parcelable
+import android.provider.OpenableColumns
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
@@ -16,6 +19,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -28,10 +32,12 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,11 +60,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
+import androidx.core.content.ContentResolverCompat
+import androidx.documentfile.provider.DocumentFile
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
@@ -83,7 +91,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import java.io.File
 import java.io.Serializable
+import java.util.UUID
 import kotlin.random.Random
 import kotlin.reflect.typeOf
 
@@ -227,18 +237,65 @@ fun <T : Any> OptionItem(
 private object StringOptionEditor : OptionEditor<String> {
     @Composable
     override fun Dialog(scope: OptionEditorScope<String>) {
-        var showFileDialog by rememberSaveable { mutableStateOf(false) }
         var fieldValue by rememberSaveable(scope.value) {
             mutableStateOf(scope.value.orEmpty())
         }
         val validatorFailed by remember {
             derivedStateOf { !scope.option.validator(fieldValue) }
         }
+        var copyingDataToCache by remember {
+            mutableStateOf(false)
+        }
 
-        val fs: Filesystem = koinInject()
-        val pathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
-            it?.let {
-                fieldValue = it.path.toString()
+        val context = LocalContext.current
+
+        fun copyFile(documentFile: DocumentFile): String {
+            val filename = documentFile.name ?: UUID.randomUUID().toString()
+            copyingDataToCache = true
+            try {
+                val tempFile = File(context.cacheDir, filename)
+                if (documentFile.isDirectory) {
+                    tempFile.mkdirs()
+                    documentFile.listFiles().forEach { documentFile ->
+                        val filename = documentFile.name ?: return@forEach
+                        val tempFile = File(tempFile, filename).apply {
+                            createNewFile()
+                        }
+                        context.contentResolver.openInputStream(documentFile.uri)?.use { input ->
+                            tempFile.outputStream().use { output ->
+                                input.copyTo(output)
+                            }
+                        }
+                    }
+                } else {
+                    tempFile.createNewFile()
+                    context.contentResolver.openInputStream(documentFile.uri)?.use { input ->
+                        tempFile.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                }
+                return tempFile.path
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return ""
+            } finally {
+                copyingDataToCache = false
+            }
+        }
+
+        val folderPathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
+            it?.let { uri ->
+                DocumentFile.fromTreeUri(context, uri)?.let { documentFile ->
+                    fieldValue = copyFile(documentFile)
+                }
+            }
+        }
+        val filePathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) {
+            it?.let { uri ->
+                DocumentFile.fromSingleUri(context, uri)?.let { documentFile ->
+                    fieldValue = copyFile(documentFile)
+                }
             }
         }
 
@@ -252,9 +309,10 @@ private object StringOptionEditor : OptionEditor<String> {
                     placeholder = {
                         Text(stringResource(R.string.dialog_input_placeholder))
                     },
-                    isError = validatorFailed,
+                    enabled = !copyingDataToCache,
+                    isError = validatorFailed && !copyingDataToCache,
                     supportingText = {
-                        if (validatorFailed) {
+                        if (validatorFailed && !copyingDataToCache) {
                             Text(
                                 stringResource(R.string.input_dialog_value_invalid),
                                 modifier = Modifier.fillMaxWidth(),
@@ -263,32 +321,48 @@ private object StringOptionEditor : OptionEditor<String> {
                         }
                     },
                     trailingIcon = {
-                        var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
-                        IconButton(
-                            onClick = { showDropdownMenu = true }
-                        ) {
-                            Icon(
-                                Icons.Outlined.MoreVert,
-                                stringResource(R.string.string_option_menu_description)
-                            )
-                        }
+                        if (copyingDataToCache) {
+                            CircularProgressIndicator(modifier = Modifier.size(16.dp))
+                        } else {
+                            var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
+                            IconButton(
+                                onClick = { showDropdownMenu = true }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.MoreVert,
+                                    stringResource(R.string.string_option_menu_description)
+                                )
+                            }
 
-                        DropdownMenu(
-                            expanded = showDropdownMenu,
-                            onDismissRequest = { showDropdownMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(Icons.Outlined.Folder, null)
-                                },
-                                text = {
-                                    Text(stringResource(R.string.path_selector))
-                                },
-                                onClick = {
-                                    showDropdownMenu = false
-                                    pathLauncher.launch(Uri.fromFile(fs.externalFilesDir().toFile()))
-                                }
-                            )
+                            DropdownMenu(
+                                expanded = showDropdownMenu,
+                                onDismissRequest = { showDropdownMenu = false }
+                            ) {
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(Icons.Outlined.Folder, null)
+                                    },
+                                    text = {
+                                        Text(stringResource(R.string.path_selector))
+                                    },
+                                    onClick = {
+                                        showDropdownMenu = false
+                                        folderPathLauncher.launch(null)
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(Icons.Outlined.InsertDriveFile, null)
+                                    },
+                                    text = {
+                                        Text(stringResource(R.string.path_selector))
+                                    },
+                                    onClick = {
+                                        showDropdownMenu = false
+                                        filePathLauncher.launch(arrayOf("*/*"))
+                                    }
+                                )
+                            }
                         }
                     }
                 )
