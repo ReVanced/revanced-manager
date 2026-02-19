@@ -104,23 +104,23 @@ fun AnnouncementScreen(
                 val webView = it.children.first() as WebView
                 @Language("HTML")
                 val style = """
-                        <html>
-                          <head>
-                            <meta name="viewport" content="width=device-width, initial-scale=1" />
-                            <style>
-                              body {
-                                color: ${textColor.toCss()};
-                              }
-                              a {
-                                color: ${linkColor.toCss()};
-                              }
-                            </style>
-                          </head>
-                          <body>
-                            ${announcement.content}
-                          </body>
-                        </html>
-                    """.trimIndent()
+                    <html>
+                      <head>
+                        <meta name="viewport" content="width=device-width, initial-scale=1" />
+                        <style>
+                          body {
+                            color: ${textColor.toCss()};
+                          }
+                          a {
+                            color: ${linkColor.toCss()};
+                          }
+                        </style>
+                      </head>
+                      <body>
+                        ${announcement.content}
+                      </body>
+                    </html>
+                """.trimIndent()
                 webView.loadData(style, "text/html", "UTF-8")
             }
         )
