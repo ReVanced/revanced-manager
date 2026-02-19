@@ -95,7 +95,7 @@ class DashboardViewModel(
 
         val readAnnouncements = prefs.readAnnouncements.get()
         if (readAnnouncements.isEmpty()) {
-            val announcementIds = announcements.mapTo(mutableSetOf()) { it.id.toString() }
+            val announcementIds = announcements.mapTo(mutableSetOf()) { it.id }
             prefs.readAnnouncements.update(announcementIds)
             return
         }
@@ -104,7 +104,7 @@ class DashboardViewModel(
             val hasRelevantTag = "revanced" in announcement.tags ||
                     "manager" in announcement.tags
 
-            val isUnread = announcement.id.toString() !in readAnnouncements
+            val isUnread = announcement.id !in readAnnouncements
 
             hasRelevantTag && isUnread
         }
@@ -114,8 +114,9 @@ class DashboardViewModel(
     fun markUnreadAnnouncementRead() {
         viewModelScope.launch {
             unreadAnnouncement?.let {
-                val readAnnouncements = prefs.readAnnouncements.get()
-                prefs.readAnnouncements.update(readAnnouncements + it.id.toString())
+                prefs.edit {
+                    prefs.readAnnouncements += it.id
+                }
             }
             unreadAnnouncement = null
         }

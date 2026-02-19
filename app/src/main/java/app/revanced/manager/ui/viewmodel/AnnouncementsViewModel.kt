@@ -44,7 +44,7 @@ class AnnouncementsViewModel(
         readAnnouncements.add(id)
         viewModelScope.launch {
             val current = preferences.readAnnouncements.get()
-            preferences.readAnnouncements.update(current + id.toString())
+            preferences.readAnnouncements.update(current + id)
         }
     }
 
@@ -101,7 +101,7 @@ class AnnouncementsViewModel(
         viewModelScope.launch {
             preferences.readAnnouncements.flow.collect { ids ->
                 readAnnouncements.clear()
-                readAnnouncements.addAll(ids.map { it.toLong() })
+                readAnnouncements.addAll(ids)
             }
         }
     }
