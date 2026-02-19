@@ -1,4 +1,4 @@
-package app.revanced.manager.plugin.downloader
+package app.revanced.manager.downloader
 
 import android.content.ComponentName
 import android.content.Context
@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.app.Activity
 import android.os.Parcelable
+import androidx.annotation.StringRes
 import kotlinx.coroutines.withTimeout
 import java.io.InputStream
 import java.io.OutputStream
@@ -15,10 +16,10 @@ import kotlin.coroutines.suspendCoroutine
 
 @RequiresOptIn(
     level = RequiresOptIn.Level.ERROR,
-    message = "This API is only intended for plugin hosts, don't use it in a plugin.",
+    message = "This API is only intended for downloader hosts, don't use it in a downloader.",
 )
 @Retention(AnnotationRetention.BINARY)
-annotation class PluginHostApi
+annotation class DownloaderHostApi
 
 /**
  * The base interface for all DSL scopes.
@@ -30,9 +31,9 @@ interface Scope {
     val hostPackageName: String
 
     /**
-     * The package name of the plugin.
+     * The package name of the downloader.
      */
-    val pluginPackageName: String
+    val downloaderPackageName: String
 }
 
 /**
@@ -43,7 +44,7 @@ interface GetScope : Scope {
      * Ask the user to perform some required interaction in the activity specified by the provided [Intent].
      * This function returns normally with the resulting [Intent] when the activity finishes with code [Activity.RESULT_OK].
      *
-     * @throws UserInteractionException.RequestDenied User decided to skip this plugin.
+     * @throws UserInteractionException.RequestDenied User decided to skip this downloader.
      * @throws UserInteractionException.Activity.Cancelled The activity was cancelled.
      * @throws UserInteractionException.Activity.NotCompleted The activity finished with an unknown result code.
      */
@@ -67,14 +68,14 @@ class DownloaderScope<T : Parcelable> internal constructor(
     private val scopeImpl: Scope,
     internal val context: Context
 ) : Scope by scopeImpl {
-    // Returning an InputStream is the primary way for plugins to implement the download function, but we also want to offer an OutputStream API since using InputStream might not be convenient in all cases.
-    // It is much easier to implement the main InputStream API on top of OutputStreams compared to doing it the other way around, which is why we are using OutputStream here. This detail is not visible to plugins.
+    // Returning an InputStream is the primary way for a downloader to implement the download function, but we also want to offer an OutputStream API since using InputStream might not be convenient in all cases.
+    // It is much easier to implement the main InputStream API on top of OutputStreams compared to doing it the other way around, which is why we are using OutputStream here.
     internal var download: (suspend OutputDownloadScope.(T, OutputStream) -> Unit)? = null
     internal var get: (suspend GetScope.(String, String?) -> GetResult<T>?)? = null
     private val inputDownloadScopeImpl = object : InputDownloadScope, Scope by scopeImpl {}
 
     /**
-     * Define the download block of the plugin.
+     * Define the download block of the downloader.
      */
     fun download(block: suspend InputDownloadScope.(data: T) -> DownloadResult) {
         download = { app, outputStream ->
@@ -88,7 +89,7 @@ class DownloaderScope<T : Parcelable> internal constructor(
     }
 
     /**
-     * Define the get block of the plugin.
+     * Define the get block of the downloader.
      * The block should return null if the app cannot be found. The version in the result must match the version argument unless it is null.
      */
     fun get(block: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?) {
@@ -122,44 +123,53 @@ class DownloaderScope<T : Parcelable> internal constructor(
     }
 }
 
-class DownloaderBuilder<T : Parcelable> internal constructor(private val block: DownloaderScope<T>.() -> Unit) {
-    @PluginHostApi
+class DownloaderBuilder<T : Parcelable> internal constructor(
+    @param:StringRes private val name: Int,
+    private val block: DownloaderScope<T>.() -> Unit
+) {
+    @DownloaderHostApi
     fun build(scopeImpl: Scope, context: Context) =
         with(DownloaderScope<T>(scopeImpl, context)) {
             block()
 
             Downloader(
                 download = download!!,
-                get = get!!
+                get = get!!,
+                name = name,
             )
         }
 }
 
 class Downloader<T : Parcelable> internal constructor(
-    @property:PluginHostApi val get: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?,
-    @property:PluginHostApi val download: suspend OutputDownloadScope.(data: T, outputStream: OutputStream) -> Unit
+    @property:DownloaderHostApi val get: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?,
+    @property:DownloaderHostApi val download: suspend OutputDownloadScope.(data: T, outputStream: OutputStream) -> Unit,
+    @property:DownloaderHostApi @param:StringRes val name: Int,
 )
 
 /**
- * Define a downloader plugin.
+ * Define a downloader.
  */
-fun <T : Parcelable> Downloader(block: DownloaderScope<T>.() -> Unit) = DownloaderBuilder(block)
+fun <T : Parcelable> Downloader(@StringRes name: Int, block: DownloaderScope<T>.() -> Unit) =
+    DownloaderBuilder(name, block)
 
 /**
  * @see GetScope.requestStartActivity
  */
 sealed class UserInteractionException(message: String) : Exception(message) {
-    class RequestDenied @PluginHostApi constructor() :
+    class RequestDenied @DownloaderHostApi constructor() :
         UserInteractionException("Request denied by user")
 
     sealed class Activity(message: String) : UserInteractionException(message) {
-        class Cancelled @PluginHostApi constructor() : Activity("Interaction cancelled")
+        class Cancelled @DownloaderHostApi constructor() : Activity("Interaction cancelled")
 
         /**
          * @param resultCode The result code of the activity.
          * @param intent The [Intent] of the activity.
          */
-        class NotCompleted @PluginHostApi constructor(val resultCode: Int, val intent: Intent?) :
+        class NotCompleted @DownloaderHostApi constructor(
+            val resultCode: Int,
+            val intent: Intent?
+        ) :
             Activity("Unexpected activity result code: $resultCode")
     }
 }
