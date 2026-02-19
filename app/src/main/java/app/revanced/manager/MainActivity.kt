@@ -142,10 +142,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                     navController.navigate(Announcements)
                 },
                 onAnnouncementClick = { announcement ->
-                    navController.navigateComplex(
-                        Announcement,
-                        Announcement.ViewModelParams(announcement)
-                    )
+                    navController.navigate(Announcement(announcement))
                 }
             )
         }
@@ -195,16 +192,13 @@ private fun ReVancedManager(vm: MainViewModel) {
             AnnouncementsScreen(
                 onBackClick = navController::popBackStack,
                 onAnnouncementClick = { announcement ->
-                    navController.navigateComplex(
-                        Announcement,
-                        Announcement.ViewModelParams(announcement)
-                    )
+                    navController.navigate(Announcement(announcement))
                 }
             )
         }
 
         composable<Announcement> {
-            val data = it.getComplexArg<Announcement.ViewModelParams>()
+            val data = it.toRoute<Announcement>()
 
             AnnouncementScreen(
                 onBackClick = navController::popBackStack,

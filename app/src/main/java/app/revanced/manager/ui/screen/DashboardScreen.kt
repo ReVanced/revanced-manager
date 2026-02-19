@@ -233,7 +233,10 @@ fun DashboardScreen(
                                     }
                                 }
                             ) {
-                                Icon(Icons.Outlined.Notifications, stringResource(R.string.announcements))
+                                Icon(
+                                    Icons.Outlined.Notifications,
+                                    stringResource(R.string.announcements)
+                                )
                             }
                         }
                         IconButton(onClick = onSettingsClick) {
@@ -342,7 +345,7 @@ fun DashboardScreen(
                 vm.unreadAnnouncement?.let { announcement ->
                     {
                         NotificationCard(
-                            text = announcement.title,
+                            text = stringResource(R.string.new_announcement, announcement.title),
                             icon = Icons.Filled.Notifications,
                             actions = {
                                 TextButton(onClick = vm::markUnreadAnnouncementRead) {
