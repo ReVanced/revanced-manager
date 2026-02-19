@@ -1,3 +1,10 @@
+# app [1.26.0-dev.22](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.21...v1.26.0-dev.22) (2026-02-19)
+
+
+### Bug Fixes
+
+* Create modules path in root installer ([4fc2ba3](https://github.com/ReVanced/revanced-manager/commit/4fc2ba339b6d275fb9da8b65ff86b74a6594436d))
+
 # app [1.26.0-dev.21](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.20...v1.26.0-dev.21) (2026-02-19)
 
 
