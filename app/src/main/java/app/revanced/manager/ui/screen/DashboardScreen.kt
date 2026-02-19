@@ -60,6 +60,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
@@ -94,7 +95,7 @@ fun DashboardScreen(
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
     onAnnouncementsClick: () -> Unit,
-    onAnnouncementClick: (Long) -> Unit,
+    onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
     onDownloaderPluginClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
@@ -350,7 +351,7 @@ fun DashboardScreen(
                                 TextButton(
                                     onClick = {
                                         vm.markUnreadAnnouncementRead()
-                                        onAnnouncementClick(announcement.id)
+                                        onAnnouncementClick(announcement)
                                     }
                                 ) {
                                     Text(stringResource(R.string.view_announcement))

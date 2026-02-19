@@ -33,8 +33,6 @@ class ReVancedAPI(
 
     suspend fun getAnnouncements() = request<List<ReVancedAnnouncement>>("announcements")
 
-    suspend fun getAnnouncement(id: Long) = request<ReVancedAnnouncement>("announcements/$id")
-
     suspend fun getAnnouncementTags() = request<List<ReVancedAnnouncementTag>>("announcements/tags")
 
     suspend fun getAppUpdate() =

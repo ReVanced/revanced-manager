@@ -1,9 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import android.annotation.SuppressLint
-import android.view.MotionEvent
-import android.webkit.WebView
-import android.widget.FrameLayout
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,21 +41,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import app.revanced.manager.R
+import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
-import org.intellij.lang.annotations.Language
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnnouncementsScreen(
     onBackClick: () -> Unit,
-    onAnnouncementClick: (Long) -> Unit,
+    onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
     vm: AnnouncementsViewModel = koinViewModel(),
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -125,7 +120,7 @@ fun AnnouncementsScreen(
                                 .fillMaxWidth(),
                             onClick = {
                                 vm.markUnreadAnnouncementRead(announcement.id)
-                                onAnnouncementClick(announcement.id)
+                                onAnnouncementClick(announcement)
                             },
                             title = announcement.title,
                             date = announcement.createdAt.relativeTime(LocalContext.current),
@@ -180,16 +175,7 @@ private fun FilterBottomSheet(
                                 selectedTags.add(tag)
                             }
                         },
-                        label = { Text(tag) },
-                        leadingIcon = {
-                            AnimatedVisibility(selected) {
-                                Icon(
-                                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-                                    imageVector = Icons.Default.Check,
-                                    contentDescription = null
-                                )
-                            }
-                        }
+                        label = { Text(tag) }
                     )
                 }
             }

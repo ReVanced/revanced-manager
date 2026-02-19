@@ -19,11 +19,11 @@ import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import app.revanced.manager.network.utils.getOrNull
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
@@ -39,6 +39,7 @@ class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
     private val downloaderPluginRepository: DownloaderPluginRepository,
+    private val announcementRepository: AnnouncementRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager,
@@ -93,7 +94,7 @@ class DashboardViewModel(
 
     private suspend fun checkForAnnouncements() {
         val announcements = withContext(Dispatchers.IO) {
-            reVancedAPI.getAnnouncements().getOrNull()
+            announcementRepository.getAnnouncements()
         } ?: return
 
         val readAnnouncements = prefs.readAnnouncements.get()
@@ -103,12 +104,15 @@ class DashboardViewModel(
             return
         }
 
-        unreadAnnouncement = announcements.firstOrNull {
-            if (!it.tags.contains("✨ ReVanced") && !it.tags.contains("manager"))
-                return@firstOrNull false
+        unreadAnnouncement = announcements.firstOrNull { announcement ->
+            val hasRelevantTag = "revanced" in announcement.tags ||
+                    "manager" in announcement.tags
 
-            it.id.toString() !in readAnnouncements
+            val isUnread = announcement.id.toString() !in readAnnouncements
+
+            hasRelevantTag && isUnread
         }
+
     }
 
     fun markUnreadAnnouncementRead() {

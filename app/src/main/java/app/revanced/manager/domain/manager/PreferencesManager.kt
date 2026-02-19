@@ -21,6 +21,7 @@ class PreferencesManager(
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)
 
     val readAnnouncements = stringSetPreference("read_announcements", emptySet())
+    val selectedAnnouncementTags = stringSetPreference("selected_announcement_tags", setOf("revanced", "manager"))
     val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
     val showManagerUpdateDialogOnLaunch = booleanPreference("show_manager_update_dialog_on_launch", true)

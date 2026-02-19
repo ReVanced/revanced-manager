@@ -9,21 +9,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import app.revanced.manager.network.utils.getOrNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.collections.plus
 
 class AnnouncementsViewModel(
-    private val reVancedAPI: ReVancedAPI,
+    private val announcementRepository: AnnouncementRepository,
     private val network: NetworkInfo,
     private val preferences: PreferencesManager
-): ViewModel() {
+) : ViewModel() {
 
-    private var _announcements: List<ReVancedAnnouncement>? = null
+    private var allAnnouncements by mutableStateOf<List<ReVancedAnnouncement>?>(null)
 
     var announcements by mutableStateOf<List<ReVancedAnnouncement>?>(null)
         private set
@@ -35,74 +33,76 @@ class AnnouncementsViewModel(
 
     val selectedTags = mutableStateListOf<String>()
 
-    val isConnected: Boolean
-        get() = network.isConnected()
-
     init {
-        fetchAnnouncements()
-        fetchTags()
-        filterTags()
-        observeUnreads()
+        loadData()
+        observeSelectedTags()
+        observeReadAnnouncements()
     }
 
     fun markUnreadAnnouncementRead(id: Long) {
+        if (id in readAnnouncements) return
         readAnnouncements.add(id)
         viewModelScope.launch {
-            val readAnnouncements = preferences.readAnnouncements.get()
-            preferences.readAnnouncements.update(readAnnouncements + id.toString())
+            val current = preferences.readAnnouncements.get()
+            preferences.readAnnouncements.update(current + id.toString())
         }
     }
 
-    private fun fetchAnnouncements() {
+    private fun saveSelectedTags() {
         viewModelScope.launch {
-            if (!isConnected) {
-                return@launch
+            preferences.selectedAnnouncementTags.update(selectedTags.toSet())
+        }
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            if (!network.isConnected()) return@launch
+
+            val savedTags = preferences.selectedAnnouncementTags.get()
+            selectedTags.apply {
+                clear()
+                addAll(savedTags)
             }
 
             withContext(Dispatchers.IO) {
-                reVancedAPI.getAnnouncements().getOrNull()
-            }?.let {
-                _announcements = it
-                selectedTags.addAll(listOf("✨ ReVanced", "manager"))
-            }
-        }
-    }
-
-    private fun fetchTags() {
-        viewModelScope.launch {
-            if (!isConnected) {
-                return@launch
-            }
-
-            withContext(Dispatchers.IO) {
-                reVancedAPI.getAnnouncementTags().getOrNull()
-            }?.let {
-                tags = it.map { it.name }
-            }
-        }
-    }
-
-    private fun filterTags() {
-        viewModelScope.launch {
-            snapshotFlow { selectedTags.toList() }.collect {
-                announcements = _announcements?.filter { announcement ->
-                    selectedTags.any { selectedTag ->
-                        announcement.tags.contains(selectedTag)
-                    }
+                announcementRepository.getAnnouncements()?.let {
+                    allAnnouncements = it
+                }
+                announcementRepository.getTags()?.let {
+                    tags = it.map { tag -> tag.name }
                 }
             }
+
+            applyTagFilter()
         }
     }
 
-    private fun observeUnreads() {
+    private fun applyTagFilter() {
+        val selected = selectedTags.toList()
+        announcements = if (selected.isEmpty()) {
+            allAnnouncements
+        } else {
+            allAnnouncements?.filter { announcement ->
+                announcement.tags.any { it in selected }
+            }
+        }
+    }
+
+    private fun observeSelectedTags() {
         viewModelScope.launch {
-            preferences.readAnnouncements.flow.collect { announcements ->
+            snapshotFlow { selectedTags.toList() }.collect { _ ->
+                saveSelectedTags()
+                applyTagFilter()
+            }
+        }
+    }
+
+    private fun observeReadAnnouncements() {
+        viewModelScope.launch {
+            preferences.readAnnouncements.flow.collect { ids ->
                 readAnnouncements.clear()
-                announcements.forEach {
-                    readAnnouncements.add(it.toLong())
-                }
+                readAnnouncements.addAll(ids.map { it.toLong() })
             }
         }
     }
-
 }
