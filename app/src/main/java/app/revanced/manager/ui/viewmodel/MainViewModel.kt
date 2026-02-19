@@ -31,6 +31,8 @@ import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import java.io.File
 
+private const val LEGACY_LIST_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu!"
+
 class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
@@ -169,8 +171,7 @@ class MainViewModel(
             patchSelectionRepository.import(0, selection)
         }
         settings.patchedApps?.let { apps ->
-            val LIST_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu!"
-            json.decodeFromString<List<String>>(apps.removePrefix(LIST_PREFIX)).forEach { appJson ->
+            json.decodeFromString<List<String>>(apps.removePrefix(LEGACY_LIST_PREFIX)).forEach { appJson ->
                 val patchedApp = json.decodeFromString<LegacyPatchedApp>(appJson)
                 installedAppRepository.addOrUpdate(
                     patchedApp.packageName,
