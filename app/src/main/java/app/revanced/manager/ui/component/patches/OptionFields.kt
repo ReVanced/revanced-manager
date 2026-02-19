@@ -343,7 +343,7 @@ private object StringOptionEditor : OptionEditor<String> {
                                         Icon(Icons.Outlined.Folder, null)
                                     },
                                     text = {
-                                        Text(stringResource(R.string.path_selector))
+                                        Text(stringResource(R.string.path_selector_dir))
                                     },
                                     onClick = {
                                         showDropdownMenu = false
@@ -352,10 +352,12 @@ private object StringOptionEditor : OptionEditor<String> {
                                 )
                                 DropdownMenuItem(
                                     leadingIcon = {
+                                        // InsertDriveFile is the only icon that actually represents a file.
+                                        // I don't think we need automirroring here as suggested by a warning.
                                         Icon(Icons.Outlined.InsertDriveFile, null)
                                     },
                                     text = {
-                                        Text(stringResource(R.string.path_selector))
+                                        Text(stringResource(R.string.path_selector_file))
                                     },
                                     onClick = {
                                         showDropdownMenu = false
