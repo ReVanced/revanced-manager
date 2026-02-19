@@ -91,13 +91,13 @@ fun DashboardScreen(
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
-    onDownloaderPluginClick: () -> Unit,
+    onDownloaderClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
-    val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
+    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
         false
     )
     val androidContext = LocalContext.current
@@ -309,14 +309,14 @@ fun DashboardScreen(
                         )
                     }
                 } else null,
-                if (showNewDownloaderPluginsNotification) {
+                if (showNewDownloaderNotification) {
                     {
                         NotificationCard(
-                            text = stringResource(R.string.new_downloader_plugins_notification),
+                            text = stringResource(R.string.new_downloader_notification),
                             icon = Icons.Outlined.Download,
-                            modifier = Modifier.clickable(onClick = onDownloaderPluginClick),
+                            modifier = Modifier.clickable(onClick = onDownloaderClick),
                             actions = {
-                                TextButton(onClick = vm::ignoreNewDownloaderPlugins) {
+                                TextButton(onClick = vm::ignoreNewDownloaders) {
                                     Text(stringResource(R.string.dismiss))
                                 }
                             }

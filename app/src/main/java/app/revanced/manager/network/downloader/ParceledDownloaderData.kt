@@ -10,20 +10,22 @@ import kotlinx.parcelize.Parcelize
  * A container for [Parcelable] data returned from downloader. Instances of this class can be safely stored in a bundle without needing to set the [ClassLoader].
  */
 class ParceledDownloaderData private constructor(
-    val pluginPackageName: String,
+    val downloaderPackageName: String,
+    val downloaderClassName: String,
     private val bundle: Bundle
 ) : Parcelable {
-    constructor(plugin: LoadedDownloaderPlugin, data: Parcelable) : this(
-        plugin.packageName,
+    constructor(downloader: LoadedDownloader, data: Parcelable) : this(
+        downloader.packageName,
+        downloader.className,
         createBundle(data)
     )
 
-    fun unwrapWith(plugin: LoadedDownloaderPlugin): Parcelable {
-        bundle.classLoader = plugin.classLoader
+    fun unwrapWith(classLoader: ClassLoader): Parcelable {
+        bundle.classLoader = classLoader
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val className = bundle.getString(CLASS_NAME_KEY)!!
-            val clazz = plugin.classLoader.loadClass(className)
+            val clazz = classLoader.loadClass(className)
 
             bundle.getParcelable(DATA_KEY, clazz)!! as Parcelable
         } else @Suppress("Deprecation") bundle.getParcelable(DATA_KEY)!!

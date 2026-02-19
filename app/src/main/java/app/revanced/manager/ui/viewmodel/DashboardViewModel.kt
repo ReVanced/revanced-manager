@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.getSystemService
@@ -15,15 +14,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
@@ -34,7 +30,7 @@ import kotlinx.coroutines.launch
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
-    private val downloaderPluginRepository: DownloaderPluginRepository,
+    private val downloaderRepository: DownloaderRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager,
@@ -45,8 +41,8 @@ class DashboardViewModel(
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
-    val newDownloaderPluginsAvailable =
-        downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
+    val newDownloadersAvailable =
+        downloaderRepository.newDownloaderPackageNames.map { it.isNotEmpty() }
 
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
@@ -71,8 +67,8 @@ class DashboardViewModel(
         }
     }
 
-    fun ignoreNewDownloaderPlugins() = viewModelScope.launch {
-        downloaderPluginRepository.acknowledgeAllNewPlugins()
+    fun ignoreNewDownloaders() = viewModelScope.launch {
+        downloaderRepository.acknowledgeAll()
     }
 
     private suspend fun checkForManagerUpdates() {
