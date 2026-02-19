@@ -184,9 +184,10 @@ Second \"item\" text"</string>
     <string name="export_patch_selection_description">Export patch selection to a JSON file</string>
     <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
     <string name="export_patch_selection_success">Exported patch selection</string>
-    <string name="reset_patch_selection">Reset patch selection</string>
+    <string name="reset_configuration">Reset configuration</string>
+    <string name="reset_patch_selection">Patch selections</string>
     <string name="reset_patch_selection_description">Reset the stored patch selection</string>
-    <string name="reset_patch_options">Reset patch options</string>
+    <string name="reset_patch_options">Patch options</string>
     <string name="reset_patch_options_description">Reset the stored patch options</string>
     <string name="reset_patch_selection_success">Patch selection has been reset</string>
     <string name="patch_selection_reset_all">Reset patch selection globally</string>
