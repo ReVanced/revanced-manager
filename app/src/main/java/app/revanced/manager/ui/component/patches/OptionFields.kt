@@ -1,8 +1,11 @@
 package app.revanced.manager.ui.component.patches
 
 import android.app.Application
+import android.net.Uri
+import android.os.Environment
 import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
@@ -55,6 +58,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
@@ -232,19 +236,9 @@ private object StringOptionEditor : OptionEditor<String> {
         }
 
         val fs: Filesystem = koinInject()
-        val (contract, permissionName) = fs.permissionContract()
-        val permissionLauncher = rememberLauncherForActivityResult(contract = contract) {
-            showFileDialog = it
-        }
-
-        if (showFileDialog) {
-            PathSelectorDialog(
-                root = fs.externalFilesDir()
-            ) {
-                showFileDialog = false
-                it?.let { path ->
-                    fieldValue = path.toString()
-                }
+        val pathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
+            it?.let {
+                fieldValue = it.path.toString()
             }
         }
 
@@ -292,11 +286,7 @@ private object StringOptionEditor : OptionEditor<String> {
                                 },
                                 onClick = {
                                     showDropdownMenu = false
-                                    if (fs.hasStoragePermission()) {
-                                        showFileDialog = true
-                                    } else {
-                                        permissionLauncher.launch(permissionName)
-                                    }
+                                    pathLauncher.launch(Uri.fromFile(fs.externalFilesDir().toFile()))
                                 }
                             )
                         }
