@@ -1,21 +1,23 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.InstallMobile
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -34,15 +36,12 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.BottomContentBar
+import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
 import app.revanced.manager.ui.component.settings.Changelog
 import app.revanced.manager.ui.viewmodel.UpdateViewModel
 import app.revanced.manager.ui.viewmodel.UpdateViewModel.State
 import app.revanced.manager.util.relativeTime
-import com.gigamole.composefadingedges.content.FadingEdgesContentType
-import com.gigamole.composefadingedges.content.scrollconfig.FadingEdgesScrollConfig
-import com.gigamole.composefadingedges.fill.FadingEdgesFillType
-import com.gigamole.composefadingedges.verticalFadingEdges
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +52,21 @@ fun UpdateScreen(
     vm: UpdateViewModel = koinViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    val buttonConfig = when (vm.state) {
+        State.CAN_DOWNLOAD -> Triple(
+            { vm.downloadUpdate() },
+            R.string.download,
+            Icons.Outlined.InstallMobile
+        )
+        State.DOWNLOADING -> Triple(onBackClick, R.string.cancel, Icons.Outlined.Cancel)
+        State.CAN_INSTALL -> Triple(
+            { vm.installUpdate() },
+            R.string.install_app,
+            Icons.Outlined.InstallMobile
+        )
+        else -> null
+    }
 
     Scaffold(
         topBar = {
@@ -76,38 +90,26 @@ fun UpdateScreen(
                 onBackClick = onBackClick
             )
         },
-        floatingActionButton = {
-            val buttonConfig = when (vm.state) {
-                State.CAN_DOWNLOAD -> Triple(
-                    { vm.downloadUpdate() },
-                    R.string.download,
-                    Icons.Outlined.InstallMobile
-                )
-
-                State.DOWNLOADING -> Triple(onBackClick, R.string.cancel, Icons.Outlined.Cancel)
-                State.CAN_INSTALL -> Triple(
-                    { vm.installUpdate() },
-                    R.string.install_app,
-                    Icons.Outlined.InstallMobile
-                )
-
-                else -> null
-            }
-
+        bottomBar = {
             buttonConfig?.let { (onClick, textRes, icon) ->
-                HapticExtendedFloatingActionButton(
-                    onClick = onClick::invoke,
-                    icon = { Icon(icon, null) },
-                    text = { Text(stringResource(textRes)) }
-                )
+                BottomContentBar(modifier = Modifier.navigationBarsPadding()) {
+                    FilledTonalButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        onClick = onClick::invoke
+                    ) {
+                        Icon(icon, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = stringResource(textRes))
+                    }
+                }
             }
-
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .padding(paddingValues),
+            modifier = Modifier.padding(paddingValues),
         ) {
             if (vm.state == State.DOWNLOADING)
                 LinearProgressIndicator(
@@ -121,16 +123,9 @@ fun UpdateScreen(
                     onDownloadAnyways = { vm.downloadUpdate(true) }
                 )
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(32.dp)
-            ) {
-                vm.releaseInfo?.let { changelog ->
-                    Changelog(changelog)
-                }
+
+            vm.releaseInfo?.let { changelog ->
+                Changelog(changelog)
             }
         }
     }
@@ -166,27 +161,11 @@ private fun MeteredDownloadConfirmationDialog(
 
 @Composable
 private fun ColumnScope.Changelog(releaseInfo: ReVancedAsset) {
-    val scrollState = rememberScrollState()
-    Column(
+    ColumnWithScrollbarEdgeShadow(
         modifier = Modifier
             .weight(1f)
-            .verticalScroll(scrollState)
-            .verticalFadingEdges(
-                fillType = FadingEdgesFillType.FadeColor(
-                    color = MaterialTheme.colorScheme.background,
-                    fillStops = Triple(0F, 0.55F, 1F),
-                    secondStopAlpha = 1F
-                ),
-                contentType = FadingEdgesContentType.Dynamic.Scroll(
-                    state = scrollState,
-                    scrollConfig = FadingEdgesScrollConfig.Dynamic(
-                        animationSpec = spring(),
-                        isLerpByDifferenceForPartialContent = true,
-                        scrollFactor = 1.25F
-                    )
-                ),
-                length = 350.dp
-            )
+            .fillMaxSize()
+            .padding(16.dp),
     ) {
         Changelog(
             markdown = releaseInfo.description.replace("`", ""),
