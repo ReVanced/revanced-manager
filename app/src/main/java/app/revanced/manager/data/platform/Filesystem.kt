@@ -4,10 +4,12 @@ import android.Manifest
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.documentfile.provider.DocumentFile
 import app.revanced.manager.util.RequestManageStorageContract
 import java.io.File
 import java.nio.file.Path
@@ -30,6 +32,14 @@ class Filesystem(private val app: Application) {
      * Paths to this directory can be safely stored in parcels.
      */
     val uiTempDir: File = app.getDir("ui_ephemeral", Context.MODE_PRIVATE)
+
+    fun openFileDocument(uri: Uri): DocumentFile? {
+        return DocumentFile.fromSingleUri(app, uri)
+    }
+
+    fun openFolderDocument(uri: Uri): DocumentFile? {
+        return DocumentFile.fromTreeUri(app, uri)
+    }
 
     fun externalFilesDir(): Path = Environment.getExternalStorageDirectory().toPath()
 

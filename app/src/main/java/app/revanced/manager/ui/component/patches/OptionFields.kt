@@ -247,13 +247,17 @@ private object StringOptionEditor : OptionEditor<String> {
             mutableStateOf(false)
         }
 
-        val context = LocalContext.current
+        val fs: Filesystem = koinInject()
 
         fun copyFile(documentFile: DocumentFile): String {
             val filename = documentFile.name ?: UUID.randomUUID().toString()
             copyingDataToCache = true
             try {
-                val tempFile = File(context.cacheDir, filename)
+                val tempDir = File(fs.tempDir, "options")
+                val tempFile = File(tempDir, filename)
+                if (tempFile.exists()) {
+                    tempFile.delete()
+                }
                 if (documentFile.isDirectory) {
                     tempFile.mkdirs()
                     documentFile.listFiles().forEach { documentFile ->
@@ -261,15 +265,16 @@ private object StringOptionEditor : OptionEditor<String> {
                         val tempFile = File(tempFile, filename).apply {
                             createNewFile()
                         }
-                        context.contentResolver.openInputStream(documentFile.uri)?.use { input ->
+                        fs.contentResolver.openInputStream(documentFile.uri)?.use { input ->
                             tempFile.outputStream().use { output ->
                                 input.copyTo(output)
                             }
                         }
                     }
                 } else {
+                    tempDir.mkdirs()
                     tempFile.createNewFile()
-                    context.contentResolver.openInputStream(documentFile.uri)?.use { input ->
+                    fs.contentResolver.openInputStream(documentFile.uri)?.use { input ->
                         tempFile.outputStream().use { output ->
                             input.copyTo(output)
                         }
@@ -286,14 +291,14 @@ private object StringOptionEditor : OptionEditor<String> {
 
         val folderPathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
             it?.let { uri ->
-                DocumentFile.fromTreeUri(context, uri)?.let { documentFile ->
+                fs.openFolderDocument(uri)?.let { documentFile ->
                     fieldValue = copyFile(documentFile)
                 }
             }
         }
         val filePathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) {
             it?.let { uri ->
-                DocumentFile.fromSingleUri(context, uri)?.let { documentFile ->
+                fs.openFileDocument(uri)?.let { documentFile ->
                     fieldValue = copyFile(documentFile)
                 }
             }
