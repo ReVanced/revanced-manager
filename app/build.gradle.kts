@@ -253,6 +253,7 @@ android {
             excludes += "/META-INF/INDEX.LIST"
             excludes += "/META-INF/**/*.txt"
             excludes += "/META-INF/**/*.properties"
+            excludes += "/META-INF/DEPENDENCIES"
 
             // Desktop AAPT binaries
             excludes += "/prebuilt/**"
@@ -288,6 +289,17 @@ kotlin {
     jvmToolchain(17)
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-Xexplicit-backing-fields",
+            "-Xcontext-parameters",
+        )
+    }
+}
+
+configurations {
+    all {
+        // ReVanced Library has a dependency which conflicts with whatever this is. We don't use protobuf, so it should be fine.
+        exclude(group = "com.google.api.grpc", module = "proto-google-common-protos")
     }
 }
 

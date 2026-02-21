@@ -129,7 +129,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
                 isSelected(
                     bundle.uid,
                     patch
-                ) && patch.options?.any { it.required && it.default == null && it.key !in opts } ?: false
+                ) && patch.options?.any { it.required && it.default == null && it.name !in opts } ?: false
             }.toList()
         }.filter { (_, patches) -> patches.isNotEmpty() }
     }
@@ -180,13 +180,13 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
     fun getOptions(bundle: Int, patch: PatchInfo) = patchOptions[bundle]?.get(patch.name)
 
-    fun setOption(bundle: Int, patch: PatchInfo, key: String, value: Any?) {
+    fun setOption(bundle: Int, patch: PatchInfo, name: String, value: Any?) {
         // All patches
         val patchesToOpts = patchOptions.getOrElse(bundle, ::persistentMapOf)
         // The key-value options of an individual patch
         val patchToOpts = patchesToOpts
             .getOrElse(patch.name, ::persistentMapOf)
-            .put(key, value)
+            .put(name, value)
 
         patchOptions[bundle] = patchesToOpts.put(patch.name, patchToOpts)
     }

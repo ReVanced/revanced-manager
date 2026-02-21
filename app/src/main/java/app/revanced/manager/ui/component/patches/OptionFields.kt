@@ -205,7 +205,7 @@ fun <T : Any> OptionItem(
     WithOptionEditor(editor, option, value, setValue, selectionWarningEnabled) {
         ListItem(
             modifier = Modifier.clickable(onClick = ::clickAction),
-            headlineContent = { Text(option.title) },
+            headlineContent = { Text(option.name) },
             supportingContent = {
                 Column {
                     Text(option.description)
@@ -250,7 +250,7 @@ private object StringOptionEditor : OptionEditor<String> {
 
         AlertDialog(
             onDismissRequest = scope.dismissDialog,
-            title = { Text(scope.option.title) },
+            title = { Text(scope.option.name) },
             text = {
                 OutlinedTextField(
                     value = fieldValue,
@@ -330,7 +330,7 @@ private abstract class NumberOptionEditor<T : Number> : OptionEditor<T> {
 
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
-        NumberDialog(scope.option.title, scope.value, scope.option.validator) {
+        NumberDialog(scope.option.name, scope.value, scope.option.validator) {
             if (it == null) return@NumberDialog scope.dismissDialog()
 
             scope.submitDialog(it)
@@ -455,7 +455,7 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
                         Text(stringResource(R.string.cancel))
                     }
                 },
-                title = { Text(scope.option.title) },
+                title = { Text(scope.option.name) },
                 textHorizontalPadding = PaddingValues(horizontal = 0.dp),
                 text = {
                     val presets = remember(scope.option.presets) {
@@ -496,8 +496,7 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
 private class ListOptionEditor<T : Serializable>(private val elementEditor: OptionEditor<T>) :
     OptionEditor<List<T>> {
     private fun createElementOption(option: Option<List<T>>) = Option<T>(
-        option.title,
-        option.key,
+        option.name,
         option.description,
         option.required,
         option.type.arguments.first().type!!,
@@ -566,7 +565,7 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                             R.plurals.selected_count,
                             deletionTargets.size,
                             deletionTargets.size
-                        ) else scope.option.title,
+                        ) else scope.option.name,
                         onBackClick = back,
                         backIcon = {
                             if (deleteMode) {

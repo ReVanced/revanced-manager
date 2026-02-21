@@ -35,15 +35,15 @@ class PatchOptionsRepository(db: AppDatabase) {
                             bundlePatchOptions.getOrPut(dbOption.patchName, ::mutableMapOf)
 
                         val option =
-                            bundlePatches[sourceUid]?.get(dbOption.patchName)?.options?.find { it.key == dbOption.key }
+                            bundlePatches[sourceUid]?.get(dbOption.patchName)?.options?.find { it.name == dbOption.name }
                         if (option != null) {
                             try {
-                                deserializedPatchOptions[option.key] =
+                                deserializedPatchOptions[option.name] =
                                     dbOption.value.deserializeFor(option)
                             } catch (e: Option.SerializationException) {
                                 Log.w(
                                     tag,
-                                    "Option ${dbOption.patchName}:${option.key} could not be deserialized",
+                                    "Option ${dbOption.patchName}:${option.name} could not be deserialized",
                                     e
                                 )
                             }
