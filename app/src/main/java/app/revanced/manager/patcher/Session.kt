@@ -16,7 +16,6 @@ import java.io.Closeable
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import kotlin.collections.set
 
 internal typealias PatchList = List<Patch>
 private typealias Patcher = (emit: (PatchResult) -> Unit) -> PatchesResult
@@ -111,7 +110,6 @@ class Session(
 
     override fun close() {
         tempDir.deleteRecursively()
-        //patcher.close()
     }
 
     companion object {
