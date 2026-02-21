@@ -135,15 +135,15 @@ android {
     buildToolsVersion = "35.0.1"
 
     defaultConfig {
-        applicationId = "app.revanced.manager"
+        applicationId = "app.revanced.manager.flutter"
         minSdk = 26
         targetSdk = 35
 
         val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
         versionName = versionStr
         versionCode = with(versionStr.toVersion()) {
-            major * 10_000_000 +
-                    minor * 10_000 +
+            major * 100_000_000 +
+                    minor * 100_000 +
                     patch * 100 +
                     (preRelease?.substringAfterLast('.')?.toInt() ?: 99)
         }
@@ -217,23 +217,6 @@ android {
         includeInBundle = false
     }
 
-    packaging {
-        resources.excludes.addAll(
-            listOf(
-                "/prebuilt/**",
-                "META-INF/DEPENDENCIES",
-                "META-INF/**.version",
-                "DebugProbesKt.bin",
-                "kotlin-tooling-metadata.json",
-                "org/bouncycastle/pqc/**.properties",
-                "org/bouncycastle/x509/**.properties",
-            )
-        )
-        jniLibs {
-            useLegacyPackaging = true
-        }
-    }
-
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
@@ -252,6 +235,51 @@ android {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
+        }
+    }
+
+    packaging {
+        resources {
+            // Useless files
+            excludes += "/XPP3_*_VERSION"
+            excludes += "/font-awesome-license.txt"
+            excludes += "/smali.properties"
+            excludes += "/baksmali.properties"
+            excludes += "/properties/apktool.properties"
+            excludes += "/org/antlr/**"
+            excludes += "/org/mockito/**"
+            excludes += "/org/bouncycastle/pqc/**.properties"
+            excludes += "/org/bouncycastle/x509/**.properties"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/**/*.txt"
+            excludes += "/META-INF/**/*.properties"
+
+            // Desktop AAPT binaries
+            excludes += "/prebuilt/**"
+
+            // Reflection symbol list (https://stackoverflow.com/a/41073782/13964629)
+            excludes += "/**/*.kotlin_builtins"
+        }
+        jniLibs {
+            // 32-bit x86 is dead
+            excludes += "/lib/x86/*.so"
+
+            // Equivalent of AndroidManifest's extractNativeLibs=true to ensure libs are compressed
+            useLegacyPackaging = true
+        }
+    }
+}
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) {
+        it.packaging.resources.excludes.apply {
+            // Debug metadata
+            add("/META-INF/*.version")
+            add("/META-INF/*.kotlin_module")
+            add("/kotlin-tooling-metadata.json")
+
+            // Kotlin debugging (https://github.com/Kotlin/kotlinx.coroutines/issues/2274)
+            add("/DebugProbesKt.bin")
         }
     }
 }

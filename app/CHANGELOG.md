@@ -1,3 +1,31 @@
+# app [1.26.0-dev.23](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.22...v1.26.0-dev.23) (2026-02-19)
+
+
+### Bug Fixes
+
+* Flutter migration ([#2946](https://github.com/ReVanced/revanced-manager/issues/2946)) ([31a0f75](https://github.com/ReVanced/revanced-manager/commit/31a0f751aaff3233f50821963f28454d239318b2))
+
+# app [1.26.0-dev.22](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.21...v1.26.0-dev.22) (2026-02-19)
+
+
+### Bug Fixes
+
+* Create modules path in root installer ([4fc2ba3](https://github.com/ReVanced/revanced-manager/commit/4fc2ba339b6d275fb9da8b65ff86b74a6594436d))
+
+# app [1.26.0-dev.21](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.20...v1.26.0-dev.21) (2026-02-19)
+
+
+### Features
+
+* Allow multiple downloaders per APK ([#2916](https://github.com/ReVanced/revanced-manager/issues/2916)) ([0f56377](https://github.com/ReVanced/revanced-manager/commit/0f56377214fae05693a21177daf7534c103df74e))
+
+# app [1.26.0-dev.20](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.19...v1.26.0-dev.20) (2026-01-09)
+
+
+### Bug Fixes
+
+* Save FAB freaking out in select patches screen ([4c0b6b0](https://github.com/ReVanced/revanced-manager/commit/4c0b6b02e95a8d6f655bcf5c25493b1f9a4a4dcd))
+
 # app [1.26.0-dev.19](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.18...v1.26.0-dev.19) (2026-01-08)
 
 

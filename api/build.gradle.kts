@@ -31,7 +31,7 @@ kotlin {
 }
 
 android {
-    namespace = "app.revanced.manager.plugin.downloader"
+    namespace = "app.revanced.manager.downloader"
     compileSdk = 36
 
     defaultConfig {
@@ -61,7 +61,7 @@ android {
 }
 
 apiValidation {
-    nonPublicMarkers += "app.revanced.manager.plugin.downloader.PluginHostApi"
+    nonPublicMarkers += "app.revanced.manager.downloader.DownloaderHostApi"
 }
 
 publishing {
