@@ -52,11 +52,13 @@ class MainViewModel(
     private suspend fun findDownloadedApp(app: SelectedApp): SelectedApp.Local? {
         if (app !is SelectedApp.Search) return null
 
-        val suggestedVersion = suggestedVersion(app.packageName) ?: return null
-
-        val downloadedApp =
+        val suggestedVersion = suggestedVersion(app.packageName)
+        val downloadedApp = if (suggestedVersion != null) {
             downloadedAppRepository.get(app.packageName, suggestedVersion, markUsed = true)
-                ?: return null
+        } else {
+            downloadedAppRepository.getLatestByPackage(app.packageName, markUsed = true)
+        } ?: return null
+
         return SelectedApp.Local(
             downloadedApp.packageName,
             downloadedApp.version,
