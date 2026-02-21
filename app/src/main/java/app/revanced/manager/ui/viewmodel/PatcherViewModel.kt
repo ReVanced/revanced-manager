@@ -28,6 +28,7 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.StepId
@@ -59,6 +60,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
@@ -88,6 +90,7 @@ class PatcherViewModel(
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
+    private val patchBundleRepository: PatchBundleRepository by inject()
     private val rootInstaller: RootInstaller by inject()
     private val savedStateHandle: SavedStateHandle = get()
     private val ackpineInstaller: PackageInstaller = get()
@@ -378,13 +381,15 @@ class PatcherViewModel(
             Session.State.Succeeded -> {
                 app.toast(app.getString(R.string.install_app_success))
                 installedPackageName = installerPkgName
+                val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
                 installedAppRepository.addOrUpdate(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version
                         ?: withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile)?.versionName!! },
                     InstallType.DEFAULT,
-                    input.selectedPatches
+                    input.selectedPatches,
+                    bundleInfo
                 )
             }
         }
@@ -457,12 +462,14 @@ class PatcherViewModel(
                             label
                         )
 
+                        val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
                         installedAppRepository.addOrUpdate(
                             currentPackageInfo.packageName,
                             packageName,
                             inputVersion,
                             InstallType.MOUNT,
-                            input.selectedPatches
+                            input.selectedPatches,
+                            bundleInfo
                         )
 
                         rootInstaller.mount(packageName)

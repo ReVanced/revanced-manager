@@ -165,6 +165,15 @@ fun InstalledAppInfoScreen(
                     trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
                 )
 
+                viewModel.patchBundles.forEach { bundle ->
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.patch_bundle_source),
+                        supportingContent = bundle.bundleVersion?.let { version ->
+                            stringResource(R.string.patch_bundle_source_description, bundle.bundleName, version)
+                        } ?: bundle.bundleName
+                    )
+                }
+
                 SettingsListItem(
                     headlineContent = stringResource(R.string.package_name),
                     supportingContent = installedApp.currentPackageName
