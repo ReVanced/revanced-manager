@@ -147,9 +147,6 @@ class PatchBundleRepository(
     private suspend fun loadMetadata(sources: MutableMap<Int, PatchBundleSource>): Map<Int, PatchBundleInfo.Global> {
         // Map bundles -> sources
         val map = sources.mapNotNull { (_, src) ->
-            // HACK (must remove before merge): disable official bundle to prevent it from sabotaging the updated version.
-            if (src.uid == 0) return@mapNotNull null
-
             (src.patchBundle ?: return@mapNotNull null) to src
         }.toMap()
 

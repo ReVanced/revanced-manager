@@ -55,7 +55,6 @@ data class PatchBundle(val patchesJar: String) : Parcelable {
     )
 
     object Loader {
-
         private fun patches(bundles: Iterable<PatchBundle>) = buildMap {
             val bundleMap = bundles.associateBy { it.patchesJar }
 
