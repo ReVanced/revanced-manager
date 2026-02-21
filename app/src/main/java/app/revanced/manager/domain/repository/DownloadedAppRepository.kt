@@ -130,6 +130,8 @@ class DownloadedAppRepository(
             if (markUsed) dao.markUsed(packageName, version)
         }
 
+    suspend fun getAllByPackage(packageName: String) = dao.getAllByPackage(packageName)
+
     suspend fun delete(downloadedApps: Collection<DownloadedApp>) {
         downloadedApps.forEach {
             dir.resolve(it.directory).deleteRecursively()

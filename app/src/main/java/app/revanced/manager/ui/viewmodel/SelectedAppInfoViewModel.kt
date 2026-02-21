@@ -22,6 +22,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -67,6 +68,7 @@ class SelectedAppInfoViewModel(
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
+    private val downloadedAppRepository: DownloadedAppRepository = get()
     private val downloaderRepository: DownloaderRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
     private val rootInstaller: RootInstaller = get()
@@ -81,6 +83,8 @@ class SelectedAppInfoViewModel(
 
     val hasRoot = rootInstaller.hasRootAccess()
     var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
+        private set
+    var downloadedApps: List<SelectedApp.Local> by mutableStateOf(emptyList())
         private set
 
     private var _selectedApp by savedStateHandle.saveable {
@@ -103,6 +107,8 @@ class SelectedAppInfoViewModel(
             val packageInfo = async(Dispatchers.IO) { pm.getPackageInfo(packageName) }
             val installedAppDeferred =
                 async(Dispatchers.IO) { installedAppRepository.get(packageName) }
+            val downloadedAppsDeferred =
+                async(Dispatchers.IO) { downloadedAppRepository.getAllByPackage(packageName) }
 
             installedAppData =
                 packageInfo.await()?.let {
@@ -111,6 +117,15 @@ class SelectedAppInfoViewModel(
                         it.versionName!!
                     ) to installedAppDeferred.await()
                 }
+
+            downloadedApps = downloadedAppsDeferred.await().map {
+                SelectedApp.Local(
+                    it.packageName,
+                    it.version,
+                    downloadedAppRepository.getApkFileForApp(it),
+                    false
+                )
+            }
         }
     }
 

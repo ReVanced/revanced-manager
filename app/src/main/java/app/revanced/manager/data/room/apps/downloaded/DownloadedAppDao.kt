@@ -15,6 +15,9 @@ interface DownloadedAppDao {
     @Query("SELECT * FROM downloaded_app WHERE package_name = :packageName AND version = :version")
     suspend fun get(packageName: String, version: String): DownloadedApp?
 
+    @Query("SELECT * FROM downloaded_app WHERE package_name = :packageName ORDER BY last_used DESC")
+    suspend fun getAllByPackage(packageName: String): List<DownloadedApp>
+
     @Upsert
     suspend fun upsert(downloadedApp: DownloadedApp)
 

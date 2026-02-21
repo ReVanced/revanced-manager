@@ -73,6 +73,7 @@ Second \"item\" text"</string>
     <string name="apk_source_downloader">Using %s</string>
     <string name="apk_source_installed">Using installed APK</string>
     <string name="apk_source_local">Using a local APK file</string>
+    <string name="apk_source_downloaded">Downloaded</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
@@ -305,6 +306,7 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="original_package_name">Original package name</string>
     <string name="applied_patches">Applied patches</string>
     <string name="view_applied_patches">View applied patches</string>
+
     <string name="default_install">Default</string>
     <string name="mount_install">Mount</string>
     <string name="mounted">Mounted</string>

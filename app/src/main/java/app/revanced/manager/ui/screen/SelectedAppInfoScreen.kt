@@ -149,6 +149,7 @@ fun SelectedAppInfoScreen(
 
             AppSourceSelectorDialog(
                 downloaders = downloaders,
+                downloadedApps = vm.downloadedApps,
                 installedApp = vm.installedAppData,
                 searchApp = SelectedApp.Search(
                     vm.packageName,
@@ -282,6 +283,7 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
 @Composable
 private fun AppSourceSelectorDialog(
     downloaders: List<LoadedDownloader>,
+    downloadedApps: List<SelectedApp.Local>,
     installedApp: Pair<SelectedApp.Installed, InstalledApp?>?,
     searchApp: SelectedApp.Search,
     activeSearchJob: LoadedDownloader?,
@@ -349,6 +351,21 @@ private fun AppSourceSelectorDialog(
                             colors = transparentListItemColors
                         )
                     }
+                }
+
+                items(
+                    downloadedApps,
+                    key = { "downloaded_${it.version}" }
+                ) { app ->
+                    val usable = requiredVersion == null || app.version == requiredVersion
+                    ListItem(
+                        modifier = Modifier
+                            .clickable(enabled = canSelect && usable) { onSelect(app) }
+                            .enabled(usable),
+                        headlineContent = { Text(stringResource(R.string.apk_source_downloaded)) },
+                        supportingContent = { Text(app.version) },
+                        colors = transparentListItemColors
+                    )
                 }
 
                 items(
