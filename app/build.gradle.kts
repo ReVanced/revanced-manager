@@ -253,6 +253,7 @@ android {
             excludes += "/META-INF/INDEX.LIST"
             excludes += "/META-INF/**/*.txt"
             excludes += "/META-INF/**/*.properties"
+            excludes += "/META-INF/DEPENDENCIES"
 
             // Desktop AAPT binaries
             excludes += "/prebuilt/**"
