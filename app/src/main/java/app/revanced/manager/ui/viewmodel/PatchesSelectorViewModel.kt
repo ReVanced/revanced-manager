@@ -209,6 +209,74 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         filter = filter xor flag
     }
 
+    /**
+     * Get the selection state for a bundle's patches.
+     *
+     * @return null for indeterminate, true for all selected, false for none selected.
+     */
+    fun getBundleSelectionState(bundle: PatchBundleInfo.Scoped): Boolean? {
+        val patches = bundle.patchSequence(allowIncompatiblePatches).toList()
+        if (patches.isEmpty()) return false
+
+        val selectedCount = patches.count { isSelected(bundle.uid, it) }
+        return when (selectedCount) {
+            patches.size -> true
+            0 -> false
+            else -> null
+        }
+    }
+
+    fun deselectAll(bundles: List<PatchBundleInfo.Scoped>, bundleUid: Int?) = viewModelScope.launch {
+        hasModifiedSelection = true
+        val selection = customPatchSelection ?: defaultPatchSelection.first()
+
+        customPatchSelection = bundles.fold(selection) { acc, bundle ->
+            if (bundleUid != null && bundle.uid != bundleUid) return@fold acc
+            acc.put(bundle.uid, persistentSetOf())
+        }
+    }
+
+    fun invertSelection(bundles: List<PatchBundleInfo.Scoped>, bundleUid: Int?) = viewModelScope.launch {
+        hasModifiedSelection = true
+        val selection = customPatchSelection ?: defaultPatchSelection.first()
+
+        customPatchSelection = bundles.fold(selection) { acc, bundle ->
+            if (bundleUid != null && bundle.uid != bundleUid) return@fold acc
+
+            val currentSelected = acc[bundle.uid] ?: persistentSetOf()
+            val inverted = bundle.patchSequence(allowIncompatiblePatches)
+                .filter { it.name !in currentSelected }
+                .map { it.name }
+                .toPersistentSet()
+            acc.put(bundle.uid, inverted)
+        }
+    }
+
+    fun restoreDefaults(bundles: List<PatchBundleInfo.Scoped>, bundleUid: Int?) = viewModelScope.launch {
+        if (bundleUid == null) {
+            // Restoring all bundles is equivalent to a full reset.
+            customPatchSelection = null
+            hasModifiedSelection = false
+            return@launch
+        }
+
+        hasModifiedSelection = true
+        val selection = customPatchSelection ?: defaultPatchSelection.first()
+        val defaults = defaultPatchSelection.first()
+
+        customPatchSelection = selection.put(bundleUid, defaults[bundleUid] ?: persistentSetOf())
+    }
+
+    fun deselectAllExcept(bundles: List<PatchBundleInfo.Scoped>, keepBundleUid: Int) = viewModelScope.launch {
+        hasModifiedSelection = true
+        val selection = customPatchSelection ?: defaultPatchSelection.first()
+
+        customPatchSelection = bundles.fold(selection) { acc, bundle ->
+            if (bundle.uid == keepBundleUid) return@fold acc
+            acc.put(bundle.uid, persistentSetOf())
+        }
+    }
+
     companion object {
         const val SHOW_INCOMPATIBLE = 1 // 2^0
         const val SHOW_UNIVERSAL = 2 // 2^1
