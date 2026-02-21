@@ -97,6 +97,7 @@ fun DashboardScreen(
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
         false
     )
@@ -285,6 +286,16 @@ fun DashboardScreen(
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.unsupported_architecture_warning),
                             onDismiss = null
+                        )
+                    }
+                } else null,
+                if (bundleDownloadError != null) {
+                    {
+                        NotificationCard(
+                            isWarning = true,
+                            icon = Icons.Outlined.WarningAmber,
+                            text = stringResource(R.string.patches_download_fail_notification),
+                            onClick = onSettingsClick
                         )
                     }
                 } else null,

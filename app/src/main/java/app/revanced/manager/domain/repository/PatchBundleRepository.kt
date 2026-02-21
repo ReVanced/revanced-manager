@@ -36,6 +36,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -54,6 +56,9 @@ class PatchBundleRepository(
     private val bundlesDir = app.getDir("patch_bundles", Context.MODE_PRIVATE)
 
     private val store = Store(CoroutineScope(Dispatchers.Default), State())
+
+    private val _updateError = MutableStateFlow<Throwable?>(null)
+    val updateError = _updateError.asStateFlow()
 
     val sources = store.state.map { it.sources.values.toList() }
     val bundles = store.state.map {
@@ -397,11 +402,13 @@ class PatchBundleRepository(
             }
 
             if (showToast) toast(R.string.patches_update_success)
+            _updateError.value = null
             doReload()
         }
 
         override suspend fun catch(exception: Exception) {
             Log.e(tag, "Failed to update patches", exception)
+            _updateError.value = exception
             toast(R.string.patches_download_fail, exception.simpleMessage())
         }
     }
