@@ -80,7 +80,6 @@ fun OnboardingScreen(
 
     var managerUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var patchesUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
-    var isNavigating by remember { mutableStateOf(false) }
     var showSkipPermissionsDialog by remember { mutableStateOf(false) }
 
     val installAppsLauncher = rememberLauncherForActivityResult(RequestInstallAppsContract) {
@@ -97,40 +96,6 @@ fun OnboardingScreen(
         ActivityResultContracts.StartActivityForResult()
     ) {
         vm.refreshPermissionStates()
-    }
-
-    val onCompletedAppClick: (String) -> Unit = { packageName ->
-        if (!isNavigating) {
-            isNavigating = true
-            scope.launch {
-                vm.completeOnboarding()
-                onAppClick(packageName)
-            }
-        }
-    }
-
-    val onNextClick: () -> Unit = {
-        if (currentStep == OnboardingStep.Updates) {
-            scope.launch {
-                vm.applyAutoUpdatePrefs(
-                    managerEnabled = managerUpdatesEnabled,
-                    patchesEnabled = patchesUpdatesEnabled
-                )
-                vm.advance()
-            }
-        } else {
-            vm.advance()
-        }
-    }
-
-    val onFinishClick: () -> Unit = {
-        if (!isNavigating) {
-            isNavigating = true
-            scope.launch {
-                vm.completeOnboarding()
-                onFinish()
-            }
-        }
     }
 
     BackHandler(enabled = currentStep != OnboardingStep.Permissions) {
@@ -155,10 +120,23 @@ fun OnboardingScreen(
         OnboardingButtons(
             currentStep = currentStep,
             allPermissionsGranted = vm.allPermissionsGranted,
-            isNavigating = isNavigating,
             onSkipPermissionsClick = { showSkipPermissionsDialog = true },
-            onNextClick = onNextClick,
-            onFinishClick = onFinishClick
+            onNextClick = {
+                if (currentStep == OnboardingStep.Updates) scope.launch {
+                    vm.applyAutoUpdatePrefs(
+                        managerEnabled = managerUpdatesEnabled,
+                        patchesEnabled = patchesUpdatesEnabled
+                    )
+                }
+
+                vm.advance()
+            },
+            onFinishClick = {
+                scope.launch {
+                    vm.completeOnboarding()
+                    onFinish()
+                }
+            }
         )
     }
 
@@ -213,7 +191,12 @@ fun OnboardingScreen(
                 OnboardingStep.Apps -> AppsStepContent(
                     apps = apps,
                     suggestedVersions = suggestedVersions,
-                    onAppClick = onCompletedAppClick,
+                    onAppClick = { packageName ->
+                        scope.launch {
+                            vm.completeOnboarding()
+                            onAppClick(packageName)
+                        }
+                    },
                     showSubtitle = showSubtitle
                 )
             }
@@ -356,7 +339,6 @@ private fun OnboardingHeader() {
 private fun OnboardingButtons(
     currentStep: OnboardingStep,
     allPermissionsGranted: Boolean,
-    isNavigating: Boolean,
     onSkipPermissionsClick: () -> Unit,
     onNextClick: () -> Unit,
     onFinishClick: () -> Unit
@@ -434,7 +416,6 @@ private fun OnboardingButtons(
                         .fillMaxWidth()
                         .height(56.dp),
                     onClick = onFinishClick,
-                    enabled = !isNavigating
                 ) {
                     Text(text = stringResource(R.string.onboarding_skip))
                 }
