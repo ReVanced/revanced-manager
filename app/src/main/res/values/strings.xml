@@ -349,8 +349,8 @@ Second \"item\" text"</string>
     <string name="downloader_invalid_version">Downloader did not fetch the correct version</string>
     <string name="downloader_app_not_found">Downloader did not find the app</string>
     <string name="downloader_error">Downloader error: %s</string>
-    <string name="downloader_no_plugins_installed">No downloader installed.</string>
-    <string name="downloader_no_plugins_available">There are downloaders installed but none are trusted. Check your settings.</string>
+    <string name="downloader_no_plugins_installed">No app downloaders are installed!</string>
+    <string name="downloader_no_plugins_trusted">No app downloaders have been trusted! Please check your settings.</string>
     <string name="already_patched">Already patched</string>
 
     <string name="patch_selector_sheet_filter_title">Filter</string>

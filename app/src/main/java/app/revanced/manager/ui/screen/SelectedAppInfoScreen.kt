@@ -215,9 +215,12 @@ fun SelectedAppInfoScreen(
             )
             error?.let {
                 Text(
-                    stringResource(it.resourceId),
+                    text = stringResource(it.resourceId),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(horizontal = 24.dp)
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .padding(horizontal = 24.dp)
                 )
             }
 

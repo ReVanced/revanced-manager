@@ -27,11 +27,12 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.patcher.patch.PatchBundleInfo
-import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
+import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderData
+import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.plugin.downloader.GetScope
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
@@ -74,6 +75,7 @@ class SelectedAppInfoViewModel(
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
     val plugins = pluginsRepository.loadedPluginsFlow
+    val allPlugins = pluginsRepository.pluginStates
     val desiredVersion = input.app.version
     val packageName = input.app.packageName
 
@@ -162,9 +164,10 @@ class SelectedAppInfoViewModel(
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
-    val errorFlow = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
-        when {
-            app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
+    val errorFlow = combine(allPlugins, snapshotFlow { selectedApp }) { allPlugins, app ->
+        when (app) {
+            is SelectedApp.Search if allPlugins.isEmpty() -> Error.NoPluginsInstalled
+            is SelectedApp.Search if allPlugins.values.all { it is DownloaderPluginState.Untrusted } -> Error.NoPluginsTrusted
             else -> null
         }
     }
@@ -303,7 +306,8 @@ class SelectedAppInfoViewModel(
     }
 
     enum class Error(@param:StringRes val resourceId: Int) {
-        NoPlugins(R.string.downloader_no_plugins_available)
+        NoPluginsInstalled(R.string.downloader_no_plugins_installed),
+        NoPluginsTrusted(R.string.downloader_no_plugins_trusted),
     }
 
     private companion object {
