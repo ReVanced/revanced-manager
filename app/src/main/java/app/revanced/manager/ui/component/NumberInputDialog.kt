@@ -22,6 +22,7 @@ import app.revanced.manager.R
 private inline fun <T> NumberInputDialog(
     current: T?,
     name: String,
+    unit: String?,
     crossinline onSubmit: (T?) -> Unit,
     crossinline validator: @DisallowComposableCalls (T) -> Boolean,
     crossinline toNumberOrNull: @DisallowComposableCalls String.() -> T?
@@ -47,6 +48,7 @@ private inline fun <T> NumberInputDialog(
                     Text(stringResource(R.string.dialog_input_placeholder))
                 },
                 isError = validatorFailed,
+                suffix = unit?.let { { Text(it) } },
                 supportingText = {
                     if (validatorFailed) {
                         Text(
@@ -78,22 +80,25 @@ private inline fun <T> NumberInputDialog(
 fun IntInputDialog(
     current: Int?,
     name: String,
+    unit: String? = null,
     validator: (Int) -> Boolean = { true },
     onSubmit: (Int?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toIntOrNull)
+) = NumberInputDialog(current, name, unit, onSubmit, validator, String::toIntOrNull)
 
 @Composable
 fun LongInputDialog(
     current: Long?,
     name: String,
+    unit: String? = null,
     validator: (Long) -> Boolean = { true },
     onSubmit: (Long?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toLongOrNull)
+) = NumberInputDialog(current, name, unit, onSubmit, validator, String::toLongOrNull)
 
 @Composable
 fun FloatInputDialog(
     current: Float?,
     name: String,
+    unit: String? = null,
     validator: (Float) -> Boolean = { true },
     onSubmit: (Float?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toFloatOrNull)
+) = NumberInputDialog(current, name, unit, onSubmit, validator, String::toFloatOrNull)

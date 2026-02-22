@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package app.revanced.manager.util
 
 import android.content.Context
@@ -341,7 +343,6 @@ fun androidx.navigation.NavController.popBackStackSafe(): Boolean {
 }
 
 // Renderscript is deprecated on new Android, but it works perfectly for what is needed
-@Suppress("DEPRECATION")
 fun blurBackground(
     context: Context,
     image: Bitmap,

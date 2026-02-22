@@ -345,7 +345,7 @@ private object IntOptionEditor : NumberOptionEditor<Int>() {
         current: Int?,
         validator: (Int?) -> Boolean,
         onSubmit: (Int?) -> Unit
-    ) = IntInputDialog(current, title, validator, onSubmit)
+    ) = IntInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
 private object LongOptionEditor : NumberOptionEditor<Long>() {
@@ -355,7 +355,7 @@ private object LongOptionEditor : NumberOptionEditor<Long>() {
         current: Long?,
         validator: (Long?) -> Boolean,
         onSubmit: (Long?) -> Unit
-    ) = LongInputDialog(current, title, validator, onSubmit)
+    ) = LongInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
 private object FloatOptionEditor : NumberOptionEditor<Float>() {
@@ -365,7 +365,7 @@ private object FloatOptionEditor : NumberOptionEditor<Float>() {
         current: Float?,
         validator: (Float?) -> Boolean,
         onSubmit: (Float?) -> Unit
-    ) = FloatInputDialog(current, title, validator, onSubmit)
+    ) = FloatInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
 private object BooleanOptionEditor : OptionEditor<Boolean> {

@@ -25,7 +25,8 @@ fun IntegerItem(
     preference: Preference<Int>,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     @StringRes headline: Int,
-    @StringRes description: Int
+    @StringRes description: Int,
+    unit: String? = null,
 ) {
     val value by preference.getAsState()
 
@@ -34,7 +35,8 @@ fun IntegerItem(
         value = value,
         onValueChange = { coroutineScope.launch { preference.update(it) } },
         headline = headline,
-        description = description
+        description = description,
+        unit = unit
     )
 }
 
@@ -44,14 +46,19 @@ fun IntegerItem(
     value: Int,
     onValueChange: (Int) -> Unit,
     @StringRes headline: Int,
-    @StringRes description: Int
+    @StringRes description: Int,
+    unit: String? = null,
 ) {
     var dialogOpen by rememberSaveable {
         mutableStateOf(false)
     }
 
     if (dialogOpen) {
-        IntInputDialog(current = value, name = stringResource(headline)) { new ->
+        IntInputDialog(
+            current = value,
+            unit = unit,
+            name = stringResource(headline)
+        ) { new ->
             dialogOpen = false
             new?.let(onValueChange)
         }

@@ -7,6 +7,7 @@ import android.os.Build
 import android.view.HapticFeedbackConstants
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -140,18 +141,25 @@ fun AdvancedSettingsScreen(
                 title = stringResource(R.string.patcher),
                 leadingContent = { Icon(Icons.Outlined.Tune, contentDescription = null, modifier = Modifier.size(18.dp)) }
             ) {
+                val useProcessRuntime by viewModel.prefs.useProcessRuntime.getAsState()
+
                 BooleanItem(
                     preference = viewModel.prefs.useProcessRuntime,
                     coroutineScope = viewModel.viewModelScope,
                     headline = R.string.process_runtime,
                     description = R.string.process_runtime_description,
                 )
-                IntegerItem(
-                    preference = viewModel.prefs.patcherProcessMemoryLimit,
-                    coroutineScope = viewModel.viewModelScope,
-                    headline = R.string.process_runtime_memory_limit,
-                    description = R.string.process_runtime_memory_limit_description,
-                )
+                AnimatedVisibility(
+                    visible = useProcessRuntime,
+                ) {
+                    IntegerItem(
+                        preference = viewModel.prefs.patcherProcessMemoryLimit,
+                        coroutineScope = viewModel.viewModelScope,
+                        headline = R.string.process_runtime_memory_limit,
+                        description = R.string.process_runtime_memory_limit_description,
+                        unit = "MiB",
+                    )
+                }
             }
 
             ListSection(
