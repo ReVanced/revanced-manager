@@ -1,8 +1,8 @@
 package app.revanced.manager.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,26 +43,43 @@ fun LazyColumnWithScrollbarEdgeShadow(
     val surfaceColor = MaterialTheme.colorScheme.surface
     val proximityPx = with(LocalDensity.current) { edgeShadowProximity.toPx() }
 
+    val topAlpha by remember(state, proximityPx) {
+        derivedStateOf {
+            if (!state.canScrollBackward || proximityPx <= 0f)
+                return@derivedStateOf 0f
+
+            val layoutInfo = state.layoutInfo
+            val firstVisible = layoutInfo.visibleItemsInfo.firstOrNull()
+                ?: return@derivedStateOf 0f
+
+            if (firstVisible.index > 0)
+                return@derivedStateOf 1f
+
+            val viewportStart = layoutInfo.viewportStartOffset + layoutInfo.beforeContentPadding
+            val overflowPx = (viewportStart - firstVisible.offset).coerceAtLeast(0)
+
+            (overflowPx / proximityPx).coerceIn(0f, 1f)
+        }
+    }
+
     val bottomAlpha by remember(state, proximityPx) {
         derivedStateOf {
-            if (!state.canScrollForward || proximityPx <= 0f) {
-                0f
-            } else {
-                val layoutInfo = state.layoutInfo
-                val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()
-                    ?: return@derivedStateOf 0f
-                val lastIndex = layoutInfo.totalItemsCount - 1
+            if (!state.canScrollForward || proximityPx <= 0f)
+                return@derivedStateOf 0f
 
-                if (lastVisible.index < lastIndex) {
-                    1f
-                } else {
-                    val viewportEnd =
-                        layoutInfo.viewportEndOffset - layoutInfo.afterContentPadding
-                    val overflowPx =
-                        (lastVisible.offset + lastVisible.size - viewportEnd).coerceAtLeast(0)
-                    (overflowPx / proximityPx).coerceIn(0f, 1f)
-                }
-            }
+            val layoutInfo = state.layoutInfo
+            val lastIndex = layoutInfo.totalItemsCount - 1
+            val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()
+                ?: return@derivedStateOf 0f
+
+            if (lastVisible.index < lastIndex)
+                return@derivedStateOf 1f
+
+            val viewportEnd = layoutInfo.viewportEndOffset - layoutInfo.afterContentPadding
+            val overflowPx = (lastVisible.offset + lastVisible.size - viewportEnd)
+                .coerceAtLeast(0)
+
+            (overflowPx / proximityPx).coerceIn(0f, 1f)
         }
     }
 
@@ -78,6 +95,21 @@ fun LazyColumnWithScrollbarEdgeShadow(
             userScrollEnabled = userScrollEnabled,
             content = content
         )
+
+        if (topAlpha > 0f) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .height(edgeShadowHeight)
+                    .alpha(topAlpha)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(surfaceColor, Color.Transparent)
+                        )
+                    )
+            )
+        }
 
         if (bottomAlpha > 0f) {
             Box(
