@@ -36,7 +36,7 @@ class AnnouncementsViewModel(
         showArchived
     ) { source, tags, selectedTags, showArchived ->
         if (source == null) return@combine null
-        // Only filter by tags that actually
+        // Only filter by tags that actually exist
         val availableTags = tags.orEmpty().toSet()
         val validSelected = selectedTags.intersect(availableTags)
 
