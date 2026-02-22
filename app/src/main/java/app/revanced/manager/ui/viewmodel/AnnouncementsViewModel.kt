@@ -113,11 +113,10 @@ class AnnouncementsViewModel(
 
     private fun observeSelectedTags() {
         viewModelScope.launch {
-            snapshotFlow { selectedTags.toSet() to showArchived }
-                .distinctUntilChanged()
-                .collect {
-                    applyTagFilter()
-                }
+            snapshotFlow { selectedTags.toList() }.collect { _ ->
+                saveSelectedTags()
+                applyTagFilter()
+            }
         }
     }
 }
