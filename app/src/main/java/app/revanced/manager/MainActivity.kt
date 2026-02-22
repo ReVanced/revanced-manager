@@ -121,7 +121,7 @@ private fun ReVancedManager(vm: MainViewModel) {
         enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
         exitTransition = { slideOutHorizontally(targetOffsetX = { -it / 3 }) },
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it / 3 }) },
-        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
+        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) }
     ) {
         composable<Dashboard> {
             DashboardScreen(
@@ -142,10 +142,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                     navController.navigate(Announcements)
                 },
                 onAnnouncementClick = { announcement ->
-                    navController.navigateComplex(
-                        Announcement,
-                        Announcement.ViewModelParams(announcement)
-                    )
+                    navController.navigateComplex(Announcement, announcement)
                 }
             )
         }
@@ -195,20 +192,15 @@ private fun ReVancedManager(vm: MainViewModel) {
             AnnouncementsScreen(
                 onBackClick = navController::popBackStack,
                 onAnnouncementClick = { announcement ->
-                    navController.navigateComplex(
-                        Announcement,
-                        Announcement.ViewModelParams(announcement)
-                    )
+                    navController.navigateComplex(Announcement, announcement)
                 }
             )
         }
 
         composable<Announcement> {
-            val data = it.getComplexArg<Announcement.ViewModelParams>()
-
             AnnouncementScreen(
                 onBackClick = navController::popBackStack,
-                announcement = data.announcement
+                announcement = it.getComplexArg()
             )
         }
 
