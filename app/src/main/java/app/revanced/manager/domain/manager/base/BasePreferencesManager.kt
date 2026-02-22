@@ -59,12 +59,12 @@ class EditorContext(private val prefs: MutablePreferences) {
         get() = prefs.run { read() }
         set(value) = prefs.run { write(value) }
 
-    operator fun Preference<Set<String>>.plusAssign(value: String) = prefs.run {
+    operator fun <T> Preference<Set<T>>.plusAssign(value: T) = prefs.run {
         write(read() + value)
     }
 
-    operator fun Preference<Set<Long>>.plusAssign(value: Long) = prefs.run {
-        write(read() + value)
+    operator fun <T> Preference<Set<T>>.minusAssign(value: T) = prefs.run {
+        write(read() subtract setOf(value))
     }
 }
 

@@ -34,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -42,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.ui.component.AppTopBar
@@ -64,16 +64,20 @@ fun AnnouncementsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var showFilterSheet by rememberSaveable { mutableStateOf(false) }
+    val tags by vm.tags.collectAsStateWithLifecycle()
+    val selectedTags by vm.selectedTags.getAsState()
+    val showArchived by vm.showArchived.collectAsStateWithLifecycle()
+    val announcements by vm.announcements.collectAsStateWithLifecycle(emptyList())
 
     if (showFilterSheet) {
         FilterBottomSheet(
             onDismissRequest = { showFilterSheet = false },
-            tags = vm.tags.orEmpty(),
-            selectedTags = vm.selectedTags,
-            showArchived = vm.showArchived,
-            onShowArchivedChange = { vm.showArchived = it },
+            tags = tags.orEmpty(),
+            selectedTags = selectedTags,
+            showArchived = showArchived,
+            onShowArchivedChange = { vm.showArchived.value = it },
             onReset = vm::resetTagSelection,
-            onSave = vm::saveSelectedTags
+            changeSelection = vm::changeTagSelection
         )
     }
 
@@ -83,7 +87,7 @@ fun AnnouncementsScreen(
                 title = { Text(stringResource(R.string.announcements)) },
                 onBackClick = onBackClick,
                 actions = {
-                    if (vm.tags != null) {
+                    if (tags != null) {
                         IconButton(onClick = { showFilterSheet = true }) {
                             Icon(
                                 imageVector = Icons.Outlined.FilterAlt,
@@ -96,16 +100,16 @@ fun AnnouncementsScreen(
             )
         }
     ) { paddingValues ->
-        val readAnnouncements by vm.preferences.readAnnouncements.getAsState()
+        val readAnnouncements by vm.readAnnouncements.getAsState()
         LazyColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
-            verticalArrangement = if (vm.announcements.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
+            verticalArrangement = if (announcements.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            vm.announcements?.let { repositories ->
+            announcements?.let { repositories ->
                 if (repositories.isEmpty()) {
                     item {
                         Text(
@@ -158,11 +162,11 @@ fun AnnouncementsScreen(
 private fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
     tags: List<String>,
-    selectedTags: SnapshotStateList<String>,
+    selectedTags: Set<String>,
     showArchived: Boolean,
     onShowArchivedChange: (Boolean) -> Unit,
     onReset: () -> Unit,
-    onSave: () -> Unit
+    changeSelection: (String) -> Unit
 ) {
     ModalBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
@@ -180,16 +184,10 @@ private fun FilterBottomSheet(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 tags.forEach { tag ->
-                    val selected = selectedTags.contains(tag)
-
                     FilterChip(
-                        selected = selected,
+                        selected = tag in selectedTags,
                         onClick = {
-                            if (selected) {
-                                selectedTags.remove(tag)
-                            } else {
-                                selectedTags.add(tag)
-                            }
+                            changeSelection(tag)
                         },
                         label = { Text(tag) }
                     )
