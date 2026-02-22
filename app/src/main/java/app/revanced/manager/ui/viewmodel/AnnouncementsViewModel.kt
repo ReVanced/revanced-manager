@@ -82,7 +82,11 @@ class AnnouncementsViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            if (!network.isConnected()) return@launch
+            if (!network.isConnected()) {
+                allAnnouncements.value = emptyList()
+                _tags.value = emptyList()
+                return@launch
+            }
 
             withContext(Dispatchers.IO) {
                 announcementRepository.getAnnouncements()?.let {

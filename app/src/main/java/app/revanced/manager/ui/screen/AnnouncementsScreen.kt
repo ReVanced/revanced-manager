@@ -109,8 +109,8 @@ fun AnnouncementsScreen(
             verticalArrangement = if (announcements.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            announcements?.let { repositories ->
-                if (repositories.isEmpty()) {
+            announcements?.let { announcements ->
+                if (announcements.isEmpty()) {
                     item {
                         Text(
                             text = stringResource(id = R.string.no_announcements_found),
@@ -119,7 +119,7 @@ fun AnnouncementsScreen(
                     }
                 } else {
                     itemsIndexed(
-                        items = repositories,
+                        items = announcements,
                         key = { _, announcement ->
                             announcement.id
                         }

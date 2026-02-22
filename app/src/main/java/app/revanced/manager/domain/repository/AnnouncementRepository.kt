@@ -31,9 +31,4 @@ class AnnouncementRepository(
             return cachedTags
         }
     }
-
-    fun invalidateCache() {
-        cachedAnnouncements = null
-        cachedTags = null
-    }
 }
