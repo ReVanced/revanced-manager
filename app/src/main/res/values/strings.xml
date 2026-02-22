@@ -82,6 +82,9 @@ Second \"item\" text"</string>
     <string name="auto_updates_dialog_patches">ReVanced Patches</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
+    <string name="announcements_filter_tag">Filter by tag</string>
+    <string name="announcements_show_archived">Show archived</string>
+
     <string name="general">General</string>
     <string name="general_description">Language, theme, dynamic color</string>
     <string name="updates">Updates</string>
@@ -380,6 +383,7 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="less">Less</string>
     <string name="continue_">Continue</string>
     <string name="dismiss">Dismiss</string>
+    <string name="view_announcement">View announcement</string>
     <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
     <string name="website">Website</string>
@@ -398,6 +402,8 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="patches_delete_single_dialog_description">Are you sure you want to delete \"%s\"?</string>
     <string name="patches_delete_multiple_dialog_description">Are you sure you want to delete the selected patches?</string>
 
+    <string name="announcements">Announcements</string>
+    <string name="archive">Archive</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
     <string name="developer_options_taps">%d taps remaining</string>
@@ -443,6 +449,7 @@ ReVanced Manager will close when updating."</string>
 
     <string name="failed_to_check_updates">Failed to check for updates: %s</string>
     <string name="no_update_available">No update available</string>
+    <string name="no_announcements_found">No announcements found</string>
     <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
     <string name="update_available_dialog_description">A new version of ReVanced Manager (%s) is available.</string>
@@ -499,4 +506,5 @@ Click on the patches to see more details."</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
+    <string name="new_announcement">New announcement:\n%s</string>
 </resources>

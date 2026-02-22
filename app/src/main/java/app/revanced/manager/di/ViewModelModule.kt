@@ -14,6 +14,7 @@ val viewModelModule = module {
     viewModelOf(::AppSelectorViewModel)
     viewModelOf(::PatcherViewModel)
     viewModelOf(::UpdateViewModel)
+    viewModelOf(::AnnouncementsViewModel)
     viewModelOf(::ChangelogsViewModel)
     viewModelOf(::ImportExportViewModel)
     viewModelOf(::AboutViewModel)
