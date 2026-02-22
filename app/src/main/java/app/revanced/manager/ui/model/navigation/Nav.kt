@@ -27,9 +27,12 @@ data class Update(val downloadOnScreenEntry: Boolean = false)
 data object Announcements
 
 @Serializable
-data class Announcement(
-    val announcement: ReVancedAnnouncement
-)
+data object Announcement : ComplexParameter<Announcement.ViewModelParams> {
+    @Parcelize
+    data class ViewModelParams(
+        val announcement: ReVancedAnnouncement
+    ) : Parcelable
+}
 
 @Serializable
 data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.ViewModelParams> {
