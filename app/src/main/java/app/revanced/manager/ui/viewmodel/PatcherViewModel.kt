@@ -4,12 +4,12 @@ import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInstaller as AndroidPackageInstaller
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.os.ParcelUuid
 import android.os.StatFs
+import android.text.format.Formatter
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.derivedStateOf
@@ -34,19 +34,20 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.WorkerRepository
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
-import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.Step
+import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.withState
 import app.revanced.manager.util.PM
@@ -65,6 +66,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
@@ -84,7 +86,7 @@ import ru.solrudev.ackpine.uninstaller.UninstallFailure
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
-import android.text.format.Formatter
+import android.content.pm.PackageInstaller as AndroidPackageInstaller
 
 @OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
 class PatcherViewModel(
@@ -97,6 +99,7 @@ class PatcherViewModel(
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
     private val prefs: PreferencesManager by inject()
+    private val patchBundleRepository: PatchBundleRepository by inject()
     private val savedStateHandle: SavedStateHandle = get()
     private val ackpineInstaller: PackageInstaller = get()
 
@@ -114,8 +117,7 @@ class PatcherViewModel(
     }
         private set
     var packageInstallerStatus: Int? by savedStateHandle.saveable(
-        key = "packageInstallerStatus",
-        stateSaver = autoSaver()
+        key = "packageInstallerStatus", stateSaver = autoSaver()
     ) {
         mutableStateOf(null)
     }
@@ -288,17 +290,14 @@ class PatcherViewModel(
 
                 is ProgressEvent.Progress -> withState(
                     message = event.message ?: message,
-                    progress = event.current?.let { event.current to event.total } ?: progress
-                )
+                    progress = event.current?.let { event.current to event.total } ?: progress)
 
                 is ProgressEvent.Completed -> withState(State.COMPLETED, progress = null)
 
                 is ProgressEvent.Failed -> {
                     if (event.stepId == null && steps.any { it.state == State.FAILED }) return@launch
                     withState(
-                        State.FAILED,
-                        message = event.error.stackTrace,
-                        progress = null
+                        State.FAILED, message = event.error.stackTrace, progress = null
                     )
                 }
             }
@@ -335,9 +334,8 @@ class PatcherViewModel(
         }
     }
 
-    fun exportLogs(context: Context) {
-        val activityManager =
-            context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    suspend fun exportLogs(context: Context) {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
         val memInfo = ActivityManager.MemoryInfo().also {
             activityManager.getMemoryInfo(it)
@@ -352,40 +350,55 @@ class PatcherViewModel(
             is SelectedApp.Local -> "Storage (Local)"
         }
 
+        val patchCounts = patchBundleRepository.patchCountsFlow.first()
+        val patchesInfo = patchBundleRepository.sources.first()
+            .joinToString("\n") { source ->
+                val count = patchCounts[source.uid] ?: 0
+                "  - ${source.name}: ${source.version ?: "N/A"} ($count patches)"
+            }
+        val hasRoot = rootInstaller.hasRootAccess()
+        val suggestedVersion = patchBundleRepository.suggestedVersions.first()[packageName]
+
         val deviceContent = """
-            Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-            Build type: ${BuildConfig.BUILD_TYPE}
-            Manufacturer: ${Build.MANUFACTURER}
-            Brand: ${Build.BRAND}
+            - Device Info
             Model: ${Build.MODEL}
-            Device: ${Build.DEVICE}
             Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})
-            Security patch: ${Build.VERSION.SECURITY_PATCH}
-            Supported Archs: ${Build.SUPPORTED_ABIS.joinToString()}
+            Supported architectures: ${Build.SUPPORTED_ABIS.joinToString()}
+            Root permissions: ${if (hasRoot) "Yes" else "No"}
+            
+            RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available
+            Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available
             Memory limit: ${activityManager.memoryClass}MB (large: ${activityManager.largeMemoryClass}MB)
-            RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} /
-                 ${Formatter.formatFileSize(context, memInfo.totalMem)} available
-            Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} /
-                     ${Formatter.formatFileSize(context, statFs.totalBytes)} available
+            
+            - Manager
+            App version: ${BuildConfig.VERSION_NAME}
+            Patches: $patchesInfo
+            
+            - Target App
+            Package name: $packageName
+            Installed version: ${version ?: "N/A"}
+            Selected version: ${selectedApp.version}
+            Suggested version: ${suggestedVersion ?: "N/A"}
             APK source: $apkSource
             APK file: ${inputFile?.name ?: "N/A"}
-            Package name: $packageName
-            App version: ${version ?: "N/A"}
-            API URL: ${prefs.api.getBlocking()}
-            Patches auto-update: ${prefs.usePatchesPrereleases.getBlocking()}
-            Manager auto-update: ${prefs.managerAutoUpdates.getBlocking()}
+            
+            - Settings
+            API URL: ${prefs.api.get()}
+            Patches auto-update: ${prefs.usePatchesPrereleases.get()}
+            Manager auto-update: ${prefs.managerAutoUpdates.get()}
+            Use prerelease patch bundles: ${prefs.usePatchesPrereleases.get()}
+            Allow changing patch selection: ${prefs.disableSelectionWarning.get()}
+            Version compatibility check: ${!prefs.disablePatchVersionCompatCheck.get()}
+            Show universal patches: ${!prefs.disableUniversalPatchCheck.get()}
         """.trimIndent()
 
-        val logsContent = logs
-            .asSequence()
-            .map { (level, msg) -> "[${level.name}]: $msg" }
-            .joinToString("\n")
+        val logsContent =
+            logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
 
         val sendIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(
-                Intent.EXTRA_TEXT,
-                "$deviceContent\n\n--- Logs ---\n$logsContent"
+                Intent.EXTRA_TEXT, "$deviceContent\n- Logs\n$logsContent"
             )
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
@@ -433,8 +446,9 @@ class PatcherViewModel(
                 installedAppRepository.addOrUpdate(
                     installerPkgName,
                     packageName,
-                    input.selectedApp.version
-                        ?: withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile)?.versionName!! },
+                    input.selectedApp.version ?: withContext(Dispatchers.IO) {
+                        pm.getPackageInfo(outputFile)?.versionName!!
+                    },
                     InstallType.DEFAULT,
                     input.selectedPatches
                 )
@@ -456,8 +470,7 @@ class PatcherViewModel(
                     withContext(Dispatchers.IO) { pm.getPackageInfo(currentPackageInfo.packageName) }
                 if (existingPackageInfo != null) {
                     // Check if the app version is less than the installed version
-                    if (
-                        pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(
+                    if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(
                             existingPackageInfo
                         )
                     ) {
@@ -502,11 +515,7 @@ class PatcherViewModel(
                         needsRootUninstall = true
                         // Install as root
                         rootInstaller.install(
-                            outputFile,
-                            inputFile,
-                            packageName,
-                            inputVersion,
-                            label
+                            outputFile, inputFile, packageName, inputVersion, label
                         )
 
                         installedAppRepository.addOrUpdate(
@@ -586,18 +595,15 @@ class PatcherViewModel(
         }
 
         fun generateSteps(
-            context: Context,
-            selectedApp: SelectedApp,
-            selectedPatches: PatchSelection
+            context: Context, selectedApp: SelectedApp, selectedPatches: PatchSelection
         ): List<Step> = buildList {
-            if (selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search)
-                add(
-                    Step(
-                        StepId.DownloadAPK,
-                        context.getString(R.string.download_apk),
-                        StepCategory.PREPARING
-                    )
+            if (selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search) add(
+                Step(
+                    StepId.DownloadAPK,
+                    context.getString(R.string.download_apk),
+                    StepCategory.PREPARING
                 )
+            )
 
             add(
                 Step(
@@ -625,9 +631,7 @@ class PatcherViewModel(
             selectedPatches.values.asSequence().flatten().sorted().forEachIndexed { index, name ->
                 add(
                     Step(
-                        StepId.ExecutePatch(index),
-                        name,
-                        StepCategory.PATCHING
+                        StepId.ExecutePatch(index), name, StepCategory.PATCHING
                     )
                 )
             }
