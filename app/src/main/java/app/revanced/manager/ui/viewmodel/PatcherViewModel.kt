@@ -1,11 +1,15 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller as AndroidPackageInstaller
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
 import android.os.ParcelUuid
+import android.os.StatFs
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.derivedStateOf
@@ -22,11 +26,13 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.ProgressEvent
@@ -78,6 +84,7 @@ import ru.solrudev.ackpine.uninstaller.UninstallFailure
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
+import android.text.format.Formatter
 
 @OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
 class PatcherViewModel(
@@ -89,6 +96,7 @@ class PatcherViewModel(
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
+    private val prefs: PreferencesManager by inject()
     private val savedStateHandle: SavedStateHandle = get()
     private val ackpineInstaller: PackageInstaller = get()
 
@@ -328,17 +336,61 @@ class PatcherViewModel(
     }
 
     fun exportLogs(context: Context) {
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(
-                Intent.EXTRA_TEXT,
-                logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
-            )
-            type = "text/plain"
+        val activityManager =
+            context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+        val memInfo = ActivityManager.MemoryInfo().also {
+            activityManager.getMemoryInfo(it)
         }
 
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        context.startActivity(shareIntent)
+        val statFs = StatFs(Environment.getDataDirectory().path)
+
+        val apkSource = when (input.selectedApp) {
+            is SelectedApp.Search -> "Auto (Search)"
+            is SelectedApp.Installed -> "Installed app"
+            is SelectedApp.Download -> "Download"
+            is SelectedApp.Local -> "Storage (Local)"
+        }
+
+        val deviceContent = """
+            Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
+            Build type: ${BuildConfig.BUILD_TYPE}
+            Manufacturer: ${Build.MANUFACTURER}
+            Brand: ${Build.BRAND}
+            Model: ${Build.MODEL}
+            Device: ${Build.DEVICE}
+            Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})
+            Security patch: ${Build.VERSION.SECURITY_PATCH}
+            Supported Archs: ${Build.SUPPORTED_ABIS.joinToString()}
+            Memory limit: ${activityManager.memoryClass}MB (large: ${activityManager.largeMemoryClass}MB)
+            RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} /
+                 ${Formatter.formatFileSize(context, memInfo.totalMem)} available
+            Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} /
+                     ${Formatter.formatFileSize(context, statFs.totalBytes)} available
+            APK source: $apkSource
+            APK file: ${inputFile?.name ?: "N/A"}
+            Package name: $packageName
+            App version: ${version ?: "N/A"}
+            API URL: ${prefs.api.getBlocking()}
+            Patches auto-update: ${prefs.usePatchesPrereleases.getBlocking()}
+            Manager auto-update: ${prefs.managerAutoUpdates.getBlocking()}
+        """.trimIndent()
+
+        val logsContent = logs
+            .asSequence()
+            .map { (level, msg) -> "[${level.name}]: $msg" }
+            .joinToString("\n")
+
+        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "$deviceContent\n\n--- Logs ---\n$logsContent"
+            )
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+
+        context.startActivity(Intent.createChooser(sendIntent, null))
     }
 
     fun open() = installedPackageName?.let(pm::launch)
