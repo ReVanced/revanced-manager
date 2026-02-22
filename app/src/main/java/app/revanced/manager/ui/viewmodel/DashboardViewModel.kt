@@ -23,11 +23,14 @@ import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
+import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -101,12 +104,14 @@ class DashboardViewModel(
         }
 
         unreadAnnouncement = announcements.firstOrNull { announcement ->
+            val isNotArchived = announcement.archivedAt.toInstant(TimeZone.UTC) > Clock.System.now()
+
             val hasRelevantTag = "revanced" in announcement.tags ||
                     "manager" in announcement.tags
 
             val isUnread = announcement.id !in readAnnouncements
 
-            hasRelevantTag && isUnread
+            isNotArchived && hasRelevantTag && isUnread
         }
 
     }

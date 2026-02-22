@@ -83,6 +83,7 @@ Second \"item\" text"</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="announcements_filter_tag">Filter by tag</string>
+    <string name="announcements_show_archived">Show archived</string>
 
     <string name="general">General</string>
     <string name="general_description">Language, theme, dynamic color</string>

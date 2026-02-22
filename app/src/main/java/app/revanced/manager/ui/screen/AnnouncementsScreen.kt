@@ -14,16 +14,20 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.outlined.FilterAlt
+import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,7 +49,11 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
+import app.revanced.manager.util.transparentListItemColors
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import org.koin.androidx.compose.koinViewModel
+import kotlin.time.Clock
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +69,11 @@ fun AnnouncementsScreen(
         FilterBottomSheet(
             onDismissRequest = { showFilterSheet = false },
             tags = vm.tags.orEmpty(),
-            selectedTags = vm.selectedTags
+            selectedTags = vm.selectedTags,
+            showArchived = vm.showArchived,
+            onShowArchivedChange = { vm.showArchived = it },
+            onReset = vm::resetTagSelection,
+            onSave = vm::saveSelectedTags
         )
     }
 
@@ -123,7 +135,8 @@ fun AnnouncementsScreen(
                             date = announcement.createdAt.relativeTime(LocalContext.current),
                             author = announcement.author,
                             content = announcement.content,
-                            unread = announcement.id !in vm.readAnnouncements
+                            unread = announcement.id !in vm.readAnnouncements,
+                            archived = announcement.archivedAt.toInstant(TimeZone.UTC) < Clock.System.now()
                         )
                     }
                 }
@@ -144,7 +157,11 @@ fun AnnouncementsScreen(
 private fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
     tags: List<String>,
-    selectedTags: SnapshotStateList<String>
+    selectedTags: SnapshotStateList<String>,
+    showArchived: Boolean,
+    onShowArchivedChange: (Boolean) -> Unit,
+    onReset: () -> Unit,
+    onSave: () -> Unit
 ) {
     ModalBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
@@ -163,6 +180,7 @@ private fun FilterBottomSheet(
             ) {
                 tags.forEach { tag ->
                     val selected = selectedTags.contains(tag)
+
                     FilterChip(
                         selected = selected,
                         onClick = {
@@ -176,6 +194,22 @@ private fun FilterBottomSheet(
                     )
                 }
             }
+
+            ListItem(
+                modifier = Modifier.clickable(onClick = { onShowArchivedChange(!showArchived) }),
+                headlineContent = { Text(text = stringResource(R.string.announcements_show_archived)) },
+                trailingContent = {
+                    Switch(
+                        checked = showArchived,
+                        onCheckedChange = onShowArchivedChange
+                    )
+                },
+                colors = transparentListItemColors
+            )
+
+            TextButton(modifier = Modifier.align(Alignment.End), onClick = onReset) {
+                Text(stringResource(R.string.reset))
+            }
         }
     }
 }
@@ -188,7 +222,8 @@ private fun AnnouncementCard(
     date: String,
     author: String,
     content: String,
-    unread: Boolean
+    unread: Boolean,
+    archived: Boolean
 ) {
     Column(
         modifier = modifier
@@ -216,6 +251,13 @@ private fun AnnouncementCard(
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = if (unread) FontWeight.ExtraBold else null
                     )
+                    if (archived) {
+                        Icon(
+                            Icons.Outlined.Inventory2,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp)
+                        )
+                    }
                     if (unread) {
                         Badge(modifier = Modifier.size(6.dp))
                     }
