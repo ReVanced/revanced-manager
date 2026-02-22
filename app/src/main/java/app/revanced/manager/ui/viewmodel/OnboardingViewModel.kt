@@ -94,9 +94,6 @@ class OnboardingViewModel(
         currentStep = if (allPermissionsGranted) OnboardingStep.Updates else OnboardingStep.Permissions
     }
 
-    fun loadLabel(packageInfo: PackageInfo?) =
-        with(pm) { packageInfo?.label() ?: app.getString(R.string.not_installed) }
-
     fun refreshPermissionStates() {
         canInstallUnknownApps = pm.canInstallPackages()
         isNotificationsEnabled = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||

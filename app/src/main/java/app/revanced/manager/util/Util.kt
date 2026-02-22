@@ -3,8 +3,14 @@ package app.revanced.manager.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.graphics.Bitmap
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.FloatRange
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
@@ -23,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
+import androidx.core.graphics.scale
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -331,4 +338,36 @@ fun androidx.navigation.NavController.popBackStackSafe(): Boolean {
     } else {
         false
     }
+}
+
+// Renderscript is deprecated on new Android, but it works perfectly for what is needed
+@Suppress("DEPRECATION")
+fun blurBackground(
+    context: Context,
+    image: Bitmap,
+    @Suppress("SameParameterValue")
+    @FloatRange(0.0, 25.0)
+    radius: Float,
+): Bitmap {
+    val rs = RenderScript.create(context)
+    val workingBitmap = image.scale(64, 64)
+
+    val input = Allocation.createFromBitmap(
+        rs,
+        workingBitmap,
+        Allocation.MipmapControl.MIPMAP_NONE,
+        Allocation.USAGE_SCRIPT,
+    )
+    val output = Allocation.createTyped(rs, input.type)
+
+    ScriptIntrinsicBlur.create(rs, Element.U8_4(rs)).apply {
+        setRadius(radius)
+        setInput(input)
+        forEach(output)
+    }
+
+    output.copyTo(workingBitmap)
+    rs.destroy()
+
+    return workingBitmap
 }

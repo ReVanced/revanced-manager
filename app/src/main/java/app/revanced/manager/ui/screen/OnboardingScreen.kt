@@ -213,7 +213,6 @@ fun OnboardingScreen(
                 OnboardingStep.Apps -> AppsStepContent(
                     apps = apps,
                     suggestedVersions = suggestedVersions,
-                    loadLabel = vm::loadLabel,
                     onAppClick = onCompletedAppClick,
                     showSubtitle = showSubtitle
                 )
