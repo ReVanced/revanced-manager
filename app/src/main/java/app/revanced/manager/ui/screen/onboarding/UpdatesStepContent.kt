@@ -30,10 +30,12 @@ fun UpdatesStepContent(
     showSubtitle: Boolean = true,
     modifier: Modifier = Modifier
 ) {
+    val appName = stringResource(R.string.app_name)
+
     ColumnWithScrollbarEdgeShadow(modifier = modifier.fillMaxSize()) {
         if (showSubtitle) {
             Text(
-                text = stringResource(R.string.onboarding_updates_subtitle),
+                text = stringResource(R.string.onboarding_updates_subtitle, appName),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -43,7 +45,7 @@ fun UpdatesStepContent(
 
         ListSection {
             UpdatesItem(
-                headline = stringResource(R.string.auto_updates_dialog_manager),
+                headline = stringResource(R.string.auto_updates_dialog_manager, appName),
                 icon = Icons.Outlined.Update,
                 checked = managerEnabled,
                 onCheckedChange = onManagerEnabledChange

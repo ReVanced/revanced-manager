@@ -33,6 +33,25 @@ fun BooleanItem(
 @Composable
 fun BooleanItem(
     modifier: Modifier = Modifier,
+    preference: Preference<Boolean>,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    @StringRes headline: Int,
+    description: String
+) {
+    val value by preference.getAsState()
+
+    BooleanItem(
+        modifier = modifier,
+        value = value,
+        onValueChange = { coroutineScope.launch { preference.update(it) } },
+        headline = headline,
+        description = description
+    )
+}
+
+@Composable
+fun BooleanItem(
+    modifier: Modifier = Modifier,
     value: Boolean,
     onValueChange: (Boolean) -> Unit,
     @StringRes headline: Int,

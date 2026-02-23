@@ -97,22 +97,23 @@ fun OnboardingScreen(
     ) {
         vm.refreshPermissionStates()
     }
+    val appName = stringResource(R.string.app_name)
 
     BackHandler(enabled = currentStep != OnboardingStep.Permissions) {
         vm.retreat()
     }
 
     val stepTitle = when (currentStep) {
-        OnboardingStep.Permissions -> stringResource(R.string.onboarding_permissions_subtitle)
+        OnboardingStep.Permissions -> stringResource(R.string.onboarding_permissions_subtitle, appName)
         OnboardingStep.Updates -> stringResource(R.string.auto_updates_dialog_title)
-        OnboardingStep.Sources -> stringResource(R.string.onboarding_sources_subtitle)
+        OnboardingStep.Sources -> stringResource(R.string.onboarding_sources_subtitle, appName)
         OnboardingStep.Apps -> stringResource(R.string.select_app)
     }
 
     val stepDescription = when (currentStep) {
         OnboardingStep.Permissions -> stringResource(R.string.onboarding_permissions_skip_description)
         OnboardingStep.Updates -> stringResource(R.string.auto_updates_dialog_note)
-        OnboardingStep.Sources -> stringResource(R.string.onboarding_sources_note)
+        OnboardingStep.Sources -> stringResource(R.string.onboarding_sources_note, appName)
         OnboardingStep.Apps -> stringResource(R.string.onboarding_subtitle)
     }
 

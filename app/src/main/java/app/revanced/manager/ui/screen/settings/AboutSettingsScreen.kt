@@ -71,6 +71,7 @@ fun AboutSettingsScreen(
 ) {
     val context = LocalContext.current
     val resources = LocalResources.current
+    val appName = stringResource(R.string.app_name)
     // painterResource() is broken on release builds for some reason.
     val icon = rememberDrawablePainter(drawable = remember(resources) {
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
@@ -278,11 +279,11 @@ fun AboutSettingsScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.about_revanced_manager),
+                        text = stringResource(R.string.about_revanced_manager, appName),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = stringResource(R.string.revanced_manager_description),
+                        text = stringResource(R.string.revanced_manager_description, appName),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

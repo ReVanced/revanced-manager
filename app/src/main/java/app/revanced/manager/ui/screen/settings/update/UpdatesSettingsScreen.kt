@@ -62,6 +62,7 @@ fun UpdatesSettingsScreen(
 ) {
     val context = LocalContext.current
     val resources = LocalResources.current
+    val appName = stringResource(R.string.app_name)
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val appIcon = rememberDrawablePainter(
@@ -172,7 +173,7 @@ fun UpdatesSettingsScreen(
                 BooleanItem(
                     preference = vm.managerAutoUpdates,
                     headline = R.string.update_checking_manager,
-                    description = R.string.update_checking_manager_description
+                    description = stringResource(R.string.update_checking_manager_description, appName)
                 )
 
                 BooleanItem(
@@ -184,7 +185,7 @@ fun UpdatesSettingsScreen(
                 SafeguardBooleanItem(
                     preference = vm.useManagerPrereleases,
                     headline = R.string.manager_prereleases,
-                    description = R.string.manager_prereleases_description,
+                    description = stringResource(R.string.manager_prereleases_description, appName),
                     confirmationText = R.string.prereleases_warning
                 )
             }
