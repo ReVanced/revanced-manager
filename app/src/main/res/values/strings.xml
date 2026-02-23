@@ -293,6 +293,9 @@ Second \"item\" text"</string>
     <string name="patches_download_fail">Failed to download patches: %s</string>
     <string name="patches_replace_fail">Failed to import patches: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
+    <string name="no_patched_apps_description">You currently don\'t have any patched apps that we know of. Change that by patching your first app!</string>
+    <string name="no_patches_found">No patches found</string>
+    <string name="no_patches_description">You don\'t have any patches yet. Add patches by tapping the button below!</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="patches_selected">%s selected</string>
     <string name="incompatible_patches">Incompatible patches</string>
