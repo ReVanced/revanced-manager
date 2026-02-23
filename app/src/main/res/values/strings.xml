@@ -435,8 +435,8 @@ Second \"item\" text"</string>
     <string name="patches_delete_single_dialog_description">Are you sure you want to delete \"%s\"?</string>
     <string name="patches_delete_multiple_dialog_description">Are you sure you want to delete the selected patches?</string>
 
-    <string name="about_revanced_manager">About ReVanced Manager</string>
-    <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
+    <string name="about_revanced_manager">About %1$s</string>
+    <string name="revanced_manager_description">%1$s is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
     <string name="developer_options_taps">%d taps remaining</string>
     <string name="developer_options_enabled">Developer options enabled</string>
     <string name="developer_options_already_enabled">Developer options are already enabled</string>
