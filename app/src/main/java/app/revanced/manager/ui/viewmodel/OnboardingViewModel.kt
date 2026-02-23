@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
-import android.content.pm.PackageInfo
 import android.os.Build
 import android.os.PowerManager
 import androidx.compose.runtime.getValue
@@ -11,7 +10,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
@@ -19,11 +17,9 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 data class OnboardingPluginInfo(
@@ -51,17 +47,9 @@ class OnboardingViewModel(
 
     val apps = pm.appList.map { apps ->
         apps.filter { (it.patches ?: 0) > 0 }.ifEmpty { null }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-        null
-    )
+    }
 
-    val suggestedVersions = patchBundleRepository.suggestedVersions.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-        emptyMap()
-    )
+    val suggestedVersions = patchBundleRepository.suggestedVersions
 
     val plugins = downloaderPluginRepository.pluginStates.map { states ->
         states.mapNotNull { (packageName, state) ->
@@ -74,7 +62,8 @@ class OnboardingViewModel(
             )
         }.sortedBy { it.name.lowercase() }
     }.flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), emptyList())
+
+    private var hasPlugins by mutableStateOf(false)
 
     var canInstallUnknownApps by mutableStateOf(false)
         private set
@@ -91,6 +80,9 @@ class OnboardingViewModel(
 
     init {
         refreshPermissionStates()
+        viewModelScope.launch {
+            plugins.collect { hasPlugins = it.isNotEmpty() }
+        }
         currentStep = if (allPermissionsGranted) OnboardingStep.Updates else OnboardingStep.Permissions
     }
 
@@ -137,7 +129,7 @@ class OnboardingViewModel(
 
     private fun nextStep(from: OnboardingStep) = when (from) {
         OnboardingStep.Permissions -> OnboardingStep.Updates
-        OnboardingStep.Updates -> if (plugins.value.isNotEmpty()) OnboardingStep.Sources else OnboardingStep.Apps
+        OnboardingStep.Updates -> if (hasPlugins) OnboardingStep.Sources else OnboardingStep.Apps
         OnboardingStep.Sources -> OnboardingStep.Apps
         OnboardingStep.Apps -> OnboardingStep.Apps
     }
@@ -146,10 +138,7 @@ class OnboardingViewModel(
         OnboardingStep.Permissions -> OnboardingStep.Permissions
         OnboardingStep.Updates -> OnboardingStep.Permissions
         OnboardingStep.Sources -> OnboardingStep.Updates
-        OnboardingStep.Apps -> if (plugins.value.isNotEmpty()) OnboardingStep.Sources else OnboardingStep.Updates
+        OnboardingStep.Apps -> if (hasPlugins) OnboardingStep.Sources else OnboardingStep.Updates
     }
 
-    private companion object {
-        private const val STOP_TIMEOUT_MILLIS = 5_000L
-    }
 }

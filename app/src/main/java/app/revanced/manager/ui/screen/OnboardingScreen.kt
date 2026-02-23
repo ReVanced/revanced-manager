@@ -72,9 +72,9 @@ fun OnboardingScreen(
     vm: OnboardingViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
-    val apps by vm.apps.collectAsStateWithLifecycle()
-    val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle()
-    val plugins by vm.plugins.collectAsStateWithLifecycle()
+    val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
+    val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
+    val plugins by vm.plugins.collectAsStateWithLifecycle(initialValue = emptyList())
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
