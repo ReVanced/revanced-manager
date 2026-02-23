@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
@@ -30,8 +31,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -46,11 +50,13 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
+import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
 import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinActivityViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -61,16 +67,19 @@ fun UpdatesSettingsScreen(
     vm: UpdatesSettingsViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
+    val dashboardVm: DashboardViewModel = koinActivityViewModel()
     val resources = LocalResources.current
     val appName = stringResource(R.string.app_name)
     val coroutineScope = rememberCoroutineScope()
+    var checkingForUpdate by remember { mutableStateOf(false) }
+    val hasAvailableUpdate = !dashboardVm.updatedManagerVersion.isNullOrEmpty()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val appIcon = rememberDrawablePainter(
         drawable = remember(context) {
             AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
         }
     )
-
+    
     Scaffold(
         topBar = {
             AppTopBar(
@@ -85,22 +94,50 @@ fun UpdatesSettingsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
+                    enabled = !checkingForUpdate,
                     onClick = {
                         coroutineScope.launch {
+                            if (hasAvailableUpdate) {
+                                onUpdateClick()
+                                return@launch
+                            }
+
                             if (!vm.isConnected) {
                                 context.toast(resources.getString(R.string.no_network_toast))
                                 return@launch
                             }
-                            if (vm.checkForUpdates()) onUpdateClick()
+                            checkingForUpdate = true
+                            try {
+                                val version = vm.checkForUpdates()
+                                dashboardVm.updateUpdatedManagerVersion(version)
+                                if (!version.isNullOrEmpty()) onUpdateClick()
+                            } finally {
+                                checkingForUpdate = false
+                            }
                         }
                     }
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Update,
-                        contentDescription = stringResource(R.string.refresh)
-                    )
+                    if (checkingForUpdate) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Filled.Update,
+                            contentDescription = stringResource(R.string.refresh)
+                        )
+                    }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = stringResource(R.string.manual_update_check))
+                    Text(
+                        text = stringResource(
+                            when {
+                                checkingForUpdate -> R.string.update_check
+                                hasAvailableUpdate -> R.string.view_update
+                                else -> R.string.manual_update_check
+                            }
+                        )
+                    )
                 }
             }
         },
@@ -186,7 +223,13 @@ fun UpdatesSettingsScreen(
                     preference = vm.useManagerPrereleases,
                     headline = R.string.manager_prereleases,
                     description = stringResource(R.string.manager_prereleases_description, appName),
-                    confirmationText = R.string.prereleases_warning
+                    confirmationText = R.string.prereleases_warning,
+                    onValueChange = { value ->
+                        coroutineScope.launch {
+                            vm.useManagerPrereleases.update(value)
+                            dashboardVm.updateUpdatedManagerVersion(null)
+                        }
+                    }
                 )
             }
         }

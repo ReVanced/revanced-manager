@@ -19,20 +19,20 @@ class UpdatesSettingsViewModel(
     val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
     val useManagerPrereleases = prefs.useManagerPrereleases
 
-
     val isConnected: Boolean
         get() = network.isConnected()
 
-    suspend fun checkForUpdates(): Boolean {
-        uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
-            app.toast(app.getString(R.string.update_check))
+    suspend fun checkForUpdates(): String? {
+        var availableVersion: String? = null
 
-            if (reVancedAPI.getAppUpdate() == null)
+        uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
+            val update = reVancedAPI.getAppUpdate()
+            availableVersion = update?.version
+
+            if (update == null)
                 app.toast(app.getString(R.string.no_update_available))
-            else
-                return true
         }
 
-        return false
+        return availableVersion
     }
 }

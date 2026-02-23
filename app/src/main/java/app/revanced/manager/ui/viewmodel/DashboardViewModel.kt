@@ -94,6 +94,10 @@ class DashboardViewModel(
         }
     }
 
+    fun updateUpdatedManagerVersion(value: String?) {
+        updatedManagerVersion = value
+    }
+
     private fun sendEvent(event: BundleListViewModel.Event) {
         viewModelScope.launch { bundleListEventsChannel.send(event) }
     }

@@ -447,6 +447,7 @@ Second \"item\" text"</string>
     <string name="update_completed">Update installed</string>
     <string name="install_update_manager_failed">Failed to install update</string>
     <string name="manual_update_check">Check for updates</string>
+    <string name="view_update">View update</string>
     <string name="manual_update_check_description">Manually check for updates</string>
     <string name="update_checking_manager">Check for updates on launch</string>
     <string name="update_checking_manager_description">Check for new versions of %1$s when the application starts</string>

@@ -60,6 +60,7 @@ import app.revanced.manager.ui.screen.settings.update.ChangelogsSettingsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
+import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
@@ -117,6 +118,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 private fun ReVancedManager(vm: MainViewModel) {
     val navController = rememberNavController()
+    val dashboardVm: DashboardViewModel = koinViewModel()
     val completedOnboarding by vm.prefs.completedOnboarding.getAsState()
 
     EventEffect(vm.appSelectFlow) { app ->
@@ -143,6 +145,7 @@ private fun ReVancedManager(vm: MainViewModel) {
 
         composable<Dashboard> {
             DashboardScreen(
+                vm = dashboardVm,
                 onSettingsClick = { navController.navigateSafe(Settings) },
                 onAppSelectorClick = {
                     navController.navigateSafe(AppSelector)
