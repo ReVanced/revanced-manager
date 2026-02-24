@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.webkit.WebView
 import android.widget.FrameLayout
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -73,37 +75,46 @@ fun AnnouncementScreen(
             )
         }
     ) { paddingValues ->
-        AndroidView(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(scrollState)
-                .padding(horizontal = 10.dp),
-            factory = {
-                val webView = WebView(it).apply {
-                    setBackgroundColor(0)
-                    isVerticalScrollBarEnabled = false
-                    isHorizontalScrollBarEnabled = false
-                    isLongClickable = false
-                    setOnLongClickListener { true }
-                    isHapticFeedbackEnabled = false
-                    layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+                .padding(paddingValues)
+        ) {
+            AnnouncementTag(
+                tags = announcement.tags,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp, vertical = 8.dp)
+            )
+            AndroidView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
+                factory = {
+                    val webView = WebView(it).apply {
+                        setBackgroundColor(0)
+                        isVerticalScrollBarEnabled = false
+                        isHorizontalScrollBarEnabled = false
+                        isLongClickable = false
+                        setOnLongClickListener { true }
+                        isHapticFeedbackEnabled = false
 
-                    // Disable WebView's internal scrolling
-                    @SuppressLint("ClickableViewAccessibility")
-                    setOnTouchListener { _, event ->
-                        event.action == MotionEvent.ACTION_MOVE
+                        // Disable WebView's internal scrolling
+                        @SuppressLint("ClickableViewAccessibility")
+                        setOnTouchListener { _, event ->
+                            event.action == MotionEvent.ACTION_MOVE
+                        }
                     }
-                }
-                FrameLayout(it).apply {
-                    addView(webView)
-                }
-            },
-            update = {
-                val webView = it.children.first() as WebView
-                @Language("HTML")
-                val style = """
+                    FrameLayout(it).apply {
+                        addView(webView)
+                    }
+                },
+                update = {
+                    val webView = it.children.first() as WebView
+                    @Language("HTML")
+                    val style = """
                     <html>
                       <head>
                         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -121,13 +132,14 @@ fun AnnouncementScreen(
                       </body>
                     </html>
                 """.trimIndent()
-                webView.loadData(style, "text/html", "UTF-8")
-            },
-            onRelease = {
-                val webView = it.children.first() as WebView
-                webView.destroy()
-            }
-        )
+                    webView.loadData(style, "text/html", "UTF-8")
+                },
+                onRelease = {
+                    val webView = it.children.first() as WebView
+                    webView.destroy()
+                }
+            )
+        }
     }
 }
 
