@@ -334,7 +334,7 @@ class PatcherViewModel(
         }
     }
 
-    suspend fun exportLogs(context: Context) {
+    fun exportLogs(context: Context) = viewModelScope.launch {
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
         val memInfo = ActivityManager.MemoryInfo().also {
@@ -360,20 +360,6 @@ class PatcherViewModel(
         val suggestedVersion = patchBundleRepository.suggestedVersions.first()[packageName]
 
         val deviceContent = """
-            - Device Info
-            Model: ${Build.MODEL}
-            Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})
-            Supported architectures: ${Build.SUPPORTED_ABIS.joinToString()}
-            Root permissions: ${if (hasRoot) "Yes" else "No"}
-            
-            RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available
-            Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available
-            Memory limit: ${activityManager.memoryClass}MB (large: ${activityManager.largeMemoryClass}MB)
-            
-            - Manager
-            App version: ${BuildConfig.VERSION_NAME}
-            Patches: $patchesInfo
-            
             - Target App
             Package name: $packageName
             Installed version: ${version ?: "N/A"}
@@ -382,25 +368,47 @@ class PatcherViewModel(
             APK source: $apkSource
             APK file: ${inputFile?.name ?: "N/A"}
             
-            - Settings
-            API URL: ${prefs.api.get()}
-            Patches auto-update: ${prefs.usePatchesPrereleases.get()}
-            Manager auto-update: ${prefs.managerAutoUpdates.get()}
-            Use prerelease patch bundles: ${prefs.usePatchesPrereleases.get()}
-            Allow changing patch selection: ${prefs.disableSelectionWarning.get()}
+            - Selected Patches
+            Patch bundles: $patchesInfo
+            
+            - Patching Configuration
             Version compatibility check: ${!prefs.disablePatchVersionCompatCheck.get()}
+            Allow changing patch selection: ${prefs.disableSelectionWarning.get()}
             Show universal patches: ${!prefs.disableUniversalPatchCheck.get()}
+            Use patches pre-releases: ${prefs.usePatchesPrereleases.get()}
+            
+            - Runtime Configuration
+            Use process runtime: ${prefs.useProcessRuntime.get()}
+            Process runtime custom memory limit: ${prefs.patcherProcessMemoryLimit.get()}
+            Memory limit: ${activityManager.memoryClass}MB (large: ${activityManager.largeMemoryClass}MB)
+            
+            - Manager
+            App version: ${BuildConfig.VERSION_NAME}
+            API URL: ${prefs.api.get()}
+            Use manager pre-releases: ${prefs.useManagerPrereleases.get()}
+            Manager auto-update: ${prefs.managerAutoUpdates.get()}
+            
+            - Environment
+            Root permissions: ${if (hasRoot) "Yes" else "No"}
+            RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available
+            Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available
+            
+            - Device Info
+            Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})
+            Supported architectures: ${Build.SUPPORTED_ABIS.joinToString()}
+            Model: ${Build.MODEL}
         """.trimIndent()
 
         val logsContent =
             logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
 
-        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
             type = "text/plain"
             putExtra(
-                Intent.EXTRA_TEXT, "$deviceContent\n- Logs\n$logsContent"
+                Intent.EXTRA_TEXT, "$deviceContent\n\n- Logs\n$logsContent"
             )
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            type = "text/plain"
         }
 
         context.startActivity(Intent.createChooser(sendIntent, null))
