@@ -22,20 +22,20 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.network.downloader.DownloaderPluginState
-import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
+import app.revanced.manager.network.downloader.DownloaderState
+import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
-import app.revanced.manager.plugin.downloader.GetScope
-import app.revanced.manager.plugin.downloader.PluginHostApi
-import app.revanced.manager.plugin.downloader.UserInteractionException
+import app.revanced.manager.downloader.GetScope
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
@@ -60,7 +60,7 @@ import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
-@OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
+@OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
 class SelectedAppInfoViewModel(
     input: SelectedApplicationInfo.ViewModelParams
 ) : ViewModel(), KoinComponent {
@@ -68,14 +68,14 @@ class SelectedAppInfoViewModel(
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
-    private val pluginsRepository: DownloaderPluginRepository = get()
+    private val downloaderRepository: DownloaderRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
     private val rootInstaller: RootInstaller = get()
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
-    val plugins = pluginsRepository.loadedPluginsFlow
-    val allPlugins = pluginsRepository.pluginStates
+    val downloaders = downloaderRepository.loadedDownloadersFlow
+    val allDownloaders = downloaderRepository.downloadersStates
     val desiredVersion = input.app.version
     val packageName = input.app.packageName
 
@@ -158,16 +158,16 @@ class SelectedAppInfoViewModel(
 
     var showSourceSelector by mutableStateOf(false)
         private set
-    private var pluginAction: Pair<LoadedDownloaderPlugin, Job>? by mutableStateOf(null)
-    val activePluginAction get() = pluginAction?.first?.packageName
+    private var downloaderAction: Pair<LoadedDownloader, Job>? by mutableStateOf(null)
+    val activeDownloader get() = downloaderAction?.first
     private var launchedActivity by mutableStateOf<CompletableDeferred<ActivityResult>?>(null)
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
-    val errorFlow = combine(allPlugins, snapshotFlow { selectedApp }) { allPlugins, app ->
+    val errorFlow = combine(allDownloaders, snapshotFlow { selectedApp }) { allDownloaders, app ->
         when (app) {
-            is SelectedApp.Search if allPlugins.isEmpty() -> Error.NoPluginsInstalled
-            is SelectedApp.Search if allPlugins.values.all { it is DownloaderPluginState.Untrusted } -> Error.NoPluginsTrusted
+            is SelectedApp.Search if allDownloaders.isEmpty() -> Error.NoDownloadersInstalled
+            is SelectedApp.Search if allDownloaders.values.all { it is DownloaderState.Untrusted } -> Error.NoDownloadersTrusted
             else -> null
         }
     }
@@ -177,23 +177,23 @@ class SelectedAppInfoViewModel(
         showSourceSelector = true
     }
 
-    private fun cancelPluginAction() {
-        pluginAction?.second?.cancel()
-        pluginAction = null
+    private fun cancelDownloaderAction() {
+        downloaderAction?.second?.cancel()
+        downloaderAction = null
     }
 
     fun dismissSourceSelector() {
-        cancelPluginAction()
+        cancelDownloaderAction()
         showSourceSelector = false
     }
 
-    fun searchUsingPlugin(plugin: LoadedDownloaderPlugin) {
-        cancelPluginAction()
-        pluginAction = plugin to viewModelScope.launch {
+    fun searchUsingDownloader(downloader: LoadedDownloader) {
+        cancelDownloaderAction()
+        downloaderAction = downloader to viewModelScope.launch {
             try {
                 val scope = object : GetScope {
                     override val hostPackageName = app.packageName
-                    override val pluginPackageName = plugin.packageName
+                    override val downloaderPackageName = downloader.packageName
                     override suspend fun requestStartActivity(intent: Intent) =
                         withContext(Dispatchers.Main) {
                             if (launchedActivity != null) error("Previous activity has not finished")
@@ -218,7 +218,7 @@ class SelectedAppInfoViewModel(
                 }
 
                 withContext(Dispatchers.IO) {
-                    plugin.get(scope, packageName, desiredVersion)
+                    downloader.get(scope, packageName, desiredVersion)
                 }?.let { (data, version) ->
                     if (desiredVersion != null && version != desiredVersion) {
                         app.toast(app.getString(R.string.downloader_invalid_version))
@@ -227,7 +227,7 @@ class SelectedAppInfoViewModel(
                     selectedApp = SelectedApp.Download(
                         packageName,
                         version,
-                        ParceledDownloaderData(plugin, data)
+                        ParceledDownloaderData(downloader, data)
                     )
                 } ?: app.toast(app.getString(R.string.downloader_app_not_found))
             } catch (e: UserInteractionException.Activity) {
@@ -238,13 +238,13 @@ class SelectedAppInfoViewModel(
                 app.toast(app.getString(R.string.downloader_error, e.simpleMessage()))
                 Log.e(tag, "Downloader.get threw an exception", e)
             } finally {
-                pluginAction = null
+                downloaderAction = null
                 dismissSourceSelector()
             }
         }
     }
 
-    fun handlePluginActivityResult(result: ActivityResult) {
+    fun handleDownloaderActivityResult(result: ActivityResult) {
         launchedActivity?.complete(result)
     }
 
@@ -306,8 +306,8 @@ class SelectedAppInfoViewModel(
     }
 
     enum class Error(@param:StringRes val resourceId: Int) {
-        NoPluginsInstalled(R.string.downloader_no_plugins_installed),
-        NoPluginsTrusted(R.string.downloader_no_plugins_trusted),
+        NoDownloadersInstalled(R.string.no_downloaders_installed),
+        NoDownloadersTrusted(R.string.no_downloaders_trusted),
     }
 
     private companion object {
@@ -325,7 +325,7 @@ class SelectedAppInfoViewModel(
                         bundleOptions.forEach patch@{ (patchName, values) ->
                             // Get all valid option keys for the patch.
                             val validOptionKeys =
-                                patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
+                                patches[patchName]?.options?.map { it.name }?.toSet() ?: return@patch
 
                             this@bundleOptions[patchName] = values.filterKeys { key ->
                                 key in validOptionKeys

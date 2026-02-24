@@ -1,12 +1,9 @@
 package app.revanced.manager
 
-import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
@@ -27,6 +24,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import app.revanced.manager.ui.model.navigation.Announcement
+import app.revanced.manager.ui.model.navigation.Announcements
 import app.revanced.manager.ui.model.navigation.AppSelector
 import app.revanced.manager.ui.model.navigation.BundleInformation
 import app.revanced.manager.ui.model.navigation.ComplexParameter
@@ -37,6 +36,8 @@ import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
+import app.revanced.manager.ui.screen.AnnouncementScreen
+import app.revanced.manager.ui.screen.AnnouncementsScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.BundleInformationScreen
 import app.revanced.manager.ui.screen.DashboardScreen
@@ -73,6 +74,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
+
 class MainActivity : AppCompatActivity() {
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,23 +87,12 @@ class MainActivity : AppCompatActivity() {
         val vm: MainViewModel = getActivityViewModel()
 
         setContent {
-            val launcher = rememberLauncherForActivityResult(
-                ActivityResultContracts.StartActivityForResult(),
-                onResult = vm::applyLegacySettings
-            )
             val theme by vm.prefs.theme.getAsState()
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
             val pureBlackTheme by vm.prefs.pureBlackTheme.getAsState()
 
             LaunchedEffect(theme, dynamicColor, pureBlackTheme) {
                 resetListItemColorsCached()
-            }
-
-            EventEffect(vm.legacyImportActivityFlow) {
-                try {
-                    launcher.launch(it)
-                } catch (_: ActivityNotFoundException) {
-                }
             }
 
             ReVancedManagerTheme(
@@ -134,7 +125,7 @@ private fun ReVancedManager(vm: MainViewModel) {
         enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
         exitTransition = { slideOutHorizontally(targetOffsetX = { -it / 3 }) },
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it / 3 }) },
-        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
+        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) }
     ) {
         composable<Onboarding> {
             OnboardingScreen(
@@ -153,7 +144,7 @@ private fun ReVancedManager(vm: MainViewModel) {
                 onUpdateClick = {
                     navController.navigateSafe(Update())
                 },
-                onDownloaderPluginClick = {
+                onDownloaderClick = {
                     navController.navigateSafe(Settings.Downloads)
                 },
                 onAppClick = { packageName ->
@@ -161,6 +152,12 @@ private fun ReVancedManager(vm: MainViewModel) {
                 },
                 onBundleClick = { uid ->
                     navController.navigateSafe(BundleInformation(uid))
+                },
+                onAnnouncementsClick = {
+                    navController.navigate(Announcements)
+                },
+                onAnnouncementClick = { announcement ->
+                    navController.navigateComplex(Announcement, announcement)
                 }
             )
         }
@@ -210,6 +207,22 @@ private fun ReVancedManager(vm: MainViewModel) {
             UpdateScreen(
                 onBackClick = navController::popBackStackSafe,
                 vm = koinViewModel { parametersOf(data.downloadOnScreenEntry) }
+            )
+        }
+
+        composable<Announcements> {
+            AnnouncementsScreen(
+                onBackClick = navController::popBackStack,
+                onAnnouncementClick = { announcement ->
+                    navController.navigateComplex(Announcement, announcement)
+                }
+            )
+        }
+
+        composable<Announcement> {
+            AnnouncementScreen(
+                onBackClick = navController::popBackStack,
+                announcement = it.getComplexArg()
             )
         }
 

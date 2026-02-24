@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.getSystemService
@@ -15,26 +14,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.domain.repository.AnnouncementRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlin.time.Clock
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
-    private val downloaderPluginRepository: DownloaderPluginRepository,
+    private val downloaderRepository: DownloaderRepository,
+    private val announcementRepository: AnnouncementRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager,
@@ -45,8 +49,8 @@ class DashboardViewModel(
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
-    val newDownloaderPluginsAvailable =
-        downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
+    val newDownloadersAvailable =
+        downloaderRepository.newDownloaderPackageNames.map { it.isNotEmpty() }
 
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
@@ -61,18 +65,22 @@ class DashboardViewModel(
     var showBatteryOptimizationsWarning by mutableStateOf(false)
         private set
 
+    var unreadAnnouncement by mutableStateOf<ReVancedAnnouncement?>(null)
+        private set
+
     private val bundleListEventsChannel = Channel<BundleListViewModel.Event>()
     val bundleListEventsFlow = bundleListEventsChannel.receiveAsFlow()
 
     init {
         viewModelScope.launch {
             checkForManagerUpdates()
+            checkForAnnouncements()
             updateBatteryOptimizationsWarning()
         }
     }
 
-    fun ignoreNewDownloaderPlugins() = viewModelScope.launch {
-        downloaderPluginRepository.acknowledgeAllNewPlugins()
+    fun ignoreNewDownloaders() = viewModelScope.launch {
+        downloaderRepository.acknowledgeAll()
     }
 
     private suspend fun checkForManagerUpdates() {
@@ -80,6 +88,44 @@ class DashboardViewModel(
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
             updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
+        }
+    }
+
+    private suspend fun checkForAnnouncements() {
+        uiSafe(app, R.string.failed_to_check_updates, "Failed to check for announcements") {
+            val announcements = withContext(Dispatchers.IO) {
+                announcementRepository.getAnnouncements()
+            } ?: throw IllegalStateException("Announcements could not be retrieved")
+
+            val readAnnouncements = prefs.readAnnouncements.get()
+            if (readAnnouncements.isEmpty()) {
+                val announcementIds = announcements.mapTo(mutableSetOf()) { it.id }
+                prefs.readAnnouncements.update(announcementIds)
+                return@uiSafe
+            }
+
+            unreadAnnouncement = announcements.firstOrNull { announcement ->
+                val isNotArchived =
+                    announcement.archivedAt.toInstant(TimeZone.UTC) > Clock.System.now()
+
+                val hasRelevantTag = "revanced" in announcement.tags ||
+                        "manager" in announcement.tags
+
+                val isUnread = announcement.id !in readAnnouncements
+
+                isNotArchived && hasRelevantTag && isUnread
+            }
+        }
+    }
+
+    fun markUnreadAnnouncementRead() {
+        viewModelScope.launch {
+            unreadAnnouncement?.let {
+                prefs.edit {
+                    prefs.readAnnouncements += it.id
+                }
+            }
+            unreadAnnouncement = null
         }
     }
 

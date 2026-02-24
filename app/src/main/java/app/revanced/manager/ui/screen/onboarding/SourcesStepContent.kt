@@ -23,13 +23,13 @@ import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SettingsListItem
-import app.revanced.manager.ui.viewmodel.OnboardingPluginInfo
+import app.revanced.manager.ui.viewmodel.OnboardingDownloadersInfo
 
 @Composable
 fun SourcesStepContent(
-    plugins: List<OnboardingPluginInfo>,
-    onTrustPlugin: (String) -> Unit,
-    onRevokePluginTrust: (String) -> Unit,
+    downloaders: List<OnboardingDownloadersInfo>,
+    onTrustDownloader: (String) -> Unit,
+    onRevokeDownloaderTrust: (String) -> Unit,
     showSubtitle: Boolean = true,
     modifier: Modifier = Modifier
 ) {
@@ -46,7 +46,7 @@ fun SourcesStepContent(
             Spacer(modifier = Modifier.height(24.dp))
         }
 
-        if (plugins.isEmpty()) {
+        if (downloaders.isEmpty()) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -67,19 +67,19 @@ fun SourcesStepContent(
             }
         } else {
             ListSection {
-                plugins.forEach { plugin ->
+                downloaders.forEach { downloader ->
                     SettingsListItem(
-                        headlineContent = plugin.name,
-                        supportingContent = plugin.version,
+                        headlineContent = downloader.name,
+                        supportingContent = downloader.version,
                         leadingContent = {
                             OnboardingLeadingIcon(
                                 icon = Icons.Outlined.Download,
-                                containerColor = if (plugin.isTrusted) {
+                                containerColor = if (downloader.isTrusted) {
                                     MaterialTheme.colorScheme.primaryContainer
                                 } else {
                                     MaterialTheme.colorScheme.surfaceContainerHighest
                                 },
-                                iconColor = if (plugin.isTrusted) {
+                                iconColor = if (downloader.isTrusted) {
                                     MaterialTheme.colorScheme.onPrimaryContainer
                                 } else {
                                     MaterialTheme.colorScheme.onSurfaceVariant
@@ -88,21 +88,21 @@ fun SourcesStepContent(
                         },
                         trailingContent = {
                             HapticSwitch(
-                                checked = plugin.isTrusted,
+                                checked = downloader.isTrusted,
                                 onCheckedChange = { checked ->
                                     if (checked) {
-                                        onTrustPlugin(plugin.packageName)
+                                        onTrustDownloader(downloader.packageName)
                                     } else {
-                                        onRevokePluginTrust(plugin.packageName)
+                                        onRevokeDownloaderTrust(downloader.packageName)
                                     }
                                 }
                             )
                         },
                         onClick = {
-                            if (plugin.isTrusted) {
-                                onRevokePluginTrust(plugin.packageName)
+                            if (downloader.isTrusted) {
+                                onRevokeDownloaderTrust(downloader.packageName)
                             } else {
-                                onTrustPlugin(plugin.packageName)
+                                onTrustDownloader(downloader.packageName)
                             }
                         }
                     )

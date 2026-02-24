@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.network.downloader.DownloaderPluginState
+import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-data class OnboardingPluginInfo(
+data class OnboardingDownloadersInfo(
     val packageName: String,
     val name: String,
     val version: String,
@@ -40,7 +40,7 @@ class OnboardingViewModel(
     private val app: Application,
     private val prefs: PreferencesManager,
     private val pm: PM,
-    private val downloaderPluginRepository: DownloaderPluginRepository,
+    private val downloaderRepository: DownloaderRepository,
     private val patchBundleRepository: PatchBundleRepository,
 ) : ViewModel() {
     private val powerManager = app.getSystemService<PowerManager>()!!
@@ -51,19 +51,19 @@ class OnboardingViewModel(
 
     val suggestedVersions = patchBundleRepository.suggestedVersions
 
-    val plugins = downloaderPluginRepository.pluginStates.map { states ->
+    val downloaders = downloaderRepository.downloaderPackageStates.map { states ->
         states.mapNotNull { (packageName, state) ->
             val packageInfo = pm.getPackageInfo(packageName) ?: return@mapNotNull null
-            OnboardingPluginInfo(
+            OnboardingDownloadersInfo(
                 packageName = packageName,
                 name = with(pm) { packageInfo.label() },
                 version = packageInfo.versionName.orEmpty(),
-                isTrusted = state is DownloaderPluginState.Loaded
+                isTrusted = state is DownloaderPackageState.Loaded
             )
         }.sortedBy { it.name.lowercase() }
     }.flowOn(Dispatchers.Default)
 
-    private var hasPlugins by mutableStateOf(false)
+    private var hasDownloaders by mutableStateOf(false)
 
     var canInstallUnknownApps by mutableStateOf(false)
         private set
@@ -81,7 +81,7 @@ class OnboardingViewModel(
     init {
         refreshPermissionStates()
         viewModelScope.launch {
-            plugins.collect { hasPlugins = it.isNotEmpty() }
+            downloaders.collect { hasDownloaders = it.isNotEmpty() }
         }
         currentStep = if (allPermissionsGranted) OnboardingStep.Updates else OnboardingStep.Permissions
     }
@@ -101,12 +101,12 @@ class OnboardingViewModel(
         currentStep = previousStep(currentStep)
     }
 
-    fun trustPlugin(packageName: String) = viewModelScope.launch {
-        downloaderPluginRepository.trustPackage(packageName)
+    fun trustDownloader(packageName: String) = viewModelScope.launch {
+        downloaderRepository.trustPackage(packageName)
     }
 
-    fun revokePluginTrust(packageName: String) = viewModelScope.launch {
-        downloaderPluginRepository.revokeTrustForPackage(packageName)
+    fun revokeDownloaderTrust(packageName: String) = viewModelScope.launch {
+        downloaderRepository.revokeTrustForPackage(packageName)
     }
 
     suspend fun applyAutoUpdatePrefs(managerEnabled: Boolean, patchesEnabled: Boolean) {
@@ -129,7 +129,7 @@ class OnboardingViewModel(
 
     private fun nextStep(from: OnboardingStep) = when (from) {
         OnboardingStep.Permissions -> OnboardingStep.Updates
-        OnboardingStep.Updates -> if (hasPlugins) OnboardingStep.Sources else OnboardingStep.Apps
+        OnboardingStep.Updates -> if (hasDownloaders) OnboardingStep.Sources else OnboardingStep.Apps
         OnboardingStep.Sources -> OnboardingStep.Apps
         OnboardingStep.Apps -> OnboardingStep.Apps
     }
@@ -138,7 +138,7 @@ class OnboardingViewModel(
         OnboardingStep.Permissions -> OnboardingStep.Permissions
         OnboardingStep.Updates -> OnboardingStep.Permissions
         OnboardingStep.Sources -> OnboardingStep.Updates
-        OnboardingStep.Apps -> if (hasPlugins) OnboardingStep.Sources else OnboardingStep.Updates
+        OnboardingStep.Apps -> if (hasDownloaders) OnboardingStep.Sources else OnboardingStep.Updates
     }
 
 }

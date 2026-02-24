@@ -7,7 +7,7 @@ import android.util.Log
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.di.*
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.tag
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ class ManagerApplication : Application() {
     private val scope = MainScope()
     private val prefs: PreferencesManager by inject()
     private val patchBundleRepository: PatchBundleRepository by inject()
-    private val downloaderPluginRepository: DownloaderPluginRepository by inject()
+    private val downloaderRepository: DownloaderRepository by inject()
     private val fs: Filesystem by inject()
 
     override fun onCreate() {
@@ -70,7 +70,7 @@ class ManagerApplication : Application() {
             prefs.preload()
         }
         scope.launch(Dispatchers.Default) {
-            downloaderPluginRepository.reload()
+            downloaderRepository.reload()
         }
         scope.launch(Dispatchers.Default) {
             with(patchBundleRepository) {

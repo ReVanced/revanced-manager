@@ -17,7 +17,7 @@ data class PatchInfo(
     val compatiblePackages: ImmutableList<CompatiblePackage>?,
     val options: ImmutableList<Option<*>>?
 ) {
-    constructor(patch: Patch<*>) : this(
+    constructor(patch: Patch) : this(
         patch.name.orEmpty(),
         patch.description,
         patch.use,
@@ -49,7 +49,7 @@ data class PatchInfo(
      * The resulting patch cannot be executed.
      * This is necessary because some functions in ReVanced Library only accept full [Patch] objects.
      */
-    fun toPatcherPatch(): Patch<*> =
+    fun toPatcherPatch(): Patch =
         resourcePatch(name = name, description = description, use = include) {
             compatiblePackages?.let { pkgs ->
                 compatibleWith(*pkgs.map { it.packageName to it.versions }.toTypedArray())
@@ -65,8 +65,7 @@ data class CompatiblePackage(
 
 @Immutable
 data class Option<T>(
-    val title: String,
-    val key: String,
+    val name: String,
     val description: String,
     val required: Boolean,
     val type: KType,
@@ -75,8 +74,7 @@ data class Option<T>(
     val validator: (T?) -> Boolean,
 ) {
     constructor(option: PatchOption<T>) : this(
-        option.title ?: option.key,
-        option.key,
+        option.name,
         option.description.orEmpty(),
         option.required,
         option.type,

@@ -43,7 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.network.downloader.DownloaderPluginState
+import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
@@ -64,7 +64,7 @@ fun DownloadsSettingsScreen(
 ) {
     val context = LocalContext.current
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
-    val pluginStates by viewModel.downloaderPluginStates.collectAsStateWithLifecycle()
+    val downloaderStates by viewModel.downloaderStates.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -72,8 +72,8 @@ fun DownloadsSettingsScreen(
         ConfirmDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
             onConfirm = { viewModel.deleteApps() },
-            title = stringResource(R.string.downloader_plugin_delete_apps_title),
-            description = stringResource(R.string.downloader_plugin_delete_apps_description),
+            title = stringResource(R.string.downloader_delete_apps_title),
+            description = stringResource(R.string.downloader_delete_apps_description),
             icon = Icons.Outlined.Delete
         )
     }
@@ -96,8 +96,8 @@ fun DownloadsSettingsScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         PullToRefreshBox(
-            onRefresh = viewModel::refreshPlugins,
-            isRefreshing = viewModel.isRefreshingPlugins,
+            onRefresh = viewModel::refreshDownloaders,
+            isRefreshing = viewModel.isRefreshingDownloaders,
             modifier = Modifier.padding(paddingValues)
         ) {
             LazyColumnWithScrollbar(
@@ -105,18 +105,18 @@ fun DownloadsSettingsScreen(
             ) {
                 item {
                     ListSection(
-                        title = stringResource(R.string.downloader_plugins),
+                        title = stringResource(R.string.downloaders),
                         leadingContent = { Icon(Icons.Outlined.Source, contentDescription = null, modifier = Modifier.size(18.dp)) }
                     ) {
-                        if (pluginStates.isEmpty()) {
+                        if (downloaderStates.isEmpty()) {
                             Text(
-                                stringResource(R.string.downloader_no_plugins_installed),
+                                stringResource(R.string.no_downloaders_installed),
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center
                             )
                         } else {
-                            pluginStates.forEach { (packageName, state) ->
-                                DownloaderPluginItem(
+                            downloaderStates.forEach { (packageName, state) ->
+                                DownloaderItem(
                                     context = context,
                                     viewModel = viewModel,
                                     packageName = packageName,
@@ -164,11 +164,11 @@ fun DownloadsSettingsScreen(
 
 @OptIn(ExperimentalStdlibApi::class)
 @Composable
-private fun DownloaderPluginItem(
+private fun DownloaderItem(
     context: android.content.Context,
     viewModel: DownloadsViewModel,
     packageName: String,
-    state: DownloaderPluginState
+    state: DownloaderPackageState
 ) {
     var showDialog by rememberSaveable {
         mutableStateOf(false)
@@ -198,69 +198,69 @@ private fun DownloaderPluginItem(
         }
 
         when (state) {
-            is DownloaderPluginState.Loaded -> TrustDialog(
-                title = R.string.downloader_plugin_revoke_trust_dialog_title,
+            is DownloaderPackageState.Loaded -> TrustDialog(
+                title = R.string.downloader_revoke_trust_dialog_title,
                 body = stringResource(
-                    R.string.downloader_plugin_trust_dialog_body,
+                    R.string.downloader_trust_dialog_body,
                     packageName,
                     signature
                 ),
-                pluginName = appName,
+                downloaderName = appName,
                 signature = signature,
                 onDismiss = ::dismiss,
                 onConfirm = {
-                    viewModel.revokePluginTrust(packageName)
+                    viewModel.revokeDownloaderTrust(packageName)
                     dismiss()
                 }
             )
 
-            is DownloaderPluginState.Failed -> ExceptionViewerDialog(
+            is DownloaderPackageState.Failed -> ExceptionViewerDialog(
                 text = remember(state.throwable) {
                     state.throwable.stackTraceToString()
                 },
                 onDismiss = ::dismiss
             )
 
-            is DownloaderPluginState.Untrusted -> TrustDialog(
-                title = R.string.downloader_plugin_trust_dialog_title,
+            is DownloaderPackageState.Untrusted -> TrustDialog(
+                title = R.string.downloader_trust_dialog_title,
                 body = stringResource(
-                    R.string.downloader_plugin_trust_dialog_body
+                    R.string.downloader_trust_dialog_body
                 ),
-                pluginName = appName,
+                downloaderName = appName,
                 signature = signature,
                 onDismiss = ::dismiss,
                 onConfirm = {
-                    viewModel.trustPlugin(packageName)
+                    viewModel.trustDownloader(packageName)
                     dismiss()
                 }
             )
         }
-    }
 
-    SettingsListItem(
-        onClick = { showDialog = true },
-        headlineContent = {
-            AppLabel(
-                packageInfo = packageInfo,
-                style = MaterialTheme.typography.bodyLarge
-            )
-        },
-        supportingContent = stringResource(
-            when (state) {
-                is DownloaderPluginState.Loaded -> R.string.downloader_plugin_state_trusted
-                is DownloaderPluginState.Failed -> R.string.downloader_plugin_state_failed
-                is DownloaderPluginState.Untrusted -> R.string.downloader_plugin_state_untrusted
-            }
-        ),
-        trailingContent = { Text(packageInfo.versionName!!) }
-    )
+        SettingsListItem(
+            onClick = { showDialog = true },
+            headlineContent = {
+                AppLabel(
+                    packageInfo = packageInfo,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
+            supportingContent = stringResource(
+                when (state) {
+                    is DownloaderPackageState.Loaded -> R.string.downloader_state_trusted
+                    is DownloaderPackageState.Failed -> R.string.downloader_state_failed
+                    is DownloaderPackageState.Untrusted -> R.string.downloader_state_untrusted
+                }
+            ),
+            trailingContent = { Text(packageInfo.versionName!!) }
+        )
+    }
 }
 
 @Composable
 private fun TrustDialog(
     @StringRes title: Int,
     body: String,
-    pluginName: String,
+    downloaderName: String,
     signature: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
@@ -291,8 +291,8 @@ private fun TrustDialog(
                     ) {
                         Text(
                             stringResource(
-                                R.string.downloader_plugin_trust_dialog_plugin,
-                                pluginName
+                                R.string.downloader_trust_dialog_name,
+                                downloaderName
                             ),
                         )
                         OutlinedCard(
@@ -302,7 +302,7 @@ private fun TrustDialog(
                         ) {
                             Text(
                                 stringResource(
-                                    R.string.downloader_plugin_trust_dialog_signature,
+                                    R.string.downloader_trust_dialog_signature,
                                     signature.chunked(2).joinToString(" ")
                                 ), modifier = Modifier.padding(12.dp)
                             )

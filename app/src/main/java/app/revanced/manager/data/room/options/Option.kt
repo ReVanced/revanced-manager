@@ -5,8 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import app.revanced.manager.patcher.patch.Option
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -36,7 +34,7 @@ import kotlin.reflect.typeOf
 data class Option(
     @ColumnInfo(name = "group") val group: Int,
     @ColumnInfo(name = "patch_name") val patchName: String,
-    @ColumnInfo(name = "key") val key: String,
+    @ColumnInfo(name = "key") val name: String,
     // Encoded as Json.
     @ColumnInfo(name = "value") val value: SerializedValue,
 ) {

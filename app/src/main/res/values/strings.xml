@@ -14,7 +14,7 @@ Second \"item\" text"</string>
 -->
 <resources>
     <string name="app_name">ReVanced Manager</string>
-    <string name="patcher">Patcher test</string>
+    <string name="patcher">Patcher</string>
     <string name="patches">Patches</string>
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
@@ -42,8 +42,8 @@ Second \"item\" text"</string>
     <string name="permission_battery_description">Prevents patching from being interrupted in the background</string>
     <string name="permission_grant">Grant</string>
 
-    <string name="plugin_host_permission_label">%1$s plugin host</string>
-    <string name="plugin_host_permission_description">Used to control access to %1$s plugins. Only %1$s has this.</string>
+    <string name="downloader_host_permission_label">%1$s host</string>
+    <string name="downloader_host_permission_description">Used to control access to %1$s downloaders. Only %1$s has this.</string>
 
     <string name="toast_copied_to_clipboard">Copied!</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
@@ -56,7 +56,7 @@ Second \"item\" text"</string>
     <string name="fab_patch_app">Patch an app</string>
     <string name="fab_add_patches">Add patches</string>
 
-    <string name="new_downloader_plugins_notification">New downloader plugins available. Click here to configure them.</string>
+    <string name="new_downloader_notification">New downloader(s) available. Click here to configure them.</string>
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
@@ -82,7 +82,7 @@ Second \"item\" text"</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
     <string name="app_source_dialog_option_auto_description">Use all available downloader to download the app</string>
-    <string name="app_source_dialog_option_auto_unavailable">No plugins available</string>
+    <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
 
@@ -108,12 +108,15 @@ Second \"item\" text"</string>
     <string name="auto_updates_dialog_patches">ReVanced Patches</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
+    <string name="announcements_filter_tag">Filter by tag</string>
+    <string name="announcements_show_archived">Show archived</string>
+
     <string name="general">General</string>
     <string name="general_description">Language, theme, dynamic color</string>
     <string name="updates">Updates</string>
     <string name="updates_description">Check for updates and view changelog</string>
     <string name="downloads">Downloads</string>
-    <string name="downloads_description">Downloader plugins and downloaded apps</string>
+    <string name="downloads_description">Downloaders and downloaded apps</string>
     <string name="import_export">Import &amp; export</string>
     <string name="import_export_description">Keystore, patch options and selection</string>
     <string name="advanced">Advanced</string>
@@ -208,17 +211,17 @@ Second \"item\" text"</string>
     <string name="patch_options_reset_all">Reset patch options globally</string>
     <string name="patch_options_reset_all_dialog_description">You are about to reset all patch options. You will have to reapply each option again.</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
-    <string name="downloader_plugins">Plugins</string>
-    <string name="downloader_plugin_state_trusted">Trusted</string>
-    <string name="downloader_plugin_state_failed">Failed to load. Click for more details</string>
-    <string name="downloader_plugin_state_untrusted">Untrusted</string>
-    <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
-    <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_plugin_trust_dialog_body">Continuing will allow this plugin to run on your system.\n\nOnly enable this plugin if you trust it. Plugins can execute arbitrary code and may compromise your device.</string>
-    <string name="downloader_plugin_trust_dialog_signature">Signature:\n\n%s</string>
-    <string name="downloader_plugin_trust_dialog_plugin">Plugin:\n%s</string>
-    <string name="downloader_plugin_delete_apps_title">Delete selected apps</string>
-    <string name="downloader_plugin_delete_apps_description">Are you sure you want to delete the selected apps?</string>
+    <string name="downloaders">Downloaders</string>
+    <string name="downloader_state_trusted">Trusted</string>
+    <string name="downloader_state_failed">Failed to load. Click for more details</string>
+    <string name="downloader_state_untrusted">Untrusted</string>
+    <string name="downloader_trust_dialog_title">Trust downloader?</string>
+    <string name="downloader_revoke_trust_dialog_title">Revoke trust?</string>
+    <string name="downloader_trust_dialog_body">Continuing will allow this downloader to run.\n\nOnly enable this downloader if you trust it. Downloaders can make Manager execute arbitrary code.</string>
+    <string name="downloader_trust_dialog_signature">Signature:\n\n%s</string>
+    <string name="downloader_trust_dialog_name">Downloader:\n%s</string>
+    <string name="downloader_delete_apps_title">Delete selected apps</string>
+    <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found.</string>
 
     <string name="search_apps">Search apps…</string>
@@ -352,8 +355,8 @@ Second \"item\" text"</string>
     <string name="downloader_invalid_version">Downloader did not fetch the correct version</string>
     <string name="downloader_app_not_found">Downloader did not find the app</string>
     <string name="downloader_error">Downloader error: %s</string>
-    <string name="downloader_no_plugins_installed">No app downloaders are installed!</string>
-    <string name="downloader_no_plugins_trusted">No app downloaders have been trusted! Please check your settings.</string>
+    <string name="no_downloaders_installed">No app downloaders are installed!</string>
+    <string name="no_downloaders_trusted">No app downloaders have been trusted! Please check your settings.</string>
     <string name="already_patched">Already patched</string>
 
     <string name="patch_selector_sheet_filter_title">Filter</string>
@@ -381,7 +384,7 @@ Second \"item\" text"</string>
     <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
-    <string name="plugin_activity_dialog_body">User interaction is required in order to proceed with this plugin.</string>
+    <string name="downloader_activity_dialog_body">User interaction is required in order to proceed with this downloader.</string>
     <string name="select_install_type">Select installation type</string>
 
     <string name="patcher_step_group_preparing">Preparing</string>
@@ -413,6 +416,7 @@ Second \"item\" text"</string>
     <string name="less">Less</string>
     <string name="continue_">Continue</string>
     <string name="dismiss">Dismiss</string>
+    <string name="view_announcement">View announcement</string>
     <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
     <string name="website">Website</string>
@@ -435,6 +439,8 @@ Second \"item\" text"</string>
     <string name="patches_delete_single_dialog_description">Are you sure you want to delete \"%s\"?</string>
     <string name="patches_delete_multiple_dialog_description">Are you sure you want to delete the selected patches?</string>
 
+    <string name="announcements">Announcements</string>
+    <string name="archive">Archive</string>
     <string name="about_revanced_manager">About %1$s</string>
     <string name="revanced_manager_description">%1$s is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
     <string name="developer_options_taps">%d taps remaining</string>
@@ -482,6 +488,7 @@ Second \"item\" text"</string>
 
     <string name="failed_to_check_updates">Failed to check for updates: %s</string>
     <string name="no_update_available">No update available</string>
+    <string name="no_announcements_found">No announcements found</string>
     <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
     <string name="update_available_dialog_description">A new version of %1$s (%2$s) is available.</string>
@@ -538,4 +545,5 @@ Second \"item\" text"</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
+    <string name="new_announcement">New announcement:\n%s</string>
 </resources>

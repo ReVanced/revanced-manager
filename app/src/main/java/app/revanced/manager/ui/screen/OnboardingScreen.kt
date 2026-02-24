@@ -74,7 +74,7 @@ fun OnboardingScreen(
     val context = LocalContext.current
     val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
-    val plugins by vm.plugins.collectAsStateWithLifecycle(initialValue = emptyList())
+    val downloaders by vm.downloaders.collectAsStateWithLifecycle(initialValue = emptyList())
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
@@ -183,9 +183,9 @@ fun OnboardingScreen(
                 )
 
                 OnboardingStep.Sources -> SourcesStepContent(
-                    plugins = plugins,
-                    onTrustPlugin = vm::trustPlugin,
-                    onRevokePluginTrust = vm::revokePluginTrust,
+                    downloaders = downloaders,
+                    onTrustDownloader = vm::trustDownloader,
+                    onRevokeDownloaderTrust = vm::revokeDownloaderTrust,
                     showSubtitle = showSubtitle
                 )
 

@@ -1,4 +1,4 @@
-package app.revanced.manager.plugin.downloader
+package app.revanced.manager.downloader
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -7,7 +7,7 @@ import java.net.URI
 
 /**
  * A simple parcelable data class for storing a package name and version.
- * This can be used as the data type for plugins that only need a name and version to implement their [DownloaderScope.download] function.
+ * This can be used as the data type for downloaders that only need a name and version to implement their [DownloaderScope.download] function.
  *
  * @param name The package name.
  * @param version The version.
