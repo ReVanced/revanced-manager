@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screen.settings.update
 
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -207,17 +208,21 @@ fun UpdatesSettingsScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             ListSection {
+                val managerAutoUpdates by vm.managerAutoUpdates.getAsState()
+
                 BooleanItem(
                     preference = vm.managerAutoUpdates,
                     headline = R.string.update_checking_manager,
                     description = stringResource(R.string.update_checking_manager_description, appName)
                 )
 
-                BooleanItem(
-                    preference = vm.showManagerUpdateDialogOnLaunch,
-                    headline = R.string.show_manager_update_dialog_on_launch,
-                    description = R.string.show_manager_update_dialog_on_launch_description
-                )
+                AnimatedVisibility(visible = managerAutoUpdates) {
+                    BooleanItem(
+                        preference = vm.showManagerUpdateDialogOnLaunch,
+                        headline = R.string.show_manager_update_dialog_on_launch,
+                        description = R.string.show_manager_update_dialog_on_launch_description
+                    )
+                }
 
                 SafeguardBooleanItem(
                     preference = vm.useManagerPrereleases,
