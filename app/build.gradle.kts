@@ -257,9 +257,6 @@ android {
 
             // Desktop AAPT binaries
             excludes += "/prebuilt/**"
-
-            // Reflection symbol list (https://stackoverflow.com/a/41073782/13964629)
-            excludes += "/**/*.kotlin_builtins"
         }
         jniLibs {
             // 32-bit x86 is dead
