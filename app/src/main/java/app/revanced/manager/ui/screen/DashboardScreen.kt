@@ -299,7 +299,7 @@ fun DashboardScreen(
                                 }
                             ) {
                                 Icon(
-                                    Icons.Outlined.Notifications,
+                                    Icons.Filled.Notifications,
                                     stringResource(R.string.announcements)
                                 )
                             }
