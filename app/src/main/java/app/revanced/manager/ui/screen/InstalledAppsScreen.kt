@@ -10,6 +10,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ fun InstalledAppsScreen(
     onAppClick: (InstalledApp) -> Unit,
     viewModel: InstalledAppsViewModel = koinViewModel()
 ) {
-    val installedApps by viewModel.apps.collectAsStateWithLifecycle(initialValue = null)
+    val installedApps by viewModel.apps.collectAsStateWithLifecycle()
 
     Column {
         LazyColumnWithScrollbar(
@@ -38,38 +39,40 @@ fun InstalledAppsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = if (installedApps.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
         ) {
-            installedApps?.let { installedApps ->
-                if (installedApps.isNotEmpty()) {
-                    items(
-                        installedApps,
-                        key = { it.currentPackageName }
-                    ) { installedApp ->
-                        viewModel.packageInfoMap[installedApp.currentPackageName].let { packageInfo ->
-                            ListItem(
-                                modifier = Modifier.clickable { onAppClick(installedApp) },
-                                leadingContent = {
-                                    AppIcon(
-                                        packageInfo,
-                                        contentDescription = null,
-                                        Modifier.size(36.dp)
-                                    )
-                                },
-                                headlineContent = { AppLabel(packageInfo, defaultText = null) },
-                                supportingContent = { Text(installedApp.currentPackageName) }
-                            )
-
-                        }
-                    }
-                } else {
-                    item {
-                        Text(
-                            text = stringResource(R.string.no_patched_apps_found),
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    }
+            val apps = installedApps
+            if (apps == null) {
+                item(key = "LOADING") {
+                    LoadingIndicator()
                 }
+            } else if (apps.isNotEmpty()) {
+                items(
+                    apps,
+                    key = { "APP-" + it.currentPackageName },
+                    contentType = { "APP" },
+                ) { installedApp ->
+                    val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
 
-            } ?: item { LoadingIndicator() }
+                    ListItem(
+                        modifier = Modifier.clickable { onAppClick(installedApp) },
+                        leadingContent = {
+                            AppIcon(
+                                packageInfo,
+                                contentDescription = null,
+                                Modifier.size(36.dp)
+                            )
+                        },
+                        headlineContent = { AppLabel(packageInfo, defaultText = null) },
+                        supportingContent = { Text(installedApp.currentPackageName) }
+                    )
+                }
+            } else {
+                item(key = "NONE") {
+                    Text(
+                        text = stringResource(R.string.no_patched_apps_found),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            }
         }
     }
 }
