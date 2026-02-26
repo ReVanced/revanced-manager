@@ -51,10 +51,7 @@ class AppSelectorViewModel(
 
     val apps = pm.appList.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(
-            stopTimeoutMillis = 0,
-            replayExpirationMillis = 10_000,
-        ),
+        started = SharingStarted.WhileSubscribed(),
         initialValue = null,
     )
 
