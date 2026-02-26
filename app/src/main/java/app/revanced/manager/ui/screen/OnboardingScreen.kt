@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,7 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -62,6 +63,7 @@ import app.revanced.manager.ui.screen.onboarding.UpdatesStepContent
 import app.revanced.manager.ui.viewmodel.OnboardingStep
 import app.revanced.manager.ui.viewmodel.OnboardingViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -307,6 +309,12 @@ private fun StepDescription(title: String, description: String) {
 
 @Composable
 private fun OnboardingHeader() {
+val context = LocalContext.current
+    val resources = LocalResources.current
+    val icon = rememberDrawablePainter(drawable = remember(resources) {
+        AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
+    })
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
@@ -320,7 +328,7 @@ private fun OnboardingHeader() {
             Spacer(modifier = Modifier.height(16.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = painterResource(R.drawable.ic_logo_ring),
+                    painter = icon,
                     contentDescription = null,
                     modifier = Modifier.size(40.dp)
                 )
