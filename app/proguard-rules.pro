@@ -12,3 +12,6 @@
 -dontwarn java.awt.**
 -dontwarn javax.**
 -dontwarn org.slf4j.**
+
+-dontwarn org.immutables.value.Generated
+-dontwarn reactor.blockhound.integration.BlockHoundIntegration
