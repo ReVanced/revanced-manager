@@ -5,14 +5,15 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.installer.RootServiceException
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,12 +34,12 @@ class InstalledAppsViewModel(
 
     init {
         viewModelScope.launch {
-            fetchPackageInfos()
+            apps.filterNotNull().collectLatest(::fetchPackageInfos)
         }
     }
 
-    private suspend fun fetchPackageInfos() {
-        for (app in apps.filterNotNull().first()) {
+    private suspend fun fetchPackageInfos(apps: List<InstalledApp>) {
+        for (app in apps) {
             packageInfoMap[app.currentPackageName] = withContext(Dispatchers.IO) {
                 try {
                     if (app.installType == InstallType.MOUNT &&
