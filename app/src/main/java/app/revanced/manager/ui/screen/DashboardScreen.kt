@@ -294,7 +294,8 @@ fun DashboardScreen(
                         NotificationCard(
                             isWarning = true,
                             icon = Icons.Outlined.WarningAmber,
-                            text = stringResource(R.string.api_not_working_notification),
+                            title = stringResource(R.string.api_not_working_title),
+                            text = stringResource(R.string.api_not_working_description),
                             onClick = onSettingsClick
                         )
                     }
