@@ -59,10 +59,17 @@ class MainViewModel(
             downloadedAppRepository.getLatestByPackage(app.packageName, markUsed = true)
         } ?: return null
 
+        val file = try {
+            downloadedAppRepository.getApkFileForApp(downloadedApp)
+        } catch (e: Exception) {
+            Log.w(tag, "Downloaded APK file not found for ${downloadedApp.packageName}", e)
+            return null
+        }
+
         return SelectedApp.Local(
             downloadedApp.packageName,
             downloadedApp.version,
-            downloadedAppRepository.getApkFileForApp(downloadedApp),
+            file,
             false
         )
     }
