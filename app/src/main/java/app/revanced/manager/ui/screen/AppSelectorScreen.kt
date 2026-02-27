@@ -68,7 +68,7 @@ fun AppSelectorScreen(
             uri?.let(vm::handleStorageResult)
         }
 
-    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle(emptyMap())
+    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle()
 
     var search by rememberSaveable { mutableStateOf(false) }
     val appList by vm.apps.collectAsStateWithLifecycle()

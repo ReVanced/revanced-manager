@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -77,7 +76,11 @@ class AppSelectorViewModel(
     private val storageSelectionChannel = Channel<SelectedApp.Local>()
     val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
-    val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
+    val suggestedAppVersions = patchBundleRepository.suggestedVersions.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyMap(),
+    )
 
     var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
         private set
