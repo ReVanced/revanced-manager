@@ -1,3 +1,10 @@
+# app [1.26.0-dev.25](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.24...v1.26.0-dev.25) (2026-02-27)
+
+
+### Features
+
+* improve AppSelectorScreen caching/perf ([#2961](https://github.com/ReVanced/revanced-manager/issues/2961)) ([81e5a93](https://github.com/ReVanced/revanced-manager/commit/81e5a9315db4c858fa29163d15457af97163967a))
+
 # app [1.26.0-dev.24](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.23...v1.26.0-dev.24) (2026-02-27)
 
 
