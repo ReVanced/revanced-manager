@@ -55,7 +55,7 @@ Second \"item\" text"</string>
     <string name="selected_app_meta_any_version">Any available version</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
-    <string name="app_source_dialog_option_auto_description">Use all available downloader to download the app</string>
+    <string name="app_source_dialog_option_auto_description">Use a previously downloaded or all available downloaders</string>
     <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
@@ -73,7 +73,7 @@ Second \"item\" text"</string>
     <string name="apk_source_downloader">Using %s</string>
     <string name="apk_source_installed">Using installed APK</string>
     <string name="apk_source_local">Using a local APK file</string>
-    <string name="apk_source_downloaded">Downloaded</string>
+    <string name="apk_source_downloaded">Already downloaded</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 

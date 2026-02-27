@@ -118,13 +118,13 @@ class SelectedAppInfoViewModel(
                     ) to installedAppDeferred.await()
                 }
 
-            downloadedApps = downloadedAppsDeferred.await().map {
-                SelectedApp.Local(
-                    it.packageName,
-                    it.version,
-                    downloadedAppRepository.getApkFileForApp(it),
-                    false
-                )
+            downloadedApps = downloadedAppsDeferred.await().mapNotNull {
+                val file = try {
+                    downloadedAppRepository.getApkFileForApp(it)
+                } catch (_: Exception) {
+                    return@mapNotNull null
+                }
+                SelectedApp.Local(it.packageName, it.version, file, false)
             }
         }
     }

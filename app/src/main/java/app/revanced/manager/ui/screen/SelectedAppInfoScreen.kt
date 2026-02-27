@@ -325,6 +325,21 @@ private fun AppSourceSelectorDialog(
                     )
                 }
 
+                items(
+                    downloadedApps,
+                    key = { "downloaded_${it.version}" }
+                ) { app ->
+                    val usable = requiredVersion == null || app.version == requiredVersion
+                    ListItem(
+                        modifier = Modifier
+                            .clickable(enabled = canSelect && usable) { onSelect(app) }
+                            .enabled(usable),
+                        headlineContent = { Text(stringResource(R.string.apk_source_downloaded)) },
+                        supportingContent = { Text(app.version) },
+                        colors = transparentListItemColors
+                    )
+                }
+
                 installedApp?.let { (app, meta) ->
                     item(key = "installed") {
                         val (usable, text) = when {
@@ -351,21 +366,6 @@ private fun AppSourceSelectorDialog(
                             colors = transparentListItemColors
                         )
                     }
-                }
-
-                items(
-                    downloadedApps,
-                    key = { "downloaded_${it.version}" }
-                ) { app ->
-                    val usable = requiredVersion == null || app.version == requiredVersion
-                    ListItem(
-                        modifier = Modifier
-                            .clickable(enabled = canSelect && usable) { onSelect(app) }
-                            .enabled(usable),
-                        headlineContent = { Text(stringResource(R.string.apk_source_downloaded)) },
-                        supportingContent = { Text(app.version) },
-                        colors = transparentListItemColors
-                    )
                 }
 
                 items(
