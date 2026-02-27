@@ -1,3 +1,20 @@
+# app [1.26.0-dev.24](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.23...v1.26.0-dev.24) (2026-02-27)
+
+
+### Bug Fixes
+
+* Incorrect patcher string value ([f19080a](https://github.com/ReVanced/revanced-manager/commit/f19080a9862be4600860b67cd981b9a3a56b21e7))
+* Never show again toggle doing nothing for Update dialog ([6f4219c](https://github.com/ReVanced/revanced-manager/commit/6f4219c01ba43b70e130f210c8d48978a6056f68))
+* Release builds not working ([00b3c59](https://github.com/ReVanced/revanced-manager/commit/00b3c59572760993f69f2663456237faafff0283))
+* Remove quotes from strings ([fc30ba5](https://github.com/ReVanced/revanced-manager/commit/fc30ba5e83f27329b05dc81f484bb8f7471b6a99))
+* we actually don't want to exclude reflection symbols ([3222840](https://github.com/ReVanced/revanced-manager/commit/32228404c4ef38bb8931d5cfdf6a7aefde23a89c))
+
+
+### Features
+
+* Add announcements ([#2948](https://github.com/ReVanced/revanced-manager/issues/2948)) ([813df46](https://github.com/ReVanced/revanced-manager/commit/813df46847620bd854dccc52ff244388b3385e17))
+* Update to Patcher v22 ([#2939](https://github.com/ReVanced/revanced-manager/issues/2939)) ([8667051](https://github.com/ReVanced/revanced-manager/commit/8667051283f934a32ac7b7cc76178397dc45a0e6))
+
 # app [1.26.0-dev.23](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.22...v1.26.0-dev.23) (2026-02-19)
 
 
