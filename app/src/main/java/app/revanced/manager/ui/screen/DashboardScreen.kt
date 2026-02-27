@@ -294,7 +294,7 @@ fun DashboardScreen(
                         NotificationCard(
                             isWarning = true,
                             icon = Icons.Outlined.WarningAmber,
-                            text = stringResource(R.string.patches_download_fail_notification),
+                            text = stringResource(R.string.api_not_working_notification),
                             onClick = onSettingsClick
                         )
                     }
