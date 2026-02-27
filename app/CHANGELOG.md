@@ -1,3 +1,10 @@
+# app [1.26.0-dev.26](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.25...v1.26.0-dev.26) (2026-02-27)
+
+
+### Features
+
+* improve InstalledAppsScreen caching/perf ([#2963](https://github.com/ReVanced/revanced-manager/issues/2963)) ([323d217](https://github.com/ReVanced/revanced-manager/commit/323d2170efa0e3f2c8d2245ff08a2e92c52cb9d7))
+
 # app [1.26.0-dev.25](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.24...v1.26.0-dev.25) (2026-02-27)
 
 
