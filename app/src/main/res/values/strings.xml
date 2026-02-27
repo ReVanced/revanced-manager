@@ -160,6 +160,8 @@ Second \"item\" text"</string>
     <string name="universal_patches_safeguard_confirmation">"Universal patches are not as well tested as those that target specific apps.
 
         Enable anyways?"</string>
+    <string name="keystore">Keystore</string>
+    <string name="patches_selections">Patches selections</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -183,10 +185,14 @@ Second \"item\" text"</string>
     <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
     <string name="import_patch_selection_fail">Could not import patch selection: %s</string>
     <string name="import_patch_selection_success">Imported patch selection</string>
+    <string name="select_bundle_for_import">Select bundle to import into</string>
     <string name="export_patch_selection">Export patch selection</string>
     <string name="export_patch_selection_description">Export patch selection to a JSON file</string>
     <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
     <string name="export_patch_selection_success">Exported patch selection</string>
+    <string name="select_bundle_for_export">Select bundle to export from</string>
+    <string name="patch_selection_packages">Apps with saved selections</string>
+    <string name="patch_selection_entries">Total selected patches</string>
     <string name="reset_configuration">Reset configuration</string>
     <string name="reset_patch_selection">Patch selections</string>
     <string name="reset_patch_selection_description">Reset the stored patch selection</string>
