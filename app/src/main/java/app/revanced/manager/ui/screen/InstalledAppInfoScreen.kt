@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,16 +43,15 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
-import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstalledAppInfoScreen(
     onPatchClick: (packageName: String) -> Unit,
     onBackClick: () -> Unit,
+    onAppliedPatchesClick: () -> Unit,
     viewModel: InstalledAppInfoViewModel
 ) {
-    val context = LocalContext.current
 
     SideEffect {
         viewModel.onBackClick = onBackClick
@@ -152,7 +150,7 @@ fun InstalledAppInfoScreen(
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
                 SettingsListItem(
-                    modifier = Modifier.clickable { context.toast("Not implemented yet!") },
+                    modifier = Modifier.clickable(onClick = onAppliedPatchesClick),
                     headlineContent = stringResource(R.string.applied_patches),
                     supportingContent = 
                             (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {
@@ -164,15 +162,6 @@ fun InstalledAppInfoScreen(
                             },
                     trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
                 )
-
-                viewModel.patchBundles.forEach { bundle ->
-                    SettingsListItem(
-                        headlineContent = stringResource(R.string.patch_bundle_source),
-                        supportingContent = bundle.bundleVersion?.let { version ->
-                            stringResource(R.string.patch_bundle_source_description, bundle.bundleName, version)
-                        } ?: bundle.bundleName
-                    )
-                }
 
                 SettingsListItem(
                     headlineContent = stringResource(R.string.package_name),

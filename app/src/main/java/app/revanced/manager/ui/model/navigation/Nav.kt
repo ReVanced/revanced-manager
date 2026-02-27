@@ -17,6 +17,9 @@ object Dashboard
 object AppSelector
 
 @Serializable
+data class AppliedPatches(val packageName: String)
+
+@Serializable
 data class InstalledApplicationInfo(val packageName: String)
 
 @Serializable
