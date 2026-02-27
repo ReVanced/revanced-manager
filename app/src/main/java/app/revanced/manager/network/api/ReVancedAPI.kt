@@ -6,6 +6,7 @@ import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.network.dto.ReVancedAnnouncementTag
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedGitRepository
+import app.revanced.manager.network.dto.ReVancedHistory
 import app.revanced.manager.network.dto.ReVancedInfo
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.APIResponse
@@ -20,16 +21,23 @@ class ReVancedAPI(
 ) {
     private suspend fun apiUrl() = prefs.api.get()
 
-    private suspend inline fun <reified T> request(api: String, route: String): APIResponse<T> =
+    private suspend inline fun <reified T> request(
+        api: String,
+        route: String,
+        version: String? = "v4"
+    ): APIResponse<T> =
         withContext(
             Dispatchers.IO
         ) {
             client.request {
-                url("$api/v4/$route")
+                url("$api/$version/$route")
             }
         }
 
-    private suspend inline fun <reified T> request(route: String) = request<T>(apiUrl(), route)
+    private suspend inline fun <reified T> request(
+        route: String,
+        version: String = "v4"
+    ) = request<T>(apiUrl(), route, version)
 
     suspend fun getAnnouncements() = request<List<ReVancedAnnouncement>>("announcements")
 
@@ -40,6 +48,8 @@ class ReVancedAPI(
 
     suspend fun getLatestAppInfo() =
         request<ReVancedAsset>("manager?prerelease=${prefs.useManagerPrereleases.get()}")
+
+    suspend fun getAppHistory() = request<ReVancedHistory>("patches/history", "dev")
 
     suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches?prerelease=${prefs.usePatchesPrereleases.get()}")
 

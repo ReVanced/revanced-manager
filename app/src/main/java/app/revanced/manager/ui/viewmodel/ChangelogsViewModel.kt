@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
+import app.revanced.manager.network.dto.ReVancedHistory
 import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
@@ -20,10 +21,21 @@ class ChangelogsViewModel(
     var releaseInfo: ReVancedAsset? by mutableStateOf(null)
         private set
 
+    var changelog: ReVancedHistory? by mutableStateOf(null)
+        private set
+
+    var versions: List<String>? by mutableStateOf(null)
+        private set
+
     init {
         viewModelScope.launch {
             uiSafe(app, R.string.changelog_download_fail, "Failed to download changelog") {
                 releaseInfo = api.getLatestAppInfo().getOrThrow()
+                changelog = api.getAppHistory().getOrThrow()
+                if (changelog != null) {
+                    val formatted = changelog!!.history.replace("\\n", "\n")
+                    versions = formatted.split(Regex("(?=## \\[)"))
+                }
             }
         }
     }

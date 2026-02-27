@@ -48,17 +48,32 @@ fun ChangelogsSettingsScreen(
                 .padding(paddingValues)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = if (vm.releaseInfo == null) Arrangement.Center else Arrangement.Top
+            verticalArrangement = if (vm.releaseInfo == null) {
+                Arrangement.Center
+            } else {
+                Arrangement.Top
+            }
         ) {
-            vm.releaseInfo?.let { info ->
+            val info = vm.releaseInfo
+            val changelog = vm.changelog
+            val versions = vm.versions
+
+            if (info != null && changelog != null && versions != null) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Changelog(
-                        markdown = info.description.replace("`", ""),
+                        markdown = versions
+                            .drop(1).asSequence()
+                            .take(10)
+                            .joinToString("\n")
+                            .replace("`", ""),
                         version = info.version,
-                        publishDate = info.createdAt.relativeTime(LocalContext.current)
+                        publishDate = info.createdAt.relativeTime(LocalContext.current),
+                        paddingValues = paddingValues
                     )
                 }
-            } ?: LoadingIndicator()
+            } else {
+                LoadingIndicator()
+            }
         }
     }
 }
