@@ -165,7 +165,6 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (Debug)")
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
@@ -175,13 +174,12 @@ android {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
-                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             }
 
             val keystoreFile = file("keystore.jks")
 
             if (project.hasProperty("signAsDebug") || !keystoreFile.exists()) {
-                applicationIdSuffix = ".debug_signed"
                 resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs.getByName("debug")
 
@@ -254,6 +252,9 @@ android {
             excludes += "/META-INF/**/*.txt"
             excludes += "/META-INF/**/*.properties"
             excludes += "/META-INF/DEPENDENCIES"
+
+            // AAPT
+            excludes += "/prebuilt/**/*"
         }
         jniLibs {
             // 32-bit x86 is dead
@@ -264,6 +265,7 @@ android {
         }
     }
 }
+
 
 androidComponents {
     onVariants(selector().withBuildType("release")) {

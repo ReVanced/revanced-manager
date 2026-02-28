@@ -1,4 +1,5 @@
 -dontobfuscate
+-keepattributes *
 
 -keep class app.revanced.manager.patcher.runtime.process.* { *; }
 -keep class app.revanced.manager.downloader.** { *; }
