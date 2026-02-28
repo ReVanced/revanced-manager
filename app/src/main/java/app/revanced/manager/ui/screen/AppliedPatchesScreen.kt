@@ -47,14 +47,13 @@ fun AppliedPatchesScreen(
 
             appliedPatches.forEach { (bundleUid, patchNames) ->
                 val bundle = bundleMap[bundleUid]
-                val headerText = bundle?.let {
-                    it.bundleVersion?.let { version ->
-                        "${it.bundleName} v$version"
-                    } ?: it.bundleName
-                } ?: "Bundle $bundleUid"
 
                 item(key = "header_$bundleUid") {
-                    ListHeader(title = headerText)
+                    ListHeader(title = bundle?.let {
+                        it.bundleVersion?.let { version ->
+                            "${it.bundleName} v$version"
+                        } ?: it.bundleName
+                    } ?: "${stringResource(R.string.patches)} $bundleUid")
                 }
 
                 items(
