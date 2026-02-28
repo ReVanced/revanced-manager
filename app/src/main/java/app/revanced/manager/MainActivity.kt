@@ -22,7 +22,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import app.revanced.manager.ui.model.navigation.AppliedPatches
 import app.revanced.manager.ui.model.navigation.AppSelector
 import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
@@ -31,7 +30,6 @@ import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
-import app.revanced.manager.ui.screen.AppliedPatchesScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
@@ -131,18 +129,6 @@ private fun ReVancedManager(vm: MainViewModel) {
 
             InstalledAppInfoScreen(
                 onPatchClick = vm::selectApp,
-                onBackClick = navController::popBackStack,
-                onAppliedPatchesClick = {
-                    navController.navigate(AppliedPatches(data.packageName))
-                },
-                viewModel = koinViewModel { parametersOf(data.packageName) }
-            )
-        }
-
-        composable<AppliedPatches> {
-            val data = it.toRoute<AppliedPatches>()
-
-            AppliedPatchesScreen(
                 onBackClick = navController::popBackStack,
                 viewModel = koinViewModel { parametersOf(data.packageName) }
             )

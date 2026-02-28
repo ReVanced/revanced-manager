@@ -5,7 +5,6 @@ import org.koin.core.module.dsl.*
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModelOf(::AppliedPatchesViewModel)
     viewModelOf(::MainViewModel)
     viewModelOf(::DashboardViewModel)
     viewModelOf(::SelectedAppInfoViewModel)

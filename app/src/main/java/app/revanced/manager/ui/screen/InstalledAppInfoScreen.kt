@@ -49,7 +49,6 @@ import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
 fun InstalledAppInfoScreen(
     onPatchClick: (packageName: String) -> Unit,
     onBackClick: () -> Unit,
-    onAppliedPatchesClick: () -> Unit,
     viewModel: InstalledAppInfoViewModel
 ) {
 
@@ -58,12 +57,20 @@ fun InstalledAppInfoScreen(
     }
 
     var showUninstallDialog by rememberSaveable { mutableStateOf(false) }
+    var showAppliedPatchesDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showUninstallDialog)
         UninstallDialog(
             onDismiss = { showUninstallDialog = false },
             onConfirm = { viewModel.uninstall() }
         )
+    if (showAppliedPatchesDialog) {
+        AppliedPatchesDialog(
+            onDismissRequest = { showAppliedPatchesDialog = false },
+            appliedPatches = viewModel.appliedPatches,
+            patchBundles = viewModel.patchBundles
+        )
+    }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -150,7 +157,7 @@ fun InstalledAppInfoScreen(
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
                 SettingsListItem(
-                    modifier = Modifier.clickable(onClick = onAppliedPatchesClick),
+                    modifier = Modifier.clickable(onClick = { showAppliedPatchesDialog = true }),
                     headlineContent = stringResource(R.string.applied_patches),
                     supportingContent = 
                             (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {
