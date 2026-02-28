@@ -70,7 +70,6 @@ fun UpdatesSettingsScreen(
     val context = LocalContext.current
     val dashboardVm: DashboardViewModel = koinActivityViewModel()
     val resources = LocalResources.current
-    val appName = stringResource(R.string.app_name)
     val coroutineScope = rememberCoroutineScope()
     var checkingForUpdate by remember { mutableStateOf(false) }
     val hasAvailableUpdate = !dashboardVm.updatedManagerVersion.isNullOrEmpty()
@@ -80,7 +79,7 @@ fun UpdatesSettingsScreen(
             AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
         }
     )
-    
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -213,7 +212,7 @@ fun UpdatesSettingsScreen(
                 BooleanItem(
                     preference = vm.managerAutoUpdates,
                     headline = R.string.update_checking_manager,
-                    description = stringResource(R.string.update_checking_manager_description, appName)
+                    description = R.string.update_checking_manager_description
                 )
 
                 AnimatedVisibility(visible = managerAutoUpdates) {
@@ -227,7 +226,7 @@ fun UpdatesSettingsScreen(
                 SafeguardBooleanItem(
                     preference = vm.useManagerPrereleases,
                     headline = R.string.manager_prereleases,
-                    description = stringResource(R.string.manager_prereleases_description, appName),
+                    description = R.string.manager_prereleases_description,
                     confirmationText = R.string.prereleases_warning,
                     onValueChange = { value ->
                         coroutineScope.launch {

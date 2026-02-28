@@ -48,7 +48,7 @@ fun PermissionsStepContent(
     ColumnWithScrollbarEdgeShadow(modifier = modifier.fillMaxSize()) {
         if (showSubtitle) {
             Text(
-                text = stringResource(R.string.onboarding_permissions_subtitle, stringResource(R.string.app_name)),
+                text = stringResource(R.string.onboarding_permissions_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp)

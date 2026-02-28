@@ -237,7 +237,6 @@ fun AdvancedSettingsScreen(
 @Composable
 private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
     var url by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
-    val appName = stringResource(R.string.app_name)
 
     AlertDialog(
         onDismissRequest = { onSubmit(null) },
@@ -271,12 +270,12 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.api_url_dialog_description, appName),
+                    text = stringResource(R.string.api_url_dialog_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = stringResource(R.string.api_url_dialog_warning, appName),
+                    text = stringResource(R.string.api_url_dialog_warning),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )

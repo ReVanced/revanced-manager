@@ -382,7 +382,7 @@ fun DashboardScreen(
                             NotificationCard(
                                 isWarning = true,
                                 icon = Icons.Default.BatteryAlert,
-                                text = stringResource(R.string.battery_optimization_notification, stringResource(R.string.app_name)),
+                                text = stringResource(R.string.battery_optimization_notification),
                                 onClick = {
                                     batteryOptimizationsLauncher.launch(
                                         Intent(

@@ -33,12 +33,10 @@ fun SourcesStepContent(
     showSubtitle: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    val appName = stringResource(R.string.app_name)
-
     ColumnWithScrollbarEdgeShadow(modifier = modifier.fillMaxSize()) {
         if (showSubtitle) {
             Text(
-                text = stringResource(R.string.onboarding_sources_subtitle, appName),
+                text = stringResource(R.string.onboarding_sources_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -113,7 +111,7 @@ fun SourcesStepContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(R.string.onboarding_sources_note, appName),
+            text = stringResource(R.string.onboarding_sources_note),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 16.dp)

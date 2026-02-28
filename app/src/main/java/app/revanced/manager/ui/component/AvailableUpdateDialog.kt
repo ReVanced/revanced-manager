@@ -67,7 +67,7 @@ fun AvailableUpdateDialog(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(R.string.update_available_dialog_description, stringResource(R.string.app_name), newVersion)
+                    text = stringResource(R.string.update_available_dialog_description, newVersion)
                 )
                 ListItem(
                     modifier = Modifier.clickable { dontShowAgain = !dontShowAgain },
