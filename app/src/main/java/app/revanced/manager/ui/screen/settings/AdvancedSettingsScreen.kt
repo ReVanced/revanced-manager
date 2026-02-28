@@ -138,6 +138,40 @@ fun AdvancedSettingsScreen(
             }
 
             ListSection(
+                title = stringResource(R.string.safeguards),
+                leadingContent = { Icon(Icons.Outlined.Security, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+            SafeguardBooleanItem(
+                preference = viewModel.prefs.disablePatchVersionCompatCheck,
+                coroutineScope = viewModel.viewModelScope,
+                headline = R.string.patch_compat_check,
+                description = R.string.patch_compat_check_description,
+                confirmationText = R.string.patch_compat_check_confirmation
+            )
+            SafeguardBooleanItem(
+                preference = viewModel.prefs.suggestedVersionSafeguard,
+                coroutineScope = viewModel.viewModelScope,
+                headline = R.string.suggested_version_safeguard,
+                description = R.string.suggested_version_safeguard_description,
+                confirmationText = R.string.suggested_version_safeguard_confirmation
+            )
+            SafeguardBooleanItem(
+                preference = viewModel.prefs.disableSelectionWarning,
+                coroutineScope = viewModel.viewModelScope,
+                headline = R.string.patch_selection_safeguard,
+                description = R.string.patch_selection_safeguard_description,
+                confirmationText = R.string.patch_selection_safeguard_confirmation
+            )
+                SafeguardBooleanItem(
+                    preference = viewModel.prefs.disableUniversalPatchCheck,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.universal_patches_safeguard,
+                    description = R.string.universal_patches_safeguard_description,
+                    confirmationText = R.string.universal_patches_safeguard_confirmation
+                )
+            }
+
+            ListSection(
                 title = stringResource(R.string.patcher),
                 leadingContent = { Icon(Icons.Outlined.Tune, contentDescription = null, modifier = Modifier.size(18.dp)) }
             ) {
