@@ -189,7 +189,7 @@ private fun ColumnScope.Changelog(releaseInfo: ReVancedAsset) {
             )
     ) {
         Changelog(
-            markdown = releaseInfo.description.replace("`", ""),
+            description = releaseInfo.description.replace("`", ""),
             version = releaseInfo.version,
             publishDate = releaseInfo.createdAt.relativeTime(LocalContext.current)
         )

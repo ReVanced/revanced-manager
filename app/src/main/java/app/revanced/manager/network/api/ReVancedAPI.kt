@@ -6,7 +6,6 @@ import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.network.dto.ReVancedAnnouncementTag
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedGitRepository
-import app.revanced.manager.network.dto.ReVancedHistory
 import app.revanced.manager.network.dto.ReVancedInfo
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.APIResponse
@@ -49,7 +48,7 @@ class ReVancedAPI(
     suspend fun getLatestAppInfo() =
         request<ReVancedAsset>("manager?prerelease=${prefs.useManagerPrereleases.get()}")
 
-    suspend fun getAppHistory() = request<ReVancedHistory>("patches/history", "dev")
+    suspend fun getAppHistory() = request<ReVancedAsset>("patches/history", "dev")
 
     suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches?prerelease=${prefs.usePatchesPrereleases.get()}")
 

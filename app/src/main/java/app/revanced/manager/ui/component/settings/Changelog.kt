@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NewReleases
+import androidx.compose.material.icons.outlined.CalendarToday
+import androidx.compose.material.icons.outlined.Campaign
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,7 +22,7 @@ import app.revanced.manager.ui.component.Markdown
 
 @Composable
 fun Changelog(
-    markdown: String,
+    description: String,
     version: String,
     publishDate: String
 ) {
@@ -34,22 +35,32 @@ fun Changelog(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = Icons.Outlined.NewReleases,
+                imageVector = Icons.Outlined.Campaign,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .size(32.dp)
             )
             Text(
-                "${version.removePrefix("v")} ($publishDate)",
+                version.removePrefix("v"),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight(800)),
                 color = MaterialTheme.colorScheme.primary,
             )
         }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Tag(
+                Icons.Outlined.CalendarToday,
+                publishDate
+            )
+        }
+        Markdown(
+            description.removeVersionHeaderIfMatches(version),
+        )
     }
-    Markdown(
-        markdown,
-    )
 }
 
 @Composable
@@ -70,4 +81,16 @@ private fun Tag(icon: ImageVector, text: String) {
             color = MaterialTheme.colorScheme.outline,
         )
     }
+}
+
+fun String.removeVersionHeaderIfMatches(version: String): String {
+    val firstNewlineIndex = indexOf('\n')
+    if (firstNewlineIndex == -1) return this
+
+    val firstLine = substring(0, firstNewlineIndex).trim()
+    val versionWithoutPrefix = version.removePrefix("v")
+
+    if (!firstLine.contains(versionWithoutPrefix)) return this
+
+    return substring(firstNewlineIndex + 1).trimStart()
 }
