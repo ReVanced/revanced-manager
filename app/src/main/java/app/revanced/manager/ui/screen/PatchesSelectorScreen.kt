@@ -542,8 +542,8 @@ fun PatchesSelectorScreen(
                                         onClick = {
                                             when {
                                                 viewModel.selectionWarningEnabled -> showSelectionWarning = true
-                                                selectionState == true -> viewModel.deselectAll(bundles, bundle.uid)
-                                                else -> viewModel.restoreDefaults(bundles, bundle.uid)
+                                                selectionState == false -> viewModel.restoreDefaults(bundles, bundle.uid)
+                                                else -> viewModel.deselectAll(bundles, bundle.uid)
                                             }
                                         }
                                     )
