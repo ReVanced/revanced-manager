@@ -1,3 +1,11 @@
+# app [1.26.0-dev.29](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.28...v1.26.0-dev.29) (2026-02-28)
+
+
+### Bug Fixes
+
+* Exclude desktop AAPT and disable R8 optimizations ([6ce5b67](https://github.com/ReVanced/revanced-manager/commit/6ce5b672feb677eccafffb6a04bdf5513f6d62fa))
+* unexclude other destabilizers ([2c3d436](https://github.com/ReVanced/revanced-manager/commit/2c3d436b258f100feea0b9864b7131ae2c5bda79))
+
 # app [1.26.0-dev.28](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.27...v1.26.0-dev.28) (2026-02-28)
 
 
