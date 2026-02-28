@@ -1,3 +1,10 @@
+# app [1.26.0-dev.28](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.27...v1.26.0-dev.28) (2026-02-28)
+
+
+### Features
+
+* Add patch selection filters ([#2956](https://github.com/ReVanced/revanced-manager/issues/2956)) ([0be493d](https://github.com/ReVanced/revanced-manager/commit/0be493da662ed2b46d4b8616942357eb6a111d17))
+
 # app [1.26.0-dev.27](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.26...v1.26.0-dev.27) (2026-02-28)
 
 
