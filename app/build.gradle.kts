@@ -254,9 +254,6 @@ android {
             excludes += "/META-INF/**/*.txt"
             excludes += "/META-INF/**/*.properties"
             excludes += "/META-INF/DEPENDENCIES"
-
-            // Desktop AAPT binaries
-            excludes += "/prebuilt/**"
         }
         jniLibs {
             // 32-bit x86 is dead
