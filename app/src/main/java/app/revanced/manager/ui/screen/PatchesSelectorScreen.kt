@@ -226,7 +226,7 @@ fun PatchesSelectorScreen(
                     onClick = {
                         guardedAction {
                             executeScopedAction { uid ->
-                                viewModel.restoreDefaults(bundles, uid)
+                                viewModel.restoreDefaults(uid)
                             }
                         }
                     }
@@ -542,7 +542,7 @@ fun PatchesSelectorScreen(
                                         onClick = {
                                             when {
                                                 viewModel.selectionWarningEnabled -> showSelectionWarning = true
-                                                selectionState == false -> viewModel.restoreDefaults(bundles, bundle.uid)
+                                                selectionState == false -> viewModel.restoreDefaults(bundle.uid)
                                                 else -> viewModel.deselectAll(bundles, bundle.uid)
                                             }
                                         }
