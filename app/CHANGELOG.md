@@ -1,3 +1,10 @@
+# app [1.26.0-dev.27](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.26...v1.26.0-dev.27) (2026-02-28)
+
+
+### Features
+
+* Show patch bundle version used to patch an app ([#2966](https://github.com/ReVanced/revanced-manager/issues/2966)) ([11bd46c](https://github.com/ReVanced/revanced-manager/commit/11bd46ce26d4fbc7f126bee5e254d4f6b5e0cc43))
+
 # app [1.26.0-dev.26](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.25...v1.26.0-dev.26) (2026-02-27)
 
 
