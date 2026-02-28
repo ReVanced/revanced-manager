@@ -1,13 +1,15 @@
 package app.revanced.manager.data.room
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import app.revanced.manager.data.room.apps.downloaded.DownloadedAppDao
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
+import app.revanced.manager.data.room.apps.downloaded.DownloadedAppDao
 import app.revanced.manager.data.room.apps.installed.AppliedPatch
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.data.room.apps.installed.InstalledAppDao
+import app.revanced.manager.data.room.apps.installed.InstalledPatchBundle
 import app.revanced.manager.data.room.selection.PatchSelection
 import app.revanced.manager.data.room.selection.SelectedPatch
 import app.revanced.manager.data.room.selection.SelectionDao
@@ -21,8 +23,9 @@ import app.revanced.manager.data.room.downloader.TrustedDownloaderDao
 import kotlin.random.Random
 
 @Database(
-    entities = [PatchBundleEntity::class, PatchSelection::class, SelectedPatch::class, DownloadedApp::class, InstalledApp::class, AppliedPatch::class, OptionGroup::class, Option::class, TrustedDownloader::class],
-    version = 1
+    entities = [PatchBundleEntity::class, PatchSelection::class, SelectedPatch::class, DownloadedApp::class, InstalledApp::class, AppliedPatch::class, InstalledPatchBundle::class, OptionGroup::class, Option::class, TrustedDownloader::class],
+    version = 2,
+    autoMigrations = [AutoMigration(from = 1, to = 2)]
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
