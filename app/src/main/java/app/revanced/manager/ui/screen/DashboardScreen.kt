@@ -157,10 +157,11 @@ fun DashboardScreen(
     }
 
     var showUpdateDialog by rememberSaveable { mutableStateOf(true) }
+    val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
     val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
 
-    if (showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
+    if (managerAutoUpdates && showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
         AvailableUpdateDialog(
             onDismiss = { showUpdateDialog = false },
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
