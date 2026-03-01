@@ -158,14 +158,14 @@ fun DashboardScreen(
 
     var showUpdateDialog by rememberSaveable { mutableStateOf(true) }
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
-    val availableUpdate = vm.updatedManagerVersion
+    val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
 
     if (showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
         AvailableUpdateDialog(
             onDismiss = { showUpdateDialog = false },
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
-            newVersion = availableUpdate
+            newVersion = availableUpdate!!
         )
     }
 
@@ -282,7 +282,7 @@ fun DashboardScreen(
                             }
                         },
                         actions = {
-                            if (!vm.updatedManagerVersion.isNullOrEmpty()) {
+                            if (availableUpdate != null) {
                                 IconButton(onClick = onUpdateClick) {
                                     BadgedBox(
                                         badge = {

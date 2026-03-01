@@ -44,6 +44,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.BottomContentBar
@@ -51,13 +52,11 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
-import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
 import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.viewmodel.koinActivityViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -68,11 +67,10 @@ fun UpdatesSettingsScreen(
     vm: UpdatesSettingsViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
-    val dashboardVm: DashboardViewModel = koinActivityViewModel()
     val resources = LocalResources.current
     val coroutineScope = rememberCoroutineScope()
     var checkingForUpdate by remember { mutableStateOf(false) }
-    val hasAvailableUpdate = !dashboardVm.updatedManagerVersion.isNullOrEmpty()
+    val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val appIcon = rememberDrawablePainter(
         drawable = remember(context) {
@@ -97,7 +95,7 @@ fun UpdatesSettingsScreen(
                     enabled = !checkingForUpdate,
                     onClick = {
                         coroutineScope.launch {
-                            if (hasAvailableUpdate) {
+                            if (availableUpdate != null) {
                                 onUpdateClick()
                                 return@launch
                             }
@@ -109,7 +107,6 @@ fun UpdatesSettingsScreen(
                             checkingForUpdate = true
                             try {
                                 val version = vm.checkForUpdates()
-                                dashboardVm.updateUpdatedManagerVersion(version)
                                 if (!version.isNullOrEmpty()) onUpdateClick()
                             } finally {
                                 checkingForUpdate = false
@@ -133,7 +130,7 @@ fun UpdatesSettingsScreen(
                         text = stringResource(
                             when {
                                 checkingForUpdate -> R.string.update_check
-                                hasAvailableUpdate -> R.string.view_update
+                                availableUpdate != null -> R.string.view_update
                                 else -> R.string.manual_update_check
                             }
                         )
@@ -231,7 +228,7 @@ fun UpdatesSettingsScreen(
                     onValueChange = { value ->
                         coroutineScope.launch {
                             vm.useManagerPrereleases.update(value)
-                            dashboardVm.updateUpdatedManagerVersion(null)
+                            vm.clearAvailableManagerUpdate()
                         }
                     }
                 )

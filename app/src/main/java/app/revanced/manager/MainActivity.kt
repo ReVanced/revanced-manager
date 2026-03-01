@@ -61,7 +61,6 @@ import app.revanced.manager.ui.screen.settings.update.ChangelogsSettingsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
-import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
@@ -109,8 +108,11 @@ class MainActivity : AppCompatActivity() {
 @Composable
 private fun ReVancedManager(vm: MainViewModel) {
     val navController = rememberNavController()
-    val dashboardVm: DashboardViewModel = koinViewModel()
     val completedOnboarding by vm.prefs.completedOnboarding.getAsState()
+    // please dont unmemoize this bahahahah
+    val startDestination = remember {
+        if (completedOnboarding) Dashboard else Onboarding
+    }
 
     EventEffect(vm.appSelectFlow) { app ->
         navController.navigateComplex(
@@ -121,7 +123,7 @@ private fun ReVancedManager(vm: MainViewModel) {
 
     NavHost(
         navController = navController,
-        startDestination = if (completedOnboarding) Dashboard else Onboarding,
+        startDestination = startDestination,
         enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
         exitTransition = { slideOutHorizontally(targetOffsetX = { -it / 3 }) },
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it / 3 }) },
@@ -129,14 +131,17 @@ private fun ReVancedManager(vm: MainViewModel) {
     ) {
         composable<Onboarding> {
             OnboardingScreen(
-                onFinish = { navController.navigateSafe(Dashboard) },
+                onFinish = {
+                    navController.navigateSafe(route = Dashboard) {
+                        popUpTo<Onboarding> { inclusive = true }
+                    }
+                },
                 onAppClick = vm::selectApp,
             )
         }
 
         composable<Dashboard> {
             DashboardScreen(
-                vm = dashboardVm,
                 onSettingsClick = { navController.navigateSafe(Settings) },
                 onAppSelectorClick = {
                     navController.navigateSafe(AppSelector)

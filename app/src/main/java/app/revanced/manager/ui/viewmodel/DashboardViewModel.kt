@@ -14,19 +14,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
+import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
 import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.datetime.TimeZone
@@ -39,7 +37,7 @@ class DashboardViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val downloaderRepository: DownloaderRepository,
     private val announcementRepository: AnnouncementRepository,
-    private val reVancedAPI: ReVancedAPI,
+    private val managerUpdateRepository: ManagerUpdateRepository,
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager,
     private val pm: PM,
@@ -51,6 +49,7 @@ class DashboardViewModel(
 
     val newDownloadersAvailable =
         downloaderRepository.newDownloaderPackageNames.map { it.isNotEmpty() }
+    val availableManagerUpdate = managerUpdateRepository.availableVersion
 
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
@@ -60,8 +59,6 @@ class DashboardViewModel(
      */
     val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
 
-    var updatedManagerVersion: String? by mutableStateOf(null)
-        private set
     var showBatteryOptimizationsWarning by mutableStateOf(false)
         private set
 
@@ -87,7 +84,7 @@ class DashboardViewModel(
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
-            updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
+            managerUpdateRepository.refreshAvailableVersion()
         }
     }
 
@@ -138,10 +135,6 @@ class DashboardViewModel(
         viewModelScope.launch {
             prefs.showManagerUpdateDialogOnLaunch.update(value)
         }
-    }
-
-    fun updateUpdatedManagerVersion(value: String?) {
-        updatedManagerVersion = value
     }
 
     private fun sendEvent(event: BundleListViewModel.Event) {
