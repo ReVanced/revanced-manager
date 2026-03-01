@@ -27,13 +27,12 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -48,7 +47,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
@@ -73,6 +71,12 @@ fun GeneralSettingsScreen(
     val prefs = viewModel.prefs
     val coroutineScope = viewModel.viewModelScope
     var showLanguagePicker by rememberSaveable { mutableStateOf(false) }
+    val scrollState = androidx.compose.foundation.rememberScrollState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = {
+            scrollState.canScrollBackward || scrollState.canScrollForward
+        }
+    )
 
     if (showLanguagePicker) {
         LanguagePicker(
@@ -83,23 +87,39 @@ fun GeneralSettingsScreen(
         )
     }
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val animatedSurfaceColor = animateColorAsState(
+        targetValue = MaterialTheme.colorScheme.surface,
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+        label = "surface"
+    ).value
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.general),
-                scrollBehavior = scrollBehavior,
-                onBackClick = onBackClick
+            MediumFlexibleTopAppBar(
+                title = { Text(stringResource(R.string.general)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = animatedSurfaceColor,
+                    scrolledContainerColor = animatedSurfaceColor
+                ),
+                scrollBehavior = scrollBehavior
             )
         },
-        containerColor = animateColorAsState(MaterialTheme.colorScheme.surface, MaterialTheme.motionScheme.defaultEffectsSpec(), "surface").value,
+        containerColor = animatedSurfaceColor,
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            state = scrollState
         ) {
             ListSection(
                 title = stringResource(R.string.appearance),
@@ -206,11 +226,9 @@ private fun LanguagePicker(
         }
     }
 
-    val scrollBehavior = if (isLanguageListScrollable) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    } else {
-        null
-    }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = { isLanguageListScrollable }
+    )
 
     FullscreenDialog(onDismissRequest = onDismiss) {
         if (isSearchActive) {
@@ -276,7 +294,7 @@ private fun LanguagePicker(
         } else {
             Scaffold(
                 topBar = {
-                    LargeFlexibleTopAppBar(
+                    MediumFlexibleTopAppBar(
                         title = { Text(stringResource(R.string.language)) },
                         navigationIcon = {
                             IconButton(onClick = onDismiss) {
@@ -297,10 +315,7 @@ private fun LanguagePicker(
                         scrollBehavior = scrollBehavior
                     )
                 },
-                modifier = Modifier.then(
-                    scrollBehavior?.let { Modifier.nestedScroll(it.nestedScrollConnection) }
-                        ?: Modifier
-                )
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             ) { paddingValues ->
                 LazyColumnWithScrollbar(
                     modifier = Modifier

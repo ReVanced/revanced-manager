@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.Button
@@ -25,12 +26,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,7 +48,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
@@ -71,7 +72,12 @@ fun UpdatesSettingsScreen(
     val coroutineScope = rememberCoroutineScope()
     var checkingForUpdate by remember { mutableStateOf(false) }
     val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val scrollState = androidx.compose.foundation.rememberScrollState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = {
+            scrollState.canScrollBackward || scrollState.canScrollForward
+        }
+    )
     val appIcon = rememberDrawablePainter(
         drawable = remember(context) {
             AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
@@ -80,10 +86,17 @@ fun UpdatesSettingsScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.updates),
-                scrollBehavior = scrollBehavior,
-                onBackClick = onBackClick
+            MediumFlexibleTopAppBar(
+                title = { Text(stringResource(R.string.updates)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
             )
         },
         bottomBar = {
@@ -138,12 +151,15 @@ fun UpdatesSettingsScreen(
                 }
             }
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier.then(
+            scrollBehavior.let { Modifier.nestedScroll(it.nestedScrollConnection) }
+        ),
     ) { paddingValues ->
         ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            state = scrollState
         ) {
             ListSection(
                 title = stringResource(R.string.manager),

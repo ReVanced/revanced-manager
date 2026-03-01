@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen.settings
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Delete
@@ -19,17 +20,19 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +48,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.ui.component.AppLabel
-import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
@@ -56,7 +58,7 @@ import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.security.MessageDigest
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalStdlibApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ExperimentalStdlibApi::class)
 @Composable
 fun DownloadsSettingsScreen(
     onBackClick: () -> Unit,
@@ -65,7 +67,15 @@ fun DownloadsSettingsScreen(
     val context = LocalContext.current
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val downloaderStates by viewModel.downloaderStates.collectAsStateWithLifecycle()
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val listState = rememberLazyListState()
+    val canScroll by remember {
+        derivedStateOf {
+            listState.canScrollBackward || listState.canScrollForward
+        }
+    }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = { canScroll }
+    )
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showDeleteConfirmationDialog) {
@@ -80,10 +90,17 @@ fun DownloadsSettingsScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.downloads),
+            MediumFlexibleTopAppBar(
+                title = { Text(stringResource(R.string.downloads)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                },
                 scrollBehavior = scrollBehavior,
-                onBackClick = onBackClick,
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
                         IconButton(onClick = { viewModel.deleteApps() }) {
@@ -93,7 +110,9 @@ fun DownloadsSettingsScreen(
                 }
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier.then(
+            scrollBehavior.let { Modifier.nestedScroll(it.nestedScrollConnection) }
+        ),
     ) { paddingValues ->
         PullToRefreshBox(
             onRefresh = viewModel::refreshDownloaders,
@@ -101,7 +120,8 @@ fun DownloadsSettingsScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             LazyColumnWithScrollbar(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                state = listState
             ) {
                 item {
                     ListSection(
