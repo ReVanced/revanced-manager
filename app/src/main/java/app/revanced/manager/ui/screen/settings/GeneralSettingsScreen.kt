@@ -235,7 +235,10 @@ private fun LanguagePicker(
             SearchViewComponent(
                 query = searchQuery,
                 onQueryChange = { searchQuery = it },
-                onActiveChange = { isSearchActive = it },
+                onActiveChange = {
+                    isSearchActive = it
+                    if (!it) searchQuery = ""
+                },
                 placeholder = { Text(stringResource(R.string.search_languages)) },
             ) {
                 if (searchQuery.isEmpty()) {

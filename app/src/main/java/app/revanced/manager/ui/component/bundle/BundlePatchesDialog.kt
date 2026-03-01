@@ -73,7 +73,10 @@ fun BundlePatchesDialog(
             SearchView(
                 query = query,
                 onQueryChange = { query = it },
-                onActiveChange = { isSearchActive = it },
+                onActiveChange = {
+                    isSearchActive = it
+                    if (!it) query = ""
+                },
                 placeholder = { Text(stringResource(R.string.search)) }
             ) {
                 when {

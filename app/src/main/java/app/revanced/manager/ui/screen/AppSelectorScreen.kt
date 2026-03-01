@@ -95,7 +95,10 @@ fun AppSelectorScreen(
         SearchView(
             query = filterText,
             onQueryChange = { filterText = it },
-            onActiveChange = { search = it },
+            onActiveChange = {
+                search = it
+                if (!it) filterText = ""
+            },
             placeholder = { Text(stringResource(R.string.search_apps)) }
         ) {
             if (appList.isNotEmpty() && filterText.isNotEmpty()) {
