@@ -74,7 +74,7 @@ jobs:
 
       - name: Attest
         if: steps.release.outputs.NEW_TAG != ''
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: 'ReVanced Manager ${{ steps.release.outputs.NEW_TAG }}'
           subject-path: app/build/outputs/apk/release/revanced-manager*.apk
