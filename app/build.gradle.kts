@@ -170,7 +170,7 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            resValue("string", "app_name", "ReVanced Manager (Debug)")
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
@@ -179,13 +179,13 @@ android {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
-                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             }
 
             val keystoreFile = file("keystore.jks")
 
             if (project.hasProperty("signAsDebug") || !keystoreFile.exists()) {
-                applicationIdSuffix = ".debug_signed"
+                resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs.getByName("debug")
 
                 isPseudoLocalesEnabled = true
@@ -258,11 +258,8 @@ android {
             excludes += "/META-INF/**/*.properties"
             excludes += "/META-INF/DEPENDENCIES"
 
-            // Desktop AAPT binaries
-            excludes += "/prebuilt/**"
-
-            // Reflection symbol list (https://stackoverflow.com/a/41073782/13964629)
-            excludes += "/**/*.kotlin_builtins"
+            // AAPT
+            excludes += "/prebuilt/**/*"
         }
         jniLibs {
             // 32-bit x86 is dead

@@ -31,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,7 +43,6 @@ import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
-import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,19 +51,26 @@ fun InstalledAppInfoScreen(
     onBackClick: () -> Unit,
     viewModel: InstalledAppInfoViewModel
 ) {
-    val context = LocalContext.current
 
     SideEffect {
         viewModel.onBackClick = onBackClick
     }
 
     var showUninstallDialog by rememberSaveable { mutableStateOf(false) }
+    var showAppliedPatchesDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showUninstallDialog)
         UninstallDialog(
             onDismiss = { showUninstallDialog = false },
             onConfirm = { viewModel.uninstall() }
         )
+    if (showAppliedPatchesDialog) {
+        AppliedPatchesDialog(
+            onDismissRequest = { showAppliedPatchesDialog = false },
+            appliedPatches = viewModel.appliedPatches,
+            patchBundles = viewModel.patchBundles
+        )
+    }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -162,8 +167,8 @@ fun InstalledAppInfoScreen(
                                 )
                             },
                     trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) },
-                    onClick = { context.toast("Not implemented yet!") }
-                )
+                    onClick = { showAppliedPatchesDialog = true },
+                    )
 
                 SettingsListItem(
                     headlineContent = stringResource(R.string.package_name),

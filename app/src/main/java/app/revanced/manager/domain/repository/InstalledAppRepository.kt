@@ -4,6 +4,8 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.apps.installed.AppliedPatch
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.data.room.apps.installed.InstalledPatchBundle
+import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -19,12 +21,16 @@ class InstalledAppRepository(
     suspend fun getAppliedPatches(packageName: String): PatchSelection =
         dao.getPatchesSelection(packageName).mapValues { (_, patches) -> patches.toSet() }
 
+    suspend fun getInstalledPatchBundles(packageName: String) =
+        dao.getInstalledPatchBundles(packageName)
+
     suspend fun addOrUpdate(
         currentPackageName: String,
         originalPackageName: String,
         version: String,
         installType: InstallType,
-        patchSelection: PatchSelection
+        patchSelection: PatchSelection,
+        bundleInfo: Map<Int, PatchBundleInfo.Global> = emptyMap()
     ) {
         dao.upsertApp(
             InstalledApp(
@@ -41,6 +47,15 @@ class InstalledAppRepository(
                         patchName = patch
                     )
                 }
+            },
+            patchSelection.keys.mapNotNull { uid ->
+                val info = bundleInfo[uid] ?: return@mapNotNull null
+                InstalledPatchBundle(
+                    packageName = currentPackageName,
+                    bundleUid = uid,
+                    bundleName = info.name,
+                    bundleVersion = info.version
+                )
             }
         )
     }

@@ -15,9 +15,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -28,13 +31,16 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -61,7 +67,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
@@ -75,6 +83,7 @@ import app.revanced.manager.ui.component.SearchBar
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
+import app.revanced.manager.ui.component.haptics.HapticTriStateCheckbox
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.component.patches.SelectionWarningDialog
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
@@ -125,7 +134,39 @@ fun PatchesSelectorScreen(
 
     val patchLazyListStates = remember(bundles) { List(bundles.size) { LazyListState() } }
 
+    var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
+    var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
+
+    var pendingScopeAction by remember { mutableStateOf<((Int?) -> Unit)?>(null) }
+
+    fun executeScopedAction(action: (Int?) -> Unit) {
+        if (bundles.size > 1) {
+            pendingScopeAction = action
+        } else {
+            action(bundles.firstOrNull()?.uid)
+        }
+    }
+
+    pendingScopeAction?.let { action ->
+        val currentBundle = bundles.getOrNull(pagerState.currentPage) ?: return@let
+
+        ScopeDialog(
+            bundleName = currentBundle.name,
+            onDismissRequest = { pendingScopeAction = null },
+            onAllPatches = {
+                action(null)
+                pendingScopeAction = null
+            },
+            onBundleOnly = {
+                action(currentBundle.uid)
+                pendingScopeAction = null
+            }
+        )
+    }
+
     if (showBottomSheet) {
+        val currentBundle = bundles.getOrNull(pagerState.currentPage)
+
         ModalBottomSheet(
             onDismissRequest = {
                 showBottomSheet = false
@@ -162,6 +203,71 @@ fun PatchesSelectorScreen(
                         label = { Text(stringResource(R.string.universal)) },
                     )
                 }
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+                Text(
+                    text = stringResource(R.string.patch_selector_sheet_actions_title),
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                fun guardedAction(action: () -> Unit) {
+                    showBottomSheet = false
+                    if (viewModel.selectionWarningEnabled) {
+                        showSelectionWarning = true
+                    } else {
+                        action()
+                    }
+                }
+
+                ActionItem(
+                    icon = Icons.Outlined.Restore,
+                    text = stringResource(R.string.restore_default_selection),
+                    onClick = {
+                        guardedAction {
+                            executeScopedAction { uid ->
+                                viewModel.restoreDefaults(uid)
+                            }
+                        }
+                    }
+                )
+
+                ActionItem(
+                    icon = Icons.Outlined.Deselect,
+                    text = stringResource(R.string.deselect_all),
+                    onClick = {
+                        guardedAction {
+                            executeScopedAction { uid ->
+                                viewModel.deselectAll(bundles, uid)
+                            }
+                        }
+                    }
+                )
+
+                ActionItem(
+                    icon = Icons.Outlined.SwapHoriz,
+                    text = stringResource(R.string.invert_selection),
+                    onClick = {
+                        guardedAction {
+                            executeScopedAction { uid ->
+                                viewModel.invertSelection(bundles, uid)
+                            }
+                        }
+                    }
+                )
+
+                if (bundles.size > 1 && currentBundle != null) {
+                    ActionItem(
+                        icon = Icons.Outlined.Deselect,
+                        text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                        onClick = {
+                            guardedAction {
+                                viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
@@ -191,9 +297,6 @@ fun PatchesSelectorScreen(
             selectionWarningEnabled = viewModel.selectionWarningEnabled
         )
     }
-
-    var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
-    var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
 
     if (showSelectionWarning)
         SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
@@ -427,16 +530,38 @@ fun PatchesSelectorScreen(
                                 }
                             },
                             text = {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(
-                                        text = bundle.name,
-                                        style = MaterialTheme.typography.bodyMedium
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    val selectionState = viewModel.getBundleSelectionState(bundle)
+                                    val toggleableState = when (selectionState) {
+                                        true -> ToggleableState.On
+                                        false -> ToggleableState.Off
+                                        null -> ToggleableState.Indeterminate
+                                    }
+
+                                    HapticTriStateCheckbox(
+                                        state = toggleableState,
+                                        onClick = {
+                                            when {
+                                                viewModel.selectionWarningEnabled -> showSelectionWarning = true
+                                                selectionState == false -> viewModel.restoreDefaults(bundle.uid)
+                                                else -> viewModel.deselectAll(bundles, bundle.uid)
+                                            }
+                                        }
                                     )
-                                    Text(
-                                        text = bundle.version.orEmpty(),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+
+                                    Spacer(modifier = Modifier.width(4.dp))
+
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Text(
+                                            text = bundle.name,
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Text(
+                                            text = bundle.version.orEmpty(),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                 }
                             },
                             selectedContentColor = MaterialTheme.colorScheme.primary,
@@ -610,6 +735,41 @@ private fun IncompatiblePatchDialog(
                 compatibleVersions.joinToString(", ")
             )
         )
+    }
+)
+
+@Composable
+private fun ActionItem(
+    icon: ImageVector,
+    text: String,
+    onClick: () -> Unit
+) {
+    ListItem(
+        modifier = Modifier.clickable(onClick = onClick),
+        leadingContent = { Icon(icon, contentDescription = null) },
+        headlineContent = { Text(text) },
+        colors = transparentListItemColors
+    )
+}
+
+@Composable
+private fun ScopeDialog(
+    bundleName: String,
+    onDismissRequest: () -> Unit,
+    onAllPatches: () -> Unit,
+    onBundleOnly: () -> Unit
+) = AlertDialog(
+    onDismissRequest = onDismissRequest,
+    title = { Text(stringResource(R.string.scope_dialog_title)) },
+    confirmButton = {
+        TextButton(onClick = onAllPatches) {
+            Text(stringResource(R.string.scope_all_patches))
+        }
+    },
+    dismissButton = {
+        TextButton(onClick = onBundleOnly) {
+            Text(stringResource(R.string.scope_bundle_patches, bundleName))
+        }
     }
 )
 

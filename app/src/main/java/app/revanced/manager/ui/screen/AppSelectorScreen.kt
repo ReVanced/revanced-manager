@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -25,9 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -69,20 +68,11 @@ fun AppSelectorScreen(
             uri?.let(vm::handleStorageResult)
         }
 
-    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle(emptyMap())
+    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle()
 
-    var filterText by rememberSaveable { mutableStateOf("") }
     var search by rememberSaveable { mutableStateOf(false) }
-
-    val appList by vm.appList.collectAsStateWithLifecycle(initialValue = emptyList())
-    val filteredAppList = remember(appList, filterText) {
-        appList.filter { app ->
-            (vm.loadLabel(app.packageInfo)).contains(
-                filterText,
-                true
-            ) or app.packageName.contains(filterText, true)
-        }
-    }
+    val appList by vm.apps.collectAsStateWithLifecycle()
+    val appsListFiltered by vm.filteredApps.collectAsStateWithLifecycle()
 
     vm.nonSuggestedVersionDialogSubject?.let {
         NonSuggestedVersionDialog(
@@ -91,20 +81,20 @@ fun AppSelectorScreen(
         )
     }
 
-    if (search)
+    if (search) {
+        val filterText by vm.filterText.collectAsState()
+
         SearchView(
             query = filterText,
-            onQueryChange = { filterText = it },
-            onActiveChange = {
-                search = it
-                if (!it) filterText = ""
-            },
+            onQueryChange = vm::setFilterText,
+            onActiveChange = { search = it },
             placeholder = { Text(stringResource(R.string.search_apps)) }
         ) {
-            if (appList.isNotEmpty() && filterText.isNotEmpty()) {
+            val appsFiltered = appsListFiltered
+            if (!appsFiltered.isNullOrEmpty() && filterText.isNotEmpty()) {
                 LazyColumnWithScrollbar(modifier = Modifier.fillMaxSize()) {
                     items(
-                        items = filteredAppList,
+                        items = appsFiltered,
                         key = { it.packageName }
                     ) { app ->
                         ListItem(
@@ -113,9 +103,9 @@ fun AppSelectorScreen(
                             },
                             leadingContent = {
                                 AppIcon(
-                                    app.packageInfo,
-                                    null,
-                                    Modifier.size(36.dp)
+                                    packageInfo = app.packageInfo,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(36.dp)
                                 )
                             },
                             headlineContent = { AppLabel(app.packageInfo) },
@@ -156,6 +146,7 @@ fun AppSelectorScreen(
                 }
             }
         }
+    }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -202,16 +193,33 @@ fun AppSelectorScreen(
                 HorizontalDivider()
             }
 
-            if (appList.isNotEmpty()) {
+            val apps = appList
+            if (apps == null) {
+                item(key = "LOADING") {
+                    Box(
+                        modifier = Modifier.fillParentMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingIndicator()
+                    }
+                }
+            } else if (apps.isNotEmpty()) {
                 items(
-                    items = appList,
-                    key = { it.packageName }
+                    items = apps,
+                    key = { "APP-" + it.packageName },
+                    contentType = { "APP" },
                 ) { app ->
                     ListItem(
                         modifier = Modifier.clickable {
                             onSelect(app.packageName)
                         },
-                        leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },
+                        leadingContent = {
+                            AppIcon(
+                                packageInfo = app.packageInfo,
+                                contentDescription = null,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        },
                         headlineContent = {
                             AppLabel(
                                 app.packageInfo,
@@ -235,15 +243,6 @@ fun AppSelectorScreen(
                             }
                         }
                     )
-
-                }
-            } else {
-                item {
-                    Box(
-                        modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center
-                    ) {
-                        LoadingIndicator()
-                    }
                 }
             }
         }
