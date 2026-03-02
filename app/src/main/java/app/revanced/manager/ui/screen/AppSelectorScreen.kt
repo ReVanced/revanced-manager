@@ -132,7 +132,7 @@ fun AppSelectorScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Search,
+                        imageVector = Icons.Filled.Search,
                         contentDescription = stringResource(R.string.search),
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
