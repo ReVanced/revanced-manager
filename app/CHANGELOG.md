@@ -1,3 +1,10 @@
+# app [1.26.0-dev.30](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.29...v1.26.0-dev.30) (2026-03-02)
+
+
+### Features
+
+* Update AAPT2 to built-tools v35. ([1ba11b3](https://github.com/ReVanced/revanced-manager/commit/1ba11b30218be263a56f6512b968f5e3dded9daf))
+
 # app [1.26.0-dev.29](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.28...v1.26.0-dev.29) (2026-02-28)
 
 
