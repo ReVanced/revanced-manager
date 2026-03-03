@@ -2,6 +2,7 @@ package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ fun ListSection(
     modifier: Modifier = Modifier,
     title: String? = null,
     leadingContent: (@Composable () -> Unit)? = null,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -51,7 +53,7 @@ fun ListSection(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(contentPadding)
                 .clip(MaterialTheme.shapes.large),
             verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap)
         ) {
