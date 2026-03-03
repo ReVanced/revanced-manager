@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,18 +41,20 @@ import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SecondaryScrollableTabRow
+import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -78,6 +81,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.CheckedFilterChip
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchBar
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
@@ -173,44 +177,44 @@ fun PatchesSelectorScreen(
             }
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 24.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = stringResource(R.string.patch_selector_sheet_filter_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
-                Text(
-                    text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    CheckedFilterChip(
-                        selected = viewModel.filter and SHOW_INCOMPATIBLE == 0,
-                        onClick = { viewModel.toggleFlag(SHOW_INCOMPATIBLE) },
-                        label = { Text(stringResource(R.string.this_version)) }
+                    Text(
+                        text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
+                        style = MaterialTheme.typography.titleMedium
                     )
 
-                    CheckedFilterChip(
-                        selected = viewModel.filter and SHOW_UNIVERSAL != 0,
-                        onClick = { viewModel.toggleFlag(SHOW_UNIVERSAL) },
-                        label = { Text(stringResource(R.string.universal)) },
-                    )
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        CheckedFilterChip(
+                            selected = viewModel.filter and SHOW_INCOMPATIBLE == 0,
+                            onClick = { viewModel.toggleFlag(SHOW_INCOMPATIBLE) },
+                            label = { Text(stringResource(R.string.this_version)) }
+                        )
+
+                        CheckedFilterChip(
+                            selected = viewModel.filter and SHOW_UNIVERSAL != 0,
+                            onClick = { viewModel.toggleFlag(SHOW_UNIVERSAL) },
+                            label = { Text(stringResource(R.string.universal)) },
+                        )
+                    }
                 }
-
-                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-
-                Text(
-                    text = stringResource(R.string.patch_selector_sheet_actions_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
 
                 fun guardedAction(action: () -> Unit) {
                     showBottomSheet = false
@@ -221,52 +225,65 @@ fun PatchesSelectorScreen(
                     }
                 }
 
-                ActionItem(
-                    icon = Icons.Outlined.Restore,
-                    text = stringResource(R.string.restore_default_selection),
-                    onClick = {
-                        guardedAction {
-                            executeScopedAction { uid ->
-                                viewModel.restoreDefaults(uid)
-                            }
-                        }
-                    }
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+                Text(
+                    text = stringResource(R.string.patch_selector_sheet_actions_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
-                ActionItem(
-                    icon = Icons.Outlined.Deselect,
-                    text = stringResource(R.string.deselect_all),
-                    onClick = {
-                        guardedAction {
-                            executeScopedAction { uid ->
-                                viewModel.deselectAll(bundles, uid)
-                            }
-                        }
-                    }
-                )
-
-                ActionItem(
-                    icon = Icons.Outlined.SwapHoriz,
-                    text = stringResource(R.string.invert_selection),
-                    onClick = {
-                        guardedAction {
-                            executeScopedAction { uid ->
-                                viewModel.invertSelection(bundles, uid)
-                            }
-                        }
-                    }
-                )
-
-                if (bundles.size > 1 && currentBundle != null) {
+                ListSection(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
                     ActionItem(
-                        icon = Icons.Outlined.Deselect,
-                        text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                        icon = Icons.Outlined.Restore,
+                        text = stringResource(R.string.restore_default_selection),
                         onClick = {
                             guardedAction {
-                                viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                                executeScopedAction { uid ->
+                                    viewModel.restoreDefaults(uid)
+                                }
                             }
                         }
                     )
+
+                    ActionItem(
+                        icon = Icons.Outlined.Deselect,
+                        text = stringResource(R.string.deselect_all),
+                        onClick = {
+                            guardedAction {
+                                executeScopedAction { uid ->
+                                    viewModel.deselectAll(bundles, uid)
+                                }
+                            }
+                        }
+                    )
+
+                    ActionItem(
+                        icon = Icons.Outlined.SwapHoriz,
+                        text = stringResource(R.string.invert_selection),
+                        onClick = {
+                            guardedAction {
+                                executeScopedAction { uid ->
+                                    viewModel.invertSelection(bundles, uid)
+                                }
+                            }
+                        }
+                    )
+
+                    if (bundles.size > 1 && currentBundle != null) {
+                        ActionItem(
+                            icon = Icons.Outlined.Deselect,
+                            text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                            onClick = {
+                                guardedAction {
+                                    viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -512,12 +529,12 @@ fun PatchesSelectorScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(top = 16.dp)
+                .padding(top = 4.dp)
         ) {
             if (bundles.size > 1) {
-                SecondaryScrollableTabRow(
+                PrimaryScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
-                    containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
+                    edgePadding = 0.dp
                 ) {
                     bundles.forEachIndexed { index, bundle ->
                         HapticTab(
@@ -738,18 +755,21 @@ private fun IncompatiblePatchDialog(
     }
 )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ActionItem(
     icon: ImageVector,
     text: String,
     onClick: () -> Unit
 ) {
-    ListItem(
-        modifier = Modifier.clickable(onClick = onClick),
+    SegmentedListItem(
+        onClick = onClick,
+        shapes = ListItemDefaults.segmentedShapes(index = 0, count = 1),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
+        ),
         leadingContent = { Icon(icon, contentDescription = null) },
-        headlineContent = { Text(text) },
-        colors = transparentListItemColors
-    )
+    ) { Text(text) }
 }
 
 @Composable
