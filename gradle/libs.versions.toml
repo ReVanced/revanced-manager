@@ -50,7 +50,7 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref="documentfile" }
+documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref  = "documentfile" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
