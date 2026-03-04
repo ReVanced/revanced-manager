@@ -1,24 +1,28 @@
 package app.revanced.manager.ui.screen
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -60,6 +64,7 @@ import app.revanced.manager.ui.screen.onboarding.AppsStepContent
 import app.revanced.manager.ui.screen.onboarding.PermissionsStepContent
 import app.revanced.manager.ui.screen.onboarding.SourcesStepContent
 import app.revanced.manager.ui.screen.onboarding.UpdatesStepContent
+import app.revanced.manager.ui.viewmodel.ApiDownloaderState
 import app.revanced.manager.ui.viewmodel.OnboardingStep
 import app.revanced.manager.ui.viewmodel.OnboardingViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
@@ -67,6 +72,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+@SuppressLint("BatteryLife")
 @Composable
 fun OnboardingScreen(
     onFinish: () -> Unit,
@@ -76,7 +82,8 @@ fun OnboardingScreen(
     val context = LocalContext.current
     val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
-    val downloaders by vm.downloaders.collectAsStateWithLifecycle(initialValue = emptyList())
+    val apiDownloaderLabel by vm.apiDownloaderLabel.collectAsStateWithLifecycle()
+    val apiDownloaderSignature by vm.apiDownloaderSignature.collectAsStateWithLifecycle()
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
@@ -104,103 +111,147 @@ fun OnboardingScreen(
         vm.retreat()
     }
 
-    val stepTitle = when (currentStep) {
-        OnboardingStep.Permissions -> stringResource(R.string.onboarding_permissions_subtitle)
-        OnboardingStep.Updates -> stringResource(R.string.auto_updates_dialog_title)
-        OnboardingStep.Sources -> stringResource(R.string.onboarding_sources_subtitle)
-        OnboardingStep.Apps -> stringResource(R.string.select_app)
-    }
+    val (stepTitle, stepDescription, stepButtons) = when (currentStep) {
+        OnboardingStep.Permissions -> Triple(
+            stringResource(R.string.onboarding_permissions_subtitle),
+            stringResource(R.string.onboarding_permissions_skip_description),
+            StepButtons(
+                primaryAction = { vm.advance() },
+                primaryEnabled = vm.allPermissionsGranted,
+                secondaryAction = if (!vm.allPermissionsGranted) {
+                    { showSkipPermissionsDialog = true }
+                } else null
+            )
+        )
 
-    val stepDescription = when (currentStep) {
-        OnboardingStep.Permissions -> stringResource(R.string.onboarding_permissions_skip_description)
-        OnboardingStep.Updates -> stringResource(R.string.auto_updates_dialog_note)
-        OnboardingStep.Sources -> stringResource(R.string.onboarding_sources_note)
-        OnboardingStep.Apps -> stringResource(R.string.onboarding_subtitle)
-    }
+        OnboardingStep.Updates -> Triple(
+            stringResource(R.string.onboarding_updates_subtitle),
+            stringResource(R.string.auto_updates_dialog_note),
+            StepButtons(
+                primaryAction = {
+                    scope.launch {
+                        vm.applyAutoUpdatePrefs(
+                            managerEnabled = managerUpdatesEnabled,
+                            patchesEnabled = patchesUpdatesEnabled
+                        )
+                    }
+                    vm.advance()
+                },
+            )
+        )
 
-    val onboardingButtons: @Composable () -> Unit = {
-        OnboardingButtons(
-            currentStep = currentStep,
-            allPermissionsGranted = vm.allPermissionsGranted,
-            onSkipPermissionsClick = { showSkipPermissionsDialog = true },
-            onNextClick = {
-                if (currentStep == OnboardingStep.Updates) scope.launch {
-                    vm.applyAutoUpdatePrefs(
-                        managerEnabled = managerUpdatesEnabled,
-                        patchesEnabled = patchesUpdatesEnabled
-                    )
+        OnboardingStep.Sources -> Triple(
+            stringResource(R.string.onboarding_sources_subtitle),
+            stringResource(R.string.onboarding_sources_description),
+            StepButtons(
+                primaryAction = { vm.advance() },
+                primaryEnabled = vm.apiDownloaderState == ApiDownloaderState.UP_TO_DATE,
+                secondaryAction = if (vm.apiDownloaderState != ApiDownloaderState.UP_TO_DATE) {
+                    { vm.advance() }
+                } else null
+            )
+        )
+
+        OnboardingStep.Apps -> Triple(
+            stringResource(R.string.select_app),
+            stringResource(R.string.onboarding_apps_subtitle),
+            StepButtons(
+                primaryTextRes = null,
+                secondaryAction = {
+                    scope.launch {
+                        vm.completeOnboarding()
+                        onFinish()
+                    }
                 }
-
-                vm.advance()
-            },
-            onFinishClick = {
-                scope.launch {
-                    vm.completeOnboarding()
-                    onFinish()
-                }
-            }
+            )
         )
     }
 
-    val stepContent: @Composable (Boolean, Modifier) -> Unit = { showSubtitle, modifier ->
+    val onboardingButtons: @Composable () -> Unit = {
+        OnboardingButtons(stepButtons)
+    }
+
+    val stepContent: @Composable ColumnScope.(showDetails: Boolean) -> Unit = { showDetails ->
         AnimatedContent(
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .weight(1f),
             targetState = currentStep,
             transitionSpec = {
                 val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
                 (slideInHorizontally { width -> width * direction } + fadeIn())
                     .togetherWith(slideOutHorizontally { width -> -width * direction } + fadeOut())
             },
-            modifier = modifier,
-            label = "onboarding_content"
+            label = "onboarding_content",
         ) { step ->
-            when (step) {
-                OnboardingStep.Permissions -> PermissionsStepContent(
-                    canInstallUnknownApps = vm.canInstallUnknownApps,
-                    isNotificationsEnabled = vm.isNotificationsEnabled,
-                    isBatteryOptimizationExempt = vm.isBatteryOptimizationExempt,
-                    onRequestInstallApps = { installAppsLauncher.launch(context.packageName) },
-                    onRequestNotifications = {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        }
-                    },
-                    onRequestBatteryOptimization = {
-                        batteryOptimizationLauncher.launch(
-                            Intent(
-                                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                                Uri.fromParts("package", context.packageName, null)
+            ColumnWithScrollbarEdgeShadow(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                if (showDetails) StepTitle(stepTitle)
+                when (step) {
+                    OnboardingStep.Permissions -> PermissionsStepContent(
+                        canInstallUnknownApps = vm.canInstallUnknownApps,
+                        isNotificationsEnabled = vm.isNotificationsEnabled,
+                        isBatteryOptimizationExempt = vm.isBatteryOptimizationExempt,
+                        onRequestInstallApps = { installAppsLauncher.launch(context.packageName) },
+                        onRequestNotifications = {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        },
+                        onRequestBatteryOptimization = {
+                            batteryOptimizationLauncher.launch(
+                                Intent(
+                                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                                    Uri.fromParts("package", context.packageName, null)
+                                )
                             )
-                        )
-                    },
-                    showSubtitle = showSubtitle
-                )
-
-                OnboardingStep.Updates -> UpdatesStepContent(
-                    managerEnabled = managerUpdatesEnabled,
-                    patchesEnabled = patchesUpdatesEnabled,
-                    onManagerEnabledChange = { managerUpdatesEnabled = it },
-                    onPatchesEnabledChange = { patchesUpdatesEnabled = it },
-                    showSubtitle = showSubtitle
-                )
-
-                OnboardingStep.Sources -> SourcesStepContent(
-                    downloaders = downloaders,
-                    onTrustDownloader = vm::trustDownloader,
-                    onRevokeDownloaderTrust = vm::revokeDownloaderTrust,
-                    showSubtitle = showSubtitle
-                )
-
-                OnboardingStep.Apps -> AppsStepContent(
-                    apps = apps,
-                    suggestedVersions = suggestedVersions,
-                    onAppClick = { packageName ->
-                        scope.launch {
-                            vm.completeOnboarding()
-                            onAppClick(packageName)
                         }
-                    },
-                    showSubtitle = showSubtitle
-                )
+                    )
+
+                    OnboardingStep.Updates -> UpdatesStepContent(
+                        managerEnabled = managerUpdatesEnabled,
+                        patchesEnabled = patchesUpdatesEnabled,
+                        onManagerEnabledChange = { managerUpdatesEnabled = it },
+                        onPatchesEnabledChange = { patchesUpdatesEnabled = it }
+                    )
+
+                    OnboardingStep.Sources -> {
+                        LaunchedEffect(vm.apiDownloaderState) {
+                            if (vm.apiDownloaderState == ApiDownloaderState.AVAILABLE) {
+                                vm.startApiDownloaderInstall()
+                            }
+                        }
+
+                        SourcesStepContent(
+                        apiDownloaderState = vm.apiDownloaderState,
+                        apiDownloaderProgress = vm.apiDownloaderProgress,
+                        apiDownloaderIsUpdate = vm.apiDownloaderIsUpdate,
+                        apiDownloaderIsTrusted = vm.apiDownloaderIsTrusted,
+                        apiDownloaderName = apiDownloaderLabel,
+                        apiDownloaderSignature = apiDownloaderSignature,
+                        onInstallApiDownloader = vm::startApiDownloaderInstall,
+                        onRetryApiDownloader = vm::retryApiDownloaderDownload,
+                        onTrustApiDownloader = {
+                            vm.apiDownloaderPackageName.value?.let { vm.trustDownloader(it) }
+                        }
+                    )
+                    }
+
+                    OnboardingStep.Apps -> AppsStepContent(
+                        modifier = Modifier.weight(1f),
+                        apps = apps,
+                        suggestedVersions = suggestedVersions,
+                        onAppClick = { packageName ->
+                            scope.launch {
+                                vm.completeOnboarding()
+                                onAppClick(packageName)
+                            }
+                        }
+                    )
+                }
+                if (showDetails) StepDescription(stepDescription)
             }
         }
     }
@@ -223,11 +274,11 @@ fun OnboardingScreen(
                         ColumnWithScrollbarEdgeShadow(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(start = 16.dp, end = 12.dp, top = 24.dp, bottom = 24.dp)
+                                .padding(start = 16.dp, end = 12.dp, top = 24.dp, bottom = 24.dp),
+                            verticalArrangement = Arrangement.spacedBy(24.dp)
                         ) {
                             OnboardingHeader()
-                            Spacer(modifier = Modifier.height(24.dp))
-                            StepDescription(title = stepTitle, description = stepDescription)
+                            StepDetails(title = stepTitle, description = stepDescription)
                         }
                     }
 
@@ -235,33 +286,24 @@ fun OnboardingScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()
-                            .padding(vertical = 24.dp)
+                            .padding(vertical = 24.dp),
+                        verticalArrangement = Arrangement.spacedBy(24.dp)
                     ) {
-                        stepContent(false, Modifier.weight(1f))
-                        Spacer(modifier = Modifier.height(24.dp))
+                        stepContent(false)
                         Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                             onboardingButtons()
                         }
                     }
                 }
             } else {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    Spacer(modifier = Modifier.height(48.dp))
-
-                    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                        OnboardingHeader()
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
-
-                    stepContent(true, Modifier.weight(1f))
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
-                        onboardingButtons()
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp, 24.dp),
+                ) {
+                    OnboardingHeader()
+                    stepContent(true)
+                    onboardingButtons()
                 }
             }
         }
@@ -290,16 +332,27 @@ fun OnboardingScreen(
 }
 
 @Composable
-private fun StepDescription(title: String, description: String) {
+private fun StepDetails(title: String, description: String) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun StepTitle(title: String) {
     Text(
         text = title,
-        style = MaterialTheme.typography.headlineSmall,
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = Modifier.fillMaxWidth()
-    )
-    Spacer(modifier = Modifier.height(12.dp))
-    Text(
-        text = description,
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.fillMaxWidth()
@@ -307,8 +360,18 @@ private fun StepDescription(title: String, description: String) {
 }
 
 @Composable
+private fun StepDescription(description: String) {
+    Text(
+        text = description,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
 private fun OnboardingHeader() {
-val context = LocalContext.current
+    val context = LocalContext.current
     val resources = LocalResources.current
     val icon = rememberDrawablePainter(drawable = remember(resources) {
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
@@ -318,20 +381,21 @@ val context = LocalContext.current
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(
                 text = stringResource(R.string.onboarding_welcome_to),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     painter = icon,
                     contentDescription = null,
                     modifier = Modifier.size(40.dp)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineLarge,
@@ -344,90 +408,41 @@ val context = LocalContext.current
 }
 
 @Composable
-private fun OnboardingButtons(
-    currentStep: OnboardingStep,
-    allPermissionsGranted: Boolean,
-    onSkipPermissionsClick: () -> Unit,
-    onNextClick: () -> Unit,
-    onFinishClick: () -> Unit
-) {
-    val actionBarPadding = PaddingValues(0.dp)
-
-    when (currentStep) {
-        OnboardingStep.Permissions -> {
-            if (allPermissionsGranted) {
-                BottomContentBar(contentPadding = actionBarPadding) {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        onClick = onNextClick
-                    ) {
-                        Text(text = stringResource(R.string.next))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = null
-                        )
-                    }
-                }
-            } else {
-                BottomContentBar(contentPadding = actionBarPadding) {
-                    TextButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        onClick = onSkipPermissionsClick
-                    ) {
-                        Text(text = stringResource(R.string.onboarding_skip))
-                    }
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        onClick = onNextClick,
-                        enabled = false
-                    ) {
-                        Text(text = stringResource(R.string.next))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = null
-                        )
-                    }
-                }
+private fun OnboardingButtons(stepButtons: StepButtons) {
+    BottomContentBar(contentPadding = PaddingValues(0.dp)) {
+        stepButtons.secondaryAction?.let { action ->
+            TextButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                onClick = action
+            ) {
+                Text(text = stringResource(stepButtons.secondaryTextRes!!))
             }
         }
-
-        OnboardingStep.Updates, OnboardingStep.Sources -> {
-            BottomContentBar(contentPadding = actionBarPadding) {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    onClick = onNextClick
-                ) {
-                    Text(text = stringResource(R.string.next))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = null
-                    )
-                }
-            }
-        }
-
-        OnboardingStep.Apps -> {
-            BottomContentBar(contentPadding = actionBarPadding) {
-                TextButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    onClick = onFinishClick,
-                ) {
-                    Text(text = stringResource(R.string.onboarding_skip))
-                }
+        stepButtons.primaryTextRes?.let { textRes ->
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                onClick = stepButtons.primaryAction,
+                enabled = stepButtons.primaryEnabled
+            ) {
+                Text(text = stringResource(textRes))
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = null
+                )
             }
         }
     }
 }
+
+data class StepButtons(
+    val primaryTextRes: Int? = R.string.next,
+    val primaryAction: () -> Unit = {},
+    val primaryEnabled: Boolean = true,
+    val secondaryTextRes: Int? = R.string.onboarding_skip,
+    val secondaryAction: (() -> Unit)? = null
+)

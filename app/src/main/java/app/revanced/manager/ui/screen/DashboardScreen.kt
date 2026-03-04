@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,13 +15,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.HorizontalPager
@@ -32,16 +33,14 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Update
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
@@ -49,6 +48,7 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -72,31 +72,32 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AvailableUpdateDialog
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.ui.viewmodel.DownloaderUpdateState
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.ui.util.lerp
-import androidx.compose.ui.layout.Layout
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -167,6 +168,88 @@ fun DashboardScreen(
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
             newVersion = availableUpdate!!
+        )
+    }
+
+    val downloaderUpdate = vm.availableDownloaderUpdate
+    val downloaderUpdateState = vm.downloaderUpdateState
+    if (downloaderUpdate != null || downloaderUpdateState == DownloaderUpdateState.DOWNLOADING || downloaderUpdateState == DownloaderUpdateState.INSTALLING) {
+        AlertDialogExtended(
+            onDismissRequest = {
+                if (downloaderUpdateState != DownloaderUpdateState.DOWNLOADING && downloaderUpdateState != DownloaderUpdateState.INSTALLING) {
+                    vm.dismissDownloaderUpdate()
+                }
+            },
+            confirmButton = {
+                when (downloaderUpdateState) {
+                    DownloaderUpdateState.IDLE -> {
+                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate) {
+                            Text(stringResource(R.string.update))
+                        }
+                    }
+                    DownloaderUpdateState.FAILED -> {
+                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate) {
+                            Text(stringResource(R.string.retry))
+                        }
+                    }
+                    else -> {}
+                }
+            },
+            dismissButton = {
+                if (downloaderUpdateState != DownloaderUpdateState.DOWNLOADING && downloaderUpdateState != DownloaderUpdateState.INSTALLING) {
+                    TextButton(onClick = vm::dismissDownloaderUpdate) {
+                        Text(stringResource(R.string.dismiss))
+                    }
+                }
+            },
+            icon = {
+                Icon(imageVector = Icons.Outlined.Download, contentDescription = null)
+            },
+            title = {
+                Text(stringResource(R.string.downloader_update_available))
+            },
+            text = {
+                Column {
+                    Text(
+                        stringResource(
+                            R.string.downloader_update_available_description,
+                            downloaderUpdate?.version.orEmpty()
+                        )
+                    )
+                    if (downloaderUpdateState == DownloaderUpdateState.DOWNLOADING) {
+                        Spacer(
+                            modifier = Modifier.height(16.dp)
+                        )
+                        LinearProgressIndicator(
+                            progress = { vm.downloaderUpdateProgress },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                    if (downloaderUpdateState == DownloaderUpdateState.INSTALLING) {
+                        Spacer(
+                            modifier = Modifier.height(16.dp)
+                        )
+                        LinearProgressIndicator(
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(
+                            modifier = Modifier.height(8.dp)
+                        )
+                        Text(
+                            stringResource(R.string.api_downloader_installing),
+                        )
+                    }
+                    if (downloaderUpdateState == DownloaderUpdateState.FAILED) {
+                        Spacer(
+                            modifier = Modifier.height(8.dp)
+                        )
+                        Text(
+                            stringResource(R.string.api_downloader_failed),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            }
         )
     }
 

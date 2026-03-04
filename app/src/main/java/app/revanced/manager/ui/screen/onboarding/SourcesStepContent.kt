@@ -1,120 +1,177 @@
 package app.revanced.manager.ui.screen.onboarding
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material3.Icon
+import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material.icons.outlined.GppMaybe
+import androidx.compose.material.icons.outlined.Verified
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
 import app.revanced.manager.ui.component.ListSection
-import app.revanced.manager.ui.component.haptics.HapticSwitch
+import app.revanced.manager.ui.component.TrustDialog
 import app.revanced.manager.ui.component.settings.SettingsListItem
-import app.revanced.manager.ui.viewmodel.OnboardingDownloadersInfo
+import app.revanced.manager.ui.viewmodel.ApiDownloaderState
 
 @Composable
 fun SourcesStepContent(
-    downloaders: List<OnboardingDownloadersInfo>,
-    onTrustDownloader: (String) -> Unit,
-    onRevokeDownloaderTrust: (String) -> Unit,
-    showSubtitle: Boolean = true,
-    modifier: Modifier = Modifier
+    apiDownloaderState: ApiDownloaderState,
+    apiDownloaderProgress: Float,
+    apiDownloaderIsUpdate: Boolean,
+    apiDownloaderIsTrusted: Boolean,
+    apiDownloaderName: String?,
+    apiDownloaderSignature: String?,
+    onInstallApiDownloader: () -> Unit,
+    onRetryApiDownloader: () -> Unit,
+    onTrustApiDownloader: () -> Unit,
 ) {
-    ColumnWithScrollbarEdgeShadow(modifier = modifier.fillMaxSize()) {
-        if (showSubtitle) {
-            Text(
-                text = stringResource(R.string.onboarding_sources_subtitle),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-
-        if (downloaders.isEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Download,
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.onboarding_no_sources),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
+    ListSection(contentPadding = PaddingValues(0.dp)) {
+        when (apiDownloaderState) {
+            ApiDownloaderState.CHECKING -> {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_downloader),
+                    supportingContent = stringResource(R.string.api_downloader_checking),
+                    leadingContent = {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.dp
+                        )
+                    }
                 )
             }
-        } else {
-            ListSection {
-                downloaders.forEach { downloader ->
-                    SettingsListItem(
-                        headlineContent = downloader.name,
-                        supportingContent = downloader.version,
-                        leadingContent = {
+
+            ApiDownloaderState.AVAILABLE -> {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_downloader),
+                    supportingContent = stringResource(
+                        if (apiDownloaderIsUpdate) R.string.api_downloader_update_available
+                        else R.string.api_downloader_available
+                    ),
+                    onClick = onInstallApiDownloader,
+                    leadingContent = {
+                        OnboardingLeadingIcon(
+                            icon = Icons.Outlined.Download,
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            iconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                )
+            }
+
+            ApiDownloaderState.DOWNLOADING -> {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_downloader),
+                    supportingContent = stringResource(
+                        if (apiDownloaderIsUpdate) R.string.api_downloader_updating
+                        else R.string.api_downloader_downloading
+                    ),
+                    leadingContent = {
+                        Box(contentAlignment = Alignment.Center) {
                             OnboardingLeadingIcon(
                                 icon = Icons.Outlined.Download,
-                                containerColor = if (downloader.isTrusted) {
-                                    MaterialTheme.colorScheme.primaryContainer
-                                } else {
-                                    MaterialTheme.colorScheme.surfaceContainerHighest
-                                },
-                                iconColor = if (downloader.isTrusted) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                }
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                iconColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
-                        },
-                        trailingContent = {
-                            HapticSwitch(
-                                checked = downloader.isTrusted,
-                                onCheckedChange = { checked ->
-                                    if (checked) {
-                                        onTrustDownloader(downloader.packageName)
-                                    } else {
-                                        onRevokeDownloaderTrust(downloader.packageName)
-                                    }
-                                }
+                            CircularProgressIndicator(
+                                progress = { apiDownloaderProgress },
+                                modifier = Modifier.size(36.dp),
+                                strokeWidth = 2.dp
                             )
-                        },
-                        onClick = {
-                            if (downloader.isTrusted) {
-                                onRevokeDownloaderTrust(downloader.packageName)
-                            } else {
-                                onTrustDownloader(downloader.packageName)
-                            }
+                        }
+                    }
+                )
+            }
+
+            ApiDownloaderState.INSTALLING -> {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_downloader),
+                    supportingContent = stringResource(R.string.api_downloader_installing),
+                    leadingContent = {
+                        Box(contentAlignment = Alignment.Center) {
+                            OnboardingLeadingIcon(
+                                icon = Icons.Outlined.Download,
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                iconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(36.dp),
+                                strokeWidth = 2.dp
+                            )
+                        }
+                    }
+                )
+            }
+
+            ApiDownloaderState.UP_TO_DATE -> {
+                var showTrustDialog by rememberSaveable { mutableStateOf(false) }
+
+                if (showTrustDialog && !apiDownloaderIsTrusted && apiDownloaderName != null && apiDownloaderSignature != null) {
+                    TrustDialog(
+                        title = R.string.downloader_trust_dialog_title,
+                        body = stringResource(R.string.downloader_trust_dialog_body),
+                        downloaderName = apiDownloaderName,
+                        signature = apiDownloaderSignature,
+                        onDismiss = { showTrustDialog = false },
+                        onConfirm = { onTrustApiDownloader() }
+                    )
+                }
+
+                if (apiDownloaderIsTrusted) {
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.api_downloader),
+                        supportingContent = stringResource(R.string.api_downloader_up_to_date),
+                        leadingContent = {
+                            OnboardingLeadingIcon(
+                                icon = Icons.Outlined.Verified,
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                iconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                    )
+                } else {
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.api_downloader),
+                        supportingContent = stringResource(R.string.downloader_state_untrusted_tap_to_trust),
+                        onClick = { showTrustDialog = true },
+                        leadingContent = {
+                            OnboardingLeadingIcon(
+                                icon = Icons.Outlined.GppMaybe,
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                                iconColor = MaterialTheme.colorScheme.onErrorContainer
+                            )
                         }
                     )
                 }
             }
+
+            ApiDownloaderState.FAILED -> {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_downloader),
+                    supportingContent = stringResource(R.string.api_downloader_failed),
+                    leadingContent = {
+                        OnboardingLeadingIcon(
+                            icon = Icons.Outlined.ErrorOutline,
+                            containerColor = MaterialTheme.colorScheme.errorContainer,
+                            iconColor = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                    },
+                    onClick = onRetryApiDownloader
+                )
+            }
+
+            else -> {}
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = stringResource(R.string.onboarding_sources_note),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
     }
 }

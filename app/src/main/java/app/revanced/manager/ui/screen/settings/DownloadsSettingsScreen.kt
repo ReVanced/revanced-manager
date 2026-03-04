@@ -52,6 +52,7 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
+import app.revanced.manager.ui.component.TrustDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -255,81 +256,23 @@ private fun DownloaderItem(
                 }
             )
         }
-
-        SettingsListItem(
-            onClick = { showDialog = true },
-            headlineContent = {
-                AppLabel(
-                    packageInfo = packageInfo,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            },
-            supportingContent = stringResource(
-                when (state) {
-                    is DownloaderPackageState.Loaded -> R.string.downloader_state_trusted
-                    is DownloaderPackageState.Failed -> R.string.downloader_state_failed
-                    is DownloaderPackageState.Untrusted -> R.string.downloader_state_untrusted
-                }
-            ),
-            trailingContent = { Text(packageInfo.versionName!!) }
-        )
     }
-}
 
-@Composable
-private fun TrustDialog(
-    @StringRes title: Int,
-    body: String,
-    downloaderName: String,
-    signature: String,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(stringResource(R.string.continue_))
-            }
+    SettingsListItem(
+        onClick = { showDialog = true },
+        headlineContent = {
+            AppLabel(
+                packageInfo = packageInfo,
+                style = MaterialTheme.typography.bodyLarge
+            )
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
+        supportingContent = stringResource(
+            when (state) {
+                is DownloaderPackageState.Loaded -> R.string.downloader_state_trusted
+                is DownloaderPackageState.Failed -> R.string.downloader_state_failed
+                is DownloaderPackageState.Untrusted -> R.string.downloader_state_untrusted
             }
-        },
-        title = { Text(stringResource(title)) },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(body)
-                Card {
-                    Column(
-                        Modifier.padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Text(
-                            stringResource(
-                                R.string.downloader_trust_dialog_name,
-                                downloaderName
-                            ),
-                        )
-                        OutlinedCard(
-                            colors = CardDefaults.outlinedCardColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                            )
-                        ) {
-                            Text(
-                                stringResource(
-                                    R.string.downloader_trust_dialog_signature,
-                                    signature.chunked(2).joinToString(" ")
-                                ), modifier = Modifier.padding(12.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
+        ),
+        trailingContent = { Text(packageInfo.versionName!!) }
     )
 }

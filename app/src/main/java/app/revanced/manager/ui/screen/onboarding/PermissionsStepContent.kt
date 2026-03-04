@@ -3,12 +3,7 @@ package app.revanced.manager.ui.screen.onboarding
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -30,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.SettingsListItem
 
@@ -41,48 +35,34 @@ fun PermissionsStepContent(
     isBatteryOptimizationExempt: Boolean,
     onRequestInstallApps: () -> Unit,
     onRequestNotifications: () -> Unit,
-    onRequestBatteryOptimization: () -> Unit,
-    showSubtitle: Boolean = true,
-    modifier: Modifier = Modifier
+    onRequestBatteryOptimization: () -> Unit
 ) {
-    ColumnWithScrollbarEdgeShadow(modifier = modifier.fillMaxSize()) {
-        if (showSubtitle) {
-            Text(
-                text = stringResource(R.string.onboarding_permissions_subtitle),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 16.dp)
+    ListSection(contentPadding = PaddingValues(0.dp)) {
+        PermissionItem(
+            icon = Icons.Outlined.Security,
+            title = stringResource(R.string.permission_install_apps),
+            description = stringResource(R.string.permission_install_apps_description),
+            isGranted = canInstallUnknownApps,
+            onRequest = onRequestInstallApps
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            PermissionItem(
+                icon = Icons.Outlined.Notifications,
+                title = stringResource(R.string.permission_notifications),
+                description = stringResource(R.string.permission_notifications_description),
+                isGranted = isNotificationsEnabled,
+                onRequest = onRequestNotifications
             )
-            Spacer(modifier = Modifier.height(24.dp))
         }
 
-        ListSection {
-            PermissionItem(
-                icon = Icons.Outlined.Security,
-                title = stringResource(R.string.permission_install_apps),
-                description = stringResource(R.string.permission_install_apps_description),
-                isGranted = canInstallUnknownApps,
-                onRequest = onRequestInstallApps
-            )
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                PermissionItem(
-                    icon = Icons.Outlined.Notifications,
-                    title = stringResource(R.string.permission_notifications),
-                    description = stringResource(R.string.permission_notifications_description),
-                    isGranted = isNotificationsEnabled,
-                    onRequest = onRequestNotifications
-                )
-            }
-
-            PermissionItem(
-                icon = Icons.Outlined.BatteryAlert,
-                title = stringResource(R.string.permission_battery),
-                description = stringResource(R.string.permission_battery_description),
-                isGranted = isBatteryOptimizationExempt,
-                onRequest = onRequestBatteryOptimization
-            )
-        }
+        PermissionItem(
+            icon = Icons.Outlined.BatteryAlert,
+            title = stringResource(R.string.permission_battery),
+            description = stringResource(R.string.permission_battery_description),
+            isGranted = isBatteryOptimizationExempt,
+            onRequest = onRequestBatteryOptimization
+        )
     }
 }
 

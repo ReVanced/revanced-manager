@@ -125,7 +125,9 @@ fun LazyColumnWithScrollbarEdgeShadow(
                     )
             )
         }
-    }
 
-    Scrollbar(state, modifier)
+        if (state.canScrollForward || state.canScrollBackward) {
+            Scrollbar(state)
+        }
+    }
 }

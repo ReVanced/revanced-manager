@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -27,10 +28,10 @@ import kotlin.jvm.optionals.getOrNull
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingAppList(
+    modifier: Modifier = Modifier,
     apps: List<AppInfo>,
     suggestedVersions: Map<String, String?>,
     onAppClick: (String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val pm = LocalContext.current.packageManager
     val appIcons = remember { ConcurrentHashMap<String, Optional<ImageBitmap>>() }
@@ -54,11 +55,10 @@ fun OnboardingAppList(
     }
 
     LazyColumnWithScrollbarEdgeShadow(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         state = rememberLazyListState(
             cacheWindow = LazyLayoutCacheWindow(ahead = 100.dp, behind = 250.dp),
         ),
-        contentPadding = PaddingValues(horizontal = 12.dp),
         verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap)
     ) {
         items(

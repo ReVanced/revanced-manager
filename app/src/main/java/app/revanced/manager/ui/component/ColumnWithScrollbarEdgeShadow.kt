@@ -17,9 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -58,21 +58,20 @@ fun ColumnWithScrollbarEdgeShadow(
             content = content
         )
 
-        if (bottomAlpha > 0f) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .height(edgeShadowHeight)
-                    .alpha(bottomAlpha)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, surfaceColor)
-                        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(edgeShadowHeight)
+                .graphicsLayer { alpha = bottomAlpha }
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(Color.Transparent, surfaceColor)
                     )
-            )
+                )
+        )
+        if (state.canScrollForward || state.canScrollBackward) {
+            Scrollbar(state)
         }
     }
-
-    Scrollbar(state, modifier)
 }

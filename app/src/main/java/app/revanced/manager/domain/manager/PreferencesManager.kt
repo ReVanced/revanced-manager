@@ -35,6 +35,8 @@ class PreferencesManager(
 
     val acknowledgedDownloaders = stringSetPreference("acknowledged_downloaders", emptySet())
 
+    val apiDownloaderPackage = stringPreference("api_downloader_package", "")
+
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
 
     val allowMeteredNetworks = booleanPreference("allow_metered_networks", false)
