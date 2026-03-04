@@ -1,3 +1,10 @@
+# app [1.26.0-dev.31](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.30...v1.26.0-dev.31) (2026-03-04)
+
+
+### Features
+
+* Don't mark all announcements as read on first launch, and set the correct default tags ([398ca00](https://github.com/ReVanced/revanced-manager/commit/398ca006b637048e6280edaf9685800f7638e6ba))
+
 # app [1.26.0-dev.30](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.29...v1.26.0-dev.30) (2026-03-02)
 
 
