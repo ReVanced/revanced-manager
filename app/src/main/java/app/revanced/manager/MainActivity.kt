@@ -53,6 +53,7 @@ import app.revanced.manager.ui.screen.settings.AboutSettingsScreen
 import app.revanced.manager.ui.screen.settings.AdvancedSettingsScreen
 import app.revanced.manager.ui.screen.settings.ContributorSettingsScreen
 import app.revanced.manager.ui.screen.settings.DeveloperSettingsScreen
+import app.revanced.manager.ui.screen.settings.DownloaderInfoScreen
 import app.revanced.manager.ui.screen.settings.DownloadsSettingsScreen
 import app.revanced.manager.ui.screen.settings.GeneralSettingsScreen
 import app.revanced.manager.ui.screen.settings.ImportExportSettingsScreen
@@ -344,7 +345,20 @@ private fun ReVancedManager(vm: MainViewModel) {
             }
 
             deepLinkedComposable<Settings.Downloads>("settings/downloads") {
-                DownloadsSettingsScreen(onBackClick = navController::popBackStackSafe)
+                DownloadsSettingsScreen(
+                    onBackClick = navController::popBackStackSafe,
+                    onDownloaderClick = { packageName ->
+                        navController.navigateSafe(Settings.DownloadersInfo(packageName))
+                    }
+                )
+            }
+
+            composable<Settings.DownloadersInfo> {
+                val route = it.toRoute<Settings.DownloadersInfo>()
+                DownloaderInfoScreen(
+                    packageName = route.packageName,
+                    onBackClick = navController::popBackStackSafe
+                )
             }
 
             deepLinkedComposable<Settings.ImportExport>("settings/import-export") {

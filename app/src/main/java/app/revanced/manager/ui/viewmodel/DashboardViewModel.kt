@@ -138,7 +138,8 @@ class DashboardViewModel(
     }
 
     private suspend fun checkForDownloaderUpdate() {
-        if (!networkInfo.isConnected()) return
+        if (!prefs.downloaderAutoUpdates.get() || !networkInfo.isConnected()) return
+        if (downloaderRepository.getInstalledApiDownloader() == null) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for downloader updates") {
             val asset = downloaderRepository.checkApiDownloaderUpdate()
@@ -159,23 +160,31 @@ class DashboardViewModel(
             downloaderUpdateState = DownloaderUpdateState.DOWNLOADING
             downloaderUpdateProgress = 0f
 
-            val result = downloaderRepository.downloadAndInstallApiDownloader(
-                asset = asset,
-                onProgress = { downloaded, total ->
-                    downloaderUpdateProgress = if (total != null && total > 0) {
-                        downloaded.toFloat() / total.toFloat()
-                    } else 0f
-                },
-                onInstalling = { installing ->
-                    if (installing) downloaderUpdateState = DownloaderUpdateState.INSTALLING
+            when (
+                downloaderRepository.installApiDownloaderAsset(
+                    asset = asset,
+                    onProgress = { downloaded, total ->
+                        downloaderUpdateProgress = if (total != null && total > 0) {
+                            downloaded.toFloat() / total.toFloat()
+                        } else 0f
+                    },
+                    onInstalling = { installing ->
+                        if (installing) downloaderUpdateState = DownloaderUpdateState.INSTALLING
+                    }
+                )
+            ) {
+                is DownloaderRepository.ApiDownloaderActionResult.Success -> {
+                    downloaderUpdateState = DownloaderUpdateState.INSTALLED
+                    availableDownloaderUpdate = null
                 }
-            )
 
-            if (result != null) {
-                downloaderUpdateState = DownloaderUpdateState.INSTALLED
-                availableDownloaderUpdate = null
-            } else {
-                downloaderUpdateState = DownloaderUpdateState.FAILED
+                DownloaderRepository.ApiDownloaderActionResult.Aborted -> {
+                    downloaderUpdateState = DownloaderUpdateState.IDLE
+                }
+
+                else -> {
+                    downloaderUpdateState = DownloaderUpdateState.FAILED
+                }
             }
         }
     }

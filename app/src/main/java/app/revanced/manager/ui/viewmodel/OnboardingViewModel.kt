@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 
@@ -78,8 +79,7 @@ class OnboardingViewModel(
         }.sortedBy { it.name.lowercase() }
     }.flowOn(Dispatchers.Default)
 
-    val apiDownloaderPackageName = prefs.apiDownloaderPackage.flow
-        .map { it.takeIf { it.isNotEmpty() } }
+    val apiDownloaderPackageName = downloaderRepository.apiDownloaderPackageName
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val apiDownloaderLabel = apiDownloaderPackageName
@@ -130,6 +130,7 @@ class OnboardingViewModel(
         get() = canInstallUnknownApps && isNotificationsEnabled && isBatteryOptimizationExempt
 
     private var pendingAsset: app.revanced.manager.network.dto.ReVancedAsset? = null
+    private var apiDownloaderInstallJob: Job? = null
 
     init {
         refreshPermissionStates()
@@ -167,20 +168,28 @@ class OnboardingViewModel(
                     ApiDownloaderState.AVAILABLE
                 }
             }
+
+            if (currentStep == OnboardingStep.Sources && apiDownloaderState == ApiDownloaderState.AVAILABLE) {
+                startApiDownloaderInstall()
+            }
             return
         }
 
         apiDownloaderIsUpdate = downloaderRepository.getInstalledApiDownloader() != null
         pendingAsset = asset
         apiDownloaderState = ApiDownloaderState.AVAILABLE
+
+        if (currentStep == OnboardingStep.Sources) {
+            startApiDownloaderInstall()
+        }
     }
 
     private suspend fun installApiDownloader() {
         val asset = pendingAsset ?: return
 
         apiDownloaderState = ApiDownloaderState.DOWNLOADING
-        val packageName =
-            downloaderRepository.downloadAndInstallApiDownloader(
+        when (
+            downloaderRepository.installApiDownloaderAsset(
                 asset = asset,
                 onProgress = { downloaded, total ->
                     apiDownloaderProgress = if (total != null && total > 0) {
@@ -191,28 +200,38 @@ class OnboardingViewModel(
                     if (installing) apiDownloaderState = ApiDownloaderState.INSTALLING
                 }
             )
+        ) {
+            is DownloaderRepository.ApiDownloaderActionResult.Success -> {
+                pendingAsset = null
+                kotlinx.coroutines.delay(500)
+                apiDownloaderState = ApiDownloaderState.UP_TO_DATE
+            }
 
-        if (packageName != null) {
-            pendingAsset = null
-            kotlinx.coroutines.delay(500)
-            apiDownloaderState = ApiDownloaderState.UP_TO_DATE
-        } else {
-            apiDownloaderState = ApiDownloaderState.FAILED
+            DownloaderRepository.ApiDownloaderActionResult.Aborted -> {
+                apiDownloaderState = ApiDownloaderState.AVAILABLE
+            }
+
+            else -> {
+                apiDownloaderState = ApiDownloaderState.FAILED
+            }
         }
     }
 
     fun startApiDownloaderInstall() {
-        viewModelScope.launch {
-            apiDownloaderProgress = 0f
-            installApiDownloader()
+        if (apiDownloaderInstallJob?.isActive == true) return
+
+        apiDownloaderInstallJob = viewModelScope.launch {
+            try {
+                apiDownloaderProgress = 0f
+                installApiDownloader()
+            } finally {
+                apiDownloaderInstallJob = null
+            }
         }
     }
 
     fun retryApiDownloaderDownload() {
-        viewModelScope.launch {
-            apiDownloaderProgress = 0f
-            installApiDownloader()
-        }
+        startApiDownloaderInstall()
     }
 
     fun refreshPermissionStates() {
@@ -224,10 +243,16 @@ class OnboardingViewModel(
 
     fun advance() {
         currentStep = nextStep(currentStep)
+        if (currentStep == OnboardingStep.Sources && apiDownloaderState == ApiDownloaderState.AVAILABLE) {
+            startApiDownloaderInstall()
+        }
     }
 
     fun retreat() {
         currentStep = previousStep(currentStep)
+        if (currentStep == OnboardingStep.Sources && apiDownloaderState == ApiDownloaderState.AVAILABLE) {
+            startApiDownloaderInstall()
+        }
     }
 
     fun trustDownloader(packageName: String) = viewModelScope.launch {

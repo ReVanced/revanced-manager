@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import ru.solrudev.ackpine.installer.InstallFailure
 import ru.solrudev.ackpine.installer.PackageInstaller
 import ru.solrudev.ackpine.installer.createSession
 import ru.solrudev.ackpine.session.Session
@@ -49,10 +50,21 @@ class DownloaderRepository(
     private val ackpineInstaller: PackageInstaller,
     db: AppDatabase
 ) {
+    sealed interface ApiDownloaderActionResult {
+        data class Success(val packageName: String) : ApiDownloaderActionResult
+        data object NoAsset : ApiDownloaderActionResult
+        data object NoInstalled : ApiDownloaderActionResult
+        data object NotTargetDownloader : ApiDownloaderActionResult
+        data object NoUpdate : ApiDownloaderActionResult
+        data object Aborted : ApiDownloaderActionResult
+        data object Failed : ApiDownloaderActionResult
+    }
+
     private val trustDao = db.trustedDownloaderDao()
     private val _downloaderPackageStates =
         MutableStateFlow(emptyMap<String, DownloaderPackageState>())
     val downloaderPackageStates = _downloaderPackageStates.asStateFlow()
+    val apiDownloaderPackageName = prefs.apiDownloaderPackage.flow.map { it.takeIf(String::isNotEmpty) }
     val loadedDownloadersFlow = downloaderPackageStates.map { states ->
         states.values.filterIsInstance<DownloaderPackageState.Loaded>().flatMap { it.downloaders }
     }
@@ -215,15 +227,43 @@ class DownloaderRepository(
         return asset
     }
 
-    suspend fun downloadAndInstallApiDownloader(
+    suspend fun installLatestApiDownloader(
+        onProgress: (downloaded: Long, total: Long?) -> Unit = { _, _ -> },
+        onInstalling: ((Boolean) -> Unit)? = null,
+    ): ApiDownloaderActionResult {
+        val asset = getApiDownloaderAsset() ?: return ApiDownloaderActionResult.NoAsset
+        return performApiDownloaderInstall(asset, onProgress, onInstalling)
+    }
+
+    suspend fun updateInstalledApiDownloader(
+        packageName: String? = null,
+        onProgress: (downloaded: Long, total: Long?) -> Unit = { _, _ -> },
+        onInstalling: ((Boolean) -> Unit)? = null,
+    ): ApiDownloaderActionResult {
+        val installed = getInstalledApiDownloader() ?: return ApiDownloaderActionResult.NoInstalled
+        if (packageName != null && installed.first != packageName) {
+            return ApiDownloaderActionResult.NotTargetDownloader
+        }
+
+        val asset = checkApiDownloaderUpdate() ?: return ApiDownloaderActionResult.NoUpdate
+        return performApiDownloaderInstall(asset, onProgress, onInstalling)
+    }
+
+    suspend fun installApiDownloaderAsset(
         asset: ReVancedAsset,
         onProgress: (downloaded: Long, total: Long?) -> Unit = { _, _ -> },
         onInstalling: ((Boolean) -> Unit)? = null,
-    ): String? = withContext(Dispatchers.IO) {
+    ): ApiDownloaderActionResult = performApiDownloaderInstall(asset, onProgress, onInstalling)
+
+    private suspend fun performApiDownloaderInstall(
+        asset: ReVancedAsset,
+        onProgress: (downloaded: Long, total: Long?) -> Unit = { _, _ -> },
+        onInstalling: ((Boolean) -> Unit)? = null,
+    ): ApiDownloaderActionResult = withContext(Dispatchers.IO) {
         getInstalledApiDownloader()?.let { (packageName, installedVersion) ->
             if (installedVersion.removePrefix("v") == asset.version.removePrefix("v")) {
                 Log.i(tag, "API downloader $packageName is already up to date (${asset.version})")
-                return@withContext packageName
+                return@withContext ApiDownloaderActionResult.Success(packageName)
             }
         }
 
@@ -251,8 +291,13 @@ class DownloaderRepository(
 
             when (result) {
                 is Session.State.Failed<*> -> {
+                    val failure = result.failure as? InstallFailure
+                    if (failure is InstallFailure.Aborted) {
+                        return@withContext ApiDownloaderActionResult.Aborted
+                    }
+
                     Log.e(tag, "Failed to install API downloader: ${result.failure}")
-                    return@withContext null
+                    return@withContext ApiDownloaderActionResult.Failed
                 }
                 Session.State.Succeeded -> {
                     Log.i(tag, "Successfully installed API downloader: $packageName")
@@ -268,12 +313,12 @@ class DownloaderRepository(
                 reload()
             }
 
-            packageName
+            ApiDownloaderActionResult.Success(packageName)
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
             Log.e(tag, "Failed to download/install API downloader", e)
-            null
+            ApiDownloaderActionResult.Failed
         } finally {
             tempFile.delete()
         }

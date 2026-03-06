@@ -11,7 +11,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -218,12 +217,6 @@ fun OnboardingScreen(
                     )
 
                     OnboardingStep.Sources -> {
-                        LaunchedEffect(vm.apiDownloaderState) {
-                            if (vm.apiDownloaderState == ApiDownloaderState.AVAILABLE) {
-                                vm.startApiDownloaderInstall()
-                            }
-                        }
-
                         SourcesStepContent(
                         apiDownloaderState = vm.apiDownloaderState,
                         apiDownloaderProgress = vm.apiDownloaderProgress,

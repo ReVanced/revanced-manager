@@ -34,6 +34,7 @@ class PreferencesManager(
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
 
     val acknowledgedDownloaders = stringSetPreference("acknowledged_downloaders", emptySet())
+    val downloaderAutoUpdates = booleanPreference("downloader_auto_updates", true)
 
     val apiDownloaderPackage = stringPreference("api_downloader_package", "")
 

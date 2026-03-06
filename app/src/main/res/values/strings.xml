@@ -35,8 +35,9 @@ Second \"item\" text"</string>
     <string name="api_downloader_available">Tap to install</string>
     <string name="api_downloader_update_available">Update available. Tap to install.</string>
     <string name="api_downloader_downloading">Downloading…</string>
-    <string name="api_downloader_updating">Updating downloader…</string>
+    <string name="api_downloader_updating">Updating Downloaders…</string>
     <string name="api_downloader_installing">Installing…</string>
+    <string name="api_downloader_deleting">Deleting…</string>
     <string name="api_downloader_up_to_date">Installed and trusted</string>
     <string name="api_downloader_failed">Failed to install. Tap to retry.</string>
 
@@ -236,17 +237,27 @@ You will not be able to update the previously installed apps from this source.</
     <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="downloaders">Downloaders</string>
     <string name="downloader_state_trusted">Trusted</string>
+    <string name="downloader_state_enabled">Enabled</string>
     <string name="downloader_state_failed">Failed to load. Click for more details</string>
     <string name="downloader_state_untrusted">Untrusted</string>
+    <string name="downloader_state_disabled">Disabled</string>
     <string name="downloader_state_untrusted_tap_to_trust">Untrusted, tap to trust</string>
-    <string name="downloader_trust_dialog_title">Trust downloader?</string>
+    <string name="downloader_trust_dialog_title">Trust downloaders?</string>
     <string name="downloader_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_trust_dialog_body">Continuing will allow this downloader to run.\n\nOnly enable this downloader if you trust it. Downloaders can make Manager execute arbitrary code.</string>
+    <string name="downloader_trust_dialog_body">Trusting will allow these downloaders to run.\n\nOnly enable these downloaders if you trust them. Downloaders can make ReVanced Manager execute arbitrary code.</string>
     <string name="downloader_trust_dialog_signature">Signature:\n\n%s</string>
     <string name="downloader_trust_dialog_name">Downloader:\n%s</string>
     <string name="downloader_delete_apps_title">Delete selected apps</string>
     <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
+    <string name="downloader_delete_single_description">Are you sure you want to delete \"%s\"?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found.</string>
+    <string name="downloader_settings_no_apps_description">Apps downloaded through ReVanced Manager will appear here.</string>
+    <string name="install_revanced_downloaders">Install downloaders to get apps directly within ReVanced Manager.</string>
+    <string name="install_revanced_downloader">Install ReVanced Downloaders</string>
+    <string name="cancel_downloader_install_title">Cancel downloaders install?</string>
+    <string name="cancel_downloader_install_description">A downloaders install is in progress. If you leave now, the download will be cancelled.</string>
+    <string name="downloader_sources_unavailable_title">These downloaders are disabled</string>
+    <string name="downloader_sources_unavailable_description">Enable these downloaders to load and show available downloaders.</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -271,6 +282,8 @@ You will not be able to update the previously installed apps from this source.</
     <string name="back">Back</string>
     <string name="warning">Warning</string>
     <string name="add">Add</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
     <string name="close">Close</string>
     <string name="clear">Clear</string>
     <string name="system">System</string>
@@ -490,6 +503,8 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="manual_update_check_description">Manually check for updates</string>
     <string name="update_checking_manager">Check for updates on launch</string>
     <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
+    <string name="update_checking_downloader">Check for ReVanced Downloaders updates on launch</string>
+    <string name="update_checking_downloader_description">Check for updates to installed ReVanced Downloaders when the application starts</string>
     <string name="manager_prereleases">Use pre-releases</string>
     <string name="manager_prereleases_description">Use pre-release versions of ReVanced Manager</string>
     <string name="prereleases_warning">Pre-release versions may be unstable and contain bugs. You may experience crashes, data loss, or other unexpected issues. Only enable this if you are comfortable with these risks.</string>
