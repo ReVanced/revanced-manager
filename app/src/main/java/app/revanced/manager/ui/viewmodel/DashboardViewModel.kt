@@ -100,15 +100,12 @@ class DashboardViewModel(
             val readAnnouncements = prefs.readAnnouncements.get()
 
             unreadAnnouncement = announcements.firstOrNull { announcement ->
-                val isNotArchived =
-                    announcement.archivedAt.toInstant(TimeZone.UTC) > Clock.System.now()
-
                 val hasRelevantTag = announcement.tags.any {
                     it == "✨ ReVanced" || it == "💊 Manager"
                 }
                 val isUnread = announcement.id !in readAnnouncements
 
-                isNotArchived && hasRelevantTag && isUnread
+                !announcement.isArchived && hasRelevantTag && isUnread
             }
         }
     }

@@ -6,15 +6,12 @@ import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 
 class AnnouncementsViewModel(
     private val announcementRepository: AnnouncementRepository,
@@ -23,37 +20,26 @@ class AnnouncementsViewModel(
 ) : ViewModel() {
     private val allAnnouncements = MutableStateFlow<List<ReVancedAnnouncement>?>(null)
 
-    private val _tags = MutableStateFlow<List<String>?>(null)
-    val tags get() = _tags.asStateFlow()
+    val tags = allAnnouncements.map { it?.tags }
     val selectedTags = preferences.selectedAnnouncementTags
     val readAnnouncements = preferences.readAnnouncements
     val showArchived = MutableStateFlow(false)
 
     val announcements = combine(
         allAnnouncements,
-        _tags,
         selectedTags.flow,
         showArchived
-    ) { source, tags, selectedTags, showArchived ->
+    ) { source, selectedTags, showArchived ->
         if (source == null) return@combine null
         // Only filter by tags that actually exist
-        val availableTags = tags.orEmpty().toSet()
+        val availableTags = source.tags
         val validSelected = selectedTags.intersect(availableTags)
 
-        val visibleAnnouncements = if (showArchived) {
-            source
-        } else {
-            source.filter { announcement ->
-                announcement.archivedAt.toInstant(TimeZone.UTC) > Clock.System.now()
-            }
-        }
+        source.filter { announcement ->
+            if (!showArchived && announcement.isArchived) return@filter false
 
-        if (validSelected.isEmpty()) {
-            visibleAnnouncements
-        } else {
-            visibleAnnouncements.filter { announcement ->
-                announcement.tags.any(validSelected::contains)
-            }
+            if (!validSelected.isEmpty()) announcement.tags.any(validSelected::contains)
+            else true
         }
     }
 
@@ -84,7 +70,6 @@ class AnnouncementsViewModel(
         viewModelScope.launch {
             if (!network.isConnected()) {
                 allAnnouncements.value = emptyList()
-                _tags.value = emptyList()
                 return@launch
             }
 
@@ -92,10 +77,14 @@ class AnnouncementsViewModel(
                 announcementRepository.getAnnouncements()?.let {
                     allAnnouncements.value = it
                 }
-                announcementRepository.getTags()?.let {
-                    _tags.value = it.map { tag -> tag.name }
-                }
             }
         }
+    }
+
+    private companion object {
+        val List<ReVancedAnnouncement>.tags: Set<String>
+            get() = flatMapTo(
+                mutableSetOf()
+            ) { it.tags }
     }
 }

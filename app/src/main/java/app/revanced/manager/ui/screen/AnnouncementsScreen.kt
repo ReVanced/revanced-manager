@@ -50,10 +50,7 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
 import app.revanced.manager.util.transparentListItemColors
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import org.koin.androidx.compose.koinViewModel
-import kotlin.time.Clock
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +61,7 @@ fun AnnouncementsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var showFilterSheet by rememberSaveable { mutableStateOf(false) }
-    val tags by vm.tags.collectAsStateWithLifecycle()
+    val tags by vm.tags.collectAsStateWithLifecycle(null)
     val selectedTags by vm.selectedTags.getAsState()
     val showArchived by vm.showArchived.collectAsStateWithLifecycle()
     val announcements by vm.announcements.collectAsStateWithLifecycle(emptyList())
@@ -129,6 +126,7 @@ fun AnnouncementsScreen(
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
+
                         AnnouncementCard(
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -141,7 +139,7 @@ fun AnnouncementsScreen(
                             author = announcement.author,
                             content = announcement.content,
                             unread = announcement.id !in readAnnouncements,
-                            archived = announcement.archivedAt.toInstant(TimeZone.UTC) < Clock.System.now()
+                            archived = announcement.isArchived
                         )
                     }
                 }
@@ -161,7 +159,7 @@ fun AnnouncementsScreen(
 @Composable
 private fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
-    tags: List<String>,
+    tags: Set<String>,
     selectedTags: Set<String>,
     showArchived: Boolean,
     onShowArchivedChange: (Boolean) -> Unit,
