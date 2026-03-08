@@ -1,3 +1,10 @@
+# app [1.26.0-dev.32](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.31...v1.26.0-dev.32) (2026-03-08)
+
+
+### Features
+
+* migrate to API v5 ([2270f32](https://github.com/ReVanced/revanced-manager/commit/2270f329de25376eb9f0ce196994cc841977ff2a))
+
 # app [1.26.0-dev.31](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.30...v1.26.0-dev.31) (2026-03-04)
 
 
