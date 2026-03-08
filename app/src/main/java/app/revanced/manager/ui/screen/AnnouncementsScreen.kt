@@ -54,6 +54,7 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
+import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,8 +66,7 @@ fun AnnouncementsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var showFilterSheet by rememberSaveable { mutableStateOf(false) }
-    var archivedExpanded by rememberSaveable { mutableStateOf(false) }
-    val tags by vm.tags.collectAsStateWithLifecycle()
+    val tags by vm.tags.collectAsStateWithLifecycle(null)
     val selectedTags by vm.selectedTags.getAsState()
     val announcementSections by vm.announcementSections.collectAsStateWithLifecycle(null)
 
@@ -154,27 +154,21 @@ fun AnnouncementsScreen(
                                     .fillMaxWidth()
                             )
                         }
-                    }
 
-                    if (archivedAnnouncements.isNotEmpty() && archivedExpanded) {
-                        item {
-                            ListSection {
-                                archivedAnnouncements.forEach { announcement ->
-                                    AnnouncementListItem(
-                                        onClick = {
-                                            vm.markAnnouncementRead(announcement.id)
-                                            onAnnouncementClick(announcement)
-                                        },
-                                        title = announcement.title,
-                                        date = announcement.createdAt.relativeTime(LocalContext.current),
-                                        author = announcement.author,
-                                        tags = announcement.tags,
-                                        unread = announcement.id !in readAnnouncements,
-                                        archived = true
-                                    )
-                                }
-                            }
-                        }
+                        AnnouncementCard(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            onClick = {
+                                vm.markAnnouncementRead(announcement.id)
+                                onAnnouncementClick(announcement)
+                            },
+                            title = announcement.title,
+                            date = announcement.createdAt.relativeTime(LocalContext.current),
+                            author = announcement.author,
+                            content = announcement.content,
+                            unread = announcement.id !in readAnnouncements,
+                            archived = announcement.isArchived
+                        )
                     }
                 }
             } ?: item {
@@ -193,7 +187,7 @@ fun AnnouncementsScreen(
 @Composable
 private fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
-    tags: List<String>,
+    tags: Set<String>,
     selectedTags: Set<String>,
     onReset: () -> Unit,
     changeSelection: (String) -> Unit
