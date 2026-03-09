@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Patcher</string>
+  <string name="downloader_host_permission_label">Hos pemuat turun ReVanced Manager</string>
+  <string name="downloader_host_permission_description">Digunakan untuk mengawal akses kepada pemuat turun ReVanced Manager. Hanya ReVanced Manager yang memilikinya.</string>
+  <string name="new_downloader_notification">Pemuat turun baharu tersedia. Klik di sini untuk mengkonfigurasinya.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Tiada pemuat turun tersedia</string>
+  <string name="announcements_filter_tag">Tapis mengikut tag</string>
+  <string name="announcements_show_archived">Tunjukkan yang diarkibkan</string>
+  <string name="downloads_description">Pemuat turun dan aplikasi yang dimuat turun</string>
+  <string name="downloaders">Pemuat turun</string>
+  <string name="downloader_state_trusted">Dipercayai</string>
+  <string name="downloader_state_failed">Gagal dimuat. Klik untuk butiran lanjut</string>
+  <string name="downloader_state_untrusted">Tidak dipercayai</string>
+  <string name="downloader_trust_dialog_title">Percayai pemuat turun?</string>
+  <string name="downloader_revoke_trust_dialog_title">Tarik balik kepercayaan?</string>
+  <string name="downloader_trust_dialog_body">Meneruskan akan membenarkan pemuat turun ini berjalan.\n\nHanya dayakan pemuat turun ini jika anda mempercayainya. Pemuat turun boleh membuat Manager melaksanakan kod sewenang-wenangnya.</string>
+  <string name="downloader_trust_dialog_signature">Tandatangan:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Pemuat turun:\n%s</string>
+  <string name="downloader_delete_apps_title">Padam aplikasi yang dipilih</string>
+  <string name="downloader_delete_apps_description">Adakah anda pasti mahu memadam aplikasi yang dipilih?</string>
+  <string name="no_downloader_installed">Tiada pemuat turun dipasang.</string>
+  <string name="no_downloader_available">Terdapat pemuat turun yang dipasang tetapi tiada yang dipercayai. Semak tetapan anda.</string>
+  <string name="patch_selector_sheet_actions_title">Tindakan</string>
+  <string name="restore_default_selection">Pulihkan pilihan lalai</string>
+  <string name="deselect_all">Nyahpilih semua</string>
+  <string name="invert_selection">Songsangkan pilihan</string>
+  <string name="deselect_all_except">Nyahpilih semua kecuali %s</string>
+  <string name="scope_dialog_title">Guna pada</string>
+  <string name="scope_all_patches">Semua tampalan</string>
+  <string name="scope_bundle_patches">%s sahaja</string>
+  <string name="downloader_activity_dialog_body">Interaksi pengguna diperlukan untuk meneruskan dengan pemuat turun ini.</string>
+  <string name="view_announcement">Lihat pengumuman</string>
+  <string name="announcements">Pengumuman</string>
+  <string name="archive">Arkib</string>
+  <string name="no_announcements_found">Tiada pengumuman ditemui</string>
+  <string name="new_announcement">Pengumuman baharu:
+%s</string>
+</resources>

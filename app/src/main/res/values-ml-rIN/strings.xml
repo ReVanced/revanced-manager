@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">പാച്ചർ</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ഡൗൺലോഡർ ഹോസ്റ്റ്</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ഡൗൺലോഡറുകളിലേക്കുള്ള ലഭ്യത നിയന്ത്രിക്കാൻ ഉപയോഗിക്കുന്നു. ReVanced Manager-ന് മാത്രം ഇതിനുള്ള അധികാരമുണ്ട്.</string>
+  <string name="new_downloader_notification">പുതിയ ഡൗൺലോഡർ(കൾ) ലഭ്യമാണ്. അവ ക്രമീകരിക്കുന്നതിന് ഇവിടെ ക്ലിക്കുചെയ്യുക.</string>
+  <string name="app_source_dialog_option_auto_unavailable">ഡൗൺലോഡർ ലഭ്യമല്ല</string>
+  <string name="announcements_filter_tag">ടാഗ് ഉപയോഗിച്ച് ഫിൽട്ടർ ചെയ്യുക</string>
+  <string name="announcements_show_archived">ആർക്കൈവ് ചെയ്തവ കാണിക്കുക</string>
+  <string name="downloads_description">ഡൗൺലോഡറുകളും ഡൗൺലോഡ് ചെയ്ത ആപ്പുകളും</string>
+  <string name="downloaders">ഡൗൺലോഡറുകൾ</string>
+  <string name="downloader_state_trusted">വിശ്വസനീയമായത്</string>
+  <string name="downloader_state_failed">ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല. കൂടുതൽ വിവരങ്ങൾക്കായി ക്ലിക്ക് ചെയ്യുക</string>
+  <string name="downloader_state_untrusted">വിശ്വസനീയമല്ലാത്തത്</string>
+  <string name="downloader_trust_dialog_title">ഡൗൺലോഡറിനെ വിശ്വസിക്കണോ?</string>
+  <string name="downloader_revoke_trust_dialog_title">വിശ്വാസം റദ്ദാക്കണോ?</string>
+  <string name="downloader_trust_dialog_body">തുടരുന്നത് ഈ ഡൗൺലോഡറിനെ പ്രവർത്തിക്കാൻ അനുവദിക്കും.\n\nനിങ്ങൾ വിശ്വസിക്കുന്നുണ്ടെങ്കിൽ മാത്രം ഈ ഡൗൺലോഡർ പ്രവർത്തനക്ഷമമാക്കുക. ഡൗൺലോഡറുകൾക്ക് Manager-നെ ഉപയോഗിച്ച് അനാവശ്യ കോഡ് പ്രവർത്തിപ്പിക്കാൻ കഴിയും.</string>
+  <string name="downloader_trust_dialog_signature">ഒപ്പ്:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">ഡൗൺലോഡർ:\n%s</string>
+  <string name="downloader_delete_apps_title">തിരഞ്ഞെടുത്ത ആപ്പുകൾ ഇല്ലാതാക്കുക</string>
+  <string name="downloader_delete_apps_description">തിരഞ്ഞെടുത്ത ആപ്പുകൾ ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടെന്ന് ഉറപ്പാണോ?</string>
+  <string name="no_downloader_installed">ഡൗൺലോഡറുകൾ ഒന്നും ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല.</string>
+  <string name="no_downloader_available">ഡൗൺലോഡറുകൾ ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ട് എന്നാൽ ഒന്നും വിശ്വസനീയമല്ല. നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക.</string>
+  <string name="patch_selector_sheet_actions_title">പ്രവർത്തനങ്ങൾ</string>
+  <string name="restore_default_selection">ഡിഫോൾട്ട് തിരഞ്ഞെടുക്കൽ പുനഃസ്ഥാപിക്കുക</string>
+  <string name="deselect_all">എല്ലാം തിരഞ്ഞെടുക്കുന്നത് റദ്ദാക്കുക</string>
+  <string name="invert_selection">തിരഞ്ഞെടുക്കൽ വിപരീതമാക്കുക</string>
+  <string name="deselect_all_except">%s ഒഴികെ മറ്റെല്ലാം തിരഞ്ഞെടുക്കൽ റദ്ദാക്കുക.</string>
+  <string name="scope_dialog_title">ഇതിലേക്ക് പ്രയോഗിക്കുക.</string>
+  <string name="scope_all_patches">എല്ലാ പാച്ചുകളും.</string>
+  <string name="scope_bundle_patches">%s മാത്രം.</string>
+  <string name="downloader_activity_dialog_body">ഈ ഡൗൺലോഡറുമായി മുന്നോട്ട് പോകാൻ ഉപയോക്തൃ ഇടപെടൽ ആവശ്യമാണ്.</string>
+  <string name="view_announcement">അറിയിപ്പ് കാണുക</string>
+  <string name="announcements">അറിയിപ്പുകൾ</string>
+  <string name="archive">ആർക്കൈവ്</string>
+  <string name="no_announcements_found">പ്രഖ്യാപനങ്ങളൊന്നും കണ്ടെത്തിയില്ല</string>
+  <string name="new_announcement">പുതിയ പ്രഖ്യാപനം:
+%s</string>
+</resources>
