@@ -1,0 +1,3 @@
+ dependencies {
+     implementation("app.revanced:revanced-patcher:{$version}")
+ }
