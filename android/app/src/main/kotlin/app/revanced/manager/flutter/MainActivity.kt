@@ -278,7 +278,7 @@ class MainActivity : FlutterActivity() {
                 val progressStep = if (totalPatchesCount > 0) 0.55 / totalPatchesCount else 0.55
                 var progress = 0.05
 
-                val patch = patcher(
+                val applyPatches = patcher(
                     inFile,
                     tmpDir,
                     Aapt.binary(applicationContext),
@@ -305,8 +305,8 @@ class MainActivity : FlutterActivity() {
                 if (cancel()) return@Thread
                 updateProgress(0.05, "Executing...", "")
 
-                val patchesResult = patch { patchResult: PatchResult ->
-                    if (cancel) return@patch
+                val patchesResult = applyPatches { patchResult: PatchResult ->
+                    if (cancel) return@applyPatches
 
                     val msg = patchResult.exception?.let {
                         val writer = StringWriter()
