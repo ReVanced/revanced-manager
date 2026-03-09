@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Plástur</string>
+  <string name="downloader_host_permission_label">ReVanced Manager niðurhala gestgjafi</string>
+  <string name="downloader_host_permission_description">Notað til að stjórna aðgangi að ReVanced Manager niðurhölurum. Aðeins ReVanced Manager hefur þetta.</string>
+  <string name="new_downloader_notification">Nýir niðurhalarar í boði. Smelltu hér til að stilla þá.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Enginn niðurhalari í boði</string>
+  <string name="announcements_filter_tag">Sía eftir merki</string>
+  <string name="announcements_show_archived">Sýna geymdar</string>
+  <string name="downloads_description">Niðurhalsforrit og niðurhöluð forrit</string>
+  <string name="downloaders">Niðurhalsforrit</string>
+  <string name="downloader_state_trusted">Treyst</string>
+  <string name="downloader_state_failed">Tókst ekki að hlaða. Smelltu fyrir frekari upplýsingar</string>
+  <string name="downloader_state_untrusted">Ótreyst</string>
+  <string name="downloader_trust_dialog_title">Treysta niðurhalsforriti?</string>
+  <string name="downloader_revoke_trust_dialog_title">Afturkalla traust?</string>
+  <string name="downloader_trust_dialog_body">Með því að halda áfram verður þessu niðurhalsforriti leyft að keyra.\n\nVirkjaðu þetta niðurhalsforrit aðeins ef þú treystir því. Niðurhalsforrit geta fengið Manager til að keyra handahófskenndan kóða.</string>
+  <string name="downloader_trust_dialog_signature">Undirskrift:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Niðurhalsforrit:\n%s</string>
+  <string name="downloader_delete_apps_title">Eyða völdum forritum</string>
+  <string name="downloader_delete_apps_description">Ertu viss um að þú viljir eyða völdum forritum?</string>
+  <string name="no_downloader_installed">Engin niðurhalsforrit uppsett.</string>
+  <string name="no_downloader_available">Það eru uppsett niðurhalsforrit en engu er treyst. Athugaðu stillingarnar þínar.</string>
+  <string name="patch_selector_sheet_actions_title">Aðgerðir</string>
+  <string name="restore_default_selection">Endurheimta sjálfgefið val</string>
+  <string name="deselect_all">Afvelja allt</string>
+  <string name="invert_selection">Snúa vali við</string>
+  <string name="deselect_all_except">Afvelja allt nema %s</string>
+  <string name="scope_dialog_title">Gildir fyrir</string>
+  <string name="scope_all_patches">Allir plástrar</string>
+  <string name="scope_bundle_patches">Aðeins %s</string>
+  <string name="downloader_activity_dialog_body">Samskipti notenda eru nauðsynleg til að halda áfram með þetta niðurhalsforrit.</string>
+  <string name="view_announcement">Skoða tilkynningu</string>
+  <string name="announcements">Tilkynningar</string>
+  <string name="archive">Skjalasafn</string>
+  <string name="no_announcements_found">Engar tilkynningar fundust</string>
+  <string name="new_announcement">Ný tilkynning:\n%s</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Закрпувач</string>
+  <string name="downloader_host_permission_label">Домаќин за преземање ReVanced Manager</string>
+  <string name="downloader_host_permission_description">Се користи за контрола на пристап до преземачите на ReVanced Manager. Само ReVanced Manager го има ова.</string>
+  <string name="new_downloader_notification">Достапни се нови преземачи. Кликнете овде за да ги конфигурирате.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Нема достапен преземач</string>
+  <string name="announcements_filter_tag">Филтрирај по ознака</string>
+  <string name="announcements_show_archived">Прикажи архивирани</string>
+  <string name="downloads_description">Преземачи и преземени апликации</string>
+  <string name="downloaders">Преземачи</string>
+  <string name="downloader_state_trusted">Доверливи</string>
+  <string name="downloader_state_failed">Неуспешно вчитување. Кликнете за повеќе детали</string>
+  <string name="downloader_state_untrusted">Недоверливи</string>
+  <string name="downloader_trust_dialog_title">Дали да се доверува на преземачот?</string>
+  <string name="downloader_revoke_trust_dialog_title">Дали да се отповика довербата?</string>
+  <string name="downloader_trust_dialog_body">Продолжувањето ќе му овозможи на овој преземач да работи.\n\nОвозможете го овој преземач само ако му верувате. Преземачите можат да направат Manager да извршува произволен код.</string>
+  <string name="downloader_trust_dialog_signature">Потпис:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Преземач:\n%s</string>
+  <string name="downloader_delete_apps_title">Избриши избрани апликации</string>
+  <string name="downloader_delete_apps_description">Дали сте сигурни дека сакате да ги избришете избраните апликации?</string>
+  <string name="no_downloader_installed">Нема инсталирани преземачи.</string>
+  <string name="no_downloader_available">Има инсталирани преземачи, но ниту еден не е доверлив. Проверете ги вашите поставки.</string>
+  <string name="patch_selector_sheet_actions_title">Дејства</string>
+  <string name="restore_default_selection">Врати го стандардниот избор</string>
+  <string name="deselect_all">Поништи го изборот на сите</string>
+  <string name="invert_selection">Инвертирај избор</string>
+  <string name="deselect_all_except">Отштиклирај ги сите освен %s</string>
+  <string name="scope_dialog_title">Примени на</string>
+  <string name="scope_all_patches">Сите закрпи</string>
+  <string name="scope_bundle_patches">%s само</string>
+  <string name="downloader_activity_dialog_body">Потребна е интеракција со корисникот за да се продолжи со овој преземач.</string>
+  <string name="view_announcement">Погледни објава</string>
+  <string name="announcements">Објави</string>
+  <string name="archive">Архива</string>
+  <string name="no_announcements_found">Не се пронајдени објави</string>
+  <string name="new_announcement">Нова објава:
+%s</string>
+</resources>

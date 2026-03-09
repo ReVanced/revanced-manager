@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">ጠጋኝ</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ማውረጃ አስተናጋጅ</string>
+  <string name="downloader_host_permission_description">የ ReVanced Manager ማውረጃዎችን መዳረሻ ለመቆጣጠር ጥቅም ላይ ይውላል። ይህ ያለው ReVanced Manager ብቻ ነው።</string>
+  <string name="new_downloader_notification">አዲስ ማውረጃ(ዎች) ይገኛል። እነሱን ለማዋቀር እዚህ ጋር ይጫኑ።</string>
+  <string name="app_source_dialog_option_auto_unavailable">ምንም ማውረጃ አይገኝም</string>
+  <string name="announcements_filter_tag">በመለያ አጣራ</string>
+  <string name="announcements_show_archived">በማህደር ያሉትን አሳይ</string>
+  <string name="downloads_description">አውራጆች እና የወረዱ መተግበሪያዎች</string>
+  <string name="downloaders">አውራጆች</string>
+  <string name="downloader_state_trusted">የታመነ</string>
+  <string name="downloader_state_failed">መጫን አልተቻለም። ለበለጠ መረጃ ይጫኑ።</string>
+  <string name="downloader_state_untrusted">የማይታመን</string>
+  <string name="downloader_trust_dialog_title">አውራጅን ያምናሉ?</string>
+  <string name="downloader_revoke_trust_dialog_title">እምነትን ይሻራሉ?</string>
+  <string name="downloader_trust_dialog_body">መቀጠል ይህ አውራጅ እንዲሰራ ይፈቅዳል።
+
+ይህን አውራጅ የሚያምኑት ከሆነ ብቻ ያንቁት። አውራጆች Manager የዘፈቀደ ኮድ እንዲያከናውን ሊያደርጉ ይችላሉ።</string>
+  <string name="downloader_trust_dialog_signature">ፊርማ:
+
+%s</string>
+  <string name="downloader_trust_dialog_name">አውራጅ:
+%s</string>
+  <string name="downloader_delete_apps_title">የተመረጡ መተግበሪያዎችን ይሰርዙ</string>
+  <string name="downloader_delete_apps_description">የተመረጡትን መተግበሪያዎች መሰረዝ እንደሚፈልጉ እርግጠኛ ነዎት?</string>
+  <string name="no_downloader_installed">ምንም አውራጆች አልተጫኑም።</string>
+  <string name="no_downloader_available">አውራጆች ተጭነዋል ግን አንዳቸውም የታመኑ አይደሉም። ቅንብሮችዎን ያረጋግጡ።</string>
+  <string name="patch_selector_sheet_actions_title">ድርጊቶች</string>
+  <string name="restore_default_selection">ነባሪ ምርጫን ወደ ነበረበት ይመልሱ</string>
+  <string name="deselect_all">ሁሉንም ምርጫ አንሳ</string>
+  <string name="invert_selection">ምርጫን ገልብጥ</string>
+  <string name="deselect_all_except">ከ%s በስተቀር ሁሉንም ምርጫ አንሳ</string>
+  <string name="scope_dialog_title">ተግብር ለ</string>
+  <string name="scope_all_patches">ሁሉም ጥገናዎች</string>
+  <string name="scope_bundle_patches">%s ብቻ</string>
+  <string name="downloader_activity_dialog_body">በዚህ አውራጅ ለመቀጠል የተጠቃሚ መስተጋብር ያስፈልጋል።</string>
+  <string name="view_announcement">ማስታወቂያ እይ</string>
+  <string name="announcements">ማስታወቂያዎች</string>
+  <string name="archive">ማህደር</string>
+  <string name="no_announcements_found">ምንም ማስታወቂያዎች አልተገኙም</string>
+  <string name="new_announcement">አዲስ ማስታወቂያ:
+%s</string>
+</resources>

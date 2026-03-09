@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">پچ‌کننده</string>
+  <string name="downloader_host_permission_label">میزبان دانلودکننده ReVanced Manager</string>
+  <string name="downloader_host_permission_description">برای کنترل دسترسی به دانلودکننده‌های ReVanced Manager استفاده می‌شود. فقط ReVanced Manager این را دارد.</string>
+  <string name="new_downloader_notification">دانلودکننده(های) جدید در دسترس است. برای پیکربندی آنها اینجا کلیک کنید.</string>
+  <string name="app_source_dialog_option_auto_unavailable">هیچ دانلودکننده‌ای در دسترس نیست</string>
+  <string name="announcements_filter_tag">فیلتر بر اساس برچسب</string>
+  <string name="announcements_show_archived">نمایش آرشیو شده</string>
+  <string name="downloads_description">بارگیری‌کننده‌ها و برنامه‌های بارگیری‌شده</string>
+  <string name="downloaders">بارگیری‌کننده‌ها</string>
+  <string name="downloader_state_trusted">قابل اعتماد</string>
+  <string name="downloader_state_failed">بارگیری ناموفق بود. برای جزئیات بیشتر کلیک کنید</string>
+  <string name="downloader_state_untrusted">غیر قابل اعتماد</string>
+  <string name="downloader_trust_dialog_title">به بارگیری‌کننده اعتماد می‌کنید؟</string>
+  <string name="downloader_revoke_trust_dialog_title">لغو اعتماد؟</string>
+  <string name="downloader_trust_dialog_body">ادامه دادن به این بارگیری‌کننده اجازه اجرا می‌دهد.\n\nفقط در صورتی این بارگیری‌کننده را فعال کنید که به آن اعتماد دارید. بارگیری‌کننده‌ها می‌توانند باعث شوند Manager کد دلخواه را اجرا کند.</string>
+  <string name="downloader_trust_dialog_signature">امضا:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">بارگیری‌کننده:\n%s</string>
+  <string name="downloader_delete_apps_title">حذف برنامه‌های انتخاب‌شده</string>
+  <string name="downloader_delete_apps_description">آیا مطمئن هستید که می‌خواهید برنامه‌های انتخاب‌شده را حذف کنید؟</string>
+  <string name="no_downloader_installed">هیچ بارگیری‌کننده‌ای نصب نشده است.</string>
+  <string name="no_downloader_available">بارگیری‌کننده‌هایی نصب شده‌اند اما هیچ‌یک قابل اعتماد نیستند. تنظیمات خود را بررسی کنید.</string>
+  <string name="patch_selector_sheet_actions_title">عملیات</string>
+  <string name="restore_default_selection">بازگرداندن انتخاب پیش‌فرض</string>
+  <string name="deselect_all">لغو انتخاب همه</string>
+  <string name="invert_selection">معکوس کردن انتخاب</string>
+  <string name="deselect_all_except">لغو انتخاب همه به جز %s</string>
+  <string name="scope_dialog_title">اعمال در</string>
+  <string name="scope_all_patches">همه وصله‌ها</string>
+  <string name="scope_bundle_patches">فقط %s</string>
+  <string name="downloader_activity_dialog_body">برای ادامه با این بارگیری‌کننده، تعامل کاربر لازم است.</string>
+  <string name="view_announcement">مشاهده اطلاعیه</string>
+  <string name="announcements">اطلاعیه‌ها</string>
+  <string name="archive">بایگانی</string>
+  <string name="no_announcements_found">هیچ اطلاعیه‌ای یافت نشد</string>
+  <string name="new_announcement">اطلاعیه جدید:\n%s</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Жамаушы</string>
+  <string name="downloader_host_permission_label">ReVanced Manager жүктеуші хосты</string>
+  <string name="downloader_host_permission_description">ReVanced Manager жүктеушілеріне кіруді басқару үшін қолданылады. Бұл тек ReVanced Manager-де бар.</string>
+  <string name="new_downloader_notification">Жаңа жүктеуші(лер) қолжетімді. Оларды теңшеу үшін осы жерді басыңыз.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Ешқандай жүктеуші қолжетімді емес</string>
+  <string name="announcements_filter_tag">Тег бойынша сүзу</string>
+  <string name="announcements_show_archived">Мұрағатталғанды көрсету</string>
+  <string name="downloads_description">Жүктеп алушылар және жүктелген қолданбалар</string>
+  <string name="downloaders">Жүктеп алушылар</string>
+  <string name="downloader_state_trusted">Сенімді</string>
+  <string name="downloader_state_failed">Жүктелмеді. Қосымша мәліметтер алу үшін басыңыз</string>
+  <string name="downloader_state_untrusted">Сенімсіз</string>
+  <string name="downloader_trust_dialog_title">Жүктеп алушыға сенесіз бе?</string>
+  <string name="downloader_revoke_trust_dialog_title">Сенімнен айырасыз ба?</string>
+  <string name="downloader_trust_dialog_body">Жалғастыру бұл жүктеп алушының жұмыс істеуіне мүмкіндік береді.\n\nБұл жүктеп алушыға сенсеңіз ғана қосыңыз. Жүктеп алушылар Manager-ге кез келген кодты орындауға мәжбүр етуі мүмкін.</string>
+  <string name="downloader_trust_dialog_signature">Қолтаңба:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Жүктеп алушы:\n%s</string>
+  <string name="downloader_delete_apps_title">Таңдалған қолданбаларды жою</string>
+  <string name="downloader_delete_apps_description">Таңдалған қолданбаларды жоюды қалайтыныңызға сенімдісіз бе?</string>
+  <string name="no_downloader_installed">Ешқандай жүктеп алушы орнатылмаған.</string>
+  <string name="no_downloader_available">Жүктеп алушылар орнатылған, бірақ олардың ешқайсысы сенімді емес. Параметрлеріңізді тексеріңіз.</string>
+  <string name="patch_selector_sheet_actions_title">Әрекеттер</string>
+  <string name="restore_default_selection">Әдепкі таңдауды қалпына келтіру</string>
+  <string name="deselect_all">Барлығының таңдауын алып тастау</string>
+  <string name="invert_selection">Таңдауды кері өзгерту</string>
+  <string name="deselect_all_except">Барлығын %s-дан басқасын таңдамау</string>
+  <string name="scope_dialog_title">Қолдану</string>
+  <string name="scope_all_patches">Барлық патчтар</string>
+  <string name="scope_bundle_patches">%s ғана</string>
+  <string name="downloader_activity_dialog_body">Бұл жүктеп алушымен жалғастыру үшін пайдаланушы әрекеті қажет.</string>
+  <string name="view_announcement">Хабарландыруды қарау</string>
+  <string name="announcements">Хабарландырулар</string>
+  <string name="archive">Мұрағат</string>
+  <string name="no_announcements_found">Хабарландырулар табылмады</string>
+  <string name="new_announcement">Жаңа хабарландыру:
+%s</string>
+</resources>

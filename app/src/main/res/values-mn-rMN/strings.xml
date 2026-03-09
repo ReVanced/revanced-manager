@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Нөхөгч</string>
+  <string name="downloader_host_permission_label">ReVanced Manager татагчийн хост</string>
+  <string name="downloader_host_permission_description">ReVanced Manager татагчид нэвтрэх эрхийг хянах зорилгоор ашиглана. Зөвхөн ReVanced Manager-т энэ нь бий.</string>
+  <string name="new_downloader_notification">Шинэ татагчид бэлэн боллоо. Тохируулахын тулд энд дарна уу.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Татагч байхгүй байна</string>
+  <string name="announcements_filter_tag">Шошгоор шүүх</string>
+  <string name="announcements_show_archived">Архивлагдсаныг харуулах</string>
+  <string name="downloads_description">Татаж авагчид болон татагдсан аппууд</string>
+  <string name="downloaders">Татаж авагчид</string>
+  <string name="downloader_state_trusted">Найдвартай</string>
+  <string name="downloader_state_failed">Ачаалж чадсангүй. Дэлгэрэнгүй мэдээлэл авахыг хүсвэл дарна уу</string>
+  <string name="downloader_state_untrusted">Найдваргүй</string>
+  <string name="downloader_trust_dialog_title">Татаж авагчийг итгэх үү?</string>
+  <string name="downloader_revoke_trust_dialog_title">Итгэлийг цуцлах уу?</string>
+  <string name="downloader_trust_dialog_body">Үргэлжлүүлбэл энэ татаж авагчийг ажиллуулахыг зөвшөөрнө.\n\nЗөвхөн итгэдэг тохиолдолд л энэ татаж авагчийг идэвхжүүлнэ үү. Татаж авагчид Manager-ийг дур зоргоор код гүйцэтгүүлэх боломжтой.</string>
+  <string name="downloader_trust_dialog_signature">Гарын үсэг:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Татаж авагч:\n%s</string>
+  <string name="downloader_delete_apps_title">Сонгосон аппуудыг устгах</string>
+  <string name="downloader_delete_apps_description">Сонгосон аппуудыг устгахдаа итгэлтэй байна уу?</string>
+  <string name="no_downloader_installed">Татаж авагч суулгагдаагүй байна.</string>
+  <string name="no_downloader_available">Татаж авагчид суулгагдсан боловч нэг нь ч найдвартай биш байна. Тохиргоогоо шалгана уу.</string>
+  <string name="patch_selector_sheet_actions_title">Үйлдлүүд</string>
+  <string name="restore_default_selection">Өгөгдмөл сонголтыг сэргээх</string>
+  <string name="deselect_all">Бүгдийг болиулах</string>
+  <string name="invert_selection">Сонголтыг эргүүлэх</string>
+  <string name="deselect_all_except">%s-ээс бусдыг нь сонгохгүй байх</string>
+  <string name="scope_dialog_title">Хэрэглэх</string>
+  <string name="scope_all_patches">Бүх нөхөөс</string>
+  <string name="scope_bundle_patches">Зөвхөн %s</string>
+  <string name="downloader_activity_dialog_body">Энэ татаж авагчаар үргэлжлүүлэхийн тулд хэрэглэгчийн оролцоо шаардлагатай.</string>
+  <string name="view_announcement">Мэдэгдлийг харах</string>
+  <string name="announcements">Мэдэгдлүүд</string>
+  <string name="archive">Архив</string>
+  <string name="no_announcements_found">Зар олдоогүй байна</string>
+  <string name="new_announcement">Шинэ зар:\n%s</string>
+</resources>

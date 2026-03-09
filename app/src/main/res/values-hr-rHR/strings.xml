@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Zakrpavač</string>
+  <string name="downloader_host_permission_label">Domaćin za preuzimanje ReVanced Manager-a</string>
+  <string name="downloader_host_permission_description">Koristi se za kontrolu pristupa preuzimačima ReVanced Manager-a. Samo ReVanced Manager ovo ima.</string>
+  <string name="settings">Postavke</string>
+  <string name="select_app">Izaberite aplikaciju</string>
+  <string name="new_downloader_notification">Dostupan/dostupni novi preuzimač(i). Kliknite ovdje da ih konfigurirate.</string>
+  <string name="import_">Uvezi</string>
+  <string name="app_source_dialog_option_auto">Automatski</string>
+  <string name="app_source_dialog_option_auto_unavailable">Nema dostupnog preuzimača</string>
+  <string name="announcements_filter_tag">Filtriraj po oznaci</string>
+  <string name="announcements_show_archived">Prikaži arhivirano</string>
+  <string name="general">Općenito</string>
+  <string name="downloads_description">Preuzimači i preuzete aplikacije</string>
+  <string name="about">O aplikaciji</string>
+  <string name="import_keystore_dialog_button">Uvezi</string>
+  <string name="downloaders">Preuzimači</string>
+  <string name="downloader_state_trusted">Pouzdano</string>
+  <string name="downloader_state_failed">Nije uspjelo učitavanje. Dodirnite za više detalja</string>
+  <string name="downloader_state_untrusted">Nepouzdano</string>
+  <string name="downloader_trust_dialog_title">Povjeriti preuzimaču?</string>
+  <string name="downloader_revoke_trust_dialog_title">Opozvati povjerenje?</string>
+  <string name="downloader_trust_dialog_body">Nastavak će dopustiti pokretanje ovog preuzimača.\n\nOmogućite ovaj preuzimač samo ako mu vjerujete. Preuzimači mogu natjerati Manager da izvrši proizvoljni kod.</string>
+  <string name="downloader_trust_dialog_signature">Potpis:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Preuzimač:\n%s</string>
+  <string name="downloader_delete_apps_title">Izbriši odabrane aplikacije</string>
+  <string name="downloader_delete_apps_description">Jeste li sigurni da želite izbrisati odabrane aplikacije?</string>
+  <string name="reset">Ponovno postavi</string>
+  <string name="light">Svjetla</string>
+  <string name="api_url_dialog_title">Promijeni URL API-a</string>
+  <string name="delete">Izbrisati</string>
+  <string name="default_install">Zadano</string>
+  <string name="no_downloader_installed">Nema instaliranih preuzimača.</string>
+  <string name="no_downloader_available">Instalirani su preuzimači, ali nijedan nije pouzdan. Provjerite postavke.</string>
+  <string name="patch_selector_sheet_actions_title">Radnje</string>
+  <string name="restore_default_selection">Vrati zadani odabir</string>
+  <string name="deselect_all">Poništi sav odabir</string>
+  <string name="invert_selection">Invertiraj odabir</string>
+  <string name="deselect_all_except">Poništi odabir svih osim %s</string>
+  <string name="scope_dialog_title">Primijeni na</string>
+  <string name="scope_all_patches">Sve zakrpe</string>
+  <string name="scope_bundle_patches">Samo %s</string>
+  <string name="downloader_activity_dialog_body">Potrebna je interakcija korisnika kako bi se nastavilo s ovim preuzimačem.</string>
+  <string name="continue_">Nastavi</string>
+  <string name="dismiss">Odbaci</string>
+  <string name="view_announcement">Prikaži obavijest</string>
+  <string name="announcements">Obavijesti</string>
+  <string name="archive">Arhiva</string>
+  <string name="save">Sačuvaj</string>
+  <string name="no_announcements_found">Nema pronađenih objava</string>
+  <string name="export">Izvezi</string>
+  <string name="new_announcement">Nova objava:
+%s</string>
+</resources>
