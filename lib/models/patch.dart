@@ -68,8 +68,14 @@ class Option {
   factory Option.fromJson(Map<String, dynamic> json) {
     _migrateV17ToV19(json);
     _migrateV19ToV20(json);
+    _migrateNullFields(json);
 
     return _$OptionFromJson(json);
+  }
+
+  static void _migrateNullFields(Map<String, dynamic> json) {
+    json['description'] ??= '';
+    json['title'] ??= json['key'] ?? '';
   }
 
   static void _migrateV17ToV19(Map<String, dynamic> json) {

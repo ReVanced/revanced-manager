@@ -12,16 +12,13 @@ import app.revanced.library.ApkUtils.applyTo
 import app.revanced.manager.flutter.utils.Aapt
 import app.revanced.manager.flutter.utils.packageInstaller.InstallerReceiver
 import app.revanced.manager.flutter.utils.packageInstaller.UninstallerReceiver
-import app.revanced.patcher.Patcher
-import app.revanced.patcher.PatcherConfig
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.PatchResult
-import app.revanced.patcher.patch.loadPatchesFromDex
+import app.revanced.patcher.patch.loadPatches
+import app.revanced.patcher.patcher
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -37,7 +34,7 @@ class MainActivity : FlutterActivity() {
     private var cancel: Boolean = false
     private var stopResult: MethodChannel.Result? = null
 
-    private lateinit var patches: Set<Patch<*>>
+    private lateinit var patches: Set<Patch>
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -114,10 +111,7 @@ class MainActivity : FlutterActivity() {
                     try {
                         val patchBundleFile = File(patchBundleFilePath)
                         patchBundleFile.setWritable(false)
-                        patches = loadPatchesFromDex(
-                            setOf(patchBundleFile),
-                            optimizedDexDirectory = codeCacheDir
-                        )
+                        patches = loadPatches(patchBundleFile)
                     } catch (t: Throwable) {
                         return@setMethodCallHandler result.error(
                             "PATCH_BUNDLE_ERROR",
@@ -150,8 +144,8 @@ class MainActivity : FlutterActivity() {
                                 put("options", JSONArray().apply {
                                     it.options.values.forEach { option ->
                                         JSONObject().apply {
-                                            put("key", option.key)
-                                            put("title", option.title)
+                                            put("key", option.name)
+                                            put("title", option.name)
                                             put("description", option.description)
                                             put("required", option.required)
 
@@ -280,72 +274,58 @@ class MainActivity : FlutterActivity() {
             try {
                 updateProgress(0.0, "Reading APK...", "Reading APK")
 
-                val patcher = Patcher(
-                    PatcherConfig(
-                        inFile,
-                        tmpDir,
-                        Aapt.binary(applicationContext).absolutePath,
-                        tmpDir.path,
-                    )
-                )
+                val totalPatchesCount = selectedPatches.size
+                val progressStep = if (totalPatchesCount > 0) 0.55 / totalPatchesCount else 0.55
+                var progress = 0.05
 
-                if (cancel(patcher::close)) return@Thread
-                updateProgress(0.02, "Loading patches...", "Loading patches")
+                val patch = patcher(
+                    inFile,
+                    tmpDir,
+                    Aapt.binary(applicationContext),
+                    tmpDir.path,
+                ) { packageName, _ ->
+                    updateProgress(0.02, "Loading patches...", "Loading patches")
 
-                val patches = patches.filter { patch ->
-                    val isCompatible = patch.compatiblePackages?.any { (name, _) ->
-                        name == patcher.context.packageMetadata.packageName
-                    } ?: false
+                    patches.filter { patch ->
+                        val isCompatible = patch.compatiblePackages?.any { (name, _) ->
+                            name == packageName
+                        } ?: false
 
-                    val compatibleOrUniversal =
-                        isCompatible || patch.compatiblePackages.isNullOrEmpty()
+                        val compatibleOrUniversal =
+                            isCompatible || patch.compatiblePackages.isNullOrEmpty()
 
-                    compatibleOrUniversal && selectedPatches.any { it == patch.name }
-                }.onEach { patch ->
-                    options[patch.name]?.forEach { (key, value) ->
-                        patch.options[key] = value
-                    }
-                }.toSet()
-
-                if (cancel(patcher::close)) return@Thread
-                updateProgress(0.05, "Executing...", "")
-
-                val patcherResult = patcher.use {
-                    it += patches
-
-                    runBlocking {
-                        // Update the progress bar every time a patch is executed from 0.15 to 0.7
-                        val totalPatchesCount = patches.size
-                        val progressStep = 0.55 / totalPatchesCount
-                        var progress = 0.05
-
-                        patcher().collect(FlowCollector { patchResult: PatchResult ->
-                            if (cancel(patcher::close)) return@FlowCollector
-
-                            val msg = patchResult.exception?.let {
-                                val writer = StringWriter()
-                                it.printStackTrace(PrintWriter(writer))
-                                "${patchResult.patch.name} failed: $writer"
-                            } ?: run {
-                                "${patchResult.patch.name} succeeded"
-                            }
-
-                            updateProgress(progress, "", msg)
-                            progress += progressStep
-                        })
-                    }
-
-                    if (cancel(patcher::close)) return@Thread
-                    updateProgress(0.75, "Building...", "")
-
-                    patcher.get()
+                        compatibleOrUniversal && selectedPatches.any { it == patch.name }
+                    }.onEach { patch ->
+                        options[patch.name]?.forEach { (key, value) ->
+                            patch.options[key] = value
+                        }
+                    }.toSet()
                 }
 
-                if (cancel(patcher::close)) return@Thread
+                if (cancel()) return@Thread
+                updateProgress(0.05, "Executing...", "")
 
-                patcherResult.applyTo(inFile)
+                val patchesResult = patch { patchResult: PatchResult ->
+                    if (cancel) return@patch
 
-                if (cancel(patcher::close)) return@Thread
+                    val msg = patchResult.exception?.let {
+                        val writer = StringWriter()
+                        it.printStackTrace(PrintWriter(writer))
+                        "${patchResult.patch.name} failed: $writer"
+                    } ?: run {
+                        "${patchResult.patch.name} succeeded"
+                    }
+
+                    updateProgress(progress, "", msg)
+                    progress += progressStep
+                }
+
+                if (cancel()) return@Thread
+                updateProgress(0.75, "Building...", "")
+
+                patchesResult.applyTo(inFile)
+
+                if (cancel()) return@Thread
 
                 ApkUtils.signApk(
                     inFile,
