@@ -51,7 +51,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -223,7 +223,7 @@ fun DashboardScreen(
                         Spacer(
                             modifier = Modifier.height(16.dp)
                         )
-                        LinearProgressIndicator(
+                        LinearWavyProgressIndicator(
                             progress = { vm.downloaderUpdateProgress },
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -232,7 +232,7 @@ fun DashboardScreen(
                         Spacer(
                             modifier = Modifier.height(16.dp)
                         )
-                        LinearProgressIndicator(
+                        LinearWavyProgressIndicator(
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(
