@@ -1,7 +1,10 @@
 package app.revanced.manager.ui.screen.settings
 
 import android.content.ClipData
+import android.content.ClipDescription
 import android.content.ClipboardManager
+import android.os.Build
+import android.os.PersistableBundle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -221,7 +224,7 @@ fun ImportExportSettingsScreen(
                                                     keystoreAlias
                                                 )
                                             )
-                                            context.toast(resources.getString(R.string.toast_copied_to_clipboard))
+                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
                                         }
                                     ) {
                                         Icon(
@@ -252,9 +255,15 @@ fun ImportExportSettingsScreen(
                                                 ClipData.newPlainText(
                                                     resources.getString(R.string.import_keystore_dialog_password_field),
                                                     keystorePass
-                                                )
+                                                ).apply { description.extras = PersistableBundle().apply {
+                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                                        putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
+                                                    } else {
+                                                        putBoolean("android.content.extra.IS_SENSITIVE", true)
+                                                    }
+                                                } }
                                             )
-                                            context.toast(resources.getString(R.string.toast_copied_to_clipboard))
+                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
                                         }
                                     ) {
                                         Icon(

@@ -242,7 +242,7 @@ fun AdvancedSettingsScreen(
                         clipboard.setPrimaryClip(
                             ClipData.newPlainText("Device Information", deviceContent)
                         )
-                        context.toast(resources.getString(R.string.toast_copied_to_clipboard))
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
                     }.withHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                 )
             }
