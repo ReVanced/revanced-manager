@@ -119,8 +119,11 @@ class RootInstaller(
                 .assertSuccess("Failed to install stock app")
         }
 
-        remoteFS.getFile(modulePath).mkdirs()
-            .also { if (!it) throw Exception("Failed to create module directory") }
+        remoteFS.getFile(modulePath).apply {
+            if (!mkdirs() && !exists()) {
+                throw Exception("Failed to create module directory")
+            }
+        }
 
         listOf(
             "service.sh",
