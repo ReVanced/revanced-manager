@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.component.settings
 
+import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
+import app.revanced.manager.util.withHapticFeedback
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -47,7 +49,7 @@ fun SettingsListItem(
     )
 
     SegmentedListItem(
-        onClick = onClick ?: {},
+        onClick = onClick?.withHapticFeedback(HapticFeedbackConstants.CLOCK_TICK) ?: { }.withHapticFeedback(HapticFeedbackConstants.CLOCK_TICK),
         onLongClick = onLongClick,
         onLongClickLabel = onLongClickLabel,
         shapes = shapes,
@@ -88,7 +90,7 @@ fun SettingsListItem(
     )
 
     SegmentedListItem(
-        onClick = onClick ?: {},
+        onClick = onClick?.withHapticFeedback(HapticFeedbackConstants.CLOCK_TICK) ?: { }.withHapticFeedback(HapticFeedbackConstants.CLOCK_TICK),
         onLongClick = onLongClick,
         onLongClickLabel = onLongClickLabel,
         shapes = shapes,
