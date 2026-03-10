@@ -46,6 +46,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -56,6 +57,7 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
+import app.revanced.manager.util.withHapticFeedback
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -224,7 +226,7 @@ private fun FilterBottomSheet(
                         selected = tag in selectedTags,
                         onClick = {
                             changeSelection(tag)
-                        },
+                        }.withHapticFeedback(HapticFeedbackConstantsCompat.CONFIRM),
                         label = { Text(tag) }
                     )
                 }
