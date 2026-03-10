@@ -171,8 +171,6 @@ android {
     buildTypes {
         debug {
             resValue("string", "app_name", "ReVanced Manager (Debug)")
-
-            buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
 
         release {
@@ -197,8 +195,6 @@ android {
                     keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
                 }
             }
-
-            buildConfigField("long", "BUILD_ID", "0L")
         }
     }
 
