@@ -39,11 +39,9 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.model.ProgressKey
 import app.revanced.manager.ui.model.State
-import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
-import app.revanced.manager.ui.model.StepProgressProvider
+import app.revanced.manager.ui.model.Step
 import java.util.Locale
 import kotlin.math.floor
 
@@ -52,8 +50,6 @@ import kotlin.math.floor
 fun Steps(
     category: StepCategory,
     steps: List<Step>,
-    stepCount: Pair<Int, Int>? = null,
-    stepProgressProvider: StepProgressProvider,
     isExpanded: Boolean = false,
     onExpand: () -> Unit,
     onClick: () -> Unit
@@ -67,8 +63,17 @@ fun Steps(
         }
     }
 
+    val filteredSteps = remember(steps) {
+        val failedCount = steps.count { it.state == State.FAILED }
+
+        steps.filter { step ->
+            // Show hidden steps if it's the only failed step.
+            !step.hide || (step.state == State.FAILED && failedCount == 1)
+        }
+    }
+
     LaunchedEffect(state) {
-        if (state == State.RUNNING)
+        if (state == State.RUNNING || state == State.FAILED)
             onExpand()
     }
 
@@ -92,13 +97,8 @@ fun Steps(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            val stepProgress = remember(stepCount, steps) {
-                stepCount?.let { (current, total) -> "$current/$total" }
-                    ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}"
-            }
-
             Text(
-                text = stepProgress,
+                text = "${filteredSteps.count { it.state == State.COMPLETED }}/${filteredSteps.size}",
                 style = MaterialTheme.typography.labelSmall
             )
 
@@ -112,23 +112,20 @@ fun Steps(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
             ) {
-                steps.forEachIndexed { index, step ->
-                    val (progress, progressText) = when (step.progressKey) {
-                        null -> null
-                        ProgressKey.DOWNLOAD -> stepProgressProvider.downloadProgress?.let { (downloaded, total) ->
-                            if (total != null) downloaded.toFloat() / total.toFloat() to "${downloaded.megaBytes}/${total.megaBytes} MB"
-                            else null to "${downloaded.megaBytes} MB"
-                        }
+                filteredSteps.forEachIndexed { index, step ->
+                    val (progress, progressText) = step.progress?.let { (current, total) ->
+                        if (total != null) current.toFloat() / total.toFloat() to "${current.megaBytes}/${total.megaBytes} MB"
+                        else null to "${current.megaBytes} MB"
                     } ?: (null to null)
 
                     SubStep(
-                        name = step.name,
+                        name = step.title,
                         state = step.state,
                         message = step.message,
                         progress = progress,
                         progressText = progressText,
                         isFirst = index == 0,
-                        isLast = index == steps.lastIndex,
+                        isLast = index == filteredSteps.lastIndex,
                     )
                 }
             }

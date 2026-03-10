@@ -4,9 +4,9 @@ import android.content.Context
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.patcher.worker.ProgressEventHandler
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.flow.first
@@ -34,7 +34,6 @@ sealed class Runtime(context: Context) : KoinComponent {
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        onPatchCompleted: suspend () -> Unit,
-        onProgress: ProgressEventHandler,
+        onEvent: (ProgressEvent) -> Unit,
     )
 }

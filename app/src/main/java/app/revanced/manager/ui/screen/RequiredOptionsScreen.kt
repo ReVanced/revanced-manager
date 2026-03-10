@@ -13,7 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -106,7 +106,7 @@ fun RequiredOptionsScreen(
                 .padding(paddingValues)
         ) {
             if (list.isEmpty()) return@Column
-            else if (list.size > 1) ScrollableTabRow(
+            else if (list.size > 1) SecondaryScrollableTabRow(
                 selectedTabIndex = pagerState.currentPage,
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
@@ -144,16 +144,16 @@ fun RequiredOptionsScreen(
 
                             val values = vm.getOptions(bundle.uid, it)
                             it.options?.forEach { option ->
-                                val key = option.key
+                                val name = option.name
                                 val value =
-                                    if (values == null || key !in values) option.default else values[key]
+                                    if (values == null || name !in values) option.default else values[name]
 
                                 @Suppress("UNCHECKED_CAST")
                                 OptionItem(
                                     option = option as Option<Any>,
                                     value = value,
                                     setValue = { new ->
-                                        vm.setOption(bundle.uid, it, key, new)
+                                        vm.setOption(bundle.uid, it, name, new)
                                     },
                                     selectionWarningEnabled = vm.selectionWarningEnabled
                                 )

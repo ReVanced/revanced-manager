@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen.settings
 
+import android.annotation.SuppressLint
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
@@ -67,8 +69,9 @@ fun AboutSettingsScreen(
     viewModel: AboutViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     // painterResource() is broken on release builds for some reason.
-    val icon = rememberDrawablePainter(drawable = remember {
+    val icon = rememberDrawablePainter(drawable = remember(resources) {
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
     })
 
@@ -76,7 +79,7 @@ fun AboutSettingsScreen(
         viewModel.socials.partition(ReVancedSocial::preferred)
     }
 
-    val preferredSocialButtons = remember(preferredSocials, viewModel.donate, viewModel.contact) {
+    val preferredSocialButtons = remember(resources, preferredSocials, viewModel.donate, viewModel.contact) {
         preferredSocials.map {
             Triple(
                 getSocialIcon(it.name),
@@ -89,7 +92,7 @@ fun AboutSettingsScreen(
             viewModel.donate?.let {
                 Triple(
                     Icons.Outlined.FavoriteBorder,
-                    context.getString(R.string.donate),
+                    resources.getString(R.string.donate),
                     third = {
                         context.openUrl(it)
                     }
@@ -98,7 +101,7 @@ fun AboutSettingsScreen(
             viewModel.contact?.let {
                 Triple(
                     Icons.Outlined.MailOutline,
-                    context.getString(R.string.contact),
+                    resources.getString(R.string.contact),
                     third = {
                         context.openUrl("mailto:$it")
                     }
@@ -131,7 +134,7 @@ fun AboutSettingsScreen(
             stringResource(R.string.contributors_description),
             third = nav@{
                 if (!viewModel.isConnected) {
-                    context.toast(context.getString(R.string.no_network_toast))
+                    context.toast(resources.getString(R.string.no_network_toast))
                     return@nav
                 }
 
@@ -153,7 +156,7 @@ fun AboutSettingsScreen(
     LaunchedEffect(developerTaps) {
         if (developerTaps == 0) return@LaunchedEffect
         if (showDeveloperSettings) {
-            snackbarHostState.showSnackbar(context.getString(R.string.developer_options_already_enabled))
+            snackbarHostState.showSnackbar(resources.getString(R.string.developer_options_already_enabled))
             developerTaps = 0
             return@LaunchedEffect
         }
@@ -161,7 +164,7 @@ fun AboutSettingsScreen(
         val remaining = DEVELOPER_OPTIONS_TAPS - developerTaps
         if (remaining > 0) {
             snackbarHostState.showSnackbar(
-                context.getString(
+                resources.getString(
                     R.string.developer_options_taps,
                     remaining
                 ),
@@ -169,7 +172,7 @@ fun AboutSettingsScreen(
             )
         } else if (remaining == 0) {
             viewModel.showDeveloperSettings.update(true)
-            snackbarHostState.showSnackbar(context.getString(R.string.developer_options_enabled))
+            snackbarHostState.showSnackbar(resources.getString(R.string.developer_options_enabled))
         }
 
         // Reset the counter

@@ -1,4 +1,4 @@
-package app.revanced.manager.plugin.downloader.webview
+package app.revanced.manager.downloader.webview
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -20,15 +20,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
-import app.revanced.manager.plugin.downloader.PluginHostApi
-import app.revanced.manager.plugin.downloader.R
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.R
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
-@OptIn(PluginHostApi::class)
-@PluginHostApi
+@OptIn(DownloaderHostApi::class)
+@DownloaderHostApi
 class WebViewActivity : ComponentActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +110,7 @@ class WebViewActivity : ComponentActivity() {
     }
 }
 
-@OptIn(PluginHostApi::class)
+@OptIn(DownloaderHostApi::class)
 internal class WebViewModel : ViewModel() {
     init {
         CookieManager.getInstance().apply {

@@ -11,6 +11,7 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     singleOf(::ReVancedAPI)
+    singleOf(::AnnouncementRepository)
     singleOf(::Filesystem) {
         createdAtStart()
     }
@@ -21,7 +22,7 @@ val repositoryModule = module {
         // It is best to load patch bundles ASAP
         createdAtStart()
     }
-    singleOf(::DownloaderPluginRepository)
+    singleOf(::DownloaderRepository)
     singleOf(::WorkerRepository)
     singleOf(::DownloadedAppRepository)
     singleOf(::InstalledAppRepository)

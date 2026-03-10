@@ -1,25 +1,19 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageInfo
-import android.content.pm.PackageInstaller
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.data.room.apps.installed.InstalledPatchBundle
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
-import app.revanced.manager.service.UninstallService
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.simpleMessage
@@ -30,6 +24,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import ru.solrudev.ackpine.session.Session
+import ru.solrudev.ackpine.uninstaller.UninstallFailure
 
 class InstalledAppInfoViewModel(
     packageName: String
@@ -46,6 +42,8 @@ class InstalledAppInfoViewModel(
     var appInfo: PackageInfo? by mutableStateOf(null)
         private set
     var appliedPatches: PatchSelection? by mutableStateOf(null)
+    var patchBundles: List<InstalledPatchBundle> by mutableStateOf(emptyList())
+        private set
     var isMounted by mutableStateOf(false)
         private set
 
@@ -58,6 +56,9 @@ class InstalledAppInfoViewModel(
                 }
                 appliedPatches = withContext(Dispatchers.IO) {
                     installedAppRepository.getAppliedPatches(it.currentPackageName)
+                }
+                patchBundles = withContext(Dispatchers.IO) {
+                    installedAppRepository.getInstalledPatchBundles(it.currentPackageName)
                 }
             }
         }
@@ -87,51 +88,28 @@ class InstalledAppInfoViewModel(
 
     fun uninstall() {
         val app = installedApp ?: return
-        when (app.installType) {
-            InstallType.DEFAULT -> pm.uninstallPackage(app.currentPackageName)
-
-            InstallType.MOUNT -> viewModelScope.launch {
-                rootInstaller.uninstall(app.currentPackageName)
-                installedAppRepository.delete(app)
-                onBackClick()
-            }
-        }
-    }
-
-    private val uninstallBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            when (intent?.action) {
-                UninstallService.APP_UNINSTALL_ACTION -> {
-                    val extraStatus =
-                        intent.getIntExtra(UninstallService.EXTRA_UNINSTALL_STATUS, -999)
-                    val extraStatusMessage =
-                        intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
-
-                    if (extraStatus == PackageInstaller.STATUS_SUCCESS) {
-                        viewModelScope.launch {
-                            installedApp?.let {
-                                installedAppRepository.delete(it)
-                            }
-                            onBackClick()
+        viewModelScope.launch {
+            when (app.installType) {
+                InstallType.DEFAULT -> {
+                    when (val result = pm.uninstallPackage(app.currentPackageName)) {
+                        is Session.State.Failed<UninstallFailure> -> {
+                            val msg = result.failure.message.orEmpty()
+                            context.toast(
+                                this@InstalledAppInfoViewModel.context.getString(
+                                    R.string.uninstall_app_fail,
+                                    msg
+                                )
+                            )
+                            return@launch
                         }
-                    } else if (extraStatus != PackageInstaller.STATUS_FAILURE_ABORTED) {
-                        this@InstalledAppInfoViewModel.context.toast(this@InstalledAppInfoViewModel.context.getString(R.string.uninstall_app_fail, extraStatusMessage))
+                        Session.State.Succeeded -> {}
                     }
-
                 }
-            }
-        }
-    }.also {
-        ContextCompat.registerReceiver(
-            context,
-            it,
-            IntentFilter(UninstallService.APP_UNINSTALL_ACTION),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-    }
 
-    override fun onCleared() {
-        super.onCleared()
-        context.unregisterReceiver(uninstallBroadcastReceiver)
+                InstallType.MOUNT -> rootInstaller.uninstall(app.currentPackageName)
+            }
+            installedAppRepository.delete(app)
+            onBackClick()
+        }
     }
 }

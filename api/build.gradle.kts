@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -17,9 +19,20 @@ dependencies {
     implementation(libs.appcompat)
 }
 
+kotlin {
+    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-Xexplicit-backing-fields",
+            "-Xcontext-parameters",
+        )
+    }
+}
+
 android {
-    namespace = "app.revanced.manager.plugin.downloader"
-    compileSdk = 35
+    namespace = "app.revanced.manager.downloader"
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
@@ -43,12 +56,12 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
 apiValidation {
-    nonPublicMarkers += "app.revanced.manager.plugin.downloader.PluginHostApi"
+    nonPublicMarkers += "app.revanced.manager.downloader.DownloaderHostApi"
 }
 
 publishing {

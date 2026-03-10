@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,7 +43,6 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
-import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,19 +51,26 @@ fun InstalledAppInfoScreen(
     onBackClick: () -> Unit,
     viewModel: InstalledAppInfoViewModel
 ) {
-    val context = LocalContext.current
 
     SideEffect {
         viewModel.onBackClick = onBackClick
     }
 
     var showUninstallDialog by rememberSaveable { mutableStateOf(false) }
+    var showAppliedPatchesDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showUninstallDialog)
         UninstallDialog(
             onDismiss = { showUninstallDialog = false },
             onConfirm = { viewModel.uninstall() }
         )
+    if (showAppliedPatchesDialog) {
+        AppliedPatchesDialog(
+            onDismissRequest = { showAppliedPatchesDialog = false },
+            appliedPatches = viewModel.appliedPatches,
+            patchBundles = viewModel.patchBundles
+        )
+    }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -152,7 +157,7 @@ fun InstalledAppInfoScreen(
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
                 SettingsListItem(
-                    modifier = Modifier.clickable { context.toast("Not implemented yet!") },
+                    modifier = Modifier.clickable(onClick = { showAppliedPatchesDialog = true }),
                     headlineContent = stringResource(R.string.applied_patches),
                     supportingContent = 
                             (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {

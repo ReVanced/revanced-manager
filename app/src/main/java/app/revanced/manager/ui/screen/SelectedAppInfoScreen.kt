@@ -25,12 +25,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,7 +40,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
-import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
+import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
@@ -67,6 +69,7 @@ fun SelectedAppInfoScreen(
     vm: SelectedAppInfoViewModel
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val networkInfo = koinInject<NetworkInfo>()
     val networkConnected = remember { networkInfo.isConnected() }
     val networkMetered = remember { !networkInfo.isUnmetered() }
@@ -76,16 +79,16 @@ fun SelectedAppInfoScreen(
     val bundles by vm.bundleInfoFlow.collectAsStateWithLifecycle(emptyList())
 
     val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
-    val patches = remember(bundles, allowIncompatiblePatches) {
-        vm.getPatches(bundles, allowIncompatiblePatches)
+    val patches by remember {
+        derivedStateOf {
+            vm.getPatches(bundles, allowIncompatiblePatches)
+        }
     }
-    val selectedPatchCount = remember(patches) {
-        patches.values.sumOf { it.size }
-    }
+    val selectedPatchCount = patches.values.sumOf { it.size }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = vm::handlePluginActivityResult
+        onResult = vm::handleDownloaderActivityResult
     )
     EventEffect(flow = vm.launchActivityFlow) { intent ->
         launcher.launch(intent)
@@ -117,7 +120,7 @@ fun SelectedAppInfoScreen(
                 },
                 onClick = patchClick@{
                     if (selectedPatchCount == 0) {
-                        context.toast(context.getString(R.string.no_patches_selected))
+                        context.toast(resources.getString(R.string.no_patches_selected))
 
                         return@patchClick
                     }
@@ -139,22 +142,22 @@ fun SelectedAppInfoScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
-        val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
+        val downloaders by vm.downloaders.collectAsStateWithLifecycle(emptyList())
 
         if (vm.showSourceSelector) {
             val requiredVersion by vm.requiredVersion.collectAsStateWithLifecycle(null)
 
             AppSourceSelectorDialog(
-                plugins = plugins,
+                downloaders = downloaders,
                 installedApp = vm.installedAppData,
                 searchApp = SelectedApp.Search(
                     vm.packageName,
                     vm.desiredVersion
                 ),
-                activeSearchJob = vm.activePluginAction,
+                activeSearchJob = vm.activeDownloader,
                 hasRoot = vm.hasRoot,
                 onDismissRequest = vm::dismissSourceSelector,
-                onSelectPlugin = vm::searchUsingPlugin,
+                onSelectDownloader = vm::searchUsingDownloader,
                 requiredVersion = requiredVersion,
                 onSelect = {
                     vm.selectedApp = it
@@ -200,8 +203,8 @@ fun SelectedAppInfoScreen(
                     is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
                     is SelectedApp.Download -> stringResource(
                         R.string.apk_source_downloader,
-                        plugins.find { it.packageName == app.data.pluginPackageName }?.name
-                            ?: app.data.pluginPackageName
+                        downloaders.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderClassName }?.name
+                            ?: app.data.downloaderPackageName
                     )
 
                     is SelectedApp.Local -> stringResource(R.string.apk_source_local)
@@ -278,14 +281,14 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
 
 @Composable
 private fun AppSourceSelectorDialog(
-    plugins: List<LoadedDownloaderPlugin>,
+    downloaders: List<LoadedDownloader>,
     installedApp: Pair<SelectedApp.Installed, InstalledApp?>?,
     searchApp: SelectedApp.Search,
-    activeSearchJob: String?,
+    activeSearchJob: LoadedDownloader?,
     hasRoot: Boolean,
     requiredVersion: String?,
     onDismissRequest: () -> Unit,
-    onSelectPlugin: (LoadedDownloaderPlugin) -> Unit,
+    onSelectDownloader: (LoadedDownloader) -> Unit,
     onSelect: (SelectedApp) -> Unit,
 ) {
     val canSelect = activeSearchJob == null
@@ -302,15 +305,15 @@ private fun AppSourceSelectorDialog(
         text = {
             LazyColumn {
                 item(key = "auto") {
-                    val hasPlugins = plugins.isNotEmpty()
+                    val hasDownloader = downloaders.isNotEmpty()
                     ListItem(
                         modifier = Modifier
-                            .clickable(enabled = canSelect && hasPlugins) { onSelect(searchApp) }
-                            .enabled(hasPlugins),
+                            .clickable(enabled = canSelect && hasDownloader) { onSelect(searchApp) }
+                            .enabled(hasDownloader),
                         headlineContent = { Text(stringResource(R.string.app_source_dialog_option_auto)) },
                         supportingContent = {
                             Text(
-                                if (hasPlugins)
+                                if (hasDownloader)
                                     stringResource(R.string.app_source_dialog_option_auto_description)
                                 else
                                     stringResource(R.string.app_source_dialog_option_auto_unavailable)
@@ -348,11 +351,17 @@ private fun AppSourceSelectorDialog(
                     }
                 }
 
-                items(plugins, key = { "plugin_${it.packageName}" }) { plugin ->
+                items(
+                    downloaders,
+                    key = { "downloader_${it.packageName}_${it.className}" }) { downloader ->
                     ListItem(
-                        modifier = Modifier.clickable(enabled = canSelect) { onSelectPlugin(plugin) },
-                        headlineContent = { Text(plugin.name) },
-                        trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == plugin.packageName },
+                        modifier = Modifier.clickable(enabled = canSelect) {
+                            onSelectDownloader(
+                                downloader
+                            )
+                        },
+                        headlineContent = { Text(downloader.name) },
+                        trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == downloader },
                         colors = transparentListItemColors
                     )
                 }

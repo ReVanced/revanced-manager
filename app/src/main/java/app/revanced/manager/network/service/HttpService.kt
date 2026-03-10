@@ -16,8 +16,11 @@ import io.ktor.http.isSuccess
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.core.isNotEmpty
 import io.ktor.utils.io.core.readBytes
+import io.ktor.utils.io.exhausted
+import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.io.asSink
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.OutputStream
@@ -69,14 +72,12 @@ class HttpService(
     ) {
         http.prepareGet(builder).execute { httpResponse ->
             if (httpResponse.status.isSuccess()) {
-                val channel: ByteReadChannel = httpResponse.body()
                 withContext(Dispatchers.IO) {
-                    while (!channel.isClosedForRead) {
+                    val channel: ByteReadChannel = httpResponse.body()
+                    val sink = outputStream.asSink()
+                    while (!channel.exhausted()) {
                         val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
-                        while (packet.isNotEmpty) {
-                            val bytes = packet.readBytes()
-                            outputStream.write(bytes)
-                        }
+                        packet.transferTo(sink)
                     }
                 }
 
