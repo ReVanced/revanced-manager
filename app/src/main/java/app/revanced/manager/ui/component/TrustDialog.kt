@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
@@ -18,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 
@@ -66,12 +69,26 @@ fun TrustDialog(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                             )
                         ) {
-                            Text(
-                                stringResource(
-                                    R.string.downloader_trust_dialog_signature,
-                                    signature.chunked(2).joinToString(" ")
-                                ), modifier = Modifier.padding(12.dp)
-                            )
+                            SelectionContainer(
+                                Modifier.padding(12.dp)
+                            ) {
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    DisableSelection {
+                                        Text(
+                                            stringResource(
+                                                R.string.downloader_trust_dialog_signature,
+                                            ),
+                                            fontFamily = FontFamily.Monospace
+                                        )
+                                    }
+                                    Text(
+                                        signature.chunked(2).joinToString(" "),
+                                        fontFamily = FontFamily.Monospace
+                                    )
+                                }
+                            }
                         }
                     }
                 }

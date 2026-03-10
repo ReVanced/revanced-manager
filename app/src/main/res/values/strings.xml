@@ -245,7 +245,7 @@ You will not be able to update the previously installed apps from this source.</
     <string name="downloader_trust_dialog_title">Trust downloaders?</string>
     <string name="downloader_revoke_trust_dialog_title">Revoke trust?</string>
     <string name="downloader_trust_dialog_body">Trusting will allow these downloaders to run.\n\nOnly enable these downloaders if you trust them. Downloaders can make ReVanced Manager execute arbitrary code.</string>
-    <string name="downloader_trust_dialog_signature">Signature:\n\n%s</string>
+    <string name="downloader_trust_dialog_signature">Signature:</string>
     <string name="downloader_trust_dialog_name">Downloader:\n%s</string>
     <string name="downloader_delete_apps_title">Delete selected apps</string>
     <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
