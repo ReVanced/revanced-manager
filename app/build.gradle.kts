@@ -132,7 +132,6 @@ buildscript {
 android {
     namespace = "app.revanced.manager"
     compileSdk = 36
-    buildToolsVersion = "35.0.1"
 
     defaultConfig {
         applicationId = "app.revanced.manager.flutter"
@@ -177,7 +176,7 @@ android {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
-                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
             val keystoreFile = file("keystore.jks")
