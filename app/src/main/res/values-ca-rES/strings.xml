@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Actualitzador</string>
+  <string name="downloader_host_permission_label">Host del descarregador de ReVanced Manager</string>
+  <string name="downloader_host_permission_description">S\'utilitza per controlar l\'accés als descarregadors de ReVanced Manager. Només ReVanced Manager disposa d\'això.</string>
+  <string name="new_downloader_notification">Nou(s) descarregador(s) disponible(s). Fes clic aquí per configurar-los.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Cap descarregador disponible</string>
+  <string name="announcements_filter_tag">Filtrar per etiqueta</string>
+  <string name="announcements_show_archived">Mostrar arxivats</string>
+  <string name="downloads_description">Descarregadors i aplicacions descarregades</string>
+  <string name="downloaders">Descarregadors</string>
+  <string name="downloader_state_trusted">De confiança</string>
+  <string name="downloader_state_failed">No s\'ha pogut carregar. Fes clic per a més detalls</string>
+  <string name="downloader_state_untrusted">No fiable</string>
+  <string name="downloader_trust_dialog_title">Confiar en el descarregador?</string>
+  <string name="downloader_revoke_trust_dialog_title">Revocar confiança?</string>
+  <string name="downloader_trust_dialog_body">Continuar permetrà que aquest descarregador s\'executi.\n\nNomés habilita aquest descarregador si hi confies. Els descarregadors poden fer que Manager executi codi arbitrari.</string>
+  <string name="downloader_trust_dialog_signature">Signatura:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Descarregador:\n%s</string>
+  <string name="downloader_delete_apps_title">Elimina les aplicacions seleccionades</string>
+  <string name="downloader_delete_apps_description">Estàs segur que vols eliminar les aplicacions seleccionades?</string>
+  <string name="no_downloader_installed">No hi ha descarregadors instal·lats.</string>
+  <string name="no_downloader_available">Hi ha descarregadors instal·lats, però cap és de confiança. Revisa la configuració.</string>
+  <string name="patch_selector_sheet_actions_title">Accions</string>
+  <string name="restore_default_selection">Restaurar selecció predeterminada</string>
+  <string name="deselect_all">Desseleccionar tot</string>
+  <string name="invert_selection">Invertir selecció</string>
+  <string name="deselect_all_except">Desseleccionar tot excepte %s</string>
+  <string name="scope_dialog_title">Aplicar a</string>
+  <string name="scope_all_patches">Tots els pegats</string>
+  <string name="scope_bundle_patches">%s només</string>
+  <string name="downloader_activity_dialog_body">Es requereix la interacció de l\'usuari per procedir amb aquest descarregador.</string>
+  <string name="view_announcement">Veure anunci</string>
+  <string name="announcements">Anuncis</string>
+  <string name="archive">Arxiu</string>
+  <string name="no_announcements_found">No s\'han trobat anuncis</string>
+  <string name="new_announcement">Nou anunci:
+%s</string>
+</resources>

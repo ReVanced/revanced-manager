@@ -1,3 +1,10 @@
+# app [1.26.0-dev.33](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.32...v1.26.0-dev.33) (2026-03-10)
+
+
+### Bug Fixes
+
+* Adjust ReVanced icons ([#2890](https://github.com/ReVanced/revanced-manager/issues/2890)) ([bc2a2cb](https://github.com/ReVanced/revanced-manager/commit/bc2a2cb3976234c8a74db93a593e103d77d22a07))
+
 # app [1.26.0-dev.32](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.31...v1.26.0-dev.32) (2026-03-08)
 
 

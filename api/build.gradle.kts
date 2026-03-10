@@ -67,12 +67,9 @@ apiValidation {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = "githubPackages"
             url = uri("https://maven.pkg.github.com/revanced/revanced-manager")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: extra["gpr.user"] as String?
-                password = System.getenv("GITHUB_TOKEN") ?: extra["gpr.key"] as String?
-            }
+            credentials(PasswordCredentials::class)
         }
     }
 

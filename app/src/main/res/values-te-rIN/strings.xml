@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">ప్యాచర్</string>
+  <string name="downloader_host_permission_label">ReVanced Manager డౌన్‌లోడర్ హోస్ట్</string>
+  <string name="downloader_host_permission_description">ReVanced Manager డౌన్‌లోడర్‌లకు ప్రాప్యతను నియంత్రించడానికి ఉపయోగించబడుతుంది. ReVanced Manager కి మాత్రమే ఇది ఉంటుంది.</string>
+  <string name="new_downloader_notification">కొత్త డౌన్‌లోడర్(లు) అందుబాటులో ఉన్నాయి. వాటిని కాన్ఫిగర్ చేయడానికి ఇక్కడ క్లిక్ చేయండి.</string>
+  <string name="app_source_dialog_option_auto_unavailable">డౌన్‌లోడర్ అందుబాటులో లేదు</string>
+  <string name="announcements_filter_tag">ట్యాగ్ ద్వారా ఫిల్టర్ చేయండి</string>
+  <string name="announcements_show_archived">ఆర్కైవ్ చేసినవి చూపించు</string>
+  <string name="downloads_description">డౌన్‌లోడర్‌లు మరియు డౌన్‌లోడ్ చేయబడిన యాప్‌లు</string>
+  <string name="downloaders">డౌన్‌లోడర్‌లు</string>
+  <string name="downloader_state_trusted">విశ్వసనీయం</string>
+  <string name="downloader_state_failed">లోడ్ చేయడంలో విఫలమైంది. మరిన్ని వివరాల కోసం క్లిక్ చేయండి</string>
+  <string name="downloader_state_untrusted">అవిశ్వసనీయం</string>
+  <string name="downloader_trust_dialog_title">డౌన్‌లోడర్‌ను నమ్మాలా?</string>
+  <string name="downloader_revoke_trust_dialog_title">నమ్మకాన్ని రద్దు చేయాలా?</string>
+  <string name="downloader_trust_dialog_body">కొనసాగించడం ద్వారా ఈ డౌన్‌లోడర్ రన్ అవ్వడానికి అనుమతిస్తుంది.
+
+మీరు విశ్వసిస్తే మాత్రమే ఈ డౌన్‌లోడర్‌ను ఎనేబుల్ చేయండి. డౌన్‌లోడర్‌లు Manager ని ఏకపక్ష కోడ్‌ను అమలు చేయమని చేయగలవు.</string>
+  <string name="downloader_trust_dialog_signature">సంతకం:
+
+%s</string>
+  <string name="downloader_trust_dialog_name">డౌన్‌లోడర్:
+%s</string>
+  <string name="downloader_delete_apps_title">ఎంచుకున్న యాప్‌లను తొలగించండి</string>
+  <string name="downloader_delete_apps_description">మీరు ఎంచుకున్న యాప్‌లను తొలగించాలనుకుంటున్నారని ఖచ్చితంగా ఉన్నారా?</string>
+  <string name="no_downloader_installed">డౌన్‌లోడర్‌లు ఇన్‌స్టాల్ చేయబడలేదు.</string>
+  <string name="no_downloader_available">డౌన్‌లోడర్‌లు ఇన్‌స్టాల్ చేయబడ్డాయి కానీ ఏవీ విశ్వసనీయమైనవి కావు. మీ సెట్టింగ్‌లను తనిఖీ చేయండి.</string>
+  <string name="patch_selector_sheet_actions_title">చర్యలు</string>
+  <string name="restore_default_selection">డిఫాల్ట్ ఎంపికను పునరుద్ధరించండి</string>
+  <string name="deselect_all">అన్నింటినీ ఎంపిక తీసివేయండి</string>
+  <string name="invert_selection">ఎంపికను విలోమం చేయండి</string>
+  <string name="deselect_all_except">%s మినహా అన్నింటినీ ఎంపిక తీసివేయండి</string>
+  <string name="scope_dialog_title">దీనికి వర్తింపజేయండి</string>
+  <string name="scope_all_patches">అన్ని ప్యాచ్‌లు</string>
+  <string name="scope_bundle_patches">కేవలం %s మాత్రమే</string>
+  <string name="downloader_activity_dialog_body">ఈ డౌన్‌లోడర్‌తో కొనసాగడానికి వినియోగదారు పరస్పర చర్య అవసరం.</string>
+  <string name="view_announcement">ప్రకటనను వీక్షించండి</string>
+  <string name="announcements">ప్రకటనలు</string>
+  <string name="archive">ఆర్కైవ్</string>
+  <string name="no_announcements_found">ప్రకటనలు కనుగొనబడలేదు</string>
+  <string name="new_announcement">కొత్త ప్రకటన:\n%s</string>
+</resources>
