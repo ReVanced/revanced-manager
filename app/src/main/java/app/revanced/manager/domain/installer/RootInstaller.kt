@@ -190,7 +190,12 @@ class ShellCommandException(
     val stderr: List<String>
 ) : Exception(format(userMessage, exitCode, stdout, stderr)) {
     companion object {
-        private fun format(message: String, exitCode: Int, stdout: List<String>, stderr: List<String>): String =
+        private fun format(
+            message: String,
+            exitCode: Int,
+            stdout: List<String>,
+            stderr: List<String>
+        ): String =
             buildString {
                 appendLine(message)
                 appendLine("Exit code: $exitCode")

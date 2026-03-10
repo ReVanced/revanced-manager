@@ -19,11 +19,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
@@ -36,7 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TabRow
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
@@ -53,10 +55,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
@@ -90,16 +94,19 @@ fun DashboardScreen(
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
-    onDownloaderPluginClick: () -> Unit,
+    onAnnouncementsClick: () -> Unit,
+    onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
+    onDownloaderClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
-    val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
+    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
         false
     )
     val androidContext = LocalContext.current
+    val resources = LocalResources.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         initialPage = DashboardPage.DASHBOARD.ordinal,
@@ -128,17 +135,16 @@ fun DashboardScreen(
         )
     }
 
-    var showUpdateDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialogOnLaunch.getBlocking()) }
-    val availableUpdate by remember {
-        derivedStateOf { vm.updatedManagerVersion.takeIf { showUpdateDialog } }
-    }
+    var showUpdateDialog by rememberSaveable { mutableStateOf(true) }
+    val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
+    val availableUpdate = vm.updatedManagerVersion
 
-    availableUpdate?.let { version ->
+    if (showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
         AvailableUpdateDialog(
             onDismiss = { showUpdateDialog = false },
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
-            newVersion = version
+            newVersion = availableUpdate
         )
     }
 
@@ -218,6 +224,20 @@ fun DashboardScreen(
                                 }
                             }
                         }
+                        IconButton(onClick = onAnnouncementsClick) {
+                            BadgedBox(
+                                badge = {
+                                    if (vm.unreadAnnouncement != null) {
+                                        Badge(modifier = Modifier.size(6.dp))
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.Notifications,
+                                    stringResource(R.string.announcements)
+                                )
+                            }
+                        }
                         IconButton(onClick = onSettingsClick) {
                             Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                         }
@@ -234,7 +254,7 @@ fun DashboardScreen(
                     when (pagerState.currentPage) {
                         DashboardPage.DASHBOARD.ordinal -> {
                             if (availablePatches < 1) {
-                                androidContext.toast(androidContext.getString(R.string.no_patch_found))
+                                androidContext.toast(resources.getString(R.string.no_patch_found))
                                 composableScope.launch {
                                     pagerState.animateScrollToPage(
                                         DashboardPage.BUNDLES.ordinal
@@ -259,7 +279,7 @@ fun DashboardScreen(
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
-            TabRow(
+            SecondaryTabRow(
                 selectedTabIndex = pagerState.currentPage,
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
@@ -307,20 +327,42 @@ fun DashboardScreen(
                         )
                     }
                 } else null,
-                if (showNewDownloaderPluginsNotification) {
+                if (showNewDownloaderNotification) {
                     {
                         NotificationCard(
-                            text = stringResource(R.string.new_downloader_plugins_notification),
+                            text = stringResource(R.string.new_downloader_notification),
                             icon = Icons.Outlined.Download,
-                            modifier = Modifier.clickable(onClick = onDownloaderPluginClick),
+                            modifier = Modifier.clickable(onClick = onDownloaderClick),
                             actions = {
-                                TextButton(onClick = vm::ignoreNewDownloaderPlugins) {
+                                TextButton(onClick = vm::ignoreNewDownloaders) {
                                     Text(stringResource(R.string.dismiss))
                                 }
                             }
                         )
                     }
-                } else null
+                } else null,
+                vm.unreadAnnouncement?.let { announcement ->
+                    {
+                        NotificationCard(
+                            text = stringResource(R.string.new_announcement, announcement.title),
+                            icon = Icons.Filled.Notifications,
+                            actions = {
+                                TextButton(onClick = vm::markUnreadAnnouncementRead) {
+                                    Text(stringResource(R.string.dismiss))
+                                }
+                                TextButton(
+                                    onClick = {
+                                        vm.markUnreadAnnouncementRead()
+                                        onAnnouncementClick(announcement)
+                                    }
+                                ) {
+                                    Text(stringResource(R.string.view_announcement))
+                                }
+                            },
+                            isWarning = announcement.level > 0
+                        )
+                    }
+                }
             )
 
             HorizontalPager(

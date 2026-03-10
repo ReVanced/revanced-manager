@@ -20,6 +20,8 @@ class PreferencesManager(
     val keystoreAlias = stringPreference("keystore_alias", KeystoreManager.DEFAULT)
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)
 
+    val readAnnouncements = longSetPreference("read_announcements", emptySet())
+    val selectedAnnouncementTags = stringSetPreference("selected_announcement_tags", setOf("revanced", "manager"))
     val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
     val showManagerUpdateDialogOnLaunch = booleanPreference("show_manager_update_dialog_on_launch", true)
@@ -31,7 +33,9 @@ class PreferencesManager(
     val disableUniversalPatchCheck = booleanPreference("disable_patch_universal_check", false)
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
 
-    val acknowledgedDownloaderPlugins = stringSetPreference("acknowledged_downloader_plugins", emptySet())
+    val acknowledgedDownloaders = stringSetPreference("acknowledged_downloaders", emptySet())
 
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
+
+    val allowMeteredNetworks = booleanPreference("allow_metered_networks", false)
 }

@@ -15,5 +15,5 @@ class NetworkInfo(app: Application) {
     /**
      * Returns true if it is safe to download large files.
      */
-    fun isSafe() = isConnected() && isUnmetered()
+    fun isSafe(ignoreMetered: Boolean) = isConnected() && (ignoreMetered || isUnmetered())
 }

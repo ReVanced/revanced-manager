@@ -15,12 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -33,6 +31,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.revanced.manager.R
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +41,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format.MonthNames
@@ -50,9 +48,11 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import java.util.Locale
+import kotlin.math.abs
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
+import kotlin.time.Clock
 
 typealias PatchSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
@@ -82,6 +82,8 @@ fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
 inline fun uiSafe(context: Context, @StringRes toastMsg: Int, logMsg: String, block: () -> Unit) {
     try {
         block()
+    } catch (e: CancellationException) {
+        throw e
     } catch (error: Exception) {
         // You can only toast on the main thread.
         GlobalScope.launch(Dispatchers.Main) {
@@ -166,7 +168,7 @@ fun LocalDateTime.relativeTime(context: Context): String {
             else -> LocalDateTime.Format {
                 monthName(MonthNames.ENGLISH_ABBREVIATED)
                 char(' ')
-                dayOfMonth()
+                day()
                 if (now.toLocalDateTime(TimeZone.UTC).year != this@relativeTime.year) {
                     chars(", ")
                     year()
@@ -193,7 +195,12 @@ val transparentListItemColors
             .also { transparentListItemColorsCached = it }
 
 @Composable
-fun <T> EventEffect(flow: Flow<T>, vararg keys: Any?, state: Lifecycle.State = Lifecycle.State.STARTED, block: suspend (T) -> Unit) {
+fun <T> EventEffect(
+    flow: Flow<T>,
+    vararg keys: Any?,
+    state: Lifecycle.State = Lifecycle.State.STARTED,
+    block: suspend (T) -> Unit
+) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val currentBlock by rememberUpdatedState(block)
 
@@ -209,40 +216,36 @@ fun <T> EventEffect(flow: Flow<T>, vararg keys: Any?, state: Lifecycle.State = L
 const val isScrollingUpSensitivity = 10
 
 @Composable
-fun LazyListState.isScrollingUp(): State<Boolean> {
-    return remember(this) {
-        var previousIndex by mutableIntStateOf(firstVisibleItemIndex)
-        var previousScrollOffset by mutableIntStateOf(firstVisibleItemScrollOffset)
+fun LazyListState.isScrollingUp() = produceState(true, this) {
+    var previousIndex = firstVisibleItemIndex
+    var previousScrollOffset = firstVisibleItemScrollOffset
 
-        derivedStateOf {
-            val indexChanged = previousIndex != firstVisibleItemIndex
-            val offsetChanged =
-                kotlin.math.abs(previousScrollOffset - firstVisibleItemScrollOffset) > isScrollingUpSensitivity
+    snapshotFlow {
+        firstVisibleItemIndex to firstVisibleItemScrollOffset
+    }.collect { (index, scrollOffset) ->
+        val indexChanged = previousIndex != index
+        val offsetChanged = abs(previousScrollOffset - scrollOffset) > isScrollingUpSensitivity
 
-            if (indexChanged) {
-                previousIndex > firstVisibleItemIndex
-            } else if (offsetChanged) {
-                previousScrollOffset > firstVisibleItemScrollOffset
-            } else {
-                true
-            }.also {
-                previousIndex = firstVisibleItemIndex
-                previousScrollOffset = firstVisibleItemScrollOffset
-            }
+        value = when {
+            indexChanged -> previousIndex > index
+            offsetChanged -> previousScrollOffset > scrollOffset
+            else -> value
         }
+        previousIndex = index
+        previousScrollOffset = scrollOffset
     }
 }
 
-// TODO: support sensitivity
 @Composable
-fun ScrollState.isScrollingUp(): State<Boolean> {
-    return remember(this) {
-        var previousScrollOffset by mutableIntStateOf(value)
-        derivedStateOf {
-            (previousScrollOffset >= value).also {
-                previousScrollOffset = value
-            }
+fun ScrollState.isScrollingUp() = produceState(true, this) {
+    var previousScrollOffset = this@isScrollingUp.value
+
+    snapshotFlow { this@isScrollingUp.value }.collect { scrollOffset ->
+        if (abs(previousScrollOffset - scrollOffset) > isScrollingUpSensitivity) {
+            value = previousScrollOffset >= scrollOffset
         }
+
+        previousScrollOffset = scrollOffset
     }
 }
 

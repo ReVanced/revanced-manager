@@ -15,9 +15,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -27,20 +30,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -49,16 +55,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
@@ -72,6 +82,7 @@ import app.revanced.manager.ui.component.SearchBar
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
+import app.revanced.manager.ui.component.haptics.HapticTriStateCheckbox
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.component.patches.SelectionWarningDialog
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
@@ -81,9 +92,11 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, FlowPreview::class)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -120,7 +133,39 @@ fun PatchesSelectorScreen(
 
     val patchLazyListStates = remember(bundles) { List(bundles.size) { LazyListState() } }
 
+    var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
+    var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
+
+    var pendingScopeAction by remember { mutableStateOf<((Int?) -> Unit)?>(null) }
+
+    fun executeScopedAction(action: (Int?) -> Unit) {
+        if (bundles.size > 1) {
+            pendingScopeAction = action
+        } else {
+            action(bundles.firstOrNull()?.uid)
+        }
+    }
+
+    pendingScopeAction?.let { action ->
+        val currentBundle = bundles.getOrNull(pagerState.currentPage) ?: return@let
+
+        ScopeDialog(
+            bundleName = currentBundle.name,
+            onDismissRequest = { pendingScopeAction = null },
+            onAllPatches = {
+                action(null)
+                pendingScopeAction = null
+            },
+            onBundleOnly = {
+                action(currentBundle.uid)
+                pendingScopeAction = null
+            }
+        )
+    }
+
     if (showBottomSheet) {
+        val currentBundle = bundles.getOrNull(pagerState.currentPage)
+
         ModalBottomSheet(
             onDismissRequest = {
                 showBottomSheet = false
@@ -157,6 +202,71 @@ fun PatchesSelectorScreen(
                         label = { Text(stringResource(R.string.universal)) },
                     )
                 }
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+                Text(
+                    text = stringResource(R.string.patch_selector_sheet_actions_title),
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                fun guardedAction(action: () -> Unit) {
+                    showBottomSheet = false
+                    if (viewModel.selectionWarningEnabled) {
+                        showSelectionWarning = true
+                    } else {
+                        action()
+                    }
+                }
+
+                ActionItem(
+                    icon = Icons.Outlined.Restore,
+                    text = stringResource(R.string.restore_default_selection),
+                    onClick = {
+                        guardedAction {
+                            executeScopedAction { uid ->
+                                viewModel.restoreDefaults(uid)
+                            }
+                        }
+                    }
+                )
+
+                ActionItem(
+                    icon = Icons.Outlined.Deselect,
+                    text = stringResource(R.string.deselect_all),
+                    onClick = {
+                        guardedAction {
+                            executeScopedAction { uid ->
+                                viewModel.deselectAll(bundles, uid)
+                            }
+                        }
+                    }
+                )
+
+                ActionItem(
+                    icon = Icons.Outlined.SwapHoriz,
+                    text = stringResource(R.string.invert_selection),
+                    onClick = {
+                        guardedAction {
+                            executeScopedAction { uid ->
+                                viewModel.invertSelection(bundles, uid)
+                            }
+                        }
+                    }
+                )
+
+                if (bundles.size > 1 && currentBundle != null) {
+                    ActionItem(
+                        icon = Icons.Outlined.Deselect,
+                        text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                        onClick = {
+                            guardedAction {
+                                viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
@@ -186,9 +296,6 @@ fun PatchesSelectorScreen(
             selectionWarningEnabled = viewModel.selectionWarningEnabled
         )
     }
-
-    var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
-    var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
 
     if (showSelectionWarning)
         SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
@@ -231,7 +338,8 @@ fun PatchesSelectorScreen(
                             viewModel.selectionWarningEnabled -> showSelectionWarning = true
 
                             // Show universal warning if universal patch is selected and the toggle is off
-                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
+                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning =
+                                true
 
                             // Toggle the patch otherwise
                             else -> viewModel.togglePatch(uid, patch)
@@ -360,6 +468,21 @@ fun PatchesSelectorScreen(
                     ) {
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
+
+                    val isScrollingUp =
+                        patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp()
+                    val expanded by produceState(true, isScrollingUp) {
+                        val state = isScrollingUp ?: return@produceState
+                        value = state.value
+
+                        // Use snapshotFlow and sample to prevent the value from changing too often.
+                        snapshotFlow { state.value }
+                            .sample(333L)
+                            .collect {
+                                value = it
+                            }
+                    }
+
                     HapticExtendedFloatingActionButton(
                         text = {
                             Text(
@@ -375,8 +498,7 @@ fun PatchesSelectorScreen(
                                 contentDescription = stringResource(R.string.save)
                             )
                         },
-                        expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp
-                            ?: true,
+                        expanded = expanded,
                         onClick = {
                             onSave(viewModel.getCustomSelection(), viewModel.getOptions())
                         }
@@ -392,7 +514,7 @@ fun PatchesSelectorScreen(
                 .padding(top = 16.dp)
         ) {
             if (bundles.size > 1) {
-                ScrollableTabRow(
+                SecondaryScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
                 ) {
@@ -407,16 +529,38 @@ fun PatchesSelectorScreen(
                                 }
                             },
                             text = {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(
-                                        text = bundle.name,
-                                        style = MaterialTheme.typography.bodyMedium
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    val selectionState = viewModel.getBundleSelectionState(bundle)
+                                    val toggleableState = when (selectionState) {
+                                        true -> ToggleableState.On
+                                        false -> ToggleableState.Off
+                                        null -> ToggleableState.Indeterminate
+                                    }
+
+                                    HapticTriStateCheckbox(
+                                        state = toggleableState,
+                                        onClick = {
+                                            when {
+                                                viewModel.selectionWarningEnabled -> showSelectionWarning = true
+                                                selectionState == false -> viewModel.restoreDefaults(bundle.uid)
+                                                else -> viewModel.deselectAll(bundles, bundle.uid)
+                                            }
+                                        }
                                     )
-                                    Text(
-                                        text = bundle.version.orEmpty(),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+
+                                    Spacer(modifier = Modifier.width(4.dp))
+
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Text(
+                                            text = bundle.name,
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Text(
+                                            text = bundle.version.orEmpty(),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                 }
                             },
                             selectedContentColor = MaterialTheme.colorScheme.primary,
@@ -593,6 +737,41 @@ private fun IncompatiblePatchDialog(
     }
 )
 
+@Composable
+private fun ActionItem(
+    icon: ImageVector,
+    text: String,
+    onClick: () -> Unit
+) {
+    ListItem(
+        modifier = Modifier.clickable(onClick = onClick),
+        leadingContent = { Icon(icon, contentDescription = null) },
+        headlineContent = { Text(text) },
+        colors = transparentListItemColors
+    )
+}
+
+@Composable
+private fun ScopeDialog(
+    bundleName: String,
+    onDismissRequest: () -> Unit,
+    onAllPatches: () -> Unit,
+    onBundleOnly: () -> Unit
+) = AlertDialog(
+    onDismissRequest = onDismissRequest,
+    title = { Text(stringResource(R.string.scope_dialog_title)) },
+    confirmButton = {
+        TextButton(onClick = onAllPatches) {
+            Text(stringResource(R.string.scope_all_patches))
+        }
+    },
+    dismissButton = {
+        TextButton(onClick = onBundleOnly) {
+            Text(stringResource(R.string.scope_bundle_patches, bundleName))
+        }
+    }
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun OptionsDialog(
@@ -621,17 +800,17 @@ private fun OptionsDialog(
         ) {
             if (patch.options == null) return@LazyColumnWithScrollbar
 
-            items(patch.options, key = { it.key }) { option ->
-                val key = option.key
+            items(patch.options, key = { it.name }) { option ->
+                val name = option.name
                 val value =
-                    if (values == null || !values.contains(key)) option.default else values[key]
+                    if (values == null || !values.contains(name)) option.default else values[name]
 
                 @Suppress("UNCHECKED_CAST")
                 OptionItem(
                     option = option as Option<Any>,
                     value = value,
                     setValue = {
-                        set(key, it)
+                        set(name, it)
                     },
                     selectionWarningEnabled = selectionWarningEnabled
                 )

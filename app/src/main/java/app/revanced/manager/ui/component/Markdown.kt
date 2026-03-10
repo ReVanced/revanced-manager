@@ -18,8 +18,6 @@ fun Markdown(
         colors = markdownColor(
             text = MaterialTheme.colorScheme.onSurfaceVariant,
             codeBackground = MaterialTheme.colorScheme.secondaryContainer,
-            codeText = MaterialTheme.colorScheme.onSecondaryContainer,
-            linkText = MaterialTheme.colorScheme.primary
         ),
         typography = markdownTypography(
             h1 = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),

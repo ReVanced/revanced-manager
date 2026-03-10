@@ -2,11 +2,8 @@ package app.revanced.manager.util
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
@@ -16,8 +13,6 @@ import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.service.InstallService
-import app.revanced.manager.service.UninstallService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -25,9 +20,12 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
+import ru.solrudev.ackpine.session.await
+import ru.solrudev.ackpine.session.parameters.Confirmation
+import ru.solrudev.ackpine.uninstaller.PackageUninstaller
+import ru.solrudev.ackpine.uninstaller.createSession
+import ru.solrudev.ackpine.uninstaller.parameters.UninstallParametersDsl
 import java.io.File
-
-private const val byteArraySize = 1024 * 1024 // Because 1,048,576 is not readable
 
 @Immutable
 @Parcelize
@@ -40,7 +38,8 @@ data class AppInfo(
 @SuppressLint("QueryPermissionsNeeded")
 class PM(
     private val app: Application,
-    patchBundleRepository: PatchBundleRepository
+    patchBundleRepository: PatchBundleRepository,
+    private val uninstaller: PackageUninstaller
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -145,17 +144,11 @@ class PM(
         false
     )
 
-    suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
-        val packageInstaller = app.packageManager.packageInstaller
-        packageInstaller.openSession(packageInstaller.createSession(sessionParams)).use { session ->
-            apks.forEach { apk -> session.writeApk(apk) }
-            session.commit(app.installIntentSender)
-        }
-    }
-
-    fun uninstallPackage(pkg: String) {
-        val packageInstaller = app.packageManager.packageInstaller
-        packageInstaller.uninstall(pkg, app.uninstallIntentSender)
+    suspend fun uninstallPackage(pkg: String, config: UninstallParametersDsl.() -> Unit = {}) = withContext(Dispatchers.IO) {
+        uninstaller.createSession(pkg) {
+            confirmation = Confirmation.IMMEDIATE
+            config()
+        }.await()
     }
 
     fun launch(pkg: String) = app.packageManager.getLaunchIntentForPackage(pkg)?.let {
@@ -164,44 +157,4 @@ class PM(
     }
 
     fun canInstallPackages() = app.packageManager.canRequestPackageInstalls()
-
-    private fun PackageInstaller.Session.writeApk(apk: File) {
-        apk.inputStream().use { inputStream ->
-            openWrite(apk.name, 0, apk.length()).use { outputStream ->
-                inputStream.copyTo(outputStream, byteArraySize)
-                fsync(outputStream)
-            }
-        }
-    }
-
-    private val intentFlags
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            PendingIntent.FLAG_MUTABLE
-        else
-            0
-
-    private val sessionParams
-        get() = PackageInstaller.SessionParams(
-            PackageInstaller.SessionParams.MODE_FULL_INSTALL
-        ).apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-                setRequestUpdateOwnership(true)
-            setInstallReason(PackageManager.INSTALL_REASON_USER)
-        }
-
-    private val Context.installIntentSender
-        get() = PendingIntent.getService(
-            this,
-            0,
-            Intent(this, InstallService::class.java),
-            intentFlags
-        ).intentSender
-
-    private val Context.uninstallIntentSender
-        get() = PendingIntent.getService(
-            this,
-            0,
-            Intent(this, UninstallService::class.java),
-            intentFlags
-        ).intentSender
 }
