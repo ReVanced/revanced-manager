@@ -1,3 +1,10 @@
+# app [1.26.0-dev.34](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.33...v1.26.0-dev.34) (2026-03-10)
+
+
+### Features
+
+* Improve root installation ([#2895](https://github.com/ReVanced/revanced-manager/issues/2895)) ([763483b](https://github.com/ReVanced/revanced-manager/commit/763483b65f755201db087eecc6f3b02b65921177))
+
 # app [1.26.0-dev.33](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.32...v1.26.0-dev.33) (2026-03-10)
 
 
