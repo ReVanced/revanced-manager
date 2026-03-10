@@ -239,12 +239,8 @@ class MainActivity : FlutterActivity() {
 
             fun postStop() = handler.post { stopResult!!.success(null) }
 
-            fun cancel(block: () -> Unit = {}): Boolean {
-                if (cancel) {
-                    block()
-                    postStop()
-                }
-
+            fun cancel(): Boolean {
+                if (cancel) postStop()
                 return cancel
             }
 
@@ -274,8 +270,7 @@ class MainActivity : FlutterActivity() {
             try {
                 updateProgress(0.0, "Reading APK...", "Reading APK")
 
-                val totalPatchesCount = selectedPatches.size
-                val progressStep = if (totalPatchesCount > 0) 0.55 / totalPatchesCount else 0.55
+                var progressStep = 0.55
                 var progress = 0.05
 
                 val applyPatches = patcher(
@@ -286,7 +281,7 @@ class MainActivity : FlutterActivity() {
                 ) { packageName, _ ->
                     updateProgress(0.02, "Loading patches...", "Loading patches")
 
-                    patches.filter { patch ->
+                    val filteredPatches = patches.filter { patch ->
                         val isCompatible = patch.compatiblePackages?.any { (name, _) ->
                             name == packageName
                         } ?: false
@@ -300,6 +295,14 @@ class MainActivity : FlutterActivity() {
                             patch.options[key] = value
                         }
                     }.toSet()
+
+                    progressStep = if (filteredPatches.isNotEmpty()) {
+                        0.55 / filteredPatches.size
+                    } else {
+                        0.0
+                    }
+
+                    filteredPatches
                 }
 
                 if (cancel()) return@Thread
