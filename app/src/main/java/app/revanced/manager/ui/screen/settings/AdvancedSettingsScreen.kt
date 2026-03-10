@@ -4,7 +4,7 @@ import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Build
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -245,7 +245,7 @@ fun AdvancedSettingsScreen(
                             ClipData.newPlainText("Device Information", deviceContent)
                         )
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
-                    }.withHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                    }.withHapticFeedback(HapticFeedbackConstantsCompat.LONG_PRESS)
                 )
             }
         }

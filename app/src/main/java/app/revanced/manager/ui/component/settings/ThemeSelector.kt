@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.component.settings
 
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -121,7 +121,7 @@ private fun ThemeOption(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .clickable(
-                onClick = onClick.withHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY),
+                onClick = onClick.withHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY),
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
@@ -134,7 +134,7 @@ private fun ThemeOption(
                 .clip(CircleShape)
                 .background(containerColor)
                 .clickable(
-                    onClick = onClick.withHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY),
+                    onClick = onClick.withHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY),
                     role = Role.Button,
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(bounded = true)

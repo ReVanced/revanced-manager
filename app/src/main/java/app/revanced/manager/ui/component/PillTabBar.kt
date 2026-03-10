@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.component
 
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -122,7 +122,7 @@ fun RowScope.PillTab(
                 detectTapGestures(
                     onPress = {
                         state.onPressedTabIndexChange(index)
-                        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                        view.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
                         try {
                             awaitRelease()
                         } finally {
