@@ -25,10 +25,12 @@ import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.OutlinedTextField
@@ -109,7 +111,7 @@ fun AdvancedSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.advanced)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -250,6 +252,7 @@ fun AdvancedSettingsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
     var url by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
@@ -260,13 +263,14 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
             TextButton(
                 onClick = {
                     onSubmit(url)
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.api_url_dialog_save))
             }
         },
         dismissButton = {
-            TextButton(onClick = { onSubmit(null) }) {
+            TextButton(onClick = { onSubmit(null) }, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -301,7 +305,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     onValueChange = { url = it },
                     label = { Text(stringResource(R.string.api_url)) },
                     trailingIcon = {
-                        IconButton(onClick = { url = defaultUrl }) {
+                        IconButton(onClick = { url = defaultUrl }, shapes = IconButtonDefaults.shapes()) {
                             Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
                         }
                     }

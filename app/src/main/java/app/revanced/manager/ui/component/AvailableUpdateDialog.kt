@@ -20,6 +20,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.util.transparentListItemColors
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AvailableUpdateDialog(
     onDismiss: () -> Unit,
@@ -40,14 +41,16 @@ fun AvailableUpdateDialog(
                 onClick = {
                     dismissDialog()
                     onConfirm()
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.show))
             }
         },
         dismissButton = {
             TextButton(
-                onClick = dismissDialog
+                onClick = dismissDialog,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.dismiss))
             }

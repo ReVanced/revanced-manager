@@ -24,10 +24,12 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Source
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -144,7 +146,7 @@ fun BundleInformationScreen(
                     null
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -153,7 +155,7 @@ fun BundleInformationScreen(
                 },
                 actions = {
                     if (!src.isDefault) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
+                        IconButton(onClick = { showDeleteConfirmationDialog = true }, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 Icons.Filled.Delete,
                                 stringResource(R.string.delete)
@@ -162,7 +164,7 @@ fun BundleInformationScreen(
                     }
                     val hasNetwork = remember { viewModel.networkInfo.isConnected() }
                     if (!isLocal && hasNetwork) {
-                        IconButton(onClick = viewModel::refresh) {
+                        IconButton(onClick = viewModel::refresh, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 Icons.Filled.Update,
                                 stringResource(R.string.refresh)
@@ -335,6 +337,7 @@ fun BundleInformationScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun TagValue(
     icon: ImageVector,
@@ -385,7 +388,7 @@ private fun TagValue(
         Spacer(modifier = Modifier.width(16.dp))
 
         if (onClick != null) {
-            TextButton(onClick = onClick) {
+            TextButton(onClick = onClick, shapes = ButtonDefaults.shapes()) {
                 Text(
                     text = buttonText,
                     style = MaterialTheme.typography.bodyMedium,

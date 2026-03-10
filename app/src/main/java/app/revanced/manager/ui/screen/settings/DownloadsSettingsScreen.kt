@@ -22,12 +22,14 @@ import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Source
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -150,7 +152,7 @@ fun DownloadsSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.downloads)) },
                 navigationIcon = {
-                    IconButton(onClick = handleBack) {
+                    IconButton(onClick = handleBack, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -160,7 +162,7 @@ fun DownloadsSettingsScreen(
                 scrollBehavior = scrollBehavior,
                 actions = {
                     if (currentTab == DownloadsTab.Apps && viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }) {
+                        IconButton(onClick = { showDeleteConfirmationDialog = true }, shapes = IconButtonDefaults.shapes()) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }
@@ -229,6 +231,7 @@ private fun rememberSelectedListState(
     if (selectedPage == DownloadsTab.Downloaders.ordinal) downloaderListState else appsListState
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun DownloadersTabContent(
     downloaderStates: Map<String, DownloaderPackageState>,
@@ -275,7 +278,8 @@ private fun DownloadersTabContent(
                     enabled = installState == DownloadsViewModel.DownloaderInstallState.IDLE,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .height(56.dp),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     if (installState != DownloadsViewModel.DownloaderInstallState.IDLE) {
                         CircularProgressIndicator(

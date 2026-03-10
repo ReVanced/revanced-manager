@@ -17,6 +17,7 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.util.transparentListItemColors
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun InstallPickerDialog(
     onDismiss: () -> Unit,
@@ -27,7 +28,7 @@ fun InstallPickerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },

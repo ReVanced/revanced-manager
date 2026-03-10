@@ -26,8 +26,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -210,7 +212,7 @@ data class BannerScaffoldColors internal constructor(
     val sheetContentColor: Color,
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BannerScaffold(
     modifier: Modifier = Modifier,
@@ -364,7 +366,7 @@ fun BannerScaffold(
                 title = { Text(title) },
                 navigationIcon = {
                     if (onBackClick != null) {
-                        IconButton(onClick = onBackClick) {
+                        IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(R.string.back),

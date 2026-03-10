@@ -40,11 +40,13 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -101,7 +103,9 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, FlowPreview::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, FlowPreview::class,
+    ExperimentalMaterial3ExpressiveApi::class
+)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -392,7 +396,8 @@ fun PatchesSelectorScreen(
                             } else {
                                 onBackClick()
                             }
-                        }
+                        },
+                        shapes = IconButtonDefaults.shapes()
                     ) {
                         Icon(
                             modifier = Modifier.rotate(rotation),
@@ -410,7 +415,8 @@ fun PatchesSelectorScreen(
                         if (searchExpanded) {
                             IconButton(
                                 onClick = { setQuery("") },
-                                enabled = query.isNotEmpty()
+                                enabled = query.isNotEmpty(),
+                                shapes = IconButtonDefaults.shapes()
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.Close,
@@ -418,7 +424,7 @@ fun PatchesSelectorScreen(
                                 )
                             }
                         } else {
-                            IconButton(onClick = { showBottomSheet = true }) {
+                            IconButton(onClick = { showBottomSheet = true }, shapes = IconButtonDefaults.shapes()) {
                                 Icon(
                                     imageVector = Icons.Outlined.FilterList,
                                     contentDescription = stringResource(R.string.more)
@@ -645,6 +651,7 @@ private fun UniversalPatchWarningDialog(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun PatchItem(
     patch: PatchInfo,
@@ -668,7 +675,7 @@ private fun PatchItem(
     supportingContent = patch.description?.let { { Text(it) } },
     trailingContent = {
         if (patch.options?.isNotEmpty() == true) {
-            IconButton(onClick = onOptionsDialog, enabled = compatible) {
+            IconButton(onClick = onOptionsDialog, enabled = compatible, shapes = IconButtonDefaults.shapes()) {
                 Icon(Icons.Outlined.Settings, null)
             }
         }
@@ -676,6 +683,7 @@ private fun PatchItem(
     colors = transparentListItemColors
 )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ListHeader(
     title: String,
@@ -691,7 +699,7 @@ fun ListHeader(
         },
         trailingContent = onHelpClick?.let {
             {
-                IconButton(onClick = it) {
+                IconButton(onClick = it, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         Icons.AutoMirrored.Outlined.HelpOutline,
                         stringResource(R.string.help)
@@ -703,6 +711,7 @@ fun ListHeader(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun IncompatiblePatchesDialog(
     appVersion: String,
@@ -713,7 +722,7 @@ private fun IncompatiblePatchesDialog(
     },
     onDismissRequest = onDismissRequest,
     confirmButton = {
-        TextButton(onClick = onDismissRequest) {
+        TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.ok))
         }
     },
@@ -728,6 +737,7 @@ private fun IncompatiblePatchesDialog(
     }
 )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun IncompatiblePatchDialog(
     appVersion: String,
@@ -739,7 +749,7 @@ private fun IncompatiblePatchDialog(
     },
     onDismissRequest = onDismissRequest,
     confirmButton = {
-        TextButton(onClick = onDismissRequest) {
+        TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.ok))
         }
     },
@@ -772,6 +782,7 @@ private fun ActionItem(
     ) { Text(text) }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ScopeDialog(
     bundleName: String,
@@ -782,18 +793,18 @@ private fun ScopeDialog(
     onDismissRequest = onDismissRequest,
     title = { Text(stringResource(R.string.scope_dialog_title)) },
     confirmButton = {
-        TextButton(onClick = onAllPatches) {
+        TextButton(onClick = onAllPatches, shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.scope_all_patches))
         }
     },
     dismissButton = {
-        TextButton(onClick = onBundleOnly) {
+        TextButton(onClick = onBundleOnly, shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.scope_bundle_patches, bundleName))
         }
     }
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun OptionsDialog(
     patch: PatchInfo,
@@ -809,7 +820,7 @@ private fun OptionsDialog(
                 title = patch.name,
                 onBackClick = onDismissRequest,
                 actions = {
-                    IconButton(onClick = reset) {
+                    IconButton(onClick = reset, shapes = IconButtonDefaults.shapes()) {
                         Icon(Icons.Filled.Restore, stringResource(R.string.reset))
                     }
                 }

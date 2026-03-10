@@ -37,7 +37,7 @@ import app.revanced.manager.ui.component.SearchView
 import kotlinx.coroutines.flow.mapNotNull
 import org.koin.compose.koinInject
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BundlePatchesDialog(
     onDismissRequest: () -> Unit,
@@ -128,7 +128,10 @@ fun BundlePatchesDialog(
                         title = stringResource(R.string.patches),
                         onBackClick = onDismissRequest,
                         actions = {
-                            IconButton(onClick = { isSearchActive = true }) {
+                            IconButton(
+                                onClick = { isSearchActive = true },
+                                shapes = IconButtonDefaults.shapes(),
+                            ) {
                                 Icon(
                                     imageVector = Icons.Filled.Search,
                                     contentDescription = stringResource(R.string.search_patches)

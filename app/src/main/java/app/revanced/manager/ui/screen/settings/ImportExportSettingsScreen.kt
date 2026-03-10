@@ -42,6 +42,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -179,7 +180,7 @@ fun ImportExportSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.import_export)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -225,7 +226,8 @@ fun ImportExportSettingsScreen(
                                                 )
                                             )
                                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
-                                        }
+                                        },
+                                        shapes = IconButtonDefaults.shapes()
                                     ) {
                                         Icon(
                                             imageVector = Icons.Outlined.ContentCopy,
@@ -239,7 +241,7 @@ fun ImportExportSettingsScreen(
                                 value = if (showKeystorePassword) keystorePass else "•".repeat(keystorePass.length),
                                 leadingContent = {
                                     val hidePassword = showKeystorePassword
-                                    IconButton(onClick = { showKeystorePassword = !showKeystorePassword }) {
+                                    IconButton(onClick = { showKeystorePassword = !showKeystorePassword }, shapes = IconButtonDefaults.shapes()) {
                                         Icon(
                                             imageVector = if (hidePassword) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
                                             contentDescription = if (hidePassword) {
@@ -264,7 +266,8 @@ fun ImportExportSettingsScreen(
                                                 } }
                                             )
                                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
-                                        }
+                                        },
+                                        shapes = IconButtonDefaults.shapes()
                                     ) {
                                         Icon(
                                             imageVector = Icons.Outlined.ContentCopy,
@@ -292,7 +295,8 @@ fun ImportExportSettingsScreen(
                     ) {
                         FilledTonalButton(
                             onClick = { importKeystoreLauncher.launch("*/*") },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.FileDownload,
@@ -309,7 +313,8 @@ fun ImportExportSettingsScreen(
                                 }
                                 exportKeystoreLauncher.launch("Manager.keystore")
                             },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Save,
@@ -368,7 +373,8 @@ fun ImportExportSettingsScreen(
                     ) {
                         FilledTonalButton(
                             onClick = vm::importSelection,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.FileDownload,
@@ -379,7 +385,8 @@ fun ImportExportSettingsScreen(
                         }
                         FilledTonalButton(
                             onClick = vm::exportSelection,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Save,
@@ -418,7 +425,8 @@ fun ImportExportSettingsScreen(
                     onClick = { showResetSheet = true },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Restore,
@@ -572,7 +580,8 @@ private fun ResetBottomSheet(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error,
                     contentColor = MaterialTheme.colorScheme.onError
-                )
+                ),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.reset))
             }
@@ -580,6 +589,7 @@ private fun ResetBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun KeystoreCredentialsDialog(
     onDismissRequest: () -> Unit,
@@ -594,13 +604,14 @@ fun KeystoreCredentialsDialog(
             TextButton(
                 onClick = {
                     onSubmit(alias, pass)
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.import_keystore_dialog_button))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismissRequest) {
+            TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },

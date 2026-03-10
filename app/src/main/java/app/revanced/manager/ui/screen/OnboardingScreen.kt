@@ -36,6 +36,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -71,6 +73,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @SuppressLint("BatteryLife")
 @Composable
 fun OnboardingScreen(
@@ -307,15 +310,18 @@ fun OnboardingScreen(
                 title = { Text(stringResource(R.string.onboarding_permissions_skip_title)) },
                 text = { Text(stringResource(R.string.onboarding_permissions_skip_description)) },
                 confirmButton = {
-                    TextButton(onClick = {
-                        showSkipPermissionsDialog = false
-                        vm.advance()
-                    }) {
+                    TextButton(
+                        onClick = {
+                            showSkipPermissionsDialog = false
+                            vm.advance()
+                        },
+                        shapes = ButtonDefaults.shapes()
+                    ) {
                         Text(stringResource(R.string.onboarding_permissions_skip_anyway))
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showSkipPermissionsDialog = false }) {
+                    TextButton(onClick = { showSkipPermissionsDialog = false }, shapes = ButtonDefaults.shapes()) {
                         Text(stringResource(R.string.cancel))
                     }
                 }
@@ -400,6 +406,7 @@ private fun OnboardingHeader() {
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun OnboardingButtons(stepButtons: StepButtons) {
     BottomContentBar(contentPadding = PaddingValues(0.dp)) {
@@ -408,7 +415,8 @@ private fun OnboardingButtons(stepButtons: StepButtons) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                onClick = action
+                onClick = action,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(text = stringResource(stepButtons.secondaryTextRes!!))
             }

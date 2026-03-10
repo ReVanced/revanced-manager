@@ -23,9 +23,12 @@ import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -58,7 +61,7 @@ import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.toast
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PatcherScreen(
     onBackClick: () -> Unit,
@@ -136,14 +139,16 @@ fun PatcherScreen(
             onDismissRequest = viewModel::rejectInteraction,
             confirmButton = {
                 TextButton(
-                    onClick = viewModel::allowInteraction
+                    onClick = viewModel::allowInteraction,
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.continue_))
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = viewModel::rejectInteraction
+                    onClick = viewModel::rejectInteraction,
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -168,13 +173,15 @@ fun PatcherScreen(
                 actions = {
                     IconButton(
                         onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
-                        enabled = patcherSucceeded == true
+                        enabled = patcherSucceeded == true,
+                        shapes = IconButtonDefaults.shapes(),
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
                     IconButton(
                         onClick = { viewModel.exportLogs(context) },
-                        enabled = patcherSucceeded != null
+                        enabled = patcherSucceeded != null,
+                        shapes = IconButtonDefaults.shapes(),
                     ) {
                         Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
                     }

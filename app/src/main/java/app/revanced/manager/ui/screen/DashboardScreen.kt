@@ -45,9 +45,12 @@ import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -108,7 +111,7 @@ enum class DashboardPage(
 }
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
@@ -183,12 +186,12 @@ fun DashboardScreen(
             confirmButton = {
                 when (downloaderUpdateState) {
                     DownloaderUpdateState.IDLE -> {
-                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate) {
+                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate, shapes = ButtonDefaults.shapes()) {
                             Text(stringResource(R.string.update))
                         }
                     }
                     DownloaderUpdateState.FAILED -> {
-                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate) {
+                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate, shapes = ButtonDefaults.shapes()) {
                             Text(stringResource(R.string.retry))
                         }
                     }
@@ -197,7 +200,7 @@ fun DashboardScreen(
             },
             dismissButton = {
                 if (downloaderUpdateState != DownloaderUpdateState.DOWNLOADING && downloaderUpdateState != DownloaderUpdateState.INSTALLING) {
-                    TextButton(onClick = vm::dismissDownloaderUpdate) {
+                    TextButton(onClick = vm::dismissDownloaderUpdate, shapes = ButtonDefaults.shapes()) {
                         Text(stringResource(R.string.dismiss))
                     }
                 }
@@ -333,7 +336,8 @@ fun DashboardScreen(
                             IconButton(
                                 onClick = {
                                     showDeleteConfirmationDialog = true
-                                }
+                                },
+                                shapes = IconButtonDefaults.shapes()
                             ) {
                                 Icon(
                                     Icons.Filled.Delete,
@@ -341,7 +345,8 @@ fun DashboardScreen(
                                 )
                             }
                             IconButton(
-                                onClick = vm::updateSources
+                                onClick = vm::updateSources,
+                                shapes = IconButtonDefaults.shapes()
                             ) {
                                 Icon(
                                     Icons.Filled.Refresh,
@@ -367,7 +372,10 @@ fun DashboardScreen(
                         },
                         actions = {
                             if (availableUpdate != null) {
-                                IconButton(onClick = onUpdateClick) {
+                                IconButton(
+                                    onClick = onUpdateClick,
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
                                     BadgedBox(
                                         badge = {
                                             Badge(modifier = Modifier.size(6.dp))
@@ -377,7 +385,7 @@ fun DashboardScreen(
                                     }
                                 }
                             }
-                            IconButton(onClick = onAnnouncementsClick) {
+                            IconButton(onClick = onAnnouncementsClick, shapes = IconButtonDefaults.shapes()) {
                             BadgedBox(
                                 badge = {
                                     if (vm.unreadAnnouncement != null) {
@@ -391,7 +399,7 @@ fun DashboardScreen(
                                 )
                             }
                         }
-                        IconButton(onClick = onSettingsClick) {
+                        IconButton(onClick = onSettingsClick, shapes = IconButtonDefaults.shapes()) {
                                 Icon(Icons.Filled.Settings, stringResource(R.string.settings))
                             }
                         },
@@ -485,7 +493,7 @@ fun DashboardScreen(
                                 icon = Icons.Outlined.Download,
                                 modifier = Modifier.clickable(onClick = onDownloaderClick),
                                 actions = {
-                                    TextButton(onClick = vm::ignoreNewDownloaders) {
+                                    TextButton(onClick = vm::ignoreNewDownloaders, shapes = ButtonDefaults.shapes()) {
                                         Text(stringResource(R.string.dismiss))
                                     }
                                 }
@@ -498,14 +506,15 @@ fun DashboardScreen(
                             text = stringResource(R.string.new_announcement, announcement.title),
                             icon = Icons.Filled.Notifications,
                             actions = {
-                                TextButton(onClick = vm::markUnreadAnnouncementRead) {
+                                TextButton(onClick = vm::markUnreadAnnouncementRead, shapes = ButtonDefaults.shapes()) {
                                     Text(stringResource(R.string.dismiss))
                                 }
                                 TextButton(
                                     onClick = {
                                         vm.markUnreadAnnouncementRead()
                                         onAnnouncementClick(announcement)
-                                    }
+                                    },
+                                    shapes = ButtonDefaults.shapes()
                                 ) {
                                     Text(stringResource(R.string.view_announcement))
                                 }
@@ -623,12 +632,13 @@ fun Notifications(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
     AlertDialogExtended(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(onClick = onContinue) {
+            TextButton(onClick = onContinue, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.continue_))
             }
         },

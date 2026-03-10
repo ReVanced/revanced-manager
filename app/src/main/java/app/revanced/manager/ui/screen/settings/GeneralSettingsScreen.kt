@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -98,7 +99,7 @@ fun GeneralSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.general)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -300,7 +301,7 @@ private fun LanguagePicker(
                     MediumFlexibleTopAppBar(
                         title = { Text(stringResource(R.string.language)) },
                         navigationIcon = {
-                            IconButton(onClick = onDismiss) {
+                            IconButton(onClick = onDismiss, shapes = IconButtonDefaults.shapes()) {
                                 Icon(
                                     Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = stringResource(R.string.back)
@@ -308,7 +309,7 @@ private fun LanguagePicker(
                             }
                         },
                         actions = {
-                            IconButton(onClick = { isSearchActive = true }) {
+                            IconButton(onClick = { isSearchActive = true }, shapes = IconButtonDefaults.shapes()) {
                                 Icon(
                                     Icons.Filled.Search,
                                     contentDescription = stringResource(R.string.search)

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -62,6 +64,7 @@ fun InstallerStatusDialog(installerStatus: Int, model: InstallerModel, onDismiss
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun installerStatusDialogButton(
     @StringRes buttonStringResId: Int,
     buttonHandler: InstallerStatusDialogButtonHandler = { },
@@ -70,7 +73,8 @@ private fun installerStatusDialogButton(
         onClick = {
             dismiss()
             buttonHandler(model)
-        }
+        },
+        shapes = ButtonDefaults.shapes()
     ) {
         Text(stringResource(buttonStringResId))
     }

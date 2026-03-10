@@ -16,7 +16,9 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.InstallMobile
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -44,7 +46,7 @@ import app.revanced.manager.ui.viewmodel.UpdateViewModel.State
 import app.revanced.manager.util.relativeTime
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 @Stable
 fun UpdateScreen(
@@ -97,7 +99,8 @@ fun UpdateScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
-                        onClick = onClick::invoke
+                        onClick = onClick::invoke,
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Icon(icon, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
@@ -131,6 +134,7 @@ fun UpdateScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun MeteredDownloadConfirmationDialog(
     onDismiss: () -> Unit,
@@ -139,7 +143,7 @@ private fun MeteredDownloadConfirmationDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         dismissButton = {
-            TextButton(onDismiss) {
+            TextButton(onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -148,7 +152,8 @@ private fun MeteredDownloadConfirmationDialog(
                 onClick = {
                     onDismiss()
                     onDownloadAnyways()
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.download))
             }

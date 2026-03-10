@@ -33,6 +33,7 @@ private enum class BundleType {
     Remote
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ImportPatchBundleDialog(
     onDismiss: () -> Unit,
@@ -97,23 +98,24 @@ fun ImportPatchBundleDialog(
                             BundleType.Local -> patchBundle?.let(onLocalSubmit)
                             BundleType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.add))
                 }
             } else {
-                TextButton(onClick = { currentStep++ }) {
+                TextButton(onClick = { currentStep++ }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.next))
                 }
             }
         },
         dismissButton = {
             if (currentStep > 0) {
-                TextButton(onClick = { currentStep-- }) {
+                TextButton(onClick = { currentStep-- }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.back))
                 }
             } else {
-                TextButton(onClick = onDismiss) {
+                TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -173,7 +175,7 @@ private fun SelectBundleTypeStep(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ImportBundleStep(
     bundleType: BundleType,
@@ -196,7 +198,7 @@ private fun ImportBundleStep(
                         },
                         supportingContent = { Text(stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set)) },
                         trailingContent = {
-                            IconButton(onClick = launchPatchActivity) {
+                            IconButton(onClick = launchPatchActivity, shapes = IconButtonDefaults.shapes()) {
                                 Icon(imageVector = Icons.Default.Topic, contentDescription = null)
                             }
                         },

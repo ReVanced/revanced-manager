@@ -19,7 +19,9 @@ import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material3.Badge
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -189,7 +191,7 @@ fun AnnouncementsScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
@@ -232,7 +234,8 @@ private fun FilterBottomSheet(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(horizontal = 16.dp),
-                onClick = onReset
+                onClick = onReset,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.reset))
             }

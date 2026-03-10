@@ -24,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -140,7 +141,7 @@ fun DownloaderInfoScreen(
                     { Text("v$it") }
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -150,14 +151,16 @@ fun DownloaderInfoScreen(
                 actions = {
                     IconButton(
                         onClick = { showDeleteConfirmationDialog = true },
-                        enabled = !isDeleting
+                        enabled = !isDeleting,
+                        shapes = IconButtonDefaults.shapes()
                     ) {
                         Icon(Icons.Filled.Delete, stringResource(R.string.delete))
                     }
                     if (canUpdate) {
                         IconButton(
                             onClick = { viewModel.updateDownloader(packageName) },
-                            enabled = !isDeleting
+                            enabled = !isDeleting,
+                            shapes = IconButtonDefaults.shapes()
                         ) {
                             Icon(Icons.Filled.Update, stringResource(R.string.update))
                         }
@@ -174,7 +177,8 @@ fun DownloaderInfoScreen(
                         enabled = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp)
+                            .height(56.dp),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(20.dp),
@@ -188,7 +192,8 @@ fun DownloaderInfoScreen(
                         onClick = { viewModel.revokeDownloaderTrust(packageName) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp)
+                            .height(56.dp),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(stringResource(R.string.disable))
                     }
@@ -201,7 +206,8 @@ fun DownloaderInfoScreen(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp)
+                            .height(56.dp),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(stringResource(R.string.enable))
                     }

@@ -14,7 +14,9 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.SettingsBackupRestore
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -191,6 +193,7 @@ fun InstalledAppInfoScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun UninstallDialog(
     onDismiss: () -> Unit,
@@ -204,14 +207,15 @@ fun UninstallDialog(
             onClick = {
                 onConfirm()
                 onDismiss()
-            }
+            },
+            shapes = ButtonDefaults.shapes()
         ) {
             Text(stringResource(R.string.ok))
         }
     },
     dismissButton = {
         TextButton(
-            onClick = onDismiss
+            onClick = onDismiss, shapes = ButtonDefaults.shapes()
         ) {
             Text(stringResource(R.string.cancel))
         }

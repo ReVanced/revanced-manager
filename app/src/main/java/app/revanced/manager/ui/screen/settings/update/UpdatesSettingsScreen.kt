@@ -28,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
@@ -90,7 +91,7 @@ fun UpdatesSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.updates)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -126,7 +127,8 @@ fun UpdatesSettingsScreen(
                                 checkingForUpdate = false
                             }
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     if (checkingForUpdate) {
                         CircularProgressIndicator(
@@ -210,7 +212,8 @@ fun UpdatesSettingsScreen(
                                 contentColor = MaterialTheme.colorScheme.onSurface
                             ),
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxWidth(),
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Text(text = stringResource(R.string.changelog))
                         }

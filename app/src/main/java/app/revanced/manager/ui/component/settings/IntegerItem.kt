@@ -3,8 +3,10 @@ package app.revanced.manager.ui.component.settings
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +42,7 @@ fun IntegerItem(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun IntegerItem(
     modifier: Modifier = Modifier,
@@ -69,7 +72,7 @@ fun IntegerItem(
         headlineContent = stringResource(headline),
         supportingContent = stringResource(description),
         trailingContent = {
-            IconButton(onClick = { dialogOpen = true }) {
+            IconButton(onClick = { dialogOpen = true }, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     Icons.Outlined.Edit,
                     contentDescription = stringResource(R.string.edit)
