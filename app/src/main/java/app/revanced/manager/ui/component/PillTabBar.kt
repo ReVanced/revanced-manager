@@ -24,8 +24,10 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -105,6 +107,17 @@ fun RowScope.PillTab(
     val isSelected = state.pagerState.currentPage == index
     val contentScale by animatePillTabScale(state.pressedTabIndex == index)
 
+    val hasComposed = remember { mutableStateOf(false) }
+    LaunchedEffect(isSelected) {
+        if (!hasComposed.value) {
+            hasComposed.value = true
+            return@LaunchedEffect
+        }
+        if (isSelected) {
+            view.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
+        }
+    }
+
     Box(
         modifier = modifier
             .weight(1f)
@@ -122,7 +135,6 @@ fun RowScope.PillTab(
                 detectTapGestures(
                     onPress = {
                         state.onPressedTabIndexChange(index)
-                        view.performHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
                         try {
                             awaitRelease()
                         } finally {
