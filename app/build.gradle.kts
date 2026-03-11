@@ -136,7 +136,7 @@ android {
     defaultConfig {
         applicationId = "app.revanced.manager.flutter"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
 
         val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
         versionName = versionStr
