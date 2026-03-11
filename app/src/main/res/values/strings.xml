@@ -318,6 +318,8 @@ You will not be able to update the previously installed apps from this source.</
     <string name="device_memory_limit_format">%1$dMB (Normal) - %2$dMB (Large)</string>
     <string name="patches_force_download">Force download all patches</string>
     <string name="patches_reset">Reset patches</string>
+    <string name="reset_onboarding">Reset onboarding</string>
+    <string name="reset_onboarding_description">Show the onboarding screen on next app launch</string>
     <string name="patching">Patching</string>
     <string name="signing">Signing</string>
     <string name="storage">Storage</string>

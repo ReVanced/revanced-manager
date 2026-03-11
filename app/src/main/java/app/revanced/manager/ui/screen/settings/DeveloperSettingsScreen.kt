@@ -77,6 +77,11 @@ fun DeveloperSettingsScreen(
                     headline = R.string.developer_options,
                     description = R.string.developer_options_description,
                 )
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.reset_onboarding),
+                    supportingContent = stringResource(R.string.reset_onboarding_description),
+                    onClick = vm::resetOnboarding
+                )
             }
 
             ListSection(
