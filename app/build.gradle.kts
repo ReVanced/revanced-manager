@@ -131,12 +131,20 @@ buildscript {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 36
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "app.revanced.manager.flutter"
-        minSdk = 26
-        targetSdk = 36
+        minSdk {
+            version = release(26)
+        }
+        targetSdk {
+            version = release(36)
+        }
 
         val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
         versionName = versionStr
