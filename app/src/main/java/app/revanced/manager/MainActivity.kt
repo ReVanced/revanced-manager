@@ -24,7 +24,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import app.revanced.manager.ui.model.navigation.Announcement
 import app.revanced.manager.ui.model.navigation.Announcements
-import app.revanced.manager.ui.model.navigation.AppSelector
 import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
 import app.revanced.manager.ui.model.navigation.InstalledApplicationInfo
@@ -34,7 +33,6 @@ import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
 import app.revanced.manager.ui.screen.AnnouncementScreen
 import app.revanced.manager.ui.screen.AnnouncementsScreen
-import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
 import app.revanced.manager.ui.screen.PatcherScreen
@@ -113,9 +111,6 @@ private fun ReVancedManager(vm: MainViewModel) {
         composable<Dashboard> {
             DashboardScreen(
                 onSettingsClick = { navController.navigate(Settings) },
-                onAppSelectorClick = {
-                    navController.navigate(AppSelector)
-                },
                 onUpdateClick = {
                     navController.navigate(Update())
                 },
@@ -125,6 +120,8 @@ private fun ReVancedManager(vm: MainViewModel) {
                 onAppClick = { packageName ->
                     navController.navigate(InstalledApplicationInfo(packageName))
                 },
+                onPatchableAppClick = vm::selectApp,
+                onStorageSelect = vm::selectApp,
                 onAnnouncementsClick = {
                     navController.navigate(Announcements)
                 },
@@ -141,14 +138,6 @@ private fun ReVancedManager(vm: MainViewModel) {
                 onPatchClick = vm::selectApp,
                 onBackClick = navController::popBackStack,
                 viewModel = koinViewModel { parametersOf(data.packageName) }
-            )
-        }
-
-        composable<AppSelector> {
-            AppSelectorScreen(
-                onSelect = vm::selectApp,
-                onStorageSelect = vm::selectApp,
-                onBackClick = navController::popBackStack
             )
         }
 

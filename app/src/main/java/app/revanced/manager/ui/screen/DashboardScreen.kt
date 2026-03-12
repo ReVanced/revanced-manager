@@ -53,12 +53,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
@@ -76,8 +74,6 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
-import app.revanced.manager.util.RequestInstallAppsContract
-import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -95,22 +91,20 @@ enum class DashboardPage(
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
-    onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
     onAnnouncementsClick: () -> Unit,
     onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
     onDownloaderClick: () -> Unit,
-    onAppClick: (String) -> Unit
+    onAppClick: (String) -> Unit,
+    onPatchableAppClick: (String) -> Unit,
+    onStorageSelect: (SelectedApp.Local) -> Unit,
 ) {
-    val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val sources by vm.sources.collectAsStateWithLifecycle(emptyList())
     val patchCounts by vm.patchCounts.collectAsStateWithLifecycle(emptyMap())
     val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(false)
-    val usePrerelease by vm.prefs.usePatchesPrereleases.getAsState()
 
     val androidContext = LocalContext.current
-    val resources = LocalResources.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         initialPage = DashboardPage.DASHBOARD.ordinal,
@@ -165,17 +159,6 @@ fun DashboardScreen(
             newVersion = availableUpdate
         )
     }
-
-    var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
-    val installAppsPermissionLauncher =
-        rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
-            showAndroid11Dialog = false
-            if (granted) onAppSelectorClick()
-        }
-    if (showAndroid11Dialog) Android11Dialog(
-        onDismissRequest = { showAndroid11Dialog = false },
-        onContinue = { installAppsPermissionLauncher.launch(androidContext.packageName) }
-    )
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {
@@ -269,41 +252,20 @@ fun DashboardScreen(
         },
         floatingActionButton = {
             val onPatchesTab = pagerState.currentPage == DashboardPage.BUNDLES.ordinal
+            if (!onPatchesTab) return@Scaffold
+
             HapticFloatingActionButton(
                 onClick = {
-                    when (pagerState.currentPage) {
-                        DashboardPage.DASHBOARD.ordinal -> {
-                            if (availablePatches < 1) {
-                                androidContext.toast(resources.getString(R.string.no_patch_found))
-                                composableScope.launch {
-                                    pagerState.animateScrollToPage(DashboardPage.BUNDLES.ordinal)
-                                }
-                                return@HapticFloatingActionButton
-                            }
-                            if (vm.android11BugActive) {
-                                showAndroid11Dialog = true
-                                return@HapticFloatingActionButton
-                            }
-
-                            onAppSelectorClick()
-                        }
-
-                        DashboardPage.BUNDLES.ordinal -> {
-                            if (sourceEditMode) {
-                                showAddBundleDialog = true
-                            } else {
-                                sourceEditMode = true
-                                selectedSourceUids = emptySet()
-                            }
-                        }
+                    if (sourceEditMode) {
+                        showAddBundleDialog = true
+                    } else {
+                        sourceEditMode = true
+                        selectedSourceUids = emptySet()
                     }
                 }
             ) {
-                val icon = when {
-                    onPatchesTab && !sourceEditMode -> Icons.Outlined.Edit
-                    else -> Icons.Default.Add
-                }
-                Icon(icon, stringResource(if (onPatchesTab && !sourceEditMode) R.string.edit else R.string.add))
+                val icon = if (!sourceEditMode) Icons.Outlined.Edit else Icons.Default.Add
+                Icon(icon, stringResource(if (!sourceEditMode) R.string.edit else R.string.add))
             }
         }
     ) { paddingValues ->
@@ -407,7 +369,9 @@ fun DashboardScreen(
                 pageContent = { index ->
                     when (DashboardPage.entries[index]) {
                         DashboardPage.DASHBOARD -> InstalledAppsScreen(
-                            onAppClick = { onAppClick(it.currentPackageName) }
+                            onAppClick = { onAppClick(it.currentPackageName) },
+                            onPatchableAppClick = onPatchableAppClick,
+                            onStorageSelect = onStorageSelect,
                         )
 
                         DashboardPage.BUNDLES -> {
