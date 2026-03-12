@@ -36,8 +36,8 @@ import kotlin.io.path.deleteExisting
 import kotlin.io.path.inputStream
 
 sealed class ResetDialogState(
-    @StringRes val titleResId: Int,
-    @StringRes val descriptionResId: Int,
+    @param:StringRes val titleResId: Int,
+    @param:StringRes val descriptionResId: Int,
     val onConfirm: () -> Unit,
     val dialogOptionName: String? = null
 ) {

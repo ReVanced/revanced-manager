@@ -19,8 +19,8 @@ Second \"item\" text"</string>
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
 
-    <string name="plugin_host_permission_label">ReVanced Manager plugin host</string>
-    <string name="plugin_host_permission_description">Used to control access to ReVanced Manager plugins. Only ReVanced Manager has this.</string>
+    <string name="downloader_host_permission_label">ReVanced Manager downloader host</string>
+    <string name="downloader_host_permission_description">Used to control access to ReVanced Manager downloaders. Only ReVanced Manager has this.</string>
 
     <string name="toast_copied_to_clipboard">Copied!</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
@@ -30,7 +30,7 @@ Second \"item\" text"</string>
     <string name="select_app">Select an app</string>
     <string name="patches_count_selected">%1$d/%2$d selected</string>
 
-    <string name="new_downloader_plugins_notification">New downloader plugins available. Click here to configure them.</string>
+    <string name="new_downloader_notification">New downloader(s) available. Click here to configure them.</string>
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
@@ -53,12 +53,34 @@ Second \"item\" text"</string>
     <string name="no_network_toast">No internet connection available</string>
 
     <string name="selected_app_meta_any_version">Any available version</string>
+    <string name="selected_app_meta_auto">%1$s (%2$s)</string>
+    <string name="selected_app_meta_source_installed_apk">Installed APK</string>
+    <string name="selected_app_meta_source_downloaded_apk">Downloaded APK</string>
+    <string name="selected_app_meta_source_local_apk">Local APK</string>
+    <string name="selected_app_meta_source_any_downloader">Any available downloader</string>
+    <string name="version_selector_title">Select version</string>
+    <string name="version_selector_auto_title">Auto (Recommended)</string>
+    <string name="version_selector_auto_description">Automatically select the best available version</string>
+    <string name="version_selector_all_patches_compatible">All patches are compatible</string>
+    <string name="version_selector_state_local">Local</string>
+    <string name="version_selector_state_downloaded_installed">Downloaded, Installed</string>
+    <string name="version_selector_state_downloaded">Downloaded</string>
+    <string name="version_selector_state_installed">Installed</string>
+    <string name="version_selector_any_title">Any available version</string>
+    <string name="version_selector_any_description">Use any available version regardless of compatibility</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
     <string name="app_source_dialog_option_auto_description">Use all available downloader to download the app</string>
-    <string name="app_source_dialog_option_auto_unavailable">No plugins available</string>
+    <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
+    <string name="source_selector_auto_description">Automatically select the best available source</string>
+    <string name="source_selector_any_available_downloader">Any available downloader</string>
+    <string name="source_selector_category_downloaded">Downloaded</string>
+    <string name="source_selector_category_local">Local</string>
+    <string name="source_selector_disable_reason_version_not_matching">Does not match the selected version</string>
+    <string name="source_selector_disable_reason_not_trusted">Not trusted</string>
+    <string name="source_selector_disable_reason_failed_to_load">Failed to load</string>
 
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Patches</string>
@@ -83,12 +105,15 @@ Second \"item\" text"</string>
     <string name="auto_updates_dialog_patches">ReVanced Patches</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
+    <string name="announcements_filter_tag">Filter by tag</string>
+    <string name="announcements_show_archived">Show archived</string>
+
     <string name="general">General</string>
-    <string name="general_description">Theme, dynamic color</string>
+    <string name="general_description">Language, theme, dynamic color</string>
     <string name="updates">Updates</string>
     <string name="updates_description">Check for updates and view changelogs</string>
     <string name="downloads">Downloads</string>
-    <string name="downloads_description">Downloader plugins and downloaded apps</string>
+    <string name="downloads_description">Downloaders and downloaded apps</string>
     <string name="import_export">Import &amp; export</string>
     <string name="import_export_description">Keystore, patch options and selection</string>
     <string name="advanced">Advanced</string>
@@ -105,27 +130,30 @@ Second \"item\" text"</string>
     <string name="pure_black_theme_description">Use pure black backgrounds for dark theme</string>
     <string name="theme">Theme</string>
     <string name="theme_description">Choose between light or dark theme</string>
+    <string name="language">Language</string>
+    <string name="language_description">Choose the app display language</string>
+    <string name="language_system_default">System default</string>
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">Do not restrict patches to compatible app versions</string>
-    <string name="patch_compat_check_confirmation">"Selecting incompatible patches can result in a broken app.
+    <string name="patch_compat_check_confirmation">Selecting incompatible patches can result in a broken app.
 
-Do you want to proceed anyways?"</string>
+Do you want to proceed anyways?</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
-    <string name="suggested_version_safeguard_confirmation">"Selecting an app that is not the suggested version may cause unexpected issues.
+    <string name="suggested_version_safeguard_confirmation">Selecting an app that is not the suggested version may cause unexpected issues.
 
-Do you want to proceed anyways?"</string>
+Do you want to proceed anyways?</string>
     <string name="patch_selection_safeguard">Allow changing patch selection and options</string>
     <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches and customization of options</string>
-    <string name="patch_selection_safeguard_confirmation">"Changing the selection of patches may cause unexpected issues.
+    <string name="patch_selection_safeguard_confirmation">Changing the selection of patches may cause unexpected issues.
 
-Enable anyways?"</string>
+Enable anyways?</string>
     <string name="universal_patches_safeguard">Allow using universal patches</string>
     <string name="universal_patches_safeguard_description">Do not prevent using universal patches</string>
-    <string name="universal_patches_safeguard_confirmation">"Universal patches are not as well tested as those that target specific apps.
+    <string name="universal_patches_safeguard_confirmation">Universal patches are not as well tested as those that target specific apps.
 
-Enable anyways?"</string>
+Enable anyways?</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -141,9 +169,9 @@ Enable anyways?"</string>
     <string name="export_keystore_success">Exported keystore</string>
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
-    <string name="regenerate_keystore_dialog_description">"You are about to regenerate your keystore the manager will use during the patching process.
+    <string name="regenerate_keystore_dialog_description">You are about to regenerate your keystore the manager will use during the patching process.
 
-You will not be able to update the previously installed apps from this source."</string>
+You will not be able to update the previously installed apps from this source.</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
     <string name="import_patch_selection">Import patch selection</string>
     <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
@@ -176,17 +204,17 @@ You will not be able to update the previously installed apps from this source."<
     <string name="patch_options_reset_all">Reset patch options globally</string>
     <string name="patch_options_reset_all_dialog_description">You are about to reset all patch options. You will have to reapply each option again.</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
-    <string name="downloader_plugins">Plugins</string>
-    <string name="downloader_plugin_state_trusted">Trusted</string>
-    <string name="downloader_plugin_state_failed">Failed to load. Click for more details</string>
-    <string name="downloader_plugin_state_untrusted">Untrusted</string>
-    <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
-    <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_plugin_trust_dialog_body">Continuing will allow this plugin to run on your system.\n\nOnly enable this plugin if you trust it. Plugins can execute arbitrary code and may compromise your device.</string>
-    <string name="downloader_plugin_trust_dialog_signature">Signature:\n\n%s</string>
-    <string name="downloader_plugin_trust_dialog_plugin">Plugin:\n%s</string>
-    <string name="downloader_plugin_delete_apps_title">Delete selected apps</string>
-    <string name="downloader_plugin_delete_apps_description">Are you sure you want to delete the selected apps?</string>
+    <string name="downloaders">Downloaders</string>
+    <string name="downloader_state_trusted">Trusted</string>
+    <string name="downloader_state_failed">Failed to load. Click for more details</string>
+    <string name="downloader_state_untrusted">Untrusted</string>
+    <string name="downloader_trust_dialog_title">Trust downloader?</string>
+    <string name="downloader_revoke_trust_dialog_title">Revoke trust?</string>
+    <string name="downloader_trust_dialog_body">Continuing will allow this downloader to run.\n\nOnly enable this downloader if you trust it. Downloaders can make Manager execute arbitrary code.</string>
+    <string name="downloader_trust_dialog_signature">Signature:\n\n%s</string>
+    <string name="downloader_trust_dialog_name">Downloader:\n%s</string>
+    <string name="downloader_delete_apps_title">Delete selected apps</string>
+    <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found.</string>
 
     <string name="search_apps">Search apps…</string>
@@ -218,6 +246,10 @@ You will not be able to update the previously installed apps from this source."<
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
+    <string name="networking">Networking</string>
+    <string name="allow_metered_networks">Allow metered networks</string>
+    <string name="allow_metered_networks_description">Permits automatic updates on metered networks.
+    The application might still warn about metered networks for manual operations.</string>
     <string name="downloaded_apps">Downloaded apps</string>
     <string name="process_runtime">Run Patcher in another process (experimental)</string>
     <string name="process_runtime_description">This is faster and allows Patcher to use more memory</string>
@@ -264,23 +296,23 @@ You will not be able to update the previously installed apps from this source."<
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
-    <string name="non_suggested_version_warning_description">"The version of the app you have selected does not match the suggested version.
+    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.
 Please use the suggested version: %s
 
-To continue anyway, disable \"Require suggested app version\" in the advanced settings."</string>
+To continue anyway, disable \"Require suggested app version\" in the advanced settings.</string>
     <string name="selection_warning_title">Stop using defaults?</string>
-    <string name="selection_warning_description">"It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.
+    <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.
 
-You need to turn on \"Allow changing patch selection and options\" in the advanced settings before toggling patches."</string>
-    <string name="universal_patch_warning_description">"Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.
+You need to turn on \"Allow changing patch selection and options\" in the advanced settings before toggling patches.</string>
+    <string name="universal_patch_warning_description">Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.
 
-You need to turn on \"Allow using universal patches\" in the advanced settings before using universal patches."</string>
+You need to turn on \"Allow using universal patches\" in the advanced settings before using universal patches.</string>
     <string name="this_version">This version</string>
     <string name="universal">Any app</string>
     <string name="search_patches">Search patches</string>
-    <string name="app_version_not_compatible">"This patch is not compatible with the selected app version (%1$s)
+    <string name="app_version_not_compatible">This patch is not compatible with the selected app version (%1$s)
 
-It is only compatible with the following version(s): %2$s"</string>
+It is only compatible with the following version(s): %2$s</string>
     <string name="continue_with_version">Continue with this version?</string>
     <string name="version_not_compatible">Not all patches are compatible with this version (%s). Do you want to continue anyway?</string>
     <string name="download_application">Download application?</string>
@@ -313,12 +345,21 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="downloader_invalid_version">Downloader did not fetch the correct version</string>
     <string name="downloader_app_not_found">Downloader did not find the app</string>
     <string name="downloader_error">Downloader error: %s</string>
-    <string name="downloader_no_plugins_installed">No downloader installed.</string>
-    <string name="downloader_no_plugins_available">There are downloaders installed but none are trusted. Check your settings.</string>
+    <string name="no_downloader_installed">No downloaders installed.</string>
+    <string name="no_downloader_available">There are downloaders installed but none are trusted. Check your settings.</string>
     <string name="already_patched">Already patched</string>
 
     <string name="patch_selector_sheet_filter_title">Filter</string>
     <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
+
+    <string name="patch_selector_sheet_actions_title">Actions</string>
+    <string name="restore_default_selection">Restore default selection</string>
+    <string name="deselect_all">Deselect all</string>
+    <string name="invert_selection">Invert selection</string>
+    <string name="deselect_all_except">Deselect all except %s</string>
+    <string name="scope_dialog_title">Apply to</string>
+    <string name="scope_all_patches">All patches</string>
+    <string name="scope_bundle_patches">%s only</string>
 
     <string name="string_option_menu_description">More options</string>
     <string name="option_preset_custom_value">Custom value</string>
@@ -342,7 +383,7 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
-    <string name="plugin_activity_dialog_body">User interaction is required in order to proceed with this plugin.</string>
+    <string name="downloader_activity_dialog_body">User interaction is required in order to proceed with this downloader.</string>
     <string name="select_install_type">Select installation type</string>
 
     <string name="patcher_step_group_preparing">Preparing</string>
@@ -374,6 +415,7 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="less">Less</string>
     <string name="continue_">Continue</string>
     <string name="dismiss">Dismiss</string>
+    <string name="view_announcement">View announcement</string>
     <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
     <string name="website">Website</string>
@@ -392,6 +434,8 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="patches_delete_single_dialog_description">Are you sure you want to delete \"%s\"?</string>
     <string name="patches_delete_multiple_dialog_description">Are you sure you want to delete the selected patches?</string>
 
+    <string name="announcements">Announcements</string>
+    <string name="archive">Archive</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
     <string name="developer_options_taps">%d taps remaining</string>
@@ -422,8 +466,8 @@ It is only compatible with the following version(s): %2$s"</string>
     <string name="save_with_count">Save (%1$s)</string>
     <string name="update">Update</string>
     <string name="empty">Empty</string>
-    <string name="installing_message">"Tap on <b>Update</b> when prompted.
-ReVanced Manager will close when updating."</string>
+    <string name="installing_message">Tap on <b>Update</b> when prompted.
+ReVanced Manager will close when updating.</string>
     <string name="no_changelogs_found">No changelogs found</string>
     <string name="just_now">Just now</string>
     <string name="minutes_ago">%sm ago</string>
@@ -437,14 +481,15 @@ ReVanced Manager will close when updating."</string>
 
     <string name="failed_to_check_updates">Failed to check for updates: %s</string>
     <string name="no_update_available">No update available</string>
+    <string name="no_announcements_found">No announcements found</string>
     <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
     <string name="update_available_dialog_description">A new version of ReVanced Manager (%s) is available.</string>
     <string name="failed_to_download_update">Failed to download update: %s</string>
     <string name="download">Download</string>
-    <string name="download_confirmation_metered">"You are currently on a metered connection, and data charges from your service provider may apply.
+    <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.
 
-Do you still want to continue?"</string>
+Do you still want to continue?</string>
     <string name="download_update_confirmation">Download update?</string>
     <string name="no_contributors_found">No contributors found</string>
     <string name="select">Select</string>
@@ -482,9 +527,9 @@ Do you still want to continue?"</string>
     <string name="patches_prereleases">Use pre-releases</string>
     <string name="patches_prereleases_description">Use pre-release versions of %s</string>
     <string name="patches_url">Patches URL</string>
-    <string name="incompatible_patches_dialog">"These patches are not compatible with the selected app version (%1$s).
+    <string name="incompatible_patches_dialog">These patches are not compatible with the selected app version (%1$s).
 
-Click on the patches to see more details."</string>
+Click on the patches to see more details.</string>
     <string name="incompatible_patch">Incompatible patch</string>
     <string name="any_version">Any</string>
     <string name="never_show_again">Never show again</string>
@@ -493,4 +538,5 @@ Click on the patches to see more details."</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
+    <string name="new_announcement">New announcement:\n%s</string>
 </resources>

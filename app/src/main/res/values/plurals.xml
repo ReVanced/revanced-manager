@@ -4,11 +4,19 @@
         <item quantity="one">%d patch</item>
         <item quantity="other">%d patches</item>
     </plurals>
+    <plurals name="available_patch_count">
+        <item quantity="one">%d patch available</item>
+        <item quantity="other">%d patches available</item>
+    </plurals>
     <plurals name="patches_executed">
         <item quantity="one">Execute %d patch</item>
         <item quantity="other">Execute %d patches</item>
     </plurals>
     <plurals name="selected_count">
         <item quantity="other">%d selected</item>
+    </plurals>
+    <plurals name="version_selector_incompatible_patches">
+        <item quantity="one">%d incompatible patch</item>
+        <item quantity="other">%d incompatible patches</item>
     </plurals>
 </resources>

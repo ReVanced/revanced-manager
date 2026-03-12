@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d0119047505da435972c5247181de675",
+    "identityHash": "c0060d66d8afa086f2632c4eb145ffc4",
     "entities": [
       {
         "tableName": "patch_bundles",
@@ -21,10 +21,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "version",
+            "fieldPath": "versionHash",
             "columnName": "version",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source",
@@ -44,9 +43,7 @@
           "columnNames": [
             "uid"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "patch_selections",
@@ -127,7 +124,6 @@
             "patch_name"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "patch_selections",
@@ -177,9 +173,7 @@
             "package_name",
             "version"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "installed_app",
@@ -215,9 +209,7 @@
           "columnNames": [
             "current_package_name"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "applied_patch",
@@ -378,7 +370,6 @@
             "key"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "option_groups",
@@ -394,7 +385,7 @@
         ]
       },
       {
-        "tableName": "trusted_downloader_plugins",
+        "tableName": "trusted_downloaders",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `signature` BLOB NOT NULL, PRIMARY KEY(`package_name`))",
         "fields": [
           {
@@ -415,15 +406,12 @@
           "columnNames": [
             "package_name"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0119047505da435972c5247181de675')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0060d66d8afa086f2632c4eb145ffc4')"
     ]
   }
 }

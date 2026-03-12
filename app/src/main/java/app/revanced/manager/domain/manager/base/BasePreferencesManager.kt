@@ -29,6 +29,9 @@ abstract class BasePreferencesManager(private val context: Context, name: String
     protected fun stringSetPreference(key: String, default: Set<String>) =
         StringSetPreference(dataStore, key, default)
 
+    protected fun longSetPreference(key: String, default: Set<Long>) =
+        LongSetPreference(dataStore, key, default)
+
     protected fun booleanPreference(key: String, default: Boolean) =
         BooleanPreference(dataStore, key, default)
 
@@ -56,8 +59,12 @@ class EditorContext(private val prefs: MutablePreferences) {
         get() = prefs.run { read() }
         set(value) = prefs.run { write(value) }
 
-    operator fun Preference<Set<String>>.plusAssign(value: String) = prefs.run {
+    operator fun <T> Preference<Set<T>>.plusAssign(value: T) = prefs.run {
         write(read() + value)
+    }
+
+    operator fun <T> Preference<Set<T>>.minusAssign(value: T) = prefs.run {
+        write(read() subtract setOf(value))
     }
 }
 
@@ -123,6 +130,19 @@ class StringSetPreference(
     default: Set<String>
 ) : BasePreference<Set<String>>(dataStore, default) {
     override val key = stringSetPreferencesKey(key)
+}
+
+class LongSetPreference(
+    dataStore: DataStore<Preferences>,
+    key: String,
+    default: Set<Long>
+) : Preference<Set<Long>>(dataStore, default) {
+    private val key = stringSetPreferencesKey(key)
+
+    override fun Preferences.read() = this[key]?.mapTo(mutableSetOf()) { it.toLong() } ?: default
+    override fun MutablePreferences.write(value: Set<Long>) {
+        this[key] = value.mapTo(mutableSetOf()) { it.toString() }
+    }
 }
 
 class BooleanPreference(

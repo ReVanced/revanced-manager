@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">පැචර්</string>
+  <string name="downloader_host_permission_label">ReVanced Manager බාගන්නා ධාරකය</string>
+  <string name="downloader_host_permission_description">ReVanced Manager බාගන්නන්ට ප්‍රවේශය පාලනය කිරීමට භාවිතා කරයි. මෙය ඇත්තේ ReVanced Manager ට පමණි.</string>
+  <string name="new_downloader_notification">නව බාගන්නන් ඇත. ඒවා වින්‍යාස කිරීමට මෙතැන ක්ලික් කරන්න.</string>
+  <string name="app_source_dialog_option_auto_unavailable">බාගන්නන් නොමැත</string>
+  <string name="announcements_filter_tag">ටැගය මඟින් පෙරහන් කරන්න</string>
+  <string name="announcements_show_archived">සංරක්ෂණය කළ දෑ පෙන්වන්න</string>
+  <string name="downloads_description">බාගැනීම්කරුවන් සහ බාගත් යෙදුම්</string>
+  <string name="downloaders">බාගැනීම්කරුවන්</string>
+  <string name="downloader_state_trusted">විශ්වාසනීයයි</string>
+  <string name="downloader_state_failed">පූරණය කිරීමට අසමත් විය. වැඩි විස්තර සඳහා ක්ලික් කරන්න</string>
+  <string name="downloader_state_untrusted">අවිශ්වාසනීයයි</string>
+  <string name="downloader_trust_dialog_title">බාගැනීම්කරු විශ්වාස කරනවාද?</string>
+  <string name="downloader_revoke_trust_dialog_title">විශ්වාසය අහෝසි කරනවාද?</string>
+  <string name="downloader_trust_dialog_body">ඉදිරියට යාමෙන් මෙම බාගැනීම්කරුට ධාවනය වීමට ඉඩ ලැබේ.\n\nඔබ එය විශ්වාස කරන්නේ නම් පමණක් මෙම බාගැනීම්කරු සක්‍රීය කරන්න. බාගැනීම්කරුවන්ට Manager හට අත්තනෝමතික කේත ක්‍රියාත්මක කිරීමට සැලැස්විය හැක.</string>
+  <string name="downloader_trust_dialog_signature">අත්සන:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">බාගැනීම්කරු:\n%s</string>
+  <string name="downloader_delete_apps_title">තෝරාගත් යෙදුම් මකන්න</string>
+  <string name="downloader_delete_apps_description">තෝරාගත් යෙදුම් මකා දැමීමට ඔබට විශ්වාසද?</string>
+  <string name="no_downloader_installed">බාගැනීම්කරුවන් ස්ථාපනය කර නොමැත.</string>
+  <string name="no_downloader_available">බාගැනීම්කරුවන් ස්ථාපනය කර ඇත, නමුත් කිසිවක් විශ්වාසනීය නොවේ. ඔබේ සැකසුම් පරීක්ෂා කරන්න.</string>
+  <string name="patch_selector_sheet_actions_title">ක්‍රියා</string>
+  <string name="restore_default_selection">පෙරනිමි තේරීම ප්‍රතිසාධනය කරන්න</string>
+  <string name="deselect_all">සියල්ල තේරීම ඉවත් කරන්න</string>
+  <string name="invert_selection">තේරීම ප්‍රතිවර්තනය කරන්න</string>
+  <string name="deselect_all_except">සියල්ල තෝරාගැනීම ඉවත් කරන්න %s හැර</string>
+  <string name="scope_dialog_title">යොදන්න</string>
+  <string name="scope_all_patches">සියලු පැච්</string>
+  <string name="scope_bundle_patches">%s පමණි</string>
+  <string name="downloader_activity_dialog_body">මෙම බාගැනීම්කරු සමඟ ඉදිරියට යාමට පරිශීලක අන්තර්ක්‍රියාව අවශ්‍ය වේ.</string>
+  <string name="view_announcement">නිවේදනය බලන්න</string>
+  <string name="announcements">නිවේදන</string>
+  <string name="archive">ලේඛනාගාරය</string>
+  <string name="no_announcements_found">නිවේදන හමු නොවීය</string>
+  <string name="new_announcement">නව නිවේදනය:
+%s</string>
+</resources>

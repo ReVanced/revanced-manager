@@ -1,20 +1,22 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.app.Activity
 import android.app.Application
-import android.content.Intent
-import android.util.Base64
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.util.Log
-import androidx.activity.result.ActivityResult
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
+import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -25,58 +27,79 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import org.json.JSONObject
+import java.io.File
+
+private const val LEGACY_LIST_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu!"
 
 class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
+    private val installedAppRepository: InstalledAppRepository,
     private val keystoreManager: KeystoreManager,
     private val app: Application,
     val prefs: PreferencesManager,
     private val json: Json
 ) : ViewModel() {
-    private val legacyImportActivityChannel = Channel<Intent>()
-    val legacyImportActivityFlow = legacyImportActivityChannel.receiveAsFlow()
+    private val appSelectChannel = Channel<SelectedAppInfo.ViewModelParams>()
+    val appSelectFlow = appSelectChannel.receiveAsFlow()
+
+    fun selectApp(packageName: String, localPath: String? = null) = viewModelScope.launch {
+        appSelectChannel.send(SelectedAppInfo.ViewModelParams(packageName, localPath))
+    }
 
     init {
         viewModelScope.launch {
             if (!prefs.firstLaunch.get()) return@launch
-            legacyImportActivityChannel.send(Intent().apply {
-                setClassName(
-                    "app.revanced.manager.flutter",
-                    "app.revanced.manager.flutter.ExportSettingsActivity"
-                )
-            })
+            val flutterPrefs = app.getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
+            if (flutterPrefs.all.isNotEmpty()) applyLegacySettings(flutterPrefs)
         }
     }
 
-    fun applyLegacySettings(result: ActivityResult) {
-        if (result.resultCode != Activity.RESULT_OK) {
-            app.toast(app.getString(R.string.legacy_import_failed))
-            Log.e(
-                tag,
-                "Got unknown result code while importing legacy settings: ${result.resultCode}"
-            )
-            return
+    fun applyLegacySettings(flutterPrefs: SharedPreferences) {
+        Log.d(tag, "Migrating flutter preferences")
+        val data = JSONObject().apply {
+            put("keystorePassword", "s3cur3p@ssw0rd")
+
+            val allEntries: Map<String, *> = flutterPrefs.all
+            for ((key, value) in allEntries) {
+                put(key.replace("flutter.", ""), value)
+            }
         }
 
-        val jsonStr = result.data?.getStringExtra("data")
-        if (jsonStr == null) {
-            app.toast(app.getString(R.string.legacy_import_failed))
-            Log.e(tag, "Legacy settings data is null")
-            return
+        val storedPatchesFile = File(app.filesDir.parentFile.absolutePath, "/app_flutter/selected-patches.json")
+        val patches: SerializedSelection? =
+            if (storedPatchesFile.exists()) {
+                json.decodeFromString<SerializedSelection>(storedPatchesFile.readText())
+            } else {
+                null
+            }
+
+        val keystoreFile = File(app.getExternalFilesDir(null), "/revanced-manager.keystore")
+        val keystore: ByteArray? = if (keystoreFile.exists()) {
+            val bytes = keystoreFile.readBytes()
+
+            keystoreFile.delete()
+
+            bytes
+        } else {
+            null
         }
+
+        flutterPrefs.edit(commit = true) { clear() }
+
         val settings = try {
-            json.decodeFromString<LegacySettings>(jsonStr)
+            json.decodeFromString<LegacySettings>(data.toString())
         } catch (e: SerializationException) {
             app.toast(app.getString(R.string.legacy_import_failed))
             Log.e(tag, "Legacy settings data could not be deserialized", e)
             return
         }
 
-        applyLegacySettings(settings)
+        applyLegacySettings(settings, patches, keystore)
     }
 
-    private fun applyLegacySettings(settings: LegacySettings) = viewModelScope.launch {
+    private fun applyLegacySettings(settings: LegacySettings, patches: SerializedSelection?, keystore: ByteArray?) = viewModelScope.launch {
         settings.themeMode?.let { theme ->
             val themeMap = mapOf(
                 0 to Theme.SYSTEM,
@@ -112,19 +135,38 @@ class MainViewModel(
         settings.patchesChangeEnabled?.let { disableSelectionWarning ->
             prefs.disableSelectionWarning.update(disableSelectionWarning)
         }
-        settings.keystore?.let { keystore ->
-            val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
+        keystore?.let { keystoreBytes ->
             keystoreManager.import(
                 "alias",
                 settings.keystorePassword,
                 keystoreBytes.inputStream()
             )
         }
-        settings.patches?.let { selection ->
+        patches?.let { selection ->
             patchSelectionRepository.import(0, selection)
+        }
+        settings.patchedApps?.let { apps ->
+            json.decodeFromString<List<String>>(apps.removePrefix(LEGACY_LIST_PREFIX)).forEach { appJson ->
+                val patchedApp = json.decodeFromString<LegacyPatchedApp>(appJson)
+                installedAppRepository.addOrUpdate(
+                    patchedApp.packageName,
+                    patchedApp.packageName,
+                    patchedApp.version,
+                    if (patchedApp.isRooted) InstallType.MOUNT else InstallType.DEFAULT,
+                    mapOf(0 to patchedApp.appliedPatches.toSet())
+                )
+            }
         }
         Log.d(tag, "Imported legacy settings")
     }
+
+    @Serializable
+    private data class LegacyPatchedApp(
+        val packageName: String,
+        val version: String,
+        val isRooted: Boolean,
+        val appliedPatches: List<String>,
+    )
 
     @Serializable
     private data class LegacySettings(
@@ -136,7 +178,6 @@ class MainViewModel(
         val experimentalPatchesEnabled: Boolean? = null,
         val patchesAutoUpdate: Boolean? = null,
         val patchesChangeEnabled: Boolean? = null,
-        val keystore: String? = null,
-        val patches: SerializedSelection? = null,
+        val patchedApps: String? = null,
     )
 }

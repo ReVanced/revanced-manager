@@ -3,6 +3,7 @@ package app.revanced.manager.ui.model.navigation
 import android.os.Parcelable
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.SelectedVersion
+import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import kotlinx.parcelize.Parcelize
@@ -22,6 +23,12 @@ data class InstalledApplicationInfo(val packageName: String)
 
 @Serializable
 data class Update(val downloadOnScreenEntry: Boolean = false)
+
+@Serializable
+data object Announcements
+
+@Serializable
+data object Announcement : ComplexParameter<ReVancedAnnouncement>
 
 @Serializable
 data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> {

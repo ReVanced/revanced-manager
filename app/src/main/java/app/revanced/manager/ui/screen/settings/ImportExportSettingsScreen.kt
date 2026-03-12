@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,6 +65,7 @@ fun ImportExportSettingsScreen(
     vm: ImportExportViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val coroutineScope = rememberCoroutineScope()
     var selectorDialog by rememberSaveable { mutableStateOf<(@Composable () -> Unit)?>(null) }
 
@@ -108,7 +110,7 @@ fun ImportExportSettingsScreen(
                 vm.viewModelScope.launch {
                     uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
                         val result = vm.tryKeystoreImport(alias, pass)
-                        if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                        if (!result) context.toast(resources.getString(R.string.import_keystore_wrong_credentials))
                     }
                 }
             }
@@ -166,7 +168,7 @@ fun ImportExportSettingsScreen(
             GroupItem(
                 onClick = {
                     if (!vm.canExport()) {
-                        context.toast(context.getString(R.string.export_keystore_unavailable))
+                        context.toast(resources.getString(R.string.export_keystore_unavailable))
                         return@GroupItem
                     }
                     exportKeystoreLauncher.launch("Manager.keystore")

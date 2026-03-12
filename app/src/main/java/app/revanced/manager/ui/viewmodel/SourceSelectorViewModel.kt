@@ -1,15 +1,18 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.app.Application
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.DownloadedAppRepository
-import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
-import app.revanced.manager.network.downloader.DownloaderPluginState
+import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.util.PM
@@ -22,10 +25,10 @@ import java.io.File
 class SourceSelectorViewModel(
     val input: SelectedAppInfo.SourceSelector.ViewModelParams
 ) : ViewModel(), KoinComponent {
-    private val app: Application = get()
     private val downloadedAppRepository: DownloadedAppRepository = get()
-    private val pluginRepository: DownloaderPluginRepository = get()
+    private val downloaderRepository: DownloaderRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
+    private val rootInstaller: RootInstaller = get()
     private val pm: PM = get()
 
     var selectedSource by mutableStateOf(input.selectedSource)
@@ -48,7 +51,6 @@ class SourceSelectorViewModel(
                             version = it.version
                         ),
                         title = it.version,
-                        category = "Downloaded",
                         key = it.version,
                         disableReason = if (input.version != null && it.version != input.version) {
                             DisableReason.VERSION_NOT_MATCHING
@@ -57,28 +59,45 @@ class SourceSelectorViewModel(
                 }
         }
 
-    val plugins = pluginRepository.pluginStates.map { plugins ->
-        plugins.toList().sortedByDescending { it.second is DownloaderPluginState.Loaded }
-            .map {
-                val packageInfo = pm.getPackageInfo(it.first)
-                val label = packageInfo?.applicationInfo?.loadLabel(app.packageManager)
-                    ?.toString()
-
-                SourceOption(
-                    source = SelectedSource.Plugin(it.first),
-                    title = label ?: it.first,
-                    category = "Plugin",
-                    key = it.first,
-                    disableReason = when (it.second) {
-                        is DownloaderPluginState.Loaded -> null
-                        is DownloaderPluginState.Untrusted -> DisableReason.NOT_TRUSTED
-                        is DownloaderPluginState.Failed -> DisableReason.FAILED_TO_LOAD
+    val downloaderSections = downloaderRepository.downloaderPackageStates.map { packageStates ->
+        packageStates.toList().sortedByDescending { it.second is DownloaderPackageState.Loaded }
+            .mapNotNull { (packageName, state) ->
+                (state as? DownloaderPackageState.Loaded)
+                    ?.takeIf { it.downloaders.isNotEmpty() }
+                    ?.let {
+                        DownloaderSection(
+                            title = it.name.ifBlank { packageName },
+                            key = packageName,
+                            options = it.downloaders.map { downloader ->
+                                SourceOption(
+                                    source = SelectedSource.Downloader(packageName, downloader.className),
+                                    title = downloader.name,
+                                    key = "${packageName}:${downloader.className}",
+                                )
+                            }
+                        )
                     }
-                )
             }
     }
 
-    fun getPackageInfo(packageName: String) = pm.getPackageInfo(packageName)
+    val unavailableDownloaders = downloaderRepository.downloaderPackageStates.map { packageStates ->
+        packageStates.toList()
+            .sortedBy { it.first }
+            .mapNotNull { (packageName, state) ->
+                val disableReason = when (state) {
+                    DownloaderPackageState.Untrusted -> DisableReason.NOT_TRUSTED
+                    is DownloaderPackageState.Failed -> DisableReason.FAILED_TO_LOAD
+                    is DownloaderPackageState.Loaded -> null
+                } ?: return@mapNotNull null
+
+                SourceOption(
+                    source = SelectedSource.Downloader(packageName),
+                    title = with(pm) { pm.getPackageInfo(packageName)?.label() ?: packageName },
+                    key = "unavailable_$packageName",
+                    disableReason = disableReason
+                )
+            }
+    }
 
     var installedSource by mutableStateOf<SourceOption?>(null)
         private set
@@ -92,10 +111,11 @@ class SourceSelectorViewModel(
             installedSource = SourceOption(
                 source = SelectedSource.Installed,
                 title = packageInfo.versionName.toString(),
-                category = "Installed",
                 key = input.packageName,
                 disableReason = when {
-                    installedApp != null -> DisableReason.ALREADY_PATCHED
+                    installedApp?.installType == InstallType.DEFAULT -> DisableReason.ALREADY_PATCHED
+                    installedApp?.installType == InstallType.MOUNT && !rootInstaller.hasRootAccess() ->
+                        DisableReason.NO_ROOT
                     input.version != null && packageInfo.versionName != input.version -> DisableReason.VERSION_NOT_MATCHING
                     else -> null
                 }
@@ -109,7 +129,6 @@ class SourceSelectorViewModel(
                 localApp = SourceOption(
                     source = SelectedSource.Local(local),
                     title = packageInfo.versionName.toString(),
-                    category = "Local",
                     key = "local",
                     disableReason = if (input.version != null && packageInfo.versionName != input.version) {
                         DisableReason.VERSION_NOT_MATCHING
@@ -119,18 +138,24 @@ class SourceSelectorViewModel(
         }
     }
 
-    enum class DisableReason(val message: String) {
-        VERSION_NOT_MATCHING("Does not match the selected version"),
-        ALREADY_PATCHED("Already patched"),
-        NOT_TRUSTED("Not trusted"),
-        FAILED_TO_LOAD("Failed to load"),
+    enum class DisableReason(@param:StringRes val message: Int) {
+        VERSION_NOT_MATCHING(R.string.source_selector_disable_reason_version_not_matching),
+        ALREADY_PATCHED(R.string.already_patched),
+        NO_ROOT(R.string.app_source_dialog_option_installed_no_root),
+        NOT_TRUSTED(R.string.source_selector_disable_reason_not_trusted),
+        FAILED_TO_LOAD(R.string.source_selector_disable_reason_failed_to_load),
     }
 
     data class SourceOption(
         val source: SelectedSource,
         val title: String,
-        val category: String? = null,
         val key: String,
         val disableReason: DisableReason? = null
+    )
+
+    data class DownloaderSection(
+        val title: String,
+        val key: String,
+        val options: List<SourceOption>,
     )
 }

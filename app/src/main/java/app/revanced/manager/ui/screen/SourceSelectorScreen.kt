@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.RadioButton
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedSource
@@ -34,12 +34,13 @@ fun SourceSelectorScreen(
     viewModel: SourceSelectorViewModel,
 ) {
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
-    val plugins by viewModel.plugins.collectAsStateWithLifecycle(emptyList())
+    val downloaderSections by viewModel.downloaderSections.collectAsStateWithLifecycle(emptyList())
+    val unavailableDownloaders by viewModel.unavailableDownloaders.collectAsStateWithLifecycle(emptyList())
 
     Scaffold(
         topBar = {
             AppTopBar(
-                title = { Text("Select source") },
+                title = { Text(stringResource(R.string.app_source_dialog_title)) },
                 onBackClick = onBackClick,
             )
         },
@@ -58,21 +59,23 @@ fun SourceSelectorScreen(
                 SourceOption(
                     isSelected = viewModel.selectedSource == SelectedSource.Auto,
                     onSelect = { viewModel.selectSource(SelectedSource.Auto) },
-                    headlineContent = { Text("Auto (Recommended)") },
-                    supportingContent = { Text("Automatically select the best available source") }
+                    headlineContent = { Text(stringResource(R.string.version_selector_auto_title)) },
+                    supportingContent = { Text(stringResource(R.string.source_selector_auto_description)) },
                 )
             }
             item {
                 SourceOption(
-                    isSelected = viewModel.selectedSource == SelectedSource.Plugin(null),
-                    onSelect = { viewModel.selectSource(SelectedSource.Plugin(null)) },
-                    headlineContent = { Text("Any available downloader") },
+                    isSelected = viewModel.selectedSource == SelectedSource.Downloader(),
+                    onSelect = { viewModel.selectSource(SelectedSource.Downloader()) },
+                    headlineContent = { Text(stringResource(R.string.source_selector_any_available_downloader)) },
                 )
             }
 
             viewModel.localApp?.let { option ->
                 item {
-                    HorizontalDivider()
+                    GroupHeader(stringResource(R.string.source_selector_category_local))
+                }
+                item {
                     SourceOption(
                         sourceOption = option,
                         isSelected = viewModel.selectedSource == option.source,
@@ -83,7 +86,9 @@ fun SourceSelectorScreen(
 
             viewModel.installedSource?.let { option ->
                 item {
-                    HorizontalDivider()
+                    GroupHeader(stringResource(R.string.installed))
+                }
+                item {
                     SourceOption(
                         sourceOption = option,
                         isSelected = viewModel.selectedSource == option.source,
@@ -92,7 +97,11 @@ fun SourceSelectorScreen(
                 }
             }
 
-            if (downloadedApps.isNotEmpty()) item { HorizontalDivider() }
+            if (downloadedApps.isNotEmpty()) {
+                item {
+                    GroupHeader(stringResource(R.string.source_selector_category_downloaded))
+                }
+            }
             items(downloadedApps, key = { it.key }) { option ->
                 SourceOption(
                     sourceOption = option,
@@ -101,13 +110,30 @@ fun SourceSelectorScreen(
                 )
             }
 
-            if (plugins.isNotEmpty()) item { HorizontalDivider() }
-            items(plugins, key = { it.key }) { option ->
-                SourceOption(
-                    sourceOption = option,
-                    isSelected = viewModel.selectedSource == option.source,
-                    onSelect = viewModel::selectSource,
-                )
+            downloaderSections.forEach { section ->
+                item(key = "downloader_header_${section.key}") {
+                    GroupHeader(section.title)
+                }
+                items(section.options, key = { it.key }) { option ->
+                    SourceOption(
+                        sourceOption = option,
+                        isSelected = viewModel.selectedSource == option.source,
+                        onSelect = viewModel::selectSource,
+                    )
+                }
+            }
+
+            if (unavailableDownloaders.isNotEmpty()) {
+                item(key = "downloader_unavailable_header") {
+                    GroupHeader(stringResource(R.string.downloaders))
+                }
+                items(unavailableDownloaders, key = { it.key }) { option ->
+                    SourceOption(
+                        sourceOption = option,
+                        isSelected = viewModel.selectedSource == option.source,
+                        onSelect = viewModel::selectSource,
+                    )
+                }
             }
         }
     }
@@ -118,14 +144,15 @@ private fun SourceOption(
     sourceOption: SourceSelectorViewModel.SourceOption,
     isSelected: Boolean,
     onSelect: (SelectedSource) -> Unit,
-) = SourceOption(
-    isSelected = isSelected,
-    onSelect = { onSelect(sourceOption.source) },
-    overlineContent = sourceOption.category?.let {{ Text(it) }},
-    headlineContent = { Text(sourceOption.title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-    supportingContent = sourceOption.disableReason?.let {{ Text(it.message) }},
-    enabled = sourceOption.disableReason == null,
-)
+) {
+    SourceOption(
+        isSelected = isSelected,
+        onSelect = { onSelect(sourceOption.source) },
+        headlineContent = { Text(sourceOption.title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+        supportingContent = sourceOption.disableReason?.let {{ Text(stringResource(it.message)) }},
+        enabled = sourceOption.disableReason == null,
+    )
+}
 
 @Composable
 private fun SourceOption(

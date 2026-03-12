@@ -25,12 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
+import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -44,6 +45,7 @@ import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.enabled
 import app.revanced.manager.util.patchCount
 import app.revanced.manager.util.toast
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -58,7 +60,7 @@ fun SelectedAppInfoScreen(
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
-    val context = LocalContext.current
+    val context = androidx.compose.ui.platform.LocalContext.current
     val networkInfo = koinInject<NetworkInfo>()
     val networkConnected = remember { networkInfo.isConnected() }
     val networkMetered = remember { !networkInfo.isUnmetered() }
@@ -66,17 +68,19 @@ fun SelectedAppInfoScreen(
     val packageName = vm.packageName
     val composableScope = rememberCoroutineScope()
 
+    val downloaders by vm.downloaders.collectAsStateWithLifecycle(emptyList())
     val error by vm.errorFlow.collectAsStateWithLifecycle(null)
 
     val selectedVersion by vm.selectedVersion.collectAsStateWithLifecycle()
     val resolvedVersion by vm.resolvedVersion.collectAsStateWithLifecycle(null)
+    val versionSelection by vm.versionPatchSelection.collectAsStateWithLifecycle(emptyMap())
 
     val selectedSource by vm.selectedSource.collectAsStateWithLifecycle()
-    val resolvedSource by vm.resolvedSource.collectAsStateWithLifecycle(null)
+    val resolvedSource by vm.resolvedSource.collectAsStateWithLifecycle(SelectedSource.Downloader())
 
     val customSelection by vm.customSelection.collectAsStateWithLifecycle(null)
-    val fullPatchSelection by vm.patchSelection.collectAsStateWithLifecycle(emptyMap())
-    val patchCount = fullPatchSelection.patchCount
+    val currentPatchSelection by vm.patchSelection.collectAsStateWithLifecycle(emptyMap())
+    val patchCount = currentPatchSelection.patchCount
 
     val incompatibleCount by vm.incompatiblePatchCount.collectAsStateWithLifecycle(0)
 
@@ -108,13 +112,19 @@ fun SelectedAppInfoScreen(
                     }
 
                     composableScope.launch {
-                        if (!vm.hasSetRequiredOptions(fullPatchSelection)) {
+                        if (!vm.hasSetRequiredOptions(currentPatchSelection)) {
                             onRequiredOptions(
-                                vm.packageName,
+                                packageName,
                                 resolvedVersion,
                                 customSelection,
                                 vm.options,
                             )
+                            return@launch
+                        }
+
+                        vm.reloadDownloaders()
+                        if (vm.errorFlow.first() != null) {
+                            context.toast(context.getString(R.string.no_downloader_available))
                             return@launch
                         }
 
@@ -131,9 +141,9 @@ fun SelectedAppInfoScreen(
                 .padding(paddingValues)
         ) {
             AppInfo(vm.selectedAppInfo, placeholderLabel = packageName) {
-                vm.selectedAppInfo?.let {
+                vm.selectedAppInfo?.packageName?.let {
                     Text(
-                        it.packageName,
+                        it,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium,
                     )
@@ -141,65 +151,61 @@ fun SelectedAppInfoScreen(
             }
 
             PageItem(
-                R.string.patch_selector_item,
-                stringResource(R.string.patch_selector_item_description, patchCount),
+                title = R.string.patch_selector_item,
+                description = stringResource(R.string.patch_selector_item_description, patchCount),
                 onClick = {
                     onPatchSelectorClick(
-                        vm.packageName,
+                        packageName,
                         resolvedVersion,
                         customSelection,
                         vm.options
                     )
                 },
-                extraDescription = if (incompatibleCount > 0) { {
-                    Text(
-                        "$incompatibleCount incompatible",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                } } else null,
+                extraDescription = if (incompatibleCount > 0) {
+                    {
+                        Text(
+                            pluralStringResource(
+                                R.plurals.version_selector_incompatible_patches,
+                                incompatibleCount,
+                                incompatibleCount
+                            ),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                } else {
+                    null
+                }
             )
 
-            val versionText = resolvedVersion ?: "Any available version"
-            val versionDescription = if (selectedVersion is SelectedVersion.Auto)
-                "Auto ($versionText)" // stringResource(R.string.selected_app_meta_auto_version, actualVersion)
-            else versionText
-
             PageItem(
-                R.string.version_selector_item,
-                versionDescription,
+                title = R.string.version_selector_item,
+                description = selectedVersionDescription(selectedVersion, resolvedVersion),
                 onClick = {
                     onVersionClick(
                         packageName,
-                        fullPatchSelection,
+                        versionSelection,
                         selectedVersion,
                         vm.localPath,
                     )
                 },
             )
 
-            val sourceText = when (val source = resolvedSource) {
-                is SelectedSource.Installed -> "Installed APK"
-                is SelectedSource.Downloaded -> "Downloaded APK"
-                is SelectedSource.Local -> "Local APK"
-                is SelectedSource.Plugin -> {
-                    source.packageName ?: "Any available downloader"
-                }
-                else -> "Auto"
-            }
-            val sourceDescription = if (selectedSource is SelectedSource.Auto)
-                "Auto ($sourceText)" // stringResource(R.string.selected_app_meta_auto_version, actualVersion)
-            else sourceText
-
             PageItem(
-                R.string.apk_source_selector_item,
-                sourceDescription,
-                onClick = { onSourceClick(
-                    packageName,
-                    resolvedVersion,
-                    selectedSource,
-                    vm.localPath,
-                ) },
+                title = R.string.apk_source_selector_item,
+                description = selectedSourceDescription(
+                    selectedSource = selectedSource,
+                    resolvedSource = resolvedSource,
+                    downloaders = downloaders,
+                ),
+                onClick = {
+                    onSourceClick(
+                        packageName,
+                        resolvedVersion,
+                        selectedSource,
+                        vm.localPath,
+                    )
+                },
             )
 
             error?.let {
@@ -210,30 +216,80 @@ fun SelectedAppInfoScreen(
                 )
             }
 
-            if (resolvedSource is SelectedSource.Plugin) Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                when {
-                    !networkConnected -> {
-                        NotificationCard(
-                            isWarning = true,
-                            icon = Icons.Outlined.WarningAmber,
-                            text = stringResource(R.string.network_unavailable_warning),
-                            onDismiss = null
-                        )
-                    }
-                    networkMetered -> {
-                        NotificationCard(
-                            isWarning = true,
-                            icon = Icons.Outlined.WarningAmber,
-                            text = stringResource(R.string.network_metered_warning),
-                            onDismiss = null
-                        )
+            if (resolvedSource is SelectedSource.Downloader) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    when {
+                        !networkConnected -> {
+                            NotificationCard(
+                                isWarning = true,
+                                icon = Icons.Outlined.WarningAmber,
+                                text = stringResource(R.string.network_unavailable_warning),
+                                onDismiss = null
+                            )
+                        }
+
+                        networkMetered -> {
+                            NotificationCard(
+                                isWarning = true,
+                                icon = Icons.Outlined.WarningAmber,
+                                text = stringResource(R.string.network_metered_warning),
+                                onDismiss = null
+                            )
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun selectedVersionDescription(
+    selectedVersion: SelectedVersion,
+    resolvedVersion: String?,
+): String {
+    val resolvedText = resolvedVersion ?: stringResource(R.string.selected_app_meta_any_version)
+    return if (selectedVersion is SelectedVersion.Auto) {
+        stringResource(R.string.selected_app_meta_auto, stringResource(R.string.app_source_dialog_option_auto), resolvedText)
+    } else {
+        resolvedText
+    }
+}
+
+@Composable
+private fun selectedSourceDescription(
+    selectedSource: SelectedSource,
+    resolvedSource: SelectedSource,
+    downloaders: List<LoadedDownloader>,
+): String {
+    val resolvedText = when (resolvedSource) {
+        SelectedSource.Auto -> stringResource(R.string.app_source_dialog_option_auto)
+        SelectedSource.Installed -> stringResource(R.string.selected_app_meta_source_installed_apk)
+        is SelectedSource.Downloaded -> stringResource(R.string.selected_app_meta_source_downloaded_apk)
+        is SelectedSource.Local -> stringResource(R.string.selected_app_meta_source_local_apk)
+        is SelectedSource.Downloader -> {
+            if (resolvedSource.packageName == null && resolvedSource.className == null) {
+                stringResource(R.string.selected_app_meta_source_any_downloader)
+            } else {
+                downloaders.firstOrNull { downloader ->
+                    downloader.packageName == resolvedSource.packageName &&
+                        downloader.className == resolvedSource.className
+                }?.name ?: stringResource(R.string.selected_app_meta_source_any_downloader)
+            }
+        }
+    }
+
+    return if (selectedSource is SelectedSource.Auto) {
+        stringResource(
+            R.string.selected_app_meta_auto,
+            stringResource(R.string.app_source_dialog_option_auto),
+            resolvedText
+        )
+    } else {
+        resolvedText
     }
 }
 

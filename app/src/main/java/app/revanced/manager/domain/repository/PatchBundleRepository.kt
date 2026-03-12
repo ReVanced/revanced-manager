@@ -39,6 +39,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import kotlin.collections.joinToString
@@ -127,32 +128,18 @@ class PatchBundleRepository(
             Log.d(tag, "Bundle: $it")
         }
 
-        val sources = entities.associate { it.uid to it.load() }.toPersistentMap()
+        val sources = entities
+            .associateTo(mutableMapOf()) { it.uid to it.load() }
+        sources.forEach syncName@{ (uid, src) ->
+            val newName = src.patchBundle?.manifestAttributes?.name?.takeIf { it != src.name }
+                ?: return@syncName
 
-        val hasOutOfDateNames = sources.values.any { it.isNameOutOfDate }
-        if (hasOutOfDateNames) dispatchAction(
-            "Sync names"
-        ) { state ->
-            val nameChanges = state.sources.mapNotNull { (_, src) ->
-                if (!src.isNameOutOfDate) return@mapNotNull null
-                val newName = src.patchBundle?.manifestAttributes?.name?.takeIf { it != src.name }
-                    ?: return@mapNotNull null
-
-                src.uid to newName
-            }
-            val sources = state.sources.toMutableMap()
-            val info = state.info.toMutableMap()
-            nameChanges.forEach { (uid, name) ->
-                updateDb(uid) { it.copy(name = name) }
-                sources[uid] = sources[uid]!!.copy(name = name)
-                info[uid] = info[uid]?.copy(name = name) ?: return@forEach
-            }
-
-            State(sources.toPersistentMap(), info.toPersistentMap())
+            updateDb(uid) { it.copy(name = newName) }
+            sources[uid] = src.copy(name = newName)
         }
-        val info = loadMetadata(sources).toPersistentMap()
 
-        return State(sources, info)
+        val info = loadMetadata(sources).toPersistentMap()
+        return State(sources.toPersistentMap(), info)
     }
 
     suspend fun reload() = dispatchAction("Full reload") {
@@ -169,38 +156,46 @@ class PatchBundleRepository(
         return all
     }
 
-    private suspend fun loadMetadata(sources: Map<Int, PatchBundleSource>): Map<Int, PatchBundleInfo.Global> {
+    private suspend fun loadMetadata(sources: MutableMap<Int, PatchBundleSource>): Map<Int, PatchBundleInfo.Global> {
         // Map bundles -> sources
         val map = sources.mapNotNull { (_, src) ->
             (src.patchBundle ?: return@mapNotNull null) to src
         }.toMap()
 
         val metadata = try {
-            PatchBundle.Loader.metadata(map.keys)
+            runInterruptible(Dispatchers.Default) {
+                PatchBundle.Loader.metadata(map.keys)
+            }
+        } catch (e: CancellationException) {
+            throw e
         } catch (error: Throwable) {
-            val uids = map.values.map { it.uid }
-
-            dispatchAction("Mark bundles as failed") { state ->
-                state.copy(sources = state.sources.mutate {
-                    uids.forEach { uid ->
-                        it[uid] = it[uid]?.copy(error = error) ?: return@forEach
-                    }
-                })
+            sources.entries.forEach { entry ->
+                entry.setValue(entry.value.copy(error = error))
             }
 
             Log.e(tag, "Failed to load bundles", error)
             emptyMap()
         }
 
-        return metadata.entries.associate { (bundle, patches) ->
-            val src = map[bundle]!!
-            src.uid to PatchBundleInfo.Global(
-                src.name,
-                bundle.manifestAttributes?.version,
-                src.uid,
-                patches
-            )
+        val output = buildMap {
+            metadata.forEach { (bundle, result) ->
+                val src = map[bundle]!!
+                val error = result.exceptionOrNull()
+                if (error != null) {
+                    sources[src.uid] = src.copy(error = error)
+                    return@forEach
+                }
+
+                this[src.uid] = PatchBundleInfo.Global(
+                    src.name,
+                    bundle.manifestAttributes?.version,
+                    src.uid,
+                    result.getOrThrow().toList()
+                )
+            }
         }
+
+        return output
     }
 
     suspend fun isVersionAllowed(packageName: String, version: String) =
@@ -298,35 +293,36 @@ class PatchBundleRepository(
             State(sources.toPersistentMap(), info.toPersistentMap())
         }
 
-    suspend fun createLocal(createStream: suspend () -> InputStream) = dispatchAction("Add bundle") {
-        with(createEntity("", SourceInfo.Local).load() as LocalPatchBundle) {
-            try {
-                createStream().use { patches -> replace(patches) }
-            } catch (e: Exception) {
-                if (e is CancellationException) throw e
-                Log.e(tag, "Got exception while importing bundle", e)
-                withContext(Dispatchers.Main) {
-                    app.toast(app.getString(R.string.patches_replace_fail, e.simpleMessage()))
+    suspend fun createLocal(createStream: suspend () -> InputStream) =
+        dispatchAction("Add bundle") {
+            with(createEntity("", SourceInfo.Local).load() as LocalPatchBundle) {
+                try {
+                    createStream().use { patches -> replace(patches) }
+                } catch (e: Exception) {
+                    if (e is CancellationException) throw e
+                    Log.e(tag, "Got exception while importing bundle", e)
+                    withContext(Dispatchers.Main) {
+                        app.toast(app.getString(R.string.patches_replace_fail, e.simpleMessage()))
+                    }
+
+                    deleteLocalFile()
                 }
-
-                deleteLocalFile()
             }
-        }
 
-        doReload()
-    }
+            doReload()
+        }
 
     suspend fun createRemote(url: String, autoUpdate: Boolean) =
         dispatchAction("Add bundle ($url)") { state ->
             val src = createEntity("", SourceInfo.from(url), autoUpdate).load() as RemotePatchBundle
-            update(src)
+            update(src, force = true)
             state.copy(sources = state.sources.put(src.uid, src))
         }
 
     suspend fun reloadApiBundles() = dispatchAction("Reload API bundles") {
-        this@PatchBundleRepository.sources.first().filterIsInstance<APIPatchBundle>().forEach {
-            with(it) { deleteLocalFile() }
-            updateDb(it.uid) { it.copy(versionHash = null) }
+        this@PatchBundleRepository.sources.first().filterIsInstance<APIPatchBundle>().forEach { src ->
+            with(src) { deleteLocalFile() }
+            updateDb(src.uid) { it.copy(versionHash = null) }
         }
 
         doReload()
@@ -341,32 +337,38 @@ class PatchBundleRepository(
             state.copy(sources = state.sources.put(uid, newSrc))
         }
 
-    suspend fun update(vararg sources: RemotePatchBundle, showToast: Boolean = false) {
+    suspend fun update(
+        vararg sources: RemotePatchBundle,
+        showToast: Boolean = false,
+        force: Boolean = false
+    ) {
         val uids = sources.map { it.uid }.toSet()
-        store.dispatch(Update(showToast = showToast) { it.uid in uids })
+        store.dispatch(Update(showToast = showToast, force = force) { it.uid in uids })
     }
 
-    suspend fun redownloadRemoteBundles() = store.dispatch(Update(force = true))
+    suspend fun redownloadRemoteBundles() = store.dispatch(Update(force = true, redownload = true))
 
     /**
      * Updates all bundles that should be automatically updated.
      */
-    suspend fun updateCheck() = store.dispatch(Update { it.autoUpdate })
+    suspend fun updateCheck() =
+        store.dispatch(Update(force = prefs.allowMeteredNetworks.get()) { it.autoUpdate })
 
     private inner class Update(
         private val force: Boolean = false,
+        private val redownload: Boolean = false,
         private val showToast: Boolean = false,
         private val predicate: (bundle: RemotePatchBundle) -> Boolean = { true },
     ) : Action<State> {
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
 
-        override fun toString() = if (force) "Redownload remote bundles" else "Update check"
+        override fun toString() = if (redownload) "Redownload remote bundles" else "Update check"
 
         override suspend fun ActionContext.execute(
             current: State
         ) = coroutineScope {
-            if (!networkInfo.isSafe()) {
+            if (!networkInfo.isSafe(force)) {
                 Log.d(tag, "Skipping update check because the network is down or metered.")
                 return@coroutineScope current
             }
@@ -379,7 +381,7 @@ class PatchBundleRepository(
                         Log.d(tag, "Updating patch bundle: ${it.name}")
 
                         val newVersion = with(it) {
-                            if (force) downloadLatest() else update()
+                            if (redownload) downloadLatest() else update()
                         } ?: return@async null
 
                         it to newVersion

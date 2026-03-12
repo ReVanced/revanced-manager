@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Yamalovchi</string>
+  <string name="downloader_host_permission_label">ReVanced Manager yuklab oluvchi xosti</string>
+  <string name="downloader_host_permission_description">ReVanced Manager yuklab oluvchilarga kirishni nazorat qilish uchun ishlatiladi. Faqat ReVanced Managerda bu mavjud.</string>
+  <string name="new_downloader_notification">Yangi yuklab oluvchilar mavjud. Ularni sozlash uchun shu yerni bosing.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Yuklab oluvchi mavjud emas</string>
+  <string name="announcements_filter_tag">Teg bo\'yicha filtrlash</string>
+  <string name="announcements_show_archived">Arxivlanganlarni ko\'rsatish</string>
+  <string name="downloads_description">Yuklab oluvchilar va yuklab olingan ilovalar</string>
+  <string name="downloaders">Yuklab oluvchilar</string>
+  <string name="downloader_state_trusted">Ishonchli</string>
+  <string name="downloader_state_failed">Yuklab bo‘lmadi. Batafsil ma‘lumot olish uchun bosing</string>
+  <string name="downloader_state_untrusted">Ishonchsiz</string>
+  <string name="downloader_trust_dialog_title">Yuklab oluvchiga ishonish kerakmi?</string>
+  <string name="downloader_revoke_trust_dialog_title">Ishonchni bekor qilsinmi?</string>
+  <string name="downloader_trust_dialog_body">Davom etish ushbu yuklab oluvchining ishlashiga ruxsat beradi.
+
+Faqat ishonadigan yuklab oluvchini yoqing. Yuklab oluvchilar Manager\'ga ixtiyoriy kodni bajarishiga sabab bo‘lishi mumkin.</string>
+  <string name="downloader_trust_dialog_signature">Imzo:
+
+%s</string>
+  <string name="downloader_trust_dialog_name">Yuklab oluvchi:
+%s</string>
+  <string name="downloader_delete_apps_title">Tanlangan ilovalarni o‘chirish</string>
+  <string name="downloader_delete_apps_description">Tanlangan ilovalarni o‘chirishga ishonchingiz komilmi?</string>
+  <string name="no_downloader_installed">Hech qanday yuklab oluvchi o‘rnatilmagan.</string>
+  <string name="no_downloader_available">Yuklab oluvchilar o‘rnatilgan, ammo ularning hech biriga ishonilmaydi. Sozlamalaringizni tekshiring.</string>
+  <string name="patch_selector_sheet_actions_title">Amallar</string>
+  <string name="restore_default_selection">Standart tanlovni tiklash</string>
+  <string name="deselect_all">Barchasini tanlovdan chiqarish</string>
+  <string name="invert_selection">Tanlovni teskariga o\'girish</string>
+  <string name="deselect_all_except">%s dan tashqari barchasini tanlashni bekor qilish</string>
+  <string name="scope_dialog_title">Qo\'llash</string>
+  <string name="scope_all_patches">Barcha yamalar</string>
+  <string name="scope_bundle_patches">Faqat %s</string>
+  <string name="downloader_activity_dialog_body">Ushbu yuklab oluvchi bilan davom etish uchun foydalanuvchi aralashuvi talab qilinadi.</string>
+  <string name="view_announcement">E\'lonni ko\'rish</string>
+  <string name="announcements">E\'lonlar</string>
+  <string name="archive">Arxiv</string>
+  <string name="no_announcements_found">E\'lonlar topilmadi</string>
+  <string name="new_announcement">Yangi e\'lon:\n%s</string>
+</resources>

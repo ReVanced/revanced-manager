@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -63,8 +64,7 @@ class VersionSelectorViewModel(
             val currentApp = pm.getPackageInfo(input.packageName)
             val patchedApp = installedAppRepository.get(input.packageName)
 
-            // Skip if installed app is patched
-            if (patchedApp?.currentPackageName == input.packageName) return@launch
+            if (patchedApp?.installType == InstallType.DEFAULT) return@launch
 
             installedAppVersion = currentApp?.versionName
         }

@@ -31,7 +31,8 @@ fun SearchView(
 ) {
     val colors = SearchBarColors(
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-        dividerColor = MaterialTheme.colorScheme.outline
+        dividerColor = MaterialTheme.colorScheme.outline,
+        inputFieldColors = SearchBarDefaults.inputFieldColors()
     )
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current

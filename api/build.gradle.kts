@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -17,9 +19,20 @@ dependencies {
     implementation(libs.appcompat)
 }
 
+kotlin {
+    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-Xexplicit-backing-fields",
+            "-Xcontext-parameters",
+        )
+    }
+}
+
 android {
-    namespace = "app.revanced.manager.plugin.downloader"
-    compileSdk = 35
+    namespace = "app.revanced.manager.downloader"
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
@@ -42,28 +55,21 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         aidl = true
     }
 }
 
 apiValidation {
-    nonPublicMarkers += "app.revanced.manager.plugin.downloader.PluginHostApi"
+    nonPublicMarkers += "app.revanced.manager.downloader.DownloaderHostApi"
 }
 
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = "githubPackages"
             url = uri("https://maven.pkg.github.com/revanced/revanced-manager")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: extra["gpr.user"] as String?
-                password = System.getenv("GITHUB_TOKEN") ?: extra["gpr.key"] as String?
-            }
+            credentials(PasswordCredentials::class)
         }
     }
 

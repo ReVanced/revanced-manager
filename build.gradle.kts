@@ -6,5 +6,6 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.about.libraries) apply false
+    alias(libs.plugins.about.libraries.android) apply false
     alias(libs.plugins.compose.compiler) apply false
 }

@@ -6,12 +6,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -19,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
@@ -42,13 +41,8 @@ fun VersionSelectorScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = { Text("Select version") },
-                onBackClick = onBackClick,
-                actions = {
-                    IconButton({}) {
-                        Icon(Icons.Outlined.MoreVert, contentDescription = null)
-                    }
-                }
+                title = { Text(stringResource(R.string.version_selector_title)) },
+                onBackClick = onBackClick
             )
         },
         floatingActionButton = {
@@ -66,8 +60,8 @@ fun VersionSelectorScreen(
                 version = SelectedVersion.Auto,
                 isSelected = viewModel.selectedVersion is SelectedVersion.Auto,
                 onSelect = viewModel::selectVersion,
-                headlineContent = { Text("Auto (Recommended)") },
-                supportingContent = { Text("Automatically select the best available version") }
+                headlineContent = { Text(stringResource(R.string.version_selector_auto_title)) },
+                supportingContent = { Text(stringResource(R.string.version_selector_auto_description)) }
             )
             HorizontalDivider()
 
@@ -79,10 +73,10 @@ fun VersionSelectorScreen(
                         val isLocal = localVersion == version.first.version
 
                         val overlineText = when {
-                            isLocal -> "Local"
-                            isDownloaded && isInstalled -> "Downloaded, Installed"
-                            isDownloaded -> "Downloaded"
-                            isInstalled -> "Installed"
+                            isLocal -> stringResource(R.string.version_selector_state_local)
+                            isDownloaded && isInstalled -> stringResource(R.string.version_selector_state_downloaded_installed)
+                            isDownloaded -> stringResource(R.string.version_selector_state_downloaded)
+                            isInstalled -> stringResource(R.string.version_selector_state_installed)
                             else -> null
                         }
 
@@ -93,7 +87,15 @@ fun VersionSelectorScreen(
                             headlineContent = { Text(version.first.version) },
                             supportingContent = {
                                 Text(
-                                    "${version.second.let { if (it == 0) "No" else it }} incompatible patches"
+                                    if (version.second == 0) {
+                                        stringResource(R.string.version_selector_all_patches_compatible)
+                                    } else {
+                                        pluralStringResource(
+                                            R.plurals.version_selector_incompatible_patches,
+                                            version.second,
+                                            version.second,
+                                        )
+                                    }
                                 )
                             },
                             overlineContent = overlineText?.let { { Text(it) } }
@@ -105,8 +107,8 @@ fun VersionSelectorScreen(
                     version = SelectedVersion.Any,
                     isSelected = viewModel.selectedVersion is SelectedVersion.Any,
                     onSelect = viewModel::selectVersion,
-                    headlineContent = { Text("Any available version") },
-                    supportingContent = { Text("Use any available version regardless of compatibility") }
+                    headlineContent = { Text(stringResource(R.string.version_selector_any_title)) },
+                    supportingContent = { Text(stringResource(R.string.version_selector_any_description)) }
                 )
             }
         }

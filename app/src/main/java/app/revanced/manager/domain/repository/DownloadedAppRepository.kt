@@ -6,8 +6,8 @@ import android.os.Parcelable
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
-import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
-import app.revanced.manager.plugin.downloader.OutputDownloadScope
+import app.revanced.manager.network.downloader.LoadedDownloader
+import app.revanced.manager.downloader.OutputDownloadScope
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.channelFlow
@@ -38,7 +38,7 @@ class DownloadedAppRepository(
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
     suspend fun download(
-        plugin: LoadedDownloaderPlugin,
+        downloader: LoadedDownloader,
         data: Parcelable,
         expectedPackageName: String,
         expectedVersion: String?,
@@ -57,7 +57,7 @@ class DownloadedAppRepository(
 
             channelFlow {
                 val scope = object : OutputDownloadScope {
-                    override val pluginPackageName = plugin.packageName
+                    override val downloaderPackageName = downloader.packageName
                     override val hostPackageName = app.packageName
                     override suspend fun reportSize(size: Long) {
                         require(size > 0) { "Size must be greater than zero" }
@@ -89,7 +89,7 @@ class DownloadedAppRepository(
                                 )
                             }
                     }
-                    plugin.download(scope, data, stream)
+                    downloader.download(scope, data, stream)
                 }
             }
                 .conflate()

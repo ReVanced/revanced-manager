@@ -1,0 +1,90 @@
+package app.revanced.manager.ui.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.revanced.manager.data.platform.NetworkInfo
+import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.AnnouncementRepository
+import app.revanced.manager.network.dto.ReVancedAnnouncement
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class AnnouncementsViewModel(
+    private val announcementRepository: AnnouncementRepository,
+    private val network: NetworkInfo,
+    private val preferences: PreferencesManager
+) : ViewModel() {
+    private val allAnnouncements = MutableStateFlow<List<ReVancedAnnouncement>?>(null)
+
+    val tags = allAnnouncements.map { it?.tags }
+    val selectedTags = preferences.selectedAnnouncementTags
+    val readAnnouncements = preferences.readAnnouncements
+    val showArchived = MutableStateFlow(false)
+
+    val announcements = combine(
+        allAnnouncements,
+        selectedTags.flow,
+        showArchived
+    ) { source, selectedTags, showArchived ->
+        if (source == null) return@combine null
+        // Only filter by tags that actually exist
+        val availableTags = source.tags
+        val validSelected = selectedTags.intersect(availableTags)
+
+        source.filter { announcement ->
+            if (!showArchived && announcement.isArchived) return@filter false
+
+            if (!validSelected.isEmpty()) announcement.tags.any(validSelected::contains)
+            else true
+        }
+    }
+
+    init {
+        loadData()
+    }
+
+    fun markAnnouncementRead(id: Long) {
+        viewModelScope.launch {
+            preferences.edit {
+                preferences.readAnnouncements += id
+            }
+        }
+    }
+
+    fun changeTagSelection(tag: String) = viewModelScope.launch {
+        preferences.edit {
+            if (tag in selectedTags.value) selectedTags -= tag
+            else selectedTags += tag
+        }
+    }
+
+    fun resetTagSelection() = viewModelScope.launch {
+        selectedTags.update(preferences.selectedAnnouncementTags.default)
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            if (!network.isConnected()) {
+                allAnnouncements.value = emptyList()
+                return@launch
+            }
+
+            withContext(Dispatchers.IO) {
+                announcementRepository.getAnnouncements()?.let {
+                    allAnnouncements.value = it
+                }
+            }
+        }
+    }
+
+    private companion object {
+        val List<ReVancedAnnouncement>.tags: Set<String>
+            get() = flatMapTo(
+                mutableSetOf()
+            ) { it.tags }
+    }
+}
