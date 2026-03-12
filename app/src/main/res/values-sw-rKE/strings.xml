@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Kirekebisha</string>
+  <string name="downloader_host_permission_label">Mwenyeji wa kipakua cha ReVanced Manager</string>
+  <string name="downloader_host_permission_description">Inatumika kudhibiti ufikiaji wa vipakua vya ReVanced Manager. Ni ReVanced Manager pekee ndiye anayemiliki hii.</string>
+  <string name="new_downloader_notification">Vipakua vipya vinapatikana. Bofya hapa ili kuvisanidi.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Hakuna kipakua kinachopatikana</string>
+  <string name="announcements_filter_tag">Chuja kwa lebo</string>
+  <string name="announcements_show_archived">Onyesha yaliyohifadhiwa</string>
+  <string name="downloads_description">Wapakuzi na programu zilizopakuliwa</string>
+  <string name="downloaders">Wapakuzi</string>
+  <string name="downloader_state_trusted">Inayoaminika</string>
+  <string name="downloader_state_failed">Imeshindwa kupakia. Bofya kwa maelezo zaidi</string>
+  <string name="downloader_state_untrusted">Isiyoaminika</string>
+  <string name="downloader_trust_dialog_title">Uaminifu wa kipakuzi?</string>
+  <string name="downloader_revoke_trust_dialog_title">Tengua uaminifu?</string>
+  <string name="downloader_trust_dialog_body">Kuendelea kutaruhusu kipakuzi hiki kuendeshwa.\n\nWasha kipakuzi hiki tu ikiwa unaki[pakuzi]amini. Wapakuzi wanaweza kumfanya Manager atekeleze msimbo holela.</string>
+  <string name="downloader_trust_dialog_signature">Saini:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Kipakuzi:\n%s</string>
+  <string name="downloader_delete_apps_title">Futa programu zilizochaguliwa</string>
+  <string name="downloader_delete_apps_description">Una uhakika unataka kufuta programu zilizochaguliwa?</string>
+  <string name="no_downloader_installed">Hakuna wapakuzi waliowekwa.</string>
+  <string name="no_downloader_available">Kuna wapakuzi waliowekwa lakini hakuna hata mmoja anayeaminika. Angalia mipangilio yako.</string>
+  <string name="patch_selector_sheet_actions_title">Vitendo</string>
+  <string name="restore_default_selection">Rejesha uteuzi chaguomsingi</string>
+  <string name="deselect_all">Ondoa uteuzi wote</string>
+  <string name="invert_selection">Pindua uteuzi</string>
+  <string name="deselect_all_except">Ondoa uteuzi wa yote isipokuwa %s</string>
+  <string name="scope_dialog_title">Tekeleza kwa</string>
+  <string name="scope_all_patches">Marekebisho yote</string>
+  <string name="scope_bundle_patches">%s tu</string>
+  <string name="downloader_activity_dialog_body">Mwingiliano wa mtumiaji unahitajika ili kuendelea na kipakuzi hiki.</string>
+  <string name="view_announcement">Tazama tangazo</string>
+  <string name="announcements">Matangazo</string>
+  <string name="archive">Kumbukumbu</string>
+  <string name="no_announcements_found">Hakuna matangazo yaliyopatikana</string>
+  <string name="new_announcement">Tangazo jipya:
+%s</string>
+</resources>

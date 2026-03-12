@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">பேட்சர்</string>
+  <string name="downloader_host_permission_label">ReVanced Manager பதிவிறக்கப்பான் ஹோஸ்ட்</string>
+  <string name="downloader_host_permission_description">ReVanced Manager பதிவிறக்கப்பான்களுக்கான அணுகலைக் கட்டுப்படுத்தப் பயன்படுகிறது. இதை ReVanced Manager மட்டுமே கொண்டுள்ளது.</string>
+  <string name="new_downloader_notification">புதிய பதிவிறக்கப்பான்(கள்) உள்ளன. அவற்றை உள்ளமைக்க இங்கே கிளிக் செய்யவும்.</string>
+  <string name="app_source_dialog_option_auto_unavailable">பதிவிறக்கப்பான் இல்லை</string>
+  <string name="announcements_filter_tag">டேக் மூலம் வடிகட்டு</string>
+  <string name="announcements_show_archived">காப்பகப்படுத்தப்பட்டதைக் காட்டு</string>
+  <string name="downloads_description">பதிவிறக்குபவர்கள் மற்றும் பதிவிறக்கப்பட்ட பயன்பாடுகள்</string>
+  <string name="downloaders">பதிவிறக்குபவர்கள்</string>
+  <string name="downloader_state_trusted">நம்பகமான</string>
+  <string name="downloader_state_failed">ஏற்றத் தவறிவிட்டது. மேலும் விவரங்களுக்கு கிளிக் செய்யவும்</string>
+  <string name="downloader_state_untrusted">நம்பத்தகாத</string>
+  <string name="downloader_trust_dialog_title">பதிவிறக்குபவரை நம்பவா?</string>
+  <string name="downloader_revoke_trust_dialog_title">நம்பிக்கையைத் திரும்பப் பெறவா?</string>
+  <string name="downloader_trust_dialog_body">தொடர்ந்தால் இந்த பதிவிறக்குபவர் இயங்க அனுமதிக்கும்.
+
+இந்த பதிவிறக்குபவரை நீங்கள் நம்பினால் மட்டுமே இயக்கவும். பதிவிறக்குபவர்கள் Manager தன்னிச்சையான குறியீட்டை இயக்கச் செய்யலாம்.</string>
+  <string name="downloader_trust_dialog_signature">கையொப்பம்:
+
+%s</string>
+  <string name="downloader_trust_dialog_name">பதிவிறக்குபவர்:
+%s</string>
+  <string name="downloader_delete_apps_title">தேர்ந்தெடுக்கப்பட்ட பயன்பாடுகளை நீக்கு</string>
+  <string name="downloader_delete_apps_description">தேர்ந்தெடுக்கப்பட்ட பயன்பாடுகளை நீக்க நீங்கள் உறுதியாக இருக்கிறீர்களா?</string>
+  <string name="no_downloader_installed">பதிவிறக்குபவர்கள் எதுவும் நிறுவப்படவில்லை.</string>
+  <string name="no_downloader_available">பதிவிறக்குபவர்கள் நிறுவப்பட்டுள்ளனர், ஆனால் யாரும் நம்பகமானவர்கள் அல்ல. உங்கள் அமைப்புகளைச் சரிபார்க்கவும்.</string>
+  <string name="patch_selector_sheet_actions_title">செயல்கள்</string>
+  <string name="restore_default_selection">இயல்புநிலைத் தேர்வை மீட்டமை</string>
+  <string name="deselect_all">அனைத்தையும் தேர்வுநீக்கு</string>
+  <string name="invert_selection">தேர்வைப் புரட்டு</string>
+  <string name="deselect_all_except">%s தவிர மற்ற அனைத்தையும் தேர்வு நீக்கவும்</string>
+  <string name="scope_dialog_title">இதற்குப் பயன்படுத்து</string>
+  <string name="scope_all_patches">அனைத்துப் பேட்ச்களும்</string>
+  <string name="scope_bundle_patches">%s மட்டும்</string>
+  <string name="downloader_activity_dialog_body">இந்த பதிவிறக்குபவருடன் தொடர பயனர் தொடர்பு தேவை.</string>
+  <string name="view_announcement">அறிவிப்பைக் காண்க</string>
+  <string name="announcements">அறிவிப்புகள்</string>
+  <string name="archive">காப்பகம்</string>
+  <string name="no_announcements_found">அறிவிப்புகள் எதுவும் கண்டறியப்படவில்லை</string>
+  <string name="new_announcement">புதிய அறிவிப்பு:
+%s</string>
+</resources>

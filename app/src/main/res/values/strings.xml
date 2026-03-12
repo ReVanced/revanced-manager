@@ -516,4 +516,16 @@ Click on the patches to see more details.</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
     <string name="new_announcement">New announcement:\n%s</string>
+
+    <plurals name="patch_count">
+        <item quantity="one">%d patch</item>
+        <item quantity="other">%d patches</item>
+    </plurals>
+    <plurals name="patches_executed">
+        <item quantity="one">Execute %d patch</item>
+        <item quantity="other">Execute %d patches</item>
+    </plurals>
+    <plurals name="selected_count">
+        <item quantity="other">%d selected</item>
+    </plurals>
 </resources>

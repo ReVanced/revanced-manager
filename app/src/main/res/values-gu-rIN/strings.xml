@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">પૅચર</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ડાઉનલોડર હોસ્ટ</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ડાઉનલોડર્સને ઍક્સેસ કરવા માટે વપરાય છે. ફક્ત ReVanced Manager પાસે આ છે.</string>
+  <string name="new_downloader_notification">નવું ડાઉનલોડર(ઓ) ઉપલબ્ધ છે. તેમને કન્ફિગર કરવા માટે અહીં ક્લિક કરો.</string>
+  <string name="app_source_dialog_option_auto_unavailable">કોઈ ડાઉનલોડર ઉપલબ્ધ નથી</string>
+  <string name="announcements_filter_tag">ટૅગ દ્વારા ફિલ્ટર કરો</string>
+  <string name="announcements_show_archived">આર્કાઇવ કરેલા બતાવો</string>
+  <string name="downloads_description">ડાઉનલોડર્સ અને ડાઉનલોડ કરેલી એપ્લિકેશનો</string>
+  <string name="downloaders">ડાઉનલોડર્સ</string>
+  <string name="downloader_state_trusted">વિશ્વસનીય</string>
+  <string name="downloader_state_failed">લોડ કરવામાં નિષ્ફળ. વધુ વિગતો માટે ક્લિક કરો</string>
+  <string name="downloader_state_untrusted">અવિશ્વસનીય</string>
+  <string name="downloader_trust_dialog_title">ડાઉનલોડર પર વિશ્વાસ કરવો?</string>
+  <string name="downloader_revoke_trust_dialog_title">વિશ્વાસ રદ કરવો?</string>
+  <string name="downloader_trust_dialog_body">ચાલુ રાખવાથી આ ડાઉનલોડરને ચાલવાની મંજૂરી મળશે.\n\nજો તમે તેના પર વિશ્વાસ કરતા હોવ તો જ આ ડાઉનલોડરને સક્ષમ કરો. ડાઉનલોડર્સ Manager ને મનસ્વી કોડ એક્ઝિક્યુટ કરાવી શકે છે.</string>
+  <string name="downloader_trust_dialog_signature">સહી:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">ડાઉનલોડર:\n%s</string>
+  <string name="downloader_delete_apps_title">પસંદ કરેલી એપ્લિકેશનો કાઢી નાખો</string>
+  <string name="downloader_delete_apps_description">શું તમે પસંદ કરેલી એપ્લિકેશનો કાઢી નાખવા માંગો છો?</string>
+  <string name="no_downloader_installed">કોઈ ડાઉનલોડર ઇન્સ્ટોલ કરેલા નથી.</string>
+  <string name="no_downloader_available">ડાઉનલોડર્સ ઇન્સ્ટોલ કરેલા છે પરંતુ તેમાંથી કોઈ પણ વિશ્વસનીય નથી. તમારી સેટિંગ્સ તપાસો.</string>
+  <string name="patch_selector_sheet_actions_title">ક્રિયાઓ</string>
+  <string name="restore_default_selection">ડિફૉલ્ટ પસંદગી પુનઃસ્થાપિત કરો</string>
+  <string name="deselect_all">બધું નાપસંદ કરો</string>
+  <string name="invert_selection">પસંદગી ઉલટાવો</string>
+  <string name="deselect_all_except">%s સિવાય બધું અનસિલેક્ટ કરો</string>
+  <string name="scope_dialog_title">આના પર લાગુ કરો</string>
+  <string name="scope_all_patches">બધા પૅચ</string>
+  <string name="scope_bundle_patches">ફક્ત %s</string>
+  <string name="downloader_activity_dialog_body">આ ડાઉનલોડર સાથે આગળ વધવા માટે વપરાશકર્તાની ક્રિયાપ્રતિક્રિયા જરૂરી છે.</string>
+  <string name="view_announcement">જાહેરાત જુઓ</string>
+  <string name="announcements">જાહેરાતો</string>
+  <string name="archive">આર્કાઇવ</string>
+  <string name="no_announcements_found">કોઈ ઘોષણાઓ મળી નથી</string>
+  <string name="new_announcement">નવી ઘોષણા:\n%s</string>
+</resources>

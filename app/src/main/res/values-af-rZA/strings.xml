@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Oplapper</string>
+  <string name="downloader_host_permission_label">ReVanced Manager aflaaier gasheer</string>
+  <string name="downloader_host_permission_description">Word gebruik om toegang tot ReVanced Manager aflaaiers te beheer. Slegs ReVanced Manager het dit.</string>
+  <string name="new_downloader_notification">Nuwe aflaaier(s) beskikbaar. Klik hier om dit te konfigureer.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Geen aflaaier beskikbaar nie</string>
+  <string name="announcements_filter_tag">Filtreer volgens etiket</string>
+  <string name="announcements_show_archived">Wys geargiveerdes</string>
+  <string name="downloads_description">Aflaaiprogramme en afgelaaide programme</string>
+  <string name="downloaders">Aflaaiprogramme</string>
+  <string name="downloader_state_trusted">Vertroud</string>
+  <string name="downloader_state_failed">Kon nie laai nie. Klik vir meer besonderhede</string>
+  <string name="downloader_state_untrusted">Onbetroubaar</string>
+  <string name="downloader_trust_dialog_title">Vertrou aflaaiprogram?</string>
+  <string name="downloader_revoke_trust_dialog_title">Trek vertroue terug?</string>
+  <string name="downloader_trust_dialog_body">Deur voort te gaan, sal hierdie aflaaiprogram toegelaat word om te loop.\n\nAktiveer hierdie aflaaiprogram slegs as jy dit vertrou. Aflaaiprogramme kan Manager arbitrêre kode laat uitvoer.</string>
+  <string name="downloader_trust_dialog_signature">Handtekening:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Aflaaiprogram:\n%s</string>
+  <string name="downloader_delete_apps_title">Vee geselekteerde programme uit</string>
+  <string name="downloader_delete_apps_description">Is jy seker jy wil die geselekteerde programme uitvee?</string>
+  <string name="no_downloader_installed">Geen aflaaiprogramme geïnstalleer nie.</string>
+  <string name="no_downloader_available">Daar is aflaaiprogramme geïnstalleer maar geeneen is vertrou nie. Kontroleer jou instellings.</string>
+  <string name="patch_selector_sheet_actions_title">Aksies</string>
+  <string name="restore_default_selection">Herstel verstekkeuse</string>
+  <string name="deselect_all">Ontkies alles</string>
+  <string name="invert_selection">Keer keuse om</string>
+  <string name="deselect_all_except">Deselekteer alles behalwe %s</string>
+  <string name="scope_dialog_title">Pas toe op</string>
+  <string name="scope_all_patches">Alle pleisters</string>
+  <string name="scope_bundle_patches">Slegs %s</string>
+  <string name="downloader_activity_dialog_body">Gebruikerinteraksie word vereis om voort te gaan met hierdie aflaaiprogram.</string>
+  <string name="view_announcement">Bekyk aankondiging</string>
+  <string name="announcements">Aankondigings</string>
+  <string name="archive">Argief</string>
+  <string name="no_announcements_found">Geen aankondigings gevind nie</string>
+  <string name="new_announcement">Nuwe aankondiging:
+%s</string>
+</resources>
