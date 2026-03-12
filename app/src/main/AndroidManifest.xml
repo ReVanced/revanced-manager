@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DownloaderActivity" android:theme="@style/Theme.DownloaderActivity" />
+        <activity android:name=".DownloaderActivity" android:exported="false" android:theme="@style/Theme.DownloaderActivity" />
 
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
