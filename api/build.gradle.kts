@@ -49,6 +49,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            // Proguard optimisation is disabled by -dontoptimize in the file
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
