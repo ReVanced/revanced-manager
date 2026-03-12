@@ -34,106 +34,106 @@ class SourceSelectorViewModel(
     var selectedSource by mutableStateOf(input.selectedSource)
         private set
 
-    fun selectSource(source: SelectedSource) {
-        selectedSource = source
-    }
-
     var localApp by mutableStateOf<SourceOption?>(null)
         private set
-
-    val downloadedApps = downloadedAppRepository.get(input.packageName)
-        .map { apps ->
-            apps.sortedByDescending { app -> app.version }
-                .map {
-                    SourceOption(
-                        source = SelectedSource.Downloaded(
-                            path = downloadedAppRepository.getApkFileForApp(it).path,
-                            version = it.version
-                        ),
-                        title = it.version,
-                        key = it.version,
-                        disableReason = if (input.version != null && it.version != input.version) {
-                            DisableReason.VERSION_NOT_MATCHING
-                        } else null
-                    )
-                }
-        }
-
-    val downloaderSections = downloaderRepository.downloaderPackageStates.map { packageStates ->
-        packageStates.toList().sortedByDescending { it.second is DownloaderPackageState.Loaded }
-            .mapNotNull { (packageName, state) ->
-                (state as? DownloaderPackageState.Loaded)
-                    ?.takeIf { it.downloaders.isNotEmpty() }
-                    ?.let {
-                        DownloaderSection(
-                            title = it.name.ifBlank { packageName },
-                            key = packageName,
-                            options = it.downloaders.map { downloader ->
-                                SourceOption(
-                                    source = SelectedSource.Downloader(packageName, downloader.className),
-                                    title = downloader.name,
-                                    key = "${packageName}:${downloader.className}",
-                                )
-                            }
-                        )
-                    }
-            }
-    }
-
-    val unavailableDownloaders = downloaderRepository.downloaderPackageStates.map { packageStates ->
-        packageStates.toList()
-            .sortedBy { it.first }
-            .mapNotNull { (packageName, state) ->
-                val disableReason = when (state) {
-                    DownloaderPackageState.Untrusted -> DisableReason.NOT_TRUSTED
-                    is DownloaderPackageState.Failed -> DisableReason.FAILED_TO_LOAD
-                    is DownloaderPackageState.Loaded -> null
-                } ?: return@mapNotNull null
-
-                SourceOption(
-                    source = SelectedSource.Downloader(packageName),
-                    title = with(pm) { pm.getPackageInfo(packageName)?.label() ?: packageName },
-                    key = "unavailable_$packageName",
-                    disableReason = disableReason
-                )
-            }
-    }
 
     var installedSource by mutableStateOf<SourceOption?>(null)
         private set
 
+    fun selectSource(source: SelectedSource) {
+        selectedSource = source
+    }
+
+    private fun versionMismatchReason(version: String?) =
+        DisableReason.VERSION_NOT_MATCHING.takeIf { input.version != null && version != input.version }
+
+    val downloadedApps = downloadedAppRepository.get(input.packageName)
+        .map { apps ->
+            apps.sortedByDescending { it.version }.map { app ->
+                SourceOption(
+                    source = SelectedSource.Downloaded(
+                        path = downloadedAppRepository.getApkFileForApp(app).path,
+                        version = app.version
+                    ),
+                    title = app.version,
+                    key = app.version,
+                    disableReason = versionMismatchReason(app.version)
+                )
+            }
+        }
+
+    val downloaderSections = downloaderRepository.downloaderPackageStates.map { packageStates ->
+        packageStates
+            .filter { (_, state) -> state !is DownloaderPackageState.Loaded || state.downloaders.isNotEmpty() }
+            .map { (packageName, state) ->
+                when (state) {
+                    is DownloaderPackageState.Loaded -> DownloaderSection(
+                        title = state.name.ifBlank { packageName },
+                        key = packageName,
+                        options = state.downloaders.map { downloader ->
+                            SourceOption(
+                                source = SelectedSource.Downloader(
+                                    packageName,
+                                    downloader.className
+                                ),
+                                title = downloader.name,
+                                key = "${packageName}:${downloader.className}",
+                            )
+                        }
+                    )
+
+                    DownloaderPackageState.Untrusted,
+                    is DownloaderPackageState.Failed -> {
+                        val title =
+                            with(pm) { pm.getPackageInfo(packageName)?.label() ?: packageName }
+                        DownloaderSection(
+                            title = title,
+                            key = "unavailable_$packageName",
+                            options = listOf(
+                                SourceOption(
+                                    source = SelectedSource.Downloader(packageName),
+                                    title = title,
+                                    key = "unavailable_$packageName",
+                                    disableReason = when (state) {
+                                        DownloaderPackageState.Untrusted -> DisableReason.NOT_TRUSTED
+                                        else -> DisableReason.FAILED_TO_LOAD
+                                    },
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+    }
+
     init {
         viewModelScope.launch {
-            val packageInfo = pm.getPackageInfo(input.packageName) ?: return@launch
+            pm.getPackageInfo(input.packageName)?.let { packageInfo ->
+                val installedApp = installedAppRepository.get(input.packageName)
 
-            val installedApp = installedAppRepository.get(input.packageName)
-
-            installedSource = SourceOption(
-                source = SelectedSource.Installed,
-                title = packageInfo.versionName.toString(),
-                key = input.packageName,
-                disableReason = when {
-                    installedApp?.installType == InstallType.DEFAULT -> DisableReason.ALREADY_PATCHED
-                    installedApp?.installType == InstallType.MOUNT && !rootInstaller.hasRootAccess() ->
-                        DisableReason.NO_ROOT
-                    input.version != null && packageInfo.versionName != input.version -> DisableReason.VERSION_NOT_MATCHING
-                    else -> null
-                }
-            )
-        }
-        input.localPath?.let { local ->
-            viewModelScope.launch {
-                val packageInfo = pm.getPackageInfo(File(local))
-                    ?: return@launch
-
-                localApp = SourceOption(
-                    source = SelectedSource.Local(local),
+                installedSource = SourceOption(
+                    source = SelectedSource.Installed,
                     title = packageInfo.versionName.toString(),
-                    key = "local",
-                    disableReason = if (input.version != null && packageInfo.versionName != input.version) {
-                        DisableReason.VERSION_NOT_MATCHING
-                    } else null
+                    key = input.packageName,
+                    disableReason = when {
+                        installedApp?.installType == InstallType.DEFAULT -> DisableReason.ALREADY_PATCHED
+                        installedApp?.installType == InstallType.MOUNT && !rootInstaller.hasRootAccess() ->
+                            DisableReason.NO_ROOT
+
+                        else -> versionMismatchReason(packageInfo.versionName)
+                    }
                 )
+            }
+
+            input.localPath?.let { local ->
+                pm.getPackageInfo(File(local))?.let { packageInfo ->
+                    localApp = SourceOption(
+                        source = SelectedSource.Local(local),
+                        title = packageInfo.versionName.toString(),
+                        key = "local",
+                        disableReason = versionMismatchReason(packageInfo.versionName)
+                    )
+                }
             }
         }
     }

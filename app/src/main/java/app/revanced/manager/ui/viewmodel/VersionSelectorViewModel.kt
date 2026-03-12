@@ -32,54 +32,45 @@ class VersionSelectorViewModel(
 
     val patchCount = input.patchSelection.patchCount
 
-    val downloadedVersions = downloadedAppsRepository.get(input.packageName)
-        .map { apps ->
-            apps.map { it.version }
-        }
+    var selectedVersion by mutableStateOf(input.selectedVersion)
+        private set
+
+    var installedAppVersion by mutableStateOf<String?>(null)
+        private set
+
+    fun selectVersion(version: SelectedVersion) {
+        selectedVersion = version
+    }
 
     private val _localVersion = MutableStateFlow<String?>(null)
     val localVersion: StateFlow<String?> = _localVersion
+
+    val downloadedVersions = downloadedAppsRepository.get(input.packageName)
+        .map { apps -> apps.map { it.version } }
 
     val availableVersions = combine(
         patchBundleRepository.suggestedVersions(input.packageName, input.patchSelection),
         _localVersion,
     ) { versions, local ->
-        versions.orEmpty()
-            .let { versions ->
-                local?.let {
-                    versions.toMutableMap().also { it.putIfAbsent(local, 0) }
-                } ?: versions
-            }
-            .map { (key, value) -> SelectedVersion.Specific(key) to patchCount - value }
-            .sortedWith(
-                compareBy<Pair<SelectedVersion.Specific, Int>>{ it.second }
-                    .thenByDescending { it.first.version }
-            )
-    }
+        val allVersions = versions.orEmpty().toMutableMap().apply {
+            if (local != null) putIfAbsent(local, 0)
+        }
 
-    var installedAppVersion by mutableStateOf<String?>(null)
+        allVersions
+            .map { (version, supported) -> SelectedVersion.Specific(version) to patchCount - supported }
+            .sortedWith(compareBy<Pair<SelectedVersion.Specific, Int>> { it.second }.thenByDescending { it.first.version })
+    }
 
     init {
         viewModelScope.launch {
-            val currentApp = pm.getPackageInfo(input.packageName)
             val patchedApp = installedAppRepository.get(input.packageName)
+            if (patchedApp?.installType != InstallType.DEFAULT) {
+                installedAppVersion = pm.getPackageInfo(input.packageName)?.versionName
+            }
 
-            if (patchedApp?.installType == InstallType.DEFAULT) return@launch
-
-            installedAppVersion = currentApp?.versionName
-        }
-        input.localPath?.let { local ->
-            viewModelScope.launch {
-                val packageInfo = pm.getPackageInfo(File(local))
-                _localVersion.value = packageInfo?.versionName
+            input.localPath?.let { local ->
+                _localVersion.value = pm.getPackageInfo(File(local))?.versionName
             }
         }
-    }
-
-    var selectedVersion by mutableStateOf(input.selectedVersion)
-        private set
-
-    fun selectVersion(version: SelectedVersion) {
-        selectedVersion = version
     }
 }

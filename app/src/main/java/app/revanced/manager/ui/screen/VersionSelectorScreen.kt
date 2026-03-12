@@ -1,9 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Save
@@ -22,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
@@ -53,63 +51,53 @@ fun VersionSelectorScreen(
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            VersionOption(
-                version = SelectedVersion.Auto,
-                isSelected = viewModel.selectedVersion is SelectedVersion.Auto,
-                onSelect = viewModel::selectVersion,
-                headlineContent = { Text(stringResource(R.string.version_selector_auto_title)) },
-                supportingContent = { Text(stringResource(R.string.version_selector_auto_description)) }
-            )
-            HorizontalDivider()
+        LazyColumnWithScrollbar(contentPadding = paddingValues) {
+            item {
+                VersionOption(
+                    version = SelectedVersion.Auto,
+                    isSelected = viewModel.selectedVersion is SelectedVersion.Auto,
+                    onSelect = viewModel::selectVersion,
+                    headlineContent = { Text(stringResource(R.string.version_selector_auto_title)) },
+                    supportingContent = { Text(stringResource(R.string.version_selector_auto_description)) }
+                )
+                HorizontalDivider()
+            }
 
             if (versions.isNotEmpty()) {
-                LazyColumn {
-                    items(versions, key = { it.first.version }) { version ->
-                        val isDownloaded = downloadedVersions.contains(version.first.version)
-                        val isInstalled = viewModel.installedAppVersion == version.first.version
-                        val isLocal = localVersion == version.first.version
-
-                        val overlineText = when {
-                            isLocal -> stringResource(R.string.version_selector_state_local)
-                            isDownloaded && isInstalled -> stringResource(R.string.version_selector_state_downloaded_installed)
-                            isDownloaded -> stringResource(R.string.version_selector_state_downloaded)
-                            isInstalled -> stringResource(R.string.version_selector_state_installed)
-                            else -> null
-                        }
-
-                        VersionOption(
-                            version = version.first,
-                            isSelected = viewModel.selectedVersion == version.first,
-                            onSelect = viewModel::selectVersion,
-                            headlineContent = { Text(version.first.version) },
-                            supportingContent = {
-                                Text(
-                                    if (version.second == 0) {
-                                        stringResource(R.string.version_selector_all_patches_compatible)
-                                    } else {
-                                        pluralStringResource(
-                                            R.plurals.version_selector_incompatible_patches,
-                                            version.second,
-                                            version.second,
-                                        )
-                                    }
-                                )
-                            },
-                            overlineContent = overlineText?.let { { Text(it) } }
-                        )
+                items(versions, key = { (version, _) -> version.version }) { (version, incompatibleCount) ->
+                    val overlineText = when {
+                        localVersion == version.version -> stringResource(R.string.version_selector_state_local)
+                        version.version in downloadedVersions && viewModel.installedAppVersion == version.version ->
+                            stringResource(R.string.version_selector_state_downloaded_installed)
+                        version.version in downloadedVersions -> stringResource(R.string.version_selector_state_downloaded)
+                        viewModel.installedAppVersion == version.version -> stringResource(R.string.version_selector_state_installed)
+                        else -> null
                     }
+
+                    VersionOption(
+                        version = version,
+                        isSelected = viewModel.selectedVersion == version,
+                        onSelect = viewModel::selectVersion,
+                        headlineContent = { Text(version.version) },
+                        supportingContent = {
+                            Text(
+                                if (incompatibleCount == 0) stringResource(R.string.version_selector_all_patches_compatible)
+                                else pluralStringResource(R.plurals.version_selector_incompatible_patches, incompatibleCount, incompatibleCount)
+                            )
+                        },
+                        overlineContent = overlineText?.let { { Text(it) } }
+                    )
                 }
             } else {
-                VersionOption(
-                    version = SelectedVersion.Any,
-                    isSelected = viewModel.selectedVersion is SelectedVersion.Any,
-                    onSelect = viewModel::selectVersion,
-                    headlineContent = { Text(stringResource(R.string.version_selector_any_title)) },
-                    supportingContent = { Text(stringResource(R.string.version_selector_any_description)) }
-                )
+                item {
+                    VersionOption(
+                        version = SelectedVersion.Any,
+                        isSelected = viewModel.selectedVersion is SelectedVersion.Any,
+                        onSelect = viewModel::selectVersion,
+                        headlineContent = { Text(stringResource(R.string.version_selector_any_title)) },
+                        supportingContent = { Text(stringResource(R.string.version_selector_any_description)) }
+                    )
+                }
             }
         }
     }
@@ -125,8 +113,7 @@ private fun VersionOption(
     overlineContent: @Composable (() -> Unit)? = null,
 ) {
     ListItem(
-        modifier = Modifier
-            .clickable { onSelect(version) },
+        modifier = Modifier.clickable { onSelect(version) },
         leadingContent = {
             RadioButton(
                 selected = isSelected,

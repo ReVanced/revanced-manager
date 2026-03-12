@@ -1,7 +1,7 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,8 +18,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
-import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.viewmodel.SourceSelectorViewModel
@@ -34,8 +34,11 @@ fun SourceSelectorScreen(
     viewModel: SourceSelectorViewModel,
 ) {
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
-    val downloaderSections by viewModel.downloaderSections.collectAsStateWithLifecycle(emptyList())
-    val unavailableDownloaders by viewModel.unavailableDownloaders.collectAsStateWithLifecycle(emptyList())
+    val allDownloaderSections by viewModel.downloaderSections.collectAsStateWithLifecycle(emptyList())
+    val (downloaderSections, unavailableSections) = allDownloaderSections.partition { section ->
+        section.options.all { it.disableReason == null }
+    }
+    val unavailableDownloaders = unavailableSections.flatMap { it.options }
 
     Scaffold(
         topBar = {
@@ -52,87 +55,47 @@ fun SourceSelectorScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumnWithScrollbar (
-            contentPadding = paddingValues,
-        ) {
-            item {
-                SourceOption(
-                    isSelected = viewModel.selectedSource == SelectedSource.Auto,
-                    onSelect = { viewModel.selectSource(SelectedSource.Auto) },
-                    headlineContent = { Text(stringResource(R.string.version_selector_auto_title)) },
-                    supportingContent = { Text(stringResource(R.string.source_selector_auto_description)) },
-                )
-            }
-            item {
-                SourceOption(
-                    isSelected = viewModel.selectedSource == SelectedSource.Downloader(),
-                    onSelect = { viewModel.selectSource(SelectedSource.Downloader()) },
-                    headlineContent = { Text(stringResource(R.string.source_selector_any_available_downloader)) },
-                )
-            }
+        ColumnWithScrollbar(modifier = Modifier.padding(paddingValues)) {
+            SourceOption(
+                isSelected = viewModel.selectedSource == SelectedSource.Auto,
+                onSelect = { viewModel.selectSource(SelectedSource.Auto) },
+                headlineContent = { Text(stringResource(R.string.version_selector_auto_title)) },
+                supportingContent = { Text(stringResource(R.string.source_selector_auto_description)) },
+            )
+            SourceOption(
+                isSelected = viewModel.selectedSource == SelectedSource.Downloader(),
+                onSelect = { viewModel.selectSource(SelectedSource.Downloader()) },
+                headlineContent = { Text(stringResource(R.string.source_selector_any_available_downloader)) },
+            )
 
             viewModel.localApp?.let { option ->
-                item {
-                    GroupHeader(stringResource(R.string.source_selector_category_local))
-                }
-                item {
-                    SourceOption(
-                        sourceOption = option,
-                        isSelected = viewModel.selectedSource == option.source,
-                        onSelect = viewModel::selectSource,
-                    )
-                }
+                GroupHeader(stringResource(R.string.source_selector_category_local))
+                SourceOption(option, viewModel.selectedSource, viewModel::selectSource)
             }
 
             viewModel.installedSource?.let { option ->
-                item {
-                    GroupHeader(stringResource(R.string.installed))
-                }
-                item {
-                    SourceOption(
-                        sourceOption = option,
-                        isSelected = viewModel.selectedSource == option.source,
-                        onSelect = viewModel::selectSource,
-                    )
-                }
+                GroupHeader(stringResource(R.string.installed))
+                SourceOption(option, viewModel.selectedSource, viewModel::selectSource)
             }
 
             if (downloadedApps.isNotEmpty()) {
-                item {
-                    GroupHeader(stringResource(R.string.source_selector_category_downloaded))
+                GroupHeader(stringResource(R.string.source_selector_category_downloaded))
+                downloadedApps.forEach { option ->
+                    SourceOption(option, viewModel.selectedSource, viewModel::selectSource)
                 }
-            }
-            items(downloadedApps, key = { it.key }) { option ->
-                SourceOption(
-                    sourceOption = option,
-                    isSelected = viewModel.selectedSource == option.source,
-                    onSelect = viewModel::selectSource,
-                )
             }
 
             downloaderSections.forEach { section ->
-                item(key = "downloader_header_${section.key}") {
-                    GroupHeader(section.title)
-                }
-                items(section.options, key = { it.key }) { option ->
-                    SourceOption(
-                        sourceOption = option,
-                        isSelected = viewModel.selectedSource == option.source,
-                        onSelect = viewModel::selectSource,
-                    )
+                GroupHeader(section.title)
+                section.options.forEach { option ->
+                    SourceOption(option, viewModel.selectedSource, viewModel::selectSource)
                 }
             }
 
             if (unavailableDownloaders.isNotEmpty()) {
-                item(key = "downloader_unavailable_header") {
-                    GroupHeader(stringResource(R.string.downloaders))
-                }
-                items(unavailableDownloaders, key = { it.key }) { option ->
-                    SourceOption(
-                        sourceOption = option,
-                        isSelected = viewModel.selectedSource == option.source,
-                        onSelect = viewModel::selectSource,
-                    )
+                GroupHeader(stringResource(R.string.downloaders))
+                unavailableDownloaders.forEach { option ->
+                    SourceOption(option, viewModel.selectedSource, viewModel::selectSource)
                 }
             }
         }
@@ -142,14 +105,14 @@ fun SourceSelectorScreen(
 @Composable
 private fun SourceOption(
     sourceOption: SourceSelectorViewModel.SourceOption,
-    isSelected: Boolean,
+    selectedSource: SelectedSource,
     onSelect: (SelectedSource) -> Unit,
 ) {
     SourceOption(
-        isSelected = isSelected,
+        isSelected = selectedSource == sourceOption.source,
         onSelect = { onSelect(sourceOption.source) },
         headlineContent = { Text(sourceOption.title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        supportingContent = sourceOption.disableReason?.let {{ Text(stringResource(it.message)) }},
+        supportingContent = sourceOption.disableReason?.let { { Text(stringResource(it.message)) } },
         enabled = sourceOption.disableReason == null,
     )
 }
