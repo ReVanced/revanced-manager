@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.ReVancedManager" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <item name="postSplashScreenTheme">@style/Theme.AppCompat.NoActionBar</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.DownloaderActivity" parent="Theme.AppCompat.DayNight">
+        <item name="android:windowActionBar">true</item>
+        <item name="android:windowNoTitle">false</item>
     </style>
 </resources>

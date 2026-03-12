@@ -2,6 +2,7 @@ package app.revanced.manager.domain.repository
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageInfo
 import android.os.Parcelable
 import android.util.Log
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.lang.reflect.Modifier
 
 @OptIn(DownloaderHostApi::class)
@@ -50,6 +52,8 @@ class DownloaderRepository(
         installed subtract acknowledged
     }
 
+    private val downloadersDir = app.getDir("downloaders", Context.MODE_PRIVATE)
+
     suspend fun reload() {
         val downloaderPackages =
             withContext(Dispatchers.IO) {
@@ -65,8 +69,12 @@ class DownloaderRepository(
             acknowledgedDownloader subtract installedDownloaderPackageNames.value
         if (uninstalledDownloader.isNotEmpty()) {
             Log.d(tag, "Uninstalled downloader: ${uninstalledDownloader.joinToString(", ")}")
+
             this@DownloaderRepository.acknowledgedPackageNames.update(acknowledgedDownloader subtract uninstalledDownloader)
             trustDao.removeAll(uninstalledDownloader)
+            withContext(Dispatchers.IO) {
+                uninstalledDownloader.forEach { downloadersDir.resolve(it).deleteRecursively() }
+            }
         }
     }
 
@@ -109,6 +117,8 @@ class DownloaderRepository(
             val scopeImpl = object : Scope {
                 override val hostPackageName = app.packageName
                 override val downloaderPackageName = downloaderContext.packageName
+                override val dataDir =
+                    downloadersDir.resolve(downloaderPackageName).also(File::mkdirs)
             }
 
             DownloaderPackageState.Loaded(
@@ -126,11 +136,12 @@ class DownloaderRepository(
                         className,
                         downloaderContext.getString(downloader.name),
                         packageInfo.versionName!!,
-                        downloader.get,
-                        downloader.download
+                        scopeImpl,
+                        downloader
                     )
                 },
                 classLoader,
+                downloaderContext,
                 with(pm) { packageInfo.label() }
             )
         } catch (e: CancellationException) {

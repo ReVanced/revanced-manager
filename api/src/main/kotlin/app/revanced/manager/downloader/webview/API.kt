@@ -1,6 +1,7 @@
 package app.revanced.manager.downloader.webview
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.annotation.StringRes
 import app.revanced.manager.downloader.DownloadUrl
 import app.revanced.manager.downloader.DownloaderScope
@@ -8,6 +9,7 @@ import app.revanced.manager.downloader.GetScope
 import app.revanced.manager.downloader.Scope
 import app.revanced.manager.downloader.Downloader
 import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.requestStartFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -121,15 +123,11 @@ suspend fun <T> GetScope.runWebView(
     val scope = WebViewScope<T>(this@supervisorScope, this@runWebView) { result = Container(it) }
     scope.initialUrl = scope.block()
 
-    // Start the webview activity and wait until it finishes.
-    requestStartActivity(Intent().apply {
-        putExtra(
-            WebViewActivity.KEY,
-            WebViewActivity.Parameters(title, scope.binder)
-        )
-        setClassName(
-            hostPackageName,
-            WebViewActivity::class.qualifiedName!!
+    // Start the webview and wait until it finishes.
+    requestStartFragment<WebViewFragment>(Bundle().apply {
+        putParcelable(
+            WebViewFragment.KEY,
+            WebViewFragment.Parameters(title, scope.binder)
         )
     })
 
