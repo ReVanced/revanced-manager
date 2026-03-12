@@ -42,6 +42,8 @@ import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.SelectedApp
@@ -100,7 +102,6 @@ class PatcherViewModel(
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val rootInstaller: RootInstaller by inject()
     private val prefs: PreferencesManager by inject()
-    private val patchBundleRepository: PatchBundleRepository by inject()
     private val savedStateHandle: SavedStateHandle = get()
     private val ackpineInstaller: PackageInstaller = get()
 
@@ -344,61 +345,88 @@ class PatcherViewModel(
 
         val statFs = StatFs(Environment.getDataDirectory().path)
 
-        val apkSource = when (input.selectedApp) {
-            is SelectedApp.Search -> "Auto (Search)"
-            is SelectedApp.Installed -> "Installed app"
-            is SelectedApp.Download -> "Download"
-            is SelectedApp.Local -> "Storage (Local)"
-        }
-
-        val patchCounts = patchBundleRepository.patchCountsFlow.first()
-        val patchesInfo = patchBundleRepository.sources.first()
-            .joinToString("\n") { source ->
-                val count = patchCounts[source.uid] ?: 0
-                "  - ${source.name}: ${source.version ?: "N/A"} ($count patches)"
-            }
         val hasRoot = rootInstaller.hasRootAccess()
         val suggestedVersion = patchBundleRepository.suggestedVersions.first()[packageName]
+        val allowIncompatiblePatches = prefs.disablePatchVersionCompatCheck.get()
+        val disableSelectionWarning = prefs.disableSelectionWarning.get()
+        val disableUniversalPatchCheck = prefs.disableUniversalPatchCheck.get()
+        val usePatchesPrereleases = prefs.usePatchesPrereleases.get()
+        val useProcessRuntime = prefs.useProcessRuntime.get()
+        val patcherProcessMemoryLimit = prefs.patcherProcessMemoryLimit.get()
+        val apiUrl = prefs.api.get()
+        val useManagerPrereleases = prefs.useManagerPrereleases.get()
+        val managerAutoUpdates = prefs.managerAutoUpdates.get()
+        val patchSelectionChanges = formatPatchSelectionChanges(
+            patchBundleRepository.scopedBundleInfoFlow(packageName, selectedApp.version).first(),
+            input.selectedPatches,
+            allowIncompatiblePatches
+        )
 
-        val deviceContent = """
-            - Target App
-            Package name: $packageName
-            Installed version: ${version ?: "N/A"}
-            Selected version: ${selectedApp.version}
-            Suggested version: ${suggestedVersion ?: "N/A"}
-            APK source: $apkSource
-            APK file: ${inputFile?.name ?: "N/A"}
-            
-            - Selected Patches
-            Patch bundles: $patchesInfo
-            
-            - Patching Configuration
-            Version compatibility check: ${!prefs.disablePatchVersionCompatCheck.get()}
-            Allow changing patch selection: ${prefs.disableSelectionWarning.get()}
-            Show universal patches: ${!prefs.disableUniversalPatchCheck.get()}
-            Use patches pre-releases: ${prefs.usePatchesPrereleases.get()}
-            
-            - Runtime Configuration
-            Use process runtime: ${prefs.useProcessRuntime.get()}
-            Process runtime custom memory limit: ${prefs.patcherProcessMemoryLimit.get()}
-            Memory limit: ${activityManager.memoryClass}MB (large: ${activityManager.largeMemoryClass}MB)
-            
-            - Manager
-            App version: ${BuildConfig.VERSION_NAME}
-            API URL: ${prefs.api.get()}
-            Use manager pre-releases: ${prefs.useManagerPrereleases.get()}
-            Manager auto-update: ${prefs.managerAutoUpdates.get()}
-            
-            - Environment
-            Root permissions: ${if (hasRoot) "Yes" else "No"}
-            RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available
-            Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available
-            
-            - Device Info
-            Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})
-            Supported architectures: ${Build.SUPPORTED_ABIS.joinToString()}
-            Model: ${Build.MODEL}
-        """.trimIndent()
+        val patchingConfiguration = buildList {
+            addPreferenceChange(
+                "Version compatibility check",
+                allowIncompatiblePatches,
+                prefs.disablePatchVersionCompatCheck.default
+            ) { (!it).toString() }
+            addPreferenceChange(
+                "Allow changing patch selection",
+                disableSelectionWarning,
+                prefs.disableSelectionWarning.default
+            )
+            addPreferenceChange(
+                "Show universal patches",
+                disableUniversalPatchCheck,
+                prefs.disableUniversalPatchCheck.default
+            ) { (!it).toString() }
+            addPreferenceChange(
+                "Use patches pre-releases",
+                usePatchesPrereleases,
+                prefs.usePatchesPrereleases.default
+            )
+        }
+
+        val runtimeConfiguration = buildList {
+            addPreferenceChange(
+                "Use process runtime",
+                useProcessRuntime,
+                prefs.useProcessRuntime.default
+            )
+            addPreferenceChange(
+                "Process runtime custom memory limit",
+                patcherProcessMemoryLimit,
+                prefs.patcherProcessMemoryLimit.default
+            ) { "${it}MB" }
+            add("Memory limit: ${activityManager.memoryClass}MB (large: ${activityManager.largeMemoryClass}MB)")
+        }
+
+        val managerConfiguration = buildList {
+            add("Manager version: ${BuildConfig.VERSION_NAME}")
+            addPreferenceChange("API URL", apiUrl, prefs.api.default)
+            addPreferenceChange(
+                "Use manager pre-releases",
+                useManagerPrereleases,
+                prefs.useManagerPrereleases.default
+            )
+            addPreferenceChange(
+                "Manager auto-update",
+                managerAutoUpdates,
+                prefs.managerAutoUpdates.default
+            )
+        }
+
+        val details = buildList {
+            add(formatAppLine(packageName, selectedApp.version, suggestedVersion))
+            addAll(patchSelectionChanges)
+            addAll(managerConfiguration)
+            addAll(patchingConfiguration)
+            addAll(runtimeConfiguration)
+            add("Root permissions: ${if (hasRoot) "Yes" else "No"}")
+            add("RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available")
+            add("Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available")
+            add("Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
+            add("Supported architectures: ${Build.SUPPORTED_ABIS.joinToString()}")
+            add("Model: ${Build.MODEL}")
+        }.joinToString("\n")
 
         val logsContent =
             logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
@@ -407,7 +435,7 @@ class PatcherViewModel(
             action = Intent.ACTION_SEND
             type = "text/plain"
             putExtra(
-                Intent.EXTRA_TEXT, "$deviceContent\n\n- Logs\n$logsContent"
+                Intent.EXTRA_TEXT, "$details\n\n$logsContent"
             )
             type = "text/plain"
         }
@@ -599,6 +627,56 @@ class PatcherViewModel(
             LogLevel.ERROR -> Log.e(TAG, msg)
         }
 
+        fun formatAppLine(packageName: String, selectedVersion: String?, suggestedVersion: String?): String {
+            val versionDetails = buildList {
+                selectedVersion?.let { add("Selected: $it") }
+                suggestedVersion?.let { add("Suggested: $it") }
+            }
+
+            return if (versionDetails.isEmpty()) {
+                "App: $packageName"
+            } else {
+                "App: $packageName (${versionDetails.joinToString(", ")})"
+            }
+        }
+
+
+        inline fun <T> MutableList<String>.addPreferenceChange(
+            label: String,
+            value: T,
+            default: T,
+            formatter: (T) -> String = { it.toString() }
+        ) {
+            if (value != default) add("$label: ${formatter(value)}")
+        }
+
+        fun formatPatchSelectionChanges(
+            bundles: List<PatchBundleInfo.Scoped>,
+            selectedPatches: PatchSelection,
+            allowIncompatible: Boolean
+        ): List<String> {
+            val defaultSelection = bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
+            val bundleNames = bundles.associate { it.uid to it.name }
+            val knownBundleIds = bundles.map(PatchBundleInfo.Scoped::uid)
+            val orderedBundleIds = knownBundleIds + (selectedPatches.keys + defaultSelection.keys)
+                .filterNot(knownBundleIds::contains)
+                .sorted()
+
+            return buildList {
+                orderedBundleIds.distinct().forEach { uid ->
+                    val selected = selectedPatches[uid].orEmpty()
+                    val defaults = defaultSelection[uid].orEmpty()
+                    val added = (selected - defaults).sorted()
+                    val removed = (defaults - selected).sorted()
+                    if (added.isEmpty() && removed.isEmpty()) return@forEach
+
+                    add("Source: ${bundleNames[uid] ?: "Source $uid"}")
+                    if (added.isNotEmpty()) add("Added: ${added.joinToString()}")
+                    if (removed.isNotEmpty()) add("Removed: ${removed.joinToString()}")
+                }
+            }
+        }
+
         fun generateSteps(
             context: Context, selectedApp: SelectedApp, selectedPatches: PatchSelection
         ): List<Step> = buildList {
@@ -658,3 +736,6 @@ class PatcherViewModel(
         }
     }
 }
+
+
+
