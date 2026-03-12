@@ -19,8 +19,12 @@ import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -40,15 +44,50 @@ class AppSelectorViewModel(
             "input.apk"
         ).also(File::delete)
     }
-    val appList = pm.appList
+
+    val filterTextFlow = MutableStateFlow("")
+    val filterText: StateFlow<String> = filterTextFlow
+
+    val apps = pm.appList.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = null,
+    )
+
+    val filteredApps = filterText
+        .combine(apps) { filter, apps ->
+            if (apps == null || filter.isBlank()) {
+                apps
+            } else {
+                apps.filter { app ->
+                    app.packageName.contains(filter, true) ||
+                            loadLabel(app.packageInfo).contains(filter)
+                }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(
+                stopTimeoutMillis = 0,
+                replayExpirationMillis = 10_000,
+            ),
+            initialValue = null,
+        )
 
     private val storageSelectionChannel = Channel<SelectedApp.Local>()
     val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
-    val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
+    val suggestedAppVersions = patchBundleRepository.suggestedVersions.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyMap(),
+    )
 
     var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
         private set
+
+    fun setFilterText(filter: String) {
+        filterTextFlow.value = filter
+    }
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 

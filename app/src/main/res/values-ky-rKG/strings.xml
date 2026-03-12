@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Патчер</string>
+  <string name="downloader_host_permission_label">ReVanced Manager жүктөп алуучу хосту</string>
+  <string name="downloader_host_permission_description">ReVanced Manager жүктөп алуучуларына кирүү мүмкүнчүлүгүн башкаруу үчүн колдонулат. Бул ReVanced Manager гана бар.</string>
+  <string name="new_downloader_notification">Жаңы жүктөөчүлөр жеткиликтүү. Аларды конфигурациялоо үчүн бул жерди басыңыз.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Жүктөп алуучу жок</string>
+  <string name="announcements_filter_tag">Тег боюнча чыпкалоо</string>
+  <string name="announcements_show_archived">Архивделгендерди көрсөтүү</string>
+  <string name="downloads_description">Жүктөөчүлөр жана жүктөлүп алынган колдонмолор</string>
+  <string name="downloaders">Жүктөөчүлөр</string>
+  <string name="downloader_state_trusted">Ишенимдүү</string>
+  <string name="downloader_state_failed">Жүктөлбөй калды. Көбүрөөк маалымат алуу үчүн басыңыз</string>
+  <string name="downloader_state_untrusted">Ишенимсиз</string>
+  <string name="downloader_trust_dialog_title">Жүктөөчүгө ишенесизби?</string>
+  <string name="downloader_revoke_trust_dialog_title">Ишенимди жокко чыгарасызбы?</string>
+  <string name="downloader_trust_dialog_body">Улантуу бул жүктөөчүгө иштөөгө уруксат берет.\n\nБул жүктөөчүгө ишенсеңиз гана иштетиңиз. Жүктөөчүлөр Manager\'ди каалаган кодду аткарууга мажбурлашы мүмкүн.</string>
+  <string name="downloader_trust_dialog_signature">Колтамга:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Жүктөөчү:\n%s</string>
+  <string name="downloader_delete_apps_title">Тандалган колдонмолорду жок кылуу</string>
+  <string name="downloader_delete_apps_description">Тандалган колдонмолорду жок кылгыңыз келеби?</string>
+  <string name="no_downloader_installed">Жүктөөчүлөр орнотулган эмес.</string>
+  <string name="no_downloader_available">Жүктөөчүлөр орнотулган, бирок алардын бири да ишенимдүү эмес. Жөндөөлөрүңүздү текшериңиз.</string>
+  <string name="patch_selector_sheet_actions_title">Аракеттер</string>
+  <string name="restore_default_selection">Демейки тандоону калыбына келтирүү</string>
+  <string name="deselect_all">Баарын тандоодон алып салуу</string>
+  <string name="invert_selection">Тандоону инвертирлөө</string>
+  <string name="deselect_all_except">Баарын тандоодон алып салуу, %s\'дан башкасын</string>
+  <string name="scope_dialog_title">Колдонуу</string>
+  <string name="scope_all_patches">Бардык оңдоолор</string>
+  <string name="scope_bundle_patches">%s гана</string>
+  <string name="downloader_activity_dialog_body">Бул жүктөөчү менен улантуу үчүн колдонуучунун аракети талап кылынат.</string>
+  <string name="view_announcement">Жарыяны көрүү</string>
+  <string name="announcements">Жарыялар</string>
+  <string name="archive">Архив</string>
+  <string name="no_announcements_found">Жарыялар табылган жок</string>
+  <string name="new_announcement">Жаңы жарыя:
+%s</string>
+</resources>

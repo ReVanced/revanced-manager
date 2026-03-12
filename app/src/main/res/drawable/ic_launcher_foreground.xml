@@ -1,30 +1,40 @@
+<!-- Copyright 2024 ReVanced. Not licensed under GPL. See https://github.com/ReVanced/revanced-branding -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="256"
     android:viewportHeight="256">
-  <group android:scaleX="0.23"
-      android:scaleY="0.23"
-      android:translateX="98.56"
-      android:translateY="98.56">
-    <path
-        android:pathData="M253.85,4.9C254.32,3.82 254.22,2.57 253.58,1.58C252.93,0.6 251.83,0 250.64,0C243.29,0 230.47,0 225.95,0C224.96,0 224.06,0.59 223.66,1.5C216.03,18.88 144.1,182.7 130.29,214.16C129.89,215.07 128.99,215.66 128,215.66C127.01,215.66 126.11,215.07 125.71,214.16C111.9,182.7 39.97,18.88 32.34,1.5C31.94,0.59 31.04,0 30.05,0C25.53,0 12.71,0 5.36,0C4.17,0 3.07,0.6 2.42,1.58C1.78,2.57 1.68,3.82 2.15,4.9C16.78,38.3 101.47,231.61 111.24,253.9C111.8,255.18 113.06,256 114.45,256C120.29,256 135.71,256 141.55,256C142.94,256 144.2,255.18 144.76,253.9C154.52,231.61 239.22,38.3 253.85,4.9Z"
-        android:fillColor="#ffffff"/>
-    <path
-        android:pathData="M130.59,131.75C130.06,132.68 129.07,133.25 128,133.25C126.93,133.25 125.94,132.68 125.4,131.75C113.45,111.06 63.88,25.19 51.93,4.5C51.4,3.57 51.4,2.43 51.93,1.5C52.47,0.57 53.46,-0 54.53,-0L201.47,-0C202.54,-0 203.53,0.57 204.06,1.5C204.6,2.43 204.6,3.57 204.06,4.5C192.12,25.19 142.54,111.06 130.59,131.75Z">
-      <aapt:attr name="android:fillColor">
-        <gradient 
-            android:startX="128"
-            android:startY="-0"
-            android:endX="128"
-            android:endY="254.6"
-            android:type="linear">
-          <item android:offset="0" android:color="#FFF04E98"/>
-          <item android:offset="0.5" android:color="#FF5F65D4"/>
-          <item android:offset="1" android:color="#FF4E98F0"/>
-        </gradient>
-      </aapt:attr>
-    </path>
-  </group>
+
+    <group
+        android:scaleX="0.24"
+        android:scaleY="0.24"
+        android:translateX="97.28"
+        android:translateY="97.28">
+
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M250.09,13.49C251.39,10.51 251.11,7.08 249.33,4.36C247.55,1.64 244.52,0 241.27,0H228.81C226.08,0 223.61,1.62 222.51,4.11C211.54,29.1 153.63,160.99 134.29,205.04C133.2,207.54 130.73,209.15 128,209.15C125.27,209.15 122.8,207.54 121.7,205.04C102.36,160.99 44.46,29.1 33.49,4.11C32.39,1.62 29.92,0 27.19,0H14.73C11.48,0 8.45,1.64 6.67,4.36C4.89,7.08 4.61,10.51 5.91,13.49C26.64,60.8 95.56,218.1 109.63,250.24C111.17,253.74 114.63,256 118.45,256H137.55C141.37,256 144.83,253.74 146.36,250.24C160.44,218.1 229.36,60.8 250.09,13.49Z"/>
+        <path
+            android:pathData="M135.14,123.87C133.67,126.43 130.94,128 128,128C125.05,128 122.33,126.43 120.85,123.87C105.89,97.97 71.44,38.28 56.48,12.37C55,9.82 55,6.68 56.48,4.12C57.95,1.57 60.68,0 63.62,0H192.37C195.32,0 198.04,1.57 199.52,4.12C200.99,6.68 200.99,9.82 199.52,12.37C184.56,38.28 150.1,97.97 135.14,123.87Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="128"
+                    android:startY="0"
+                    android:endX="128"
+                    android:endY="254.6"
+                    android:type="linear">
+                    <item
+                        android:offset="0"
+                        android:color="#FFF04E98"/>
+                    <item
+                        android:offset="0.5"
+                        android:color="#FF5F65D4"/>
+                    <item
+                        android:offset="1"
+                        android:color="#FF4E98F0"/>
+                </gradient>
+            </aapt:attr>
+        </path>
+    </group>
 </vector>

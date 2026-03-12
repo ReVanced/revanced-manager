@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">পেচাৰ</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ডাউনল\'ডাৰ হ\'ষ্ট</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ডাউনল\'ডাৰবোৰলৈ অভিগম নিয়ন্ত্ৰণ কৰিবলৈ ব্যৱহাৰ কৰা হয়। কেৱল ReVanced Manager ৰ ওচৰত এইটো আছে।</string>
+  <string name="new_downloader_notification">নতুন ডাউনল\'ডাৰ(সমূহ) উপলব্ধ। সেইবোৰ কনফিগাৰ কৰিবলৈ ইয়াত ক্লিক কৰক।</string>
+  <string name="app_source_dialog_option_auto_unavailable">কোনো ডাউনল\'ডাৰ উপলব্ধ নহয়</string>
+  <string name="announcements_filter_tag">টেগ অনুসৰি ফিল্টাৰ কৰক</string>
+  <string name="announcements_show_archived">আৰ্কাইভ কৰা দেখুৱাওক</string>
+  <string name="downloads_description">ডাউনলোডাৰসকল আৰু ডাউনলোড কৰা এপসমূহ</string>
+  <string name="downloaders">ডাউনলোডাৰসকল</string>
+  <string name="downloader_state_trusted">বিশ্বাসযোগ্য</string>
+  <string name="downloader_state_failed">লোড কৰাত ব্যৰ্থ হৈছে। অধিক বিৱৰণৰ বাবে ক্লিক কৰক</string>
+  <string name="downloader_state_untrusted">অবিশ্বাসযোগ্য</string>
+  <string name="downloader_trust_dialog_title">ডাউনলোডাৰক বিশ্বাস কৰেনে?</string>
+  <string name="downloader_revoke_trust_dialog_title">বিশ্বাস উঠাই ল\'ব নেকি?</string>
+  <string name="downloader_trust_dialog_body">চালু ৰাখিলে এই ডাউনলোডাৰটোক চলাবলৈ অনুমতি দিব।
+
+যদি আপুনি এই ডাউনলোডাৰটোক বিশ্বাস কৰে তেন্তেহে ইয়াক সক্ৰিয় কৰক। ডাউনলোডাৰসকলে Manager ক যিকোনো কোড চাবলৈ দিব পাৰে।</string>
+  <string name="downloader_trust_dialog_signature">স্বাক্ষৰ:
+
+%s</string>
+  <string name="downloader_trust_dialog_name">ডাউনলোডাৰ:
+%s</string>
+  <string name="downloader_delete_apps_title">নিৰ্বাচিত এপসমূহ বিলোপ কৰক</string>
+  <string name="downloader_delete_apps_description">আপুনি নিশ্চিতনে যে আপুনি নিৰ্বাচিত এপসমূহ বিলোপ কৰিব বিচাৰে?</string>
+  <string name="no_downloader_installed">কোনো ডাউনলোডাৰ ইনষ্টল কৰা হোৱা নাই।</string>
+  <string name="no_downloader_available">ডাউনলোডাৰ ইনষ্টল কৰা হৈছে কিন্তু কোনো বিশ্বাসযোগ্য নহয়। আপোনাৰ ছেটিংছ পৰীক্ষা কৰক।</string>
+  <string name="patch_selector_sheet_actions_title">কাৰ্য্যসমূহ</string>
+  <string name="restore_default_selection">ডিফল্ট বাছনি পুনৰুদ্ধাৰ কৰক</string>
+  <string name="deselect_all">সকলো বাছনিমুক্ত কৰক</string>
+  <string name="invert_selection">বাছনি ওলোটা কৰক</string>
+  <string name="deselect_all_except">%s বাহিৰে সকলোবোৰ বাছনিহীন কৰক</string>
+  <string name="scope_dialog_title">প্ৰয়োগ কৰক</string>
+  <string name="scope_all_patches">সকলো পেচ</string>
+  <string name="scope_bundle_patches">কেৱল %s</string>
+  <string name="downloader_activity_dialog_body">এই ডাউনলোডাৰৰ সৈতে আগবাঢ়িবলৈ ব্যৱহাৰকাৰীৰ ক্ৰিয়া-কলাপৰ প্ৰয়োজন।</string>
+  <string name="view_announcement">ঘোষণা চাওক</string>
+  <string name="announcements">ঘোষণাসমূহ</string>
+  <string name="archive">আৰ্কাইভ</string>
+  <string name="no_announcements_found">কোনো জাননী পোৱা নগ\'ল</string>
+  <string name="new_announcement">নতুন জাননী:
+%s</string>
+</resources>

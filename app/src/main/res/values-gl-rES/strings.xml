@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Parcheador</string>
+  <string name="downloader_host_permission_label">Servidor de descarga de ReVanced Manager</string>
+  <string name="downloader_host_permission_description">Utilízase para controlar o acceso aos descargadores de ReVanced Manager. Só ReVanced Manager ten isto.</string>
+  <string name="new_downloader_notification">Novo(s) descargador(es) dispoñible(s). Preme aquí para configuralos.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Ningún descargador dispoñible</string>
+  <string name="announcements_filter_tag">Filtrar por etiqueta</string>
+  <string name="announcements_show_archived">Mostrar arquivados</string>
+  <string name="downloads_description">Descargadores e aplicacións descargadas</string>
+  <string name="downloaders">Descargadores</string>
+  <string name="downloader_state_trusted">Fiable</string>
+  <string name="downloader_state_failed">Erro ao cargar. Prema para obter máis detalles</string>
+  <string name="downloader_state_untrusted">Non fiable</string>
+  <string name="downloader_trust_dialog_title">Confiar no descargador?</string>
+  <string name="downloader_revoke_trust_dialog_title">Revogar confianza?</string>
+  <string name="downloader_trust_dialog_body">Continuar permitirá que este descargador se execute.\n\nSó active este descargador se confía nel. Os descargadores poden facer que Manager execute código arbitrario.</string>
+  <string name="downloader_trust_dialog_signature">Sinatura:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Descargador:\n%s</string>
+  <string name="downloader_delete_apps_title">Eliminar aplicacións seleccionadas</string>
+  <string name="downloader_delete_apps_description">Está seguro de que quere eliminar as aplicacións seleccionadas?</string>
+  <string name="no_downloader_installed">Non hai descargadores instalados.</string>
+  <string name="no_downloader_available">Hai descargadores instalados pero ningún é fiable. Comprobe a súa configuración.</string>
+  <string name="patch_selector_sheet_actions_title">Accións</string>
+  <string name="restore_default_selection">Restaurar selección predeterminada</string>
+  <string name="deselect_all">Desmarcar todo</string>
+  <string name="invert_selection">Inverter selección</string>
+  <string name="deselect_all_except">Desmarcar todo excepto %s</string>
+  <string name="scope_dialog_title">Aplicar a</string>
+  <string name="scope_all_patches">Todos os parches</string>
+  <string name="scope_bundle_patches">Só %s</string>
+  <string name="downloader_activity_dialog_body">Requírese a interacción do usuario para continuar con este descargador.</string>
+  <string name="view_announcement">Ver anuncio</string>
+  <string name="announcements">Anuncios</string>
+  <string name="archive">Arquivo</string>
+  <string name="no_announcements_found">Non se atoparon anuncios</string>
+  <string name="new_announcement">Novo anuncio:\n%s</string>
+</resources>

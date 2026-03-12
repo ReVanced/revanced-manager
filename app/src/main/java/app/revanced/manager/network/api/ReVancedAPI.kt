@@ -2,8 +2,8 @@ package app.revanced.manager.network.api
 
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.manager.base.Preference
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import app.revanced.manager.network.dto.ReVancedAnnouncementTag
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedGitRepository
 import app.revanced.manager.network.dto.ReVancedInfo
@@ -25,7 +25,7 @@ class ReVancedAPI(
             Dispatchers.IO
         ) {
             client.request {
-                url("$api/v4/$route")
+                url("$api/v5/$route")
             }
         }
 
@@ -33,17 +33,19 @@ class ReVancedAPI(
 
     suspend fun getAnnouncements() = request<List<ReVancedAnnouncement>>("announcements")
 
-    suspend fun getAnnouncementTags() = request<List<ReVancedAnnouncementTag>>("announcements/tags")
-
     suspend fun getAppUpdate() =
         getLatestAppInfo().getOrThrow().takeIf { it.version.removePrefix("v") != BuildConfig.VERSION_NAME }
 
     suspend fun getLatestAppInfo() =
-        request<ReVancedAsset>("manager?prerelease=${prefs.useManagerPrereleases.get()}")
+        request<ReVancedAsset>("manager${prefs.useManagerPrereleases.prereleaseString()}")
 
-    suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches?prerelease=${prefs.usePatchesPrereleases.get()}")
+    suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
 
     suspend fun getContributors() = request<List<ReVancedGitRepository>>("contributors")
 
     suspend fun getInfo(api: String? = null) = request<ReVancedInfo>(api ?: apiUrl(), "about")
+
+    private companion object {
+        suspend fun Preference<Boolean>.prereleaseString() = if (get()) "/prerelease" else ""
+    }
 }
