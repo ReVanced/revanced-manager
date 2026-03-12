@@ -135,10 +135,20 @@ class PatchBundleRepository(
     }
 
     private suspend fun loadFromDb(): List<PatchBundleEntity> {
-        val all = dao.all()
+        val all = dao.all().toMutableList()
         if (all.isEmpty()) {
             dao.upsert(defaultSource)
-            return listOf(defaultSource)
+            all += defaultSource
+        }
+
+        // Temporary testing sources for dashboard source-management UX.
+        if (all.none { it.uid == testSourceOne.uid }) {
+            dao.upsert(testSourceOne)
+            all += testSourceOne
+        }
+        if (all.none { it.uid == testSourceTwo.uid }) {
+            dao.upsert(testSourceTwo)
+            all += testSourceTwo
         }
 
         return all
@@ -412,6 +422,22 @@ class PatchBundleRepository(
             name = "",
             versionHash = null,
             source = Source.API,
+            autoUpdate = false
+        )
+
+        val testSourceOne = PatchBundleEntity(
+            uid = 1001,
+            name = "Stub source A",
+            versionHash = null,
+            source = Source.Remote(io.ktor.http.Url("https://example.invalid/revanced/stub-a.json")),
+            autoUpdate = false
+        )
+
+        val testSourceTwo = PatchBundleEntity(
+            uid = 1002,
+            name = "Stub source B",
+            versionHash = null,
+            source = Source.Remote(io.ktor.http.Url("https://example.invalid/revanced/stub-b.json")),
             autoUpdate = false
         )
     }

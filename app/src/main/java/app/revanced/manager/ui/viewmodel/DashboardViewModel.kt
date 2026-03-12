@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
+import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
@@ -23,14 +24,11 @@ import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
-import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -46,6 +44,12 @@ class DashboardViewModel(
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
+    val sources = patchBundleRepository.sources
+    val patchCounts = patchBundleRepository.patchCountsFlow
+    val sourceStates = patchBundleRepository.sources.map { sources ->
+        sources.associate { src -> src.uid to src.state }
+    }
+
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
@@ -160,12 +164,52 @@ class DashboardViewModel(
     fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
     fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
 
+    fun refreshPatchSources() = viewModelScope.launch {
+        patchBundleRepository.reload()
+    }
+
+    fun deleteSources(uids: Set<Int>) = viewModelScope.launch {
+        if (uids.isEmpty()) return@launch
+
+        val selected = patchBundleRepository.sources.first().filter { it.uid in uids }
+        patchBundleRepository.remove(*selected.toTypedArray())
+    }
+
+    fun updateSource(uid: Int) = viewModelScope.launch {
+        val source = patchBundleRepository.sources.first()
+            .firstOrNull { it.uid == uid } as? RemotePatchBundle ?: return@launch
+
+        patchBundleRepository.update(source, showToast = true, force = true)
+    }
+
+    fun toggleSourceAutoUpdate(uid: Int, enabled: Boolean) = viewModelScope.launch {
+        val source = patchBundleRepository.sources.first()
+            .firstOrNull { it.uid == uid } as? RemotePatchBundle ?: return@launch
+
+        with(patchBundleRepository) {
+            source.setAutoUpdate(enabled)
+        }
+        patchBundleRepository.reload()
+    }
+
+    fun setDefaultSourcePrerelease(enabled: Boolean) = viewModelScope.launch {
+        prefs.usePatchesPrereleases.update(enabled)
+
+        val source = patchBundleRepository.sources.first()
+            .firstOrNull { it.uid == 0 } as? RemotePatchBundle ?: return@launch
+
+        patchBundleRepository.update(source, force = true)
+        patchBundleRepository.reload()
+    }
+
     @SuppressLint("Recycle")
     fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
         patchBundleRepository.createLocal { contentResolver.openInputStream(patchBundle)!! }
+        patchBundleRepository.reload()
     }
 
     fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
         patchBundleRepository.createRemote(apiUrl, autoUpdate)
+        patchBundleRepository.reload()
     }
 }

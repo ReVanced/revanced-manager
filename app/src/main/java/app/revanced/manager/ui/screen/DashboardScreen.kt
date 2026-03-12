@@ -25,8 +25,8 @@ import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Update
@@ -43,10 +43,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -60,6 +58,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
@@ -68,15 +67,20 @@ import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.bundle.BundleInformationDialog
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
+import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -99,12 +103,12 @@ fun DashboardScreen(
     onDownloaderClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
-    var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
-    val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
-    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
-        false
-    )
+    val sources by vm.sources.collectAsStateWithLifecycle(emptyList())
+    val patchCounts by vm.patchCounts.collectAsStateWithLifecycle(emptyMap())
+    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(false)
+    val usePrerelease by vm.prefs.usePatchesPrereleases.getAsState()
+
     val androidContext = LocalContext.current
     val resources = LocalResources.current
     val composableScope = rememberCoroutineScope()
@@ -113,9 +117,24 @@ fun DashboardScreen(
         initialPageOffsetFraction = 0f
     ) { DashboardPage.entries.size }
 
-    LaunchedEffect(pagerState.currentPage) {
-        if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
-    }
+    var sourceEditMode by rememberSaveable { mutableStateOf(false) }
+    var selectedSourceUids by rememberSaveable { mutableStateOf(setOf<Int>()) }
+
+    val selectedSourceCount by remember { derivedStateOf { selectedSourceUids.size } }
+
+    val readOnlyPatchesVm: PatchesSelectorViewModel = koinViewModel(
+        key = "dashboard-patches-selector",
+        parameters = {
+            parametersOf(
+                SelectedApplicationInfo.PatchesSelector.ViewModelParams(
+                    app = SelectedApp.Search(packageName = "", version = null),
+                    currentSelection = null,
+                    options = emptyMap(),
+                    readOnly = true,
+                )
+            )
+        }
+    )
 
     val firstLaunch by vm.prefs.firstLaunch.getAsState()
     if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
@@ -138,7 +157,6 @@ fun DashboardScreen(
     var showUpdateDialog by rememberSaveable { mutableStateOf(true) }
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
     val availableUpdate = vm.updatedManagerVersion
-
     if (showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
         AvailableUpdateDialog(
             onDismiss = { showUpdateDialog = false },
@@ -155,31 +173,53 @@ fun DashboardScreen(
             if (granted) onAppSelectorClick()
         }
     if (showAndroid11Dialog) Android11Dialog(
-        onDismissRequest = {
-            showAndroid11Dialog = false
-        },
-        onContinue = {
-            installAppsPermissionLauncher.launch(androidContext.packageName)
-        }
+        onDismissRequest = { showAndroid11Dialog = false },
+        onContinue = { installAppsPermissionLauncher.launch(androidContext.packageName) }
     )
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {
         ConfirmDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
-            onConfirm = vm::deleteSources,
+            onConfirm = {
+                vm.deleteSources(selectedSourceUids)
+                selectedSourceUids = emptySet()
+                sourceEditMode = false
+            },
             title = stringResource(R.string.delete),
             description = stringResource(R.string.patches_delete_multiple_dialog_description),
             icon = Icons.Outlined.Delete
         )
     }
 
+    var aboutSourceUid by rememberSaveable { mutableStateOf<Int?>(null) }
+    aboutSourceUid?.let { uid ->
+        val src = sources.firstOrNull { it.uid == uid }
+        if (src != null) {
+            BundleInformationDialog(
+                src = src,
+                patchCount = patchCounts[src.uid] ?: 0,
+                onDismissRequest = { aboutSourceUid = null },
+                onDeleteRequest = {
+                    vm.deleteSources(setOf(src.uid))
+                    aboutSourceUid = null
+                },
+                onUpdate = { vm.updateSource(src.uid) },
+            )
+        }
+    }
+
     Scaffold(
         topBar = {
-            if (bundlesSelectable) {
+            val onPatchesTab = pagerState.currentPage == DashboardPage.BUNDLES.ordinal
+
+            if (onPatchesTab && sourceEditMode) {
                 BundleTopBar(
                     title = stringResource(R.string.patches_selected, selectedSourceCount),
-                    onBackClick = vm::cancelSourceSelection,
+                    onBackClick = {
+                        sourceEditMode = false
+                        selectedSourceUids = emptySet()
+                    },
                     backIcon = {
                         Icon(
                             imageVector = Icons.Default.Close,
@@ -188,22 +228,10 @@ fun DashboardScreen(
                     },
                     actions = {
                         IconButton(
-                            onClick = {
-                                showDeleteConfirmationDialog = true
-                            }
+                            onClick = { showDeleteConfirmationDialog = true },
+                            enabled = selectedSourceUids.isNotEmpty()
                         ) {
-                            Icon(
-                                Icons.Outlined.DeleteOutline,
-                                stringResource(R.string.delete)
-                            )
-                        }
-                        IconButton(
-                            onClick = vm::updateSources
-                        ) {
-                            Icon(
-                                Icons.Outlined.Refresh,
-                                stringResource(R.string.refresh)
-                            )
+                            Icon(Icons.Outlined.DeleteOutline, stringResource(R.string.delete))
                         }
                     }
                 )
@@ -212,18 +240,13 @@ fun DashboardScreen(
                     title = stringResource(R.string.app_name),
                     actions = {
                         if (!vm.updatedManagerVersion.isNullOrEmpty()) {
-                            IconButton(
-                                onClick = onUpdateClick,
-                            ) {
-                                BadgedBox(
-                                    badge = {
-                                        Badge(modifier = Modifier.size(6.dp))
-                                    }
-                                ) {
+                            IconButton(onClick = onUpdateClick) {
+                                BadgedBox(badge = { Badge(modifier = Modifier.size(6.dp)) }) {
                                     Icon(Icons.Outlined.Update, stringResource(R.string.update))
                                 }
                             }
                         }
+
                         IconButton(onClick = onAnnouncementsClick) {
                             BadgedBox(
                                 badge = {
@@ -232,12 +255,10 @@ fun DashboardScreen(
                                     }
                                 }
                             ) {
-                                Icon(
-                                    Icons.Outlined.Notifications,
-                                    stringResource(R.string.announcements)
-                                )
+                                Icon(Icons.Outlined.Notifications, stringResource(R.string.announcements))
                             }
                         }
+
                         IconButton(onClick = onSettingsClick) {
                             Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                         }
@@ -247,18 +268,15 @@ fun DashboardScreen(
             }
         },
         floatingActionButton = {
+            val onPatchesTab = pagerState.currentPage == DashboardPage.BUNDLES.ordinal
             HapticFloatingActionButton(
                 onClick = {
-                    vm.cancelSourceSelection()
-
                     when (pagerState.currentPage) {
                         DashboardPage.DASHBOARD.ordinal -> {
                             if (availablePatches < 1) {
                                 androidContext.toast(resources.getString(R.string.no_patch_found))
                                 composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        DashboardPage.BUNDLES.ordinal
-                                    )
+                                    pagerState.animateScrollToPage(DashboardPage.BUNDLES.ordinal)
                                 }
                                 return@HapticFloatingActionButton
                             }
@@ -271,11 +289,22 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES.ordinal -> {
-                            showAddBundleDialog = true
+                            if (sourceEditMode) {
+                                showAddBundleDialog = true
+                            } else {
+                                sourceEditMode = true
+                                selectedSourceUids = emptySet()
+                            }
                         }
                     }
                 }
-            ) { Icon(Icons.Default.Add, stringResource(R.string.add)) }
+            ) {
+                val icon = when {
+                    onPatchesTab && !sourceEditMode -> Icons.Outlined.Edit
+                    else -> Icons.Default.Add
+                }
+                Icon(icon, stringResource(if (onPatchesTab && !sourceEditMode) R.string.edit else R.string.add))
+            }
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
@@ -286,7 +315,13 @@ fun DashboardScreen(
                 DashboardPage.entries.forEachIndexed { index, page ->
                     HapticTab(
                         selected = pagerState.currentPage == index,
-                        onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
+                        onClick = {
+                            composableScope.launch { pagerState.animateScrollToPage(index) }
+                            if (index != DashboardPage.BUNDLES.ordinal) {
+                                sourceEditMode = false
+                                selectedSourceUids = emptySet()
+                            }
+                        },
                         text = { Text(stringResource(page.titleResId)) },
                         icon = { Icon(page.icon, null) },
                         selectedContentColor = MaterialTheme.colorScheme.primary,
@@ -371,24 +406,46 @@ fun DashboardScreen(
                 modifier = Modifier.fillMaxSize(),
                 pageContent = { index ->
                     when (DashboardPage.entries[index]) {
-                        DashboardPage.DASHBOARD -> {
-                            InstalledAppsScreen(
-                                onAppClick = { onAppClick(it.currentPackageName) }
-                            )
-                        }
+                        DashboardPage.DASHBOARD -> InstalledAppsScreen(
+                            onAppClick = { onAppClick(it.currentPackageName) }
+                        )
 
                         DashboardPage.BUNDLES -> {
                             BackHandler {
-                                if (bundlesSelectable) vm.cancelSourceSelection() else composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        DashboardPage.DASHBOARD.ordinal
-                                    )
+                                if (sourceEditMode) {
+                                    sourceEditMode = false
+                                    selectedSourceUids = emptySet()
+                                } else composableScope.launch {
+                                    pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
                                 }
                             }
 
-                            BundleListScreen(
-                                eventsFlow = vm.bundleListEventsFlow,
-                                setSelectedSourceCount = { selectedSourceCount = it }
+                            PatchesSelectorScreen(
+                                onSave = { _, _ -> },
+                                onBackClick = {
+                                    if (sourceEditMode) {
+                                        sourceEditMode = false
+                                        selectedSourceUids = emptySet()
+                                    } else composableScope.launch {
+                                        pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
+                                    }
+                                },
+                                viewModel = readOnlyPatchesVm,
+                                sourceEditMode = sourceEditMode,
+                                selectedSourceUids = selectedSourceUids,
+                                onToggleSourceSelection = { uid ->
+                                    selectedSourceUids = if (uid in selectedSourceUids) {
+                                        selectedSourceUids - uid
+                                    } else {
+                                        selectedSourceUids + uid
+                                    }
+                                },
+                                onSourceMenuAction = { uid, action ->
+                                    when (action) {
+                                        SourceMenuAction.MORE -> aboutSourceUid = uid
+                                        SourceMenuAction.REFRESH -> vm.updateSource(uid)
+                                    }
+                                }
                             )
                         }
                     }

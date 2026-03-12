@@ -37,6 +37,7 @@ import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -50,6 +51,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
+    private val patchBundleRepository: PatchBundleRepository = get()
 
     val packageName = input.app.packageName
     val appVersion = input.app.version
@@ -62,23 +64,34 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
     val allowIncompatiblePatches =
         get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
+    val sourceStateByUidFlow = patchBundleRepository.sources.map { sources ->
+        sources.associate { src -> src.uid to src.state }
+    }
+
     val bundlesFlow = if (readOnly) {
-        get<PatchBundleRepository>().bundleInfoFlow.map { bundleInfoMap ->
-            bundleInfoMap.map { (_, bundleInfo) ->
+        combine(
+            patchBundleRepository.sources,
+            patchBundleRepository.bundleInfoFlow
+        ) { sources, bundleInfoMap ->
+            sources.map { src ->
+                val bundleInfo = bundleInfoMap[src.uid]
+                val allPatches = bundleInfo?.patches?.distinctBy(PatchInfo::name).orEmpty()
                 val compatible = mutableListOf<PatchInfo>()
                 val incompatible = mutableListOf<PatchInfo>()
                 val universal = mutableListOf<PatchInfo>()
-                bundleInfo.patches.distinctBy { it.name }.forEach { patch ->
+
+                allPatches.forEach { patch ->
                     when {
                         patch.compatiblePackages == null -> universal
                         else -> compatible
                     }.add(patch)
                 }
+
                 PatchBundleInfo.Scoped(
-                    name = bundleInfo.name,
-                    version = bundleInfo.version,
-                    uid = bundleInfo.uid,
-                    patches = bundleInfo.patches.distinctBy { it.name },
+                    name = bundleInfo?.name ?: src.name,
+                    version = bundleInfo?.version ?: src.version,
+                    uid = src.uid,
+                    patches = allPatches,
                     compatible = compatible,
                     incompatible = incompatible,
                     universal = universal
@@ -86,7 +99,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
             }
         }
     } else {
-        get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.app.version)
+        patchBundleRepository.scopedBundleInfoFlow(packageName, input.app.version)
     }
 
     init {
