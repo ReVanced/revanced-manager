@@ -427,7 +427,8 @@ private fun OnboardingButtons(stepButtons: StepButtons) {
                     .fillMaxWidth()
                     .height(56.dp),
                 onClick = stepButtons.primaryAction,
-                enabled = stepButtons.primaryEnabled
+                enabled = stepButtons.primaryEnabled,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(text = stringResource(textRes))
                 Spacer(modifier = Modifier.width(8.dp))

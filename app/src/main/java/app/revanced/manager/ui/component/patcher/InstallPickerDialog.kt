@@ -37,7 +37,8 @@ fun InstallPickerDialog(
                 onClick = {
                     onConfirm(selectedInstallType)
                     onDismiss()
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.install_app))
             }
