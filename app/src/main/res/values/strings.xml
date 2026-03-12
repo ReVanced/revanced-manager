@@ -595,5 +595,6 @@ Click on the patches to see more details.</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
+    <string name="action_trust">Trust</string>
     <string name="new_announcement">New announcement:\n%s</string>
 </resources>

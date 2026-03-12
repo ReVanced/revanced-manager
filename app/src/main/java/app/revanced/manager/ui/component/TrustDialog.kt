@@ -38,7 +38,7 @@ fun TrustDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onConfirm, shapes = ButtonDefaults.shapes()) {
-                Text(stringResource(R.string.continue_))
+                Text(stringResource(R.string.action_trust))
             }
         },
         dismissButton = {
