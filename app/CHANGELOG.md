@@ -1,3 +1,10 @@
+# app [1.26.0-dev.35](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.34...v1.26.0-dev.35) (2026-03-12)
+
+
+### Features
+
+* Add support for writing downloader UI with fragments ([#2998](https://github.com/ReVanced/revanced-manager/issues/2998)) ([7471710](https://github.com/ReVanced/revanced-manager/commit/7471710f287b4febb9546a7d7cd59d654b2754e9))
+
 # app [1.26.0-dev.34](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.33...v1.26.0-dev.34) (2026-03-10)
 
 

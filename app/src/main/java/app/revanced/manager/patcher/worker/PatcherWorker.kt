@@ -1,55 +1,56 @@
 package app.revanced.manager.patcher.worker
 
-import android.app.Activity
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.content.pm.ServiceInfo
-import android.graphics.drawable.Icon
-import android.os.Build
-import android.os.Parcelable
-import android.os.PowerManager
-import android.util.Log
-import androidx.activity.result.ActivityResult
-import androidx.work.ForegroundInfo
-import androidx.work.WorkerParameters
-import app.revanced.manager.MainActivity
-import app.revanced.manager.R
-import app.revanced.manager.data.platform.Filesystem
-import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.domain.installer.RootInstaller
-import app.revanced.manager.domain.manager.KeystoreManager
-import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloadedAppRepository
-import app.revanced.manager.domain.repository.DownloaderRepository
-import app.revanced.manager.domain.repository.InstalledAppRepository
-import app.revanced.manager.domain.worker.Worker
-import app.revanced.manager.domain.worker.WorkerRepository
-import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.downloader.GetScope
-import app.revanced.manager.downloader.UserInteractionException
-import app.revanced.manager.network.downloader.LoadedDownloader
-import app.revanced.manager.patcher.ProgressEvent
-import app.revanced.manager.patcher.StepId
-import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.patcher.runStep
-import app.revanced.manager.patcher.runtime.CoroutineRuntime
-import app.revanced.manager.patcher.runtime.ProcessRuntime
-import app.revanced.manager.patcher.toRemoteError
-import app.revanced.manager.ui.model.SelectedSource
-import app.revanced.manager.util.Options
-import app.revanced.manager.util.PM
-import app.revanced.manager.util.PatchSelection
-import app.revanced.manager.util.tag
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.io.File
+    import android.app.Activity
+    import android.app.Notification
+    import android.app.NotificationChannel
+    import android.app.NotificationManager
+    import android.app.PendingIntent
+    import android.content.Context
+    import android.content.Intent
+    import android.content.pm.ServiceInfo
+    import android.graphics.drawable.Icon
+    import android.os.Build
+    import android.os.Parcelable
+    import android.os.PowerManager
+    import android.util.Log
+    import androidx.activity.result.ActivityResult
+    import androidx.work.ForegroundInfo
+    import androidx.work.WorkerParameters
+    import app.revanced.manager.MainActivity
+    import app.revanced.manager.R
+    import app.revanced.manager.data.platform.Filesystem
+    import app.revanced.manager.data.room.apps.installed.InstallType
+    import app.revanced.manager.domain.installer.RootInstaller
+    import app.revanced.manager.domain.manager.KeystoreManager
+    import app.revanced.manager.domain.manager.PreferencesManager
+    import app.revanced.manager.domain.repository.DownloadedAppRepository
+    import app.revanced.manager.domain.repository.DownloaderRepository
+    import app.revanced.manager.domain.repository.InstalledAppRepository
+    import app.revanced.manager.domain.worker.Worker
+    import app.revanced.manager.domain.worker.WorkerRepository
+    import app.revanced.manager.downloader.DownloaderHostApi
+    import app.revanced.manager.downloader.GetScope
+    import app.revanced.manager.downloader.Scope
+    import app.revanced.manager.downloader.UserInteractionException
+    import app.revanced.manager.network.downloader.LoadedDownloader
+    import app.revanced.manager.patcher.ProgressEvent
+    import app.revanced.manager.patcher.StepId
+    import app.revanced.manager.patcher.logger.Logger
+    import app.revanced.manager.patcher.runStep
+    import app.revanced.manager.patcher.runtime.CoroutineRuntime
+    import app.revanced.manager.patcher.runtime.ProcessRuntime
+    import app.revanced.manager.patcher.toRemoteError
+    import app.revanced.manager.ui.model.SelectedSource
+    import app.revanced.manager.util.Options
+    import app.revanced.manager.util.PM
+    import app.revanced.manager.util.PatchSelection
+    import app.revanced.manager.util.tag
+    import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.flow.first
+    import kotlinx.coroutines.withContext
+    import org.koin.core.component.KoinComponent
+    import org.koin.core.component.inject
+    import java.io.File
 
 @OptIn(DownloaderHostApi::class)
 class PatcherWorker(
@@ -182,11 +183,7 @@ class PatcherWorker(
                             }
                             .firstNotNullOfOrNull { downloader ->
                                 try {
-                                    val getScope = object : GetScope {
-                                        override val downloaderPackageName = downloader.packageName
-                                        override val hostPackageName =
-                                            applicationContext.packageName
-
+                                    val getScope = object : GetScope, Scope by downloader.scopeImpl {
                                         override suspend fun requestStartActivity(intent: Intent): Intent? {
                                             val result =
                                                 args.handleStartActivityRequest(downloader, intent)
@@ -202,7 +199,7 @@ class PatcherWorker(
                                     }
 
                                     withContext(Dispatchers.IO) {
-                                        downloader.get(
+                                        downloader.impl.get(
                                             getScope,
                                             args.packageName,
                                             args.version
