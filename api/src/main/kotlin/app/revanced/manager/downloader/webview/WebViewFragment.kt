@@ -1,20 +1,26 @@
 package app.revanced.manager.downloader.webview
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
+import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -29,34 +35,59 @@ import kotlinx.parcelize.Parcelize
 
 @OptIn(DownloaderHostApi::class)
 @DownloaderHostApi
-class WebViewActivity : ComponentActivity() {
+class WebViewFragment : Fragment(R.layout.webview_fragment) {
+    private val vm by viewModels<WebViewModel>()
+    lateinit var webView: WebView
+    private val args by lazy {
+        arguments?.getParcelable<Parameters>(KEY)!!
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().apply {
+            enableEdgeToEdge()
+            onBackPressedDispatcher.addCallback {
+                if (webView.canGoBack()) webView.goBack()
+                else cancelActivity()
+            }
+            actionBar?.apply {
+                title = args.title
+                setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
+                setDisplayHomeAsUpEnabled(true)
+            }
+
+            addMenuProvider(
+                object : MenuProvider {
+                    override fun onCreateMenu(
+                        menu: Menu,
+                        menuInflater: MenuInflater
+                    ) {
+                    }
+
+                    override fun onMenuItemSelected(menuItem: MenuItem) =
+                        if (menuItem.itemId == android.R.id.home) {
+                            cancelActivity()
+
+                            true
+                        } else false
+                },
+                this
+            )
+        }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val vm by viewModels<WebViewModel>()
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_webview)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val webView = findViewById<WebView>(R.id.webview)
-        onBackPressedDispatcher.addCallback {
-            if (webView.canGoBack()) webView.goBack()
-            else cancelActivity()
-        }
+        webView = view.findViewById<WebView>(R.id.webview)
 
-        val params = intent.getParcelableExtra<Parameters>(KEY)!!
-        actionBar?.apply {
-            title = params.title
-            setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
-            setDisplayHomeAsUpEnabled(true)
-        }
-
-        val events = IWebViewEvents.Stub.asInterface(params.events)!!
+        val events = IWebViewEvents.Stub.asInterface(args.events)!!
         vm.setup(events)
 
         webView.apply {
@@ -73,13 +104,14 @@ class WebViewActivity : ComponentActivity() {
             }
         }
 
+        val activity = requireActivity()
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 vm.commands.collect {
                     when (it) {
                         is WebViewModel.Command.Finish -> {
-                            setResult(RESULT_OK)
-                            finish()
+                            activity.setResult(Activity.RESULT_OK)
+                            activity.finish()
                         }
 
                         is WebViewModel.Command.Load -> webView.loadUrl(it.url)
@@ -90,15 +122,10 @@ class WebViewActivity : ComponentActivity() {
     }
 
     private fun cancelActivity() {
-        setResult(RESULT_CANCELED)
-        finish()
+        val activity = requireActivity()
+        activity.setResult(Activity.RESULT_CANCELED)
+        activity.finish()
     }
-
-    override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == android.R.id.home) {
-        cancelActivity()
-
-        true
-    } else super.onOptionsItemSelected(item)
 
     @Parcelize
     internal class Parameters(

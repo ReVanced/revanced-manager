@@ -1,15 +1,14 @@
 package app.revanced.manager.network.downloader
 
 import android.os.Parcelable
-import app.revanced.manager.downloader.OutputDownloadScope
-import app.revanced.manager.downloader.GetScope
-import java.io.OutputStream
+import app.revanced.manager.downloader.Downloader
+import app.revanced.manager.downloader.Scope
 
 class LoadedDownloader(
     val packageName: String,
     val className: String,
     val name: String,
     val version: String,
-    val get: suspend GetScope.(packageName: String, version: String?) -> Pair<Parcelable, String?>?,
-    val download: suspend OutputDownloadScope.(data: Parcelable, outputStream: OutputStream) -> Unit
+    val scopeImpl: Scope,
+    val impl: Downloader<Parcelable>
 )
