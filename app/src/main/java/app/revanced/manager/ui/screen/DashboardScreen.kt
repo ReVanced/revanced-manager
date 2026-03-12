@@ -94,6 +94,7 @@ import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.DownloaderUpdateState
 import app.revanced.manager.util.RequestInstallAppsContract
@@ -122,15 +123,18 @@ fun DashboardScreen(
     onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
     onDownloaderClick: () -> Unit,
     onAppClick: (String) -> Unit,
+    onPatchableAppClick: (String) -> Unit,
+    onStorageSelect: (SelectedApp.Local) -> Unit,
     onBundleClick: (Int) -> Unit
 ) {
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
-    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
-        false
-    )
+    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(false)
+    val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
+    val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
+    val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
     val androidContext = LocalContext.current
     val resources = LocalResources.current
     val logoPainter = rememberDrawablePainter(drawable = remember(resources) {
@@ -162,10 +166,6 @@ fun DashboardScreen(
     }
 
     var showUpdateDialog by rememberSaveable { mutableStateOf(true) }
-    val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
-    val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
-    val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
-
     if (managerAutoUpdates && showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
         AvailableUpdateDialog(
             onDismiss = { showUpdateDialog = false },
@@ -221,32 +221,20 @@ fun DashboardScreen(
                         )
                     )
                     if (downloaderUpdateState == DownloaderUpdateState.DOWNLOADING) {
-                        Spacer(
-                            modifier = Modifier.height(16.dp)
-                        )
+                        Spacer(modifier = Modifier.height(16.dp))
                         LinearWavyProgressIndicator(
                             progress = { vm.downloaderUpdateProgress },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
                     if (downloaderUpdateState == DownloaderUpdateState.INSTALLING) {
-                        Spacer(
-                            modifier = Modifier.height(16.dp)
-                        )
-                        LinearWavyProgressIndicator(
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Spacer(
-                            modifier = Modifier.height(8.dp)
-                        )
-                        Text(
-                            stringResource(R.string.api_downloader_installing),
-                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(stringResource(R.string.api_downloader_installing))
                     }
                     if (downloaderUpdateState == DownloaderUpdateState.FAILED) {
-                        Spacer(
-                            modifier = Modifier.height(8.dp)
-                        )
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             stringResource(R.string.api_downloader_failed),
                             color = MaterialTheme.colorScheme.error
@@ -257,20 +245,79 @@ fun DashboardScreen(
         )
     }
 
+    var pendingAppSelectorLaunch by rememberSaveable { mutableStateOf(false) }
+    var pendingPatchablePackage by rememberSaveable { mutableStateOf<String?>(null) }
+    var pendingStorageSelection by rememberSaveable { mutableStateOf<SelectedApp.Local?>(null) }
+
+    fun clearPendingSelection() {
+        pendingAppSelectorLaunch = false
+        pendingPatchablePackage = null
+        pendingStorageSelection = null
+    }
+
+    fun resumePendingSelection() {
+        if (pendingAppSelectorLaunch) {
+            clearPendingSelection()
+            onAppSelectorClick()
+            return
+        }
+
+        pendingPatchablePackage?.let {
+            clearPendingSelection()
+            onPatchableAppClick(it)
+            return
+        }
+
+        pendingStorageSelection?.let {
+            clearPendingSelection()
+            onStorageSelect(it)
+        }
+    }
+
     var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
     val installAppsPermissionLauncher =
         rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
             showAndroid11Dialog = false
-            if (granted) onAppSelectorClick()
+            if (granted) {
+                resumePendingSelection()
+            } else {
+                clearPendingSelection()
+            }
         }
-    if (showAndroid11Dialog) Android11Dialog(
-        onDismissRequest = {
-            showAndroid11Dialog = false
-        },
-        onContinue = {
-            installAppsPermissionLauncher.launch(androidContext.packageName)
+
+    if (showAndroid11Dialog) {
+        Android11Dialog(
+            onDismissRequest = {
+                showAndroid11Dialog = false
+                clearPendingSelection()
+            },
+            onContinue = {
+                installAppsPermissionLauncher.launch(androidContext.packageName)
+            }
+        )
+    }
+
+    fun onPatchableSelection(packageName: String) {
+        if (vm.android11BugActive) {
+            clearPendingSelection()
+            pendingPatchablePackage = packageName
+            showAndroid11Dialog = true
+            return
         }
-    )
+
+        onPatchableAppClick(packageName)
+    }
+
+    fun onStorageSelection(app: SelectedApp.Local) {
+        if (vm.android11BugActive) {
+            clearPendingSelection()
+            pendingStorageSelection = app
+            showAndroid11Dialog = true
+            return
+        }
+
+        onStorageSelect(app)
+    }
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     if (showDeleteConfirmationDialog) {
@@ -321,254 +368,259 @@ fun DashboardScreen(
                 )
             }
 
-        Scaffold(
-            topBar = {
-                if (bundlesSelectable) {
-                    BundleTopBar(
-                        title = stringResource(R.string.patches_selected, selectedSourceCount),
-                        onBackClick = vm::cancelSourceSelection,
-                        backIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.back)
-                            )
-                        },
-                        actions = {
-                            IconButton(
-                                onClick = {
-                                    showDeleteConfirmationDialog = true
-                                },
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
+            Scaffold(
+                topBar = {
+                    if (bundlesSelectable) {
+                        BundleTopBar(
+                            title = stringResource(R.string.patches_selected, selectedSourceCount),
+                            onBackClick = vm::cancelSourceSelection,
+                            backIcon = {
                                 Icon(
-                                    Icons.Filled.Delete,
-                                    stringResource(R.string.delete)
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.back)
                                 )
-                            }
-                            IconButton(
-                                onClick = vm::updateSources,
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
-                                Icon(
-                                    Icons.Filled.Refresh,
-                                    stringResource(R.string.refresh)
-                                )
-                            }
-                        }
-                    )
-                } else {
-                    TopAppBar(
-                        title = {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                Image(
-                                    painter = logoPainter,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                                Text(stringResource(R.string.app_name))
-                            }
-                        },
-                        actions = {
-                            if (availableUpdate != null) {
+                            },
+                            actions = {
                                 IconButton(
-                                    onClick = onUpdateClick,
+                                    onClick = { showDeleteConfirmationDialog = true },
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(Icons.Filled.Delete, stringResource(R.string.delete))
+                                }
+                                IconButton(
+                                    onClick = vm::updateSources,
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(Icons.Filled.Refresh, stringResource(R.string.refresh))
+                                }
+                            }
+                        )
+                    } else {
+                        TopAppBar(
+                            title = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Image(
+                                        painter = logoPainter,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(32.dp)
+                                    )
+                                    Text(stringResource(R.string.app_name))
+                                }
+                            },
+                            actions = {
+                                if (availableUpdate != null) {
+                                    IconButton(
+                                        onClick = onUpdateClick,
+                                        shapes = IconButtonDefaults.shapes()
+                                    ) {
+                                        BadgedBox(badge = { Badge(modifier = Modifier.size(6.dp)) }) {
+                                            Icon(Icons.Filled.Update, stringResource(R.string.update))
+                                        }
+                                    }
+                                }
+                                IconButton(
+                                    onClick = onAnnouncementsClick,
                                     shapes = IconButtonDefaults.shapes()
                                 ) {
                                     BadgedBox(
                                         badge = {
-                                            Badge(modifier = Modifier.size(6.dp))
+                                            if (vm.unreadAnnouncement != null) {
+                                                Badge(modifier = Modifier.size(6.dp))
+                                            }
                                         }
                                     ) {
-                                        Icon(Icons.Filled.Update, stringResource(R.string.update))
+                                        Icon(
+                                            Icons.Filled.Notifications,
+                                            stringResource(R.string.announcements)
+                                        )
                                     }
                                 }
+                                IconButton(
+                                    onClick = onSettingsClick,
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                                }
+                            },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = Color.Transparent
+                            )
+                        )
+                    }
+                },
+                containerColor = Color.Transparent,
+                floatingActionButton = {
+                    DashboardFab(
+                        pagerState = pagerState,
+                        onPatchAppClick = {
+                            vm.cancelSourceSelection()
+                            if (availablePatches < 1) {
+                                androidContext.toast(resources.getString(R.string.no_patch_found))
+                                composableScope.launch {
+                                    pagerState.animateScrollToPage(DashboardPage.BUNDLES.ordinal)
+                                }
+                                return@DashboardFab
                             }
-                            IconButton(onClick = onAnnouncementsClick, shapes = IconButtonDefaults.shapes()) {
-                            BadgedBox(
-                                badge = {
-                                    if (vm.unreadAnnouncement != null) {
-                                        Badge(modifier = Modifier.size(6.dp))
-                                    }
-                                }
-                            ) {
-                                Icon(
-                                    Icons.Filled.Notifications,
-                                    stringResource(R.string.announcements)
+                            if (vm.android11BugActive) {
+                                clearPendingSelection()
+                                pendingAppSelectorLaunch = true
+                                showAndroid11Dialog = true
+                                return@DashboardFab
+                            }
+                            onAppSelectorClick()
+                        },
+                        onAddBundleClick = {
+                            vm.cancelSourceSelection()
+                            showAddBundleDialog = true
+                        }
+                    )
+                }
+            ) { paddingValues ->
+                Column(Modifier.padding(paddingValues)) {
+                    if (!bundlesSelectable) {
+                        PillTabBar(
+                            pagerState = pagerState,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp, vertical = 8.dp)
+                        ) {
+                            DashboardPage.entries.forEachIndexed { index, page ->
+                                PillTab(
+                                    index = index,
+                                    onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
+                                    text = { Text(stringResource(page.titleResId)) },
+                                    icon = { Icon(page.icon, null) }
                                 )
                             }
                         }
-                        IconButton(onClick = onSettingsClick, shapes = IconButtonDefaults.shapes()) {
-                                Icon(Icons.Filled.Settings, stringResource(R.string.settings))
-                            }
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = Color.Transparent
-                        )
-                    )
-                }
-            },
-            containerColor = Color.Transparent,
-            floatingActionButton = {
-                DashboardFab(
-                    pagerState = pagerState,
-                    onPatchAppClick = {
-                        vm.cancelSourceSelection()
-                        if (availablePatches < 1) {
-                            androidContext.toast(resources.getString(R.string.no_patch_found))
-                            composableScope.launch {
-                                pagerState.animateScrollToPage(DashboardPage.BUNDLES.ordinal)
-                            }
-                            return@DashboardFab
-                        }
-                        if (vm.android11BugActive) {
-                            showAndroid11Dialog = true
-                            return@DashboardFab
-                        }
-                        onAppSelectorClick()
-                    },
-                    onAddBundleClick = {
-                        vm.cancelSourceSelection()
-                        showAddBundleDialog = true
                     }
-                )
-            }
-        ) { paddingValues ->
-            Column(Modifier.padding(paddingValues)) {
-                if (!bundlesSelectable) {
-                    PillTabBar(
-                        pagerState = pagerState,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 8.dp)
-                    ) {
-                        DashboardPage.entries.forEachIndexed { index, page ->
-                            PillTab(
-                                index = index,
-                                onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
-                                text = { Text(stringResource(page.titleResId)) },
-                                icon = { Icon(page.icon, null) }
-                            )
-                        }
-                    }
-                }
 
-                Notifications(
-                    if (!Aapt.supportsDevice()) {
-                        {
-                            NotificationCard(
-                                isWarning = true,
-                                icon = Icons.Outlined.WarningAmber,
-                                text = stringResource(R.string.unsupported_architecture_warning),
-                                onDismiss = null
-                            )
-                        }
-                    } else null,
-                    if (bundleDownloadError != null) {
-                    {
-                        NotificationCard(
-                            isWarning = true,
-                            icon = Icons.Outlined.WarningAmber,
-                            title = stringResource(R.string.api_not_working_title),
-                            text = stringResource(R.string.api_not_working_description),
-                            onClick = onSettingsClick
-                        )
-                    }
-                } else null,
-                if (vm.showBatteryOptimizationsWarning) {
-                        {
-                            val batteryOptimizationsLauncher =
-                                rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                                    vm.updateBatteryOptimizationsWarning()
-                                }
-                            NotificationCard(
-                                isWarning = true,
-                                icon = Icons.Default.BatteryAlert,
-                                text = stringResource(R.string.battery_optimization_notification),
-                                onClick = {
-                                    batteryOptimizationsLauncher.launch(
-                                        Intent(
-                                            Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                                            Uri.fromParts("package", androidContext.packageName, null)
-                                        )
-                                    )
-                                }
-                            )
-                        }
-                    } else null,
-                    if (showNewDownloaderNotification) {
-                        {
-                            NotificationCard(
-                                text = stringResource(R.string.new_downloader_notification),
-                                icon = Icons.Outlined.Download,
-                                modifier = Modifier.clickable(onClick = onDownloaderClick),
-                                actions = {
-                                    TextButton(onClick = vm::ignoreNewDownloaders, shapes = ButtonDefaults.shapes()) {
-                                        Text(stringResource(R.string.dismiss))
+                    Notifications(
+                        if (!Aapt.supportsDevice()) {
+                            {
+                                NotificationCard(
+                                    isWarning = true,
+                                    icon = Icons.Outlined.WarningAmber,
+                                    text = stringResource(R.string.unsupported_architecture_warning),
+                                    onDismiss = null
+                                )
+                            }
+                        } else null,
+                        if (bundleDownloadError != null) {
+                            {
+                                NotificationCard(
+                                    isWarning = true,
+                                    icon = Icons.Outlined.WarningAmber,
+                                    title = stringResource(R.string.api_not_working_title),
+                                    text = stringResource(R.string.api_not_working_description),
+                                    onClick = onSettingsClick
+                                )
+                            }
+                        } else null,
+                        if (vm.showBatteryOptimizationsWarning) {
+                            {
+                                val batteryOptimizationsLauncher =
+                                    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                                        vm.updateBatteryOptimizationsWarning()
                                     }
-                                }
-                            )
-                        }
-                    } else null,
-                vm.unreadAnnouncement?.let { announcement ->
-                    {
-                        NotificationCard(
-                            text = stringResource(R.string.new_announcement, announcement.title),
-                            icon = Icons.Filled.Notifications,
-                            actions = {
-                                TextButton(onClick = vm::markUnreadAnnouncementRead, shapes = ButtonDefaults.shapes()) {
-                                    Text(stringResource(R.string.dismiss))
-                                }
-                                TextButton(
+                                NotificationCard(
+                                    isWarning = true,
+                                    icon = Icons.Default.BatteryAlert,
+                                    text = stringResource(R.string.battery_optimization_notification),
                                     onClick = {
-                                        vm.markUnreadAnnouncementRead()
-                                        onAnnouncementClick(announcement)
+                                        batteryOptimizationsLauncher.launch(
+                                            Intent(
+                                                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                                                Uri.fromParts("package", androidContext.packageName, null)
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+                        } else null,
+                        if (showNewDownloaderNotification) {
+                            {
+                                NotificationCard(
+                                    text = stringResource(R.string.new_downloader_notification),
+                                    icon = Icons.Outlined.Download,
+                                    modifier = Modifier.clickable(onClick = onDownloaderClick),
+                                    actions = {
+                                        TextButton(
+                                            onClick = vm::ignoreNewDownloaders,
+                                            shapes = ButtonDefaults.shapes()
+                                        ) {
+                                            Text(stringResource(R.string.dismiss))
+                                        }
+                                    }
+                                )
+                            }
+                        } else null,
+                        vm.unreadAnnouncement?.let { announcement ->
+                            {
+                                NotificationCard(
+                                    text = stringResource(R.string.new_announcement, announcement.title),
+                                    icon = Icons.Filled.Notifications,
+                                    actions = {
+                                        TextButton(
+                                            onClick = vm::markUnreadAnnouncementRead,
+                                            shapes = ButtonDefaults.shapes()
+                                        ) {
+                                            Text(stringResource(R.string.dismiss))
+                                        }
+                                        TextButton(
+                                            onClick = {
+                                                vm.markUnreadAnnouncementRead()
+                                                onAnnouncementClick(announcement)
+                                            },
+                                            shapes = ButtonDefaults.shapes()
+                                        ) {
+                                            Text(stringResource(R.string.view_announcement))
+                                        }
                                     },
-                                    shapes = ButtonDefaults.shapes()
-                                ) {
-                                    Text(stringResource(R.string.view_announcement))
-                                }
-                            },
-                            isWarning = announcement.level > 0
-                        )
-                    }
-                }
-            )
+                                    isWarning = announcement.level > 0
+                                )
+                            }
+                        }
+                    )
 
-                HorizontalPager(
-                    state = pagerState,
-                    userScrollEnabled = true,
-                    modifier = Modifier.fillMaxSize(),
-                    pageContent = { index ->
+                    HorizontalPager(
+                        state = pagerState,
+                        userScrollEnabled = true,
+                        modifier = Modifier.fillMaxSize()
+                    ) { index ->
                         when (DashboardPage.entries[index]) {
                             DashboardPage.DASHBOARD -> {
                                 InstalledAppsScreen(
-                                    onAppClick = { onAppClick(it.currentPackageName) }
+                                    onAppClick = { onAppClick(it.currentPackageName) },
+                                    onPatchableAppClick = ::onPatchableSelection,
+                                    onStorageSelect = { selectedApp -> onStorageSelection(selectedApp) }
                                 )
                             }
 
                             DashboardPage.BUNDLES -> {
                                 BackHandler {
-                                    if (bundlesSelectable) vm.cancelSourceSelection() else composableScope.launch {
-                                        pagerState.animateScrollToPage(
-                                            DashboardPage.DASHBOARD.ordinal
-                                        )
+                                    if (bundlesSelectable) {
+                                        vm.cancelSourceSelection()
+                                    } else {
+                                        composableScope.launch {
+                                            pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
+                                        }
                                     }
                                 }
 
-                            BundleListScreen(
-                                eventsFlow = vm.bundleListEventsFlow,
-                                setSelectedSourceCount = { selectedSourceCount = it },
-                                onBundleClick = onBundleClick
-                            )
+                                BundleListScreen(
+                                    eventsFlow = vm.bundleListEventsFlow,
+                                    setSelectedSourceCount = { selectedSourceCount = it },
+                                    onBundleClick = onBundleClick
+                                )
                             }
                         }
                     }
-                )
+                }
             }
-        }
         }
     }
 }
@@ -586,7 +638,7 @@ private fun DashboardFab(
             when (pagerState.currentPage) {
                 DashboardPage.DASHBOARD.ordinal -> onPatchAppClick()
                 DashboardPage.BUNDLES.ordinal -> onAddBundleClick()
-                        }
+            }
         },
         icon = { Icon(Icons.Default.Add, contentDescription = null) },
         text = { FabTextCrossfade(swipeProgress) }

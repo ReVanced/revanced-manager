@@ -162,6 +162,10 @@ private fun ReVancedManager(vm: MainViewModel) {
                 onBundleClick = { uid ->
                     navController.navigateSafe(BundleInformation(uid))
                 },
+                onPatchableAppClick = vm::selectApp,
+                onStorageSelect = { selectedApp ->
+                    vm.selectApp(selectedApp)
+                },
                 onAnnouncementsClick = {
                     navController.navigate(Announcements)
                 },

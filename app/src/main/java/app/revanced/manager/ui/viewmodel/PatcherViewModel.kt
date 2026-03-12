@@ -356,7 +356,7 @@ class PatcherViewModel(
     fun prepareLogExport() = viewModelScope.launch {
         val uri = withContext(Dispatchers.IO) {
             tempDir.resolve(logFileName()).also {
-                it.writeText(logs.joinToString("\n") {  (level, msg) -> formatLogLine(level, msg) }
+                it.writeText(logs.joinToString("\n") {  (level, msg) -> formatLogLine(level, msg) })
             }.let {
                 FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", it)
             }
