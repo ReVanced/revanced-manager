@@ -52,8 +52,14 @@ import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
+import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
+import app.revanced.manager.ui.screen.PatchesSelectorScreen
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,12 +88,27 @@ fun BundleInformationDialog(
     }
 
     if (viewCurrentBundlePatches) {
-        BundlePatchesDialog(
-            src = src,
-            onDismissRequest = {
-                viewCurrentBundlePatches = false
+        val viewModel: PatchesSelectorViewModel = koinViewModel(
+            key = "bundle-patches-${src.uid}",
+            parameters = {
+                parametersOf(
+                    SelectedApplicationInfo.PatchesSelector.ViewModelParams(
+                        app = SelectedApp.Search(packageName = "", version = null),
+                        currentSelection = null,
+                        options = emptyMap(),
+                        readOnly = true,
+                    )
+                )
             }
         )
+        FullscreenDialog(onDismissRequest = { viewCurrentBundlePatches = false }) {
+            PatchesSelectorScreen(
+                onSave = { _, _ -> },
+                onBackClick = { viewCurrentBundlePatches = false },
+                viewModel = viewModel
+            )
+        }
+        return
     }
 
     FullscreenDialog(

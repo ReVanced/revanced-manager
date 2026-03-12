@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
@@ -38,6 +40,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -45,6 +48,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.SmallFloatingActionButton
@@ -65,8 +69,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -103,6 +109,7 @@ fun PatchesSelectorScreen(
     onBackClick: () -> Unit,
     viewModel: PatchesSelectorViewModel
 ) {
+    val readOnly = viewModel.readOnly
     val bundles by viewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -203,69 +210,71 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                if (!readOnly) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
 
-                Text(
-                    text = stringResource(R.string.patch_selector_sheet_actions_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                    Text(
+                        text = stringResource(R.string.patch_selector_sheet_actions_title),
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
 
-                fun guardedAction(action: () -> Unit) {
-                    showBottomSheet = false
-                    if (viewModel.selectionWarningEnabled) {
-                        showSelectionWarning = true
-                    } else {
-                        action()
-                    }
-                }
-
-                ActionItem(
-                    icon = Icons.Outlined.Restore,
-                    text = stringResource(R.string.restore_default_selection),
-                    onClick = {
-                        guardedAction {
-                            executeScopedAction { uid ->
-                                viewModel.restoreDefaults(uid)
-                            }
+                    fun guardedAction(action: () -> Unit) {
+                        showBottomSheet = false
+                        if (viewModel.selectionWarningEnabled) {
+                            showSelectionWarning = true
+                        } else {
+                            action()
                         }
                     }
-                )
 
-                ActionItem(
-                    icon = Icons.Outlined.Deselect,
-                    text = stringResource(R.string.deselect_all),
-                    onClick = {
-                        guardedAction {
-                            executeScopedAction { uid ->
-                                viewModel.deselectAll(bundles, uid)
-                            }
-                        }
-                    }
-                )
-
-                ActionItem(
-                    icon = Icons.Outlined.SwapHoriz,
-                    text = stringResource(R.string.invert_selection),
-                    onClick = {
-                        guardedAction {
-                            executeScopedAction { uid ->
-                                viewModel.invertSelection(bundles, uid)
-                            }
-                        }
-                    }
-                )
-
-                if (bundles.size > 1 && currentBundle != null) {
                     ActionItem(
-                        icon = Icons.Outlined.Deselect,
-                        text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                        icon = Icons.Outlined.Restore,
+                        text = stringResource(R.string.restore_default_selection),
                         onClick = {
                             guardedAction {
-                                viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                                executeScopedAction { uid ->
+                                    viewModel.restoreDefaults(uid)
+                                }
                             }
                         }
                     )
+
+                    ActionItem(
+                        icon = Icons.Outlined.Deselect,
+                        text = stringResource(R.string.deselect_all),
+                        onClick = {
+                            guardedAction {
+                                executeScopedAction { uid ->
+                                    viewModel.deselectAll(bundles, uid)
+                                }
+                            }
+                        }
+                    )
+
+                    ActionItem(
+                        icon = Icons.Outlined.SwapHoriz,
+                        text = stringResource(R.string.invert_selection),
+                        onClick = {
+                            guardedAction {
+                                executeScopedAction { uid ->
+                                    viewModel.invertSelection(bundles, uid)
+                                }
+                            }
+                        }
+                    )
+
+                    if (bundles.size > 1 && currentBundle != null) {
+                        ActionItem(
+                            icon = Icons.Outlined.Deselect,
+                            text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                            onClick = {
+                                guardedAction {
+                                    viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -293,7 +302,8 @@ fun PatchesSelectorScreen(
             values = viewModel.getOptions(bundle, patch),
             reset = { viewModel.resetOptions(bundle, patch) },
             set = { key, value -> viewModel.setOption(bundle, patch, key, value) },
-            selectionWarningEnabled = viewModel.selectionWarningEnabled
+            selectionWarningEnabled = viewModel.selectionWarningEnabled,
+            readOnly = readOnly
         )
     }
 
@@ -308,6 +318,7 @@ fun PatchesSelectorScreen(
         patches: List<PatchInfo>,
         visible: Boolean,
         compatible: Boolean,
+        section: String,
         header: (@Composable () -> Unit)? = null
     ) {
         if (patches.isNotEmpty() && visible) {
@@ -319,17 +330,14 @@ fun PatchesSelectorScreen(
 
             items(
                 items = patches,
-                key = { it.name },
+                key = { "$section:${it.name}" },
                 contentType = { 1 }
             ) { patch ->
                 PatchItem(
                     patch = patch,
                     onOptionsDialog = { viewModel.optionsDialog = uid to patch },
-                    selected = compatible && viewModel.isSelected(
-                        uid,
-                        patch
-                    ),
-                    onToggle = {
+                    selected = compatible && viewModel.isSelected(uid, patch),
+                    onToggle = if (readOnly) ({}) else ({
                         when {
                             // Open incompatible dialog if the patch is not supported
                             !compatible -> viewModel.openIncompatibleDialog(patch)
@@ -344,8 +352,11 @@ fun PatchesSelectorScreen(
                             // Toggle the patch otherwise
                             else -> viewModel.togglePatch(uid, patch)
                         }
-                    },
-                    compatible = compatible
+                    }),
+                    compatible = compatible,
+                    readOnly = readOnly,
+                    packageName = viewModel.packageName,
+                    showAllPackages = readOnly
                 )
             }
         }
@@ -423,13 +434,15 @@ fun PatchesSelectorScreen(
                         uid = bundle.uid,
                         patches = bundle.compatible.searched(),
                         visible = true,
-                        compatible = true
+                        compatible = true,
+                        section = "compatible"
                     )
                     patchList(
                         uid = bundle.uid,
                         patches = bundle.universal.searched(),
                         visible = viewModel.filter and SHOW_UNIVERSAL != 0,
-                        compatible = true
+                        compatible = true,
+                        section = "universal"
                     ) {
                         ListHeader(
                             title = stringResource(R.string.universal_patches),
@@ -440,7 +453,8 @@ fun PatchesSelectorScreen(
                         uid = bundle.uid,
                         patches = bundle.incompatible.searched(),
                         visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
-                        compatible = viewModel.allowIncompatiblePatches
+                        compatible = viewModel.allowIncompatiblePatches,
+                        section = "incompatible"
                     ) {
                         ListHeader(
                             title = stringResource(R.string.incompatible_patches),
@@ -451,7 +465,7 @@ fun PatchesSelectorScreen(
             }
         },
         floatingActionButton = {
-            if (!showSaveButton) return@Scaffold
+            if (readOnly || !showSaveButton) return@Scaffold
 
             AnimatedVisibility(
                 visible = !searchExpanded,
@@ -539,13 +553,13 @@ fun PatchesSelectorScreen(
 
                                     HapticTriStateCheckbox(
                                         state = toggleableState,
-                                        onClick = {
+                                        onClick = if (readOnly) ({}) else ({
                                             when {
                                                 viewModel.selectionWarningEnabled -> showSelectionWarning = true
                                                 selectionState == false -> viewModel.restoreDefaults(bundle.uid)
                                                 else -> viewModel.deselectAll(bundles, bundle.uid)
                                             }
-                                        }
+                                        })
                                     )
 
                                     Spacer(modifier = Modifier.width(4.dp))
@@ -586,13 +600,15 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.compatible,
                             visible = true,
-                            compatible = true
+                            compatible = true,
+                            section = "compatible"
                         )
                         patchList(
                             uid = bundle.uid,
                             patches = bundle.universal,
                             visible = viewModel.filter and SHOW_UNIVERSAL != 0,
-                            compatible = true
+                            compatible = true,
+                            section = "universal"
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.universal_patches),
@@ -602,7 +618,8 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.incompatible,
                             visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
-                            compatible = viewModel.allowIncompatiblePatches
+                            compatible = viewModel.allowIncompatiblePatches,
+                            section = "incompatible"
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.incompatible_patches),
@@ -630,26 +647,41 @@ private fun UniversalPatchWarningDialog(
 @Composable
 private fun PatchItem(
     patch: PatchInfo,
-    onOptionsDialog: () -> Unit,
+    onOptionsDialog: (() -> Unit)?,
     selected: Boolean,
     onToggle: () -> Unit,
-    compatible: Boolean = true
+    compatible: Boolean = true,
+    readOnly: Boolean = false,
+    packageName: String = "",
+    showAllPackages: Boolean = false
 ) = ListItem(
     modifier = Modifier
         .let { if (!compatible) it.alpha(0.5f) else it }
-        .clickable(onClick = onToggle)
+        .let { if (!readOnly) it.clickable(onClick = onToggle) else it }
         .fillMaxSize(),
     leadingContent = {
         HapticCheckbox(
             checked = selected,
             onCheckedChange = { onToggle() },
-            enabled = compatible
+            enabled = compatible && !readOnly
         )
     },
     headlineContent = { Text(patch.name) },
-    supportingContent = patch.description?.let { { Text(it) } },
+    supportingContent = {
+        Column {
+            patch.description?.let {
+                Text(it)
+            }
+            // Show compatibility information
+            PatchCompatibilityInfo(
+                patch = patch,
+                packageName = packageName,
+                showAllPackages = showAllPackages
+            )
+        }
+    },
     trailingContent = {
-        if (patch.options?.isNotEmpty() == true) {
+        if (patch.options?.isNotEmpty() == true && onOptionsDialog != null) {
             IconButton(onClick = onOptionsDialog, enabled = compatible) {
                 Icon(Icons.Outlined.Settings, null)
             }
@@ -657,6 +689,114 @@ private fun PatchItem(
     },
     colors = transparentListItemColors
 )
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun PatchCompatibilityInfo(
+    patch: PatchInfo,
+    packageName: String = "",
+    showAllPackages: Boolean = false
+) {
+    if (patch.compatiblePackages == null) {
+        // Universal patch
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 8.dp)
+        ) {
+            CompatibilityChip(text = "📦 ${stringResource(R.string.patches_view_any_package)}")
+            CompatibilityChip(text = "🎯 ${stringResource(R.string.patches_view_any_version)}")
+        }
+    } else {
+        // Specific package compatibility
+        if (showAllPackages) {
+            // Show all packages (readonly mode)
+            patch.compatiblePackages.forEach { compatiblePackage ->
+                val versions = compatiblePackage.versions.orEmpty().reversed()
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    CompatibilityChip(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        text = "📦 ${compatiblePackage.packageName}"
+                    )
+                    if (versions.isEmpty()) {
+                        CompatibilityChip(
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            text = "🎯 ${stringResource(R.string.patches_view_any_version)}"
+                        )
+                    } else {
+                        versions.forEach { version ->
+                            CompatibilityChip(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                text = "🎯 $version"
+                            )
+                        }
+                    }
+                }
+            }
+        } else {
+            // Show only selected app's compatible versions (patching mode)
+            val selectedPackageCompat = patch.compatiblePackages.find { it.packageName == packageName }
+            if (selectedPackageCompat != null) {
+                val versions = selectedPackageCompat.versions.orEmpty().reversed()
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    if (versions.isEmpty()) {
+                        CompatibilityChip(
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            text = "🎯 ${stringResource(R.string.patches_view_any_version)}"
+                        )
+                    } else {
+                        versions.forEach { version ->
+                            CompatibilityChip(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                text = "🎯 $version"
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompatibilityChip(
+    modifier: Modifier = Modifier,
+    text: String
+) {
+    OutlinedCard(
+        modifier = modifier,
+        colors = CardColors(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        shape = RoundedCornerShape(8.0.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.20f))
+    ) {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text,
+                overflow = TextOverflow.Ellipsis,
+                softWrap = false,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
 
 @Composable
 fun ListHeader(
@@ -780,7 +920,8 @@ private fun OptionsDialog(
     reset: () -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
-    selectionWarningEnabled: Boolean
+    selectionWarningEnabled: Boolean,
+    readOnly: Boolean
 ) = FullscreenDialog(onDismissRequest = onDismissRequest) {
     Scaffold(
         topBar = {
@@ -788,8 +929,10 @@ private fun OptionsDialog(
                 title = patch.name,
                 onBackClick = onDismissRequest,
                 actions = {
-                    IconButton(onClick = reset) {
-                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                    if (!readOnly) {
+                        IconButton(onClick = reset) {
+                            Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                        }
                     }
                 }
             )
@@ -809,10 +952,9 @@ private fun OptionsDialog(
                 OptionItem(
                     option = option as Option<Any>,
                     value = value,
-                    setValue = {
-                        set(name, it)
-                    },
-                    selectionWarningEnabled = selectionWarningEnabled
+                    setValue = if (readOnly) ({}) else ({ set(name, it) }),
+                    selectionWarningEnabled = selectionWarningEnabled,
+                    readOnly = readOnly
                 )
             }
         }

@@ -18,6 +18,7 @@ fun TextInputDialog(
     onDismissRequest: () -> Unit,
     onConfirm: (String) -> Unit,
     validator: (String) -> Boolean = String::isNotEmpty,
+    readOnly: Boolean = false
 ) {
     val (value, setValue) = rememberSaveable(initial) {
         mutableStateOf(initial)
@@ -29,23 +30,30 @@ fun TextInputDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(
-                onClick = { onConfirm(value) },
-                enabled = valid
-            ) {
-                Text(stringResource(R.string.ok))
+            if (!readOnly) {
+                TextButton(
+                    onClick = { onConfirm(value) },
+                    enabled = valid
+                ) {
+                    Text(stringResource(R.string.ok))
+                }
             }
         },
         dismissButton = {
             TextButton(onClick = onDismissRequest) {
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(if (readOnly) R.string.close else R.string.cancel))
             }
         },
         title = {
             Text(title)
         },
         text = {
-            TextField(value = value, onValueChange = setValue)
+            TextField(
+                value = value,
+                onValueChange = setValue,
+                enabled = !readOnly,
+                readOnly = readOnly
+            )
         }
     )
 }

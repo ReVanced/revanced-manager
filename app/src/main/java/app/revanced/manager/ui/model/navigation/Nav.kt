@@ -47,6 +47,7 @@ data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.V
             val app: SelectedApp,
             val currentSelection: PatchSelection?,
             val options: @RawValue Options,
+            val readOnly: Boolean = false,
         ) : Parcelable
     }
 

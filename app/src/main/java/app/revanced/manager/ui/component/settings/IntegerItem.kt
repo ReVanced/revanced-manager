@@ -52,10 +52,14 @@ fun IntegerItem(
     }
 
     if (dialogOpen) {
-        IntInputDialog(current = value, name = stringResource(headline)) { new ->
-            dialogOpen = false
-            new?.let(onValueChange)
-        }
+        IntInputDialog(
+            current = value,
+            name = stringResource(headline),
+            onSubmit = { new ->
+                dialogOpen = false
+                new?.let(onValueChange)
+            }
+        )
     }
 
     SettingsListItem(

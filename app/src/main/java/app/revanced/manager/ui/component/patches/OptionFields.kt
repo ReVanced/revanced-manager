@@ -91,7 +91,8 @@ private class OptionEditorScope<T : Any>(
     val selectionWarningEnabled: Boolean,
     val showSelectionWarning: () -> Unit,
     val value: T?,
-    val setValue: (T?) -> Unit
+    val setValue: (T?) -> Unit,
+    val readOnly: Boolean = false
 ) {
     fun submitDialog(value: T?) {
         setValue(value)
@@ -106,8 +107,13 @@ private class OptionEditorScope<T : Any>(
     }
 
     fun clickAction() {
-        checkSafeguard {
+        if (readOnly) {
+            // In readonly mode, bypass the safeguard and open the dialog directly
             editor.clickAction(this)
+        } else {
+            checkSafeguard {
+                editor.clickAction(this)
+            }
         }
     }
 
@@ -123,7 +129,10 @@ private interface OptionEditor<T : Any> {
 
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        IconButton(onClick = { scope.checkSafeguard { clickAction(scope) } }) {
+        IconButton(
+            onClick = { scope.checkSafeguard { clickAction(scope) } },
+            enabled = !scope.readOnly
+        ) {
             Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
         }
     }
@@ -152,13 +161,14 @@ private inline fun <T : Any> WithOptionEditor(
     value: T?,
     noinline setValue: (T?) -> Unit,
     selectionWarningEnabled: Boolean,
+    readOnly: Boolean = false,
     crossinline onDismissDialog: @DisallowComposableCalls () -> Unit = {},
     block: OptionEditorScope<T>.() -> Unit
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showSelectionWarningDialog by rememberSaveable { mutableStateOf(false) }
 
-    val scope = remember(editor, option, value, setValue, selectionWarningEnabled) {
+    val scope = remember(editor, option, value, setValue, selectionWarningEnabled, readOnly) {
         OptionEditorScope(
             editor,
             option,
@@ -170,7 +180,8 @@ private inline fun <T : Any> WithOptionEditor(
             selectionWarningEnabled,
             showSelectionWarning = { showSelectionWarningDialog = true },
             value,
-            setValue
+            setValue,
+            readOnly = readOnly
         )
     }
 
@@ -189,7 +200,8 @@ fun <T : Any> OptionItem(
     option: Option<T>,
     value: T?,
     setValue: (T?) -> Unit,
-    selectionWarningEnabled: Boolean
+    selectionWarningEnabled: Boolean,
+    readOnly: Boolean = false
 ) {
     val editor = remember(option.type, option.presets) {
         @Suppress("UNCHECKED_CAST")
@@ -202,7 +214,7 @@ fun <T : Any> OptionItem(
         else baseOptionEditor
     }
 
-    WithOptionEditor(editor, option, value, setValue, selectionWarningEnabled) {
+    WithOptionEditor(editor, option, value, setValue, selectionWarningEnabled, readOnly) {
         ListItem(
             modifier = Modifier.clickable(onClick = ::clickAction),
             headlineContent = { Text(option.name) },
@@ -255,12 +267,14 @@ private object StringOptionEditor : OptionEditor<String> {
                 OutlinedTextField(
                     value = fieldValue,
                     onValueChange = { fieldValue = it },
+                    enabled = !scope.readOnly,
+                    readOnly = scope.readOnly,
                     placeholder = {
                         Text(stringResource(R.string.dialog_input_placeholder))
                     },
-                    isError = validatorFailed,
+                    isError = !scope.readOnly && validatorFailed,
                     supportingText = {
-                        if (validatorFailed) {
+                        if (!scope.readOnly && validatorFailed) {
                             Text(
                                 stringResource(R.string.input_dialog_value_invalid),
                                 modifier = Modifier.fillMaxWidth(),
@@ -268,51 +282,55 @@ private object StringOptionEditor : OptionEditor<String> {
                             )
                         }
                     },
-                    trailingIcon = {
-                        var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
-                        IconButton(
-                            onClick = { showDropdownMenu = true }
-                        ) {
-                            Icon(
-                                Icons.Outlined.MoreVert,
-                                stringResource(R.string.string_option_menu_description)
-                            )
-                        }
+                    trailingIcon = if (!scope.readOnly) {
+                        {
+                            var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
+                            IconButton(
+                                onClick = { showDropdownMenu = true }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.MoreVert,
+                                    stringResource(R.string.string_option_menu_description)
+                                )
+                            }
 
-                        DropdownMenu(
-                            expanded = showDropdownMenu,
-                            onDismissRequest = { showDropdownMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(Icons.Outlined.Folder, null)
-                                },
-                                text = {
-                                    Text(stringResource(R.string.path_selector))
-                                },
-                                onClick = {
-                                    showDropdownMenu = false
-                                    if (fs.hasStoragePermission()) {
-                                        showFileDialog = true
-                                    } else {
-                                        permissionLauncher.launch(permissionName)
+                            DropdownMenu(
+                                expanded = showDropdownMenu,
+                                onDismissRequest = { showDropdownMenu = false }
+                            ) {
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(Icons.Outlined.Folder, null)
+                                    },
+                                    text = {
+                                        Text(stringResource(R.string.path_selector))
+                                    },
+                                    onClick = {
+                                        showDropdownMenu = false
+                                        if (fs.hasStoragePermission()) {
+                                            showFileDialog = true
+                                        } else {
+                                            permissionLauncher.launch(permissionName)
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
                         }
-                    }
+                    } else null
                 )
             },
             confirmButton = {
-                TextButton(
-                    enabled = !validatorFailed,
-                    onClick = { scope.submitDialog(fieldValue) }) {
-                    Text(stringResource(R.string.save))
+                if (!scope.readOnly) {
+                    TextButton(
+                        enabled = !validatorFailed,
+                        onClick = { scope.submitDialog(fieldValue) }) {
+                        Text(stringResource(R.string.save))
+                    }
                 }
             },
             dismissButton = {
                 TextButton(onClick = scope.dismissDialog) {
-                    Text(stringResource(R.string.cancel))
+                    Text(stringResource(if (scope.readOnly) R.string.close else R.string.cancel))
                 }
             },
         )
@@ -325,16 +343,17 @@ private abstract class NumberOptionEditor<T : Number> : OptionEditor<T> {
         title: String,
         current: T?,
         validator: (T?) -> Boolean,
-        onSubmit: (T?) -> Unit
+        onSubmit: (T?) -> Unit,
+        readOnly: Boolean
     )
 
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
-        NumberDialog(scope.option.name, scope.value, scope.option.validator) {
+        NumberDialog(scope.option.name, scope.value, scope.option.validator, {
             if (it == null) return@NumberDialog scope.dismissDialog()
 
             scope.submitDialog(it)
-        }
+        }, scope.readOnly)
     }
 }
 
@@ -344,8 +363,9 @@ private object IntOptionEditor : NumberOptionEditor<Int>() {
         title: String,
         current: Int?,
         validator: (Int?) -> Boolean,
-        onSubmit: (Int?) -> Unit
-    ) = IntInputDialog(current, title, validator, onSubmit)
+        onSubmit: (Int?) -> Unit,
+        readOnly: Boolean
+    ) = IntInputDialog(current, title, validator, onSubmit, readOnly)
 }
 
 private object LongOptionEditor : NumberOptionEditor<Long>() {
@@ -354,8 +374,9 @@ private object LongOptionEditor : NumberOptionEditor<Long>() {
         title: String,
         current: Long?,
         validator: (Long?) -> Boolean,
-        onSubmit: (Long?) -> Unit
-    ) = LongInputDialog(current, title, validator, onSubmit)
+        onSubmit: (Long?) -> Unit,
+        readOnly: Boolean
+    ) = LongInputDialog(current, title, validator, onSubmit, readOnly)
 }
 
 private object FloatOptionEditor : NumberOptionEditor<Float>() {
@@ -364,8 +385,9 @@ private object FloatOptionEditor : NumberOptionEditor<Float>() {
         title: String,
         current: Float?,
         validator: (Float?) -> Boolean,
-        onSubmit: (Float?) -> Unit
-    ) = FloatInputDialog(current, title, validator, onSubmit)
+        onSubmit: (Float?) -> Unit,
+        readOnly: Boolean
+    ) = FloatInputDialog(current, title, validator, onSubmit, readOnly)
 }
 
 private object BooleanOptionEditor : OptionEditor<Boolean> {
@@ -381,7 +403,8 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
                 scope.checkSafeguard {
                     scope.setValue(value)
                 }
-            }
+            },
+            enabled = !scope.readOnly
         )
     }
 
@@ -422,6 +445,7 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
             scope.value,
             scope.setValue,
             scope.selectionWarningEnabled,
+            readOnly = scope.readOnly,
             onDismissDialog = scope.dismissDialog
         ) inner@{
             var hidePresetsDialog by rememberSaveable {
@@ -433,26 +457,28 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
             AlertDialogExtended(
                 onDismissRequest = scope.dismissDialog,
                 confirmButton = {
-                    TextButton(
-                        onClick = {
-                            if (selectedPreset != null) scope.submitDialog(
-                                scope.option.presets?.get(
-                                    selectedPreset
+                    if (!scope.readOnly) {
+                        TextButton(
+                            onClick = {
+                                if (selectedPreset != null) scope.submitDialog(
+                                    scope.option.presets?.get(
+                                        selectedPreset
+                                    )
                                 )
-                            )
-                            else {
-                                this@inner.openDialog()
-                                // Hide the presets dialog so it doesn't show up in the background.
-                                hidePresetsDialog = true
+                                else {
+                                    this@inner.openDialog()
+                                    // Hide the presets dialog so it doesn't show up in the background.
+                                    hidePresetsDialog = true
+                                }
                             }
+                        ) {
+                            Text(stringResource(if (selectedPreset != null) R.string.save else R.string.continue_))
                         }
-                    ) {
-                        Text(stringResource(if (selectedPreset != null) R.string.save else R.string.continue_))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = scope.dismissDialog) {
-                        Text(stringResource(R.string.cancel))
+                        Text(stringResource(if (scope.readOnly) R.string.close else R.string.cancel))
                     }
                 },
                 title = { Text(scope.option.name) },
@@ -466,13 +492,14 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
                         @Composable
                         fun Item(title: String, value: Any?, presetKey: String?) {
                             ListItem(
-                                modifier = Modifier.clickable { selectedPreset = presetKey },
+                                modifier = if (!scope.readOnly) Modifier.clickable { selectedPreset = presetKey } else Modifier,
                                 headlineContent = { Text(title) },
                                 supportingContent = value?.toString()?.let { { Text(it) } },
                                 leadingContent = {
                                     HapticRadioButton(
                                         selected = selectedPreset == presetKey,
-                                        onClick = { selectedPreset = presetKey }
+                                        onClick = if (!scope.readOnly) { { selectedPreset = presetKey } } else null,
+                                        enabled = !scope.readOnly
                                     )
                                 },
                                 colors = transparentListItemColors
@@ -602,7 +629,7 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                         stringResource(R.string.delete)
                                     )
                                 }
-                            } else {
+                            } else if (!scope.readOnly) {
                                 IconButton(onClick = items::clear) {
                                     Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                                 }
@@ -611,7 +638,7 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                     )
                 },
                 floatingActionButton = {
-                    if (deleteMode) return@Scaffold
+                    if (deleteMode || scope.readOnly) return@Scaffold
 
                     HapticExtendedFloatingActionButton(
                         text = { Text(stringResource(R.string.add)) },
@@ -643,45 +670,52 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                 elementOption,
                                 value = item.value,
                                 setValue = { items[index] = item.copy(value = it) },
-                                selectionWarningEnabled = scope.selectionWarningEnabled
+                                selectionWarningEnabled = scope.selectionWarningEnabled,
+                                readOnly = scope.readOnly
                             ) {
                                 ListItem(
-                                    modifier = Modifier.combinedClickable(
-                                        indication = LocalIndication.current,
-                                        interactionSource = interactionSource,
-                                        onLongClickLabel = stringResource(R.string.select),
-                                        onLongClick = {
-                                            if (!deleteMode) {
-                                                deletionTargets.add(item.key)
-                                                deleteMode = true
-                                            }
-                                        },
-                                        onClick = {
-                                            if (!deleteMode) {
-                                                clickAction()
-                                                return@combinedClickable
-                                            }
+                                    modifier = if (!scope.readOnly) {
+                                        Modifier.combinedClickable(
+                                            indication = LocalIndication.current,
+                                            interactionSource = interactionSource,
+                                            onLongClickLabel = stringResource(R.string.select),
+                                            onLongClick = {
+                                                if (!deleteMode) {
+                                                    deletionTargets.add(item.key)
+                                                    deleteMode = true
+                                                }
+                                            },
+                                            onClick = {
+                                                if (!deleteMode) {
+                                                    clickAction()
+                                                    return@combinedClickable
+                                                }
 
-                                            if (item.key in deletionTargets) {
-                                                deletionTargets.remove(
-                                                    item.key
-                                                )
-                                                deleteMode = deletionTargets.isNotEmpty()
-                                            } else deletionTargets.add(item.key)
-                                        },
-                                    ),
-                                    tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
-                                    leadingContent = {
-                                        IconButton(
-                                            modifier = Modifier.draggableHandle(interactionSource = interactionSource),
-                                            onClick = {},
-                                        ) {
-                                            Icon(
-                                                Icons.Filled.DragHandle,
-                                                stringResource(R.string.drag_handle)
-                                            )
-                                        }
+                                                if (item.key in deletionTargets) {
+                                                    deletionTargets.remove(
+                                                        item.key
+                                                    )
+                                                    deleteMode = deletionTargets.isNotEmpty()
+                                                } else deletionTargets.add(item.key)
+                                            },
+                                        )
+                                    } else {
+                                        Modifier.clickable(onClick = ::clickAction)
                                     },
+                                    tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
+                                    leadingContent = if (!scope.readOnly) {
+                                        {
+                                            IconButton(
+                                                modifier = Modifier.draggableHandle(interactionSource = interactionSource),
+                                                onClick = {},
+                                            ) {
+                                                Icon(
+                                                    Icons.Filled.DragHandle,
+                                                    stringResource(R.string.drag_handle)
+                                                )
+                                            }
+                                        }
+                                    } else null,
                                     headlineContent = {
                                         if (item.value == null) return@ListItem Text(
                                             stringResource(R.string.empty),

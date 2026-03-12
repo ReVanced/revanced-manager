@@ -51,8 +51,9 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
 
-    private val packageName = input.app.packageName
+    val packageName = input.app.packageName
     val appVersion = input.app.version
+    val readOnly = input.readOnly
 
     var selectionWarningEnabled by mutableStateOf(true)
         private set
@@ -61,8 +62,32 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
     val allowIncompatiblePatches =
         get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
-    val bundlesFlow =
+    val bundlesFlow = if (readOnly) {
+        get<PatchBundleRepository>().bundleInfoFlow.map { bundleInfoMap ->
+            bundleInfoMap.map { (_, bundleInfo) ->
+                val compatible = mutableListOf<PatchInfo>()
+                val incompatible = mutableListOf<PatchInfo>()
+                val universal = mutableListOf<PatchInfo>()
+                bundleInfo.patches.distinctBy { it.name }.forEach { patch ->
+                    when {
+                        patch.compatiblePackages == null -> universal
+                        else -> compatible
+                    }.add(patch)
+                }
+                PatchBundleInfo.Scoped(
+                    name = bundleInfo.name,
+                    version = bundleInfo.version,
+                    uid = bundleInfo.uid,
+                    patches = bundleInfo.patches.distinctBy { it.name },
+                    compatible = compatible,
+                    incompatible = incompatible,
+                    universal = universal
+                )
+            }
+        }
+    } else {
         get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.app.version)
+    }
 
     init {
         viewModelScope.launch {

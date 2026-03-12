@@ -24,7 +24,8 @@ private inline fun <T> NumberInputDialog(
     name: String,
     crossinline onSubmit: (T?) -> Unit,
     crossinline validator: @DisallowComposableCalls (T) -> Boolean,
-    crossinline toNumberOrNull: @DisallowComposableCalls String.() -> T?
+    crossinline toNumberOrNull: @DisallowComposableCalls String.() -> T?,
+    readOnly: Boolean = false
 ) {
     var fieldValue by rememberSaveable {
         mutableStateOf(current?.toString().orEmpty())
@@ -43,12 +44,14 @@ private inline fun <T> NumberInputDialog(
             OutlinedTextField(
                 value = fieldValue,
                 onValueChange = { fieldValue = it },
+                enabled = !readOnly,
+                readOnly = readOnly,
                 placeholder = {
                     Text(stringResource(R.string.dialog_input_placeholder))
                 },
-                isError = validatorFailed,
+                isError = !readOnly && validatorFailed,
                 supportingText = {
-                    if (validatorFailed) {
+                    if (!readOnly && validatorFailed) {
                         Text(
                             stringResource(R.string.input_dialog_value_invalid),
                             modifier = Modifier.fillMaxWidth(),
@@ -59,16 +62,18 @@ private inline fun <T> NumberInputDialog(
             )
         },
         confirmButton = {
-            TextButton(
-                onClick = { numberFieldValue?.let(onSubmit) },
-                enabled = numberFieldValue != null && !validatorFailed,
-            ) {
-                Text(stringResource(R.string.save))
+            if (!readOnly) {
+                TextButton(
+                    onClick = { numberFieldValue?.let(onSubmit) },
+                    enabled = numberFieldValue != null && !validatorFailed,
+                ) {
+                    Text(stringResource(R.string.save))
+                }
             }
         },
         dismissButton = {
             TextButton(onClick = { onSubmit(null) }) {
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(if (readOnly) R.string.close else R.string.cancel))
             }
         },
     )
@@ -79,21 +84,24 @@ fun IntInputDialog(
     current: Int?,
     name: String,
     validator: (Int) -> Boolean = { true },
-    onSubmit: (Int?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toIntOrNull)
+    onSubmit: (Int?) -> Unit,
+    readOnly: Boolean = false
+) = NumberInputDialog(current, name, onSubmit, validator, String::toIntOrNull, readOnly)
 
 @Composable
 fun LongInputDialog(
     current: Long?,
     name: String,
     validator: (Long) -> Boolean = { true },
-    onSubmit: (Long?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toLongOrNull)
+    onSubmit: (Long?) -> Unit,
+    readOnly: Boolean = false
+) = NumberInputDialog(current, name, onSubmit, validator, String::toLongOrNull, readOnly)
 
 @Composable
 fun FloatInputDialog(
     current: Float?,
     name: String,
     validator: (Float) -> Boolean = { true },
-    onSubmit: (Float?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toFloatOrNull)
+    onSubmit: (Float?) -> Unit,
+    readOnly: Boolean = false
+) = NumberInputDialog(current, name, onSubmit, validator, String::toFloatOrNull, readOnly)
