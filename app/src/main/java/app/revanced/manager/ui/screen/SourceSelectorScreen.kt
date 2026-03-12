@@ -62,11 +62,6 @@ fun SourceSelectorScreen(
                 headlineContent = { Text(stringResource(R.string.version_selector_auto_title)) },
                 supportingContent = { Text(stringResource(R.string.source_selector_auto_description)) },
             )
-            SourceOption(
-                isSelected = viewModel.selectedSource == SelectedSource.Downloader(),
-                onSelect = { viewModel.selectSource(SelectedSource.Downloader()) },
-                headlineContent = { Text(stringResource(R.string.source_selector_any_available_downloader)) },
-            )
 
             viewModel.localApp?.let { option ->
                 GroupHeader(stringResource(R.string.source_selector_category_local))
