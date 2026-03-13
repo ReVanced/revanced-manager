@@ -119,9 +119,6 @@ private fun ReVancedManager(vm: MainViewModel) {
                 onUpdateClick = {
                     navController.navigate(Update())
                 },
-                onDownloaderClick = {
-                    navController.navigate(Settings.Downloads)
-                },
                 onAppClick = { packageName ->
                     navController.navigate(InstalledApplicationInfo(packageName))
                 },

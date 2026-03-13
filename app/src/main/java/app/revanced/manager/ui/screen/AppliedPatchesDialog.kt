@@ -17,6 +17,7 @@ import app.revanced.manager.data.room.apps.installed.InstalledPatchBundle
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.patches.ListHeader
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.transparentListItemColors
 

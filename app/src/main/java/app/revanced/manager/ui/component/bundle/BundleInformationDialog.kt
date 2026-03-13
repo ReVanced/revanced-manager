@@ -59,7 +59,6 @@ import org.koin.compose.koinInject
 @Composable
 fun BundleInformationDialog(
     src: PatchBundleSource,
-    patchCount: Int,
     onDismissRequest: () -> Unit,
     onDeleteRequest: () -> Unit,
     onUpdate: () -> Unit,
@@ -69,7 +68,6 @@ fun BundleInformationDialog(
     val prefs = koinInject<PreferencesManager>()
     val hasNetwork = remember { networkInfo.isConnected() }
     val composableScope = rememberCoroutineScope()
-    var viewCurrentBundlePatches by remember { mutableStateOf(false) }
     val isLocal = src is LocalPatchBundle
     val bundleManifestAttributes = src.patchBundle?.manifestAttributes
     val (autoUpdate, endpoint) = src.asRemoteOrNull?.let { it.autoUpdate to it.endpoint }
@@ -79,15 +77,6 @@ fun BundleInformationDialog(
         with(bundleRepo) {
             src.asRemoteOrNull?.setAutoUpdate(new)
         }
-    }
-
-    if (viewCurrentBundlePatches) {
-        BundlePatchesDialog(
-            src = src,
-            onDismissRequest = {
-                viewCurrentBundlePatches = false
-            }
-        )
     }
 
     FullscreenDialog(
@@ -237,25 +226,6 @@ fun BundleInformationDialog(
                             stringResource(field_not_set)
                         }
                     )
-                }
-
-                val patchesClickable = patchCount > 0
-                BundleListItem(
-                    headlineText = stringResource(patches),
-                    supportingText = stringResource(view_patches),
-                    modifier = Modifier.clickable(
-                        enabled = patchesClickable,
-                        onClick = {
-                            viewCurrentBundlePatches = true
-                        }
-                    )
-                ) {
-                    if (patchesClickable) {
-                        Icon(
-                            Icons.AutoMirrored.Outlined.ArrowRight,
-                            stringResource(patches)
-                        )
-                    }
                 }
 
                 src.error?.let {

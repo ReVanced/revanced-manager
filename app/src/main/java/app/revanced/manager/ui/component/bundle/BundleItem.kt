@@ -47,7 +47,6 @@ fun BundleItem(
     if (viewBundleDialogPage) {
         BundleInformationDialog(
             src = src,
-            patchCount = patchCount,
             onDismissRequest = { viewBundleDialogPage = false },
             onDeleteRequest = { showDeleteConfirmationDialog = true },
             onUpdate = onUpdate,

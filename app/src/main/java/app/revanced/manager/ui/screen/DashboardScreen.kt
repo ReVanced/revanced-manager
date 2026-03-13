@@ -7,7 +7,6 @@ import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,15 +17,11 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Update
@@ -44,11 +39,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -66,9 +58,8 @@ import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.ConfirmDialog
-import app.revanced.manager.ui.component.bundle.BundleTopBar
+import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
@@ -96,11 +87,8 @@ fun DashboardScreen(
     onUpdateClick: () -> Unit,
     onAnnouncementsClick: () -> Unit,
     onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
-    onDownloaderClick: () -> Unit,
     onAppClick: (String) -> Unit
 ) {
-    var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
-    val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
         false
@@ -176,75 +164,42 @@ fun DashboardScreen(
 
     Scaffold(
         topBar = {
-            if (bundlesSelectable) {
-                BundleTopBar(
-                    title = stringResource(R.string.patches_selected, selectedSourceCount),
-                    onBackClick = vm::cancelSourceSelection,
-                    backIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    },
-                    actions = {
+            AppTopBar(
+                title = stringResource(R.string.app_name),
+                actions = {
+                    if (!vm.updatedManagerVersion.isNullOrEmpty()) {
                         IconButton(
-                            onClick = {
-                                showDeleteConfirmationDialog = true
+                            onClick = onUpdateClick,
+                        ) {
+                            BadgedBox(
+                                badge = {
+                                    Badge(modifier = Modifier.size(6.dp))
+                                }
+                            ) {
+                                Icon(Icons.Outlined.Update, stringResource(R.string.update))
+                            }
+                        }
+                    }
+                    IconButton(onClick = onAnnouncementsClick) {
+                        BadgedBox(
+                            badge = {
+                                if (vm.unreadAnnouncement != null) {
+                                    Badge(modifier = Modifier.size(6.dp))
+                                }
                             }
                         ) {
                             Icon(
-                                Icons.Outlined.DeleteOutline,
-                                stringResource(R.string.delete)
-                            )
-                        }
-                        IconButton(
-                            onClick = vm::updateSources
-                        ) {
-                            Icon(
-                                Icons.Outlined.Refresh,
-                                stringResource(R.string.refresh)
+                                Icons.Outlined.Notifications,
+                                stringResource(R.string.announcements)
                             )
                         }
                     }
-                )
-            } else {
-                AppTopBar(
-                    title = stringResource(R.string.app_name),
-                    actions = {
-                        if (!vm.updatedManagerVersion.isNullOrEmpty()) {
-                            IconButton(
-                                onClick = onUpdateClick,
-                            ) {
-                                BadgedBox(
-                                    badge = {
-                                        Badge(modifier = Modifier.size(6.dp))
-                                    }
-                                ) {
-                                    Icon(Icons.Outlined.Update, stringResource(R.string.update))
-                                }
-                            }
-                        }
-                        IconButton(onClick = onAnnouncementsClick) {
-                            BadgedBox(
-                                badge = {
-                                    if (vm.unreadAnnouncement != null) {
-                                        Badge(modifier = Modifier.size(6.dp))
-                                    }
-                                }
-                            ) {
-                                Icon(
-                                    Icons.Outlined.Notifications,
-                                    stringResource(R.string.announcements)
-                                )
-                            }
-                        }
-                        IconButton(onClick = onSettingsClick) {
-                            Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
-                        }
-                    },
-                    applyContainerColor = true
-                )
-            }
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                    }
+                },
+                applyContainerColor = true
+            )
         },
         floatingActionButton = {
             HapticFloatingActionButton(
@@ -378,17 +333,8 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES -> {
-                            BackHandler {
-                                if (bundlesSelectable) vm.cancelSourceSelection() else composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        DashboardPage.DASHBOARD.ordinal
-                                    )
-                                }
-                            }
-
                             BundleListScreen(
-                                eventsFlow = vm.bundleListEventsFlow,
-                                setSelectedSourceCount = { selectedSourceCount = it }
+                                eventsFlow = vm.bundleListEventsFlow
                             )
                         }
                     }
