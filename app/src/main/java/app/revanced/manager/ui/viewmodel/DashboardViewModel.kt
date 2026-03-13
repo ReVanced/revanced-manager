@@ -41,6 +41,7 @@ class DashboardViewModel(
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
+    val bundleDownloadError = patchBundleRepository.updateError
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
@@ -120,14 +121,14 @@ class DashboardViewModel(
         }
     }
 
-    fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
+    fun applyAutoUpdatePrefs(enabled: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
-        prefs.managerAutoUpdates.update(manager)
+        prefs.managerAutoUpdates.update(enabled)
 
-        if (manager) checkForManagerUpdates()
+        if (enabled) {
+            checkForManagerUpdates()
 
-        if (patches) {
             with(patchBundleRepository) {
                 sources
                     .first()

@@ -102,6 +102,7 @@ fun DashboardScreen(
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val androidContext = LocalContext.current
     val resources = LocalResources.current
     val composableScope = rememberCoroutineScope()
@@ -300,6 +301,17 @@ fun DashboardScreen(
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.unsupported_architecture_warning),
                             onDismiss = null
+                        )
+                    }
+                } else null,
+                if (bundleDownloadError != null) {
+                    {
+                        NotificationCard(
+                            isWarning = true,
+                            icon = Icons.Outlined.WarningAmber,
+                            title = stringResource(R.string.api_not_working_title),
+                            text = stringResource(R.string.api_not_working_description),
+                            onClick = onSettingsClick
                         )
                     }
                 } else null,

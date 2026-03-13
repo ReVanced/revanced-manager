@@ -54,7 +54,7 @@ Second \"item\" text"</string>
     <string name="selected_app_meta_any_version">Any available version</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
-    <string name="app_source_dialog_option_auto_description">Use all available downloader to download the app</string>
+    <string name="app_source_dialog_option_auto_description">Use a previously downloaded or all available downloaders</string>
     <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
@@ -72,14 +72,14 @@ Second \"item\" text"</string>
     <string name="apk_source_downloader">Using %s</string>
     <string name="apk_source_installed">Using installed APK</string>
     <string name="apk_source_local">Using a local APK file</string>
+    <string name="apk_source_downloaded">Already downloaded</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
     <string name="auto_updates_dialog_title">Configure updates</string>
-    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
-    <string name="auto_updates_dialog_manager">ReVanced Manager</string>
-    <string name="auto_updates_dialog_patches">ReVanced Patches</string>
-    <string name="auto_updates_dialog_note">These settings can be changed later.</string>
+    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates?
+
+This can be changed later in the settings.</string>
 
     <string name="announcements_filter_tag">Filter by tag</string>
     <string name="announcements_show_archived">Show archived</string>
@@ -263,6 +263,8 @@ You will not be able to update the previously installed apps from this source.</
     <string name="download_app">Download app</string>
     <string name="download_apk">Download APK file</string>
     <string name="patches_download_fail">Failed to download patches: %s</string>
+    <string name="api_not_working_title">API service is currently down</string>
+    <string name="api_not_working_description">Some features might be impacted. Check your connection or API URL in settings.</string>
     <string name="patches_replace_fail">Failed to import patches: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
@@ -307,6 +309,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="original_package_name">Original package name</string>
     <string name="applied_patches">Applied patches</string>
     <string name="view_applied_patches">View applied patches</string>
+
     <string name="default_install">Default</string>
     <string name="mount_install">Mount</string>
     <string name="mounted">Mounted</string>

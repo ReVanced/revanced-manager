@@ -27,6 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -71,6 +73,9 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
     protected abstract val replaceFail: Int
 
     protected abstract suspend fun loadDataFromSources(sources: MutableMap<Int, Source<LOADED>>): OUTPUT
+
+    private val _updateError = MutableStateFlow<Throwable?>(null)
+    val updateError = _updateError.asStateFlow()
 
     protected val store =
         Store(CoroutineScope(Dispatchers.Default), State<LOADED, OUTPUT>(data = initial))
@@ -300,11 +305,13 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
             }
 
             if (showToast) toast(updateSuccess)
+            _updateError.value = null
             doReload()
         }
 
         override suspend fun catch(exception: Exception) {
             Log.e(tag, "Failed to update", exception)
+            _updateError.value = exception
             toast(updateFailed, exception.simpleMessage())
         }
     }
