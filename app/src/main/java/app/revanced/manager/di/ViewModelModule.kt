@@ -27,4 +27,6 @@ val viewModelModule = module {
     viewModelOf(::UpdatesSettingsViewModel)
     viewModelOf(::BundleListViewModel)
     viewModelOf(::BundleInformationViewModel)
+    viewModelOf(::VersionSelectorViewModel)
+    viewModelOf(::SourceSelectorViewModel)
 }

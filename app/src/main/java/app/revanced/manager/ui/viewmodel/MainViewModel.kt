@@ -9,15 +9,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
-import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
+import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -36,41 +35,17 @@ private const val LEGACY_LIST_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGxpc3Qu
 class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
-    private val downloadedAppRepository: DownloadedAppRepository,
     private val installedAppRepository: InstalledAppRepository,
     private val keystoreManager: KeystoreManager,
     private val app: Application,
     val prefs: PreferencesManager,
     private val json: Json
 ) : ViewModel() {
-    private val appSelectChannel = Channel<SelectedApp>()
+    private val appSelectChannel = Channel<SelectedAppInfo.ViewModelParams>()
     val appSelectFlow = appSelectChannel.receiveAsFlow()
 
-    private suspend fun suggestedVersion(packageName: String) =
-        patchBundleRepository.suggestedVersions.first()[packageName]
-
-    private suspend fun findDownloadedApp(app: SelectedApp): SelectedApp.Local? {
-        if (app !is SelectedApp.Search) return null
-
-        val suggestedVersion = suggestedVersion(app.packageName) ?: return null
-
-        val downloadedApp =
-            downloadedAppRepository.get(app.packageName, suggestedVersion, markUsed = true)
-                ?: return null
-        return SelectedApp.Local(
-            downloadedApp.packageName,
-            downloadedApp.version,
-            downloadedAppRepository.getApkFileForApp(downloadedApp),
-            false
-        )
-    }
-
-    fun selectApp(app: SelectedApp) = viewModelScope.launch {
-        appSelectChannel.send(findDownloadedApp(app) ?: app)
-    }
-
-    fun selectApp(packageName: String) = viewModelScope.launch {
-        selectApp(SelectedApp.Search(packageName, suggestedVersion(packageName)))
+    fun selectApp(packageName: String, localPath: String? = null) = viewModelScope.launch {
+        appSelectChannel.send(SelectedAppInfo.ViewModelParams(packageName, localPath))
     }
 
     init {

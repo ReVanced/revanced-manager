@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Lappeverktøy</string>
+  <string name="downloader_host_permission_label">ReVanced Manager nedlastervert</string>
+  <string name="downloader_host_permission_description">Brukes til å kontrollere tilgang til ReVanced Manager-nedlastere. Kun ReVanced Manager har dette.</string>
+  <string name="new_downloader_notification">Ny(e) nedlaster(e) er tilgjengelig. Klikk her for å konfigurere dem.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Ingen nedlaster tilgjengelig</string>
+  <string name="announcements_filter_tag">Filtrer etter tagg</string>
+  <string name="announcements_show_archived">Vis arkiverte</string>
+  <string name="downloads_description">Nedlastere og nedlastede apper</string>
+  <string name="downloaders">Nedlastere</string>
+  <string name="downloader_state_trusted">Betrodd</string>
+  <string name="downloader_state_failed">Kunne ikke lastes inn. Klikk for mer informasjon</string>
+  <string name="downloader_state_untrusted">Ubetrodd</string>
+  <string name="downloader_trust_dialog_title">Betro nedlaster?</string>
+  <string name="downloader_revoke_trust_dialog_title">Trekk tilbake tillit?</string>
+  <string name="downloader_trust_dialog_body">Fortsetter du, vil denne nedlasteren få lov til å kjøre.\n\nAktiver kun denne nedlasteren hvis du stoler på den. Nedlastere kan få Manager til å utføre vilkårlig kode.</string>
+  <string name="downloader_trust_dialog_signature">Signatur:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Nedlaster:\n%s</string>
+  <string name="downloader_delete_apps_title">Slett valgte apper</string>
+  <string name="downloader_delete_apps_description">Er du sikker på at du vil slette de valgte appene?</string>
+  <string name="no_downloader_installed">Ingen nedlastere installert.</string>
+  <string name="no_downloader_available">Det er installert nedlastere, men ingen er betrodd. Sjekk innstillingene dine.</string>
+  <string name="patch_selector_sheet_actions_title">Handlinger</string>
+  <string name="restore_default_selection">Gjenopprett standardvalg</string>
+  <string name="deselect_all">Avmarker alle</string>
+  <string name="invert_selection">Inverter valg</string>
+  <string name="deselect_all_except">Avmarker alle unntatt %s</string>
+  <string name="scope_dialog_title">Bruk på</string>
+  <string name="scope_all_patches">Alle oppdateringer</string>
+  <string name="scope_bundle_patches">Kun %s</string>
+  <string name="downloader_activity_dialog_body">Brukerinteraksjon er påkrevd for å fortsette med denne nedlasteren.</string>
+  <string name="view_announcement">Vis kunngjøring</string>
+  <string name="announcements">Kunngjøringer</string>
+  <string name="archive">Arkiv</string>
+  <string name="no_announcements_found">Ingen kunngjøringer funnet</string>
+  <string name="new_announcement">Ny kunngjøring:
+%s</string>
+</resources>

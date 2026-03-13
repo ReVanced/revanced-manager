@@ -1,55 +1,56 @@
 package app.revanced.manager.patcher.worker
 
-import android.app.Activity
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.content.pm.ServiceInfo
-import android.graphics.drawable.Icon
-import android.os.Build
-import android.os.Parcelable
-import android.os.PowerManager
-import android.util.Log
-import androidx.activity.result.ActivityResult
-import androidx.work.ForegroundInfo
-import androidx.work.WorkerParameters
-import app.revanced.manager.MainActivity
-import app.revanced.manager.R
-import app.revanced.manager.data.platform.Filesystem
-import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.domain.installer.RootInstaller
-import app.revanced.manager.domain.manager.KeystoreManager
-import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloadedAppRepository
-import app.revanced.manager.domain.repository.DownloaderRepository
-import app.revanced.manager.domain.repository.InstalledAppRepository
-import app.revanced.manager.domain.worker.Worker
-import app.revanced.manager.domain.worker.WorkerRepository
-import app.revanced.manager.network.downloader.LoadedDownloader
-import app.revanced.manager.patcher.ProgressEvent
-import app.revanced.manager.patcher.StepId
-import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.patcher.runStep
-import app.revanced.manager.patcher.runtime.CoroutineRuntime
-import app.revanced.manager.patcher.runtime.ProcessRuntime
-import app.revanced.manager.patcher.toRemoteError
-import app.revanced.manager.downloader.GetScope
-import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.downloader.UserInteractionException
-import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.util.Options
-import app.revanced.manager.util.PM
-import app.revanced.manager.util.PatchSelection
-import app.revanced.manager.util.tag
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.io.File
+    import android.app.Activity
+    import android.app.Notification
+    import android.app.NotificationChannel
+    import android.app.NotificationManager
+    import android.app.PendingIntent
+    import android.content.Context
+    import android.content.Intent
+    import android.content.pm.ServiceInfo
+    import android.graphics.drawable.Icon
+    import android.os.Build
+    import android.os.Parcelable
+    import android.os.PowerManager
+    import android.util.Log
+    import androidx.activity.result.ActivityResult
+    import androidx.work.ForegroundInfo
+    import androidx.work.WorkerParameters
+    import app.revanced.manager.MainActivity
+    import app.revanced.manager.R
+    import app.revanced.manager.data.platform.Filesystem
+    import app.revanced.manager.data.room.apps.installed.InstallType
+    import app.revanced.manager.domain.installer.RootInstaller
+    import app.revanced.manager.domain.manager.KeystoreManager
+    import app.revanced.manager.domain.manager.PreferencesManager
+    import app.revanced.manager.domain.repository.DownloadedAppRepository
+    import app.revanced.manager.domain.repository.DownloaderRepository
+    import app.revanced.manager.domain.repository.InstalledAppRepository
+    import app.revanced.manager.domain.worker.Worker
+    import app.revanced.manager.domain.worker.WorkerRepository
+    import app.revanced.manager.downloader.DownloaderHostApi
+    import app.revanced.manager.downloader.GetScope
+    import app.revanced.manager.downloader.Scope
+    import app.revanced.manager.downloader.UserInteractionException
+    import app.revanced.manager.network.downloader.LoadedDownloader
+    import app.revanced.manager.patcher.ProgressEvent
+    import app.revanced.manager.patcher.StepId
+    import app.revanced.manager.patcher.logger.Logger
+    import app.revanced.manager.patcher.runStep
+    import app.revanced.manager.patcher.runtime.CoroutineRuntime
+    import app.revanced.manager.patcher.runtime.ProcessRuntime
+    import app.revanced.manager.patcher.toRemoteError
+    import app.revanced.manager.ui.model.SelectedSource
+    import app.revanced.manager.util.Options
+    import app.revanced.manager.util.PM
+    import app.revanced.manager.util.PatchSelection
+    import app.revanced.manager.util.tag
+    import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.flow.first
+    import kotlinx.coroutines.withContext
+    import org.koin.core.component.KoinComponent
+    import org.koin.core.component.inject
+    import java.io.File
 
 @OptIn(DownloaderHostApi::class)
 class PatcherWorker(
@@ -67,7 +68,9 @@ class PatcherWorker(
     private val rootInstaller: RootInstaller by inject()
 
     class Args(
-        val input: SelectedApp,
+        val packageName: String,
+        val version: String?,
+        val source: SelectedSource,
         val output: String,
         val selectedPatches: PatchSelection,
         val options: Options,
@@ -75,9 +78,7 @@ class PatcherWorker(
         val handleStartActivityRequest: suspend (LoadedDownloader, Intent) -> ActivityResult,
         val setInputFile: suspend (File) -> Unit,
         val onEvent: (ProgressEvent) -> Unit,
-    ) {
-        val packageName get() = input.packageName
-    }
+    )
 
     override suspend fun getForegroundInfo() =
         ForegroundInfo(
@@ -142,7 +143,7 @@ class PatcherWorker(
         val patchedApk = fs.tempDir.resolve("patched.apk")
 
         return try {
-            if (args.input is SelectedApp.Installed) {
+            if (args.source is SelectedSource.Installed) {
                 installedAppRepository.get(args.packageName)?.let {
                     if (it.installType == InstallType.MOUNT) {
                         rootInstaller.unmount(args.packageName)
@@ -155,41 +156,34 @@ class PatcherWorker(
                     downloader,
                     data,
                     args.packageName,
-                    args.input.version,
+                    args.version,
                     prefs.suggestedVersionSafeguard.get(),
                     !prefs.disablePatchVersionCompatCheck.get(),
-                    onDownload = { progress ->
-                        args.onEvent(
-                            ProgressEvent.Progress(
-                                stepId = StepId.DownloadAPK,
-                                current = progress.first,
-                                total = progress.second
-                            )
+                ) { progress ->
+                    args.onEvent(
+                        ProgressEvent.Progress(
+                            stepId = StepId.DownloadAPK,
+                            current = progress.first,
+                            total = progress.second
                         )
-                    }
-                ).also { args.setInputFile(it) }
+                    )
+                }.also { args.setInputFile(it) }
 
-            val inputFile = when (val selectedApp = args.input) {
-                is SelectedApp.Download -> {
-                    runStep(StepId.DownloadAPK, args.onEvent) {
-                        val (downloader, data) = downloaderRepository.unwrapParceledData(
-                            selectedApp.data
-                        )
-
-                        download(downloader, data)
-                    }
-                }
-
-                is SelectedApp.Search -> {
+            val inputFile = when (val source = args.source) {
+                SelectedSource.Auto -> throw Exception("Auto source is not supported in worker.")
+                is SelectedSource.Downloader -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
                         downloaderRepository.loadedDownloadersFlow.first()
+                            .filter { downloader ->
+                                (source.packageName == null || downloader.packageName == source.packageName) &&
+                                    (source.className == null || downloader.className == source.className)
+                            }
+                            .ifEmpty {
+                                throw Exception("No downloader available.")
+                            }
                             .firstNotNullOfOrNull { downloader ->
                                 try {
-                                    val getScope = object : GetScope {
-                                        override val downloaderPackageName = downloader.packageName
-                                        override val hostPackageName =
-                                            applicationContext.packageName
-
+                                    val getScope = object : GetScope, Scope by downloader.scopeImpl {
                                         override suspend fun requestStartActivity(intent: Intent): Intent? {
                                             val result =
                                                 args.handleStartActivityRequest(downloader, intent)
@@ -203,24 +197,32 @@ class PatcherWorker(
                                             }
                                         }
                                     }
+
                                     withContext(Dispatchers.IO) {
-                                        downloader.get(
+                                        downloader.impl.get(
                                             getScope,
-                                            selectedApp.packageName,
-                                            selectedApp.version
+                                            args.packageName,
+                                            args.version
                                         )
-                                    }?.takeIf { (_, version) -> selectedApp.version == null || version == selectedApp.version }
+                                    }?.takeIf { (_, version) ->
+                                        args.version == null || version == args.version
+                                    }
                                 } catch (e: UserInteractionException.Activity.NotCompleted) {
                                     throw e
                                 } catch (_: UserInteractionException) {
                                     null
-                                }?.let { (data, _) -> download(downloader, data) }
+                                }?.let { (data, _) ->
+                                    download(downloader, data)
+                                }
                             } ?: throw Exception("App is not available.")
                     }
                 }
 
-                is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
-                is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo!!.sourceDir)
+                is SelectedSource.Downloaded -> File(source.path).also { args.setInputFile(it) }
+                is SelectedSource.Local -> File(source.path).also { args.setInputFile(it) }
+                is SelectedSource.Installed -> File(
+                    pm.getPackageInfo(args.packageName)!!.applicationInfo!!.sourceDir
+                ).also { args.setInputFile(it) }
             }
 
             val runtime = if (prefs.useProcessRuntime.get()) {
@@ -268,8 +270,8 @@ class PatcherWorker(
             Result.failure()
         } finally {
             patchedApk.delete()
-            if (args.input is SelectedApp.Local && args.input.temporary) {
-                args.input.file.delete()
+            if (args.source is SelectedSource.Local && args.source.path.startsWith(fs.uiTempDir.path)) {
+                File(args.source.path).delete()
             }
         }
     }

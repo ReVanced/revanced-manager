@@ -20,7 +20,9 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.sources.Extensions.version
+import app.revanced.manager.domain.sources.PatchBundleSource
+import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -53,7 +55,7 @@ fun BundleItem(
 
         headlineContent = { Text(src.name) },
         supportingContent = {
-            if (src.state is PatchBundleSource.State.Available) {
+            if (src.state is Source.State.Available<*>) {
                 Text(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
             }
         },
@@ -61,9 +63,9 @@ fun BundleItem(
             Row {
                 val icon = remember(src.state) {
                     when (src.state) {
-                        is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.patches_error
-                        is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.patches_missing
-                        is PatchBundleSource.State.Available -> null
+                        is Source.State.Failed -> Icons.Outlined.ErrorOutline to R.string.patches_error
+                        is Source.State.Missing -> Icons.Outlined.Warning to R.string.patches_missing
+                        is Source.State.Available<*> -> null
                     }
                 }
 

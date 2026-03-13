@@ -97,22 +97,45 @@ Second \"item\" text"</string>
     <string name="no_network_toast">No internet connection available</string>
 
     <string name="selected_app_meta_any_version">Any available version</string>
+    <string name="selected_app_meta_auto">%1$s (%2$s)</string>
+    <string name="selected_app_meta_source_installed_apk">Installed APK</string>
+    <string name="selected_app_meta_source_downloaded_apk">Downloaded APK</string>
+    <string name="selected_app_meta_source_local_apk">Local APK</string>
+    <string name="selected_app_meta_source_any_downloader">Any available downloader</string>
+    <string name="version_selector_title">Select version</string>
+    <string name="version_selector_auto_title">Auto (Recommended)</string>
+    <string name="version_selector_auto_description">Automatically select the best available version</string>
+    <string name="version_selector_all_patches_compatible">All patches are compatible</string>
+    <string name="version_selector_state_local">Local</string>
+    <string name="version_selector_state_downloaded_installed">Downloaded, Installed</string>
+    <string name="version_selector_state_downloaded">Downloaded</string>
+    <string name="version_selector_state_installed">Installed</string>
+    <string name="version_selector_any_title">Any available version</string>
+    <string name="version_selector_any_description">Use any available version regardless of compatibility</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
     <string name="app_source_dialog_option_auto_description">Use all available downloader to download the app</string>
     <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
+    <string name="source_selector_auto_description">Automatically select the best available source</string>
+    <string name="source_selector_any_available_downloader">Any available downloader</string>
+    <string name="source_selector_category_downloaded">Downloaded</string>
+    <string name="source_selector_category_local">Local</string>
+    <string name="source_selector_disable_reason_version_not_matching">Does not match the selected version</string>
+    <string name="source_selector_disable_reason_not_trusted">Not trusted</string>
+    <string name="source_selector_disable_reason_failed_to_load">Failed to load</string>
 
     <string name="patch_item_description">Start patching the application</string>
-    <string name="patch_selector_item">Select patches</string>
-    <string name="patch_selector_item_description">%d patches selected</string>
+    <string name="patch_selector_item">Patches</string>
+    <string name="patch_selector_item_description">%d selected</string>
     <string name="no_patches_selected">No patches selected</string>
+    <string name="version_selector_item">Version</string>
 
     <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
     <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
-    <string name="apk_source_selector_item">Select APK source</string>
+    <string name="apk_source_selector_item">APK source</string>
     <string name="apk_source_auto">Using all APK downloaders</string>
     <string name="apk_source_downloader">Using %s</string>
     <string name="apk_source_installed">Using installed APK</string>
@@ -121,10 +144,9 @@ Second \"item\" text"</string>
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
     <string name="auto_updates_dialog_title">Configure updates</string>
-    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
-    <string name="auto_updates_dialog_manager">ReVanced Manager</string>
-    <string name="auto_updates_dialog_patches">ReVanced Patches</string>
-    <string name="auto_updates_dialog_note">These settings can be changed later.</string>
+    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates?
+
+This can be changed later in the settings.</string>
 
     <string name="announcements_filter_tag">Filter by tag</string>
     <string name="announcements_show_archived">Show archived</string>
@@ -236,17 +258,12 @@ You will not be able to update the previously installed apps from this source.</
     <string name="patch_options_reset_all_dialog_description">You are about to reset all patch options. You will have to reapply each option again.</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="downloaders">Downloaders</string>
-    <string name="downloader_state_trusted">Trusted</string>
+    <string name="downloader_prereleases">Use pre-releases</string>
+    <string name="downloader_prereleases_description">Use pre-release versions of the main downloader</string>
+    <string name="downloader_state_loaded">Loaded</string>
     <string name="downloader_state_enabled">Enabled</string>
     <string name="downloader_state_failed">Failed to load. Click for more details</string>
-    <string name="downloader_state_untrusted">Untrusted</string>
-    <string name="downloader_state_disabled">Disabled</string>
-    <string name="downloader_state_untrusted_tap_to_trust">Untrusted, tap to trust</string>
-    <string name="downloader_trust_dialog_title">Trust downloaders?</string>
-    <string name="downloader_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_trust_dialog_body">Trusting will allow these downloaders to run.\n\nOnly enable these downloaders if you trust them. Downloaders can make ReVanced Manager execute arbitrary code.</string>
-    <string name="downloader_trust_dialog_signature">Signature:</string>
-    <string name="downloader_trust_dialog_name">Downloader:\n%s</string>
+    <string name="downloader_state_missing">Missing</string>
     <string name="downloader_delete_apps_title">Delete selected apps</string>
     <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_delete_single_description">Are you sure you want to delete \"%s\"?</string>
@@ -258,6 +275,9 @@ You will not be able to update the previously installed apps from this source.</
     <string name="cancel_downloader_install_description">A downloaders install is in progress. If you leave now, the download will be cancelled.</string>
     <string name="downloader_sources_unavailable_title">These downloaders are disabled</string>
     <string name="downloader_sources_unavailable_description">Enable these downloaders to load and show available downloaders.</string>
+
+    <string name="downloader_update_failed">Failed to update downloader: %s</string>
+    <string name="downloader_replace_fail">Failed to import downloader: %s</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -273,7 +293,7 @@ You will not be able to update the previously installed apps from this source.</
     <string name="share">Share</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
-    <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
+    <string name="select_from_storage_description">Select an APK file from storage</string>
     <string name="suggested_version_info">Suggested version: %s</string>
     <string name="type_anything">Type anything to continue</string>
     <string name="search">Search patches…</string>
@@ -333,6 +353,8 @@ You will not be able to update the previously installed apps from this source.</
     <string name="download_app">Download app</string>
     <string name="download_apk">Download APK file</string>
     <string name="patches_download_fail">Failed to download patches: %s</string>
+    <string name="api_not_working_title">API service is currently down</string>
+    <string name="api_not_working_description">Some features might be impacted. Check your connection or API URL in settings.</string>
     <string name="patches_replace_fail">Failed to import patches: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="no_patched_apps_description">You currently don\'t have any patched apps that we know of. Change that by patching your first app!</string>
@@ -597,4 +619,24 @@ Click on the patches to see more details.</string>
     <string name="confirm">Confirm</string>
     <string name="action_trust">Trust</string>
     <string name="new_announcement">New announcement:\n%s</string>
+
+    <plurals name="patch_count">
+        <item quantity="one">%d patch</item>
+        <item quantity="other">%d patches</item>
+    </plurals>
+    <plurals name="patches_executed">
+        <item quantity="one">Execute %d patch</item>
+        <item quantity="other">Execute %d patches</item>
+    </plurals>
+    <plurals name="selected_count">
+        <item quantity="other">%d selected</item>
+    </plurals>
+    <plurals name="version_selector_incompatible_patches">
+        <item quantity="one">%d incompatible patch</item>
+        <item quantity="other">%d incompatible patches</item>
+    </plurals>
+    <plurals name="available_patch_count">
+        <item quantity="one">%d patch available</item>
+        <item quantity="other">%d patches available</item>
+    </plurals>
 </resources>

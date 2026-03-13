@@ -58,6 +58,7 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
 import app.revanced.manager.util.withHapticFeedback
+import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,9 +71,9 @@ fun AnnouncementsScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var showFilterSheet by rememberSaveable { mutableStateOf(false) }
     var archivedExpanded by rememberSaveable { mutableStateOf(false) }
-    val tags by vm.tags.collectAsStateWithLifecycle()
+    val tags by vm.tags.collectAsStateWithLifecycle(null)
     val selectedTags by vm.selectedTags.getAsState()
-    val announcementSections by vm.announcementSections.collectAsStateWithLifecycle(null)
+    val announcementSections by vm.announcementSections.collectAsStateWithLifecycle(emptyList())
 
     if (showFilterSheet) {
         FilterBottomSheet(
@@ -197,7 +198,7 @@ fun AnnouncementsScreen(
 @Composable
 private fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
-    tags: List<String>,
+    tags: Set<String>,
     selectedTags: Set<String>,
     onReset: () -> Unit,
     changeSelection: (String) -> Unit

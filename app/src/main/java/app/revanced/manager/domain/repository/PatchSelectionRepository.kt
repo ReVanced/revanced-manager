@@ -16,7 +16,7 @@ class PatchSelectionRepository(db: AppDatabase) {
             packageName = packageName
         ).also { dao.createSelection(it) }.uid
 
-    suspend fun getSelection(packageName: String): Map<Int, Set<String>> =
+    suspend fun getSelection(packageName: String): app.revanced.manager.util.PatchSelection =
         dao.getSelectedPatches(packageName).mapValues { it.value.toSet() }
 
     suspend fun updateSelection(packageName: String, selection: Map<Int, Set<String>>) =

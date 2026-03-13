@@ -6,19 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.EaseInOutQuad
-import androidx.compose.animation.core.EaseOut
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -30,33 +25,30 @@ import androidx.navigation.toRoute
 import app.revanced.manager.ui.model.navigation.Announcement
 import app.revanced.manager.ui.model.navigation.Announcements
 import app.revanced.manager.ui.model.navigation.AppSelector
-import app.revanced.manager.ui.model.navigation.BundleInformation
 import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
 import app.revanced.manager.ui.model.navigation.InstalledApplicationInfo
-import app.revanced.manager.ui.model.navigation.Onboarding
 import app.revanced.manager.ui.model.navigation.Patcher
-import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
+import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
 import app.revanced.manager.ui.screen.AnnouncementScreen
 import app.revanced.manager.ui.screen.AnnouncementsScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
-import app.revanced.manager.ui.screen.BundleInformationScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
-import app.revanced.manager.ui.screen.OnboardingScreen
 import app.revanced.manager.ui.screen.PatcherScreen
 import app.revanced.manager.ui.screen.PatchesSelectorScreen
 import app.revanced.manager.ui.screen.RequiredOptionsScreen
 import app.revanced.manager.ui.screen.SelectedAppInfoScreen
 import app.revanced.manager.ui.screen.SettingsScreen
+import app.revanced.manager.ui.screen.SourceSelectorScreen
 import app.revanced.manager.ui.screen.UpdateScreen
+import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.screen.settings.AboutSettingsScreen
 import app.revanced.manager.ui.screen.settings.AdvancedSettingsScreen
 import app.revanced.manager.ui.screen.settings.ContributorSettingsScreen
 import app.revanced.manager.ui.screen.settings.DeveloperSettingsScreen
-import app.revanced.manager.ui.screen.settings.DownloaderInfoScreen
 import app.revanced.manager.ui.screen.settings.DownloadsSettingsScreen
 import app.revanced.manager.ui.screen.settings.GeneralSettingsScreen
 import app.revanced.manager.ui.screen.settings.ImportExportSettingsScreen
@@ -68,10 +60,6 @@ import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
-import app.revanced.manager.util.deepLinkedComposable
-import app.revanced.manager.util.navigateSafe
-import app.revanced.manager.util.popBackStackSafe
-import app.revanced.manager.util.resetListItemColorsCached
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -94,10 +82,6 @@ class MainActivity : AppCompatActivity() {
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
             val pureBlackTheme by vm.prefs.pureBlackTheme.getAsState()
 
-            LaunchedEffect(theme, dynamicColor, pureBlackTheme) {
-                resetListItemColorsCached()
-            }
-
             ReVancedManagerTheme(
                 darkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK,
                 dynamicColor = dynamicColor,
@@ -112,55 +96,36 @@ class MainActivity : AppCompatActivity() {
 @Composable
 private fun ReVancedManager(vm: MainViewModel) {
     val navController = rememberNavController()
-    val completedOnboarding by vm.prefs.completedOnboarding.getAsState()
-    // please dont unmemoize this bahahahah
-    val startDestination = remember {
-        if (completedOnboarding) Dashboard else Onboarding
-    }
 
     EventEffect(vm.appSelectFlow) { app ->
         navController.navigateComplex(
-            SelectedApplicationInfo,
-            SelectedApplicationInfo.ViewModelParams(app)
+            SelectedAppInfo,
+            app
         )
     }
 
     NavHost(
         navController = navController,
-        startDestination = startDestination,
-        enterTransition = { slideInHorizontally(animationSpec = tween(300, easing = EaseInOutQuad), initialOffsetX = { it }) },
-        exitTransition = { slideOutHorizontally(animationSpec = tween(250, easing = EaseOut), targetOffsetX = { -it / 3 }) },
-        popEnterTransition = { slideInHorizontally(animationSpec = tween(300, easing = EaseInOutQuad), initialOffsetX = { -it / 3 }) },
-        popExitTransition = { slideOutHorizontally(animationSpec = tween(250, easing = EaseOut), targetOffsetX = { it }) }
+        startDestination = Dashboard,
+        enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
+        exitTransition = { slideOutHorizontally(targetOffsetX = { -it / 3 }) },
+        popEnterTransition = { slideInHorizontally(initialOffsetX = { -it / 3 }) },
+        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) }
     ) {
-        composable<Onboarding> {
-            OnboardingScreen(
-                onFinish = {
-                    navController.navigateSafe(route = Dashboard) {
-                        popUpTo<Onboarding> { inclusive = true }
-                    }
-                },
-                onAppClick = vm::selectApp,
-            )
-        }
-
         composable<Dashboard> {
             DashboardScreen(
-                onSettingsClick = { navController.navigateSafe(Settings) },
+                onSettingsClick = { navController.navigate(Settings) },
                 onAppSelectorClick = {
-                    navController.navigateSafe(AppSelector)
+                    navController.navigate(AppSelector)
                 },
                 onUpdateClick = {
-                    navController.navigateSafe(Update())
+                    navController.navigate(Update())
                 },
                 onDownloaderClick = {
-                    navController.navigateSafe(Settings.Downloads)
+                    navController.navigate(Settings.Downloads)
                 },
                 onAppClick = { packageName ->
-                    navController.navigateSafe(InstalledApplicationInfo(packageName))
-                },
-                onBundleClick = { uid ->
-                    navController.navigateSafe(BundleInformation(uid))
+                    navController.navigate(InstalledApplicationInfo(packageName))
                 },
                 onAnnouncementsClick = {
                     navController.navigate(Announcements)
@@ -171,35 +136,34 @@ private fun ReVancedManager(vm: MainViewModel) {
             )
         }
 
-        composable<BundleInformation> {
-            BundleInformationScreen(
-                onBackClick = navController::popBackStackSafe,
-                viewModel = koinViewModel()
-            )
-        }
-
         composable<InstalledApplicationInfo> {
             val data = it.toRoute<InstalledApplicationInfo>()
 
             InstalledAppInfoScreen(
-                onPatchClick = vm::selectApp,
-                onBackClick = navController::popBackStackSafe,
+                onPatchClick = { packageName ->
+                    vm.selectApp(packageName)
+                },
+                onBackClick = navController::popBackStack,
                 viewModel = koinViewModel { parametersOf(data.packageName) }
             )
         }
 
         composable<AppSelector> {
             AppSelectorScreen(
-                onSelect = vm::selectApp,
-                onStorageSelect = vm::selectApp,
-                onBackClick = navController::popBackStackSafe
+                onSelect = { packageName ->
+                    vm.selectApp(packageName)
+                },
+                onStorageSelect = { packageName, localPath ->
+                    vm.selectApp(packageName, localPath)
+                },
+                onBackClick = navController::popBackStack
             )
         }
 
         composable<Patcher> {
             PatcherScreen(
                 onBackClick = {
-                    navController.navigateSafe(route = Dashboard) {
+                    navController.navigate(route = Dashboard) {
                         launchSingleTop = true
                         popUpTo<Dashboard> {
                             inclusive = false
@@ -214,7 +178,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             val data = it.toRoute<Update>()
 
             UpdateScreen(
-                onBackClick = navController::popBackStackSafe,
+                onBackClick = navController::popBackStack,
                 vm = koinViewModel { parametersOf(data.downloadOnScreenEntry) }
             )
         }
@@ -235,18 +199,18 @@ private fun ReVancedManager(vm: MainViewModel) {
             )
         }
 
-        navigation<SelectedApplicationInfo>(startDestination = SelectedApplicationInfo.Main) {
-            composable<SelectedApplicationInfo.Main> {
+        navigation<SelectedAppInfo>(startDestination = SelectedAppInfo.Main) {
+            composable<SelectedAppInfo.Main> {
                 val parentBackStackEntry = navController.navGraphEntry(it)
                 val data =
-                    parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
+                    parentBackStackEntry.getComplexArg<SelectedAppInfo.ViewModelParams>()
                 val viewModel =
                     koinViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
                         parametersOf(data)
                     }
 
                 SelectedAppInfoScreen(
-                    onBackClick = navController::popBackStackSafe,
+                    onBackClick = navController::popBackStack,
                     onPatchClick = {
                         it.lifecycleScope.launch {
                             navController.navigateComplex(
@@ -255,23 +219,47 @@ private fun ReVancedManager(vm: MainViewModel) {
                             )
                         }
                     },
-                    onPatchSelectorClick = { app, patches, options ->
+                    onPatchSelectorClick = { packageName, version, patchSelection, options ->
                         navController.navigateComplex(
-                            SelectedApplicationInfo.PatchesSelector,
-                            SelectedApplicationInfo.PatchesSelector.ViewModelParams(
-                                app,
-                                patches,
-                                options
+                            SelectedAppInfo.PatchesSelector,
+                            SelectedAppInfo.PatchesSelector.ViewModelParams(
+                                packageName,
+                                version,
+                                patchSelection,
+                                options,
                             )
                         )
                     },
-                    onRequiredOptions = { app, patches, options ->
+                    onRequiredOptions = { packageName, version, patchSelection, options ->
                         navController.navigateComplex(
-                            SelectedApplicationInfo.RequiredOptions,
-                            SelectedApplicationInfo.PatchesSelector.ViewModelParams(
-                                app,
-                                patches,
-                                options
+                            SelectedAppInfo.RequiredOptions,
+                            SelectedAppInfo.PatchesSelector.ViewModelParams(
+                                packageName,
+                                version,
+                                patchSelection,
+                                options,
+                            )
+                        )
+                    },
+                    onVersionClick = { packageName, patchSelection, selectedVersion, local ->
+                        navController.navigateComplex(
+                            SelectedAppInfo.VersionSelector,
+                            SelectedAppInfo.VersionSelector.ViewModelParams(
+                                packageName,
+                                patchSelection,
+                                selectedVersion,
+                                local,
+                            )
+                        )
+                    },
+                    onSourceClick = { packageName, version, selectedSource, local ->
+                        navController.navigateComplex(
+                            SelectedAppInfo.SourceSelector,
+                            SelectedAppInfo.SourceSelector.ViewModelParams(
+                                packageName,
+                                version,
+                                selectedSource,
+                                local,
                             )
                         )
                     },
@@ -279,32 +267,66 @@ private fun ReVancedManager(vm: MainViewModel) {
                 )
             }
 
-            composable<SelectedApplicationInfo.PatchesSelector> {
+            composable<SelectedAppInfo.PatchesSelector> {
                 val data =
-                    it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
+                    it.getComplexArg<SelectedAppInfo.PatchesSelector.ViewModelParams>()
                 val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
 
                 PatchesSelectorScreen(
-                    onBackClick = navController::popBackStackSafe,
+                    onBackClick = navController::popBackStack,
                     onSave = { patches, options ->
                         selectedAppInfoVm.updateConfiguration(patches, options)
-                        navController.popBackStackSafe()
+                        navController.popBackStack()
                     },
                     viewModel = koinViewModel { parametersOf(data) }
                 )
             }
 
-            composable<SelectedApplicationInfo.RequiredOptions> {
+            composable<SelectedAppInfo.VersionSelector> {
                 val data =
-                    it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
+                    it.getComplexArg<SelectedAppInfo.VersionSelector.ViewModelParams>()
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
+                    viewModelStoreOwner = navController.navGraphEntry(it)
+                )
+
+                VersionSelectorScreen(
+                    onBackClick = navController::popBackStack,
+                    onSave = { version ->
+                        selectedAppInfoVm.updateVersion(version)
+                        navController.popBackStack()
+                    },
+                    viewModel = koinViewModel { parametersOf(data) }
+                )
+            }
+
+            composable<SelectedAppInfo.SourceSelector> {
+                val data =
+                    it.getComplexArg<SelectedAppInfo.SourceSelector.ViewModelParams>()
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
+                    viewModelStoreOwner = navController.navGraphEntry(it)
+                )
+
+                SourceSelectorScreen(
+                    onBackClick = navController::popBackStack,
+                    onSave = { source ->
+                        selectedAppInfoVm.updateSource(source)
+                        navController.popBackStack()
+                    },
+                    viewModel = koinViewModel { parametersOf(data) }
+                )
+            }
+
+            composable<SelectedAppInfo.RequiredOptions> {
+                val data =
+                    it.getComplexArg<SelectedAppInfo.PatchesSelector.ViewModelParams>()
                 val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
 
                 RequiredOptionsScreen(
-                    onBackClick = navController::popBackStackSafe,
+                    onBackClick = navController::popBackStack,
                     onContinue = { patches, options ->
                         selectedAppInfoVm.updateConfiguration(patches, options)
                         it.lifecycleScope.launch {
@@ -320,71 +342,58 @@ private fun ReVancedManager(vm: MainViewModel) {
         }
 
         navigation<Settings>(startDestination = Settings.Main) {
-            deepLinkedComposable<Settings.Main>("settings") {
+            composable<Settings.Main> {
                 SettingsScreen(
-                    onBackClick = navController::popBackStackSafe,
-                    navigate = navController::navigateSafe
+                    onBackClick = navController::popBackStack,
+                    navigate = navController::navigate
                 )
             }
 
-            deepLinkedComposable<Settings.General>("settings/general") {
-                GeneralSettingsScreen(onBackClick = navController::popBackStackSafe)
+            composable<Settings.General> {
+                GeneralSettingsScreen(onBackClick = navController::popBackStack)
             }
 
-            deepLinkedComposable<Settings.Advanced>("settings/advanced") {
-                AdvancedSettingsScreen(onBackClick = navController::popBackStackSafe)
+            composable<Settings.Advanced> {
+                AdvancedSettingsScreen(onBackClick = navController::popBackStack)
             }
 
-            deepLinkedComposable<Settings.Developer>("settings/developer") {
-                DeveloperSettingsScreen(onBackClick = navController::popBackStackSafe)
+            composable<Settings.Developer> {
+                DeveloperSettingsScreen(onBackClick = navController::popBackStack)
             }
 
-            deepLinkedComposable<Settings.Updates>("settings/updates") {
+            composable<Settings.Updates> {
                 UpdatesSettingsScreen(
-                    onBackClick = navController::popBackStackSafe,
-                    onChangelogClick = { navController.navigateSafe(Settings.Changelogs) },
-                    onUpdateClick = { navController.navigateSafe(Update()) }
+                    onBackClick = navController::popBackStack,
+                    onChangelogClick = { navController.navigate(Settings.Changelogs) },
+                    onUpdateClick = { navController.navigate(Update()) }
                 )
             }
 
-            deepLinkedComposable<Settings.Downloads>("settings/downloads") {
-                DownloadsSettingsScreen(
-                    onBackClick = navController::popBackStackSafe,
-                    onDownloaderClick = { packageName ->
-                        navController.navigateSafe(Settings.DownloadersInfo(packageName))
-                    }
-                )
+            composable<Settings.Downloads> {
+                DownloadsSettingsScreen(onBackClick = navController::popBackStack)
             }
 
-            composable<Settings.DownloadersInfo> {
-                val route = it.toRoute<Settings.DownloadersInfo>()
-                DownloaderInfoScreen(
-                    packageName = route.packageName,
-                    onBackClick = navController::popBackStackSafe
-                )
+            composable<Settings.ImportExport> {
+                ImportExportSettingsScreen(onBackClick = navController::popBackStack)
             }
 
-            deepLinkedComposable<Settings.ImportExport>("settings/import-export") {
-                ImportExportSettingsScreen(onBackClick = navController::popBackStackSafe)
-            }
-
-            deepLinkedComposable<Settings.About>("about") {
+            composable<Settings.About> {
                 AboutSettingsScreen(
-                    onBackClick = navController::popBackStackSafe,
-                    navigate = navController::navigateSafe
+                    onBackClick = navController::popBackStack,
+                    navigate = navController::navigate
                 )
             }
 
             composable<Settings.Changelogs> {
-                ChangelogsSettingsScreen(onBackClick = navController::popBackStackSafe)
+                ChangelogsSettingsScreen(onBackClick = navController::popBackStack)
             }
 
             composable<Settings.Contributors> {
-                ContributorSettingsScreen(onBackClick = navController::popBackStackSafe)
+                ContributorSettingsScreen(onBackClick = navController::popBackStack)
             }
 
             composable<Settings.Licenses> {
-                LicensesSettingsScreen(onBackClick = navController::popBackStackSafe)
+                LicensesSettingsScreen(onBackClick = navController::popBackStack)
             }
 
         }
@@ -400,10 +409,8 @@ private fun <T : Parcelable, R : ComplexParameter<T>> NavController.navigateComp
     route: R,
     data: T
 ) {
-    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
-        navigate(route)
-        getBackStackEntry(route).savedStateHandle["args"] = data
-    }
+    navigate(route)
+    getBackStackEntry(route).savedStateHandle["args"] = data
 }
 
 private fun <T : Parcelable> NavBackStackEntry.getComplexArg() = savedStateHandle.get<T>("args")!!

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">កម្មវិធីបំណះ</string>
+  <string name="downloader_host_permission_label">ម៉ាស៊ីន​ទាញ​យក ReVanced Manager</string>
+  <string name="downloader_host_permission_description">ប្រើ​សម្រាប់​គ្រប់គ្រង​សិទ្ធិ​ចូល​ប្រើ​ប្រាស់​កម្មវិធី​ទាញ​យក ReVanced Manager។ មាន​តែ ReVanced Manager ប៉ុណ្ណោះ​ដែល​មាន​នេះ។</string>
+  <string name="new_downloader_notification">មាន​កម្មវិធី​ទាញ​យក​ថ្មី​ហើយ។ សូម​ចុច​ទីនេះ​ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​ពួកវា។</string>
+  <string name="app_source_dialog_option_auto_unavailable">មិន​មាន​កម្មវិធី​ទាញ​យក​ទេ។</string>
+  <string name="announcements_filter_tag">ត្រងតាមស្លាក</string>
+  <string name="announcements_show_archived">បង្ហាញឯកសារដែលបានទុកក្នុងបណ្ណសារ</string>
+  <string name="downloads_description">អ្នកទាញយក និង​កម្មវិធី​ដែលបាន​ទាញយក</string>
+  <string name="downloaders">អ្នកទាញយក</string>
+  <string name="downloader_state_trusted">គួរឱ្យទុកចិត្ត</string>
+  <string name="downloader_state_failed">បរាជ័យ​ក្នុងការ​ផ្ទុក។ ចុច​សម្រាប់​ព័ត៌មាន​លម្អិត​បន្ថែម</string>
+  <string name="downloader_state_untrusted">មិនគួរ​ឱ្យទុកចិត្ត</string>
+  <string name="downloader_trust_dialog_title">ទុកចិត្ត​អ្នកទាញយក​ដែរ​ឬទេ?</string>
+  <string name="downloader_revoke_trust_dialog_title">លុបចោល​ការទុកចិត្ត​ដែរ​ឬទេ?</string>
+  <string name="downloader_trust_dialog_body">ការបន្ត​នឹង​អនុញ្ញាត​ឱ្យ​អ្នកទាញយក​នេះ​ដំណើរការ។\n\nបើក​ដំណើរការ​អ្នកទាញយក​នេះ​បាន លុះត្រាតែ​អ្នក​ទុកចិត្ត​វា។ អ្នកទាញយក​អាច​ធ្វើឱ្យ Manager ប្រតិបត្តិ​កូដ​ដែល​បំពាន។</string>
+  <string name="downloader_trust_dialog_signature">ហត្ថលេខា៖\n\n%s</string>
+  <string name="downloader_trust_dialog_name">អ្នកទាញយក៖\n%s</string>
+  <string name="downloader_delete_apps_title">លុប​កម្មវិធី​ដែលបាន​ជ្រើសរើស</string>
+  <string name="downloader_delete_apps_description">តើ​អ្នក​ប្រាកដ​ទេ​ថា​អ្នក​ចង់​លុប​កម្មវិធី​ដែលបាន​ជ្រើសរើស?</string>
+  <string name="no_downloader_installed">មិនមាន​អ្នកទាញយក​ណា​ដែល​បាន​ដំឡើង​ទេ។</string>
+  <string name="no_downloader_available">មាន​អ្នកទាញយក​ដែលបាន​ដំឡើង ប៉ុន្តែ​គ្មាន​មួយណា​ដែល​គួរឱ្យទុកចិត្ត​ទេ។ ពិនិត្យ​ការកំណត់​របស់​អ្នក។</string>
+  <string name="patch_selector_sheet_actions_title">សកម្មភាព</string>
+  <string name="restore_default_selection">ស្ដារការជ្រើសរើសលំនាំដើម</string>
+  <string name="deselect_all">ឈប់ជ្រើសរើសទាំងអស់</string>
+  <string name="invert_selection">ប្ដូរការជ្រើសរើស</string>
+  <string name="deselect_all_except">ដោះធីកទាំងអស់ លើកលែងតែ %s</string>
+  <string name="scope_dialog_title">អនុវត្តទៅ</string>
+  <string name="scope_all_patches">បំណះទាំងអស់</string>
+  <string name="scope_bundle_patches">%s តែប៉ុណ្ណោះ</string>
+  <string name="downloader_activity_dialog_body">ត្រូវការ​ការ​អន្តរកម្ម​ពី​អ្នកប្រើប្រាស់ ដើម្បី​បន្ត​ជាមួយ​អ្នកទាញយក​នេះ។</string>
+  <string name="view_announcement">មើលសេចក្ដីប្រកាស</string>
+  <string name="announcements">សេចក្ដីប្រកាស</string>
+  <string name="archive">បណ្ណសារ</string>
+  <string name="no_announcements_found">មិនមានសេចក្ដីប្រកាសណាមួយទេ</string>
+  <string name="new_announcement">សេចក្ដីប្រកាសថ្មី:
+%s</string>
+</resources>

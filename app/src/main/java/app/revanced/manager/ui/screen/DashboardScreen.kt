@@ -130,6 +130,7 @@ fun DashboardScreen(
     val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
         false
     )
+    val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val androidContext = LocalContext.current
     val resources = LocalResources.current
     val logoPainter = rememberDrawablePainter(drawable = remember(resources) {

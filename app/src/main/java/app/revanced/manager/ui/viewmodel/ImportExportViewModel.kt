@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.KeystoreManager
+import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
-import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.PatchOptionsRepository
+import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.util.JSON_MIMETYPE
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe

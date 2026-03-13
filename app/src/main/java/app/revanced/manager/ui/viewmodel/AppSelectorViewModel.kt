@@ -3,9 +3,6 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,8 +10,6 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
-import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +30,6 @@ class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
     fs: Filesystem,
-    private val patchBundleRepository: PatchBundleRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val inputFile = savedStateHandle.saveable(key = "inputFile") {
@@ -73,27 +67,14 @@ class AppSelectorViewModel(
             initialValue = null,
         )
 
-    private val storageSelectionChannel = Channel<SelectedApp.Local>()
+    private val storageSelectionChannel = Channel<Pair<String, String>>()
     val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
-
-    val suggestedAppVersions = patchBundleRepository.suggestedVersions.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = emptyMap(),
-    )
-
-    var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
-        private set
 
     fun setFilterText(filter: String) {
         filterTextFlow.value = filter
     }
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
-
-    fun dismissNonSuggestedVersionDialog() {
-        nonSuggestedVersionDialogSubject = null
-    }
 
     fun handleStorageResult(uri: Uri) = viewModelScope.launch {
         val selectedApp = withContext(Dispatchers.IO) {
@@ -105,11 +86,8 @@ class AppSelectorViewModel(
             return@launch
         }
 
-        if (patchBundleRepository.isVersionAllowed(selectedApp.packageName, selectedApp.version)) {
-            storageSelectionChannel.send(selectedApp)
-        } else {
-            nonSuggestedVersionDialogSubject = selectedApp
-        }
+        // TODO: Disallow if 0 patches are compatible
+        storageSelectionChannel.send(selectedApp)
     }
 
     private fun loadSelectedFile(uri: Uri) =
@@ -119,12 +97,7 @@ class AppSelectorViewModel(
                 Files.copy(stream, toPath())
 
                 pm.getPackageInfo(this)?.let { packageInfo ->
-                    SelectedApp.Local(
-                        packageName = packageInfo.packageName,
-                        version = packageInfo.versionName!!,
-                        file = this,
-                        temporary = true
-                    )
+                    Pair(packageInfo.packageName, path)
                 }
             }
         }

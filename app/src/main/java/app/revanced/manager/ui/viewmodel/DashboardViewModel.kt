@@ -23,13 +23,10 @@ import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
-import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -45,6 +42,7 @@ class DashboardViewModel(
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
+    val bundleDownloadError = patchBundleRepository.updateError
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
@@ -87,10 +85,6 @@ class DashboardViewModel(
         }
     }
 
-    fun ignoreNewDownloaders() = viewModelScope.launch {
-        downloaderRepository.acknowledgeAll()
-    }
-
     private suspend fun checkForManagerUpdates() {
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
@@ -106,22 +100,14 @@ class DashboardViewModel(
             } ?: throw IllegalStateException("Announcements could not be retrieved")
 
             val readAnnouncements = prefs.readAnnouncements.get()
-            if (readAnnouncements.isEmpty()) {
-                val announcementIds = announcements.mapTo(mutableSetOf()) { it.id }
-                prefs.readAnnouncements.update(announcementIds)
-                return@uiSafe
-            }
 
             unreadAnnouncement = announcements.firstOrNull { announcement ->
-                val isNotArchived =
-                    announcement.archivedAt.toInstant(TimeZone.UTC) > Clock.System.now()
-
-                val hasRelevantTag = "revanced" in announcement.tags ||
-                        "manager" in announcement.tags
-
+                val hasRelevantTag = announcement.tags.any {
+                    it == "✨ ReVanced" || it == "💊 Manager"
+                }
                 val isUnread = announcement.id !in readAnnouncements
 
-                isNotArchived && hasRelevantTag && isUnread
+                !announcement.isArchived && hasRelevantTag && isUnread
             }
         }
     }

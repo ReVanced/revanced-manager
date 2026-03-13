@@ -8,7 +8,6 @@ import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -32,27 +31,22 @@ class AnnouncementsViewModel(
 ) : ViewModel() {
     private val allAnnouncements = MutableStateFlow<List<ReVancedAnnouncement>?>(null)
 
-    private val _tags = MutableStateFlow<List<String>?>(null)
-    val tags get() = _tags.asStateFlow()
+    val tags = allAnnouncements.map { it?.tags }
     val selectedTags = preferences.selectedAnnouncementTags
     val readAnnouncements = preferences.readAnnouncements
 
     val announcements = combine(
         allAnnouncements,
-        _tags,
         selectedTags.flow
-    ) { source, tags, selectedTags ->
+    ) { source, selectedTags ->
         if (source == null) return@combine null
-        // Only filter by tags that actually exist
-        val availableTags = tags.orEmpty().toSet()
+        // Only filter by tags that actuzzzally exist
+        val availableTags = source.tags
         val validSelected = selectedTags.intersect(availableTags)
 
-        if (validSelected.isEmpty()) {
-            source
-        } else {
-            source.filter { announcement ->
-                announcement.tags.any(validSelected::contains)
-            }
+        source.filter { announcement ->
+            if (!validSelected.isEmpty()) announcement.tags.any(validSelected::contains)
+            else true
         }
     }
 
@@ -96,7 +90,6 @@ class AnnouncementsViewModel(
         viewModelScope.launch {
             if (!network.isConnected()) {
                 allAnnouncements.value = emptyList()
-                _tags.value = emptyList()
                 return@launch
             }
 
@@ -104,10 +97,14 @@ class AnnouncementsViewModel(
                 announcementRepository.getAnnouncements()?.let {
                     allAnnouncements.value = it
                 }
-                announcementRepository.getTags()?.let {
-                    _tags.value = it.map { tag -> tag.name }
-                }
             }
         }
+    }
+
+    private companion object {
+        val List<ReVancedAnnouncement>.tags: Set<String>
+            get() = flatMapTo(
+                mutableSetOf()
+            ) { it.tags }
     }
 }

@@ -20,7 +20,7 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
+import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.saver.Nullable
@@ -45,14 +45,14 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.ViewModelParams) :
+class PatchesSelectorViewModel(input: SelectedAppInfo.PatchesSelector.ViewModelParams) :
     ViewModel(), KoinComponent {
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
 
-    private val packageName = input.app.packageName
-    val appVersion = input.app.version
+    private val packageName = input.packageName
+    val appVersion = input.version
 
     var selectionWarningEnabled by mutableStateOf(true)
         private set
@@ -62,7 +62,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     val allowIncompatiblePatches =
         get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
     val bundlesFlow =
-        get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.app.version)
+        get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.version)
 
     init {
         viewModelScope.launch {
@@ -88,7 +88,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         key = "selection",
         stateSaver = selectionSaver,
     ) {
-        mutableStateOf(input.currentSelection?.toPersistentPatchSelection())
+        mutableStateOf(input.patchSelection?.toPersistentPatchSelection())
     }
 
     private val patchOptions: PersistentOptions by savedStateHandle.saveable(

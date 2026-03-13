@@ -44,9 +44,7 @@ import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.component.SearchView
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
@@ -56,13 +54,13 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppSelectorScreen(
-    onSelect: (String) -> Unit,
-    onStorageSelect: (SelectedApp.Local) -> Unit,
+    onSelect: (packageName: String) -> Unit,
+    onStorageSelect: (packageName: String, path: String) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = koinViewModel()
 ) {
     EventEffect(flow = vm.storageSelectionFlow) {
-        onStorageSelect(it)
+        onStorageSelect(it.first, it.second)
     }
 
     val pickApkLauncher =
@@ -70,18 +68,9 @@ fun AppSelectorScreen(
             uri?.let(vm::handleStorageResult)
         }
 
-    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle()
-
     var search by rememberSaveable { mutableStateOf(false) }
     val appList by vm.apps.collectAsStateWithLifecycle()
     val appsListFiltered by vm.filteredApps.collectAsStateWithLifecycle()
-
-    vm.nonSuggestedVersionDialogSubject?.let {
-        NonSuggestedVersionDialog(
-            suggestedVersion = suggestedVersions[it.packageName].orEmpty(),
-            onDismiss = vm::dismissNonSuggestedVersionDialog
-        )
-    }
 
     if (search) {
         val filterText by vm.filterText.collectAsState()
@@ -111,18 +100,20 @@ fun AppSelectorScreen(
                                 )
                             },
                             headlineContent = { AppLabel(app.packageInfo) },
-                            supportingContent = { Text(app.packageName) },
-                            trailingContent = app.patches?.let {
+                            supportingContent = app.patches?.let {
                                 {
                                     Text(
                                         pluralStringResource(
-                                            R.plurals.patch_count,
+                                            R.plurals.available_patch_count,
                                             it,
                                             it
                                         )
                                     )
                                 }
                             },
+                            trailingContent = if (app.packageInfo == null) {
+                                { Text(stringResource(R.string.not_installed)) }
+                            } else null,
                             colors = transparentListItemColors
                         )
                     }
@@ -228,22 +219,20 @@ fun AppSelectorScreen(
                                 defaultText = app.packageName
                             )
                         },
-                        supportingContent = {
-                            suggestedVersions[app.packageName]?.let {
-                                Text(stringResource(R.string.suggested_version_info, it))
-                            }
-                        },
-                        trailingContent = app.patches?.let {
+                        supportingContent = app.patches?.let {
                             {
                                 Text(
                                     pluralStringResource(
-                                        R.plurals.patch_count,
+                                        R.plurals.available_patch_count,
                                         it,
                                         it
                                     )
                                 )
                             }
-                        }
+                        },
+                        trailingContent = if (app.packageInfo == null) {
+                            { Text(stringResource(R.string.not_installed)) }
+                        } else null
                     )
                 }
             }

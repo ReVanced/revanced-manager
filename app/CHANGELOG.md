@@ -1,3 +1,38 @@
+# app [1.26.0-dev.35](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.34...v1.26.0-dev.35) (2026-03-12)
+
+
+### Features
+
+* Add support for writing downloader UI with fragments ([#2998](https://github.com/ReVanced/revanced-manager/issues/2998)) ([7471710](https://github.com/ReVanced/revanced-manager/commit/7471710f287b4febb9546a7d7cd59d654b2754e9))
+
+# app [1.26.0-dev.34](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.33...v1.26.0-dev.34) (2026-03-10)
+
+
+### Features
+
+* Improve root installation ([#2895](https://github.com/ReVanced/revanced-manager/issues/2895)) ([763483b](https://github.com/ReVanced/revanced-manager/commit/763483b65f755201db087eecc6f3b02b65921177))
+
+# app [1.26.0-dev.33](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.32...v1.26.0-dev.33) (2026-03-10)
+
+
+### Bug Fixes
+
+* Adjust ReVanced icons ([#2890](https://github.com/ReVanced/revanced-manager/issues/2890)) ([bc2a2cb](https://github.com/ReVanced/revanced-manager/commit/bc2a2cb3976234c8a74db93a593e103d77d22a07))
+
+# app [1.26.0-dev.32](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.31...v1.26.0-dev.32) (2026-03-08)
+
+
+### Features
+
+* migrate to API v5 ([2270f32](https://github.com/ReVanced/revanced-manager/commit/2270f329de25376eb9f0ce196994cc841977ff2a))
+
+# app [1.26.0-dev.31](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.30...v1.26.0-dev.31) (2026-03-04)
+
+
+### Features
+
+* Don't mark all announcements as read on first launch, and set the correct default tags ([398ca00](https://github.com/ReVanced/revanced-manager/commit/398ca006b637048e6280edaf9685800f7638e6ba))
+
 # app [1.26.0-dev.30](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.29...v1.26.0-dev.30) (2026-03-02)
 
 
