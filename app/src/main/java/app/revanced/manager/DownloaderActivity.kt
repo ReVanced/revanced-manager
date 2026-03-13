@@ -9,18 +9,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
 import app.revanced.manager.domain.repository.DownloaderRepository
-import app.revanced.manager.network.downloader.DownloaderPackageState
 import org.koin.android.ext.android.inject
 
 class DownloaderActivity : FragmentActivity() {
     private val downloaderRepository: DownloaderRepository by inject()
-    var downloaderPackageName = ""
+    private var downloaderPackageName = ""
 
     private val downloaderPkgState
-        get() = downloaderRepository
-            .downloaderPackageStates
-            .value[downloaderPackageName]
-            ?.let { it as? DownloaderPackageState.Loaded }
+        get() = downloaderRepository.findPackageByName(downloaderPackageName)
 
     private var res: Resources? = null
 

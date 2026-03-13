@@ -1,10 +1,10 @@
-package app.revanced.manager.data.room.bundles
+package app.revanced.manager.data.room.downloader
 
 import androidx.room.*
 import app.revanced.manager.data.room.sources.Source
 
-@Entity(tableName = "patch_bundles")
-data class PatchBundleEntity(
+@Entity(tableName = "downloaders")
+data class DownloaderEntity(
     @PrimaryKey val uid: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "version") val versionHash: String? = null,

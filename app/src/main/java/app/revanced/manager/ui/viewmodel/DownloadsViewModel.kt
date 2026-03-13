@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.util.PM
@@ -19,9 +20,11 @@ import kotlinx.coroutines.withContext
 class DownloadsViewModel(
     private val downloadedAppRepository: DownloadedAppRepository,
     private val downloaderRepository: DownloaderRepository,
+    prefs: PreferencesManager,
     val pm: PM
 ) : ViewModel() {
-    val downloaderStates = downloaderRepository.downloaderPackageStates
+    val usePrereleases = prefs.useDownloaderPrerelease
+    val downloaderSources = downloaderRepository.downloaderSources
     val downloadedApps = downloadedAppRepository.getAll().map { downloadedApps ->
         downloadedApps.sortedWith(
             compareBy<DownloadedApp> {
@@ -53,15 +56,8 @@ class DownloadsViewModel(
 
     fun refreshDownloaders() = viewModelScope.launch {
         isRefreshingDownloaders = true
-        downloaderRepository.reload()
+        // Note: this should just be a normal update check.
+        downloaderRepository.redownloadRemote()
         isRefreshingDownloaders = false
-    }
-
-    fun trustDownloader(packageName: String) = viewModelScope.launch {
-        downloaderRepository.trustPackage(packageName)
-    }
-
-    fun revokeDownloaderTrust(packageName: String) = viewModelScope.launch {
-        downloaderRepository.revokeTrustForPackage(packageName)
     }
 }
