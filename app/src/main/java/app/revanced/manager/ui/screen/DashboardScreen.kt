@@ -127,6 +127,7 @@ fun DashboardScreen(
     var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
     val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(
         false
     )
@@ -465,7 +466,18 @@ fun DashboardScreen(
                             )
                         }
                     } else null,
-                    if (vm.showBatteryOptimizationsWarning) {
+                    if (bundleDownloadError != null) {
+                    {
+                        NotificationCard(
+                            isWarning = true,
+                            icon = Icons.Outlined.WarningAmber,
+                            title = stringResource(R.string.api_not_working_title),
+                            text = stringResource(R.string.api_not_working_description),
+                            onClick = onSettingsClick
+                        )
+                    }
+                } else null,
+                if (vm.showBatteryOptimizationsWarning) {
                         {
                             val batteryOptimizationsLauncher =
                                 rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
