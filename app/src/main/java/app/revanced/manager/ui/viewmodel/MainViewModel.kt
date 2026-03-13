@@ -15,6 +15,7 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.tag

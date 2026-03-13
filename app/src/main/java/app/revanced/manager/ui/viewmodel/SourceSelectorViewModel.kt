@@ -12,7 +12,7 @@ import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
-import app.revanced.manager.network.downloader.DownloaderPackageState
+import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.model.SelectedSource
 import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.util.PM
@@ -62,48 +62,53 @@ class SourceSelectorViewModel(
             }
         }
 
-    val downloaderSections = downloaderRepository.downloaderPackageStates.map { packageStates ->
-        packageStates
-            .filter { (_, state) -> state !is DownloaderPackageState.Loaded || state.downloaders.isNotEmpty() }
-            .map { (packageName, state) ->
-                when (state) {
-                    is DownloaderPackageState.Loaded -> DownloaderSection(
-                        title = state.name.ifBlank { packageName },
-                        key = packageName,
-                        options = state.downloaders.map { downloader ->
-                            SourceOption(
-                                source = SelectedSource.Downloader(
-                                    packageName,
-                                    downloader.className
-                                ),
-                                title = downloader.name,
-                                key = "${packageName}:${downloader.className}",
-                            )
-                        }
+    val downloaderSections = downloaderRepository.downloaderSources.map { sources ->
+        sources.values.mapNotNull { source ->
+            val loaded = source.loaded
+            if (loaded != null) {
+                val options = loaded.downloaders.map { downloader ->
+                    SourceOption(
+                        source = SelectedSource.Downloader(
+                            downloader.packageName,
+                            downloader.className
+                        ),
+                        title = downloader.name,
+                        key = "${downloader.packageName}:${downloader.className}",
                     )
-
-                    DownloaderPackageState.Untrusted,
-                    is DownloaderPackageState.Failed -> {
-                        val title =
-                            with(pm) { pm.getPackageInfo(packageName)?.label() ?: packageName }
-                        DownloaderSection(
-                            title = title,
-                            key = "unavailable_$packageName",
-                            options = listOf(
-                                SourceOption(
-                                    source = SelectedSource.Downloader(packageName),
-                                    title = title,
-                                    key = "unavailable_$packageName",
-                                    disableReason = when (state) {
-                                        DownloaderPackageState.Untrusted -> DisableReason.NOT_TRUSTED
-                                        else -> DisableReason.FAILED_TO_LOAD
-                                    },
-                                )
-                            )
-                        )
-                    }
                 }
+
+                if (options.isEmpty()) {
+                    null
+                } else {
+                    DownloaderSection(
+                        title = source.name.ifBlank { loaded.name },
+                        key = loaded.downloaders.first().packageName,
+                        options = options,
+                    )
+                }
+            } else {
+                val disableReason = when (source.state) {
+                    is Source.State.Failed,
+                    Source.State.Missing -> DisableReason.FAILED_TO_LOAD
+
+                    is Source.State.Available<*> -> null
+                } ?: return@mapNotNull null
+
+                val title = source.name.ifBlank { source.uid.toString() }
+                DownloaderSection(
+                    title = title,
+                    key = "unavailable_${source.uid}",
+                    options = listOf(
+                        SourceOption(
+                            source = SelectedSource.Downloader(),
+                            title = title,
+                            key = "unavailable_${source.uid}",
+                            disableReason = disableReason,
+                        )
+                    )
+                )
             }
+        }
     }
 
     init {
