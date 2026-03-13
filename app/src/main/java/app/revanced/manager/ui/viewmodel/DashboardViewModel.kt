@@ -133,14 +133,14 @@ class DashboardViewModel(
         }
     }
 
-    fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
+    fun applyAutoUpdatePrefs(enabled: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
-        prefs.managerAutoUpdates.update(manager)
+        prefs.managerAutoUpdates.update(enabled)
 
-        if (manager) checkForManagerUpdates()
+        if (enabled) {
+            checkForManagerUpdates()
 
-        if (patches) {
             with(patchBundleRepository) {
                 sources
                     .first()
