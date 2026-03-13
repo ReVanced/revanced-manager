@@ -15,7 +15,6 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -53,7 +52,6 @@ class SelectedAppInfoViewModel(
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
-    private val downloadedAppRepository: DownloadedAppRepository = get()
     private val downloaderRepository: DownloaderRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
     private val downloadedAppRepository: DownloadedAppRepository = get()
