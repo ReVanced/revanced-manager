@@ -14,30 +14,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
-import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
-import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
-    private val downloaderRepository: DownloaderRepository,
     private val announcementRepository: AnnouncementRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
@@ -46,11 +41,9 @@ class DashboardViewModel(
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
+    val bundleDownloadError = patchBundleRepository.updateError
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
-
-    val newDownloadersAvailable =
-        downloaderRepository.newDownloaderPackageNames.map { it.isNotEmpty() }
 
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
@@ -77,10 +70,6 @@ class DashboardViewModel(
             checkForAnnouncements()
             updateBatteryOptimizationsWarning()
         }
-    }
-
-    fun ignoreNewDownloaders() = viewModelScope.launch {
-        downloaderRepository.acknowledgeAll()
     }
 
     private suspend fun checkForManagerUpdates() {
@@ -132,14 +121,14 @@ class DashboardViewModel(
         }
     }
 
-    fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
+    fun applyAutoUpdatePrefs(enabled: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
-        prefs.managerAutoUpdates.update(manager)
+        prefs.managerAutoUpdates.update(enabled)
 
-        if (manager) checkForManagerUpdates()
+        if (enabled) {
+            checkForManagerUpdates()
 
-        if (patches) {
             with(patchBundleRepository) {
                 sources
                     .first()

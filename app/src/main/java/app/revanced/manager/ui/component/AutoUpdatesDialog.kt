@@ -27,57 +27,23 @@ import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.util.transparentListItemColors
 
 @Composable
-fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
-    var patchesEnabled by rememberSaveable { mutableStateOf(true) }
-    var managerEnabled by rememberSaveable { mutableStateOf(true) }
+fun AutoUpdatesDialog(onSubmit: (Boolean) -> Unit) {
+    var enabled by rememberSaveable { mutableStateOf(true) }
 
     AlertDialog(
         onDismissRequest = {},
         confirmButton = {
-            TextButton(onClick = { onSubmit(managerEnabled, patchesEnabled) }) {
-                Text(stringResource(R.string.save))
+            TextButton(onClick = { onSubmit(enabled) }) {
+                Text(stringResource(R.string.confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onSubmit(false) }) {
+                Text(stringResource(R.string.no))
             }
         },
         icon = { Icon(Icons.Outlined.Update, null) },
         title = { Text(text = stringResource(R.string.auto_updates_dialog_title)) },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(text = stringResource(R.string.auto_updates_dialog_description))
-
-                Column {
-                    AutoUpdatesItem(
-                        headline = R.string.auto_updates_dialog_manager,
-                        icon = Icons.Outlined.Update,
-                        checked = managerEnabled,
-                        onCheckedChange = { managerEnabled = it }
-                    )
-                    HorizontalDivider()
-                    AutoUpdatesItem(
-                        headline = R.string.auto_updates_dialog_patches,
-                        icon = Icons.Outlined.Source,
-                        checked = patchesEnabled,
-                        onCheckedChange = { patchesEnabled = it }
-                    )
-                }
-
-                Text(text = stringResource(R.string.auto_updates_dialog_note))
-            }
-        }
+        text = { Text(text = stringResource(R.string.auto_updates_dialog_description)) }
     )
 }
-
-@Composable
-private fun AutoUpdatesItem(
-    @StringRes headline: Int,
-    icon: ImageVector,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) = ListItem(
-    leadingContent = { Icon(icon, null) },
-    headlineContent = { Text(stringResource(headline)) },
-    trailingContent = { HapticCheckbox(checked = checked, onCheckedChange = null) },
-    modifier = Modifier.clickable { onCheckedChange(!checked) },
-    colors = transparentListItemColors
-)

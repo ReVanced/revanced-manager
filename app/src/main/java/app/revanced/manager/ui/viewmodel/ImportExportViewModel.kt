@@ -16,7 +16,7 @@ import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.util.JSON_MIMETYPE
 import app.revanced.manager.util.toast

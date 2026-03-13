@@ -53,6 +53,7 @@ class SelectedAppInfoViewModel(
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
+    private val downloadedAppRepository: DownloadedAppRepository = get()
     private val downloaderRepository: DownloaderRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
     private val downloadedAppRepository: DownloadedAppRepository = get()

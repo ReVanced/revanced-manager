@@ -30,7 +30,6 @@ Second \"item\" text"</string>
     <string name="select_app">Select an app</string>
     <string name="patches_count_selected">%1$d/%2$d selected</string>
 
-    <string name="new_downloader_notification">New downloader(s) available. Click here to configure them.</string>
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
@@ -70,7 +69,7 @@ Second \"item\" text"</string>
     <string name="version_selector_any_description">Use any available version regardless of compatibility</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
-    <string name="app_source_dialog_option_auto_description">Use all available downloader to download the app</string>
+    <string name="app_source_dialog_option_auto_description">Use a previously downloaded or all available downloaders</string>
     <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
@@ -96,14 +95,14 @@ Second \"item\" text"</string>
     <string name="apk_source_downloader">Using %s</string>
     <string name="apk_source_installed">Using installed APK</string>
     <string name="apk_source_local">Using a local APK file</string>
+    <string name="apk_source_downloaded">Already downloaded</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
     <string name="auto_updates_dialog_title">Configure updates</string>
-    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
-    <string name="auto_updates_dialog_manager">ReVanced Manager</string>
-    <string name="auto_updates_dialog_patches">ReVanced Patches</string>
-    <string name="auto_updates_dialog_note">These settings can be changed later.</string>
+    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates?
+
+This can be changed later in the settings.</string>
 
     <string name="announcements_filter_tag">Filter by tag</string>
     <string name="announcements_show_archived">Show archived</string>
@@ -205,17 +204,17 @@ You will not be able to update the previously installed apps from this source.</
     <string name="patch_options_reset_all_dialog_description">You are about to reset all patch options. You will have to reapply each option again.</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="downloaders">Downloaders</string>
-    <string name="downloader_state_trusted">Trusted</string>
+    <string name="downloader_prereleases">Use pre-releases</string>
+    <string name="downloader_prereleases_description">Use pre-release versions of the main downloader</string>
+    <string name="downloader_state_loaded">Loaded</string>
     <string name="downloader_state_failed">Failed to load. Click for more details</string>
-    <string name="downloader_state_untrusted">Untrusted</string>
-    <string name="downloader_trust_dialog_title">Trust downloader?</string>
-    <string name="downloader_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_trust_dialog_body">Continuing will allow this downloader to run.\n\nOnly enable this downloader if you trust it. Downloaders can make Manager execute arbitrary code.</string>
-    <string name="downloader_trust_dialog_signature">Signature:\n\n%s</string>
-    <string name="downloader_trust_dialog_name">Downloader:\n%s</string>
+    <string name="downloader_state_missing">Missing</string>
     <string name="downloader_delete_apps_title">Delete selected apps</string>
     <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found.</string>
+
+    <string name="downloader_update_failed">Failed to update downloader: %s</string>
+    <string name="downloader_replace_fail">Failed to import downloader: %s</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -287,6 +286,8 @@ You will not be able to update the previously installed apps from this source.</
     <string name="download_app">Download app</string>
     <string name="download_apk">Download APK file</string>
     <string name="patches_download_fail">Failed to download patches: %s</string>
+    <string name="api_not_working_title">API service is currently down</string>
+    <string name="api_not_working_description">Some features might be impacted. Check your connection or API URL in settings.</string>
     <string name="patches_replace_fail">Failed to import patches: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
@@ -331,6 +332,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="original_package_name">Original package name</string>
     <string name="applied_patches">Applied patches</string>
     <string name="view_applied_patches">View applied patches</string>
+
     <string name="default_install">Default</string>
     <string name="mount_install">Mount</string>
     <string name="mounted">Mounted</string>
