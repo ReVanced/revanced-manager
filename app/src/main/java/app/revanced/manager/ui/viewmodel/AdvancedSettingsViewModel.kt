@@ -38,7 +38,7 @@ class AdvancedSettingsViewModel(
         if (value == prefs.api.get()) return@launch
 
         prefs.api.update(value)
-        patchBundleRepository.reloadApiBundles()
+        patchBundleRepository.reloadApiSources()
     }
 
     fun exportDebugLogs(target: Uri) = viewModelScope.launch {

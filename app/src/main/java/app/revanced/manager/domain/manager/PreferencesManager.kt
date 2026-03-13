@@ -27,13 +27,12 @@ class PreferencesManager(
     val showManagerUpdateDialogOnLaunch = booleanPreference("show_manager_update_dialog_on_launch", true)
     val useManagerPrereleases = booleanPreference("manager_prereleases", false)
     val usePatchesPrereleases = booleanPreference("patches_prereleases", false)
+    val useDownloaderPrerelease = booleanPreference("downloader_prereleases", false)
 
     val disablePatchVersionCompatCheck = booleanPreference("disable_patch_version_compatibility_check", false)
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
     val disableUniversalPatchCheck = booleanPreference("disable_patch_universal_check", false)
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
-
-    val acknowledgedDownloaders = stringSetPreference("acknowledged_downloaders", emptySet())
 
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
 

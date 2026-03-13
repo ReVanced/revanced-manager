@@ -1,8 +1,8 @@
 package app.revanced.manager.data.room
 
 import androidx.room.TypeConverter
-import app.revanced.manager.data.room.bundles.Source
 import app.revanced.manager.data.room.options.Option.SerializedValue
+import app.revanced.manager.data.room.sources.Source
 import java.io.File
 
 class Converters {

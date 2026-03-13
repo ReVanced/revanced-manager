@@ -41,12 +41,12 @@ import app.revanced.manager.R.string.patches
 import app.revanced.manager.R.string.patches_url
 import app.revanced.manager.R.string.view_patches
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.bundles.LocalPatchBundle
-import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
+import app.revanced.manager.domain.sources.LocalPatchBundle
+import app.revanced.manager.domain.sources.PatchBundleSource
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.FullscreenDialog
@@ -71,7 +71,7 @@ fun BundleInformationDialog(
     val composableScope = rememberCoroutineScope()
     var viewCurrentBundlePatches by remember { mutableStateOf(false) }
     val isLocal = src is LocalPatchBundle
-    val bundleManifestAttributes = src.patchBundle?.manifestAttributes
+    val bundleManifestAttributes = src.loaded?.manifestAttributes
     val (autoUpdate, endpoint) = src.asRemoteOrNull?.let { it.autoUpdate to it.endpoint }
         ?: (null to null)
 
@@ -279,7 +279,7 @@ fun BundleInformationDialog(
                         modifier = Modifier.clickable { showDialog = true }
                     )
                 }
-                if (src.state is PatchBundleSource.State.Missing && !isLocal) {
+                if (src.state is Source.State.Missing && !isLocal) {
                     BundleListItem(
                         headlineText = stringResource(R.string.patches_error),
                         supportingText = stringResource(R.string.patches_not_downloaded),

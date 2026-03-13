@@ -41,6 +41,8 @@ class ReVancedAPI(
 
     suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
 
+    suspend fun getDownloaderUpdate() = request<ReVancedAsset>("manager/downloaders${prefs.useDownloaderPrerelease.prereleaseString()}")
+
     suspend fun getContributors() = request<List<ReVancedGitRepository>>("contributors")
 
     suspend fun getInfo(api: String? = null) = request<ReVancedInfo>(api ?: apiUrl(), "about")
