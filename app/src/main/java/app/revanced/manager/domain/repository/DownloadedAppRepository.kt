@@ -131,6 +131,8 @@ class DownloadedAppRepository(
             if (markUsed) dao.markUsed(packageName, version)
         }
 
+    suspend fun getAllByPackage(packageName: String) = dao.getAllByPackage(packageName)
+
     suspend fun getLatestByPackage(packageName: String, markUsed: Boolean = false) =
         dao.getLatestByPackage(packageName)?.also {
             if (markUsed) dao.markUsed(it.packageName, it.version)
