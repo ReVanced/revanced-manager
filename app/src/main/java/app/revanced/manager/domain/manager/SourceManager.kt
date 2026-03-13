@@ -146,7 +146,7 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
         }
 
     /**
-     * Updates a patch bundle in the database. Do not use this outside an action.
+     * Updates a source in the database. Do not use this outside an action.
      */
     private suspend fun updateDb(
         uid: Int,
