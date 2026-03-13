@@ -19,6 +19,7 @@ import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
 import kotlinx.collections.immutable.*
 import kotlinx.coroutines.CancellationException
@@ -125,6 +126,17 @@ class PatchBundleRepository(
     }
 
     val patchCountsFlow = bundleInfoFlow.map { it.mapValues { (_, info) -> info.patches.size } }
+
+    fun suggestedVersions(packageName: String, patchSelection: PatchSelection) =
+        bundleInfoFlow.map {
+            val allPatches = patchSelection.flatMap { (uid, patches) ->
+                val bundle = it[uid] ?: return@flatMap emptyList()
+                bundle.patches.filter { patch -> patches.contains(patch.name) }
+                    .map(PatchInfo::toPatcherPatch)
+            }.toSet()
+
+            allPatches.mostCommonCompatibleVersions(countUnusedPatches = true)[packageName]
+        }
 
     val suggestedVersions = bundleInfoFlow.map {
         val allPatches =

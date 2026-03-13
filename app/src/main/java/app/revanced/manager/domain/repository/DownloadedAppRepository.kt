@@ -32,6 +32,8 @@ class DownloadedAppRepository(
 
     fun getAll() = dao.getAllApps().distinctUntilChanged()
 
+    fun get(packageName: String) = dao.get(packageName)
+
     fun getApkFileForApp(app: DownloadedApp): File =
         getApkFileForDir(dir.resolve(app.directory))
 
@@ -129,13 +131,6 @@ class DownloadedAppRepository(
     suspend fun get(packageName: String, version: String, markUsed: Boolean = false) =
         dao.get(packageName, version)?.also {
             if (markUsed) dao.markUsed(packageName, version)
-        }
-
-    suspend fun getAllByPackage(packageName: String) = dao.getAllByPackage(packageName)
-
-    suspend fun getLatestByPackage(packageName: String, markUsed: Boolean = false) =
-        dao.getLatestByPackage(packageName)?.also {
-            if (markUsed) dao.markUsed(it.packageName, it.version)
         }
 
     suspend fun delete(downloadedApps: Collection<DownloadedApp>) {

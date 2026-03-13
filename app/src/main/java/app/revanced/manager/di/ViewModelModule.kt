@@ -25,4 +25,6 @@ val viewModelModule = module {
     viewModelOf(::InstalledAppInfoViewModel)
     viewModelOf(::UpdatesSettingsViewModel)
     viewModelOf(::BundleListViewModel)
+    viewModelOf(::VersionSelectorViewModel)
+    viewModelOf(::SourceSelectorViewModel)
 }

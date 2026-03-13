@@ -40,7 +40,7 @@ data class PatchInfo(
             if (pkg.packageName != packageName) return@any false
             if (pkg.versions == null) return@any true
 
-            versionName != null && versionName in pkg.versions
+            versionName == null || versionName in pkg.versions
         }
     }
 

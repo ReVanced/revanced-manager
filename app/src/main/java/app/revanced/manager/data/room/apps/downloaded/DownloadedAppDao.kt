@@ -2,7 +2,6 @@ package app.revanced.manager.data.room.apps.downloaded
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
@@ -12,14 +11,11 @@ interface DownloadedAppDao {
     @Query("SELECT * FROM downloaded_app")
     fun getAllApps(): Flow<List<DownloadedApp>>
 
+    @Query("SELECT * FROM downloaded_app WHERE package_name = :packageName")
+    fun get(packageName: String): Flow<List<DownloadedApp>>
+
     @Query("SELECT * FROM downloaded_app WHERE package_name = :packageName AND version = :version")
     suspend fun get(packageName: String, version: String): DownloadedApp?
-
-    @Query("SELECT * FROM downloaded_app WHERE package_name = :packageName ORDER BY last_used DESC")
-    suspend fun getAllByPackage(packageName: String): List<DownloadedApp>
-
-    @Query("SELECT * FROM downloaded_app WHERE package_name = :packageName ORDER BY last_used DESC LIMIT 1")
-    suspend fun getLatestByPackage(packageName: String): DownloadedApp?
 
     @Upsert
     suspend fun upsert(downloadedApp: DownloadedApp)

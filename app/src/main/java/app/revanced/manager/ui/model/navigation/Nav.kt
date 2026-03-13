@@ -1,8 +1,9 @@
 package app.revanced.manager.ui.model.navigation
 
 import android.os.Parcelable
+import app.revanced.manager.ui.model.SelectedSource
+import app.revanced.manager.ui.model.SelectedVersion
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import kotlinx.parcelize.Parcelize
@@ -30,10 +31,11 @@ data object Announcements
 data object Announcement : ComplexParameter<ReVancedAnnouncement>
 
 @Serializable
-data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.ViewModelParams> {
+data object SelectedAppInfo : ComplexParameter<SelectedAppInfo.ViewModelParams> {
     @Parcelize
     data class ViewModelParams(
-        val app: SelectedApp,
+        val packageName: String,
+        val localPath: String? = null,
         val patches: PatchSelection? = null
     ) : Parcelable
 
@@ -44,9 +46,32 @@ data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.V
     data object PatchesSelector : ComplexParameter<PatchesSelector.ViewModelParams> {
         @Parcelize
         data class ViewModelParams(
-            val app: SelectedApp,
-            val currentSelection: PatchSelection?,
+            val packageName: String,
+            val version: String?,
+            val patchSelection: PatchSelection?,
             val options: @RawValue Options,
+        ) : Parcelable
+    }
+
+    @Serializable
+    data object VersionSelector : ComplexParameter<VersionSelector.ViewModelParams> {
+        @Parcelize
+        data class ViewModelParams(
+            val packageName: String,
+            val patchSelection: PatchSelection,
+            val selectedVersion: SelectedVersion,
+            val localPath: String? = null,
+        ) : Parcelable
+    }
+
+    @Serializable
+    data object SourceSelector : ComplexParameter<SourceSelector.ViewModelParams> {
+        @Parcelize
+        data class ViewModelParams(
+            val packageName: String,
+            val version: String?,
+            val selectedSource: SelectedSource,
+            val localPath: String? = null,
         ) : Parcelable
     }
 
@@ -58,7 +83,9 @@ data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.V
 data object Patcher : ComplexParameter<Patcher.ViewModelParams> {
     @Parcelize
     data class ViewModelParams(
-        val selectedApp: SelectedApp,
+        val packageName: String,
+        val version: String?,
+        val selectedSource: SelectedSource,
         val selectedPatches: PatchSelection,
         val options: @RawValue Options
     ) : Parcelable

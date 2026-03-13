@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import app.revanced.manager.R
 import com.eygraber.compose.placeholder.material3.placeholder
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,8 @@ fun AppLabel(
                 shape = RoundedCornerShape(100)
             )
             .then(modifier),
-        style = style
+        style = style,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
     )
 }

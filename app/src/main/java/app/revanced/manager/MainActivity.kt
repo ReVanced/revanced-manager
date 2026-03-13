@@ -29,7 +29,7 @@ import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
 import app.revanced.manager.ui.model.navigation.InstalledApplicationInfo
 import app.revanced.manager.ui.model.navigation.Patcher
-import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
+import app.revanced.manager.ui.model.navigation.SelectedAppInfo
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
 import app.revanced.manager.ui.screen.AnnouncementScreen
@@ -42,7 +42,9 @@ import app.revanced.manager.ui.screen.PatchesSelectorScreen
 import app.revanced.manager.ui.screen.RequiredOptionsScreen
 import app.revanced.manager.ui.screen.SelectedAppInfoScreen
 import app.revanced.manager.ui.screen.SettingsScreen
+import app.revanced.manager.ui.screen.SourceSelectorScreen
 import app.revanced.manager.ui.screen.UpdateScreen
+import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.screen.settings.AboutSettingsScreen
 import app.revanced.manager.ui.screen.settings.AdvancedSettingsScreen
 import app.revanced.manager.ui.screen.settings.ContributorSettingsScreen
@@ -97,8 +99,8 @@ private fun ReVancedManager(vm: MainViewModel) {
 
     EventEffect(vm.appSelectFlow) { app ->
         navController.navigateComplex(
-            SelectedApplicationInfo,
-            SelectedApplicationInfo.ViewModelParams(app)
+            SelectedAppInfo,
+            app
         )
     }
 
@@ -138,7 +140,9 @@ private fun ReVancedManager(vm: MainViewModel) {
             val data = it.toRoute<InstalledApplicationInfo>()
 
             InstalledAppInfoScreen(
-                onPatchClick = vm::selectApp,
+                onPatchClick = { packageName ->
+                    vm.selectApp(packageName)
+                },
                 onBackClick = navController::popBackStack,
                 viewModel = koinViewModel { parametersOf(data.packageName) }
             )
@@ -146,8 +150,12 @@ private fun ReVancedManager(vm: MainViewModel) {
 
         composable<AppSelector> {
             AppSelectorScreen(
-                onSelect = vm::selectApp,
-                onStorageSelect = vm::selectApp,
+                onSelect = { packageName ->
+                    vm.selectApp(packageName)
+                },
+                onStorageSelect = { packageName, localPath ->
+                    vm.selectApp(packageName, localPath)
+                },
                 onBackClick = navController::popBackStack
             )
         }
@@ -191,11 +199,11 @@ private fun ReVancedManager(vm: MainViewModel) {
             )
         }
 
-        navigation<SelectedApplicationInfo>(startDestination = SelectedApplicationInfo.Main) {
-            composable<SelectedApplicationInfo.Main> {
+        navigation<SelectedAppInfo>(startDestination = SelectedAppInfo.Main) {
+            composable<SelectedAppInfo.Main> {
                 val parentBackStackEntry = navController.navGraphEntry(it)
                 val data =
-                    parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
+                    parentBackStackEntry.getComplexArg<SelectedAppInfo.ViewModelParams>()
                 val viewModel =
                     koinViewModel<SelectedAppInfoViewModel>(viewModelStoreOwner = parentBackStackEntry) {
                         parametersOf(data)
@@ -211,23 +219,47 @@ private fun ReVancedManager(vm: MainViewModel) {
                             )
                         }
                     },
-                    onPatchSelectorClick = { app, patches, options ->
+                    onPatchSelectorClick = { packageName, version, patchSelection, options ->
                         navController.navigateComplex(
-                            SelectedApplicationInfo.PatchesSelector,
-                            SelectedApplicationInfo.PatchesSelector.ViewModelParams(
-                                app,
-                                patches,
-                                options
+                            SelectedAppInfo.PatchesSelector,
+                            SelectedAppInfo.PatchesSelector.ViewModelParams(
+                                packageName,
+                                version,
+                                patchSelection,
+                                options,
                             )
                         )
                     },
-                    onRequiredOptions = { app, patches, options ->
+                    onRequiredOptions = { packageName, version, patchSelection, options ->
                         navController.navigateComplex(
-                            SelectedApplicationInfo.RequiredOptions,
-                            SelectedApplicationInfo.PatchesSelector.ViewModelParams(
-                                app,
-                                patches,
-                                options
+                            SelectedAppInfo.RequiredOptions,
+                            SelectedAppInfo.PatchesSelector.ViewModelParams(
+                                packageName,
+                                version,
+                                patchSelection,
+                                options,
+                            )
+                        )
+                    },
+                    onVersionClick = { packageName, patchSelection, selectedVersion, local ->
+                        navController.navigateComplex(
+                            SelectedAppInfo.VersionSelector,
+                            SelectedAppInfo.VersionSelector.ViewModelParams(
+                                packageName,
+                                patchSelection,
+                                selectedVersion,
+                                local,
+                            )
+                        )
+                    },
+                    onSourceClick = { packageName, version, selectedSource, local ->
+                        navController.navigateComplex(
+                            SelectedAppInfo.SourceSelector,
+                            SelectedAppInfo.SourceSelector.ViewModelParams(
+                                packageName,
+                                version,
+                                selectedSource,
+                                local,
                             )
                         )
                     },
@@ -235,9 +267,9 @@ private fun ReVancedManager(vm: MainViewModel) {
                 )
             }
 
-            composable<SelectedApplicationInfo.PatchesSelector> {
+            composable<SelectedAppInfo.PatchesSelector> {
                 val data =
-                    it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
+                    it.getComplexArg<SelectedAppInfo.PatchesSelector.ViewModelParams>()
                 val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
@@ -252,9 +284,43 @@ private fun ReVancedManager(vm: MainViewModel) {
                 )
             }
 
-            composable<SelectedApplicationInfo.RequiredOptions> {
+            composable<SelectedAppInfo.VersionSelector> {
                 val data =
-                    it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
+                    it.getComplexArg<SelectedAppInfo.VersionSelector.ViewModelParams>()
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
+                    viewModelStoreOwner = navController.navGraphEntry(it)
+                )
+
+                VersionSelectorScreen(
+                    onBackClick = navController::popBackStack,
+                    onSave = { version ->
+                        selectedAppInfoVm.updateVersion(version)
+                        navController.popBackStack()
+                    },
+                    viewModel = koinViewModel { parametersOf(data) }
+                )
+            }
+
+            composable<SelectedAppInfo.SourceSelector> {
+                val data =
+                    it.getComplexArg<SelectedAppInfo.SourceSelector.ViewModelParams>()
+                val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
+                    viewModelStoreOwner = navController.navGraphEntry(it)
+                )
+
+                SourceSelectorScreen(
+                    onBackClick = navController::popBackStack,
+                    onSave = { source ->
+                        selectedAppInfoVm.updateSource(source)
+                        navController.popBackStack()
+                    },
+                    viewModel = koinViewModel { parametersOf(data) }
+                )
+            }
+
+            composable<SelectedAppInfo.RequiredOptions> {
+                val data =
+                    it.getComplexArg<SelectedAppInfo.PatchesSelector.ViewModelParams>()
                 val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
                     viewModelStoreOwner = navController.navGraphEntry(it)
                 )
