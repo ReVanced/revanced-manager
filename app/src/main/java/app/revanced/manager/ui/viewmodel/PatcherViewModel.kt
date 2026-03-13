@@ -277,31 +277,47 @@ class PatcherViewModel(
     }
 
     private fun handleProgressEvent(event: ProgressEvent) = viewModelScope.launch {
+        if (event is ProgressEvent.Failed && event.stepId == null && steps.any { it.state == State.FAILED }) {
+            return@launch
+        }
+
         val stepIndex = steps.indexOfFirst {
             event.stepId?.let { id -> id == it.id }
                 ?: (it.state == State.RUNNING || it.state == State.WAITING)
         }
 
-        if (stepIndex != -1) steps[stepIndex] = steps[stepIndex].run {
-            when (event) {
-                is ProgressEvent.Started -> withState(State.RUNNING)
+        if (stepIndex != -1) {
+            val currentStep = steps[stepIndex]
+            val updatedStep = when (event) {
+                is ProgressEvent.Started -> currentStep.withState(State.RUNNING)
 
-                is ProgressEvent.Progress -> withState(
-                    message = event.message ?: message,
-                    progress = event.current?.let { event.current to event.total } ?: progress
+                is ProgressEvent.Progress -> currentStep.withState(
+                    message = event.message ?: currentStep.message,
+                    progress = event.current?.let { event.current to event.total } ?: currentStep.progress
                 )
 
-                is ProgressEvent.Completed -> withState(State.COMPLETED, progress = null)
-
-                is ProgressEvent.Failed -> {
-                    if (event.stepId == null && steps.any { it.state == State.FAILED }) return@launch
-                    withState(
-                        State.FAILED,
-                        message = event.error.stackTrace,
-                        progress = null
+                is ProgressEvent.Log -> currentStep.withState(
+                    message = appendLog(
+                        currentStep.message,
+                        formatLogLine(event.level, event.message)
                     )
+                )
+
+                is ProgressEvent.Completed -> currentStep.withState(State.COMPLETED, progress = null)
+                    .let { step ->
+                        if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
+                    }
+
+                is ProgressEvent.Failed -> currentStep.withState(
+                    State.FAILED,
+                    message = event.error.stackTrace,
+                    progress = null
+                ).let { step ->
+                    if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
                 }
             }
+
+            steps[stepIndex] = updatedStep
         }
     }
 
@@ -340,7 +356,7 @@ class PatcherViewModel(
     fun prepareLogExport() = viewModelScope.launch {
         val uri = withContext(Dispatchers.IO) {
             tempDir.resolve(logFileName()).also {
-                it.writeText(logs.joinToString("\n") { (level, msg) -> "[${level.name}]: $msg" })
+                it.writeText(logs.joinToString("\n") {  (level, msg) -> formatLogLine(level, msg) }
             }.let {
                 FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", it)
             }
@@ -551,6 +567,18 @@ class PatcherViewModel(
             LogLevel.ERROR -> Log.e(TAG, msg)
         }
 
+        fun formatLogLine(level: LogLevel, message: String) = when (level) {
+            LogLevel.INFO -> message
+            LogLevel.WARN -> "Warning: $message"
+            LogLevel.ERROR -> "Error: $message"
+            LogLevel.TRACE -> "Debug: $message"
+        }
+
+        fun appendLog(current: String?, line: String): String =
+            current?.takeIf { it.isNotBlank() }
+                ?.let { "$it\n$line" }
+                ?: line
+
         fun generateSteps(
             context: Context,
             selectedApp: SelectedApp,
@@ -583,17 +611,17 @@ class PatcherViewModel(
                 Step(
                     StepId.ExecutePatches,
                     context.getString(R.string.execute_patches),
-                    StepCategory.PATCHING,
-                    hide = true
+                    StepCategory.PATCHING
                 )
             )
 
-            selectedPatches.values.asSequence().flatten().sorted().forEachIndexed { index, name ->
+            selectedPatches.values.asSequence().flatten().forEachIndexed { index, name ->
                 add(
                     Step(
                         StepId.ExecutePatch(index),
                         name,
-                        StepCategory.PATCHING
+                        StepCategory.PATCHING,
+                        hide = true
                     )
                 )
             }

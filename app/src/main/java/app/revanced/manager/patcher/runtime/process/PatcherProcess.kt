@@ -13,6 +13,8 @@ import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.patcher.logger.forStep
+import app.revanced.manager.patcher.logger.withJavaLogging
 import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.patcher.runStep
 import app.revanced.manager.patcher.runtime.ProcessRuntime
@@ -60,40 +62,41 @@ class PatcherProcess() : IPatcherProcess.Stub() {
 
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
+            val loadLogger = logger.forStep(StepId.LoadPatches, ::onEvent)
             val patchList = runStep(StepId.LoadPatches, ::onEvent) {
-                val allPatches = PatchBundle.Loader.patches(
-                    parameters.configurations.map { it.bundle },
-                    parameters.packageName
-                )
+                loadLogger.withJavaLogging {
+                    val allPatches = PatchBundle.Loader.patches(
+                        parameters.configurations.map { it.bundle },
+                        parameters.packageName
+                    )
 
-                parameters.configurations.flatMap { config ->
-                    val patches = (allPatches[config.bundle] ?: return@flatMap emptyList())
-                        .filter { it.name in config.patches }
-                        .associateBy { it.name }
+                    parameters.configurations.flatMap { config ->
+                        val patches = (allPatches[config.bundle] ?: return@flatMap emptyList())
+                            .filter { it.name in config.patches }
+                            .associateBy { it.name }
 
-                    config.options.forEach { (patchName, opts) ->
-                        val patchOptions = patches[patchName]?.options
-                            ?: throw Exception("Patch with name $patchName does not exist.")
+                        config.options.forEach { (patchName, opts) ->
+                            val patchOptions = patches[patchName]?.options
+                                ?: throw Exception("Patch with name $patchName does not exist.")
 
-                        opts.forEach { (key, value) ->
-                            patchOptions[key] = value
+                            opts.forEach { (key, value) ->
+                                patchOptions[key] = value
+                            }
                         }
-                    }
 
-                    patches.values
+                        patches.values
+                    }
                 }
             }
 
-            val session = runStep(StepId.ReadAPK, ::onEvent) {
-                Session(
-                    cacheDir = parameters.cacheDir,
-                    aaptPath = parameters.aaptPath,
-                    frameworkDir = parameters.frameworkDir,
-                    logger = logger,
-                    input = File(parameters.inputFile),
-                    onEvent = ::onEvent,
-                )
-            }
+            val session = Session(
+                cacheDir = parameters.cacheDir,
+                aaptPath = parameters.aaptPath,
+                frameworkDir = parameters.frameworkDir,
+                logger = logger,
+                input = File(parameters.inputFile),
+                onEvent = ::onEvent,
+            )
 
             session.use {
                 it.run(File(parameters.outputFile), patchList)
