@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">ପ୍ୟାଚର୍</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ଡାଉନଲୋଡର୍ ହୋଷ୍ଟ</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ଡାଉନଲୋଡର୍‌ଗୁଡିକୁ ନିୟନ୍ତ୍ରଣ କରିବା ପାଇଁ ବ୍ୟବହୃତ। କେବଳ ReVanced Manager ପାଖରେ ଏହା ଅଛି।</string>
+  <string name="new_downloader_notification">ନୂଆ ଡାଉନଲୋଡର୍(ଗୁଡ଼ିକ) ଉପଲବ୍ଧ। ସେମାନଙ୍କୁ ବିନ୍ୟାସ କରିବାକୁ ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ।</string>
+  <string name="app_source_dialog_option_auto_unavailable">କୌଣସି ଡାଉନଲୋଡର୍ ଉପଲବ୍ଧ ନାହିଁ</string>
+  <string name="announcements_filter_tag">ଟ୍ୟାଗ୍ ଦ୍ୱାରା ଫିଲ୍ଟର୍ କରନ୍ତୁ</string>
+  <string name="announcements_show_archived">ଆର୍କାଇଭ୍ ହୋଇଥିବା ଦେଖାନ୍ତୁ</string>
+  <string name="downloads_description">ଡାଉନଲୋଡର ଏବଂ ଡାଉନଲୋଡ୍ ହୋଇଥିବା ଆପ୍ସ</string>
+  <string name="downloaders">ଡାଉନଲୋଡର</string>
+  <string name="downloader_state_trusted">ବିଶ୍ୱସ୍ତ</string>
+  <string name="downloader_state_failed">ଲୋଡ୍ କରିବାରେ ବିଫଳ ହେଲା। ଅଧିକ ବିବରଣୀ ପାଇଁ କ୍ଲିକ୍ କରନ୍ତୁ</string>
+  <string name="downloader_state_untrusted">ଅବିଶ୍ୱସ୍ତ</string>
+  <string name="downloader_trust_dialog_title">ଡାଉନଲୋଡରକୁ ବିଶ୍ୱାସ କରିବେ କି?</string>
+  <string name="downloader_revoke_trust_dialog_title">ବିଶ୍ୱାସ ପ୍ରତ୍ୟାହାର କରିବେ କି?</string>
+  <string name="downloader_trust_dialog_body">ଆଗକୁ ବଢ଼ିଲେ ଏହି ଡାଉନଲୋଡରକୁ ଚାଲୁ କରିବାକୁ ଅନୁମତି ମିଳିବ।\n\nଯଦି ଆପଣ ଏହି ଡାଉନଲୋଡରକୁ ବିଶ୍ୱାସ କରନ୍ତି, ତେବେ ହିଁ ଏହାକୁ ସକ୍ଷମ କରନ୍ତୁ। ଡାଉନଲୋଡରମାନେ Managerକୁ ଯେକୌଣସି କୋଡ୍ ଏକ୍ସିକ୍ୟୁଟ୍ କରିବାକୁ ଦେଇପାରନ୍ତି।</string>
+  <string name="downloader_trust_dialog_signature">ସିଗ୍ନେଚର୍:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">ଡାଉନଲୋଡର:\n%s</string>
+  <string name="downloader_delete_apps_title">ମନୋନୀତ ଆପ୍ସଗୁଡ଼ିକୁ ଡିଲିଟ୍ କରନ୍ତୁ</string>
+  <string name="downloader_delete_apps_description">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ମନୋନୀତ ଆପ୍ସଗୁଡ଼ିକୁ ଡିଲିଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି?</string>
+  <string name="no_downloader_installed">କୌଣସି ଡାଉନଲୋଡର ଇନଷ୍ଟଲ୍ ହୋଇନାହିଁ।</string>
+  <string name="no_downloader_available">ଡାଉନଲୋଡର ଇନଷ୍ଟଲ୍ ହୋଇଛି କିନ୍ତୁ କୌଣସିଟି ବିଶ୍ୱସ୍ତ ନୁହେଁ। ଆପଣଙ୍କ ସେଟିଂସ ଯାଞ୍ଚ କରନ୍ତୁ।</string>
+  <string name="patch_selector_sheet_actions_title">କାର୍ଯ୍ୟଗୁଡିକ</string>
+  <string name="restore_default_selection">ଡିଫଲ୍ଟ ଚୟନ ପୁନରୁଦ୍ଧାର କରନ୍ତୁ</string>
+  <string name="deselect_all">ସବୁ ଅଚୟନ କରନ୍ତୁ</string>
+  <string name="invert_selection">ଚୟନ ଓଲଟାନ୍ତୁ</string>
+  <string name="deselect_all_except">ସମସ୍ତଙ୍କୁ ଅନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ %s ବ୍ୟତୀତ</string>
+  <string name="scope_dialog_title">ପ୍ରୟୋଗ କରନ୍ତୁ</string>
+  <string name="scope_all_patches">ସମସ୍ତ ପ୍ୟାଚ୍</string>
+  <string name="scope_bundle_patches">%s କେବଳ</string>
+  <string name="downloader_activity_dialog_body">ଏହି ଡାଉନଲୋଡର ସହିତ ଆଗକୁ ବଢ଼ିବା ପାଇଁ ଉପଭୋକ୍ତାଙ୍କ ହସ୍ତକ୍ଷେପ ଆବଶ୍ୟକ।</string>
+  <string name="view_announcement">ଘୋଷଣା ଦେଖନ୍ତୁ</string>
+  <string name="announcements">ଘୋଷଣାଗୁଡ଼ିକ</string>
+  <string name="archive">ଆର୍କାଇଭ୍</string>
+  <string name="no_announcements_found">କୌଣସି ଘୋଷଣା ମିଳିଲା ନାହିଁ</string>
+  <string name="new_announcement">ନୂତନ ଘୋଷଣା:
+%s</string>
+</resources>

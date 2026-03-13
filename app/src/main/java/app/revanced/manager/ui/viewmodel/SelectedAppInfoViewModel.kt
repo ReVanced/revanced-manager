@@ -35,6 +35,7 @@ import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.downloader.GetScope
 import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.Scope
 import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.Patcher
@@ -207,9 +208,7 @@ class SelectedAppInfoViewModel(
         cancelDownloaderAction()
         downloaderAction = downloader to viewModelScope.launch {
             try {
-                val scope = object : GetScope {
-                    override val hostPackageName = app.packageName
-                    override val downloaderPackageName = downloader.packageName
+                val scope = object : GetScope, Scope by downloader.scopeImpl {
                     override suspend fun requestStartActivity(intent: Intent) =
                         withContext(Dispatchers.Main) {
                             if (launchedActivity != null) error("Previous activity has not finished")
@@ -234,7 +233,7 @@ class SelectedAppInfoViewModel(
                 }
 
                 withContext(Dispatchers.IO) {
-                    downloader.get(scope, packageName, desiredVersion)
+                    downloader.impl.get(scope, packageName, desiredVersion)
                 }?.let { (data, version) ->
                     if (desiredVersion != null && version != desiredVersion) {
                         app.toast(app.getString(R.string.downloader_invalid_version))
@@ -340,7 +339,7 @@ class SelectedAppInfoViewModel(
                         bundleOptions.forEach patch@{ (patchName, values) ->
                             // Get all valid option keys for the patch.
                             val validOptionKeys =
-                                patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
+                                patches[patchName]?.options?.map { it.name }?.toSet() ?: return@patch
 
                             this@bundleOptions[patchName] = values.filterKeys { key ->
                                 key in validOptionKeys

@@ -1,29 +1,30 @@
 [versions]
-ktx = "1.17.0"
-material3 = "1.4.0"
+ktx = "1.18.0"
+material3 = "1.5.0-alpha14"
 ui-tooling = "1.10.0"
 viewmodel-lifecycle = "2.10.0"
 splash-screen = "1.2.0"
 activity = "1.12.2"
 appcompat = "1.7.1"
+fragment = "1.8.9"
 preferences-datastore = "1.2.0"
 work-runtime = "2.11.0"
 compose-bom = "2025.12.01"
-navigation = "2.9.6"
+navigation = "2.9.7"
 accompanist = "0.37.3"
 placeholder = "1.0.12"
 reorderable = "3.0.0"
-serialization = "1.9.0"
+serialization = "1.10.0"
 collection = "0.4.0"
 datetime = "0.7.1"
 room-version = "2.8.4"
-revanced-patcher = "21.0.0"
-revanced-library = "3.0.2"
+revanced-patcher = "22.0.0"
+revanced-library = "4.0.0"
 koin = "4.1.1"
-ktor = "3.3.3"
-markdown-renderer = "0.39.0"
+ktor = "3.4.1"
+markdown-renderer = "0.39.2"
 fading-edges = "1.0.4"
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 android-gradle-plugin = "8.13.2"
 dev-tools-gradle-plugin = "2.3.4"
 about-libraries = "13.2.1"
@@ -37,7 +38,7 @@ kotlin-process = "1.5.1"
 hidden-api-stub = "4.4.0"
 binary-compatibility-validator = "0.18.1"
 semver-parser = "3.0.0"
-ackpine = "0.19.1"
+ackpine = "0.20.6"
 
 [libraries]
 # AndroidX Core
@@ -46,6 +47,7 @@ runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", ve
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
+fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -81,8 +83,8 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-ver
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
 
 # Patcher
-revanced-patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "revanced-patcher" }
-revanced-library = { group = "app.revanced", name = "revanced-library", version.ref = "revanced-library" }
+revanced-patcher = { group = "app.revanced", name = "patcher-android", version.ref = "revanced-patcher" }
+revanced-library = { group = "app.revanced", name = "library-android", version.ref = "revanced-library" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }

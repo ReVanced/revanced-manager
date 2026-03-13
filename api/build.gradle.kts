@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.binary.compatibility.validator)
     `maven-publish`
     signing
@@ -15,14 +14,17 @@ group = "app.revanced"
 dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.runtime.ktx)
-    implementation(libs.activity.compose)
-    implementation(libs.appcompat)
+    implementation(libs.fragment.ktx)
 }
 
 kotlin {
     jvmToolchain(17)
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-Xexplicit-backing-fields",
+            "-Xcontext-parameters",
+        )
     }
 }
 
@@ -63,12 +65,9 @@ apiValidation {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = "githubPackages"
             url = uri("https://maven.pkg.github.com/revanced/revanced-manager")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: extra["gpr.user"] as String?
-                password = System.getenv("GITHUB_TOKEN") ?: extra["gpr.key"] as String?
-            }
+            credentials(PasswordCredentials::class)
         }
     }
 

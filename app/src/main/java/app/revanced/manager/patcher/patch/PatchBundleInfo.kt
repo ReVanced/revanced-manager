@@ -137,7 +137,7 @@ sealed class PatchBundleInfo {
                     it.options.all option@{ option ->
                         if (!option.required || option.default != null) return@option true
 
-                        option.key in opts
+                        option.name in opts
                     }
                 }
         }

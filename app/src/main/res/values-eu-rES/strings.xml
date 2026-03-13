@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Adabakitzailea</string>
+  <string name="downloader_host_permission_label">ReVanced Manager deskargatzailearen ostalaria</string>
+  <string name="downloader_host_permission_description">ReVanced Manager deskargatzaileetarako sarbidea kontrolatzeko erabiltzen da. ReVanced Managerrek bakarrik du hau.</string>
+  <string name="new_downloader_notification">Deskargatzaile berriak eskuragarri. Egin klik hemen konfiguratzeko.</string>
+  <string name="app_source_dialog_option_auto_unavailable">Ez dago deskargatzailerik eskuragarri</string>
+  <string name="announcements_filter_tag">Etiketaren arabera iragazi</string>
+  <string name="announcements_show_archived">Artxibatutakoak erakutsi</string>
+  <string name="downloads_description">Deskargatzaileak eta deskargatutako aplikazioak</string>
+  <string name="downloaders">Deskargatzaileak</string>
+  <string name="downloader_state_trusted">Fidagarria</string>
+  <string name="downloader_state_failed">Kargatzeak huts egin du. Egin klik xehetasun gehiago lortzeko</string>
+  <string name="downloader_state_untrusted">Ez fidagarria</string>
+  <string name="downloader_trust_dialog_title">Deskargatzailea fidatu?</string>
+  <string name="downloader_revoke_trust_dialog_title">Fidagarritasuna ezeztatu?</string>
+  <string name="downloader_trust_dialog_body">Jarraitzek deskargatzaile honi exekutatzen uzten dio.\n\nGaitu deskargatzaile hau fidatzen bazara soilik. Deskargatzaileek Manager-ek kode arbitrarioa exekutatzea eragin dezakete.</string>
+  <string name="downloader_trust_dialog_signature">Sinadura:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">Deskargatzailea:\n%s</string>
+  <string name="downloader_delete_apps_title">Hautatutako aplikazioak ezabatu</string>
+  <string name="downloader_delete_apps_description">Ziur zaude hautatutako aplikazioak ezabatu nahi dituzula?</string>
+  <string name="no_downloader_installed">Ez dago deskargatzailerik instalatuta.</string>
+  <string name="no_downloader_available">Instalatutako deskargatzaileak daude baina bat ere ez da fidagarria. Egiaztatu zure ezarpenak.</string>
+  <string name="patch_selector_sheet_actions_title">Ekintzak</string>
+  <string name="restore_default_selection">Berrezarri hautapen lehenetsia</string>
+  <string name="deselect_all">Desautatu guztiak</string>
+  <string name="invert_selection">Hautapen alderantzikatu</string>
+  <string name="deselect_all_except">Guztiak desautatu, %s izan ezik</string>
+  <string name="scope_dialog_title">Honi aplikatu</string>
+  <string name="scope_all_patches">Adabaki guztiak</string>
+  <string name="scope_bundle_patches">%s soilik</string>
+  <string name="downloader_activity_dialog_body">Erabiltzailearen interakzioa beharrezkoa da deskargatzaile honekin aurrera egiteko.</string>
+  <string name="view_announcement">Iragarkia ikusi</string>
+  <string name="announcements">Iragarkiak</string>
+  <string name="archive">Artxiboa</string>
+  <string name="no_announcements_found">Ez da iragarkirik aurkitu</string>
+  <string name="new_announcement">Iragarki berria:
+%s</string>
+</resources>

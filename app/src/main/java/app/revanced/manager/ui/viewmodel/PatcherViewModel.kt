@@ -3,7 +3,6 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInstaller as AndroidPackageInstaller
 import android.net.Uri
 import android.os.ParcelUuid
 import android.util.Log
@@ -28,19 +27,20 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.WorkerRepository
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
-import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.Step
+import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.withState
 import app.revanced.manager.util.PM
@@ -59,6 +59,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
@@ -78,6 +79,7 @@ import ru.solrudev.ackpine.uninstaller.UninstallFailure
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
+import android.content.pm.PackageInstaller as AndroidPackageInstaller
 
 @OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
 class PatcherViewModel(
@@ -88,6 +90,7 @@ class PatcherViewModel(
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
+    private val patchBundleRepository: PatchBundleRepository by inject()
     private val rootInstaller: RootInstaller by inject()
     private val savedStateHandle: SavedStateHandle = get()
     private val ackpineInstaller: PackageInstaller = get()
@@ -378,13 +381,15 @@ class PatcherViewModel(
             Session.State.Succeeded -> {
                 app.toast(app.getString(R.string.install_app_success))
                 installedPackageName = installerPkgName
+                val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
                 installedAppRepository.addOrUpdate(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version
                         ?: withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile)?.versionName!! },
                     InstallType.DEFAULT,
-                    input.selectedPatches
+                    input.selectedPatches,
+                    bundleInfo
                 )
             }
         }
@@ -399,24 +404,26 @@ class PatcherViewModel(
                     withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile) }
                         ?: throw Exception("Failed to load application info")
 
-                // If the app is currently installed
-                val existingPackageInfo =
-                    withContext(Dispatchers.IO) { pm.getPackageInfo(currentPackageInfo.packageName) }
-                if (existingPackageInfo != null) {
-                    // Check if the app version is less than the installed version
-                    if (
-                        pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(
-                            existingPackageInfo
-                        )
-                    ) {
-                        // Exit if the selected app version is less than the installed version
-                        packageInstallerStatus = AndroidPackageInstaller.STATUS_FAILURE_CONFLICT
-                        return@launch
-                    }
-                }
 
                 when (installType) {
                     InstallType.DEFAULT -> {
+                        // If the app is currently installed
+                        val existingPackageInfo =
+                            withContext(Dispatchers.IO) { pm.getPackageInfo(currentPackageInfo.packageName) }
+                        if (existingPackageInfo != null) {
+                            // Check if the app version is less than the installed version
+                            if (
+                                pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(
+                                    existingPackageInfo
+                                )
+                            ) {
+                                // Exit if the selected app version is less than the installed version
+                                packageInstallerStatus =
+                                    AndroidPackageInstaller.STATUS_FAILURE_CONFLICT
+                                return@launch
+                            }
+                        }
+
                         // Check if the app is mounted as root
                         // If it is, unmount it first, silently
                         if (rootInstaller.hasRootAccess() && rootInstaller.isAppMounted(packageName)) {
@@ -430,17 +437,6 @@ class PatcherViewModel(
                     InstallType.MOUNT -> {
                         val label = with(pm) {
                             currentPackageInfo.label()
-                        }
-
-                        // Check for base APK, first check if the app is already installed
-                        if (existingPackageInfo == null) {
-                            // If the app is not installed, check if the output file is a base apk
-                            if (currentPackageInfo.splitNames.isNotEmpty()) {
-                                // Exit if there is no base APK package
-                                packageInstallerStatus =
-                                    AndroidPackageInstaller.STATUS_FAILURE_INVALID
-                                return@launch
-                            }
                         }
 
                         val inputVersion = input.selectedApp.version
@@ -457,12 +453,14 @@ class PatcherViewModel(
                             label
                         )
 
+                        val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
                         installedAppRepository.addOrUpdate(
                             currentPackageInfo.packageName,
                             packageName,
                             inputVersion,
                             InstallType.MOUNT,
-                            input.selectedPatches
+                            input.selectedPatches,
+                            bundleInfo
                         )
 
                         rootInstaller.mount(packageName)

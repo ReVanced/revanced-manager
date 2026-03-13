@@ -165,7 +165,6 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (Debug)")
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
@@ -175,13 +174,12 @@ android {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
-                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             }
 
             val keystoreFile = file("keystore.jks")
 
             if (project.hasProperty("signAsDebug") || !keystoreFile.exists()) {
-                applicationIdSuffix = ".debug_signed"
                 resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs.getByName("debug")
 
@@ -217,23 +215,6 @@ android {
         includeInBundle = false
     }
 
-    packaging {
-        resources.excludes.addAll(
-            listOf(
-                "/prebuilt/**",
-                "META-INF/DEPENDENCIES",
-                "META-INF/**.version",
-                "DebugProbesKt.bin",
-                "kotlin-tooling-metadata.json",
-                "org/bouncycastle/pqc/**.properties",
-                "org/bouncycastle/x509/**.properties",
-            )
-        )
-        jniLibs {
-            useLegacyPackaging = true
-        }
-    }
-
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
@@ -254,12 +235,67 @@ android {
             version = "3.22.1"
         }
     }
+
+    packaging {
+        resources {
+            // Useless files
+            excludes += "/XPP3_*_VERSION"
+            excludes += "/font-awesome-license.txt"
+            excludes += "/smali.properties"
+            excludes += "/baksmali.properties"
+            excludes += "/properties/apktool.properties"
+            excludes += "/org/antlr/**"
+            excludes += "/org/mockito/**"
+            excludes += "/org/bouncycastle/pqc/**.properties"
+            excludes += "/org/bouncycastle/x509/**.properties"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/**/*.txt"
+            excludes += "/META-INF/**/*.properties"
+            excludes += "/META-INF/DEPENDENCIES"
+
+            // AAPT
+            excludes += "/prebuilt/**/*"
+        }
+        jniLibs {
+            // 32-bit x86 is dead
+            excludes += "/lib/x86/*.so"
+
+            // Equivalent of AndroidManifest's extractNativeLibs=true to ensure libs are compressed
+            useLegacyPackaging = true
+        }
+    }
+}
+
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) {
+        it.packaging.resources.excludes.apply {
+            // Debug metadata
+            add("/META-INF/*.version")
+            add("/META-INF/*.kotlin_module")
+            add("/kotlin-tooling-metadata.json")
+
+            // Kotlin debugging (https://github.com/Kotlin/kotlinx.coroutines/issues/2274)
+            add("/DebugProbesKt.bin")
+        }
+    }
 }
 
 kotlin {
     jvmToolchain(17)
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-Xexplicit-backing-fields",
+            "-Xcontext-parameters",
+        )
+    }
+}
+
+configurations {
+    all {
+        // ReVanced Library has a dependency which conflicts with whatever this is. We don't use protobuf, so it should be fine.
+        exclude(group = "com.google.api.grpc", module = "proto-google-common-protos")
     }
 }
 

@@ -11,7 +11,7 @@ jobs:
     name: Dispatch event to documentation repository
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: peter-evans/repository-dispatch@v3
+      - uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.DOCUMENTATION_REPO_ACCESS_TOKEN  }}
           repository: revanced/revanced-documentation

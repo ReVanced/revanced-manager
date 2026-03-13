@@ -1,3 +1,98 @@
+# app [1.26.0-dev.35](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.34...v1.26.0-dev.35) (2026-03-12)
+
+
+### Features
+
+* Add support for writing downloader UI with fragments ([#2998](https://github.com/ReVanced/revanced-manager/issues/2998)) ([7471710](https://github.com/ReVanced/revanced-manager/commit/7471710f287b4febb9546a7d7cd59d654b2754e9))
+
+# app [1.26.0-dev.34](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.33...v1.26.0-dev.34) (2026-03-10)
+
+
+### Features
+
+* Improve root installation ([#2895](https://github.com/ReVanced/revanced-manager/issues/2895)) ([763483b](https://github.com/ReVanced/revanced-manager/commit/763483b65f755201db087eecc6f3b02b65921177))
+
+# app [1.26.0-dev.33](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.32...v1.26.0-dev.33) (2026-03-10)
+
+
+### Bug Fixes
+
+* Adjust ReVanced icons ([#2890](https://github.com/ReVanced/revanced-manager/issues/2890)) ([bc2a2cb](https://github.com/ReVanced/revanced-manager/commit/bc2a2cb3976234c8a74db93a593e103d77d22a07))
+
+# app [1.26.0-dev.32](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.31...v1.26.0-dev.32) (2026-03-08)
+
+
+### Features
+
+* migrate to API v5 ([2270f32](https://github.com/ReVanced/revanced-manager/commit/2270f329de25376eb9f0ce196994cc841977ff2a))
+
+# app [1.26.0-dev.31](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.30...v1.26.0-dev.31) (2026-03-04)
+
+
+### Features
+
+* Don't mark all announcements as read on first launch, and set the correct default tags ([398ca00](https://github.com/ReVanced/revanced-manager/commit/398ca006b637048e6280edaf9685800f7638e6ba))
+
+# app [1.26.0-dev.30](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.29...v1.26.0-dev.30) (2026-03-02)
+
+
+### Features
+
+* Update AAPT2 to built-tools v35. ([1ba11b3](https://github.com/ReVanced/revanced-manager/commit/1ba11b30218be263a56f6512b968f5e3dded9daf))
+
+# app [1.26.0-dev.29](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.28...v1.26.0-dev.29) (2026-02-28)
+
+
+### Bug Fixes
+
+* Exclude desktop AAPT and disable R8 optimizations ([6ce5b67](https://github.com/ReVanced/revanced-manager/commit/6ce5b672feb677eccafffb6a04bdf5513f6d62fa))
+* unexclude other destabilizers ([2c3d436](https://github.com/ReVanced/revanced-manager/commit/2c3d436b258f100feea0b9864b7131ae2c5bda79))
+
+# app [1.26.0-dev.28](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.27...v1.26.0-dev.28) (2026-02-28)
+
+
+### Features
+
+* Add patch selection filters ([#2956](https://github.com/ReVanced/revanced-manager/issues/2956)) ([0be493d](https://github.com/ReVanced/revanced-manager/commit/0be493da662ed2b46d4b8616942357eb6a111d17))
+
+# app [1.26.0-dev.27](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.26...v1.26.0-dev.27) (2026-02-28)
+
+
+### Features
+
+* Show patch bundle version used to patch an app ([#2966](https://github.com/ReVanced/revanced-manager/issues/2966)) ([11bd46c](https://github.com/ReVanced/revanced-manager/commit/11bd46ce26d4fbc7f126bee5e254d4f6b5e0cc43))
+
+# app [1.26.0-dev.26](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.25...v1.26.0-dev.26) (2026-02-27)
+
+
+### Features
+
+* improve InstalledAppsScreen caching/perf ([#2963](https://github.com/ReVanced/revanced-manager/issues/2963)) ([323d217](https://github.com/ReVanced/revanced-manager/commit/323d2170efa0e3f2c8d2245ff08a2e92c52cb9d7))
+
+# app [1.26.0-dev.25](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.24...v1.26.0-dev.25) (2026-02-27)
+
+
+### Features
+
+* improve AppSelectorScreen caching/perf ([#2961](https://github.com/ReVanced/revanced-manager/issues/2961)) ([81e5a93](https://github.com/ReVanced/revanced-manager/commit/81e5a9315db4c858fa29163d15457af97163967a))
+
+# app [1.26.0-dev.24](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.23...v1.26.0-dev.24) (2026-02-27)
+
+
+### Bug Fixes
+
+* Incorrect patcher string value ([f19080a](https://github.com/ReVanced/revanced-manager/commit/f19080a9862be4600860b67cd981b9a3a56b21e7))
+* Never show again toggle doing nothing for Update dialog ([6f4219c](https://github.com/ReVanced/revanced-manager/commit/6f4219c01ba43b70e130f210c8d48978a6056f68))
+* Release builds not working ([00b3c59](https://github.com/ReVanced/revanced-manager/commit/00b3c59572760993f69f2663456237faafff0283))
+* Remove quotes from strings ([fc30ba5](https://github.com/ReVanced/revanced-manager/commit/fc30ba5e83f27329b05dc81f484bb8f7471b6a99))
+* we actually don't want to exclude reflection symbols ([3222840](https://github.com/ReVanced/revanced-manager/commit/32228404c4ef38bb8931d5cfdf6a7aefde23a89c))
+
+
+### Features
+
+* Add announcements ([#2948](https://github.com/ReVanced/revanced-manager/issues/2948)) ([813df46](https://github.com/ReVanced/revanced-manager/commit/813df46847620bd854dccc52ff244388b3385e17))
+* Update to Patcher v22 ([#2939](https://github.com/ReVanced/revanced-manager/issues/2939)) ([8667051](https://github.com/ReVanced/revanced-manager/commit/8667051283f934a32ac7b7cc76178397dc45a0e6))
+
 # app [1.26.0-dev.23](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.22...v1.26.0-dev.23) (2026-02-19)
 
 
