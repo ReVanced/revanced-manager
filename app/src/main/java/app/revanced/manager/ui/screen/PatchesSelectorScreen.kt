@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Deselect
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
@@ -131,6 +132,7 @@ fun PatchesSelectorScreen(
     val stickyHeaderTopGap = 8.dp
     val readOnly = viewModel.readOnly
     val bundles by viewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val bundleLoadIssues by viewModel.bundleLoadIssuesFlow.collectAsStateWithLifecycle(initialValue = emptyMap())
     val pm: PM = koinInject()
     val pmAppList by pm.appList.collectAsStateWithLifecycle(initialValue = emptyList())
     val patchLazyListState = rememberLazyListState()
@@ -494,6 +496,7 @@ fun PatchesSelectorScreen(
     ) {
         sections.forEach { section ->
             val bundle = section.bundle
+            val loadIssueResId = bundleLoadIssues[bundle.uid]
 
             stickyHeader(key = "$keyPrefix-source-${bundle.uid}") {
                 Column(
@@ -511,7 +514,10 @@ fun PatchesSelectorScreen(
                         onExpandToggle = { toggleBundleExpanded(bundle.uid) },
                         onDeleteClick = { onSourceDeleteRequest?.invoke(bundle.uid) },
                         sourceEditMode = isSourceEditMode,
-                        readOnly = readOnly
+                        readOnly = readOnly,
+                        loadIssue = loadIssueResId?.let { messageId ->
+                            stringResource(messageId)
+                        }
                     )
                 }
             }
@@ -1070,7 +1076,8 @@ private fun SourceSectionHeader(
     onExpandToggle: () -> Unit,
     onDeleteClick: () -> Unit,
     sourceEditMode: Boolean,
-    readOnly: Boolean
+    readOnly: Boolean,
+    loadIssue: String?
 ) {
     val toggleableState = when (selectionState) {
         true -> ToggleableState.On
@@ -1098,12 +1105,24 @@ private fun SourceSectionHeader(
             headlineContent = {
                 Text(text = bundle.name)
             },
-            supportingContent = bundle.version?.takeIf { it.isNotBlank() }?.let { version ->
-                {
-                    Text(
-                        text = version,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+            supportingContent = {
+                val version = bundle.version?.takeIf { it.isNotBlank() }
+                if (version == null && loadIssue == null) return@ListItem
+
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    version?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    loadIssue?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             },
             trailingContent = {

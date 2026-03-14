@@ -15,6 +15,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
+import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.bundles.PatchBundleSource.State
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchBundleInfo
@@ -37,6 +39,7 @@ import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -65,11 +68,34 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     val allowIncompatiblePatches =
         get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking() || appVersion == null
     val bundlesFlow = if (browseAllBundles) {
-        bundleRepository.bundleInfoFlow.map { bundles ->
-            bundles.values.map(PatchBundleInfo.Global::asReadonlyScoped)
+        combine(bundleRepository.sources, bundleRepository.bundleInfoFlow) { sources, bundles ->
+            mergeSourcesWithBundleInfo(
+                sources,
+                bundles.mapValues { (_, bundle) -> bundle.asReadonlyScoped() }
+            )
         }
     } else {
-        bundleRepository.scopedBundleInfoFlow(packageName, input.app.version)
+        combine(
+            bundleRepository.sources,
+            bundleRepository.scopedBundleInfoFlow(packageName, input.app.version)
+        ) { sources, bundles ->
+            mergeSourcesWithBundleInfo(
+                sources,
+                bundles.associateBy(PatchBundleInfo.Scoped::uid)
+            )
+        }
+    }
+
+    val bundleLoadIssuesFlow = bundleRepository.sources.map { sources ->
+        sources.mapNotNull { source ->
+            val messageId = when {
+                source.error != null -> R.string.patches_error_description
+                source.state is State.Missing -> R.string.patches_not_downloaded
+                else -> null
+            } ?: return@mapNotNull null
+
+            source.uid to messageId
+        }.toMap()
     }
 
     init {
@@ -306,6 +332,13 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         private val selectionSaver: Saver<PersistentPatchSelection?, Nullable<PatchSelection>> =
             nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
     }
+
+    private fun mergeSourcesWithBundleInfo(
+        sources: List<PatchBundleSource>,
+        scopedBundleInfoByUid: Map<Int, PatchBundleInfo.Scoped>
+    ) = sources.map { source ->
+        scopedBundleInfoByUid[source.uid] ?: source.emptyScopedBundleInfo()
+    }
 }
 
 // Versions of other types, but utilizing persistent/observable collection types.
@@ -321,6 +354,16 @@ private fun PatchBundleInfo.Global.asReadonlyScoped() = PatchBundleInfo.Scoped(
     uid = uid,
     patches = patches,
     compatible = patches,
+    incompatible = emptyList(),
+    universal = emptyList()
+)
+
+private fun PatchBundleSource.emptyScopedBundleInfo() = PatchBundleInfo.Scoped(
+    name = name,
+    version = version,
+    uid = uid,
+    patches = emptyList(),
+    compatible = emptyList(),
     incompatible = emptyList(),
     universal = emptyList()
 )

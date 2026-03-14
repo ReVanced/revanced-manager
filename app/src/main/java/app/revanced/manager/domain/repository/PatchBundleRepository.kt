@@ -61,6 +61,9 @@ class PatchBundleRepository(
     private val _updateError = MutableStateFlow<Throwable?>(null)
     val updateError = _updateError.asStateFlow()
 
+    private val _apiOutageError = MutableStateFlow<Throwable?>(null)
+    val apiOutageError = _apiOutageError.asStateFlow()
+
     val sources = store.state.map { it.sources.values.toList() }
     val bundles = store.state.map {
         it.sources.mapNotNull { (uid, src) ->
@@ -353,6 +356,8 @@ class PatchBundleRepository(
         private val showToast: Boolean = false,
         private val predicate: (bundle: RemotePatchBundle) -> Boolean = { true },
     ) : Action<State> {
+        private var attemptedMainApiBundleUpdate = false
+
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
 
@@ -369,6 +374,9 @@ class PatchBundleRepository(
             val updated = current.sources.values
                 .filterIsInstance<RemotePatchBundle>()
                 .filter { predicate(it) }
+                .also { targets ->
+                    attemptedMainApiBundleUpdate = targets.any { it.uid == 0 && it is APIPatchBundle }
+                }
                 .map {
                     async {
                         Log.d(tag, "Updating patch bundle: ${it.name}")
@@ -383,6 +391,11 @@ class PatchBundleRepository(
                 .awaitAll()
                 .filterNotNull()
                 .toMap()
+
+            if (attemptedMainApiBundleUpdate) {
+                _apiOutageError.value = null
+            }
+
             if (updated.isEmpty()) {
                 if (showToast) toast(R.string.patches_update_unavailable)
                 return@coroutineScope current
@@ -404,6 +417,11 @@ class PatchBundleRepository(
         override suspend fun catch(exception: Exception) {
             Log.e(tag, "Failed to update patches", exception)
             _updateError.value = exception
+
+            if (attemptedMainApiBundleUpdate) {
+                _apiOutageError.value = exception
+            }
+
             toast(R.string.patches_download_fail, exception.simpleMessage())
         }
     }

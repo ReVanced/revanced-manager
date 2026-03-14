@@ -87,7 +87,7 @@ Second \"item\" text"</string>
     <string name="patches_missing">Missing</string>
     <string name="patches_error">Error</string>
     <string name="patches_error_description">Patches could not be loaded. Click to view the error</string>
-    <string name="patches_not_downloaded">Patches has not been downloaded. Click here to download it</string>
+    <string name="patches_not_downloaded">Patches has not been downloaded.</string>
     <string name="patches_name_default">Patches</string>
     <string name="patches_name_fallback">Unnamed</string>
 
