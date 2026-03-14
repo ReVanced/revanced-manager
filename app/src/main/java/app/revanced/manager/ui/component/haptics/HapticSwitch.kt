@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.component.haptics
 
-import android.os.Build
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchColors
@@ -25,15 +24,9 @@ fun HapticSwitch(
     Switch(
         checked = checked,
         onCheckedChange = { newChecked ->
-            val useNewConstants = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-            val hapticFeedbackType = when {
-                newChecked && useNewConstants -> HapticFeedbackConstants.TOGGLE_ON
-                newChecked -> HapticFeedbackConstants.VIRTUAL_KEY
-                !newChecked && useNewConstants -> HapticFeedbackConstants.TOGGLE_OFF
-                !newChecked -> HapticFeedbackConstants.CLOCK_TICK
-                else -> {HapticFeedbackConstants.VIRTUAL_KEY}
-            }
-            view.performHapticFeedback(hapticFeedbackType)
+            view.performHapticFeedback(
+                if (newChecked) HapticFeedbackConstantsCompat.TOGGLE_ON else HapticFeedbackConstantsCompat.TOGGLE_OFF
+            )
             onCheckedChange(newChecked)
         },
         modifier = modifier,

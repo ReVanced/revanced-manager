@@ -47,7 +47,7 @@ class AboutViewModel(
                 return@launch
             }
             withContext(Dispatchers.IO) {
-                reVancedAPI.getInfo("https://api.revanced.app").getOrNull()
+                reVancedAPI.getInfo().getOrNull()
             }?.let {
                 socials = it.socials
                 contact = it.contact.email

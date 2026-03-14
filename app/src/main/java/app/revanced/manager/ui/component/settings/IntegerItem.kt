@@ -1,11 +1,12 @@
 package app.revanced.manager.ui.component.settings
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +27,8 @@ fun IntegerItem(
     preference: Preference<Int>,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     @StringRes headline: Int,
-    @StringRes description: Int
+    @StringRes description: Int,
+    unit: String? = null,
 ) {
     val value by preference.getAsState()
 
@@ -35,42 +37,48 @@ fun IntegerItem(
         value = value,
         onValueChange = { coroutineScope.launch { preference.update(it) } },
         headline = headline,
-        description = description
+        description = description,
+        unit = unit
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun IntegerItem(
     modifier: Modifier = Modifier,
     value: Int,
     onValueChange: (Int) -> Unit,
     @StringRes headline: Int,
-    @StringRes description: Int
+    @StringRes description: Int,
+    unit: String? = null,
 ) {
     var dialogOpen by rememberSaveable {
         mutableStateOf(false)
     }
 
     if (dialogOpen) {
-        IntInputDialog(current = value, name = stringResource(headline)) { new ->
+        IntInputDialog(
+            current = value,
+            unit = unit,
+            name = stringResource(headline)
+        ) { new ->
             dialogOpen = false
             new?.let(onValueChange)
         }
     }
 
     SettingsListItem(
-        modifier = Modifier
-            .clickable { dialogOpen = true }
-            .then(modifier),
+        modifier = modifier,
         headlineContent = stringResource(headline),
         supportingContent = stringResource(description),
         trailingContent = {
-            IconButton(onClick = { dialogOpen = true }) {
+            IconButton(onClick = { dialogOpen = true }, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     Icons.Outlined.Edit,
                     contentDescription = stringResource(R.string.edit)
                 )
             }
-        }
+        },
+        onClick = { dialogOpen = true }
     )
 }

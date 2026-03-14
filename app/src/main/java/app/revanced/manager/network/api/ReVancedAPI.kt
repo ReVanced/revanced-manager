@@ -19,17 +19,18 @@ class ReVancedAPI(
     private val prefs: PreferencesManager
 ) {
     private suspend fun apiUrl() = prefs.api.get()
+    private val apiVersion = "v5"
 
-    private suspend inline fun <reified T> request(api: String, route: String): APIResponse<T> =
+    private suspend inline fun <reified T> request(api: String, route: String, apiVersion: String = this.apiVersion): APIResponse<T> =
         withContext(
             Dispatchers.IO
         ) {
             client.request {
-                url("$api/v5/$route")
+                url("$api/$apiVersion/$route")
             }
         }
 
-    private suspend inline fun <reified T> request(route: String) = request<T>(apiUrl(), route)
+    private suspend inline fun <reified T> request(route: String, apiVersion: String = this.apiVersion) = request<T>(apiUrl(), route, apiVersion)
 
     suspend fun getAnnouncements() = request<List<ReVancedAnnouncement>>("announcements")
 
@@ -41,9 +42,11 @@ class ReVancedAPI(
 
     suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
 
+    suspend fun getDownloaderAsset() = request<ReVancedAsset>("manager/downloaders${prefs.useManagerPrereleases.get()}")
+
     suspend fun getContributors() = request<List<ReVancedGitRepository>>("contributors")
 
-    suspend fun getInfo(api: String? = null) = request<ReVancedInfo>(api ?: apiUrl(), "about")
+    suspend fun getInfo() = request<ReVancedInfo>("about")
 
     private companion object {
         suspend fun Preference<Boolean>.prereleaseString() = if (get()) "/prerelease" else ""

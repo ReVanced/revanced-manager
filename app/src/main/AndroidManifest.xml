@@ -41,15 +41,24 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:configChanges="layoutDirection|locale"
             android:theme="@style/Theme.ReVancedManager">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="${deepLinkScheme}" />
+            </intent-filter>
         </activity>
 
-        <activity android:name=".downloader.webview.WebViewActivity" android:exported="false" android:theme="@style/Theme.WebViewActivity" />
+        <activity android:name=".DownloaderActivity" android:exported="false" android:theme="@style/Theme.DownloaderActivity" />
 
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
@@ -73,14 +82,15 @@
                     tools:node="remove" />
         </provider>
 
+
         <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
+            android:name=".ManagerFileProvider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            tools:node="merge">
+            android:grantUriPermissions="true">
             <meta-data
-                android:name="ru.solrudev.ackpine.AckpineInitializer"
-                tools:node="remove" />
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
         </provider>
     </application>
 </manifest>

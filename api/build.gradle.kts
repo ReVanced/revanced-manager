@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.binary.compatibility.validator)
     `maven-publish`
     signing
@@ -15,8 +14,7 @@ group = "app.revanced"
 dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.runtime.ktx)
-    implementation(libs.activity.compose)
-    implementation(libs.appcompat)
+    implementation(libs.fragment.ktx)
 }
 
 kotlin {
@@ -32,10 +30,16 @@ kotlin {
 
 android {
     namespace = "app.revanced.manager.downloader"
-    compileSdk = 36
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
-        minSdk = 26
+        minSdk {
+            version = release(26)
+        }
 
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -43,6 +47,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            // Proguard optimisation is disabled by -dontoptimize in the file
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

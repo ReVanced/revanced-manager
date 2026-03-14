@@ -64,7 +64,7 @@ dependencies {
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
 
-    // Downloader plugins
+    // Downloaders
     implementation(project(":api"))
 
     // Native processes
@@ -131,13 +131,20 @@ buildscript {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 36
-    buildToolsVersion = "35.0.1"
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "app.revanced.manager.flutter"
-        minSdk = 26
-        targetSdk = 35
+        minSdk {
+            version = release(26)
+        }
+        targetSdk {
+            version = release(36)
+        }
 
         val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
         versionName = versionStr
@@ -161,20 +168,23 @@ android {
             .joinToString(prefix = "{", separator = ",", postfix = "}") { "\"$it\"" }
 
         buildConfigField("String[]", "SUPPORTED_LOCALES", locales)
+
+        val deepLinkScheme = "revanced-manager"
+        manifestPlaceholders["deepLinkScheme"] = deepLinkScheme
+
+        buildConfigField("String", "DEEP_LINK_SCHEME", "\"$deepLinkScheme\"")
     }
 
     buildTypes {
         debug {
             resValue("string", "app_name", "ReVanced Manager (Debug)")
-
-            buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
 
         release {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
-                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
             val keystoreFile = file("keystore.jks")
@@ -192,8 +202,6 @@ android {
                     keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
                 }
             }
-
-            buildConfigField("long", "BUILD_ID", "0L")
         }
     }
 
@@ -265,7 +273,6 @@ android {
         }
     }
 }
-
 
 androidComponents {
     onVariants(selector().withBuildType("release")) {

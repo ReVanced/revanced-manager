@@ -15,7 +15,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material.icons.outlined.WarningAmber
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -149,6 +151,7 @@ fun SelectedAppInfoScreen(
 
             AppSourceSelectorDialog(
                 downloaders = downloaders,
+                downloadedApps = vm.downloadedApps,
                 installedApp = vm.installedAppData,
                 searchApp = SelectedApp.Search(
                     vm.packageName,
@@ -215,9 +218,12 @@ fun SelectedAppInfoScreen(
             )
             error?.let {
                 Text(
-                    stringResource(it.resourceId),
+                    text = stringResource(it.resourceId),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(horizontal = 24.dp)
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .padding(horizontal = 24.dp)
                 )
             }
 
@@ -279,9 +285,11 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun AppSourceSelectorDialog(
     downloaders: List<LoadedDownloader>,
+    downloadedApps: List<SelectedApp.Local>,
     installedApp: Pair<SelectedApp.Installed, InstalledApp?>?,
     searchApp: SelectedApp.Search,
     activeSearchJob: LoadedDownloader?,
@@ -296,7 +304,7 @@ private fun AppSourceSelectorDialog(
     AlertDialogExtended(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(onClick = onDismissRequest) {
+            TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -319,6 +327,21 @@ private fun AppSourceSelectorDialog(
                                     stringResource(R.string.app_source_dialog_option_auto_unavailable)
                             )
                         },
+                        colors = transparentListItemColors
+                    )
+                }
+
+                items(
+                    downloadedApps,
+                    key = { "downloaded_${it.version}" }
+                ) { app ->
+                    val usable = requiredVersion == null || app.version == requiredVersion
+                    ListItem(
+                        modifier = Modifier
+                            .clickable(enabled = canSelect && usable) { onSelect(app) }
+                            .enabled(usable),
+                        headlineContent = { Text(stringResource(R.string.apk_source_downloaded)) },
+                        supportingContent = { Text(app.version) },
                         colors = transparentListItemColors
                     )
                 }

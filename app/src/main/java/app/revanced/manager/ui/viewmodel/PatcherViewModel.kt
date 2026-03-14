@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import app.revanced.manager.BuildConfig
+import androidx.core.content.FileProvider
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
@@ -158,6 +159,8 @@ class PatcherViewModel(
 
     private var inputFile: File? by savedStateHandle.saveableVar()
     private val outputFile = tempDir.resolve("output.apk")
+    var preparedLogUri by mutableStateOf<Uri?>(null)
+        private set
 
     private val logs by savedStateHandle.saveable<MutableList<Pair<LogLevel, String>>> { mutableListOf() }
     private val logger = object : Logger() {
@@ -170,6 +173,8 @@ class PatcherViewModel(
             }
         }
     }
+    val logPreviewText
+        get() = logs.takeLast(30).joinToString("\n") { (level, msg) -> "[${level.name}]: $msg" }
 
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
         generateSteps(app, input.selectedApp, input.selectedPatches).toMutableStateList()
@@ -281,28 +286,44 @@ class PatcherViewModel(
     }
 
     private fun handleProgressEvent(event: ProgressEvent) = viewModelScope.launch {
+        if (event is ProgressEvent.Failed && event.stepId == null && steps.any { it.state == State.FAILED }) {
+            return@launch
+        }
+
         val stepIndex = steps.indexOfFirst {
             event.stepId?.let { id -> id == it.id }
                 ?: (it.state == State.RUNNING || it.state == State.WAITING)
         }
 
-        if (stepIndex != -1) steps[stepIndex] = steps[stepIndex].run {
-            when (event) {
-                is ProgressEvent.Started -> withState(State.RUNNING)
+        if (stepIndex != -1) {
+            val currentStep = steps[stepIndex]
+            val updatedStep = when (event) {
+                is ProgressEvent.Started -> currentStep.withState(State.RUNNING)
 
-                is ProgressEvent.Progress -> withState(
-                    message = event.message ?: message,
-                    progress = event.current?.let { event.current to event.total } ?: progress)
+                is ProgressEvent.Progress -> currentStep.withState(
+                    message = event.message ?: currentStep.message,
+                    progress = event.current?.let { event.current to event.total } ?: currentStep.progress
+                )
 
-                is ProgressEvent.Completed -> withState(State.COMPLETED, progress = null)
+                is ProgressEvent.Log -> currentStep.withState(
+                    message = appendLog(currentStep.message, formatLogLine(event.level, event.message))
+                )
 
-                is ProgressEvent.Failed -> {
-                    if (event.stepId == null && steps.any { it.state == State.FAILED }) return@launch
-                    withState(
-                        State.FAILED, message = event.error.stackTrace, progress = null
-                    )
+                is ProgressEvent.Completed -> currentStep.withState(State.COMPLETED, progress = null)
+                    .let { step ->
+                        if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
+                    }
+
+                is ProgressEvent.Failed -> currentStep.withState(
+                    State.FAILED,
+                    message = event.error.stackTrace,
+                    progress = null
+                ).let { step ->
+                    if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
                 }
             }
+
+            steps[stepIndex] = updatedStep
         }
     }
 
@@ -336,7 +357,43 @@ class PatcherViewModel(
         }
     }
 
-    fun exportLogs(context: Context) = viewModelScope.launch {
+    fun logFileName() = "revanced_patcher_${packageName}_${version}_${System.currentTimeMillis()}.txt"
+
+    fun prepareLogExport() = viewModelScope.launch {
+        val logSnapshot = logs.toList()
+        val uri = withContext(Dispatchers.IO) {
+            val content = buildLogExportText(app, logSnapshot)
+            tempDir.resolve(logFileName()).also {
+                it.writeText(content)
+            }.let {
+                FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", it)
+            }
+        }
+
+        preparedLogUri = uri
+    }
+
+    fun saveLogs(target: Uri?) = viewModelScope.launch {
+        val logSnapshot = logs.toList()
+        target?.let {
+            withContext(Dispatchers.IO) {
+                val content = buildLogExportText(app, logSnapshot)
+                app.contentResolver.openOutputStream(it)?.bufferedWriter().use { writer ->
+                    writer?.write(content)
+                }
+            }
+            app.toast(app.getString(R.string.save_logs_success))
+        }
+    }
+
+    fun clearPreparedLogExport() {
+        preparedLogUri = null
+    }
+
+    private suspend fun buildLogExportText(
+        context: Context,
+        logSnapshot: List<Pair<LogLevel, String>>
+    ): String {
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
         val memInfo = ActivityManager.MemoryInfo().also {
@@ -428,19 +485,14 @@ class PatcherViewModel(
             add("Model: ${Build.MODEL}")
         }.joinToString("\n")
 
-        val logsContent =
-            logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
-
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "text/plain"
-            putExtra(
-                Intent.EXTRA_TEXT, "$details\n\n$logsContent"
-            )
-            type = "text/plain"
+        val logsContent = logSnapshot.joinToString("\n") { (level, msg) ->
+            formatLogLine(level, msg)
         }
 
-        context.startActivity(Intent.createChooser(sendIntent, null))
+        return buildList {
+            add(details)
+            if (logsContent.isNotBlank()) add(logsContent)
+        }.joinToString("\n\n")
     }
 
     fun open() = installedPackageName?.let(pm::launch)
@@ -640,7 +692,6 @@ class PatcherViewModel(
             }
         }
 
-
         inline fun <T> MutableList<String>.addPreferenceChange(
             label: String,
             value: T,
@@ -677,6 +728,18 @@ class PatcherViewModel(
             }
         }
 
+        fun formatLogLine(level: LogLevel, message: String) = when (level) {
+            LogLevel.INFO -> message
+            LogLevel.WARN -> "Warning: $message"
+            LogLevel.ERROR -> "Error: $message"
+            LogLevel.TRACE -> "Debug: $message"
+        }
+
+        fun appendLog(current: String?, line: String): String =
+            current?.takeIf { it.isNotBlank() }
+                ?.let { "$it\n$line" }
+                ?: line
+
         fun generateSteps(
             context: Context, selectedApp: SelectedApp, selectedPatches: PatchSelection
         ): List<Step> = buildList {
@@ -706,15 +769,17 @@ class PatcherViewModel(
                 Step(
                     StepId.ExecutePatches,
                     context.getString(R.string.execute_patches),
-                    StepCategory.PATCHING,
-                    hide = true
+                    StepCategory.PATCHING
                 )
             )
 
-            selectedPatches.values.asSequence().flatten().sorted().forEachIndexed { index, name ->
+            selectedPatches.values.asSequence().flatten().forEachIndexed { index, name ->
                 add(
                     Step(
-                        StepId.ExecutePatch(index), name, StepCategory.PATCHING
+                        StepId.ExecutePatch(index),
+                        name,
+                        StepCategory.PATCHING,
+                        hide = true
                     )
                 )
             }

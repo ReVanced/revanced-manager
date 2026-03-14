@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.component.haptics
 
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
@@ -22,7 +22,7 @@ fun HapticTriStateCheckbox(
 ) {
     TriStateCheckbox(
         state = state,
-        onClick = onClick?.withHapticFeedback(HapticFeedbackConstants.CLOCK_TICK),
+        onClick = onClick?.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK),
         modifier = modifier,
         enabled = enabled,
         colors = colors,

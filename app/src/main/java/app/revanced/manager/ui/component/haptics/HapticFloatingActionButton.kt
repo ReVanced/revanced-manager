@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.component.haptics
 
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -25,7 +25,7 @@ fun HapticFloatingActionButton (
     content: @Composable () -> Unit,
 ) {
     FloatingActionButton(
-        onClick = onClick.withHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY),
+        onClick = onClick.withHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY),
         modifier = modifier,
         shape = shape,
         containerColor = containerColor,
