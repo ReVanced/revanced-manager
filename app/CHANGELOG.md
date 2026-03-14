@@ -1,3 +1,10 @@
+# app [1.26.0-dev.38](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.37...v1.26.0-dev.38) (2026-03-14)
+
+
+### Features
+
+* Downloader source system ([#3007](https://github.com/ReVanced/revanced-manager/issues/3007)) ([3e0967e](https://github.com/ReVanced/revanced-manager/commit/3e0967e7c2a1e23af7e3f23eed01b3cb4180b27a))
+
 # app [1.26.0-dev.37](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.36...v1.26.0-dev.37) (2026-03-14)
 
 
