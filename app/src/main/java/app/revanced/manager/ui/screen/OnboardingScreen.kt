@@ -140,20 +140,6 @@ fun OnboardingScreen(
             )
         )
 
-        /*
-        OnboardingStep.Sources -> Triple(
-            stringResource(R.string.onboarding_sources_subtitle),
-            stringResource(R.string.onboarding_sources_description),
-            StepButtons(
-                primaryAction = { vm.advance() },
-                primaryEnabled = vm.apiDownloaderState == ApiDownloaderState.UP_TO_DATE,
-                secondaryAction = if (vm.apiDownloaderState != ApiDownloaderState.UP_TO_DATE) {
-                    { vm.advance() }
-                } else null
-            )
-        )
-        */
-
         OnboardingStep.Apps -> Triple(
             stringResource(R.string.select_app),
             stringResource(R.string.onboarding_apps_subtitle),

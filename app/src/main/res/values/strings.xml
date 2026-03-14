@@ -264,8 +264,8 @@ You will not be able to update the previously installed apps from this source.</
     <string name="install_revanced_downloader">Install ReVanced Downloaders</string>
     <string name="cancel_downloader_install_title">Cancel downloaders install?</string>
     <string name="cancel_downloader_install_description">A downloaders install is in progress. If you leave now, the download will be cancelled.</string>
-    <string name="downloader_sources_unavailable_title">These downloaders are disabled</string>
-    <string name="downloader_sources_unavailable_description">Enable these downloaders to load and show available downloaders.</string>
+    <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
+    <string name="downloader_sources_unavailable_description">Click on the update button to fix it.</string>
 
     <string name="downloader_update_failed">Failed to update downloader: %s</string>
     <string name="downloader_replace_fail">Failed to import downloader: %s</string>

@@ -55,6 +55,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,14 +66,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.lerp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -92,11 +90,11 @@ import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
-import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.collections.emptyList
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -216,77 +214,6 @@ fun DashboardScreen(
             newVersion = availableUpdate!!
         )
     }
-
-    /*
-    val downloaderUpdate = vm.availableDownloaderUpdate
-    val downloaderUpdateState = vm.downloaderUpdateState
-    if (downloaderUpdate != null || downloaderUpdateState == DownloaderUpdateState.DOWNLOADING || downloaderUpdateState == DownloaderUpdateState.INSTALLING) {
-        AlertDialogExtended(
-            onDismissRequest = {
-                if (downloaderUpdateState != DownloaderUpdateState.DOWNLOADING && downloaderUpdateState != DownloaderUpdateState.INSTALLING) {
-                    vm.dismissDownloaderUpdate()
-                }
-            },
-            confirmButton = {
-                when (downloaderUpdateState) {
-                    DownloaderUpdateState.IDLE -> {
-                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate, shapes = ButtonDefaults.shapes()) {
-                            Text(stringResource(R.string.update))
-                        }
-                    }
-                    DownloaderUpdateState.FAILED -> {
-                        TextButton(onClick = vm::downloadAndInstallDownloaderUpdate, shapes = ButtonDefaults.shapes()) {
-                            Text(stringResource(R.string.retry))
-                        }
-                    }
-                    else -> {}
-                }
-            },
-            dismissButton = {
-                if (downloaderUpdateState != DownloaderUpdateState.DOWNLOADING && downloaderUpdateState != DownloaderUpdateState.INSTALLING) {
-                    TextButton(onClick = vm::dismissDownloaderUpdate, shapes = ButtonDefaults.shapes()) {
-                        Text(stringResource(R.string.dismiss))
-                    }
-                }
-            },
-            icon = {
-                Icon(imageVector = Icons.Outlined.Download, contentDescription = null)
-            },
-            title = {
-                Text(stringResource(R.string.downloader_update_available))
-            },
-            text = {
-                Column {
-                    Text(
-                        stringResource(
-                            R.string.downloader_update_available_description,
-                            downloaderUpdate?.version.orEmpty()
-                        )
-                    )
-                    if (downloaderUpdateState == DownloaderUpdateState.DOWNLOADING) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        LinearWavyProgressIndicator(
-                            progress = { vm.downloaderUpdateProgress },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    if (downloaderUpdateState == DownloaderUpdateState.INSTALLING) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(stringResource(R.string.api_downloader_installing))
-                    }
-                    if (downloaderUpdateState == DownloaderUpdateState.FAILED) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            stringResource(R.string.api_downloader_failed),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                }
-            }
-        )
-    }*/
 
     var pendingAppSelectorLaunch by rememberSaveable { mutableStateOf(false) }
     var pendingPatchablePackage by rememberSaveable { mutableStateOf<String?>(null) }
@@ -641,39 +568,6 @@ private fun DashboardFab(
                     Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun FabTextCrossfade(progress: Float) {
-    val texts = listOf(
-        stringResource(R.string.fab_patch_app),
-        stringResource(R.string.fab_add_patches)
-    )
-
-    Layout(
-        content = {
-            texts.forEachIndexed { index, text ->
-                val textProgress = if (index == 0) 1f - progress else progress
-                val direction = if (index == 0) 1f else -1f
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.graphicsLayer {
-                        alpha = textProgress
-                        translationX = (1f - textProgress) * direction * -50f
-                    }
-                )
-            }
-        }
-    ) { measurables, constraints ->
-        val placeables = measurables.map { it.measure(constraints) }
-        val width = lerp(placeables[0].width.toFloat(), placeables[1].width.toFloat(), progress).toInt()
-        val height = placeables.maxOf { it.height }
-
-        layout(width, height) {
-            placeables.forEach { it.placeRelative(0, 0) }
         }
     }
 }
