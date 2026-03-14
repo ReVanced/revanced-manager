@@ -454,6 +454,9 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
+    <string name="save_as_file">Save to files</string>
+    <string name="export_patcher_logs">Export patcher logs</string>
+    <string name="save_logs_success">Logs saved</string>
     <string name="downloader_activity_dialog_body">User interaction is required in order to proceed with this downloader.</string>
     <string name="select_install_type">Select installation type</string>
 

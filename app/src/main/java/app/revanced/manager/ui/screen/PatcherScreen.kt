@@ -51,6 +51,7 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.ShareSheet
 import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
@@ -74,8 +75,13 @@ fun PatcherScreen(
 
     val context = LocalContext.current
     val resources = LocalResources.current
-    val exportApkLauncher =
-        rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
+    var showLogExportSheet by rememberSaveable { mutableStateOf(false) }
+    val exportApkLauncher = rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
+    val saveLogsLauncher = rememberLauncherForActivityResult(CreateDocument("text/plain")) { uri ->
+            viewModel.saveLogs(uri)
+            showLogExportSheet = false
+            viewModel.clearPreparedLogExport()
+        }
 
     val patcherSucceeded by viewModel.patcherSucceeded.observeAsState(null)
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (viewModel.installedPackageName != null || !viewModel.isInstalling) } }
@@ -119,6 +125,21 @@ fun PatcherScreen(
             title = stringResource(R.string.patcher_stop_confirm_title),
             description = stringResource(R.string.patcher_stop_confirm_description),
             icon = Icons.Outlined.Cancel
+        )
+    }
+
+    if (showLogExportSheet) {
+        ShareSheet(
+            onDismissRequest = {
+                showLogExportSheet = false
+                viewModel.clearPreparedLogExport()
+            },
+            title = stringResource(R.string.export_patcher_logs),
+            preview = viewModel.logPreviewText,
+            shareUri = viewModel.preparedLogUri,
+            onSaveToFilesClick = {
+                saveLogsLauncher.launch(viewModel.logFileName())
+            }
         )
     }
 
@@ -179,7 +200,10 @@ fun PatcherScreen(
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
                     IconButton(
-                        onClick = { viewModel.exportLogs(context) },
+                        onClick = {
+                            viewModel.prepareLogExport()
+                            showLogExportSheet = true
+                        },
                         enabled = patcherSucceeded != null,
                         shapes = IconButtonDefaults.shapes(),
                     ) {

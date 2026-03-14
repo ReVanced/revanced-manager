@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.core.content.FileProvider
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
@@ -148,6 +149,8 @@ class PatcherViewModel(
 
     private var inputFile: File? by savedStateHandle.saveableVar()
     private val outputFile = tempDir.resolve("output.apk")
+    var preparedLogUri by mutableStateOf<Uri?>(null)
+        private set
 
     private val logs by savedStateHandle.saveable<MutableList<Pair<LogLevel, String>>> { mutableListOf() }
     private val logger = object : Logger() {
@@ -160,6 +163,8 @@ class PatcherViewModel(
             }
         }
     }
+    val logPreviewText
+        get() = logs.takeLast(30).joinToString("\n") { (level, msg) -> "[${level.name}]: $msg" }
 
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
         generateSteps(app, input.selectedSource, input.selectedPatches).toMutableStateList()
@@ -331,18 +336,33 @@ class PatcherViewModel(
         }
     }
 
-    fun exportLogs(context: Context) {
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(
-                Intent.EXTRA_TEXT,
-                logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
-            )
-            type = "text/plain"
+    fun logFileName() = "revanced_patcher_${packageName}_${version}_${System.currentTimeMillis()}.txt"
+
+    fun prepareLogExport() = viewModelScope.launch {
+        val uri = withContext(Dispatchers.IO) {
+            tempDir.resolve(logFileName()).also {
+                it.writeText(logs.joinToString("\n") { (level, msg) -> "[${level.name}]: $msg" })
+            }.let {
+                FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", it)
+            }
         }
 
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        context.startActivity(shareIntent)
+        preparedLogUri = uri
+    }
+
+    fun saveLogs(target: Uri?) = viewModelScope.launch {
+        target?.let {
+            withContext(Dispatchers.IO) {
+                app.contentResolver.openOutputStream(it)?.bufferedWriter().use { writer ->
+                    writer?.write(logs.joinToString("\n") { (level, msg) -> "[${level.name}]: $msg" })
+                }
+            }
+            app.toast(app.getString(R.string.save_logs_success))
+        }
+    }
+
+    fun clearPreparedLogExport() {
+        preparedLogUri = null
     }
 
     fun open() = installedPackageName?.let(pm::launch)
