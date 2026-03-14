@@ -47,7 +47,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            // Proguard optimisation is disabled by -dontoptimize in the file
+            // Note: There are actually no optimisation since we disable it in proguard, AGP does not allow you to remove -optimize from this for some reason.
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

@@ -184,6 +184,7 @@ android {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
+                // Note: There are actually no optimisation since we disable it in proguard, AGP does not allow you to remove -optimize from this for some reason.
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
