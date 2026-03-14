@@ -25,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -62,7 +63,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AnnouncementsScreen(
     onBackClick: () -> Unit,
@@ -93,7 +94,7 @@ fun AnnouncementsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (tags != null) {
-                        IconButton(onClick = { showFilterSheet = true }) {
+                        IconButton(onClick = { showFilterSheet = true }, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 imageVector = Icons.Filled.FilterAlt,
                                 contentDescription = stringResource(R.string.announcements_filter_tag)

@@ -14,8 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -47,6 +49,7 @@ import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun InstalledAppsScreen(
     onAppClick: (InstalledApp) -> Unit,
@@ -215,7 +218,7 @@ fun InstalledAppsScreen(
                     title = stringResource(R.string.patchable_apps_section_title),
                     modifier = Modifier.weight(1f)
                 )
-                IconButton(onClick = { search = true }) {
+                IconButton(onClick = { search = true }, shapes = IconButtonDefaults.shapes()) {
                     Icon(Icons.Outlined.Search, stringResource(R.string.search))
                 }
             }
