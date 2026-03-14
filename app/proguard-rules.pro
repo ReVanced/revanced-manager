@@ -1,4 +1,5 @@
 -dontobfuscate
+-dontoptimize
 -keepattributes *
 
 -keep class app.revanced.manager.patcher.runtime.process.* { *; }

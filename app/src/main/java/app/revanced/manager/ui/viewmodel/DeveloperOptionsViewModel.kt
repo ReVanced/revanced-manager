@@ -7,6 +7,7 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 
@@ -23,5 +24,10 @@ class DeveloperOptionsViewModel(
 
     fun resetBundles() = viewModelScope.launch {
         patchBundleRepository.reset()
+    }
+
+    fun resetOnboarding() = viewModelScope.launch {
+        prefs.completedOnboarding.update(false)
+        app.toast(app.getString(R.string.reset_onboarding_description))
     }
 }

@@ -41,11 +41,20 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:configChanges="layoutDirection|locale"
             android:theme="@style/Theme.ReVancedManager">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="${deepLinkScheme}" />
             </intent-filter>
         </activity>
 
@@ -81,6 +90,16 @@
             <meta-data
                 android:name="ru.solrudev.ackpine.AckpineInitializer"
                 tools:node="remove" />
+        </provider>
+
+        <provider
+            android:name=".ManagerFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
         </provider>
     </application>
 </manifest>

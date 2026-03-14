@@ -1,13 +1,11 @@
 package app.revanced.manager.network.dto
 
 import android.os.Parcelable
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.time.Clock
 
 @Parcelize
 @Serializable
@@ -18,10 +16,10 @@ data class ReVancedAnnouncement(
     val content: String,
     val tags: List<String>,
     @SerialName("created_at")
-    val createdAt: LocalDateTime,
+    val createdAt: Instant,
     @SerialName("archived_at")
-    val archivedAt: LocalDateTime?,
+    val archivedAt: Instant?,
     val level: Int,
 ) : Parcelable {
-    val isArchived get() = archivedAt?.toInstant(TimeZone.UTC)?.let { it < Clock.System.now() } ?: false
+    val isArchived get() = archivedAt?.let { it < Clock.System.now() } ?: false
 }

@@ -45,7 +45,6 @@ class PatcherProcess() : IPatcherProcess.Stub() {
             exitProcess(1)
         })
 
-    override fun buildId() = BuildConfig.BUILD_ID
     override fun exit() = exitProcess(0)
 
     override fun start(parameters: Parameters, events: IPatcherEvents) {

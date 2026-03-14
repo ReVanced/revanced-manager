@@ -75,7 +75,7 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            if (!prefs.firstLaunch.get()) return@launch
+            if (prefs.completedOnboarding.get()) return@launch
             val flutterPrefs = app.getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
             if (flutterPrefs.all.isNotEmpty()) applyLegacySettings(flutterPrefs)
         }

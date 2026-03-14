@@ -30,10 +30,16 @@ kotlin {
 
 android {
     namespace = "app.revanced.manager.downloader"
-    compileSdk = 36
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
-        minSdk = 26
+        minSdk {
+            version = release(26)
+        }
 
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -41,6 +47,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            // Proguard optimisation is disabled by -dontoptimize in the file
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
