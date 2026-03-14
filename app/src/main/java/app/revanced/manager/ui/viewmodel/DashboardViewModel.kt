@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
@@ -23,21 +24,17 @@ import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
-import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
-    private val downloaderRepository: DownloaderRepository,
     private val announcementRepository: AnnouncementRepository,
     private val managerUpdateRepository: ManagerUpdateRepository,
     private val networkInfo: NetworkInfo,
@@ -50,8 +47,6 @@ class DashboardViewModel(
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
-    val newDownloadersAvailable =
-        downloaderRepository.newDownloaderPackageNames.map { it.isNotEmpty() }
     val availableManagerUpdate = managerUpdateRepository.availableVersion
 
     /**
@@ -68,15 +63,6 @@ class DashboardViewModel(
     var unreadAnnouncement by mutableStateOf<ReVancedAnnouncement?>(null)
         private set
 
-    var availableDownloaderUpdate by mutableStateOf<ReVancedAsset?>(null)
-        private set
-
-    var downloaderUpdateState by mutableStateOf(DownloaderUpdateState.IDLE)
-        private set
-
-    var downloaderUpdateProgress by mutableStateOf(0f)
-        private set
-
     private val bundleListEventsChannel = Channel<BundleListViewModel.Event>()
     val bundleListEventsFlow = bundleListEventsChannel.receiveAsFlow()
 
@@ -84,13 +70,8 @@ class DashboardViewModel(
         viewModelScope.launch {
             checkForManagerUpdates()
             checkForAnnouncements()
-            checkForDownloaderUpdate()
             updateBatteryOptimizationsWarning()
         }
-    }
-
-    fun ignoreNewDownloaders() = viewModelScope.launch {
-        downloaderRepository.acknowledgeAll()
     }
 
     private suspend fun checkForManagerUpdates() {
@@ -131,58 +112,6 @@ class DashboardViewModel(
         }
     }
 
-    private suspend fun checkForDownloaderUpdate() {
-        if (!prefs.downloaderAutoUpdates.get() || !networkInfo.isConnected()) return
-        if (downloaderRepository.getInstalledApiDownloader() == null) return
-
-        uiSafe(app, R.string.failed_to_check_updates, "Failed to check for downloader updates") {
-            val asset = downloaderRepository.checkApiDownloaderUpdate()
-            if (asset != null) {
-                availableDownloaderUpdate = asset
-            }
-        }
-    }
-
-    fun dismissDownloaderUpdate() {
-        availableDownloaderUpdate = null
-        downloaderUpdateState = DownloaderUpdateState.IDLE
-    }
-
-    fun downloadAndInstallDownloaderUpdate() {
-        val asset = availableDownloaderUpdate ?: return
-        viewModelScope.launch {
-            downloaderUpdateState = DownloaderUpdateState.DOWNLOADING
-            downloaderUpdateProgress = 0f
-
-            when (
-                downloaderRepository.installApiDownloaderAsset(
-                    asset = asset,
-                    onProgress = { downloaded, total ->
-                        downloaderUpdateProgress = if (total != null && total > 0) {
-                            downloaded.toFloat() / total.toFloat()
-                        } else 0f
-                    },
-                    onInstalling = { installing ->
-                        if (installing) downloaderUpdateState = DownloaderUpdateState.INSTALLING
-                    }
-                )
-            ) {
-                is DownloaderRepository.ApiDownloaderActionResult.Success -> {
-                    downloaderUpdateState = DownloaderUpdateState.INSTALLED
-                    availableDownloaderUpdate = null
-                }
-
-                DownloaderRepository.ApiDownloaderActionResult.Aborted -> {
-                    downloaderUpdateState = DownloaderUpdateState.IDLE
-                }
-
-                else -> {
-                    downloaderUpdateState = DownloaderUpdateState.FAILED
-                }
-            }
-        }
-    }
-
     fun updateBatteryOptimizationsWarning() {
         showBatteryOptimizationsWarning =
             !powerManager.isIgnoringBatteryOptimizations(app.packageName)
@@ -215,12 +144,4 @@ class DashboardViewModel(
     fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
         patchBundleRepository.createRemote(apiUrl, autoUpdate)
     }
-}
-
-enum class DownloaderUpdateState {
-    IDLE,
-    DOWNLOADING,
-    INSTALLING,
-    INSTALLED,
-    FAILED
 }

@@ -28,46 +28,74 @@ import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.util.BIN_MIMETYPE
 import app.revanced.manager.util.transparentListItemColors
 
-private enum class BundleType {
+private enum class SourceType {
     Local,
     Remote
 }
 
+enum class ImportSourceDialogStrings(
+    val title: Int,
+    val type_description: Int,
+    val type_remote_description: Int,
+    val type_local_description: Int,
+    val import_local: Int,
+    val import_remote: Int
+) {
+    PATCHES(
+        R.string.add_patches,
+        R.string.select_patches_type_dialog_description,
+        R.string.remote_patches_description,
+        R.string.local_patches_description,
+        R.string.patches,
+        R.string.patches_url
+    ),
+    DOWNLOADERS(
+        R.string.downloader_add,
+        R.string.select_downloader_type_dialog_description,
+        R.string.remote_downloaders_description,
+        R.string.local_downloaders_description,
+        R.string.downloaders,
+        R.string.downloader_url
+    ),
+}
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun ImportPatchBundleDialog(
+fun ImportSourceDialog(
+    strings: ImportSourceDialogStrings,
     onDismiss: () -> Unit,
     onRemoteSubmit: (String, Boolean) -> Unit,
     onLocalSubmit: (Uri) -> Unit
 ) {
     var currentStep by rememberSaveable { mutableIntStateOf(0) }
-    var bundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
-    var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
+    var sourceType by rememberSaveable { mutableStateOf(SourceType.Remote) }
+    var local by rememberSaveable { mutableStateOf<Uri?>(null) }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(true) }
 
-    val patchActivityLauncher =
+    val fileActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { patchBundle = it }
+            uri?.let { local = it }
         }
 
-    fun launchPatchActivity() {
-        patchActivityLauncher.launch(BIN_MIMETYPE)
+    fun launchFileActivity() {
+        fileActivityLauncher.launch(BIN_MIMETYPE)
     }
 
     val steps = listOf<@Composable () -> Unit>(
         {
-            SelectBundleTypeStep(bundleType) { selectedType ->
-                bundleType = selectedType
+            SelectSourceTypeStep(strings, sourceType) { selectedType ->
+                sourceType = selectedType
             }
         },
         {
-            ImportBundleStep(
-                bundleType,
-                patchBundle,
+            ImportSourceStep(
+                strings,
+                sourceType,
+                local,
                 remoteUrl,
                 autoUpdate,
-                { launchPatchActivity() },
+                ::launchFileActivity,
                 { remoteUrl = it },
                 { autoUpdate = it }
             )
@@ -76,15 +104,15 @@ fun ImportPatchBundleDialog(
 
     val inputsAreValid by remember {
         derivedStateOf {
-            (bundleType == BundleType.Local && patchBundle != null) ||
-                    (bundleType == BundleType.Remote && remoteUrl.isNotEmpty())
+            (sourceType == SourceType.Local && local != null) ||
+                    (sourceType == SourceType.Remote && remoteUrl.isNotEmpty())
         }
     }
 
     AlertDialogExtended(
         onDismissRequest = onDismiss,
         title = {
-            Text(stringResource(if (currentStep == 0) R.string.select else R.string.add_patches))
+            Text(stringResource(if (currentStep == 0) R.string.select else strings.title))
         },
         text = {
             steps[currentStep]()
@@ -94,9 +122,9 @@ fun ImportPatchBundleDialog(
                 TextButton(
                     enabled = inputsAreValid,
                     onClick = {
-                        when (bundleType) {
-                            BundleType.Local -> patchBundle?.let(onLocalSubmit)
-                            BundleType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
+                        when (sourceType) {
+                            SourceType.Local -> local?.let(onLocalSubmit)
+                            SourceType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
                         }
                     },
                     shapes = ButtonDefaults.shapes()
@@ -125,9 +153,10 @@ fun ImportPatchBundleDialog(
 }
 
 @Composable
-private fun SelectBundleTypeStep(
-    bundleType: BundleType,
-    onBundleTypeSelected: (BundleType) -> Unit
+private fun SelectSourceTypeStep(
+    strings: ImportSourceDialogStrings,
+    sourceType: SourceType,
+    onSourceTypeSelected: (SourceType) -> Unit
 ) {
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState()),
@@ -135,20 +164,20 @@ private fun SelectBundleTypeStep(
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 24.dp),
-            text = stringResource(R.string.select_patches_type_dialog_description)
+            text = stringResource(strings.type_description)
         )
         Column {
             ListItem(
                 modifier = Modifier.clickable(
                     role = Role.RadioButton,
-                    onClick = { onBundleTypeSelected(BundleType.Remote) }
+                    onClick = { onSourceTypeSelected(SourceType.Remote) }
                 ),
                 headlineContent = { Text(stringResource(R.string.enter_url)) },
                 overlineContent = { Text(stringResource(R.string.recommended)) },
-                supportingContent = { Text(stringResource(R.string.remote_patches_description)) },
+                supportingContent = { Text(stringResource(strings.type_remote_description)) },
                 leadingContent = {
                     HapticRadioButton(
-                        selected = bundleType == BundleType.Remote,
+                        selected = sourceType == SourceType.Remote,
                         onClick = null
                     )
                 },
@@ -158,14 +187,14 @@ private fun SelectBundleTypeStep(
             ListItem(
                 modifier = Modifier.clickable(
                     role = Role.RadioButton,
-                    onClick = { onBundleTypeSelected(BundleType.Local) }
+                    onClick = { onSourceTypeSelected(SourceType.Local) }
                 ),
                 headlineContent = { Text(stringResource(R.string.select_from_storage)) },
-                supportingContent = { Text(stringResource(R.string.local_patches_description)) },
+                supportingContent = { Text(stringResource(strings.type_local_description)) },
                 overlineContent = { },
                 leadingContent = {
                     HapticRadioButton(
-                        selected = bundleType == BundleType.Local,
+                        selected = sourceType == SourceType.Local,
                         onClick = null
                     )
                 },
@@ -177,45 +206,49 @@ private fun SelectBundleTypeStep(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun ImportBundleStep(
-    bundleType: BundleType,
-    patchBundle: Uri?,
+private fun ImportSourceStep(
+    strings: ImportSourceDialogStrings,
+    sourceType: SourceType,
+    local: Uri?,
     remoteUrl: String,
     autoUpdate: Boolean,
-    launchPatchActivity: () -> Unit,
+    launchFileActivity: () -> Unit,
     onRemoteUrlChange: (String) -> Unit,
     onAutoUpdateChange: (Boolean) -> Unit
 ) {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        when (bundleType) {
-            BundleType.Local -> {
+        when (sourceType) {
+            SourceType.Local -> {
                 Column(
                     modifier = Modifier.padding(horizontal = 8.dp)
                 ) {
                     ListItem(
                         headlineContent = {
-                            Text(stringResource(R.string.patches))
+                            Text(stringResource(strings.import_local))
                         },
-                        supportingContent = { Text(stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set)) },
+                        supportingContent = { Text(stringResource(if (local != null) R.string.file_field_set else R.string.file_field_not_set)) },
                         trailingContent = {
-                            IconButton(onClick = launchPatchActivity, shapes = IconButtonDefaults.shapes()) {
+                            IconButton(
+                                onClick = launchFileActivity,
+                                shapes = IconButtonDefaults.shapes()
+                            ) {
                                 Icon(imageVector = Icons.Default.Topic, contentDescription = null)
                             }
                         },
-                        modifier = Modifier.clickable { launchPatchActivity() },
+                        modifier = Modifier.clickable { launchFileActivity() },
                         colors = transparentListItemColors
                     )
                 }
             }
 
-            BundleType.Remote -> {
+            SourceType.Remote -> {
                 Column(
                     modifier = Modifier.padding(TextHorizontalPadding)
                 ) {
                     OutlinedTextField(
                         value = remoteUrl,
                         onValueChange = onRemoteUrlChange,
-                        label = { Text(stringResource(R.string.patches_url)) }
+                        label = { Text(stringResource(strings.import_remote)) }
                     )
                 }
                 Column(

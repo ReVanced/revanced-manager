@@ -63,9 +63,7 @@ import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
 import app.revanced.manager.ui.screen.onboarding.AppsStepContent
 import app.revanced.manager.ui.screen.onboarding.PermissionsStepContent
-import app.revanced.manager.ui.screen.onboarding.SourcesStepContent
 import app.revanced.manager.ui.screen.onboarding.UpdatesStepContent
-import app.revanced.manager.ui.viewmodel.ApiDownloaderState
 import app.revanced.manager.ui.viewmodel.OnboardingStep
 import app.revanced.manager.ui.viewmodel.OnboardingViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
@@ -84,13 +82,12 @@ fun OnboardingScreen(
     val context = LocalContext.current
     val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
-    val apiDownloaderLabel by vm.apiDownloaderLabel.collectAsStateWithLifecycle()
-    val apiDownloaderSignature by vm.apiDownloaderSignature.collectAsStateWithLifecycle()
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
     var managerUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var patchesUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
+    var downloaderUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var showSkipPermissionsDialog by remember { mutableStateOf(false) }
 
     val installAppsLauncher = rememberLauncherForActivityResult(RequestInstallAppsContract) {
@@ -134,23 +131,12 @@ fun OnboardingScreen(
                     scope.launch {
                         vm.applyAutoUpdatePrefs(
                             managerEnabled = managerUpdatesEnabled,
-                            patchesEnabled = patchesUpdatesEnabled
+                            patchesEnabled = patchesUpdatesEnabled,
+                            downloadersEnabled = downloaderUpdatesEnabled,
                         )
                     }
                     vm.advance()
                 },
-            )
-        )
-
-        OnboardingStep.Sources -> Triple(
-            stringResource(R.string.onboarding_sources_subtitle),
-            stringResource(R.string.onboarding_sources_description),
-            StepButtons(
-                primaryAction = { vm.advance() },
-                primaryEnabled = vm.apiDownloaderState == ApiDownloaderState.UP_TO_DATE,
-                secondaryAction = if (vm.apiDownloaderState != ApiDownloaderState.UP_TO_DATE) {
-                    { vm.advance() }
-                } else null
             )
         )
 
@@ -215,25 +201,11 @@ fun OnboardingScreen(
                     OnboardingStep.Updates -> UpdatesStepContent(
                         managerEnabled = managerUpdatesEnabled,
                         patchesEnabled = patchesUpdatesEnabled,
+                        downloadersEnabled = downloaderUpdatesEnabled,
                         onManagerEnabledChange = { managerUpdatesEnabled = it },
-                        onPatchesEnabledChange = { patchesUpdatesEnabled = it }
+                        onPatchesEnabledChange = { patchesUpdatesEnabled = it },
+                        onDownloadersEnabledChange = { downloaderUpdatesEnabled = it },
                     )
-
-                    OnboardingStep.Sources -> {
-                        SourcesStepContent(
-                        apiDownloaderState = vm.apiDownloaderState,
-                        apiDownloaderProgress = vm.apiDownloaderProgress,
-                        apiDownloaderIsUpdate = vm.apiDownloaderIsUpdate,
-                        apiDownloaderIsTrusted = vm.apiDownloaderIsTrusted,
-                        apiDownloaderName = apiDownloaderLabel,
-                        apiDownloaderSignature = apiDownloaderSignature,
-                        onInstallApiDownloader = vm::startApiDownloaderInstall,
-                        onRetryApiDownloader = vm::retryApiDownloaderDownload,
-                        onTrustApiDownloader = {
-                            vm.apiDownloaderPackageName.value?.let { vm.trustDownloader(it) }
-                        }
-                    )
-                    }
 
                     OnboardingStep.Apps -> AppsStepContent(
                         modifier = Modifier.weight(1f),

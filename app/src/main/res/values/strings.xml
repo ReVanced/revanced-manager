@@ -126,10 +126,12 @@ Second \"item\" text"</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
+
     <string name="auto_updates_dialog_title">Configure updates</string>
     <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
     <string name="auto_updates_dialog_manager">ReVanced Manager</string>
     <string name="auto_updates_dialog_patches">ReVanced Patches</string>
+    <string name="auto_updates_dialog_downloaders">ReVanced Manager: Downloaders</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="announcements_filter_tag">Filter by tag</string>
@@ -243,28 +245,30 @@ You will not be able to update the previously installed apps from this source.</
     <string name="patch_options_reset_all_dialog_description">You are about to reset all patch options. You will have to reapply each option again.</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="downloaders">Downloaders</string>
-    <string name="downloader_state_trusted">Trusted</string>
-    <string name="downloader_state_enabled">Enabled</string>
+    <string name="downloader_prereleases">Use pre-releases</string>
+    <string name="downloader_prereleases_description">Use pre-release versions of the main downloader</string>
+    <string name="downloader_state_loaded">Loaded</string>
     <string name="downloader_state_failed">Failed to load. Click for more details</string>
-    <string name="downloader_state_untrusted">Untrusted</string>
-    <string name="downloader_state_disabled">Disabled</string>
-    <string name="downloader_state_untrusted_tap_to_trust">Untrusted, tap to trust</string>
-    <string name="downloader_trust_dialog_title">Trust downloaders?</string>
-    <string name="downloader_revoke_trust_dialog_title">Revoke trust?</string>
-    <string name="downloader_trust_dialog_body">Trusting will allow these downloaders to run.\n\nOnly enable these downloaders if you trust them. Downloaders can make ReVanced Manager execute arbitrary code.</string>
-    <string name="downloader_trust_dialog_signature">Signature:</string>
-    <string name="downloader_trust_dialog_name">Downloader:\n%s</string>
+    <string name="downloader_state_missing">Missing</string>
     <string name="downloader_delete_apps_title">Delete selected apps</string>
     <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
     <string name="downloader_delete_single_description">Are you sure you want to delete \"%s\"?</string>
     <string name="downloader_settings_no_apps">No downloaded apps found.</string>
     <string name="downloader_settings_no_apps_description">Apps downloaded through ReVanced Manager will appear here.</string>
+    <string name="downloader_url">Downloader URL</string>
+    <string name="downloader_add">Add Downloader</string>
+    <string name="select_downloader_type_dialog_description">Add new downloaders from URL or local files</string>
+    <string name="local_downloaders_description">Add downloaders from local storage.</string>
+    <string name="remote_downloaders_description">Add downloaders from URL. Can be automatically updated.</string>
     <string name="install_revanced_downloaders">Install downloaders to get apps directly within ReVanced Manager.</string>
     <string name="install_revanced_downloader">Install ReVanced Downloaders</string>
     <string name="cancel_downloader_install_title">Cancel downloaders install?</string>
     <string name="cancel_downloader_install_description">A downloaders install is in progress. If you leave now, the download will be cancelled.</string>
-    <string name="downloader_sources_unavailable_title">These downloaders are disabled</string>
-    <string name="downloader_sources_unavailable_description">Enable these downloaders to load and show available downloaders.</string>
+    <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
+    <string name="downloader_sources_unavailable_description">Click on the update button to fix it.</string>
+
+    <string name="downloader_update_failed">Failed to update downloader: %s</string>
+    <string name="downloader_replace_fail">Failed to import downloader: %s</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -613,7 +617,6 @@ Click on the patches to see more details.</string>
     <string name="failed_to_import_keystore">Failed to import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
-    <string name="action_trust">Trust</string>
     <string name="new_announcement">New announcement:\n%s</string>
 
     <plurals name="patch_count">

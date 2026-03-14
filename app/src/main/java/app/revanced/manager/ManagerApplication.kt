@@ -73,9 +73,11 @@ class ManagerApplication : Application() {
             downloaderRepository.reload()
         }
         scope.launch(Dispatchers.Default) {
-            with(patchBundleRepository) {
-                reload()
-                updateCheck()
+            arrayOf(patchBundleRepository, downloaderRepository).forEach {
+                with(it) {
+                    reload()
+                    updateCheck()
+                }
             }
         }
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {

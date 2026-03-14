@@ -31,7 +31,6 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.patcher.patch.PatchBundleInfo
@@ -85,7 +84,7 @@ class SelectedAppInfoViewModel(
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
     val downloaders = downloaderRepository.loadedDownloadersFlow
-    val allDownloaders = downloaderRepository.downloaderPackageStates
+    val allDownloaders = downloaderRepository.downloaderSources
     val packageName = input.app.packageName
 
     private val persistConfiguration = input.patches == null
@@ -220,7 +219,6 @@ class SelectedAppInfoViewModel(
     val errorFlow = combine(allDownloaders, snapshotFlow { selectedApp }) { allDownloaders, app ->
         when (app) {
             is SelectedApp.Search if allDownloaders.isEmpty() -> Error.NoDownloadersInstalled
-            is SelectedApp.Search if allDownloaders.values.all { it is DownloaderPackageState.Untrusted } -> Error.NoDownloadersTrusted
             else -> null
         }
     }
@@ -439,7 +437,6 @@ class SelectedAppInfoViewModel(
 
     enum class Error(@param:StringRes val resourceId: Int) {
         NoDownloadersInstalled(R.string.no_downloaders_installed),
-        NoDownloadersTrusted(R.string.no_downloaders_trusted),
     }
 
     private companion object {

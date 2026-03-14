@@ -1,6 +1,7 @@
 package app.revanced.manager.data.room.bundles
 
 import androidx.room.*
+import app.revanced.manager.data.room.sources.SourceProperties
 
 @Dao
 interface PatchBundleDao {
@@ -23,7 +24,7 @@ interface PatchBundleDao {
     suspend fun remove(uid: Int)
 
     @Query("SELECT name, version, auto_update, source FROM patch_bundles WHERE uid = :uid")
-    suspend fun getProps(uid: Int): PatchBundleProperties?
+    suspend fun getProps(uid: Int): SourceProperties?
 
     @Upsert
     suspend fun upsert(source: PatchBundleEntity)
