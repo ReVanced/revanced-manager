@@ -45,7 +45,7 @@ class ReVancedAPI(
 
     suspend fun getContributors() = request<List<ReVancedGitRepository>>("contributors")
 
-    suspend fun getInfo(api: String? = null) = request<ReVancedInfo>(api ?: apiUrl(), "about")
+    suspend fun getInfo() = request<ReVancedInfo>("about")
 
     private companion object {
         suspend fun Preference<Boolean>.prereleaseString() = if (get()) "/prerelease" else ""

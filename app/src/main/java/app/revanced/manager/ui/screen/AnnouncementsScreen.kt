@@ -1,6 +1,8 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.MarqueeSpacing
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,22 +12,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.outlined.FilterAlt
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material3.Badge
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -36,20 +39,27 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
-import app.revanced.manager.util.transparentListItemColors
+import app.revanced.manager.util.withHapticFeedback
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,18 +71,16 @@ fun AnnouncementsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var showFilterSheet by rememberSaveable { mutableStateOf(false) }
+    var archivedExpanded by rememberSaveable { mutableStateOf(false) }
     val tags by vm.tags.collectAsStateWithLifecycle(null)
     val selectedTags by vm.selectedTags.getAsState()
-    val showArchived by vm.showArchived.collectAsStateWithLifecycle()
-    val announcements by vm.announcements.collectAsStateWithLifecycle(emptyList())
+    val announcementSections by vm.announcementSections.collectAsStateWithLifecycle(null)
 
     if (showFilterSheet) {
         FilterBottomSheet(
             onDismissRequest = { showFilterSheet = false },
             tags = tags.orEmpty(),
             selectedTags = selectedTags,
-            showArchived = showArchived,
-            onShowArchivedChange = { vm.showArchived.value = it },
             onReset = vm::resetTagSelection,
             changeSelection = vm::changeTagSelection
         )
@@ -87,7 +95,7 @@ fun AnnouncementsScreen(
                     if (tags != null) {
                         IconButton(onClick = { showFilterSheet = true }) {
                             Icon(
-                                imageVector = Icons.Outlined.FilterAlt,
+                                imageVector = Icons.Filled.FilterAlt,
                                 contentDescription = stringResource(R.string.announcements_filter_tag)
                             )
                         }
@@ -103,11 +111,15 @@ fun AnnouncementsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
-            verticalArrangement = if (announcements.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = if (announcementSections?.isEmpty != false) {
+                Arrangement.Center
+            } else {
+                Arrangement.spacedBy(8.dp)
+            },
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            announcements?.let { announcements ->
-                if (announcements.isEmpty()) {
+            announcementSections?.let { sections ->
+                if (sections.isEmpty) {
                     item {
                         Text(
                             text = stringResource(id = R.string.no_announcements_found),
@@ -115,32 +127,60 @@ fun AnnouncementsScreen(
                         )
                     }
                 } else {
-                    itemsIndexed(
-                        items = announcements,
-                        key = { _, announcement ->
-                            announcement.id
+                    val activeAnnouncements = sections.activeAnnouncements
+                    val archivedAnnouncements = sections.archivedAnnouncements
+
+                    if (activeAnnouncements.isNotEmpty()) {
+                        item {
+                            ListSection {
+                                activeAnnouncements.forEach { announcement ->
+                                    AnnouncementListItem(
+                                        onClick = {
+                                            vm.markAnnouncementRead(announcement.id)
+                                            onAnnouncementClick(announcement)
+                                        },
+                                        title = announcement.title,
+                                        date = announcement.createdAt.toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current),
+                                        author = announcement.author,
+                                        tags = announcement.tags,
+                                        unread = announcement.id !in readAnnouncements,
+                                        archived = false
+                                    )
+                                }
+                            }
                         }
-                    ) { i, announcement ->
-                        if (i != 0) {
-                            HorizontalDivider(
-                                modifier = Modifier.fillMaxWidth()
+                    }
+
+                    if (archivedAnnouncements.isNotEmpty()) {
+                        item {
+                            ArchivedAnnouncementsHeader(
+                                expanded = archivedExpanded,
+                                onToggle = { archivedExpanded = !archivedExpanded },
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             )
                         }
+                    }
 
-                        AnnouncementCard(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            onClick = {
-                                vm.markAnnouncementRead(announcement.id)
-                                onAnnouncementClick(announcement)
-                            },
-                            title = announcement.title,
-                            date = announcement.createdAt.relativeTime(LocalContext.current),
-                            author = announcement.author,
-                            content = announcement.content,
-                            unread = announcement.id !in readAnnouncements,
-                            archived = announcement.isArchived
-                        )
+                    if (archivedAnnouncements.isNotEmpty() && archivedExpanded) {
+                        item {
+                            ListSection {
+                                archivedAnnouncements.forEach { announcement ->
+                                    AnnouncementListItem(
+                                        onClick = {
+                                            vm.markAnnouncementRead(announcement.id)
+                                            onAnnouncementClick(announcement)
+                                        },
+                                        title = announcement.title,
+                                        date = announcement.createdAt.toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current),
+                                        author = announcement.author,
+                                        tags = announcement.tags,
+                                        unread = announcement.id !in readAnnouncements,
+                                        archived = true
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             } ?: item {
@@ -155,14 +195,12 @@ fun AnnouncementsScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
     tags: Set<String>,
     selectedTags: Set<String>,
-    showArchived: Boolean,
-    onShowArchivedChange: (Boolean) -> Unit,
     onReset: () -> Unit,
     changeSelection: (String) -> Unit
 ) {
@@ -170,15 +208,19 @@ private fun FilterBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
                 text = stringResource(R.string.announcements_filter_tag),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
             FlowRow(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 tags.forEach { tag ->
@@ -186,25 +228,19 @@ private fun FilterBottomSheet(
                         selected = tag in selectedTags,
                         onClick = {
                             changeSelection(tag)
-                        },
+                        }.withHapticFeedback(HapticFeedbackConstantsCompat.CONFIRM),
                         label = { Text(tag) }
                     )
                 }
             }
 
-            ListItem(
-                modifier = Modifier.clickable(onClick = { onShowArchivedChange(!showArchived) }),
-                headlineContent = { Text(text = stringResource(R.string.announcements_show_archived)) },
-                trailingContent = {
-                    Switch(
-                        checked = showArchived,
-                        onCheckedChange = onShowArchivedChange
-                    )
-                },
-                colors = transparentListItemColors
-            )
-
-            TextButton(modifier = Modifier.align(Alignment.End), onClick = onReset) {
+            TextButton(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(horizontal = 16.dp),
+                onClick = onReset,
+                shapes = ButtonDefaults.shapes()
+            ) {
                 Text(stringResource(R.string.reset))
             }
         }
@@ -212,32 +248,66 @@ private fun FilterBottomSheet(
 }
 
 @Composable
-private fun AnnouncementCard(
-    modifier: Modifier = Modifier,
+private fun ArchivedAnnouncementsHeader(
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val rotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "archivedChevronRotation"
+    )
+    Row(
+        modifier = modifier
+            .padding(horizontal = 8.dp).clip(MaterialTheme.shapes.small).clickable(onClick = onToggle).padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.History,
+            contentDescription = null,
+            modifier = Modifier
+                .size(24.dp)
+                .padding(end = 8.dp)
+        )
+        Text(
+            text = stringResource(R.string.announcements_show_archived),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            imageVector = Icons.Default.ExpandMore,
+            contentDescription = if (expanded) stringResource(R.string.collapse_content) else stringResource(R.string.expand_content),
+            modifier = Modifier.rotate(rotation)
+        )
+    }
+}
+
+@Composable
+private fun AnnouncementListItem(
     onClick: () -> Unit,
     title: String,
     date: String,
     author: String,
-    content: String,
+    tags: List<String>,
     unread: Boolean,
     archived: Boolean
 ) {
-    Column(
-        modifier = modifier
-            .clickable(onClick = onClick)
-            .background(if (unread) MaterialTheme.colorScheme.surfaceContainerLow else MaterialTheme.colorScheme.surface)
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
+    SettingsListItem(
+        onClick = onClick,
+        headlineContent = {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = title,
+                    modifier = Modifier.basicMarquee(
+                        iterations = Int.MAX_VALUE,
+                        repeatDelayMillis = 1500,
+                        initialDelayMillis = 2500,
+                        spacing = MarqueeSpacing.fractionOfContainer(1f / 5f),
+                        velocity = 55.dp,
+                    ),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = if (unread) FontWeight.ExtraBold else null
+                    fontWeight = if (unread) FontWeight.ExtraBold else null,
+                    maxLines = 1
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -259,69 +329,49 @@ private fun AnnouncementCard(
                         Badge(modifier = Modifier.size(6.dp))
                     }
                 }
+                AnnouncementTag(
+                    tags = tags,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-            Icon(Icons.Default.ChevronRight, contentDescription = null)
+        },
+        trailingContent = {
+            Icon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = stringResource(R.string.view_announcement)
+            )
         }
-        // TODO add announcement summary
-//        val textColor = MaterialTheme.colorScheme.onSurface
-//        val linkColor = MaterialTheme.colorScheme.primary
-//        AndroidView(
-//            factory = {
-//                WebView(it).apply {
-//                    setBackgroundColor(0)
-//                    isVerticalScrollBarEnabled = false
-//                    isHorizontalScrollBarEnabled = false
-//                    isLongClickable = false
-//                    setOnLongClickListener { true }
-//                    isHapticFeedbackEnabled = false
-//
-//                    // Disable WebView's internal scrolling
-//                    @SuppressLint("ClickableViewAccessibility")
-//                    setOnTouchListener { _, event ->
-//                        event.action == MotionEvent.ACTION_MOVE
-//                    }
-//                }
-//            },
-//            update = {
-//                @Language("HTML")
-//                val body = """
-//                  <html>
-//                    <head>
-//                      <meta name="viewport" content="width=device-width, initial-scale=1" />
-//                      <style>
-//                        * {
-//                          font-size: 12px;
-//                          font-weight: normal;
-//                        }
-//                        body {
-//                          margin: 0;
-//                          padding: 0;
-//                          color: ${textColor.toCss()};
-//                          overflow: hidden;
-//                          display: -webkit-box;
-//                          -webkit-box-orient: vertical;
-//                          -webkit-line-clamp: 3;
-//                          text-overflow: ellipsis;
-//                        }
-//                        a {
-//                          color: ${linkColor.toCss()};
-//                        }
-//                      </style>
-//                    </head>
-//                    <body>
-//                      $content
-//                    </body>
-//                  </html>
-//                """.trimIndent()
-//
-//                it.loadData(body, "text/html", "UTF-8")
-//            },
-//            onReset = {},
-//            onRelease = { it.destroy() }
-//        )
-    }
+    )
 }
 
 //private fun Color.toCss(): String {
 //    return "rgba(${red * 255f}, ${green * 255f}, ${blue * 255f}, $alpha)"
 //}
+
+@Composable
+fun AnnouncementTag(
+    tags: List<String>,
+    modifier: Modifier = Modifier
+) {
+    if (tags.isEmpty()) return
+
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        tags.forEach { tag ->
+            Surface(
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                Text(
+                    text = tag,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                )
+            }
+        }
+    }
+}

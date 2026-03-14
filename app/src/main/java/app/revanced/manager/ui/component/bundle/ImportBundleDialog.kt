@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material3.*
@@ -31,6 +33,7 @@ private enum class BundleType {
     Remote
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ImportPatchBundleDialog(
     onDismiss: () -> Unit,
@@ -95,23 +98,24 @@ fun ImportPatchBundleDialog(
                             BundleType.Local -> patchBundle?.let(onLocalSubmit)
                             BundleType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.add))
                 }
             } else {
-                TextButton(onClick = { currentStep++ }) {
+                TextButton(onClick = { currentStep++ }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.next))
                 }
             }
         },
         dismissButton = {
             if (currentStep > 0) {
-                TextButton(onClick = { currentStep-- }) {
+                TextButton(onClick = { currentStep-- }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.back))
                 }
             } else {
-                TextButton(onClick = onDismiss) {
+                TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -126,6 +130,7 @@ private fun SelectBundleTypeStep(
     onBundleTypeSelected: (BundleType) -> Unit
 ) {
     Column(
+        modifier = Modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Text(
@@ -170,7 +175,7 @@ private fun SelectBundleTypeStep(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ImportBundleStep(
     bundleType: BundleType,
@@ -181,7 +186,7 @@ private fun ImportBundleStep(
     onRemoteUrlChange: (String) -> Unit,
     onAutoUpdateChange: (Boolean) -> Unit
 ) {
-    Column {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         when (bundleType) {
             BundleType.Local -> {
                 Column(
@@ -193,7 +198,7 @@ private fun ImportBundleStep(
                         },
                         supportingContent = { Text(stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set)) },
                         trailingContent = {
-                            IconButton(onClick = launchPatchActivity) {
+                            IconButton(onClick = launchPatchActivity, shapes = IconButtonDefaults.shapes()) {
                                 Icon(imageVector = Icons.Default.Topic, contentDescription = null)
                             }
                         },

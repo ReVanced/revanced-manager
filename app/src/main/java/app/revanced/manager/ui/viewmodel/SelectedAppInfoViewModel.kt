@@ -28,11 +28,12 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.patcher.patch.PatchBundleInfo
-import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
+import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
+import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.downloader.GetScope
 import app.revanced.manager.downloader.DownloaderHostApi
 import app.revanced.manager.downloader.Scope
@@ -77,6 +78,7 @@ class SelectedAppInfoViewModel(
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
     val downloaders = downloaderRepository.loadedDownloadersFlow
+    val allDownloaders = downloaderRepository.downloaderPackageStates
     val desiredVersion = input.app.version
     val packageName = input.app.packageName
 
@@ -182,9 +184,10 @@ class SelectedAppInfoViewModel(
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
-    val errorFlow = combine(downloaders, snapshotFlow { selectedApp }) { downloaderList, app ->
-        when {
-            app is SelectedApp.Search && downloaderList.isEmpty() -> Error.NoDownloaders
+    val errorFlow = combine(allDownloaders, snapshotFlow { selectedApp }) { allDownloaders, app ->
+        when (app) {
+            is SelectedApp.Search if allDownloaders.isEmpty() -> Error.NoDownloadersInstalled
+            is SelectedApp.Search if allDownloaders.values.all { it is DownloaderPackageState.Untrusted } -> Error.NoDownloadersTrusted
             else -> null
         }
     }
@@ -321,7 +324,8 @@ class SelectedAppInfoViewModel(
     }
 
     enum class Error(@param:StringRes val resourceId: Int) {
-        NoDownloaders(R.string.no_downloader_available)
+        NoDownloadersInstalled(R.string.no_downloaders_installed),
+        NoDownloadersTrusted(R.string.no_downloaders_trusted),
     }
 
     private companion object {

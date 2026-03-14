@@ -50,8 +50,11 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
+    private val bundleRepository: PatchBundleRepository = get()
 
-    private val packageName = input.app.packageName
+    val readOnly = input.readOnly
+    private val browseAllBundles = input.browseAllBundles
+    val packageName = input.app.packageName
     val appVersion = input.app.version
 
     var selectionWarningEnabled by mutableStateOf(true)
@@ -61,11 +64,22 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
     val allowIncompatiblePatches =
         get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
-    val bundlesFlow =
-        get<PatchBundleRepository>().scopedBundleInfoFlow(packageName, input.app.version)
+    val bundlesFlow = if (browseAllBundles) {
+        bundleRepository.bundleInfoFlow.map { bundles ->
+            bundles.values.map(PatchBundleInfo.Global::asReadonlyScoped)
+        }
+    } else {
+        bundleRepository.scopedBundleInfoFlow(packageName, input.app.version)
+    }
 
     init {
         viewModelScope.launch {
+            if (readOnly) {
+                universalPatchWarningEnabled = false
+                selectionWarningEnabled = false
+                return@launch
+            }
+
             if (prefs.disableUniversalPatchCheck.get()) {
                 universalPatchWarningEnabled = false
             }
@@ -135,7 +149,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     }
     val requiredOptsPatches = flow { emit(requiredOptsPatchesDeferred.await()) }
 
-    fun selectionIsValid(bundles: List<PatchBundleInfo.Scoped>) = bundles.any { bundle ->
+    fun selectionIsValid(bundles: List<PatchBundleInfo.Scoped>) = !readOnly && bundles.any { bundle ->
         bundle.patchSequence(allowIncompatiblePatches).any { patch ->
             isSelected(bundle.uid, patch)
         }
@@ -300,3 +314,13 @@ private typealias PersistentPatchSelection = PersistentMap<Int, PersistentSet<St
 
 private fun PatchSelection.toPersistentPatchSelection(): PersistentPatchSelection =
     mapValues { (_, v) -> v.toPersistentSet() }.toPersistentMap()
+
+private fun PatchBundleInfo.Global.asReadonlyScoped() = PatchBundleInfo.Scoped(
+    name = name,
+    version = version,
+    uid = uid,
+    patches = patches,
+    compatible = patches,
+    incompatible = emptyList(),
+    universal = emptyList()
+)

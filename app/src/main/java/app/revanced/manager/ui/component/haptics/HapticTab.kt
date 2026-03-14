@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.component.haptics
 
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Tab
@@ -24,7 +24,7 @@ fun HapticTab (
 ) {
     Tab(
         selected = selected,
-        onClick = onClick.withHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY),
+        onClick = onClick.withHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY),
         modifier = modifier,
         enabled = enabled,
         text = text,

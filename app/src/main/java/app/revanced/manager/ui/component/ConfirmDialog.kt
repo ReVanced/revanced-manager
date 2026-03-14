@@ -1,6 +1,8 @@
 package app.revanced.manager.ui.component
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -9,6 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ConfirmDialog(
     onDismiss: () -> Unit,
@@ -20,7 +23,7 @@ fun ConfirmDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         dismissButton = {
-            TextButton(onDismiss) {
+            TextButton(onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -29,7 +32,8 @@ fun ConfirmDialog(
                 onClick = {
                     onConfirm()
                     onDismiss()
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.confirm))
             }

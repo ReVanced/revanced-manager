@@ -12,6 +12,17 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlin.time.Clock
+
+data class AnnouncementSections(
+    val activeAnnouncements: List<ReVancedAnnouncement>,
+    val archivedAnnouncements: List<ReVancedAnnouncement>
+) {
+    val isEmpty: Boolean
+        get() = activeAnnouncements.isEmpty() && archivedAnnouncements.isEmpty()
+}
 
 class AnnouncementsViewModel(
     private val announcementRepository: AnnouncementRepository,
@@ -23,23 +34,36 @@ class AnnouncementsViewModel(
     val tags = allAnnouncements.map { it?.tags }
     val selectedTags = preferences.selectedAnnouncementTags
     val readAnnouncements = preferences.readAnnouncements
-    val showArchived = MutableStateFlow(false)
 
     val announcements = combine(
         allAnnouncements,
-        selectedTags.flow,
-        showArchived
-    ) { source, selectedTags, showArchived ->
+        selectedTags.flow
+    ) { source, selectedTags ->
         if (source == null) return@combine null
         // Only filter by tags that actually exist
         val availableTags = source.tags
         val validSelected = selectedTags.intersect(availableTags)
 
-        source.filter { announcement ->
-            if (!showArchived && announcement.isArchived) return@filter false
+        if (validSelected.isEmpty()) {
+            source
+        } else {
+            source.filter { announcement ->
+                announcement.tags.any(validSelected::contains)
+            }
+        }
+    }
 
-            if (!validSelected.isEmpty()) announcement.tags.any(validSelected::contains)
-            else true
+    val announcementSections = announcements.map { announcementList ->
+        announcementList?.let { announcements ->
+            val now = Clock.System.now()
+            val (activeAnnouncements, archivedAnnouncements) = announcements.partition { announcement ->
+                announcement.archivedAt ?: return@partition true
+                announcement.archivedAt > now
+            }
+            AnnouncementSections(
+                activeAnnouncements = activeAnnouncements,
+                archivedAnnouncements = archivedAnnouncements
+            )
         }
     }
 

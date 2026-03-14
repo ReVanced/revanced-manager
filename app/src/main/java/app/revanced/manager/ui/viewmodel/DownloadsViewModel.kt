@@ -1,26 +1,33 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.mutableStateSetOf
+import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DownloadsViewModel(
+    private val app: Application,
     private val downloadedAppRepository: DownloadedAppRepository,
     private val downloaderRepository: DownloaderRepository,
     prefs: PreferencesManager,
+    private val networkInfo: NetworkInfo,
     val pm: PM
 ) : ViewModel() {
     val usePrereleases = prefs.useDownloaderPrerelease
@@ -36,6 +43,14 @@ class DownloadsViewModel(
 
     var isRefreshingDownloaders by mutableStateOf(false)
         private set
+
+    var isUpdatingDownloader by mutableStateOf(false)
+        private set
+
+    var deletingDownloaderPackageName by mutableStateOf<String?>(null)
+        private set
+
+    private var installDownloaderJob: Job? = null
 
     fun toggleApp(downloadedApp: DownloadedApp) {
         if (appSelection.contains(downloadedApp))
@@ -56,8 +71,9 @@ class DownloadsViewModel(
 
     fun refreshDownloaders() = viewModelScope.launch {
         isRefreshingDownloaders = true
-        // Note: this should just be a normal update check.
-        downloaderRepository.redownloadRemote()
+        // TODO: fix me!
         isRefreshingDownloaders = false
     }
+
+    // TODO: reimplement functions.
 }

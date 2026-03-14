@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Icon
@@ -15,11 +14,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -28,7 +23,6 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.sources.Extensions.version
 import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.sources.Source
-import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -40,41 +34,14 @@ fun BundleItem(
     isBundleSelected: Boolean,
     toggleSelection: (Boolean) -> Unit,
     onSelect: () -> Unit,
-    onDelete: () -> Unit,
-    onUpdate: () -> Unit,
+    onClick: () -> Unit,
 ) {
-    var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
-    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-
-    if (viewBundleDialogPage) {
-        BundleInformationDialog(
-            src = src,
-            patchCount = patchCount,
-            onDismissRequest = { viewBundleDialogPage = false },
-            onDeleteRequest = { showDeleteConfirmationDialog = true },
-            onUpdate = onUpdate,
-        )
-    }
-
-    if (showDeleteConfirmationDialog) {
-        ConfirmDialog(
-            onDismiss = { showDeleteConfirmationDialog = false },
-            onConfirm = {
-                onDelete()
-                viewBundleDialogPage = false
-            },
-            title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_single_dialog_description, src.name),
-            icon = Icons.Outlined.Delete
-        )
-    }
-
     ListItem(
         modifier = Modifier
             .height(64.dp)
             .fillMaxWidth()
             .combinedClickable(
-                onClick = { viewBundleDialogPage = true },
+                onClick = onClick,
                 onLongClick = onSelect,
             ),
         leadingContent = if (selectable) {

@@ -17,15 +17,17 @@ import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
+import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAnnouncement
+import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,7 +36,7 @@ class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
     private val announcementRepository: AnnouncementRepository,
-    private val reVancedAPI: ReVancedAPI,
+    private val managerUpdateRepository: ManagerUpdateRepository,
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager,
     private val pm: PM,
@@ -45,6 +47,8 @@ class DashboardViewModel(
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
+    val availableManagerUpdate = managerUpdateRepository.availableVersion
+
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
      * This value is true when the conditions that trigger the bug are met.
@@ -53,8 +57,6 @@ class DashboardViewModel(
      */
     val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
 
-    var updatedManagerVersion: String? by mutableStateOf(null)
-        private set
     var showBatteryOptimizationsWarning by mutableStateOf(false)
         private set
 
@@ -76,7 +78,7 @@ class DashboardViewModel(
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
-            updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
+            managerUpdateRepository.refreshAvailableVersion()
         }
     }
 
@@ -121,6 +123,7 @@ class DashboardViewModel(
         }
     }
 
+    // TODO: should this be nuked?
     fun applyAutoUpdatePrefs(enabled: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
@@ -148,6 +151,11 @@ class DashboardViewModel(
     fun cancelSourceSelection() = sendEvent(BundleListViewModel.Event.CANCEL)
     fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
     fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
+
+    fun deleteSource(uid: Int) = viewModelScope.launch {
+        val source = patchBundleRepository.sources.first().firstOrNull { it.uid == uid } ?: return@launch
+        patchBundleRepository.remove(source)
+    }
 
     @SuppressLint("Recycle")
     fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
