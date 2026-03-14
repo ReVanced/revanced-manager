@@ -296,6 +296,9 @@ private fun ReVancedManager(vm: MainViewModel) {
                         selectedAppInfoVm.updateConfiguration(patches, options)
                         navController.popBackStackSafe()
                     },
+                    onBundleInfoClick = { uid ->
+                        navController.navigateSafe(BundleInformation(uid))
+                    },
                     viewModel = koinViewModel { parametersOf(data) }
                 )
             }

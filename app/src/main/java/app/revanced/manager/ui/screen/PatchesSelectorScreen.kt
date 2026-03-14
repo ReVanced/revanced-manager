@@ -10,27 +10,28 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material.icons.outlined.FilterList
@@ -51,7 +52,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.SmallFloatingActionButton
@@ -63,7 +63,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -71,13 +70,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.sample
 import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
+import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.CheckedFilterChip
@@ -88,7 +91,6 @@ import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchBar
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
-import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.haptics.HapticTriStateCheckbox
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.component.patches.SelectionWarningDialog
@@ -99,34 +101,30 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.sample
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, FlowPreview::class,
-    ExperimentalMaterial3ExpressiveApi::class
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalLayoutApi::class,
+    FlowPreview::class,
+    ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalFoundationApi::class
 )
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
+    onBundleInfoClick: (Int) -> Unit,
     viewModel: PatchesSelectorViewModel
 ) {
+    val stickyHeaderTopGap = 8.dp
     val bundles by viewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        initialPageOffsetFraction = 0f
-    ) {
-        bundles.size
-    }
-    val composableScope = rememberCoroutineScope()
-    val (query, setQuery) = rememberSaveable {
-        mutableStateOf("")
-    }
-    val (searchExpanded, setSearchExpanded) = rememberSaveable {
-        mutableStateOf(false)
-    }
+    val patchLazyListState = rememberLazyListState()
+    val searchLazyListState = rememberLazyListState()
+    val (query, setQuery) = rememberSaveable { mutableStateOf("") }
+    val (searchExpanded, setSearchExpanded) = rememberSaveable { mutableStateOf(false) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var collapsedBundleUids by rememberSaveable { mutableStateOf(emptyList<Int>()) }
+
     val showSaveButton by remember {
         derivedStateOf { viewModel.selectionIsValid(bundles) }
     }
@@ -140,12 +138,50 @@ fun PatchesSelectorScreen(
         }
     }
 
-    val patchLazyListStates = remember(bundles) { List(bundles.size) { LazyListState() } }
-
     var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
     var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
-
     var pendingScopeAction by remember { mutableStateOf<((Int?) -> Unit)?>(null) }
+
+    fun toggleBundleExpanded(bundleUid: Int) {
+        collapsedBundleUids = if (bundleUid in collapsedBundleUids) {
+            collapsedBundleUids - bundleUid
+        } else {
+            collapsedBundleUids + bundleUid
+        }
+    }
+
+    fun onBundleSelectionClick(bundle: PatchBundleInfo.Scoped) {
+        val selectionState = viewModel.getBundleSelectionState(bundle)
+        when {
+            viewModel.selectionWarningEnabled -> showSelectionWarning = true
+            selectionState == false -> viewModel.restoreDefaults(bundle.uid)
+            else -> viewModel.deselectAll(bundles, bundle.uid)
+        }
+    }
+
+    val sections = remember(bundles, viewModel.filter, collapsedBundleUids) {
+        buildBundleSections(
+            bundles = bundles,
+            filter = viewModel.filter,
+            collapsedBundleUids = collapsedBundleUids
+        )
+    }
+    val searchSections = remember(bundles, query, viewModel.filter, collapsedBundleUids) {
+        buildBundleSections(
+            bundles = bundles,
+            query = query,
+            filter = viewModel.filter,
+            collapsedBundleUids = collapsedBundleUids,
+            forceExpanded = query.isNotBlank()
+        )
+    }
+    val sectionLayouts = remember(sections) { buildSectionLayouts(sections) }
+    val currentBundle by remember(sectionLayouts, patchLazyListState) {
+        derivedStateOf {
+            sectionLayouts.lastOrNull { it.headerIndex <= patchLazyListState.firstVisibleItemIndex }?.bundle
+                ?: bundles.firstOrNull()
+        }
+    }
 
     fun executeScopedAction(action: (Int?) -> Unit) {
         if (bundles.size > 1) {
@@ -156,29 +192,25 @@ fun PatchesSelectorScreen(
     }
 
     pendingScopeAction?.let { action ->
-        val currentBundle = bundles.getOrNull(pagerState.currentPage) ?: return@let
+        val activeBundle = currentBundle ?: return@let
 
         ScopeDialog(
-            bundleName = currentBundle.name,
+            bundleName = activeBundle.name,
             onDismissRequest = { pendingScopeAction = null },
             onAllPatches = {
                 action(null)
                 pendingScopeAction = null
             },
             onBundleOnly = {
-                action(currentBundle.uid)
+                action(activeBundle.uid)
                 pendingScopeAction = null
             }
         )
     }
 
     if (showBottomSheet) {
-        val currentBundle = bundles.getOrNull(pagerState.currentPage)
-
         ModalBottomSheet(
-            onDismissRequest = {
-                showBottomSheet = false
-            }
+            onDismissRequest = { showBottomSheet = false }
         ) {
             Column(
                 modifier = Modifier
@@ -277,13 +309,13 @@ fun PatchesSelectorScreen(
                         }
                     )
 
-                    if (bundles.size > 1 && currentBundle != null) {
+                    currentBundle?.let { bundle ->
                         ActionItem(
                             icon = Icons.Outlined.Deselect,
-                            text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                            text = stringResource(R.string.deselect_all_except, bundle.name),
                             onClick = {
                                 guardedAction {
-                                    viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                                    viewModel.deselectAllExcept(bundles, bundle.uid)
                                 }
                             }
                         )
@@ -328,46 +360,90 @@ fun PatchesSelectorScreen(
     fun LazyListScope.patchList(
         uid: Int,
         patches: List<PatchInfo>,
-        visible: Boolean,
         compatible: Boolean,
+        keyPrefix: String,
         header: (@Composable () -> Unit)? = null
     ) {
-        if (patches.isNotEmpty() && visible) {
-            header?.let {
-                item(contentType = 0) {
-                    it()
-                }
+        if (patches.isEmpty()) return
+
+        header?.let {
+            item(key = "$keyPrefix-header", contentType = 0) {
+                it()
             }
+        }
 
-            items(
-                items = patches,
-                key = { it.name },
-                contentType = { 1 }
-            ) { patch ->
-                PatchItem(
-                    patch = patch,
-                    onOptionsDialog = { viewModel.optionsDialog = uid to patch },
-                    selected = compatible && viewModel.isSelected(
-                        uid,
-                        patch
-                    ),
-                    onToggle = {
-                        when {
-                            // Open incompatible dialog if the patch is not supported
-                            !compatible -> viewModel.openIncompatibleDialog(patch)
+        items(
+            items = patches,
+            key = { "$keyPrefix-${it.name}" },
+            contentType = { 1 }
+        ) { patch ->
+            PatchItem(
+                patch = patch,
+                onOptionsDialog = { viewModel.optionsDialog = uid to patch },
+                selected = compatible && viewModel.isSelected(uid, patch),
+                onToggle = {
+                    when {
+                        !compatible -> viewModel.openIncompatibleDialog(patch)
+                        viewModel.selectionWarningEnabled -> showSelectionWarning = true
+                        patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
+                        else -> viewModel.togglePatch(uid, patch)
+                    }
+                },
+                compatible = compatible
+            )
+        }
+    }
 
-                            // Show selection warning if enabled
-                            viewModel.selectionWarningEnabled -> showSelectionWarning = true
+    fun LazyListScope.sectionedPatchList(
+        sections: List<BundleSection>,
+        keyPrefix: String
+    ) {
+        sections.forEach { section ->
+             val bundle = section.bundle
 
-                            // Show universal warning if universal patch is selected and the toggle is off
-                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning =
-                                true
+             stickyHeader(key = "$keyPrefix-source-${bundle.uid}") {
+                 Column(
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .zIndex(1f)
+                         .background(MaterialTheme.colorScheme.surface)
+                 ) {
+                     SourceSectionHeader(
+                         bundle = bundle,
+                         expanded = section.expanded,
+                         selectionState = viewModel.getBundleSelectionState(bundle),
+                         onClick = { onBundleInfoClick(bundle.uid) },
+                         onSelectionClick = { onBundleSelectionClick(bundle) },
+                         onExpandToggle = { toggleBundleExpanded(bundle.uid) }
+                     )
+                 }
+             }
 
-                            // Toggle the patch otherwise
-                            else -> viewModel.togglePatch(uid, patch)
-                        }
-                    },
-                    compatible = compatible
+            if (!section.expanded) return@forEach
+
+            patchList(
+                uid = bundle.uid,
+                patches = section.compatible,
+                compatible = true,
+                keyPrefix = "$keyPrefix-compatible-${bundle.uid}"
+            )
+            patchList(
+                uid = bundle.uid,
+                patches = section.universal,
+                compatible = true,
+                keyPrefix = "$keyPrefix-universal-${bundle.uid}"
+            ) {
+                ListHeader(title = stringResource(R.string.universal_patches))
+            }
+            patchList(
+                uid = bundle.uid,
+                patches = section.incompatible,
+                compatible = viewModel.allowIncompatiblePatches,
+                keyPrefix = "$keyPrefix-incompatible-${bundle.uid}"
+            ) {
+                ListHeader(
+                    title = stringResource(R.string.incompatible_patches),
+                    onHelpClick = { showIncompatiblePatchesDialog = true }
                 )
             }
         }
@@ -434,46 +510,31 @@ fun PatchesSelectorScreen(
                     }
                 }
             ) {
-                val bundle = bundles[pagerState.currentPage]
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(stickyHeaderTopGap)
+                        .background(MaterialTheme.colorScheme.surface)
+                )
 
-                LazyColumnWithScrollbar(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    fun List<PatchInfo>.searched() = filter {
-                        it.name.contains(query, true)
-                    }
-
-                    patchList(
-                        uid = bundle.uid,
-                        patches = bundle.compatible.searched(),
-                        visible = true,
-                        compatible = true
-                    )
-                    patchList(
-                        uid = bundle.uid,
-                        patches = bundle.universal.searched(),
-                        visible = viewModel.filter and SHOW_UNIVERSAL != 0,
-                        compatible = true
-                    ) {
-                        ListHeader(
-                            title = stringResource(R.string.universal_patches),
-                        )
-                    }
-
-                    patchList(
-                        uid = bundle.uid,
-                        patches = bundle.incompatible.searched(),
-                        visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
-                        compatible = viewModel.allowIncompatiblePatches
-                    ) {
-                        ListHeader(
-                            title = stringResource(R.string.incompatible_patches),
-                            onHelpClick = { showIncompatiblePatchesDialog = true }
-                        )
-                    }
-                }
-            }
-        },
+                Box(
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .weight(1f)
+                 ) {
+                     LazyColumnWithScrollbar(
+                         modifier = Modifier.fillMaxSize(),
+                         state = searchLazyListState,
+                         contentPadding = PaddingValues(bottom = 16.dp)
+                     ) {
+                         sectionedPatchList(
+                             sections = searchSections,
+                             keyPrefix = "search"
+                         )
+                     }
+                 }
+             }
+         },
         floatingActionButton = {
             if (!showSaveButton) return@Scaffold
 
@@ -493,14 +554,11 @@ fun PatchesSelectorScreen(
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
 
-                    val isScrollingUp =
-                        patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp()
+                    val isScrollingUp = patchLazyListState.isScrollingUp()
                     val expanded by produceState(true, isScrollingUp) {
-                        val state = isScrollingUp ?: return@produceState
-                        value = state.value
+                        value = isScrollingUp.value
 
-                        // Use snapshotFlow and sample to prevent the value from changing too often.
-                        snapshotFlow { state.value }
+                        snapshotFlow { isScrollingUp.value }
                             .sample(333L)
                             .collect {
                                 value = it
@@ -531,113 +589,38 @@ fun PatchesSelectorScreen(
             }
         }
     ) { paddingValues ->
+        if (searchExpanded) return@Scaffold
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(top = 4.dp)
         ) {
-            if (bundles.size > 1) {
-                PrimaryScrollableTabRow(
-                    selectedTabIndex = pagerState.currentPage,
-                    edgePadding = 0.dp
-                ) {
-                    bundles.forEachIndexed { index, bundle ->
-                        HapticTab(
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        index
-                                    )
-                                }
-                            },
-                            text = {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    val selectionState = viewModel.getBundleSelectionState(bundle)
-                                    val toggleableState = when (selectionState) {
-                                        true -> ToggleableState.On
-                                        false -> ToggleableState.Off
-                                        null -> ToggleableState.Indeterminate
-                                    }
-
-                                    HapticTriStateCheckbox(
-                                        state = toggleableState,
-                                        onClick = {
-                                            when {
-                                                viewModel.selectionWarningEnabled -> showSelectionWarning = true
-                                                selectionState == false -> viewModel.restoreDefaults(bundle.uid)
-                                                else -> viewModel.deselectAll(bundles, bundle.uid)
-                                            }
-                                        }
-                                    )
-
-                                    Spacer(modifier = Modifier.width(4.dp))
-
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Text(
-                                            text = bundle.name,
-                                            style = MaterialTheme.typography.bodyMedium
-                                        )
-                                        Text(
-                                            text = bundle.version.orEmpty(),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                }
-                            },
-                            selectedContentColor = MaterialTheme.colorScheme.primary,
-                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-
-            HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = true,
-                pageContent = { index ->
-                    // Avoid crashing if the lists have not been fully initialized yet.
-                    if (index > bundles.lastIndex || bundles.size != patchLazyListStates.size) return@HorizontalPager
-                    val bundle = bundles[index]
-
-                    LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize(),
-                        state = patchLazyListStates[index]
-                    ) {
-                        patchList(
-                            uid = bundle.uid,
-                            patches = bundle.compatible,
-                            visible = true,
-                            compatible = true
-                        )
-                        patchList(
-                            uid = bundle.uid,
-                            patches = bundle.universal,
-                            visible = viewModel.filter and SHOW_UNIVERSAL != 0,
-                            compatible = true
-                        ) {
-                            ListHeader(
-                                title = stringResource(R.string.universal_patches),
-                            )
-                        }
-                        patchList(
-                            uid = bundle.uid,
-                            patches = bundle.incompatible,
-                            visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
-                            compatible = viewModel.allowIncompatiblePatches
-                        ) {
-                            ListHeader(
-                                title = stringResource(R.string.incompatible_patches),
-                                onHelpClick = { showIncompatiblePatchesDialog = true }
-                            )
-                        }
-                    }
-                }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(stickyHeaderTopGap)
+                    .background(MaterialTheme.colorScheme.surface)
             )
-        }
-    }
+
+            Box(
+                 modifier = Modifier
+                     .fillMaxWidth()
+                     .weight(1f)
+             ) {
+                 LazyColumnWithScrollbar(
+                     modifier = Modifier.fillMaxSize(),
+                     state = patchLazyListState,
+                     contentPadding = PaddingValues(bottom = 16.dp)
+                 ) {
+                     sectionedPatchList(
+                         sections = sections,
+                         keyPrefix = "main"
+                     )
+                 }
+             }
+         }
+     }
 }
 
 @Composable
@@ -848,5 +831,126 @@ private fun OptionsDialog(
                 )
             }
         }
+    }
+}
+
+private data class BundleSection(
+    val bundle: PatchBundleInfo.Scoped,
+    val compatible: List<PatchInfo>,
+    val universal: List<PatchInfo>,
+    val incompatible: List<PatchInfo>,
+    val expanded: Boolean
+) {
+    val hasVisiblePatches: Boolean
+        get() = compatible.isNotEmpty() || universal.isNotEmpty() || incompatible.isNotEmpty()
+}
+
+private data class BundleSectionLayout(
+    val bundle: PatchBundleInfo.Scoped,
+    val headerIndex: Int
+)
+
+private fun buildBundleSections(
+    bundles: List<PatchBundleInfo.Scoped>,
+    query: String = "",
+    filter: Int,
+    collapsedBundleUids: List<Int>,
+    forceExpanded: Boolean = false
+): List<BundleSection> {
+    fun List<PatchInfo>.searched() = if (query.isBlank()) {
+        this
+    } else {
+        filter { it.name.contains(query, ignoreCase = true) }
+    }
+
+    return bundles.mapNotNull { bundle ->
+        BundleSection(
+            bundle = bundle,
+            compatible = bundle.compatible.searched(),
+            universal = if (filter and SHOW_UNIVERSAL != 0) bundle.universal.searched() else emptyList(),
+            incompatible = if (filter and SHOW_INCOMPATIBLE != 0) bundle.incompatible.searched() else emptyList(),
+            expanded = forceExpanded || bundle.uid !in collapsedBundleUids
+        ).takeIf { query.isBlank() || it.hasVisiblePatches }
+    }
+}
+
+private fun buildSectionLayouts(sections: List<BundleSection>) = buildList {
+    var itemIndex = 0
+
+    sections.forEach { section ->
+        add(BundleSectionLayout(section.bundle, itemIndex))
+        itemIndex += 1
+
+        if (!section.expanded) return@forEach
+
+        itemIndex += section.compatible.size
+        if (section.universal.isNotEmpty()) {
+            itemIndex += 1 + section.universal.size
+        }
+        if (section.incompatible.isNotEmpty()) {
+            itemIndex += 1 + section.incompatible.size
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun SourceSectionHeader(
+    bundle: PatchBundleInfo.Scoped,
+    expanded: Boolean,
+    selectionState: Boolean?,
+    onClick: () -> Unit,
+    onSelectionClick: () -> Unit,
+    onExpandToggle: () -> Unit
+) {
+    val toggleableState = when (selectionState) {
+        true -> ToggleableState.On
+        false -> ToggleableState.Off
+        null -> ToggleableState.Indeterminate
+    }
+    val arrowRotation by animateFloatAsState(
+        targetValue = if (expanded) 0f else -90f,
+        animationSpec = tween(durationMillis = 250, easing = EaseInOut),
+        label = "Bundle section expand state"
+    )
+
+    Column {
+        ListItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick),
+            leadingContent = {
+                HapticTriStateCheckbox(
+                    state = toggleableState,
+                    onClick = onSelectionClick
+                )
+            },
+            headlineContent = {
+                Text(text = bundle.name)
+            },
+            supportingContent = bundle.version?.takeIf { it.isNotBlank() }?.let { version ->
+                {
+                    Text(
+                        text = version,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            },
+            trailingContent = {
+                IconButton(onClick = onExpandToggle, shapes = IconButtonDefaults.shapes()) {
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowDown,
+                        contentDescription = stringResource(
+                            if (expanded) R.string.collapse_content else R.string.expand_content
+                        ),
+                        modifier = Modifier.rotate(arrowRotation)
+                    )
+                }
+            },
+            colors = ListItemDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
+            )
+        )
+        HorizontalDivider()
     }
 }
