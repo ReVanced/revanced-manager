@@ -87,7 +87,7 @@ Second \"item\" text"</string>
     <string name="patches_missing">Missing</string>
     <string name="patches_error">Error</string>
     <string name="patches_error_description">Patches could not be loaded. Click to view the error</string>
-    <string name="patches_not_downloaded">Patches has not been downloaded. Click here to download it</string>
+    <string name="patches_not_downloaded">Patches has not been downloaded.</string>
     <string name="patches_name_default">Patches</string>
     <string name="patches_name_fallback">Unnamed</string>
 
@@ -100,13 +100,14 @@ Second \"item\" text"</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
     <string name="app_source_dialog_option_auto_description">Use installed app, then downloaded APK, then available downloaders</string>
-    <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
-    <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
+    <string name="app_source_dialog_option_auto_unavailable">No compatible found app or downloaders available</string>
+    <string name="app_source_dialog_option_installed_no_root">Mounted apps can\'t be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
 
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Select patches</string>
     <string name="patch_selector_item_description">%d patches selected</string>
+    <string name="patch_selection_changed_warning">Selection of patches has been changed</string>
     <string name="no_patches_selected">No patches selected</string>
 
     <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
@@ -146,6 +147,7 @@ Second \"item\" text"</string>
     <string name="import_export_description">Keystore, patch options and selection</string>
     <string name="advanced">Advanced</string>
     <string name="advanced_description">API URL, memory limit, debugging</string>
+    <string name="safeguards_toggled_warning">Safeguards have been toggled</string>
     <string name="about">About</string>
     <string name="about_app_name">About %1$s</string>
     <string name="opensource_licenses">Open source licenses</string>
@@ -494,6 +496,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="repository">Repository</string>
     <string name="bundle_information_by_author">By %1$s</string>
     <string name="version">Version</string>
+    <string name="version_compatibility_warning">Selected version may be incompatible with selected patches</string>
     <string name="submit_feedback">Submit issue or feedback</string>
     <string name="submit_feedback_description">Help us improve this application</string>
     <string name="developer_options">Developer options</string>

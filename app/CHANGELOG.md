@@ -1,3 +1,40 @@
+# app [1.26.0-dev.37](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.36...v1.26.0-dev.37) (2026-03-14)
+
+
+### Bug Fixes
+
+* Make app source dialog string more accurate ([c8b429f](https://github.com/ReVanced/revanced-manager/commit/c8b429fa4741a28b9c29144939036d6fa8633cb4))
+
+# app [1.26.0-dev.36](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.35...v1.26.0-dev.36) (2026-03-14)
+
+
+### Bug Fixes
+
+* Bottom sheet on patches selector glitched when going to full screen sheet ([aa153a7](https://github.com/ReVanced/revanced-manager/commit/aa153a74d596c19d2844cb2fe72b5694d6a5b510))
+* Detect downloaded APKs when patches support any version ([#2967](https://github.com/ReVanced/revanced-manager/issues/2967)) ([65e84e2](https://github.com/ReVanced/revanced-manager/commit/65e84e2944968a312f34d66d1a40c0cc9d3ef473))
+* Downgrade AGP to fix build issues ([c7e56c4](https://github.com/ReVanced/revanced-manager/commit/c7e56c4700a6566a010ef5aaf8ba7efd740dc9ce))
+* Import AndroidX WindowInsets ([af2683d](https://github.com/ReVanced/revanced-manager/commit/af2683d91df375e0c4ff3ab75ad696f18f69ccf6))
+* Make transitions in/out duration the same ([cd24d59](https://github.com/ReVanced/revanced-manager/commit/cd24d59b19d8b662af9e662ac48b4c13071e2284))
+* Merge doppelgirl design decision to public ([1277315](https://github.com/ReVanced/revanced-manager/commit/12773154d6d73d90e9447ef4c0f991575f4840a9))
+* Patcher FAB elevation being wrong on BAB component ([30ecf62](https://github.com/ReVanced/revanced-manager/commit/30ecf62d356df41bcd6e2b167ee7262ce6655e20))
+* Remove redundant patch fab on initial tab screen ([c925078](https://github.com/ReVanced/revanced-manager/commit/c925078a84adcf371a999fdb9ed2d886fbad4507))
+* SearchBar padding in patches screen ([54d59c3](https://github.com/ReVanced/revanced-manager/commit/54d59c36fec7958ae60e35f40b9f0e821ba941c4))
+* Show previously downloaded APKs in source selector dialog ([#2964](https://github.com/ReVanced/revanced-manager/issues/2964)) ([b28f0a8](https://github.com/ReVanced/revanced-manager/commit/b28f0a84f367eafd9ac01c74aefcbbe9395ee4ba))
+
+
+### Features
+
+* Add UI nudges to note about pitfalls ([9cf2bd6](https://github.com/ReVanced/revanced-manager/commit/9cf2bd6603179c0ea24df64849ed023ed69f2795))
+* Export more info in logs ([#2957](https://github.com/ReVanced/revanced-manager/issues/2957)) ([69abbdc](https://github.com/ReVanced/revanced-manager/commit/69abbdc48adf8e92e7b32167fcf1674c2079056f))
+* Merge app selector screen with apps screen ([37fdd15](https://github.com/ReVanced/revanced-manager/commit/37fdd159409b160f7e348125c6f97fab73bf1ba4))
+* Revamp UI and improve UX ([2d42197](https://github.com/ReVanced/revanced-manager/commit/2d4219701248ee70fd42d93755fee0a63b75e5db))
+* Show logger details in patcher screen ([4d354f5](https://github.com/ReVanced/revanced-manager/commit/4d354f5aefecfffac2c85d835be8eb0ce5d37b0f))
+* Show patches load errors in patches tab and adjust API down notification to work correctly ([5b871b8](https://github.com/ReVanced/revanced-manager/commit/5b871b8cf29d95b91f856a8e6d725fdc96af2337))
+* Show persistent error card when patch bundle download fails ([#2965](https://github.com/ReVanced/revanced-manager/issues/2965)) ([9e9b189](https://github.com/ReVanced/revanced-manager/commit/9e9b189b2c5e462a8ddd10f6ca407f185b3d2016))
+* Use patch first flow ([535694e](https://github.com/ReVanced/revanced-manager/commit/535694e38d02a2404605377a3eb4798dad7a3b2c))
+* Use patch selector screen in patches tab ([15b43bf](https://github.com/ReVanced/revanced-manager/commit/15b43bfe815db57e69d15e0fb75d3cb41303932b))
+* Use sectioned list for patches selector screen ([8f05023](https://github.com/ReVanced/revanced-manager/commit/8f05023105ba6bfcfef1b3dfa7e6a8ba46daa27b))
+
 # app [1.26.0-dev.35](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.34...v1.26.0-dev.35) (2026-03-12)
 
 

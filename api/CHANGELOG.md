@@ -1,3 +1,10 @@
+# api [1.0.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/api@1.0.0-dev.3...api@1.0.0-dev.4) (2026-03-14)
+
+
+### Features
+
+* Revamp UI and improve UX ([2d42197](https://github.com/ReVanced/revanced-manager/commit/2d4219701248ee70fd42d93755fee0a63b75e5db))
+
 # api [1.0.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/api@1.0.0-dev.2...api@1.0.0-dev.3) (2026-03-12)
 
 

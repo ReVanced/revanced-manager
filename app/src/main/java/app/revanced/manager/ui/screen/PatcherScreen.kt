@@ -26,6 +26,7 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -234,7 +235,13 @@ fun PatcherScreen(
                                     if (viewModel.isDeviceRooted()) showInstallPicker = true
                                     else viewModel.install(InstallType.DEFAULT)
                                 else viewModel.open()
-                            }
+                            },
+                            elevation = FloatingActionButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                focusedElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                            )
                         )
                     }
                 }

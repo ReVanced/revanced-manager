@@ -3,7 +3,6 @@ package app.revanced.manager.domain.manager
 import android.app.Application
 import android.util.Log
 import androidx.annotation.StringRes
-import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.redux.Action
 import app.revanced.manager.data.redux.ActionContext
@@ -76,6 +75,9 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
 
     private val _updateError = MutableStateFlow<Throwable?>(null)
     val updateError = _updateError.asStateFlow()
+
+    private val _apiOutageError = MutableStateFlow<Throwable?>(null)
+    val apiOutageError = _apiOutageError.asStateFlow()
 
     protected val store =
         Store(CoroutineScope(Dispatchers.Default), State<LOADED, OUTPUT>(data = initial))
@@ -261,6 +263,8 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
         private val showToast: Boolean = false,
         private val predicate: (source: RemoteSource<LOADED>) -> Boolean = { true },
     ) : Action<State<LOADED, OUTPUT>> {
+        private var attemptedMainApiUpdate = false
+
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
 
@@ -277,6 +281,9 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
             val updated = current.sources.values
                 .filterIsInstance<RemoteSource<LOADED>>()
                 .filter { predicate(it) }
+                .also { targets ->
+                    attemptedMainApiUpdate = targets.any { it.uid == 0 && it is APISource<*> }
+                }
                 .map {
                     async {
                         Log.d(tag, "Updating: ${it.name}")
@@ -306,12 +313,14 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
 
             if (showToast) toast(updateSuccess)
             _updateError.value = null
+            if (attemptedMainApiUpdate) _apiOutageError.value = null
             doReload()
         }
 
         override suspend fun catch(exception: Exception) {
             Log.e(tag, "Failed to update", exception)
             _updateError.value = exception
+            if (attemptedMainApiUpdate) _apiOutageError.value = exception
             toast(updateFailed, exception.simpleMessage())
         }
     }

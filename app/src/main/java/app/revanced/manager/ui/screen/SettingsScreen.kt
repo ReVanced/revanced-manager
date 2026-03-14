@@ -31,8 +31,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -62,6 +64,23 @@ private data class Section(
 fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> Unit) {
     val prefs: PreferencesManager = koinInject()
     val showDeveloperSettings by prefs.showDeveloperSettings.getAsState()
+    val disablePatchVersionCompatCheck by prefs.disablePatchVersionCompatCheck.getAsState()
+    val disableSelectionWarning by prefs.disableSelectionWarning.getAsState()
+    val disableUniversalPatchCheck by prefs.disableUniversalPatchCheck.getAsState()
+    val suggestedVersionSafeguard by prefs.suggestedVersionSafeguard.getAsState()
+    val safeguardsToggled by remember(
+        disablePatchVersionCompatCheck,
+        disableSelectionWarning,
+        disableUniversalPatchCheck,
+        suggestedVersionSafeguard
+    ) {
+        derivedStateOf {
+            disablePatchVersionCompatCheck ||
+                disableSelectionWarning ||
+                disableUniversalPatchCheck ||
+                !suggestedVersionSafeguard
+        }
+    }
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         canScroll = {
@@ -183,9 +202,20 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
 
                 ListSection {
                     advancedSections.forEach { (name, description, icon, destination) ->
+                        val hasSafeguardWarning = destination == Settings.Advanced && safeguardsToggled
+                        val supportingText = if (hasSafeguardWarning) {
+                            "Safeguards have been toggled"
+                        } else {
+                            stringResource(description)
+                        }
                         SettingsListItem(
                             headlineContent = stringResource(name),
-                            supportingContent = stringResource(description),
+                            supportingContent = supportingText,
+                            supportingContentColor = if (hasSafeguardWarning) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                Color.Unspecified
+                            },
                             leadingContent = { ExpressiveListIcon(icon = icon) },
                             onClick = { navigate(destination) }
                         )

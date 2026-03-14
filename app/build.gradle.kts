@@ -57,6 +57,7 @@ dependencies {
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.foundation.layout)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
 
@@ -184,6 +185,7 @@ android {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
+                // Note: There are actually no optimisation since we disable it in proguard, AGP does not allow you to remove -optimize from this for some reason.
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
@@ -235,6 +237,12 @@ android {
 
     androidResources {
         generateLocaleConfig = true
+    }
+
+    android {
+        lint {
+            disable.add("ExtraTranslation")
+        }
     }
 
     externalNativeBuild {

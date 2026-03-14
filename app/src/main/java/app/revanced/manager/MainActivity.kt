@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.EaseInOutQuad
+import androidx.compose.animation.core.EaseInOutQuart
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -129,9 +130,9 @@ private fun ReVancedManager(vm: MainViewModel) {
         navController = navController,
         startDestination = startDestination,
         enterTransition = { slideInHorizontally(animationSpec = tween(300, easing = EaseInOutQuad), initialOffsetX = { it }) },
-        exitTransition = { slideOutHorizontally(animationSpec = tween(250, easing = EaseOut), targetOffsetX = { -it / 3 }) },
+        exitTransition = { slideOutHorizontally(animationSpec = tween(300, easing = EaseOut), targetOffsetX = { -it / 3 }) },
         popEnterTransition = { slideInHorizontally(animationSpec = tween(300, easing = EaseInOutQuad), initialOffsetX = { -it / 3 }) },
-        popExitTransition = { slideOutHorizontally(animationSpec = tween(250, easing = EaseOut), targetOffsetX = { it }) }
+        popExitTransition = { slideOutHorizontally(animationSpec = tween(300, easing = EaseOut), targetOffsetX = { it }) }
     ) {
         composable<Onboarding> {
             OnboardingScreen(

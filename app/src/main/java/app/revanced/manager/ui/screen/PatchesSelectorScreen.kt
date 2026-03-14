@@ -20,10 +20,14 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -37,6 +41,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Deselect
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
@@ -55,6 +60,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.SmallFloatingActionButton
@@ -128,6 +134,7 @@ fun PatchesSelectorScreen(
     val stickyHeaderTopGap = 8.dp
     val readOnly = viewModel.readOnly
     val bundles by viewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val bundleLoadIssues by viewModel.bundleLoadIssuesFlow.collectAsStateWithLifecycle(initialValue = emptyMap())
     val pm: PM = koinInject()
     val pmAppList by pm.appList.collectAsStateWithLifecycle(initialValue = emptyList())
     val patchLazyListState = rememberLazyListState()
@@ -257,10 +264,15 @@ fun PatchesSelectorScreen(
     }
 
     if (showBottomSheet) {
-        ModalBottomSheet(onDismissRequest = { showBottomSheet = false }) {
+        val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = modalBottomSheetState
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
                     .padding(bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -486,6 +498,7 @@ fun PatchesSelectorScreen(
     ) {
         sections.forEach { section ->
             val bundle = section.bundle
+            val loadIssueResId = bundleLoadIssues[bundle.uid]
 
             stickyHeader(key = "$keyPrefix-source-${bundle.uid}") {
                 Column(
@@ -503,7 +516,10 @@ fun PatchesSelectorScreen(
                         onExpandToggle = { toggleBundleExpanded(bundle.uid) },
                         onDeleteClick = { onSourceDeleteRequest?.invoke(bundle.uid) },
                         sourceEditMode = isSourceEditMode,
-                        readOnly = readOnly
+                        readOnly = readOnly,
+                        loadIssue = loadIssueResId?.let { messageId ->
+                            stringResource(messageId)
+                        }
                     )
                 }
             }
@@ -542,74 +558,80 @@ fun PatchesSelectorScreen(
 
     Scaffold(
         topBar = {
-            SearchBar(
-                query = query,
-                onQueryChange = setQuery,
-                expanded = searchExpanded,
-                onExpandedChange = setSearchExpanded,
-                placeholder = { Text(stringResource(R.string.search_patches)) },
-                leadingIcon = {
-                    val rotation by animateFloatAsState(
-                        targetValue = if (searchExpanded) 360f else 0f,
-                        animationSpec = tween(durationMillis = 400, easing = EaseInOut),
-                        label = "SearchBar back button"
-                    )
-                    IconButton(
-                        onClick = {
-                            if (searchExpanded) setSearchExpanded(false) else onBackClick()
-                        },
-                        shapes = IconButtonDefaults.shapes()
-                    ) {
-                        Icon(
-                            modifier = Modifier.rotate(rotation),
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+            Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                SearchBar(
+                    query = query,
+                    onQueryChange = setQuery,
+                    expanded = searchExpanded,
+                    onExpandedChange = setSearchExpanded,
+                    placeholder = { Text(stringResource(R.string.search_patches)) },
+                    windowInsets = if (readOnly) WindowInsets(0, 0, 0, 0) else WindowInsets.systemBars,
+                    leadingIcon = {
+                        val rotation by animateFloatAsState(
+                            targetValue = if (searchExpanded) 360f else 0f,
+                            animationSpec = tween(durationMillis = 400, easing = EaseInOut),
+                            label = "SearchBar back button"
                         )
-                    }
-                },
-                trailingIcon = {
-                    AnimatedContent(
-                        targetState = searchExpanded,
-                        label = "Filter/Clear",
-                        transitionSpec = { fadeIn() togetherWith fadeOut() }
-                    ) { expanded ->
-                        if (expanded) {
-                            IconButton(
-                                onClick = { setQuery("") },
-                                enabled = query.isNotEmpty(),
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Close,
-                                    contentDescription = stringResource(R.string.clear)
-                                )
-                            }
-                        } else {
-                            IconButton(onClick = { showBottomSheet = true }, shapes = IconButtonDefaults.shapes()) {
-                                Icon(
-                                    imageVector = Icons.Outlined.FilterList,
-                                    contentDescription = stringResource(R.string.more)
-                                )
+                        IconButton(
+                            onClick = {
+                                if (searchExpanded) setSearchExpanded(false) else onBackClick()
+                            },
+                            shapes = IconButtonDefaults.shapes()
+                        ) {
+                            Icon(
+                                modifier = Modifier.rotate(rotation),
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back)
+                            )
+                        }
+                    },
+                    trailingIcon = {
+                        AnimatedContent(
+                            targetState = searchExpanded,
+                            label = "Filter/Clear",
+                            transitionSpec = { fadeIn() togetherWith fadeOut() }
+                        ) { expanded ->
+                            if (expanded) {
+                                IconButton(
+                                    onClick = { setQuery("") },
+                                    enabled = query.isNotEmpty(),
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = stringResource(R.string.clear)
+                                    )
+                                }
+                            } else {
+                                IconButton(
+                                    onClick = { showBottomSheet = true },
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.FilterList,
+                                        contentDescription = stringResource(R.string.more)
+                                    )
+                                }
                             }
                         }
                     }
-                }
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .background(MaterialTheme.colorScheme.surface)
                 ) {
-                    LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize(),
-                        state = searchLazyListState,
-                        contentPadding = PaddingValues(bottom = 16.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .background(MaterialTheme.colorScheme.surface)
                     ) {
-                        sectionedPatchList(
-                            sections = searchSections,
-                            keyPrefix = "search"
-                        )
+                        LazyColumnWithScrollbar(
+                            modifier = Modifier.fillMaxSize(),
+                            state = searchLazyListState,
+                            contentPadding = PaddingValues(bottom = 16.dp)
+                        ) {
+                            sectionedPatchList(
+                                sections = searchSections,
+                                keyPrefix = "search"
+                            )
+                        }
                     }
                 }
             }
@@ -1056,7 +1078,8 @@ private fun SourceSectionHeader(
     onExpandToggle: () -> Unit,
     onDeleteClick: () -> Unit,
     sourceEditMode: Boolean,
-    readOnly: Boolean
+    readOnly: Boolean,
+    loadIssue: String?
 ) {
     val toggleableState = when (selectionState) {
         true -> ToggleableState.On
@@ -1084,12 +1107,24 @@ private fun SourceSectionHeader(
             headlineContent = {
                 Text(text = bundle.name)
             },
-            supportingContent = bundle.version?.takeIf { it.isNotBlank() }?.let { version ->
-                {
-                    Text(
-                        text = version,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+            supportingContent = {
+                val version = bundle.version?.takeIf { it.isNotBlank() }
+                if (version == null && loadIssue == null) return@ListItem
+
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    version?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    loadIssue?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             },
             trailingContent = {
