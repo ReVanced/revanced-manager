@@ -207,23 +207,6 @@ fun OnboardingScreen(
                         onDownloadersEnabledChange = { downloaderUpdatesEnabled = it },
                     )
 
-                    /*
-                    OnboardingStep.Sources -> {
-                        SourcesStepContent(
-                        apiDownloaderState = vm.apiDownloaderState,
-                        apiDownloaderProgress = vm.apiDownloaderProgress,
-                        apiDownloaderIsUpdate = vm.apiDownloaderIsUpdate,
-                        apiDownloaderIsTrusted = vm.apiDownloaderIsTrusted,
-                        apiDownloaderName = apiDownloaderLabel,
-                        apiDownloaderSignature = apiDownloaderSignature,
-                        onInstallApiDownloader = vm::startApiDownloaderInstall,
-                        onRetryApiDownloader = vm::retryApiDownloaderDownload,
-                        onTrustApiDownloader = {
-                            vm.apiDownloaderPackageName.value?.let { vm.trustDownloader(it) }
-                        }
-                    )
-                    }*/
-
                     OnboardingStep.Apps -> AppsStepContent(
                         modifier = Modifier.weight(1f),
                         apps = apps,
