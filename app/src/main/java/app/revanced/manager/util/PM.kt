@@ -185,3 +185,11 @@ class PM(
 
     fun canInstallPackages() = app.packageManager.canRequestPackageInstalls()
 }
+
+/**
+ * Returns true if this package is a split APK (i.e. has multiple split source dirs).
+ * Split APKs cannot be used directly as a patch source.
+ */
+fun PackageInfo.isSplitApk(): Boolean =
+    !applicationInfo?.splitSourceDirs.isNullOrEmpty() || !splitNames.isNullOrEmpty()
+

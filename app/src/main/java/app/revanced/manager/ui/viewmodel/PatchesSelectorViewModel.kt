@@ -63,7 +63,7 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         private set
 
     val allowIncompatiblePatches =
-        get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
+        get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking() || appVersion == null
     val bundlesFlow = if (browseAllBundles) {
         bundleRepository.bundleInfoFlow.map { bundles ->
             bundles.values.map(PatchBundleInfo.Global::asReadonlyScoped)

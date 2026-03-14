@@ -99,7 +99,7 @@ Second \"item\" text"</string>
     <string name="selected_app_meta_any_version">Any available version</string>
     <string name="app_source_dialog_title">Select source</string>
     <string name="app_source_dialog_option_auto">Auto</string>
-    <string name="app_source_dialog_option_auto_description">Use a previously downloaded or all available downloaders</string>
+    <string name="app_source_dialog_option_auto_description">Use installed app, then downloaded APK, then available downloaders</string>
     <string name="app_source_dialog_option_auto_unavailable">No downloader available</string>
     <string name="app_source_dialog_option_installed_no_root">Mounted apps cannot be patched again without root access</string>
     <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
@@ -113,7 +113,11 @@ Second \"item\" text"</string>
     <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
     <string name="apk_source_selector_item">Select APK source</string>
-    <string name="apk_source_auto">Using all APK downloaders</string>
+    <string name="apk_source_auto">Auto</string>
+    <string name="apk_source_auto_installed">Auto · Using installed APK</string>
+    <string name="apk_source_auto_downloaded">Auto · Using downloaded APK</string>
+    <string name="apk_source_auto_downloader">Auto · Using available downloaders</string>
+    <string name="apk_source_auto_storage">Auto · Select from storage</string>
     <string name="apk_source_downloader">Using %s</string>
     <string name="apk_source_installed">Using installed APK</string>
     <string name="apk_source_local">Using a local APK file</string>
@@ -372,6 +376,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="download_application">Download application?</string>
     <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
     <string name="failed_to_load_apk">Failed to load APK</string>
+    <string name="split_apk_not_supported">Split APKs cannot be patched</string>
     <string name="loading">Loading…</string>
     <string name="not_installed">Not installed</string>
     <string name="installed">Installed</string>
