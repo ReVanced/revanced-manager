@@ -24,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,7 @@ fun SettingsListItem(
     onLongClickLabel: String? = null,
     overlineContent: @Composable (() -> Unit)? = null,
     supportingContent: String? = null,
+    supportingContentColor: Color = Color.Unspecified,
     leadingContent: @Composable (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
 ) {
@@ -64,7 +66,14 @@ fun SettingsListItem(
                 }
             }
         },
-        supportingContent = supportingContent?.let { { Text(it) } },
+        supportingContent = supportingContent?.let {
+            {
+                Text(
+                    text = it,
+                    color = supportingContentColor
+                )
+            }
+        },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(headlineContent)
@@ -81,6 +90,7 @@ fun SettingsListItem(
     onLongClickLabel: String? = null,
     overlineContent: @Composable (() -> Unit)? = null,
     supportingContent: String? = null,
+    supportingContentColor: Color = Color.Unspecified,
     leadingContent: @Composable (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
 ) {
@@ -99,7 +109,14 @@ fun SettingsListItem(
         overlineContent = overlineContent,
         leadingContent = leadingContent,
         trailingContent = trailingContent,
-        supportingContent = supportingContent?.let { { Text(it) } },
+        supportingContent = supportingContent?.let {
+            {
+                Text(
+                    text = it,
+                    color = supportingContentColor
+                )
+            }
+        },
         content = headlineContent
     )
 }

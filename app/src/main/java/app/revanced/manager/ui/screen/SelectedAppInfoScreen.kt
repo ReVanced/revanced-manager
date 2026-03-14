@@ -35,8 +35,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -60,7 +60,6 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.enabled
-import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -74,7 +73,6 @@ fun SelectedAppInfoScreen(
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
-    val context = LocalContext.current
     val resources = LocalResources.current
     val networkInfo = koinInject<NetworkInfo>()
     val networkConnected = remember { networkInfo.isConnected() }
@@ -102,6 +100,16 @@ fun SelectedAppInfoScreen(
             )
         }
     }
+    val strictVersionOptions by remember(bundles, patches, packageName) {
+        derivedStateOf {
+            buildVersionOptions(
+                bundles = bundles,
+                selectedPatches = patches,
+                packageName = packageName,
+                allowIncompatible = false
+            )
+        }
+    }
     val selectedVersionLabel by remember(vm.selectedApp.version) {
         derivedStateOf {
             vm.selectedApp.version ?: resources.getString(R.string.selected_app_meta_any_version)
@@ -109,6 +117,23 @@ fun SelectedAppInfoScreen(
     }
     var showVersionSelector by remember { mutableStateOf(false) }
     val selectedPatchCount = patches.values.sumOf { it.size }
+    val hasModifiedPatchSelection by remember(bundles, effectiveAllowIncompatible) {
+        derivedStateOf {
+            vm.hasModifiedPatchSelection(bundles, effectiveAllowIncompatible)
+        }
+    }
+    val showVersionCompatibilityWarning by remember(
+        vm.selectedApp.version,
+        allowIncompatiblePatches,
+        strictVersionOptions
+    ) {
+        derivedStateOf {
+            val selectedVersion = vm.selectedApp.version ?: return@derivedStateOf false
+            allowIncompatiblePatches &&
+                strictVersionOptions.versions.isNotEmpty() &&
+                selectedVersion !in strictVersionOptions.versions
+        }
+    }
 
     LaunchedEffect(versionOptions, vm.selectedApp.version) {
         if (versionOptions.unrestricted) return@LaunchedEffect
@@ -258,6 +283,11 @@ fun SelectedAppInfoScreen(
                     R.string.patch_selector_item_description,
                     selectedPatchCount
                 ),
+                warningDescription = if (hasModifiedPatchSelection) {
+                    stringResource(R.string.patch_selection_changed_warning)
+                } else {
+                    null
+                },
                 onClick = {
                     onPatchSelectorClick(
                         vm.selectedApp,
@@ -272,6 +302,11 @@ fun SelectedAppInfoScreen(
             PageItem(
                 R.string.version,
                 selectedVersionLabel,
+                warningDescription = if (showVersionCompatibilityWarning) {
+                    stringResource(R.string.version_compatibility_warning)
+                } else {
+                    null
+                },
                 enabled = versionOptions.unrestricted || versionOptions.versions.isNotEmpty(),
                 onClick = { showVersionSelector = true }
             )
@@ -355,6 +390,8 @@ private fun PageItem(
     @StringRes title: Int,
     description: String,
     enabled: Boolean = true,
+    warningDescription: String? = null,
+    warningColor: Color = Color.Unspecified,
     onClick: () -> Unit
 ) {
     ListItem(
@@ -370,11 +407,25 @@ private fun PageItem(
             )
         },
         supportingContent = {
-            Text(
-                description,
-                color = MaterialTheme.colorScheme.outline,
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(
+                    description,
+                    color = MaterialTheme.colorScheme.outline,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                warningDescription?.let {
+                    Text(
+                        text = "(!) $it",
+                        color = if (warningColor == Color.Unspecified) {
+                            MaterialTheme.colorScheme.tertiary
+                        } else {
+                            warningColor
+                        },
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
         },
         trailingContent = {
             Icon(Icons.AutoMirrored.Outlined.ArrowRight, null)

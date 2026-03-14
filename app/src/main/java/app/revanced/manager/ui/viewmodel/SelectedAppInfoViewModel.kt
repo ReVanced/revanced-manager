@@ -403,6 +403,15 @@ class SelectedAppInfoViewModel(
     fun getPatches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
         selectionState.patches(bundles, allowIncompatible)
 
+    fun hasModifiedPatchSelection(
+        bundles: List<PatchBundleInfo.Scoped>,
+        allowIncompatible: Boolean
+    ): Boolean {
+        val selected = getPatches(bundles, allowIncompatible)
+        val defaults = bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
+        return selected != defaults
+    }
+
     fun getCustomPatches(
         bundles: List<PatchBundleInfo.Scoped>,
         allowIncompatible: Boolean

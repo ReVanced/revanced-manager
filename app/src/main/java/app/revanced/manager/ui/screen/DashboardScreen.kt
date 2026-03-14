@@ -138,6 +138,23 @@ fun DashboardScreen(
     val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(false)
     val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
+    val disablePatchVersionCompatCheck by vm.prefs.disablePatchVersionCompatCheck.getAsState()
+    val disableSelectionWarning by vm.prefs.disableSelectionWarning.getAsState()
+    val disableUniversalPatchCheck by vm.prefs.disableUniversalPatchCheck.getAsState()
+    val suggestedVersionSafeguard by vm.prefs.suggestedVersionSafeguard.getAsState()
+    val safeguardsToggled by remember(
+        disablePatchVersionCompatCheck,
+        disableSelectionWarning,
+        disableUniversalPatchCheck,
+        suggestedVersionSafeguard
+    ) {
+        derivedStateOf {
+            disablePatchVersionCompatCheck ||
+                disableSelectionWarning ||
+                disableUniversalPatchCheck ||
+                !suggestedVersionSafeguard
+        }
+    }
     val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
     val androidContext = LocalContext.current
     val resources = LocalResources.current
@@ -442,7 +459,18 @@ fun DashboardScreen(
                                 onClick = onSettingsClick,
                                 shapes = IconButtonDefaults.shapes()
                             ) {
-                                Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                                BadgedBox(
+                                    badge = {
+                                        if (safeguardsToggled) {
+                                            Badge(
+                                                modifier = Modifier.size(6.dp),
+                                                containerColor = MaterialTheme.colorScheme.error
+                                            )
+                                        }
+                                    }
+                                ) {
+                                    Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                                }
                             }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
