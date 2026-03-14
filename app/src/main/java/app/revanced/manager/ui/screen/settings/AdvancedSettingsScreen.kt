@@ -4,33 +4,44 @@ import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Build
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Api
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -46,9 +57,8 @@ import androidx.core.content.getSystemService
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
-import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
@@ -58,7 +68,7 @@ import app.revanced.manager.util.toast
 import app.revanced.manager.util.withHapticFeedback
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
@@ -74,47 +84,81 @@ fun AdvancedSettingsScreen(
             activityManager.largeMemoryClass
         )
     }
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val scrollState = rememberScrollState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = {
+            scrollState.canScrollBackward || scrollState.canScrollForward
+        }
+    )
+
+    val showDeveloperSettings by viewModel.prefs.showDeveloperSettings.getAsState()
+    var developerTaps by rememberSaveable { mutableIntStateOf(0) }
+
+    LaunchedEffect(developerTaps) {
+        if (developerTaps < 10) return@LaunchedEffect
+
+        if (showDeveloperSettings) {
+            context.toast(context.getString(R.string.developer_options_already_enabled))
+        } else {
+            viewModel.prefs.showDeveloperSettings.update(true)
+            context.toast(context.getString(R.string.developer_options_enabled))
+        }
+        developerTaps = 0
+    }
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.advanced),
-                scrollBehavior = scrollBehavior,
-                onBackClick = onBackClick
+            MediumFlexibleTopAppBar(
+                title = { Text(stringResource(R.string.advanced)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier.then(
+            scrollBehavior.let { Modifier.nestedScroll(it.nestedScrollConnection) }
+        ),
     ) { paddingValues ->
         ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            state = scrollState
         ) {
-            GroupHeader(stringResource(R.string.manager))
+            ListSection(
+                title = stringResource(R.string.manager),
+                leadingContent = { Icon(Icons.Outlined.WorkOutline, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                val apiUrl by viewModel.prefs.api.getAsState()
+                var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
-            val apiUrl by viewModel.prefs.api.getAsState()
-            var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
-
-            if (showApiUrlDialog) {
-                APIUrlDialog(
-                    currentUrl = apiUrl,
-                    defaultUrl = viewModel.prefs.api.default,
-                    onSubmit = {
-                        showApiUrlDialog = false
-                        it?.let(viewModel::setApiUrl)
-                    }
+                if (showApiUrlDialog) {
+                    APIUrlDialog(
+                        currentUrl = apiUrl,
+                        defaultUrl = viewModel.prefs.api.default,
+                        onSubmit = {
+                            showApiUrlDialog = false
+                            it?.let(viewModel::setApiUrl)
+                        }
+                    )
+                }
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_url),
+                    supportingContent = stringResource(R.string.api_url_description),
+                    onClick = { showApiUrlDialog = true }
                 )
             }
-            SettingsListItem(
-                headlineContent = stringResource(R.string.api_url),
-                supportingContent = stringResource(R.string.api_url_description),
-                modifier = Modifier.clickable {
-                    showApiUrlDialog = true
-                }
-            )
 
-            GroupHeader(stringResource(R.string.safeguards))
+            ListSection(
+                title = stringResource(R.string.safeguards),
+                leadingContent = { Icon(Icons.Outlined.Security, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
             SafeguardBooleanItem(
                 preference = viewModel.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = viewModel.viewModelScope,
@@ -136,39 +180,50 @@ fun AdvancedSettingsScreen(
                 description = R.string.patch_selection_safeguard_description,
                 confirmationText = R.string.patch_selection_safeguard_confirmation
             )
-            SafeguardBooleanItem(
-                preference = viewModel.prefs.disableUniversalPatchCheck,
-                coroutineScope = viewModel.viewModelScope,
-                headline = R.string.universal_patches_safeguard,
-                description = R.string.universal_patches_safeguard_description,
-                confirmationText = R.string.universal_patches_safeguard_confirmation
-            )
+                SafeguardBooleanItem(
+                    preference = viewModel.prefs.disableUniversalPatchCheck,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.universal_patches_safeguard,
+                    description = R.string.universal_patches_safeguard_description,
+                    confirmationText = R.string.universal_patches_safeguard_confirmation
+                )
+            }
 
-            GroupHeader(stringResource(R.string.patcher))
-            BooleanItem(
-                preference = viewModel.prefs.useProcessRuntime,
-                coroutineScope = viewModel.viewModelScope,
-                headline = R.string.process_runtime,
-                description = R.string.process_runtime_description,
-            )
-            IntegerItem(
-                preference = viewModel.prefs.patcherProcessMemoryLimit,
-                coroutineScope = viewModel.viewModelScope,
-                headline = R.string.process_runtime_memory_limit,
-                description = R.string.process_runtime_memory_limit_description,
-            )
+            ListSection(
+                title = stringResource(R.string.patcher),
+                leadingContent = { Icon(Icons.Outlined.Tune, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                val useProcessRuntime by viewModel.prefs.useProcessRuntime.getAsState()
 
-            GroupHeader(stringResource(R.string.debugging))
-            val exportDebugLogsLauncher =
-                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    it?.let(viewModel::exportDebugLogs)
+                BooleanItem(
+                    preference = viewModel.prefs.useProcessRuntime,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.process_runtime,
+                    description = R.string.process_runtime_description,
+                )
+                AnimatedVisibility(
+                    visible = useProcessRuntime,
+                ) {
+                    IntegerItem(
+                        preference = viewModel.prefs.patcherProcessMemoryLimit,
+                        coroutineScope = viewModel.viewModelScope,
+                        headline = R.string.process_runtime_memory_limit,
+                        description = R.string.process_runtime_memory_limit_description,
+                        unit = "MiB",
+                    )
                 }
-            SettingsListItem(
-                headlineContent = stringResource(R.string.debug_logs_export),
-                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(viewModel.debugLogFileName) }
-            )
-            val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
-            val deviceContent = """
+            }
+
+            ListSection(
+                title = stringResource(R.string.debugging),
+                leadingContent = { Icon(Icons.Outlined.BugReport, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                val exportDebugLogsLauncher =
+                    rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
+                        it?.let(viewModel::exportDebugLogs)
+                    }
+                val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
+                val deviceContent = """
                     Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
                     Build type: ${BuildConfig.BUILD_TYPE}
                     Model: ${Build.MODEL}
@@ -176,25 +231,28 @@ fun AdvancedSettingsScreen(
                     Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
                     Memory limit: $memoryLimit
                 """.trimIndent()
-            SettingsListItem(
-                modifier = Modifier.combinedClickable(
-                    onClick = { },
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.debug_logs_export),
+                    onClick = { exportDebugLogsLauncher.launch(viewModel.debugLogFileName) }
+                )
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.about_device),
+                    supportingContent = deviceContent,
+                    onClick = { developerTaps++ },
                     onLongClickLabel = stringResource(R.string.copy_to_clipboard),
                     onLongClick = {
                         clipboard.setPrimaryClip(
                             ClipData.newPlainText("Device Information", deviceContent)
                         )
-
-                        context.toast(resources.getString(R.string.toast_copied_to_clipboard))
-                    }.withHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                ),
-                headlineContent = stringResource(R.string.about_device),
-                supportingContent = deviceContent
-            )
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
+                    }.withHapticFeedback(HapticFeedbackConstantsCompat.LONG_PRESS)
+                )
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
     var url by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
@@ -205,13 +263,14 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
             TextButton(
                 onClick = {
                     onSubmit(url)
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.api_url_dialog_save))
             }
         },
         dismissButton = {
-            TextButton(onClick = { onSubmit(null) }) {
+            TextButton(onClick = { onSubmit(null) }, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -227,6 +286,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
         },
         text = {
             Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
@@ -245,7 +305,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     onValueChange = { url = it },
                     label = { Text(stringResource(R.string.api_url)) },
                     trailingIcon = {
-                        IconButton(onClick = { url = defaultUrl }) {
+                        IconButton(onClick = { url = defaultUrl }, shapes = IconButtonDefaults.shapes()) {
                             Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
                         }
                     }

@@ -15,30 +15,45 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -48,33 +63,35 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
+import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.CheckedFilterChip
+import app.revanced.manager.ui.component.FullscreenDialog
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchBar
-import app.revanced.manager.ui.component.bundle.BundlePatchList
-import app.revanced.manager.ui.component.bundle.BundleSectionHeader
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
-import app.revanced.manager.ui.component.patches.IncompatiblePatchDialog
-import app.revanced.manager.ui.component.patches.IncompatiblePatchesDialog
-import app.revanced.manager.ui.component.patches.ListHeader
-import app.revanced.manager.ui.component.patches.OptionsDialog
-import app.revanced.manager.ui.component.patches.ScopeDialog
+import app.revanced.manager.ui.component.haptics.HapticTab
+import app.revanced.manager.ui.component.haptics.HapticTriStateCheckbox
+import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.component.patches.SelectionWarningDialog
-import app.revanced.manager.ui.component.patches.UniversalPatchWarningDialog
-import app.revanced.manager.ui.component.patches.patchList
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_INCOMPATIBLE
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
@@ -84,8 +101,11 @@ import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.sample
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, FlowPreview::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, FlowPreview::class,
+    ExperimentalMaterial3ExpressiveApi::class
+)
 @Composable
 fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
@@ -93,65 +113,200 @@ fun PatchesSelectorScreen(
     viewModel: PatchesSelectorViewModel
 ) {
     val bundles by viewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
-    val (query, setQuery) = rememberSaveable { mutableStateOf("") }
-    val (searchExpanded, setSearchExpanded) = rememberSaveable { mutableStateOf(false) }
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        bundles.size
+    }
+    val composableScope = rememberCoroutineScope()
+    val (query, setQuery) = rememberSaveable {
+        mutableStateOf("")
+    }
+    val (searchExpanded, setSearchExpanded) = rememberSaveable {
+        mutableStateOf(false)
+    }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-    val showSaveButton by remember { derivedStateOf { viewModel.selectionIsValid(bundles) } }
+    val showSaveButton by remember {
+        derivedStateOf { viewModel.selectionIsValid(bundles) }
+    }
 
     val defaultPatchSelectionCount by viewModel.defaultSelectionCount
         .collectAsStateWithLifecycle(initialValue = 0)
+
     val selectedPatchCount by remember {
         derivedStateOf {
             viewModel.customPatchSelection?.values?.sumOf { it.size } ?: defaultPatchSelectionCount
         }
     }
 
-    val lazyListState = rememberLazyListState()
+    val patchLazyListStates = remember(bundles) { List(bundles.size) { LazyListState() } }
 
     var showSelectionWarning by rememberSaveable { mutableStateOf(false) }
     var showUniversalWarning by rememberSaveable { mutableStateOf(false) }
-    var showIncompatiblePatchesDialog by rememberSaveable { mutableStateOf(false) }
+
     var pendingScopeAction by remember { mutableStateOf<((Int?) -> Unit)?>(null) }
 
     fun executeScopedAction(action: (Int?) -> Unit) {
-        if (bundles.size > 1) pendingScopeAction = action
-        else action(bundles.firstOrNull()?.uid)
-    }
-
-    fun handlePatchClick(uid: Int, patch: PatchInfo, compatible: Boolean) {
-        when {
-            !compatible -> viewModel.openIncompatibleDialog(patch)
-            viewModel.selectionWarningEnabled -> showSelectionWarning = true
-            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled ->
-                showUniversalWarning = true
-            else -> viewModel.togglePatch(uid, patch)
+        if (bundles.size > 1) {
+            pendingScopeAction = action
+        } else {
+            action(bundles.firstOrNull()?.uid)
         }
     }
 
     pendingScopeAction?.let { action ->
-        val firstBundle = bundles.firstOrNull() ?: return@let
+        val currentBundle = bundles.getOrNull(pagerState.currentPage) ?: return@let
+
         ScopeDialog(
-            bundleName = firstBundle.name,
+            bundleName = currentBundle.name,
             onDismissRequest = { pendingScopeAction = null },
-            onAllPatches = { action(null); pendingScopeAction = null },
-            onBundleOnly = { action(firstBundle.uid); pendingScopeAction = null }
+            onAllPatches = {
+                action(null)
+                pendingScopeAction = null
+            },
+            onBundleOnly = {
+                action(currentBundle.uid)
+                pendingScopeAction = null
+            }
         )
     }
 
-    if (viewModel.compatibleVersions.isNotEmpty()) {
+    if (showBottomSheet) {
+        val currentBundle = bundles.getOrNull(pagerState.currentPage)
+
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.patch_selector_sheet_filter_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        CheckedFilterChip(
+                            selected = viewModel.filter and SHOW_INCOMPATIBLE == 0,
+                            onClick = { viewModel.toggleFlag(SHOW_INCOMPATIBLE) },
+                            label = { Text(stringResource(R.string.this_version)) }
+                        )
+
+                        CheckedFilterChip(
+                            selected = viewModel.filter and SHOW_UNIVERSAL != 0,
+                            onClick = { viewModel.toggleFlag(SHOW_UNIVERSAL) },
+                            label = { Text(stringResource(R.string.universal)) },
+                        )
+                    }
+                }
+
+                fun guardedAction(action: () -> Unit) {
+                    showBottomSheet = false
+                    if (viewModel.selectionWarningEnabled) {
+                        showSelectionWarning = true
+                    } else {
+                        action()
+                    }
+                }
+
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+                Text(
+                    text = stringResource(R.string.patch_selector_sheet_actions_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                ListSection(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    ActionItem(
+                        icon = Icons.Outlined.Restore,
+                        text = stringResource(R.string.restore_default_selection),
+                        onClick = {
+                            guardedAction {
+                                executeScopedAction { uid ->
+                                    viewModel.restoreDefaults(uid)
+                                }
+                            }
+                        }
+                    )
+
+                    ActionItem(
+                        icon = Icons.Outlined.Deselect,
+                        text = stringResource(R.string.deselect_all),
+                        onClick = {
+                            guardedAction {
+                                executeScopedAction { uid ->
+                                    viewModel.deselectAll(bundles, uid)
+                                }
+                            }
+                        }
+                    )
+
+                    ActionItem(
+                        icon = Icons.Outlined.SwapHoriz,
+                        text = stringResource(R.string.invert_selection),
+                        onClick = {
+                            guardedAction {
+                                executeScopedAction { uid ->
+                                    viewModel.invertSelection(bundles, uid)
+                                }
+                            }
+                        }
+                    )
+
+                    if (bundles.size > 1 && currentBundle != null) {
+                        ActionItem(
+                            icon = Icons.Outlined.Deselect,
+                            text = stringResource(R.string.deselect_all_except, currentBundle.name),
+                            onClick = {
+                                guardedAction {
+                                    viewModel.deselectAllExcept(bundles, currentBundle.uid)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    if (viewModel.compatibleVersions.isNotEmpty())
         IncompatiblePatchDialog(
             appVersion = viewModel.appVersion ?: stringResource(R.string.any_version),
             compatibleVersions = viewModel.compatibleVersions,
             onDismissRequest = viewModel::dismissDialogs
         )
+    var showIncompatiblePatchesDialog by rememberSaveable {
+        mutableStateOf(false)
     }
-
-    if (showIncompatiblePatchesDialog) {
+    if (showIncompatiblePatchesDialog)
         IncompatiblePatchesDialog(
             appVersion = viewModel.appVersion ?: stringResource(R.string.any_version),
             onDismissRequest = { showIncompatiblePatchesDialog = false }
         )
-    }
 
     viewModel.optionsDialog?.let { (bundle, patch) ->
         OptionsDialog(
@@ -164,61 +319,159 @@ fun PatchesSelectorScreen(
         )
     }
 
-    if (showSelectionWarning) SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
-    if (showUniversalWarning) UniversalPatchWarningDialog(onDismiss = { showUniversalWarning = false })
+    if (showSelectionWarning)
+        SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
 
-    if (showBottomSheet) {
-        FilterAndActionsBottomSheet(
-            onDismiss = { showBottomSheet = false },
-            viewModel = viewModel,
-            bundles = bundles,
-            onShowSelectionWarning = { showSelectionWarning = true },
-            executeScopedAction = ::executeScopedAction
-        )
+    if (showUniversalWarning)
+        UniversalPatchWarningDialog(onDismiss = { showUniversalWarning = false })
+
+    fun LazyListScope.patchList(
+        uid: Int,
+        patches: List<PatchInfo>,
+        visible: Boolean,
+        compatible: Boolean,
+        header: (@Composable () -> Unit)? = null
+    ) {
+        if (patches.isNotEmpty() && visible) {
+            header?.let {
+                item(contentType = 0) {
+                    it()
+                }
+            }
+
+            items(
+                items = patches,
+                key = { it.name },
+                contentType = { 1 }
+            ) { patch ->
+                PatchItem(
+                    patch = patch,
+                    onOptionsDialog = { viewModel.optionsDialog = uid to patch },
+                    selected = compatible && viewModel.isSelected(
+                        uid,
+                        patch
+                    ),
+                    onToggle = {
+                        when {
+                            // Open incompatible dialog if the patch is not supported
+                            !compatible -> viewModel.openIncompatibleDialog(patch)
+
+                            // Show selection warning if enabled
+                            viewModel.selectionWarningEnabled -> showSelectionWarning = true
+
+                            // Show universal warning if universal patch is selected and the toggle is off
+                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning =
+                                true
+
+                            // Toggle the patch otherwise
+                            else -> viewModel.togglePatch(uid, patch)
+                        }
+                    },
+                    compatible = compatible
+                )
+            }
+        }
     }
 
     Scaffold(
         topBar = {
-            PatchesSelectorSearchBar(
+            SearchBar(
                 query = query,
                 onQueryChange = setQuery,
-                searchExpanded = searchExpanded,
-                onSearchExpandedChange = setSearchExpanded,
-                onBackClick = onBackClick,
-                onFilterClick = { showBottomSheet = true }
-            ) {
-                fun List<PatchInfo>.searched() = filter { it.name.contains(query, true) }
-
-                BundlePatchList(
-                    bundles = bundles,
-                    uid = { it.uid },
-                    modifier = Modifier.fillMaxSize(),
-                    autoExpandInitial = true,
-                    headerContent = { bundle, expanded, _ ->
-                        if (bundles.size > 1) {
-                            BundleSectionHeader(
-                                name = bundle.name,
-                                version = bundle.version,
-                                expanded = expanded,
-                            )
-                        }
-                    },
-                    patchContent = { bundle ->
-                        bundlePatchLists(
-                            compatible = bundle.compatible.searched(),
-                            universal = bundle.universal.searched(),
-                            incompatible = bundle.incompatible.searched(),
-                            filter = viewModel.filter,
-                            allowIncompatiblePatches = viewModel.allowIncompatiblePatches,
-                            onOptionsDialog = { patch -> viewModel.optionsDialog = bundle.uid to patch },
-                            isSelected = { patch -> viewModel.isSelected(bundle.uid, patch) },
-                            onPatchClick = { patch, compatible ->
-                                handlePatchClick(bundle.uid, patch, compatible)
-                            },
-                            onIncompatibleHelpClick = { showIncompatiblePatchesDialog = true }
+                expanded = searchExpanded,
+                onExpandedChange = setSearchExpanded,
+                placeholder = {
+                    Text(stringResource(R.string.search_patches))
+                },
+                leadingIcon = {
+                    val rotation by animateFloatAsState(
+                        targetValue = if (searchExpanded) 360f else 0f,
+                        animationSpec = tween(durationMillis = 400, easing = EaseInOut),
+                        label = "SearchBar back button"
+                    )
+                    IconButton(
+                        onClick = {
+                            if (searchExpanded) {
+                                setSearchExpanded(false)
+                            } else {
+                                onBackClick()
+                            }
+                        },
+                        shapes = IconButtonDefaults.shapes()
+                    ) {
+                        Icon(
+                            modifier = Modifier.rotate(rotation),
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
-                )
+                },
+                trailingIcon = {
+                    AnimatedContent(
+                        targetState = searchExpanded,
+                        label = "Filter/Clear",
+                        transitionSpec = { fadeIn() togetherWith fadeOut() }
+                    ) { searchExpanded ->
+                        if (searchExpanded) {
+                            IconButton(
+                                onClick = { setQuery("") },
+                                enabled = query.isNotEmpty(),
+                                shapes = IconButtonDefaults.shapes()
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = stringResource(R.string.clear)
+                                )
+                            }
+                        } else {
+                            IconButton(onClick = { showBottomSheet = true }, shapes = IconButtonDefaults.shapes()) {
+                                Icon(
+                                    imageVector = Icons.Outlined.FilterList,
+                                    contentDescription = stringResource(R.string.more)
+                                )
+                            }
+                        }
+                    }
+                }
+            ) {
+                val bundle = bundles[pagerState.currentPage]
+
+                LazyColumnWithScrollbar(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    fun List<PatchInfo>.searched() = filter {
+                        it.name.contains(query, true)
+                    }
+
+                    patchList(
+                        uid = bundle.uid,
+                        patches = bundle.compatible.searched(),
+                        visible = true,
+                        compatible = true
+                    )
+                    patchList(
+                        uid = bundle.uid,
+                        patches = bundle.universal.searched(),
+                        visible = viewModel.filter and SHOW_UNIVERSAL != 0,
+                        compatible = true
+                    ) {
+                        ListHeader(
+                            title = stringResource(R.string.universal_patches),
+                        )
+                    }
+
+                    patchList(
+                        uid = bundle.uid,
+                        patches = bundle.incompatible.searched(),
+                        visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
+                        compatible = viewModel.allowIncompatiblePatches
+                    ) {
+                        ListHeader(
+                            title = stringResource(R.string.incompatible_patches),
+                            onHelpClick = { showIncompatiblePatchesDialog = true }
+                        )
+                    }
+                }
             }
         },
         floatingActionButton = {
@@ -240,333 +493,360 @@ fun PatchesSelectorScreen(
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
 
-                    SaveButton(
-                        lazyListState = lazyListState,
-                        selectedPatchCount = selectedPatchCount,
-                        onSave = { onSave(viewModel.getCustomSelection(), viewModel.getOptions()) }
+                    val isScrollingUp =
+                        patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp()
+                    val expanded by produceState(true, isScrollingUp) {
+                        val state = isScrollingUp ?: return@produceState
+                        value = state.value
+
+                        // Use snapshotFlow and sample to prevent the value from changing too often.
+                        snapshotFlow { state.value }
+                            .sample(333L)
+                            .collect {
+                                value = it
+                            }
+                    }
+
+                    HapticExtendedFloatingActionButton(
+                        text = {
+                            Text(
+                                stringResource(
+                                    R.string.save_with_count,
+                                    selectedPatchCount
+                                )
+                            )
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Save,
+                                contentDescription = stringResource(R.string.save)
+                            )
+                        },
+                        expanded = expanded,
+                        onClick = {
+                            onSave(viewModel.getCustomSelection(), viewModel.getOptions())
+                        }
                     )
                 }
             }
         }
     ) { paddingValues ->
-        BundlePatchList(
-            bundles = bundles,
-            uid = { it.uid },
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            lazyListState = lazyListState,
-            autoExpandInitial = true,
-            headerContent = { bundle, expanded, onToggleExpand ->
-                BundleSectionHeader(
-                    name = bundle.name,
-                    version = bundle.version,
-                    expanded = expanded,
-                    onToggleExpand = onToggleExpand,
-                )
-            },
-            patchContent = { bundle ->
-                bundlePatchLists(
-                    compatible = bundle.compatible,
-                    universal = bundle.universal,
-                    incompatible = bundle.incompatible,
-                    filter = viewModel.filter,
-                    allowIncompatiblePatches = viewModel.allowIncompatiblePatches,
-                    onOptionsDialog = { patch -> viewModel.optionsDialog = bundle.uid to patch },
-                    isSelected = { patch -> viewModel.isSelected(bundle.uid, patch) },
-                    onPatchClick = { patch, compatible ->
-                        handlePatchClick(bundle.uid, patch, compatible)
-                    },
-                    onIncompatibleHelpClick = { showIncompatiblePatchesDialog = true }
-                )
+                .padding(paddingValues)
+                .padding(top = 4.dp)
+        ) {
+            if (bundles.size > 1) {
+                PrimaryScrollableTabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    edgePadding = 0.dp
+                ) {
+                    bundles.forEachIndexed { index, bundle ->
+                        HapticTab(
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                composableScope.launch {
+                                    pagerState.animateScrollToPage(
+                                        index
+                                    )
+                                }
+                            },
+                            text = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    val selectionState = viewModel.getBundleSelectionState(bundle)
+                                    val toggleableState = when (selectionState) {
+                                        true -> ToggleableState.On
+                                        false -> ToggleableState.Off
+                                        null -> ToggleableState.Indeterminate
+                                    }
+
+                                    HapticTriStateCheckbox(
+                                        state = toggleableState,
+                                        onClick = {
+                                            when {
+                                                viewModel.selectionWarningEnabled -> showSelectionWarning = true
+                                                selectionState == false -> viewModel.restoreDefaults(bundle.uid)
+                                                else -> viewModel.deselectAll(bundles, bundle.uid)
+                                            }
+                                        }
+                                    )
+
+                                    Spacer(modifier = Modifier.width(4.dp))
+
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Text(
+                                            text = bundle.name,
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Text(
+                                            text = bundle.version.orEmpty(),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            },
+                            selectedContentColor = MaterialTheme.colorScheme.primary,
+                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
-        )
+
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = true,
+                pageContent = { index ->
+                    // Avoid crashing if the lists have not been fully initialized yet.
+                    if (index > bundles.lastIndex || bundles.size != patchLazyListStates.size) return@HorizontalPager
+                    val bundle = bundles[index]
+
+                    LazyColumnWithScrollbar(
+                        modifier = Modifier.fillMaxSize(),
+                        state = patchLazyListStates[index]
+                    ) {
+                        patchList(
+                            uid = bundle.uid,
+                            patches = bundle.compatible,
+                            visible = true,
+                            compatible = true
+                        )
+                        patchList(
+                            uid = bundle.uid,
+                            patches = bundle.universal,
+                            visible = viewModel.filter and SHOW_UNIVERSAL != 0,
+                            compatible = true
+                        ) {
+                            ListHeader(
+                                title = stringResource(R.string.universal_patches),
+                            )
+                        }
+                        patchList(
+                            uid = bundle.uid,
+                            patches = bundle.incompatible,
+                            visible = viewModel.filter and SHOW_INCOMPATIBLE != 0,
+                            compatible = viewModel.allowIncompatiblePatches
+                        ) {
+                            ListHeader(
+                                title = stringResource(R.string.incompatible_patches),
+                                onHelpClick = { showIncompatiblePatchesDialog = true }
+                            )
+                        }
+                    }
+                }
+            )
+        }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PatchesSelectorSearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    searchExpanded: Boolean,
-    onSearchExpandedChange: (Boolean) -> Unit,
-    onBackClick: () -> Unit,
-    onFilterClick: () -> Unit,
-    searchResultsContent: @Composable () -> Unit
+private fun UniversalPatchWarningDialog(
+    onDismiss: () -> Unit
 ) {
-    SearchBar(
-        query = query,
-        onQueryChange = onQueryChange,
-        expanded = searchExpanded,
-        onExpandedChange = onSearchExpandedChange,
-        placeholder = { Text(stringResource(R.string.search_patches)) },
-        leadingIcon = {
-            SearchBarBackButton(
-                searchExpanded = searchExpanded,
-                onSearchCollapse = { onSearchExpandedChange(false) },
-                onBackClick = onBackClick
+    SafeguardDialog(
+        onDismiss = onDismiss,
+        title = R.string.warning,
+        body = stringResource(R.string.universal_patch_warning_description),
+    )
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun PatchItem(
+    patch: PatchInfo,
+    onOptionsDialog: () -> Unit,
+    selected: Boolean,
+    onToggle: () -> Unit,
+    compatible: Boolean = true
+) = ListItem(
+    modifier = Modifier
+        .let { if (!compatible) it.alpha(0.5f) else it }
+        .clickable(onClick = onToggle)
+        .fillMaxSize(),
+    leadingContent = {
+        HapticCheckbox(
+            checked = selected,
+            onCheckedChange = { onToggle() },
+            enabled = compatible
+        )
+    },
+    headlineContent = { Text(patch.name) },
+    supportingContent = patch.description?.let { { Text(it) } },
+    trailingContent = {
+        if (patch.options?.isNotEmpty() == true) {
+            IconButton(onClick = onOptionsDialog, enabled = compatible, shapes = IconButtonDefaults.shapes()) {
+                Icon(Icons.Outlined.Settings, null)
+            }
+        }
+    },
+    colors = transparentListItemColors
+)
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun ListHeader(
+    title: String,
+    onHelpClick: (() -> Unit)? = null
+) {
+    ListItem(
+        headlineContent = {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelLarge
             )
         },
-        trailingIcon = {
-            SearchBarTrailingActions(
-                searchExpanded = searchExpanded,
-                query = query,
-                onClearQuery = { onQueryChange("") },
-                onFilterClick = onFilterClick
-            )
-        }
-    ) {
-        searchResultsContent()
-    }
-}
-
-@Composable
-private fun SearchBarBackButton(
-    searchExpanded: Boolean,
-    onSearchCollapse: () -> Unit,
-    onBackClick: () -> Unit
-) {
-    val rotation by animateFloatAsState(
-        targetValue = if (searchExpanded) 360f else 0f,
-        animationSpec = tween(durationMillis = 400, easing = EaseInOut),
-        label = "SearchBar back button"
-    )
-    IconButton(
-        onClick = { if (searchExpanded) onSearchCollapse() else onBackClick() }
-    ) {
-        Icon(
-            modifier = Modifier.rotate(rotation),
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = stringResource(R.string.back)
-        )
-    }
-}
-
-@Composable
-private fun SearchBarTrailingActions(
-    searchExpanded: Boolean,
-    query: String,
-    onClearQuery: () -> Unit,
-    onFilterClick: () -> Unit
-) {
-    AnimatedContent(
-        targetState = searchExpanded,
-        label = "Filter/Clear",
-        transitionSpec = { fadeIn() togetherWith fadeOut() }
-    ) { expanded ->
-        if (expanded) {
-            IconButton(onClick = onClearQuery, enabled = query.isNotEmpty()) {
-                Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.clear))
+        trailingContent = onHelpClick?.let {
+            {
+                IconButton(onClick = it, shapes = IconButtonDefaults.shapes()) {
+                    Icon(
+                        Icons.AutoMirrored.Outlined.HelpOutline,
+                        stringResource(R.string.help)
+                    )
+                }
             }
-        } else {
-            IconButton(onClick = onFilterClick) {
-                Icon(Icons.Outlined.FilterList, contentDescription = stringResource(R.string.more))
-            }
-        }
-    }
-}
-
-@OptIn(FlowPreview::class)
-@Composable
-private fun SaveButton(
-    lazyListState: LazyListState,
-    selectedPatchCount: Int,
-    onSave: () -> Unit
-) {
-    val isScrollingUp = lazyListState.isScrollingUp()
-    val expanded by produceState(true, isScrollingUp) {
-        value = isScrollingUp.value
-        snapshotFlow { isScrollingUp.value }
-            .sample(333L)
-            .collect { value = it }
-    }
-
-    HapticExtendedFloatingActionButton(
-        text = { Text(stringResource(R.string.save_with_count, selectedPatchCount)) },
-        icon = {
-            Icon(
-                imageVector = Icons.Outlined.Save,
-                contentDescription = stringResource(R.string.save)
-            )
         },
-        expanded = expanded,
-        onClick = onSave
+        colors = transparentListItemColors
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun FilterAndActionsBottomSheet(
-    onDismiss: () -> Unit,
-    viewModel: PatchesSelectorViewModel,
-    bundles: List<PatchBundleInfo.Scoped>,
-    onShowSelectionWarning: () -> Unit,
-    executeScopedAction: ((Int?) -> Unit) -> Unit
-) {
-    ModalBottomSheet(onDismissRequest = onDismiss) {
-        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            FilterSection(
-                filter = viewModel.filter,
-                onToggleFlag = viewModel::toggleFlag
-            )
-
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-
-            ActionsSection(
-                viewModel = viewModel,
-                bundles = bundles,
-                onDismiss = onDismiss,
-                onShowSelectionWarning = onShowSelectionWarning,
-                executeScopedAction = executeScopedAction
-            )
+private fun IncompatiblePatchesDialog(
+    appVersion: String,
+    onDismissRequest: () -> Unit
+) = AlertDialog(
+    icon = {
+        Icon(Icons.Outlined.WarningAmber, null)
+    },
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
+        TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
+            Text(stringResource(R.string.ok))
         }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun FilterSection(
-    filter: Int,
-    onToggleFlag: (Int) -> Unit
-) {
-    Text(
-        text = stringResource(R.string.patch_selector_sheet_filter_title),
-        style = MaterialTheme.typography.headlineSmall,
-        modifier = Modifier.padding(bottom = 16.dp)
-    )
-
-    Text(
-        text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
-        style = MaterialTheme.typography.titleMedium
-    )
-
-    FlowRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        CheckedFilterChip(
-            selected = filter and SHOW_INCOMPATIBLE == 0,
-            onClick = { onToggleFlag(SHOW_INCOMPATIBLE) },
-            label = { Text(stringResource(R.string.this_version)) }
-        )
-        CheckedFilterChip(
-            selected = filter and SHOW_UNIVERSAL != 0,
-            onClick = { onToggleFlag(SHOW_UNIVERSAL) },
-            label = { Text(stringResource(R.string.universal)) }
+    },
+    title = { Text(stringResource(R.string.incompatible_patches)) },
+    text = {
+        Text(
+            stringResource(
+                R.string.incompatible_patches_dialog,
+                appVersion
+            )
         )
     }
-}
+)
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun ActionsSection(
-    viewModel: PatchesSelectorViewModel,
-    bundles: List<PatchBundleInfo.Scoped>,
-    onDismiss: () -> Unit,
-    onShowSelectionWarning: () -> Unit,
-    executeScopedAction: ((Int?) -> Unit) -> Unit
-) {
-    Text(
-        text = stringResource(R.string.patch_selector_sheet_actions_title),
-        style = MaterialTheme.typography.headlineSmall,
-        modifier = Modifier.padding(bottom = 8.dp)
-    )
-
-    fun guardedAction(action: () -> Unit) {
-        onDismiss()
-        if (viewModel.selectionWarningEnabled) {
-            onShowSelectionWarning()
-        } else {
-            action()
+private fun IncompatiblePatchDialog(
+    appVersion: String,
+    compatibleVersions: List<String>,
+    onDismissRequest: () -> Unit
+) = AlertDialog(
+    icon = {
+        Icon(Icons.Outlined.WarningAmber, null)
+    },
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
+        TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
+            Text(stringResource(R.string.ok))
         }
-    }
-
-    ActionItem(
-        icon = Icons.Outlined.Restore,
-        text = stringResource(R.string.restore_default_selection),
-        onClick = {
-            guardedAction {
-                executeScopedAction { uid -> viewModel.restoreDefaults(uid) }
-            }
-        }
-    )
-
-    ActionItem(
-        icon = Icons.Outlined.Deselect,
-        text = stringResource(R.string.deselect_all),
-        onClick = {
-            guardedAction {
-                executeScopedAction { uid -> viewModel.deselectAll(bundles, uid) }
-            }
-        }
-    )
-
-    ActionItem(
-        icon = Icons.Outlined.SwapHoriz,
-        text = stringResource(R.string.invert_selection),
-        onClick = {
-            guardedAction {
-                executeScopedAction { uid -> viewModel.invertSelection(bundles, uid) }
-            }
-        }
-    )
-}
-
-private fun LazyListScope.bundlePatchLists(
-    compatible: List<PatchInfo>,
-    universal: List<PatchInfo>,
-    incompatible: List<PatchInfo>,
-    filter: Int,
-    allowIncompatiblePatches: Boolean,
-    onOptionsDialog: (PatchInfo) -> Unit,
-    isSelected: (PatchInfo) -> Boolean,
-    onPatchClick: (PatchInfo, Boolean) -> Unit,
-    onIncompatibleHelpClick: () -> Unit
-) {
-    patchList(
-        patches = compatible,
-        visible = true,
-        compatible = true,
-        onOptionsDialog = onOptionsDialog,
-        isSelected = isSelected,
-        onPatchClick = onPatchClick
-    )
-    patchList(
-        patches = universal,
-        visible = filter and SHOW_UNIVERSAL != 0,
-        compatible = true,
-        onOptionsDialog = onOptionsDialog,
-        isSelected = isSelected,
-        onPatchClick = onPatchClick,
-        header = { ListHeader(title = stringResource(R.string.universal_patches)) }
-    )
-    patchList(
-        patches = incompatible,
-        visible = filter and SHOW_INCOMPATIBLE != 0,
-        compatible = allowIncompatiblePatches,
-        onOptionsDialog = onOptionsDialog,
-        isSelected = isSelected,
-        onPatchClick = onPatchClick,
-        header = {
-            ListHeader(
-                title = stringResource(R.string.incompatible_patches),
-                onHelpClick = onIncompatibleHelpClick
+    },
+    title = { Text(stringResource(R.string.incompatible_patch)) },
+    text = {
+        Text(
+            stringResource(
+                R.string.app_version_not_compatible,
+                appVersion,
+                compatibleVersions.joinToString(", ")
             )
-        }
-    )
-}
+        )
+    }
+)
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun ActionItem(
+private fun ActionItem(
     icon: ImageVector,
     text: String,
     onClick: () -> Unit
 ) {
-    ListItem(
-        modifier = Modifier.clickable(onClick = onClick),
+    SegmentedListItem(
+        onClick = onClick,
+        shapes = ListItemDefaults.segmentedShapes(index = 0, count = 1),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
+        ),
         leadingContent = { Icon(icon, contentDescription = null) },
-        headlineContent = { Text(text) },
-        colors = transparentListItemColors
-    )
+    ) { Text(text) }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun ScopeDialog(
+    bundleName: String,
+    onDismissRequest: () -> Unit,
+    onAllPatches: () -> Unit,
+    onBundleOnly: () -> Unit
+) = AlertDialog(
+    onDismissRequest = onDismissRequest,
+    title = { Text(stringResource(R.string.scope_dialog_title)) },
+    confirmButton = {
+        TextButton(onClick = onAllPatches, shapes = ButtonDefaults.shapes()) {
+            Text(stringResource(R.string.scope_all_patches))
+        }
+    },
+    dismissButton = {
+        TextButton(onClick = onBundleOnly, shapes = ButtonDefaults.shapes()) {
+            Text(stringResource(R.string.scope_bundle_patches, bundleName))
+        }
+    }
+)
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun OptionsDialog(
+    patch: PatchInfo,
+    values: Map<String, Any?>?,
+    reset: () -> Unit,
+    set: (String, Any?) -> Unit,
+    onDismissRequest: () -> Unit,
+    selectionWarningEnabled: Boolean
+) = FullscreenDialog(onDismissRequest = onDismissRequest) {
+    Scaffold(
+        topBar = {
+            AppTopBar(
+                title = patch.name,
+                onBackClick = onDismissRequest,
+                actions = {
+                    IconButton(onClick = reset, shapes = IconButtonDefaults.shapes()) {
+                        Icon(Icons.Filled.Restore, stringResource(R.string.reset))
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        LazyColumnWithScrollbar(
+            modifier = Modifier.padding(paddingValues)
+        ) {
+            if (patch.options == null) return@LazyColumnWithScrollbar
+
+            items(patch.options, key = { it.name }) { option ->
+                val name = option.name
+                val value =
+                    if (values == null || !values.contains(name)) option.default else values[name]
+
+                @Suppress("UNCHECKED_CAST")
+                OptionItem(
+                    option = option as Option<Any>,
+                    value = value,
+                    setValue = {
+                        set(name, it)
+                    },
+                    selectionWarningEnabled = selectionWarningEnabled
+                )
+            }
+        }
+    }
 }

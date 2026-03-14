@@ -76,6 +76,7 @@ private val LightColorScheme = lightColorScheme(
     scrim = rv_theme_light_scrim,
 )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ReVancedManagerTheme(
     darkTheme: Boolean,
@@ -115,10 +116,11 @@ fun ReVancedManagerTheme(
         }
     }
 
-    MaterialTheme(
+    MaterialExpressiveTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
+        motionScheme = MotionScheme.expressive()
     )
 }
 

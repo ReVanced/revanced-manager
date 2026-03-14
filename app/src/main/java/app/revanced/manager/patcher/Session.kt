@@ -4,6 +4,8 @@ import app.revanced.library.ApkUtils.applyTo
 import app.revanced.manager.patcher.Session.Companion.component1
 import app.revanced.manager.patcher.Session.Companion.component2
 import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.patcher.logger.forStep
+import app.revanced.manager.patcher.logger.withJavaLogging
 import app.revanced.patcher.PatchesResult
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.PatchResult
@@ -31,7 +33,11 @@ class Session(
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
 
 
-    private suspend fun applyPatchesVerbose(patcher: Patcher, indices: Map<Patch, Int>) =
+    private suspend fun applyPatchesVerbose(
+        patcher: Patcher,
+        indices: Map<Patch, Int>,
+        phaseLogger: Logger = logger,
+    ) =
         withContext(
             Dispatchers.Default
         ) {
@@ -49,8 +55,8 @@ class Session(
                             exception.toRemoteError(),
                         )
                     )
-                    logger.error("${patch.name} failed:")
-                    logger.error(exception.stackTraceToString())
+                    phaseLogger.error("${patch.name} failed:")
+                    phaseLogger.error(exception.stackTraceToString())
                     throw exception
                 }
 
@@ -59,8 +65,6 @@ class Session(
                         StepId.ExecutePatch(index),
                     )
                 )
-
-                logger.info("${patch.name} succeeded")
             }
         }
 
@@ -68,42 +72,45 @@ class Session(
         val indices = HashMap<Patch, Int>(selectedPatches.size)
         selectedPatches.forEachIndexed { idx, patch -> indices[patch] = idx }
 
-        val result = runStep(StepId.ExecutePatches, onEvent) {
-            java.util.logging.Logger.getLogger("").apply {
-                handlers.forEach {
-                    it.close()
-                    removeHandler(it)
+        val prepareLogger = logger.forStep(StepId.ReadAPK, onEvent)
+        val patchingLogger = logger.forStep(StepId.ExecutePatches, onEvent)
+        val writingLogger = logger.forStep(StepId.WriteAPK, onEvent)
+
+        val patcher = runStep(StepId.ReadAPK, onEvent) {
+            prepareLogger.withJavaLogging {
+                patcher(
+                    apkFile = input,
+                    temporaryFilesPath = tempDir,
+                    frameworkFileDirectory = frameworkDir,
+                    aaptBinaryPath = File(aaptPath)
+                ) { _packageName, _version ->
+                    selectedPatches.toSet()
                 }
-
-                addHandler(logger.handler)
             }
+        }
 
-            val patcher = patcher(
-                apkFile = input,
-                temporaryFilesPath = tempDir,
-                frameworkFileDirectory = frameworkDir,
-                aaptBinaryPath = File(aaptPath)
-            ) { _packageName, _version ->
-                selectedPatches.toSet()
+        val result = runStep(StepId.ExecutePatches, onEvent) {
+            patchingLogger.withJavaLogging {
+                patchingLogger.info("Applying patches...")
+                applyPatchesVerbose(patcher, indices, patchingLogger)
             }
-
-            logger.info("Applying patches...")
-            applyPatchesVerbose(patcher, indices)
         }
 
         runStep(StepId.WriteAPK, onEvent) {
-            logger.info("Writing patched files...")
+            writingLogger.withJavaLogging {
+                writingLogger.info("Writing patched files...")
 
-            val patched = tempDir.resolve("result.apk")
-            withContext(Dispatchers.IO) {
-                Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
-            }
-            result.applyTo(patched)
+                val patched = tempDir.resolve("result.apk")
+                withContext(Dispatchers.IO) {
+                    Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                }
+                result.applyTo(patched)
 
-            logger.info("Patched apk saved to $patched")
+                writingLogger.info("Patched apk saved to $patched")
 
-            withContext(Dispatchers.IO) {
-                Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                withContext(Dispatchers.IO) {
+                    Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                }
             }
         }
     }

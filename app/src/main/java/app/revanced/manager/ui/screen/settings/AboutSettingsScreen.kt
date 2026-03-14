@@ -17,10 +17,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.MailOutline
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -51,6 +54,7 @@ import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.viewmodel.AboutViewModel
@@ -61,7 +65,9 @@ import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
+    ExperimentalMaterial3ExpressiveApi::class
+)
 @Composable
 fun AboutSettingsScreen(
     onBackClick: () -> Unit,
@@ -233,6 +239,7 @@ fun AboutSettingsScreen(
                     FilledTonalButton(
                         onClick = onClick,
                         modifier = Modifier.weight(1f),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -258,6 +265,7 @@ fun AboutSettingsScreen(
                     IconButton(
                         onClick = onClick,
                         modifier = Modifier.padding(end = 8.dp),
+                        shapes = IconButtonDefaults.shapes()
                     ) {
                         Icon(
                             icon,
@@ -287,14 +295,13 @@ fun AboutSettingsScreen(
                     )
                 }
             }
-            Column {
+            ListSection {
                 listItems.forEach { (title, description, onClick) ->
                     SettingsListItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { onClick() },
+                        modifier = Modifier.fillMaxWidth(),
                         headlineContent = title,
-                        supportingContent = description
+                        supportingContent = description,
+                        onClick = onClick
                     )
                 }
             }

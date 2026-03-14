@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.component.haptics
 
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
@@ -26,7 +26,7 @@ fun HapticRadioButton(
         onClick = onClick?.let {
             {
                 // Perform haptic feedback
-                if (!selected) view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                if (!selected) view.performHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK)
                 it()
             }
         },

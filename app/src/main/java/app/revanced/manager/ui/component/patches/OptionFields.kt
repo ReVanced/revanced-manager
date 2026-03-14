@@ -20,20 +20,23 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DragHandle
+import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -121,9 +124,13 @@ private class OptionEditorScope<T : Any>(
 private interface OptionEditor<T : Any> {
     fun clickAction(scope: OptionEditorScope<T>) = scope.openDialog()
 
+    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        IconButton(onClick = { scope.checkSafeguard { clickAction(scope) } }) {
+        IconButton(
+            onClick = { scope.checkSafeguard { clickAction(scope) } },
+            shapes = IconButtonDefaults.shapes(),
+        ) {
             Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
         }
     }
@@ -221,6 +228,7 @@ fun <T : Any> OptionItem(
 }
 
 private object StringOptionEditor : OptionEditor<String> {
+    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @Composable
     override fun Dialog(scope: OptionEditorScope<String>) {
         var showFileDialog by rememberSaveable { mutableStateOf(false) }
@@ -271,7 +279,8 @@ private object StringOptionEditor : OptionEditor<String> {
                     trailingIcon = {
                         var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
                         IconButton(
-                            onClick = { showDropdownMenu = true }
+                            onClick = { showDropdownMenu = true },
+                            shapes = IconButtonDefaults.shapes(),
                         ) {
                             Icon(
                                 Icons.Outlined.MoreVert,
@@ -306,12 +315,14 @@ private object StringOptionEditor : OptionEditor<String> {
             confirmButton = {
                 TextButton(
                     enabled = !validatorFailed,
-                    onClick = { scope.submitDialog(fieldValue) }) {
+                    onClick = { scope.submitDialog(fieldValue) },
+                    shapes = ButtonDefaults.shapes()
+                ) {
                     Text(stringResource(R.string.save))
                 }
             },
             dismissButton = {
-                TextButton(onClick = scope.dismissDialog) {
+                TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             },
@@ -345,7 +356,7 @@ private object IntOptionEditor : NumberOptionEditor<Int>() {
         current: Int?,
         validator: (Int?) -> Boolean,
         onSubmit: (Int?) -> Unit
-    ) = IntInputDialog(current, title, validator, onSubmit)
+    ) = IntInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
 private object LongOptionEditor : NumberOptionEditor<Long>() {
@@ -355,7 +366,7 @@ private object LongOptionEditor : NumberOptionEditor<Long>() {
         current: Long?,
         validator: (Long?) -> Boolean,
         onSubmit: (Long?) -> Unit
-    ) = LongInputDialog(current, title, validator, onSubmit)
+    ) = LongInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
 private object FloatOptionEditor : NumberOptionEditor<Float>() {
@@ -365,7 +376,7 @@ private object FloatOptionEditor : NumberOptionEditor<Float>() {
         current: Float?,
         validator: (Float?) -> Boolean,
         onSubmit: (Float?) -> Unit
-    ) = FloatInputDialog(current, title, validator, onSubmit)
+    ) = FloatInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
 private object BooleanOptionEditor : OptionEditor<Boolean> {
@@ -408,6 +419,7 @@ private object UnknownTypeEditor : OptionEditor<Any>, KoinComponent {
  */
 private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<T>) :
     OptionEditor<T> {
+    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
         var selectedPreset by rememberSaveable(scope.value, scope.option.presets) {
@@ -445,13 +457,14 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
                                 // Hide the presets dialog so it doesn't show up in the background.
                                 hidePresetsDialog = true
                             }
-                        }
+                        },
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(stringResource(if (selectedPreset != null) R.string.save else R.string.continue_))
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = scope.dismissDialog) {
+                    TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
                         Text(stringResource(R.string.cancel))
                     }
                 },
@@ -504,7 +517,9 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
         null
     ) { true }
 
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+        ExperimentalMaterial3ExpressiveApi::class
+    )
     @Composable
     override fun Dialog(scope: OptionEditorScope<List<T>>) {
         val items =
@@ -583,10 +598,11 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     onClick = {
                                         if (items.size == deletionTargets.size) deletionTargets.clear()
                                         else deletionTargets.addAll(items.map { it.key })
-                                    }
+                                    },
+                                    shapes = IconButtonDefaults.shapes(),
                                 ) {
                                     Icon(
-                                        Icons.Outlined.SelectAll,
+                                        Icons.Filled.SelectAll,
                                         stringResource(R.string.select_deselect_all)
                                     )
                                 }
@@ -595,16 +611,20 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                         items.removeIf { it.key in deletionTargets }
                                         deletionTargets.clear()
                                         deleteMode = false
-                                    }
+                                    },
+                                    shapes = IconButtonDefaults.shapes(),
                                 ) {
                                     Icon(
-                                        Icons.Outlined.Delete,
+                                        Icons.Filled.Delete,
                                         stringResource(R.string.delete)
                                     )
                                 }
                             } else {
-                                IconButton(onClick = items::clear) {
-                                    Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                                IconButton(
+                                    onClick = items::clear,
+                                    shapes = IconButtonDefaults.shapes(),
+                                ) {
+                                    Icon(Icons.Filled.Restore, stringResource(R.string.reset))
                                 }
                             }
                         }
@@ -675,6 +695,7 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                         IconButton(
                                             modifier = Modifier.draggableHandle(interactionSource = interactionSource),
                                             onClick = {},
+                                            shapes = IconButtonDefaults.shapes(),
                                         ) {
                                             Icon(
                                                 Icons.Filled.DragHandle,

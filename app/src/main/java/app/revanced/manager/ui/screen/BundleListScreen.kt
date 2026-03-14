@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,9 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -18,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,14 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.domain.sources.Extensions.version
-import app.revanced.manager.domain.sources.PatchBundleSource
-import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.SearchBar
-import app.revanced.manager.ui.component.bundle.BundleInformationDialog
 import app.revanced.manager.ui.component.bundle.BundlePatchList
 import app.revanced.manager.ui.component.bundle.BundleSectionHeader
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
@@ -52,6 +51,8 @@ import org.koin.compose.koinInject
 fun BundleListScreen(
     viewModel: BundleListViewModel = koinViewModel(),
     eventsFlow: Flow<BundleListViewModel.Event>,
+    setSelectedSourceCount: (Int) -> Unit,
+    onBundleClick: (Int) -> Unit
 ) {
     val patchCounts by viewModel.patchCounts.collectAsStateWithLifecycle(emptyMap())
     val sources by viewModel.sources.collectAsStateWithLifecycle(emptyList())
@@ -73,6 +74,10 @@ fun BundleListScreen(
 
     EventEffect(eventsFlow) {
         viewModel.handleEvent(it)
+    }
+
+    LaunchedEffect(viewModel.selectedSources.size) {
+        setSelectedSourceCount(viewModel.selectedSources.size)
     }
 
     Column {
@@ -136,85 +141,68 @@ fun BundleListScreen(
             isRefreshing = viewModel.isRefreshing,
             modifier = Modifier.weight(1f)
         ) {
-            BundlePatchList(
-                bundles = sources,
-                uid = { it.uid },
-                modifier = Modifier.fillMaxSize(),
-                headerContent = { source, expanded, onToggleExpand ->
-                    BundleListHeader(
-                        source = source,
-                        patchCount = patchCounts[source.uid] ?: 0,
-                        expanded = expanded,
-                        onToggleExpand = onToggleExpand,
-                        onDelete = { viewModel.delete(source) },
-                        onUpdate = { viewModel.update(source) },
-                        selectable = viewModel.selectedSources.isNotEmpty(),
-                        isBundleSelected = source.uid in viewModel.selectedSources,
-                        toggleSelection = { bundleIsNotSelected ->
-                            if (bundleIsNotSelected) {
-                                viewModel.selectedSources.add(source.uid)
-                            } else {
-                                viewModel.selectedSources.remove(source.uid)
-                            }
-                        }
-                    )
-                },
-                patchContent = { source ->
-                    val patches = allBundlePatches[source.uid]?.patches.orEmpty()
-                    bundlePatchListReadOnly(
-                        patches = patches,
-                        onOptionsDialog = { patch -> optionsDialog = patch }
+            if (sources.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    EmptyState(
+                        icon = Icons.Outlined.Source,
+                        title = R.string.no_patches_found,
+                        description = R.string.no_patches_description
                     )
                 }
-            )
+            } else {
+                BundlePatchList(
+                    bundles = sources,
+                    uid = { it.uid },
+                    modifier = Modifier.fillMaxSize(),
+                    headerContent = { source, expanded, onToggleExpand ->
+                        BundleListHeader(
+                            source = source,
+                            patchCount = patchCounts[source.uid] ?: 0,
+                            expanded = expanded,
+                            onToggleExpand = onToggleExpand,
+                            onClick = { onBundleClick(source.uid) },
+                            selectable = viewModel.selectedSources.isNotEmpty(),
+                            isBundleSelected = source.uid in viewModel.selectedSources,
+                            toggleSelection = { bundleIsNotSelected ->
+                                if (bundleIsNotSelected) {
+                                    viewModel.selectedSources.add(source.uid)
+                                } else {
+                                    viewModel.selectedSources.remove(source.uid)
+                                }
+                            }
+                        )
+                    },
+                    patchContent = { source ->
+                        val patches = allBundlePatches[source.uid]?.patches.orEmpty()
+                        bundlePatchListReadOnly(
+                            patches = patches,
+                            onOptionsDialog = { patch -> optionsDialog = patch }
+                        )
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun BundleListHeader(
+private fun BundleListHeader(
     source: PatchBundleSource,
     patchCount: Int,
     expanded: Boolean,
     onToggleExpand: () -> Unit,
-    onDelete: () -> Unit,
-    onUpdate: () -> Unit,
+    onClick: () -> Unit,
     selectable: Boolean,
     isBundleSelected: Boolean,
     toggleSelection: (Boolean) -> Unit,
 ) {
-    var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
-    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-
-    if (viewBundleDialogPage) {
-        BundleInformationDialog(
-            src = source,
-            onDismissRequest = { viewBundleDialogPage = false },
-            onDeleteRequest = { showDeleteConfirmationDialog = true },
-            onUpdate = onUpdate,
-        )
-    }
-
-    if (showDeleteConfirmationDialog) {
-        ConfirmDialog(
-            onDismiss = { showDeleteConfirmationDialog = false },
-            onConfirm = {
-                onDelete()
-                viewBundleDialogPage = false
-            },
-            title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_single_dialog_description, source.name),
-            icon = Icons.Outlined.Delete
-        )
-    }
-
     BundleSectionHeader(
         name = source.name,
         version = source.version,
         expanded = expanded,
         onToggleExpand = onToggleExpand,
-        onClick = { viewBundleDialogPage = true },
-        patchCount = patchCount.takeIf { source.state is Source.State.Available<*> },
+        onClick = onClick,
+        patchCount = patchCount.takeIf { source.state is PatchBundleSource.State.Available },
         trailingContent = if (selectable) {
             {
                 HapticCheckbox(
@@ -225,9 +213,9 @@ fun BundleListHeader(
         } else {
             val icon = remember(source.state) {
                 when (source.state) {
-                    is Source.State.Failed -> Icons.Outlined.ErrorOutline to R.string.patches_error
-                    is Source.State.Missing -> Icons.Outlined.Warning to R.string.patches_missing
-                    is Source.State.Available<*> -> null
+                    is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.patches_error
+                    is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.patches_missing
+                    is PatchBundleSource.State.Available -> null
                 }
             }
             icon?.let { (vector, description) ->

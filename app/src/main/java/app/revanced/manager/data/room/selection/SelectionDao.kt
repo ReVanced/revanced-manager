@@ -38,6 +38,12 @@ abstract class SelectionDao {
     @Query("SELECT package_name FROM patch_selections")
     abstract fun getPackagesWithSelection(): Flow<List<String>>
 
+    @Query("SELECT COUNT(DISTINCT package_name) FROM patch_selections")
+    abstract fun getSelectionPackageCount(): Flow<Int>
+
+    @Query("SELECT COUNT(*) FROM selected_patches")
+    abstract fun getSelectedPatchCount(): Flow<Int>
+
     @Query("DELETE FROM patch_selections WHERE patch_bundle = :uid")
     abstract suspend fun resetForPatchBundle(uid: Int)
 

@@ -93,13 +93,15 @@ class InstalledAppInfoViewModel(
                 InstallType.DEFAULT -> {
                     when (val result = pm.uninstallPackage(app.currentPackageName)) {
                         is Session.State.Failed<UninstallFailure> -> {
-                            val msg = result.failure.message.orEmpty()
-                            context.toast(
-                                this@InstalledAppInfoViewModel.context.getString(
-                                    R.string.uninstall_app_fail,
-                                    msg
+                            if (result.failure !is UninstallFailure.Aborted) {
+                                val msg = result.failure.message.orEmpty()
+                                context.toast(
+                                    this@InstalledAppInfoViewModel.context.getString(
+                                        R.string.uninstall_app_fail,
+                                        msg
+                                    )
                                 )
-                            )
+                            }
                             return@launch
                         }
                         Session.State.Succeeded -> {}

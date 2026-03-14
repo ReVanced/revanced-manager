@@ -22,16 +22,18 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.patcher.patch.PatchBundleInfo
-import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
+import app.revanced.manager.network.downloader.DownloaderPackageState
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
+import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.downloader.GetScope
 import app.revanced.manager.downloader.DownloaderHostApi
 import app.revanced.manager.downloader.Scope
@@ -68,6 +70,7 @@ class SelectedAppInfoViewModel(
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
+    private val downloadedAppRepository: DownloadedAppRepository = get()
     private val downloaderRepository: DownloaderRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
     private val rootInstaller: RootInstaller = get()
@@ -75,6 +78,7 @@ class SelectedAppInfoViewModel(
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
     val downloaders = downloaderRepository.loadedDownloadersFlow
+    val allDownloaders = downloaderRepository.downloaderPackageStates
     val desiredVersion = input.app.version
     val packageName = input.app.packageName
 
@@ -82,6 +86,8 @@ class SelectedAppInfoViewModel(
 
     val hasRoot = rootInstaller.hasRootAccess()
     var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
+        private set
+    var downloadedApps: List<SelectedApp.Local> by mutableStateOf(emptyList())
         private set
 
     private var _selectedApp by savedStateHandle.saveable {
@@ -104,6 +110,8 @@ class SelectedAppInfoViewModel(
             val packageInfo = async(Dispatchers.IO) { pm.getPackageInfo(packageName) }
             val installedAppDeferred =
                 async(Dispatchers.IO) { installedAppRepository.get(packageName) }
+            val downloadedAppsDeferred =
+                async(Dispatchers.IO) { downloadedAppRepository.getAllByPackage(packageName) }
 
             installedAppData =
                 packageInfo.await()?.let {
@@ -112,6 +120,15 @@ class SelectedAppInfoViewModel(
                         it.versionName!!
                     ) to installedAppDeferred.await()
                 }
+
+            downloadedApps = downloadedAppsDeferred.await().mapNotNull {
+                val file = try {
+                    downloadedAppRepository.getApkFileForApp(it)
+                } catch (_: Exception) {
+                    return@mapNotNull null
+                }
+                SelectedApp.Local(it.packageName, it.version, file, false)
+            }
         }
     }
 
@@ -167,9 +184,10 @@ class SelectedAppInfoViewModel(
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
-    val errorFlow = combine(downloaders, snapshotFlow { selectedApp }) { downloaderList, app ->
-        when {
-            app is SelectedApp.Search && downloaderList.isEmpty() -> Error.NoDownloaders
+    val errorFlow = combine(allDownloaders, snapshotFlow { selectedApp }) { allDownloaders, app ->
+        when (app) {
+            is SelectedApp.Search if allDownloaders.isEmpty() -> Error.NoDownloadersInstalled
+            is SelectedApp.Search if allDownloaders.values.all { it is DownloaderPackageState.Untrusted } -> Error.NoDownloadersTrusted
             else -> null
         }
     }
@@ -306,7 +324,8 @@ class SelectedAppInfoViewModel(
     }
 
     enum class Error(@param:StringRes val resourceId: Int) {
-        NoDownloaders(R.string.no_downloader_available)
+        NoDownloadersInstalled(R.string.no_downloaders_installed),
+        NoDownloadersTrusted(R.string.no_downloaders_trusted),
     }
 
     private companion object {

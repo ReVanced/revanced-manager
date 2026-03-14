@@ -1,6 +1,7 @@
 package app.revanced.manager.patcher
 
 import android.os.Parcelable
+import app.revanced.manager.patcher.logger.LogLevel
 import kotlinx.parcelize.Parcelize
 
 
@@ -15,6 +16,12 @@ sealed class ProgressEvent : Parcelable {
         val current: Long? = null,
         val total: Long? = null,
         val message: String? = null,
+    ) : ProgressEvent()
+
+    data class Log(
+        override val stepId: StepId,
+        val level: LogLevel,
+        val message: String,
     ) : ProgressEvent()
 
     data class Completed(

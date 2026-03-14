@@ -2,23 +2,40 @@ package app.revanced.manager.ui.screen.settings
 
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,22 +45,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.FullscreenDialog
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SearchView as SearchViewComponent
+import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.component.settings.ThemeSelector
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.GeneralSettingsViewModel
+import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun GeneralSettingsScreen(
     onBackClick: () -> Unit,
@@ -51,203 +71,316 @@ fun GeneralSettingsScreen(
 ) {
     val prefs = viewModel.prefs
     val coroutineScope = viewModel.viewModelScope
-    var showThemePicker by rememberSaveable { mutableStateOf(false) }
     var showLanguagePicker by rememberSaveable { mutableStateOf(false) }
-
-    if (showThemePicker) {
-        ThemePicker(
-            onDismiss = { showThemePicker = false },
-            onConfirm = { viewModel.setTheme(it) }
-        )
-    }
+    val scrollState = androidx.compose.foundation.rememberScrollState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = {
+            scrollState.canScrollBackward || scrollState.canScrollForward
+        }
+    )
 
     if (showLanguagePicker) {
         LanguagePicker(
             supportedLocales = viewModel.getSupportedLocales(),
             currentLocale = viewModel.getCurrentLocale(),
             onDismiss = { showLanguagePicker = false },
-            onConfirm = { viewModel.setLocale(it) },
-            getDisplayName = { viewModel.getLocaleDisplayName(it) }
+            onSelect = { viewModel.setLocale(it) }
         )
     }
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val animatedSurfaceColor = animateColorAsState(
+        targetValue = MaterialTheme.colorScheme.surface,
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+        label = "surface"
+    ).value
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.general),
-                scrollBehavior = scrollBehavior,
-                onBackClick = onBackClick
+            MediumFlexibleTopAppBar(
+                title = { Text(stringResource(R.string.general)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = animatedSurfaceColor,
+                    scrolledContainerColor = animatedSurfaceColor
+                ),
+                scrollBehavior = scrollBehavior
             )
         },
+        containerColor = animatedSurfaceColor,
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            state = scrollState
         ) {
-            GroupHeader(stringResource(R.string.appearance))
-
-            val currentLocale = viewModel.getCurrentLocale()
-            val currentLanguageDisplay = remember(currentLocale) {
-                currentLocale?.let { viewModel.getLocaleDisplayName(it) }
-            }
-            SettingsListItem(
-                modifier = Modifier.clickable { showLanguagePicker = true },
-                headlineContent = stringResource(R.string.language),
-                supportingContent = stringResource(R.string.language_description),
-                trailingContent = {
-                    FilledTonalButton(onClick = { showLanguagePicker = true }) {
-                        Text(
-                            currentLanguageDisplay
-                                ?: stringResource(R.string.language_system_default)
-                        )
-                    }
+            ListSection(
+                title = stringResource(R.string.appearance),
+                leadingContent = { Icon(Icons.Outlined.Palette, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                val currentLocale = viewModel.getCurrentLocale()
+                val currentLanguageDisplay = remember(currentLocale) {
+                    currentLocale?.let { viewModel.getLocaleDisplayName(it) }
                 }
-            )
+                val theme by prefs.theme.getAsState()
+                
+                ThemeSelector(
+                    currentTheme = theme,
+                    onThemeSelected = { viewModel.setTheme(it) }
+                )
 
-            val theme by prefs.theme.getAsState()
-            SettingsListItem(
-                modifier = Modifier.clickable { showThemePicker = true },
-                headlineContent = stringResource(R.string.theme),
-                supportingContent = stringResource(R.string.theme_description),
-                trailingContent = {
-                    FilledTonalButton(
-                        onClick = {
-                            showThemePicker = true
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.language),
+                    supportingContent = stringResource(R.string.language_description),
+                    onClick = { showLanguagePicker = true },
+                    trailingContent = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = currentLanguageDisplay
+                                    ?: stringResource(R.string.language_system_default),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Icon(
+                                Icons.AutoMirrored.Outlined.ArrowRight,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
-                    ) {
-                        Text(stringResource(theme.displayName))
                     }
+                )
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    BooleanItem(
+                        preference = prefs.dynamicColor,
+                        coroutineScope = coroutineScope,
+                        headline = R.string.dynamic_color,
+                        description = R.string.dynamic_color_description
+                    )
                 }
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                BooleanItem(
-                    preference = prefs.dynamicColor,
-                    coroutineScope = coroutineScope,
-                    headline = R.string.dynamic_color,
-                    description = R.string.dynamic_color_description
-                )
-            }
-            AnimatedVisibility(theme != Theme.LIGHT) {
-                BooleanItem(
-                    preference = prefs.pureBlackTheme,
-                    coroutineScope = coroutineScope,
-                    headline = R.string.pure_black_theme,
-                    description = R.string.pure_black_theme_description
-                )
+                AnimatedVisibility(theme != Theme.LIGHT) {
+                    BooleanItem(
+                        preference = prefs.pureBlackTheme,
+                        coroutineScope = coroutineScope,
+                        headline = R.string.pure_black_theme,
+                        description = R.string.pure_black_theme_description
+                    )
+                }
             }
 
-            GroupHeader(stringResource(R.string.networking))
-            BooleanItem(
-                preference = prefs.allowMeteredNetworks,
-                coroutineScope = coroutineScope,
-                headline = R.string.allow_metered_networks,
-                description = R.string.allow_metered_networks_description
-            )
+            ListSection(
+                title = stringResource(R.string.networking),
+                leadingContent = { Icon(Icons.Outlined.Public, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                BooleanItem(
+                    preference = prefs.allowMeteredNetworks,
+                    coroutineScope = coroutineScope,
+                    headline = R.string.allow_metered_networks,
+                    description = R.string.allow_metered_networks_description
+                )
+            }
         }
     }
 }
 
-@Composable
-private fun ThemePicker(
-    onDismiss: () -> Unit,
-    onConfirm: (Theme) -> Unit,
-    prefs: PreferencesManager = koinInject()
-) {
-    var selectedTheme by rememberSaveable { mutableStateOf(prefs.theme.getBlocking()) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.theme)) },
-        text = {
-            Column {
-                Theme.entries.forEach {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedTheme = it },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        HapticRadioButton(
-                            selected = selectedTheme == it,
-                            onClick = { selectedTheme = it })
-                        Text(stringResource(it.displayName))
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirm(selectedTheme)
-                    onDismiss()
-                }
-            ) {
-                Text(stringResource(R.string.apply))
-            }
-        }
-    )
-}
-
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun LanguagePicker(
     supportedLocales: List<Locale>,
     currentLocale: Locale?,
     onDismiss: () -> Unit,
-    onConfirm: (Locale?) -> Unit,
-    getDisplayName: (Locale) -> String
+    onSelect: (Locale?) -> Unit
 ) {
-    var selectedLocale by remember { mutableStateOf(currentLocale) }
     val systemDefaultString = stringResource(R.string.language_system_default)
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+    var isSearchActive by rememberSaveable { mutableStateOf(false) }
+    val languageListState = rememberLazyListState()
+    val isLanguageListScrollable by remember {
+        derivedStateOf {
+            languageListState.canScrollBackward || languageListState.canScrollForward
+        }
+    }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.language)) },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
+    val filteredLocales = remember(searchQuery, supportedLocales, currentLocale) {
+        if (searchQuery.isEmpty()) {
+            supportedLocales
+        } else {
+            supportedLocales.filter { locale ->
+                val currentAppLocale = currentLocale ?: Locale.getDefault()
+                val localizedName = locale.getDisplayName(currentAppLocale)
+                val nativeName = locale.getDisplayName(locale)
+
+                localizedName.contains(searchQuery, ignoreCase = true) ||
+                nativeName.contains(searchQuery, ignoreCase = true)
+            }
+        }
+    }
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = { isLanguageListScrollable }
+    )
+
+    FullscreenDialog(onDismissRequest = onDismiss) {
+        if (isSearchActive) {
+            SearchViewComponent(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                onActiveChange = {
+                    isSearchActive = it
+                    if (!it) searchQuery = ""
+                },
+                placeholder = { Text(stringResource(R.string.search_languages)) },
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { selectedLocale = null },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    HapticRadioButton(
-                        selected = selectedLocale == null,
-                        onClick = { selectedLocale = null }
-                    )
-                    Text(systemDefaultString)
-                }
-
-                supportedLocales.forEach { locale ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedLocale = locale },
-                        verticalAlignment = Alignment.CenterVertically
+                if (searchQuery.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        HapticRadioButton(
-                            selected = selectedLocale == locale,
-                            onClick = { selectedLocale = locale }
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = stringResource(R.string.search_languages),
+                            modifier = Modifier.size(64.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Text(getDisplayName(locale))
+
+                        Text(
+                            text = stringResource(R.string.type_anything),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                } else {
+                    LazyColumnWithScrollbar(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(vertical = 8.dp)
+                    ) {
+                        items(filteredLocales) { locale ->
+                            val currentAppLocale = currentLocale ?: Locale.getDefault()
+                            val localizedName = locale.getDisplayName(currentAppLocale)
+                            val nativeName = locale.getDisplayName(locale)
+
+                            ListItem(
+                                modifier = Modifier.clickable {
+                                    onSelect(locale)
+                                    onDismiss()
+                                },
+                                leadingContent = {
+                                    HapticRadioButton(
+                                        selected = currentLocale == locale,
+                                        onClick = {
+                                            onSelect(locale)
+                                            onDismiss()
+                                        }
+                                    )
+                                },
+                                headlineContent = { Text(localizedName) },
+                                supportingContent = if (nativeName != localizedName) {
+                                    { Text(nativeName) }
+                                } else null,
+                                colors = transparentListItemColors
+                            )
+                        }
                     }
                 }
             }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirm(selectedLocale)
-                    onDismiss()
+        } else {
+            Scaffold(
+                topBar = {
+                    MediumFlexibleTopAppBar(
+                        title = { Text(stringResource(R.string.language)) },
+                        navigationIcon = {
+                            IconButton(onClick = onDismiss, shapes = IconButtonDefaults.shapes()) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.back)
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = { isSearchActive = true }, shapes = IconButtonDefaults.shapes()) {
+                                Icon(
+                                    Icons.Filled.Search,
+                                    contentDescription = stringResource(R.string.search)
+                                )
+                            }
+                        },
+                        scrollBehavior = scrollBehavior
+                    )
+                },
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            ) { paddingValues ->
+                LazyColumnWithScrollbar(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    state = languageListState,
+                    contentPadding = PaddingValues(vertical = 8.dp)
+                ) {
+                    item {
+                        ListItem(
+                            modifier = Modifier.clickable {
+                                onSelect(null)
+                                onDismiss()
+                            },
+                            leadingContent = {
+                                HapticRadioButton(
+                                    selected = currentLocale == null,
+                                    onClick = {
+                                        onSelect(null)
+                                        onDismiss()
+                                    }
+                                )
+                            },
+                            headlineContent = { Text(systemDefaultString) }
+                        )
+                    }
+
+                    item {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+                        )
+                    }
+
+                    items(supportedLocales) { locale ->
+                        val currentAppLocale = currentLocale ?: Locale.getDefault()
+                        val localizedName = locale.getDisplayName(currentAppLocale)
+                        val nativeName = locale.getDisplayName(locale)
+
+                        ListItem(
+                            modifier = Modifier.clickable {
+                                onSelect(locale)
+                                onDismiss()
+                            },
+                            leadingContent = {
+                                HapticRadioButton(
+                                    selected = currentLocale == locale,
+                                    onClick = {
+                                        onSelect(locale)
+                                        onDismiss()
+                                    }
+                                )
+                            },
+                            headlineContent = { Text(localizedName) },
+                            supportingContent = if (nativeName != localizedName) {
+                                { Text(nativeName) }
+                            } else null
+                        )
+                    }
                 }
-            ) {
-                Text(stringResource(R.string.apply))
             }
         }
-    )
+    }
 }
+

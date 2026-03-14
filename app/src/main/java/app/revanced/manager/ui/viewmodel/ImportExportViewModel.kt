@@ -17,11 +17,13 @@ import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.util.JSON_MIMETYPE
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -39,54 +41,19 @@ sealed class ResetDialogState(
     @param:StringRes val titleResId: Int,
     @param:StringRes val descriptionResId: Int,
     val onConfirm: () -> Unit,
-    val dialogOptionName: String? = null
+    val dialogOptionName: String? = null,
 ) {
     class Keystore(onConfirm: () -> Unit) : ResetDialogState(
         titleResId = R.string.regenerate_keystore,
         descriptionResId = R.string.regenerate_keystore_dialog_description,
         onConfirm = onConfirm
     )
-
-    class PatchSelectionAll(onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.patch_selection_reset_all,
-        descriptionResId = R.string.patch_selection_reset_all_dialog_description,
-        onConfirm = onConfirm
-    )
-
-    class PatchSelectionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.patch_selection_reset_package,
-        descriptionResId = R.string.patch_selection_reset_package_dialog_description,
-        onConfirm = onConfirm,
-        dialogOptionName = dialogOptionName
-    )
-
-    class PatchSelectionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.patch_selection_reset_patches,
-        descriptionResId = R.string.patch_selection_reset_patches_dialog_description,
-        onConfirm = onConfirm,
-        dialogOptionName = dialogOptionName
-    )
-
-    class PatchOptionsAll(onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.patch_options_reset_all,
-        descriptionResId = R.string.patch_options_reset_all_dialog_description,
-        onConfirm = onConfirm
-    )
-
-    class PatchOptionPackage(dialogOptionName:String, onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.patch_options_reset_package,
-        descriptionResId = R.string.patch_options_reset_package_dialog_description,
-        onConfirm = onConfirm,
-        dialogOptionName = dialogOptionName
-    )
-
-    class PatchOptionBundle(dialogOptionName: String, onConfirm: () -> Unit) : ResetDialogState(
-        titleResId = R.string.patch_options_reset_patches,
-        descriptionResId = R.string.patch_options_reset_patches_dialog_description,
-        onConfirm = onConfirm,
-        dialogOptionName = dialogOptionName
-    )
 }
+
+data class PatchStorageStats(
+    val selectionPackageCount: Int = 0,
+    val selectedPatchCount: Int = 0
+)
 
 @OptIn(ExperimentalSerializationApi::class)
 class ImportExportViewModel(
@@ -94,7 +61,8 @@ class ImportExportViewModel(
     private val keystoreManager: KeystoreManager,
     private val selectionRepository: PatchSelectionRepository,
     private val optionsRepository: PatchOptionsRepository,
-    patchBundleRepository: PatchBundleRepository
+    patchBundleRepository: PatchBundleRepository,
+    val prefs: PreferencesManager,
 ) : ViewModel() {
     private val contentResolver = app.contentResolver
     val patchBundles = patchBundleRepository.sources
@@ -104,21 +72,17 @@ class ImportExportViewModel(
         private set
     private var keystoreImportPath by mutableStateOf<Path?>(null)
     val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
+    val patchStorageStats = combine(
+        selectionRepository.getSelectionPackageCount(),
+        selectionRepository.getSelectedPatchCount()
+    ) { selectionPackageCount, selectedPatchCount ->
+        PatchStorageStats(
+            selectionPackageCount = selectionPackageCount,
+            selectedPatchCount = selectedPatchCount
+        )
+    }
 
     var resetDialogState by mutableStateOf<ResetDialogState?>(null)
-
-    val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
-    val packagesWithSelection = selectionRepository.getPackagesWithSavedSelection()
-
-    fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
-        optionsRepository.resetOptionsForPackage(packageName)
-        app.toast(app.getString(R.string.patch_options_reset_toast))
-    }
-
-    fun resetOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
-        optionsRepository.resetOptionsForPatchBundle(patchBundle.uid)
-        app.toast(app.getString(R.string.patch_options_reset_toast))
-    }
 
     fun resetOptions() = viewModelScope.launch {
         optionsRepository.reset()
@@ -192,16 +156,6 @@ class ImportExportViewModel(
         app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 
-    fun resetSelectionForPackage(packageName: String) = viewModelScope.launch {
-        selectionRepository.resetSelectionForPackage(packageName)
-        app.toast(app.getString(R.string.reset_patch_selection_success))
-    }
-
-    fun resetSelectionForPatchBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
-        selectionRepository.resetSelectionForPatchBundle(patchBundle.uid)
-        app.toast(app.getString(R.string.reset_patch_selection_success))
-    }
-
     fun executeSelectionAction(target: Uri) = viewModelScope.launch {
         val source = selectedBundle!!
         val action = selectionAction!!
@@ -231,11 +185,13 @@ class ImportExportViewModel(
         suspend fun execute(bundleUid: Int, location: Uri)
         val activityContract: ActivityResultContract<String, Uri?>
         val activityArg: String
+        val bundleSelectorTitle: String?
     }
 
     private inner class Import : SelectionAction {
         override val activityContract = ActivityResultContracts.GetContent()
         override val activityArg = JSON_MIMETYPE
+        override val bundleSelectorTitle = app.getString(R.string.select_bundle_for_import)
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
             R.string.import_patch_selection_fail,
@@ -255,6 +211,7 @@ class ImportExportViewModel(
     private inner class Export : SelectionAction {
         override val activityContract = ActivityResultContracts.CreateDocument(JSON_MIMETYPE)
         override val activityArg = "selection.json"
+        override val bundleSelectorTitle = app.getString(R.string.select_bundle_for_export)
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
             R.string.export_patch_selection_fail,
