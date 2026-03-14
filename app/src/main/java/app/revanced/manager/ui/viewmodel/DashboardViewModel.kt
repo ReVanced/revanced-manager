@@ -123,28 +123,6 @@ class DashboardViewModel(
         }
     }
 
-    // TODO: should this be nuked?
-    /*
-    fun applyAutoUpdatePrefs(enabled: Boolean) = viewModelScope.launch {
-        prefs.firstLaunch.update(false)
-
-        prefs.managerAutoUpdates.update(enabled)
-
-        if (enabled) {
-            checkForManagerUpdates()
-
-            with(patchBundleRepository) {
-                sources
-                    .first()
-                    .find { it.uid == 0 }
-                    ?.asRemoteOrNull
-                    ?.setAutoUpdate(true)
-
-                updateCheck()
-            }
-        }
-    }*/
-
     private fun sendEvent(event: BundleListViewModel.Event) {
         viewModelScope.launch { bundleListEventsChannel.send(event) }
     }
