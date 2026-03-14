@@ -801,6 +801,3 @@ class PatcherViewModel(
         }
     }
 }
-
-
-
