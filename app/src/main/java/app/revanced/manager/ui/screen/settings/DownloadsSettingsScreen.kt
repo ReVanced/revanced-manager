@@ -1,32 +1,22 @@
 package app.revanced.manager.ui.screen.settings
 
-import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Source
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -37,7 +27,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -57,19 +46,15 @@ import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.network.downloader.DownloaderPackage
-import app.revanced.manager.ui.component.AppIcon
-import app.revanced.manager.ui.component.AppLabel
-import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
+import app.revanced.manager.ui.component.bundle.ImportSourceDialog
+import app.revanced.manager.ui.component.bundle.ImportSourceDialogStrings
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
-import app.revanced.manager.ui.component.settings.BooleanItem
-import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -94,8 +79,7 @@ fun DownloadsSettingsScreen(
 ) {
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val downloaderSources by viewModel.downloaderSources.collectAsStateWithLifecycle(emptyMap())
-    // TODO: which is correct?
-    // val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
     val pagerState = rememberPagerState(pageCount = { DownloadsTab.entries.size })
     val scope = rememberCoroutineScope()
     val downloaderListState = rememberLazyListState()
@@ -114,27 +98,16 @@ fun DownloadsSettingsScreen(
         canScroll = { canScroll }
     )
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    var showCancelInstallConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val currentTab = DownloadsTab.entries[pagerState.currentPage]
-    // TODO: fix this.
-    val isInstallingDownloader =
-        false // viewModel.downloaderInstallState != DownloadsViewModel.DownloaderInstallState.IDLE
+    var showImportDialog by rememberSaveable { mutableStateOf(false) }
 
-    val handleBack = {
-        if (isInstallingDownloader) {
-            showCancelInstallConfirmationDialog = true
-        } else {
-            onBackClick()
-        }
-    }
-
-    // since we still want to have predictive back gesture at times when dialog isnt there
-    PredictiveBackHandler(enabled = isInstallingDownloader) { progress ->
-        try {
-            progress.collect()
-            showCancelInstallConfirmationDialog = true
-        } catch (_: CancellationException) {
-        }
+    if (showImportDialog) {
+        ImportSourceDialog(
+            strings = ImportSourceDialogStrings.DOWNLOADERS,
+            onDismiss = { showImportDialog = false },
+            onLocalSubmit = viewModel::createLocalSource,
+            onRemoteSubmit =  viewModel::createRemoteSource,
+        )
     }
 
     Scaffold(
@@ -142,7 +115,7 @@ fun DownloadsSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.downloads)) },
                 navigationIcon = {
-                    IconButton(onClick = handleBack, shapes = IconButtonDefaults.shapes()) {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -160,6 +133,14 @@ fun DownloadsSettingsScreen(
                         }
                     }
                 }
+            )
+        },
+        floatingActionButton = {
+            if (pagerState.currentPage != DownloadsTab.Downloaders.ordinal) return@Scaffold
+            HapticExtendedFloatingActionButton(
+                onClick = { showImportDialog = true },
+                icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                text = { Text(stringResource(R.string.add)) }
             )
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -308,7 +289,6 @@ private fun DownloaderItem(
                 )
             )
         },
-        // TODO: version
-        trailingContent = { Text("version here") }
+        trailingContent = source.loaded?.version?.let { @Composable { Text(it) } }
     )
 }

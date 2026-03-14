@@ -63,9 +63,7 @@ import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
 import app.revanced.manager.ui.screen.onboarding.AppsStepContent
 import app.revanced.manager.ui.screen.onboarding.PermissionsStepContent
-import app.revanced.manager.ui.screen.onboarding.SourcesStepContent
 import app.revanced.manager.ui.screen.onboarding.UpdatesStepContent
-import app.revanced.manager.ui.viewmodel.ApiDownloaderState
 import app.revanced.manager.ui.viewmodel.OnboardingStep
 import app.revanced.manager.ui.viewmodel.OnboardingViewModel
 import app.revanced.manager.util.RequestInstallAppsContract

@@ -6,5 +6,6 @@ data class DownloaderPackage(
     val downloaders: List<LoadedDownloader>,
     val classLoader: ClassLoader,
     val context: Context,
-    val name: String
+    val name: String,
+    val version: String
 )

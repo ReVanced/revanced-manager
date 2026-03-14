@@ -10,12 +10,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,16 +29,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.WarningAmber
@@ -52,10 +46,8 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -63,9 +55,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -93,7 +83,8 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
-import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
+import app.revanced.manager.ui.component.bundle.ImportSourceDialog
+import app.revanced.manager.ui.component.bundle.ImportSourceDialogStrings
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
@@ -125,7 +116,6 @@ fun DashboardScreen(
     onUpdateClick: () -> Unit,
     onAnnouncementsClick: () -> Unit,
     onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
-    onDownloaderClick: () -> Unit,
     onAppClick: (String) -> Unit,
     onPatchableAppClick: (String) -> Unit,
     onStorageSelect: (SelectedApp.Local) -> Unit,
@@ -184,7 +174,8 @@ fun DashboardScreen(
 
     var showAddBundleDialog by rememberSaveable { mutableStateOf(false) }
     if (showAddBundleDialog) {
-        ImportPatchBundleDialog(
+        ImportSourceDialog(
+            strings = ImportSourceDialogStrings.PATCHES,
             onDismiss = { showAddBundleDialog = false },
             onLocalSubmit = { patches ->
                 showAddBundleDialog = false

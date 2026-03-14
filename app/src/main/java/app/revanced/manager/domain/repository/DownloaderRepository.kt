@@ -176,14 +176,14 @@ class DownloaderRepository(
                     packageName,
                     className,
                     downloaderContext.getString(downloader.name),
-                    packageInfo.versionName!!,
                     scopeImpl,
                     downloader
                 )
             },
             classLoader,
             downloaderContext,
-            with(pm) { packageInfo.label() }
+            with(pm) { packageInfo.label() },
+            packageInfo.versionName.orEmpty()
         )
     }
 

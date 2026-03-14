@@ -4,39 +4,22 @@ import android.app.Application
 import android.os.Build
 import android.os.PowerManager
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.network.downloader.DownloaderPackage
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-
-enum class ApiDownloaderState {
-    CHECKING,
-    AVAILABLE,
-    DOWNLOADING,
-    INSTALLING,
-    UP_TO_DATE,
-    FAILED,
-    UNAVAILABLE
-}
 
 enum class OnboardingStep {
     Permissions,
     Updates,
-    // Sources,
     Apps
 }
 
@@ -55,35 +38,6 @@ class OnboardingViewModel(
 
     val suggestedVersions = patchBundleRepository.suggestedVersions
 
-    /*
-    val downloaders = downloaderRepository.downloaderPackageStates.map { states ->
-        states.mapNotNull { (packageName, state) ->
-            val packageInfo = pm.getPackageInfo(packageName) ?: return@mapNotNull null
-            OnboardingDownloadersInfo(
-                packageName = packageName,
-                name = with(pm) { packageInfo.label() },
-                version = packageInfo.versionName.orEmpty(),
-                isTrusted = state is DownloaderPackageState.Loaded
-            )
-        }.sortedBy { it.name.lowercase() }
-    }.flowOn(Dispatchers.Default)*/
-    // TODO: fix???
-    val downloaders = flowOf(emptyList<DownloaderPackage>())
-
-    private var hasDownloaders by mutableStateOf(false)
-
-    var apiDownloaderState by mutableStateOf(ApiDownloaderState.CHECKING)
-        private set
-
-    var apiDownloaderProgress by mutableFloatStateOf(0f)
-        private set
-
-    var apiDownloaderIsUpdate by mutableStateOf(false)
-        private set
-
-    var apiDownloaderIsTrusted by mutableStateOf(false)
-        private set
-
     var canInstallUnknownApps by mutableStateOf(false)
         private set
     var isNotificationsEnabled by mutableStateOf(false)
@@ -97,103 +51,12 @@ class OnboardingViewModel(
     val allPermissionsGranted
         get() = canInstallUnknownApps && isNotificationsEnabled && isBatteryOptimizationExempt
 
-    private var pendingAsset: app.revanced.manager.network.dto.ReVancedAsset? = null
-    private var apiDownloaderInstallJob: Job? = null
-
     init {
         refreshPermissionStates()
 
         currentStep =
             if (allPermissionsGranted) OnboardingStep.Updates else OnboardingStep.Permissions
-
-        viewModelScope.launch {
-            checkApiDownloader()
-        }
     }
-
-    private suspend fun checkApiDownloader() {
-        apiDownloaderState = ApiDownloaderState.CHECKING
-
-        /*
-        val asset = downloaderRepository.checkApiDownloaderUpdate()
-        if (asset == null) {
-            val installed = downloaderRepository.getInstalledApiDownloader()
-            apiDownloaderState = if (installed != null) {
-                ApiDownloaderState.UP_TO_DATE
-            } else {
-                val apiAsset = downloaderRepository.getApiDownloaderAsset()
-                if (apiAsset == null) ApiDownloaderState.UNAVAILABLE else {
-                    pendingAsset = apiAsset
-                    ApiDownloaderState.AVAILABLE
-                }
-            }
-
-            if (currentStep == OnboardingStep.Sources && apiDownloaderState == ApiDownloaderState.AVAILABLE) {
-                startApiDownloaderInstall()
-            }
-            return
-        }
-
-        apiDownloaderIsUpdate = downloaderRepository.getInstalledApiDownloader() != null
-        pendingAsset = asset
-        apiDownloaderState = ApiDownloaderState.AVAILABLE
-
-        if (currentStep == OnboardingStep.Sources) {
-            startApiDownloaderInstall()
-        }*/
-    }
-
-    /*
-    private suspend fun installApiDownloader() {
-        val asset = pendingAsset ?: return
-
-        apiDownloaderState = ApiDownloaderState.DOWNLOADING
-        when (
-            downloaderRepository.installApiDownloaderAsset(
-                asset = asset,
-                onProgress = { downloaded, total ->
-                    apiDownloaderProgress = if (total != null && total > 0) {
-                        downloaded.toFloat() / total.toFloat()
-                    } else 0f
-                },
-                onInstalling = { installing ->
-                    if (installing) apiDownloaderState = ApiDownloaderState.INSTALLING
-                }
-            )
-        ) {
-            is DownloaderRepository.ApiDownloaderActionResult.Success -> {
-                pendingAsset = null
-                kotlinx.coroutines.delay(500)
-                apiDownloaderState = ApiDownloaderState.UP_TO_DATE
-            }
-
-            DownloaderRepository.ApiDownloaderActionResult.Aborted -> {
-                apiDownloaderState = ApiDownloaderState.AVAILABLE
-            }
-
-            else -> {
-                apiDownloaderState = ApiDownloaderState.FAILED
-            }
-        }
-    }*/
-
-    /*
-    fun startApiDownloaderInstall() {
-        if (apiDownloaderInstallJob?.isActive == true) return
-
-        apiDownloaderInstallJob = viewModelScope.launch {
-            try {
-                apiDownloaderProgress = 0f
-                installApiDownloader()
-            } finally {
-                apiDownloaderInstallJob = null
-            }
-        }
-    }
-
-    fun retryApiDownloaderDownload() {
-        startApiDownloaderInstall()
-    }*/
 
     fun refreshPermissionStates() {
         canInstallUnknownApps = pm.canInstallPackages()
@@ -204,18 +67,10 @@ class OnboardingViewModel(
 
     fun advance() {
         currentStep = nextStep(currentStep)
-        /*
-        if (currentStep == OnboardingStep.Sources && apiDownloaderState == ApiDownloaderState.AVAILABLE) {
-            // startApiDownloaderInstall()
-        }*/
     }
 
     fun retreat() {
         currentStep = previousStep(currentStep)
-        /*
-        if (currentStep == OnboardingStep.Sources && apiDownloaderState == ApiDownloaderState.AVAILABLE) {
-            // startApiDownloaderInstall()
-        }*/
     }
 
     suspend fun applyAutoUpdatePrefs(managerEnabled: Boolean, patchesEnabled: Boolean, downloadersEnabled: Boolean) {
@@ -247,16 +102,14 @@ class OnboardingViewModel(
 
     private fun nextStep(from: OnboardingStep) = when (from) {
         OnboardingStep.Permissions -> OnboardingStep.Updates
-        OnboardingStep.Updates -> /*if (hasDownloaders || apiDownloaderState != ApiDownloaderState.UNAVAILABLE) OnboardingStep.Sources else */ OnboardingStep.Apps
-        //OnboardingStep.Sources -> OnboardingStep.Apps
+        OnboardingStep.Updates -> OnboardingStep.Apps
         OnboardingStep.Apps -> OnboardingStep.Apps
     }
 
     private fun previousStep(from: OnboardingStep) = when (from) {
         OnboardingStep.Permissions -> OnboardingStep.Permissions
         OnboardingStep.Updates -> OnboardingStep.Permissions
-        // OnboardingStep.Sources -> OnboardingStep.Updates
-        OnboardingStep.Apps -> /* if (hasDownloaders || apiDownloaderState != ApiDownloaderState.UNAVAILABLE) OnboardingStep.Sources else */ OnboardingStep.Updates
+        OnboardingStep.Apps -> OnboardingStep.Updates
     }
 
 }
