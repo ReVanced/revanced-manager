@@ -293,7 +293,10 @@ fun OnboardingScreen(
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showSkipPermissionsDialog = false }, shapes = ButtonDefaults.shapes()) {
+                    TextButton(
+                        onClick = { showSkipPermissionsDialog = false },
+                        shapes = ButtonDefaults.shapes()
+                    ) {
                         Text(stringResource(R.string.cancel))
                     }
                 }
