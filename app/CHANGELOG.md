@@ -1,3 +1,13 @@
+# app [2.0.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.38...v2.0.0-dev.1) (2026-03-14)
+
+
+* feat!: Bump major version ([4f6197c](https://github.com/ReVanced/revanced-manager/commit/4f6197cf7dbd80fb554c12329b994ccd8383dee5))
+
+
+### BREAKING CHANGES
+
+* bump major version to 2.0.0
+
 # app [1.26.0-dev.38](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.37...v1.26.0-dev.38) (2026-03-14)
 
 
