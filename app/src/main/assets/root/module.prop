@@ -1,0 +1,6 @@
+id=__PKG_NAME__-ReVanced
+name=__LABEL__ ReVanced
+version=__VERSION__
+versionCode=0
+author=ReVanced
+description=Mounts the patched APK on top of the original one

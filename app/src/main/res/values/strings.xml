@@ -1,0 +1,633 @@
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+    <string name="app_name">ReVanced Manager</string>
+    <string name="patcher">Patcher</string>
+    <string name="patches">Patches</string>
+    <string name="cli">CLI</string>
+    <string name="manager">Manager</string>
+
+    <string name="onboarding_welcome_to">Welcome to</string>
+    <string name="onboarding_welcome_back">Hi! It\'s the new</string>
+    <string name="onboarding_apps_subtitle">You can select an app to patch now or do it later</string>
+    <string name="onboarding_updates_subtitle">Configure automatic updates to keep ReVanced Manager and patches up to date</string>
+    <string name="onboarding_sources_subtitle">Get apps to patch without leaving the app using ReVanced Manager downloaders.</string>
+    <string name="onboarding_sources_description">Before you can patch apps, you can download them with ReVanced Manager Downloaders.</string>
+    <string name="onboarding_no_sources">No sources installed. You can install sources later from settings.</string>
+    <string name="onboarding_sources_note">Sources can execute code inside ReVanced Manager. Only enable sources you trust.</string>
+    <string name="onboarding_sources_not_found">Downloader not found</string>
+    <string name="onboarding_sources_not_found_description">Couldn\'t find downloader to download</string>
+
+    <string name="api_downloader">ReVanced Manager Downloader</string>
+    <string name="api_downloader_checking">Checking for downloader…</string>
+    <string name="api_downloader_available">Tap to install</string>
+    <string name="api_downloader_update_available">Update available. Tap to install.</string>
+    <string name="api_downloader_downloading">Downloading…</string>
+    <string name="api_downloader_updating">Updating Downloaders…</string>
+    <string name="api_downloader_installing">Installing…</string>
+    <string name="api_downloader_deleting">Deleting…</string>
+    <string name="api_downloader_up_to_date">Installed and trusted</string>
+    <string name="api_downloader_failed">Failed to install. Tap to retry.</string>
+
+    <string name="retry">Retry</string>
+    <string name="downloader_update_available">Downloader update available</string>
+    <string name="downloader_update_available_description">A new version (%s) of the ReVanced Downloader is available. Would you like to update now?</string>
+    <string name="onboarding_skip">Skip for now</string>
+    <string name="onboarding_recommended_version">Recommended version: %s</string>
+
+    <string name="onboarding_permissions_skip_title">Skip permissions?</string>
+    <string name="onboarding_permissions_skip_description">Without the required permissions, some features may not work correctly. You can grant them later in app settings.</string>
+    <string name="onboarding_permissions_skip_anyway">Skip anyway</string>
+
+    <string name="onboarding_permissions_subtitle">ReVanced Manager needs a few permissions to work properly</string>
+    <string name="permission_install_apps">Install unknown apps</string>
+    <string name="permission_install_apps_description">Required to install patched applications</string>
+    <string name="permission_notifications">Notifications</string>
+    <string name="permission_notifications_description">Allows for uninterrupted patching in the background on newer versions of Android</string>
+    <string name="permission_battery">Battery optimization</string>
+    <string name="permission_battery_description">Prevents patching from being interrupted in the background</string>
+    <string name="permission_grant">Grant</string>
+
+    <string name="downloader_host_permission_label">ReVanced Manager downloader host</string>
+    <string name="downloader_host_permission_description">Used to control access to ReVanced Manager downloaders. Only ReVanced Manager has this.</string>
+
+    <string name="toast_copied_to_clipboard">Copied!</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+
+    <string name="dashboard">Dashboard</string>
+    <string name="settings">Settings</string>
+    <string name="select_app">Select an app</string>
+    <string name="patches_count_selected">%1$d/%2$d selected</string>
+
+    <string name="fab_patch_app">Patch an app</string>
+    <string name="fab_add_patches">Add patches</string>
+
+    <string name="new_downloader_notification">New downloader(s) available. Click here to configure them.</string>
+    <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
+
+    <string name="import_">Import</string>
+    <string name="import_patches">Import patches</string>
+    <string name="file_field_set">Selected</string>
+    <string name="file_field_not_set">Not selected</string>
+
+    <string name="field_not_set">Not set</string>
+
+    <string name="patches_missing">Missing</string>
+    <string name="patches_error">Error</string>
+    <string name="patches_error_description">Patches could not be loaded. Click to view the error</string>
+    <string name="patches_not_downloaded">Patches has not been downloaded.</string>
+    <string name="patches_name_default">Patches</string>
+    <string name="patches_name_fallback">Unnamed</string>
+
+    <string name="android_11_bug_dialog_title">Android 11 bug</string>
+    <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that will negatively affect the user experience.</string>
+
+    <string name="no_network_toast">No internet connection available</string>
+
+    <string name="selected_app_meta_any_version">Any available version</string>
+    <string name="app_source_dialog_title">Select source</string>
+    <string name="app_source_dialog_option_auto">Auto</string>
+    <string name="app_source_dialog_option_auto_description">Use installed app, then downloaded APK, then available downloaders</string>
+    <string name="app_source_dialog_option_auto_unavailable">No compatible found app or downloaders available</string>
+    <string name="app_source_dialog_option_installed_no_root">Mounted apps can\'t be patched again without root access</string>
+    <string name="app_source_dialog_option_installed_version_not_suggested">Version %s does not match the suggested version</string>
+
+    <string name="patch_item_description">Start patching the application</string>
+    <string name="patch_selector_item">Select patches</string>
+    <string name="patch_selector_item_description">%d patches selected</string>
+    <string name="patch_selection_changed_warning">Selection of patches has been changed</string>
+    <string name="no_patches_selected">No patches selected</string>
+
+    <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
+    <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
+
+    <string name="apk_source_selector_item">Select APK source</string>
+    <string name="apk_source_auto">Auto</string>
+    <string name="apk_source_auto_installed">Auto · Using installed APK</string>
+    <string name="apk_source_auto_downloaded">Auto · Using downloaded APK</string>
+    <string name="apk_source_auto_downloader">Auto · Using available downloaders</string>
+    <string name="apk_source_auto_storage">Auto · Select from storage</string>
+    <string name="apk_source_downloader">Using %s</string>
+    <string name="apk_source_installed">Using installed APK</string>
+    <string name="apk_source_local">Using a local APK file</string>
+    <string name="apk_source_downloaded">Already downloaded</string>
+
+    <string name="legacy_import_failed">Could not import legacy settings</string>
+
+
+    <string name="auto_updates_dialog_title">Configure updates</string>
+    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
+    <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+    <string name="auto_updates_dialog_patches">ReVanced Patches</string>
+    <string name="auto_updates_dialog_downloaders">ReVanced Manager: Downloaders</string>
+    <string name="auto_updates_dialog_note">These settings can be changed later.</string>
+
+    <string name="announcements_filter_tag">Filter by tag</string>
+    <string name="announcements_show_archived">Show archived</string>
+
+    <string name="general">General</string>
+    <string name="general_description">Language, theme, dynamic color</string>
+    <string name="updates">Updates</string>
+    <string name="updates_description">Check for updates and view changelog</string>
+    <string name="downloads">Downloads</string>
+    <string name="downloads_description">Downloaders and downloaded apps</string>
+    <string name="import_export">Import &amp; export</string>
+    <string name="import_export_description">Keystore, patch options and selection</string>
+    <string name="advanced">Advanced</string>
+    <string name="advanced_description">API URL, memory limit, debugging</string>
+    <string name="safeguards_toggled_warning">Safeguards have been toggled</string>
+    <string name="about">About</string>
+    <string name="about_app_name">About %1$s</string>
+    <string name="opensource_licenses">Open source licenses</string>
+    <string name="opensource_licenses_description">View all the libraries used to make this application</string>
+
+    <string name="contributors">Contributors</string>
+    <string name="contributors_description">View the contributors of ReVanced</string>
+    <string name="dynamic_color">Dynamic color</string>
+    <string name="dynamic_color_description">Adapt colors to the wallpaper</string>
+    <string name="pure_black_theme">Pure black theme</string>
+    <string name="pure_black_theme_description">Use pure black backgrounds for dark theme</string>
+    <string name="theme">Theme</string>
+    <string name="theme_description">Choose between light or dark theme</string>
+    <string name="language">Language</string>
+    <string name="language_description">Choose the app display language</string>
+    <string name="language_system_default">System default</string>
+    <string name="search_languages">Search languages…</string>
+
+    <string name="safeguards">Safeguards</string>
+    <string name="patch_compat_check">Disable version compatibility check</string>
+    <string name="patch_compat_check_description">Do not restrict patches to compatible app versions</string>
+    <string name="patch_compat_check_confirmation">Selecting incompatible patches can result in a broken app.
+
+Do you want to proceed anyways?</string>
+    <string name="suggested_version_safeguard">Require suggested app version</string>
+    <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
+    <string name="suggested_version_safeguard_confirmation">Selecting an app that is not the suggested version may cause unexpected issues.
+
+Do you want to proceed anyways?</string>
+    <string name="patch_selection_safeguard">Allow changing patch selection and options</string>
+    <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches and customization of options</string>
+    <string name="patch_selection_safeguard_confirmation">Changing the selection of patches may cause unexpected issues.
+
+Enable anyways?</string>
+    <string name="universal_patches_safeguard">Allow using universal patches</string>
+    <string name="universal_patches_safeguard_description">Do not prevent using universal patches</string>
+    <string name="universal_patches_safeguard_confirmation">Universal patches are not as well tested as those that target specific apps.
+
+Enable anyways?</string>
+    <string name="keystore">Keystore</string>
+    <string name="patches_selections">Patches selections</string>
+    <string name="import_keystore">Import keystore</string>
+    <string name="import_keystore_description">Import a custom keystore</string>
+    <string name="import_keystore_dialog_title">Enter keystore credentials</string>
+    <string name="import_keystore_dialog_description">You\'ll need enter the keystore’s credentials to import it.</string>
+    <string name="import_keystore_dialog_alias_field">Username (Alias)</string>
+    <string name="import_keystore_dialog_password_field">Password</string>
+    <string name="import_keystore_dialog_button">Import</string>
+    <string name="import_keystore_wrong_credentials">Wrong keystore credentials</string>
+    <string name="import_keystore_success">Imported keystore</string>
+    <string name="export_keystore">Export keystore</string>
+    <string name="export_keystore_description">Export the current keystore</string>
+    <string name="export_keystore_unavailable">No keystore to export</string>
+    <string name="export_keystore_success">Exported keystore</string>
+    <string name="regenerate_keystore">Regenerate keystore</string>
+    <string name="regenerate_keystore_description">Generate a new keystore</string>
+    <string name="regenerate_keystore_dialog_description">You are about to regenerate your keystore the manager will use during the patching process.
+
+You will not be able to update the previously installed apps from this source.</string>
+    <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
+    <string name="import_patch_selection">Import patch selection</string>
+    <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
+    <string name="import_patch_selection_fail">Could not import patch selection: %s</string>
+    <string name="import_patch_selection_success">Imported patch selection</string>
+    <string name="select_bundle_for_import">Select bundle to import into</string>
+    <string name="export_patch_selection">Export patch selection</string>
+    <string name="export_patch_selection_description">Export patch selection to a JSON file</string>
+    <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
+    <string name="export_patch_selection_success">Exported patch selection</string>
+    <string name="select_bundle_for_export">Select bundle to export from</string>
+    <string name="patch_selection_packages">Apps with saved selections</string>
+    <string name="patch_selection_entries">Total selected patches</string>
+    <string name="reset_configuration">Reset configuration</string>
+    <string name="reset_patch_selection">Patch selections</string>
+    <string name="reset_patch_selection_description">Reset the stored patch selection</string>
+    <string name="reset_patch_options">Patch options</string>
+    <string name="reset_patch_options_description">Reset the stored patch options</string>
+    <string name="reset_patch_selection_success">Patch selection has been reset</string>
+    <string name="patch_selection_reset_all">Reset patch selection globally</string>
+    <string name="patch_selection_reset_all_dialog_description">You are about to reset all patch selections. You will need to manually select each patch again.</string>
+    <string name="patch_selection_reset_all_description">Resets all patch selections</string>
+    <string name="patch_selection_reset_package">Reset patch selection for app</string>
+    <string name="patch_selection_reset_package_dialog_description">You are about to reset the patch selection for the app \"%s\". You will have to manually select each patch again.</string>
+    <string name="patch_selection_reset_package_description">Resets patch selection for a single app</string>
+    <string name="patch_selection_reset_patches">Reset patch selection (single)</string>
+    <string name="patch_selection_reset_patches_dialog_description">You are about to reset the patch selection for \"%s\". You will have to manually select each patch again.</string>
+    <string name="patch_selection_reset_patches_description">Resets the patch selection for a specific collection of patches</string>
+    <string name="patch_options_reset_package">Reset patch options for app</string>
+    <string name="patch_options_reset_package_dialog_description">You are about to reset the patch options for the app \"%s\". You will have to reapply each option again.</string>
+    <string name="patch_options_reset_package_description">Resets patch options for a single app</string>
+    <string name="patch_options_reset_patches">Reset patch options (single)</string>
+    <string name="patch_options_reset_patches_dialog_description">You are about to reset the patch options for \"%s\". You will have to reapply each option again.</string>
+    <string name="patch_options_reset_patches_description">Resets the patch options for a specific collection of patches</string>
+    <string name="patch_options_reset_all">Reset patch options globally</string>
+    <string name="patch_options_reset_all_dialog_description">You are about to reset all patch options. You will have to reapply each option again.</string>
+    <string name="patch_options_reset_all_description">Resets all patch options</string>
+    <string name="downloaders">Downloaders</string>
+    <string name="downloader_prereleases">Use pre-releases</string>
+    <string name="downloader_prereleases_description">Use pre-release versions of the main downloader</string>
+    <string name="downloader_state_loaded">Loaded</string>
+    <string name="downloader_state_failed">Failed to load. Click for more details</string>
+    <string name="downloader_state_missing">Missing</string>
+    <string name="downloader_delete_apps_title">Delete selected apps</string>
+    <string name="downloader_delete_apps_description">Are you sure you want to delete the selected apps?</string>
+    <string name="downloader_delete_single_description">Are you sure you want to delete \"%s\"?</string>
+    <string name="downloader_settings_no_apps">No downloaded apps found.</string>
+    <string name="downloader_settings_no_apps_description">Apps downloaded through ReVanced Manager will appear here.</string>
+    <string name="downloader_url">Downloader URL</string>
+    <string name="downloader_add">Add Downloader</string>
+    <string name="select_downloader_type_dialog_description">Add new downloaders from URL or local files</string>
+    <string name="local_downloaders_description">Add downloaders from local storage.</string>
+    <string name="remote_downloaders_description">Add downloaders from URL. Can be automatically updated.</string>
+    <string name="install_revanced_downloaders">Install downloaders to get apps directly within ReVanced Manager.</string>
+    <string name="install_revanced_downloader">Install ReVanced Downloaders</string>
+    <string name="cancel_downloader_install_title">Cancel downloaders install?</string>
+    <string name="cancel_downloader_install_description">A downloaders install is in progress. If you leave now, the download will be cancelled.</string>
+    <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
+    <string name="downloader_sources_unavailable_description">Click on the update button to fix it.</string>
+
+    <string name="downloader_update_failed">Failed to update downloader: %s</string>
+    <string name="downloader_replace_fail">Failed to import downloader: %s</string>
+
+    <string name="search_apps">Search apps…</string>
+    <string name="loading_body">Loading…</string>
+    <string name="downloading_patches">Downloading patches…</string>
+
+    <string name="options">Options</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="edit">Edit</string>
+    <string name="dialog_input_placeholder">Value</string>
+    <string name="reset">Reset</string>
+    <string name="share">Share</string>
+    <string name="patch">Patch</string>
+    <string name="select_from_storage">Select from storage</string>
+    <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
+    <string name="suggested_version_info">Suggested version: %s</string>
+    <string name="type_anything">Type anything to continue</string>
+    <string name="search">Search patches…</string>
+    <string name="apply">Apply</string>
+    <string name="help">Help</string>
+    <string name="back">Back</string>
+    <string name="warning">Warning</string>
+    <string name="add">Add</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="close">Close</string>
+    <string name="clear">Clear</string>
+    <string name="system">System</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="appearance">Appearance</string>
+    <string name="networking">Networking</string>
+    <string name="allow_metered_networks">Allow metered networks</string>
+    <string name="allow_metered_networks_description">Permits automatic updates on metered networks.
+    The application might still warn about metered networks for manual operations.</string>
+    <string name="downloaded_apps">Downloaded apps</string>
+    <string name="process_runtime">Run Patcher in another process (experimental)</string>
+    <string name="process_runtime_description">This is faster and allows Patcher to use more memory</string>
+    <string name="process_runtime_memory_limit">Patcher process memory limit</string>
+    <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use</string>
+    <string name="debug_logs_export">Export debug logs</string>
+    <string name="debug_logs_export_read_failed">Failed to read logs (exit code %d)</string>
+    <string name="debug_logs_export_failed">Failed to export logs</string>
+    <string name="debug_logs_export_success">Exported logs</string>
+    <string name="api_url">API URL</string>
+    <string name="api_url_description">The API used to download necessary files</string>
+    <string name="api_url_dialog_title">Change API URL</string>
+    <string name="api_url_dialog_description">Change the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
+    <string name="api_url_dialog_warning">ReVanced Manager connects to the API to download patches and updates. Make sure that you trust it.</string>
+    <string name="api_url_dialog_save">Set</string>
+    <string name="api_url_dialog_reset">Reset API URL</string>
+    <string name="device">Device</string>
+    <string name="device_android_version">Android version</string>
+    <string name="device_model">Model</string>
+    <string name="device_architectures">CPU Architectures</string>
+    <string name="device_memory_limit">Memory limits</string>
+    <string name="device_memory_limit_format">%1$dMB (Normal) - %2$dMB (Large)</string>
+    <string name="patches_force_download">Force download all patches</string>
+    <string name="patches_reset">Reset patches</string>
+    <string name="reset_onboarding">Reset onboarding</string>
+    <string name="reset_onboarding_description">Show the onboarding screen on next app launch</string>
+    <string name="patching">Patching</string>
+    <string name="signing">Signing</string>
+    <string name="storage">Storage</string>
+    <string name="no_patch_found">No patch can be found. Check your patches</string>
+    <string name="tab_apps">Apps</string>
+    <string name="tab_patches">Patches</string>
+    <string name="delete">Delete</string>
+    <string name="refresh">Refresh</string>
+    <string name="continue_anyways">Continue anyways</string>
+    <string name="download_another_version">Download another version</string>
+    <string name="download_app">Download app</string>
+    <string name="download_apk">Download APK file</string>
+    <string name="patches_download_fail">Failed to download patches: %s</string>
+    <string name="api_not_working_title">API service is currently down</string>
+    <string name="api_not_working_description">Some features might be impacted. Check your connection or API URL in settings.</string>
+    <string name="patches_replace_fail">Failed to import patches: %s</string>
+    <string name="no_patched_apps_found">No patched apps found</string>
+    <string name="no_patched_apps_description">You currently don\'t have any patched apps that we know of. Change that by patching your first app!</string>
+    <string name="patched_apps_section_title">Patched apps</string>
+    <string name="patchable_apps_section_title">Apps that can be patched</string>
+    <string name="no_patches_found">No patches found</string>
+    <string name="no_patches_description">You don\'t have any patches yet. Add patches by tapping the button below!</string>
+    <string name="tap_on_patches">Tap on the patches to get more information about them</string>
+    <string name="patches_selected">%s selected</string>
+    <string name="incompatible_patches">Incompatible patches</string>
+    <string name="universal_patches">Universal patches</string>
+    <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
+    <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="non_suggested_version_warning_title">Non suggested version</string>
+    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.
+Please use the suggested version: %s
+
+To continue anyway, disable \"Require suggested app version\" in the advanced settings.</string>
+    <string name="selection_warning_title">Stop using defaults?</string>
+    <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.
+
+You need to turn on \"Allow changing patch selection and options\" in the advanced settings before toggling patches.</string>
+    <string name="universal_patch_warning_description">Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.
+
+You need to turn on \"Allow using universal patches\" in the advanced settings before using universal patches.</string>
+    <string name="this_version">This version</string>
+    <string name="universal">Any app</string>
+    <string name="search_patches">Search patches</string>
+    <string name="app_version_not_compatible">This patch is not compatible with the selected app version (%1$s)
+
+It is only compatible with the following version(s): %2$s</string>
+    <string name="continue_with_version">Continue with this version?</string>
+    <string name="version_not_compatible">Not all patches are compatible with this version (%s). Do you want to continue anyway?</string>
+    <string name="download_application">Download application?</string>
+    <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
+    <string name="failed_to_load_apk">Failed to load APK</string>
+    <string name="split_apk_not_supported">Split APKs cannot be patched</string>
+    <string name="loading">Loading…</string>
+    <string name="not_installed">Not installed</string>
+    <string name="installed">Installed</string>
+
+    <string name="app_info">App info</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="unpatch">Unpatch</string>
+    <string name="repatch">Repatch</string>
+    <string name="install_type">Installation type</string>
+    <string name="package_name">Package name</string>
+    <string name="original_package_name">Original package name</string>
+    <string name="applied_patches">Applied patches</string>
+    <string name="view_applied_patches">View applied patches</string>
+
+    <string name="default_install">Default</string>
+    <string name="mount_install">Mount</string>
+    <string name="mounted">Mounted</string>
+    <string name="not_mounted">Not mounted</string>
+    <string name="mount">Mount</string>
+    <string name="unmount">Unmount</string>
+    <string name="failed_to_mount">Failed to mount: %s</string>
+    <string name="failed_to_unmount">Failed to unmount: %s</string>
+    <string name="unpatch_app">Unpatch app?</string>
+    <string name="unpatch_description">Are you sure you want to unpatch this app?</string>
+
+    <string name="downloader_invalid_version">Downloader did not fetch the correct version</string>
+    <string name="downloader_app_not_found">Downloader did not find the app</string>
+    <string name="downloader_error">Downloader error: %s</string>
+    <string name="no_downloaders_installed">No app downloaders are installed!</string>
+    <string name="no_downloaders_trusted">No app downloaders have been trusted! Please check your settings.</string>
+    <string name="already_patched">Already patched</string>
+
+    <string name="patch_selector_sheet_filter_title">Filter</string>
+    <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
+    <string name="patch_selector_sheet_filter_packages_title">Packages</string>
+
+    <string name="patch_selector_sheet_actions_title">Actions</string>
+    <string name="restore_default_selection">Restore default selection</string>
+    <string name="deselect_all">Deselect all</string>
+    <string name="invert_selection">Invert selection</string>
+    <string name="deselect_all_except">Deselect all except %s</string>
+    <string name="scope_dialog_title">Apply to</string>
+    <string name="scope_all_patches">All patches</string>
+    <string name="scope_bundle_patches">%s only</string>
+
+    <string name="string_option_menu_description">More options</string>
+    <string name="option_preset_custom_value">Custom value</string>
+
+    <string name="path_selector">Select from storage</string>
+    <string name="path_selector_parent_dir">Previous directory</string>
+    <string name="path_selector_dirs">Directories</string>
+    <string name="path_selector_files">Files</string>
+
+    <string name="show_password_field">Show password</string>
+    <string name="hide_password_field">Hide password</string>
+
+    <string name="installer">Installer</string>
+    <string name="install_app">Install</string>
+    <string name="install_app_success">App installed</string>
+    <string name="install_app_fail">Failed to install app: %s</string>
+    <string name="reinstall_app_fail">Failed to reinstall app: %s</string>
+    <string name="uninstall_app_fail">Failed to uninstall app: %s</string>
+    <string name="open_app">Open</string>
+    <string name="save_apk">Save APK</string>
+    <string name="save_apk_success">APK Saved</string>
+    <string name="sign_fail">Failed to sign APK: %s</string>
+    <string name="save_logs">Save logs</string>
+    <string name="save_as_file">Save to files</string>
+    <string name="export_patcher_logs">Export patcher logs</string>
+    <string name="save_logs_success">Logs saved</string>
+    <string name="downloader_activity_dialog_body">User interaction is required in order to proceed with this downloader.</string>
+    <string name="select_install_type">Select installation type</string>
+
+    <string name="patcher_step_group_preparing">Preparing</string>
+    <string name="patcher_step_load_patches">Load patches</string>
+    <string name="patcher_step_unpack">Prepare patcher</string>
+    <string name="patcher_step_group_patching">Patching</string>
+    <string name="patcher_step_group_saving">Saving</string>
+    <string name="patcher_step_write_patched">Write patched APK file</string>
+    <string name="patcher_step_sign_apk">Sign patched APK file</string>
+    <string name="patcher_notification_title">Patching in progress…</string>
+    <string name="patcher_notification_text">Tap to return to the patcher</string>
+    <string name="patcher_stop_confirm_title">Stop patcher</string>
+    <string name="patcher_stop_confirm_description">Are you sure you want to stop the patching process?</string>
+    <string name="patcher_install_in_progress">Installation is in progress. Please wait</string>
+    <string name="execute_patches">Execute patches</string>
+    <string name="executing_patch">Execute %s</string>
+    <string name="failed_to_execute_patch">Failed to execute %s</string>
+
+    <string name="step_completed">completed</string>
+    <string name="step_failed">failed</string>
+    <string name="step_running">running</string>
+    <string name="step_waiting">waiting</string>
+
+    <string name="expand_content">expand</string>
+    <string name="collapse_content">collapse</string>
+    <string name="drag_handle">reorder</string>
+
+    <string name="more">More</string>
+    <string name="less">Less</string>
+    <string name="continue_">Continue</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="view_announcement">View announcement</string>
+    <string name="permanent_dismiss">Do not show this again</string>
+    <string name="donate">Donate</string>
+    <string name="website">Website</string>
+    <string name="github">GitHub</string>
+    <string name="contact">Contact</string>
+    <string name="license">License</string>
+    <string name="source">Source</string>
+    <string name="repository">Repository</string>
+    <string name="bundle_information_by_author">By %1$s</string>
+    <string name="version">Version</string>
+    <string name="version_compatibility_warning">Selected version may be incompatible with selected patches</string>
+    <string name="submit_feedback">Submit issue or feedback</string>
+    <string name="submit_feedback_description">Help us improve this application</string>
+    <string name="developer_options">Developer options</string>
+    <string name="developer_options_description">Options for debugging issues</string>
+    <string name="patches_update_success">Update successful</string>
+    <string name="patches_update_unavailable">No update available</string>
+    <string name="view_patches">View patches</string>
+    <string name="patches_view_any_version">Any version</string>
+    <string name="patches_view_any_package">Any package</string>
+    <string name="patches_delete_single_dialog_description">Are you sure you want to delete \"%s\"?</string>
+    <string name="patches_delete_multiple_dialog_description">Are you sure you want to delete the selected patches?</string>
+
+    <string name="announcements">Announcements</string>
+    <string name="archive">Archive</string>
+    <string name="about_revanced_manager">About ReVanced Manager</string>
+    <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and patch apps with custom patches, and manage the patching process.</string>
+    <string name="developer_options_taps">%d taps remaining</string>
+    <string name="developer_options_enabled">Developer options enabled</string>
+    <string name="developer_options_already_enabled">Developer options are already enabled</string>
+    <string name="update_available">An update is available</string>
+    <string name="current_version">Current version: %s</string>
+    <string name="new_version">New version: %s</string>
+    <string name="ready_to_install_update">Ready to install update</string>
+    <string name="update_completed">Update installed</string>
+    <string name="install_update_manager_failed">Failed to install update</string>
+    <string name="manual_update_check">Check for updates</string>
+    <string name="view_update">View update</string>
+    <string name="manual_update_check_description">Manually check for updates</string>
+    <string name="update_checking_manager">Check for updates on launch</string>
+    <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
+    <string name="update_checking_downloader">Check for ReVanced Downloaders updates on launch</string>
+    <string name="update_checking_downloader_description">Check for updates to installed ReVanced Downloaders when the application starts</string>
+    <string name="manager_prereleases">Use pre-releases</string>
+    <string name="manager_prereleases_description">Use pre-release versions of ReVanced Manager</string>
+    <string name="prereleases_warning">Pre-release versions may be unstable and contain bugs. You may experience crashes, data loss, or other unexpected issues. Only enable this if you are comfortable with these risks.</string>
+    <string name="changelog">View changelog</string>
+    <string name="changelog_loading">Loading changelog</string>
+    <string name="changelog_download_fail">Failed to download changelog: %s</string>
+    <string name="changelog_description">Check out the latest changes in this update</string>
+    <string name="battery_optimization_notification">Battery optimizations must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off optimizations.</string>
+    <string name="installing_manager_update">Installing update…</string>
+    <string name="downloading_manager_update">Downloading update…</string>
+    <string name="download_manager_failed">Failed to download update: %s</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="save_with_count">Save (%1$s)</string>
+    <string name="update">Update</string>
+    <string name="empty">Empty</string>
+    <string name="installing_message">Tap on <b>Update</b> when prompted.
+ReVanced Manager will close when updating.</string>
+    <string name="no_changelogs_found">No changelogs found</string>
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">%sm ago</string>
+    <string name="hours_ago">%sh ago</string>
+    <string name="days_ago">%sd ago</string>
+    <string name="invalid_date">Invalid date</string>
+    <string name="disable_battery_optimization">Disable battery optimization</string>
+    <string name="input_dialog_value_invalid">Invalid value</string>
+    <string name="option_required">This option is required</string>
+    <string name="required_options_screen">Required options</string>
+
+    <string name="failed_to_check_updates">Failed to check for updates: %s</string>
+    <string name="no_update_available">No update available</string>
+    <string name="no_announcements_found">No announcements found</string>
+    <string name="update_check">Checking for updates…</string>
+    <string name="dismiss_temporary">Not now</string>
+    <string name="update_available_dialog_description">A new version of ReVanced Manager (%s) is available.</string>
+    <string name="failed_to_download_update">Failed to download update: %s</string>
+    <string name="download">Download</string>
+    <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.
+
+Do you still want to continue?</string>
+    <string name="download_update_confirmation">Download update?</string>
+    <string name="no_contributors_found">No contributors found</string>
+    <string name="select">Select</string>
+    <string name="select_deselect_all">Select or deselect all</string>
+    <string name="select_patches_type_dialog_description">Add new patches from URL or local files</string>
+    <string name="local_patches_description">Add patches from local storage.</string>
+    <string name="remote_patches_description">Add patches from URL. Patches can automatically update.</string>
+    <string name="recommended">Recommended</string>
+
+    <string name="installation_failed_dialog_title">Installation failed</string>
+    <string name="installation_cancelled_dialog_title">Installation cancelled</string>
+    <string name="installation_blocked_dialog_title">Installation blocked</string>
+    <string name="installation_conflict_dialog_title">Installation conflict</string>
+    <string name="installation_incompatible_dialog_title">Installation incompatible</string>
+    <string name="installation_invalid_dialog_title">Installation invalid</string>
+    <string name="installation_storage_issue_dialog_title">Not enough storage</string>
+    <string name="installation_timeout_dialog_title">Installation timed out</string>
+    <string name="installation_failed_description">The installation failed due to an unknown reason. Try again?</string>
+    <string name="installation_aborted_description">The installation was cancelled manually. Try again?</string>
+    <string name="installation_blocked_description">The installation was blocked. Review your device security settings and try again.</string>
+    <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
+    <string name="installation_incompatible_description">The app is incompatible with this device. Use an APK that is compatible by this device and try again.</string>
+    <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
+    <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
+    <string name="installation_timeout_description">The installation took too long. Try again?</string>
+    <string name="reinstall">Reinstall</string>
+    <string name="show">Show</string>
+    <string name="debugging">Debugging</string>
+    <string name="about_device">About device</string>
+    <string name="enter_url">Enter URL</string>
+    <string name="next">Next</string>
+    <string name="auto_update">Auto update</string>
+    <string name="add_patches">Add patches</string>
+    <string name="auto_update_description">Automatically update when a new version is available</string>
+    <string name="patches_prereleases">Use pre-releases</string>
+    <string name="patches_prereleases_description">Use pre-release versions of %s</string>
+    <string name="patches_url">Patches URL</string>
+    <string name="incompatible_patches_dialog">These patches are not compatible with the selected app version (%1$s).
+
+Click on the patches to see more details.</string>
+    <string name="incompatible_patch">Incompatible patch</string>
+    <string name="any_version">Any</string>
+    <string name="never_show_again">Never show again</string>
+    <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
+    <string name="show_manager_update_dialog_on_launch_description">Show a popup notification whenever a new update is available on launch</string>
+    <string name="failed_to_import_keystore">Failed to import keystore</string>
+    <string name="export">Export</string>
+    <string name="confirm">Confirm</string>
+    <string name="new_announcement">New announcement:\n%s</string>
+
+    <plurals name="patch_count">
+        <item quantity="one">%d patch</item>
+        <item quantity="other">%d patches</item>
+    </plurals>
+    <plurals name="patches_executed">
+        <item quantity="one">Execute %d patch</item>
+        <item quantity="other">Execute %d patches</item>
+    </plurals>
+    <plurals name="selected_count">
+        <item quantity="other">%d selected</item>
+    </plurals>
+</resources>

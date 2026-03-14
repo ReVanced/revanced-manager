@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">पॅचर</string>
+  <string name="downloader_host_permission_label">ReVanced Manager डाउनलोडर होस्ट</string>
+  <string name="downloader_host_permission_description">ReVanced Manager डाउनलोडरमध्ये प्रवेश नियंत्रित करण्यासाठी वापरले जाते. फक्त ReVanced Manager कडे हे आहे.</string>
+  <string name="new_downloader_notification">नवीन डाउनलोडर उपलब्ध आहेत. त्यांना कॉन्फिगर करण्यासाठी येथे क्लिक करा.</string>
+  <string name="app_source_dialog_option_auto_unavailable">कोणताही डाउनलोडर उपलब्ध नाही</string>
+  <string name="announcements_filter_tag">टॅगनुसार फिल्टर करा</string>
+  <string name="announcements_show_archived">संग्रहित दाखवा</string>
+  <string name="downloads_description">डाउनलोडर आणि डाउनलोड केलेले ॲप्स</string>
+  <string name="downloaders">डाउनलोडर</string>
+  <string name="downloader_state_trusted">विश्वसनीय</string>
+  <string name="downloader_state_failed">लोड करण्यात अयशस्वी. अधिक तपशिलांसाठी क्लिक करा</string>
+  <string name="downloader_state_untrusted">अविश्वसनीय</string>
+  <string name="downloader_trust_dialog_title">डाउनलोडरवर विश्वास ठेवायचा?</string>
+  <string name="downloader_revoke_trust_dialog_title">विश्वास मागे घ्यायचा?</string>
+  <string name="downloader_trust_dialog_body">सुरू ठेवल्यास हा डाउनलोडर चालू होईल.\n\nतुम्हाला या डाउनलोडरवर विश्वास असल्यास, तो सक्षम करा. डाउनलोडर Manager ला अनियंत्रित कोड कार्यान्वित करण्यास लावू शकतात.</string>
+  <string name="downloader_trust_dialog_signature">स्वाक्षरी:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">डाउनलोडर:\n%s</string>
+  <string name="downloader_delete_apps_title">निवडलेले ॲप्स हटवा</string>
+  <string name="downloader_delete_apps_description">तुम्ही निवडलेले ॲप्स हटवू इच्छिता याची तुम्हाला खात्री आहे का?</string>
+  <string name="no_downloader_installed">कोणतेही डाउनलोडर स्थापित नाहीत.</string>
+  <string name="no_downloader_available">डाउनलोडर स्थापित आहेत पण त्यापैकी कोणीही विश्वसनीय नाहीत. तुमच्या सेटिंग्ज तपासा.</string>
+  <string name="patch_selector_sheet_actions_title">कृती</string>
+  <string name="restore_default_selection">डीफॉल्ट निवड पुनर्संचयित करा</string>
+  <string name="deselect_all">सर्व निवड रद्द करा</string>
+  <string name="invert_selection">निवड उलट करा</string>
+  <string name="deselect_all_except">%s वगळून सर्व निवड रद्द करा</string>
+  <string name="scope_dialog_title">याला लागू करा</string>
+  <string name="scope_all_patches">सर्व पॅचेस</string>
+  <string name="scope_bundle_patches">फक्त %s</string>
+  <string name="downloader_activity_dialog_body">या डाउनलोडरसह पुढे जाण्यासाठी वापरकर्त्याच्या परस्परसंवादाची आवश्यकता आहे.</string>
+  <string name="view_announcement">घोषणा पहा</string>
+  <string name="announcements">घोषणा</string>
+  <string name="archive">आर्काइव्ह</string>
+  <string name="no_announcements_found">कोणत्याही घोषणा सापडल्या नाहीत</string>
+  <string name="new_announcement">नवीन घोषणा:\n%s</string>
+</resources>

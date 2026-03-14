@@ -1,0 +1,47 @@
+package app.revanced.manager.network.downloader
+
+import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+/**
+ * A container for [Parcelable] data returned from downloader. Instances of this class can be safely stored in a bundle without needing to set the [ClassLoader].
+ */
+class ParceledDownloaderData private constructor(
+    val downloaderPackageName: String,
+    val downloaderClassName: String,
+    private val bundle: Bundle
+) : Parcelable {
+    constructor(downloader: LoadedDownloader, data: Parcelable) : this(
+        downloader.packageName,
+        downloader.className,
+        createBundle(data)
+    )
+
+    fun unwrapWith(classLoader: ClassLoader): Parcelable {
+        bundle.classLoader = classLoader
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val className = bundle.getString(CLASS_NAME_KEY)!!
+            val clazz = classLoader.loadClass(className)
+
+            bundle.getParcelable(DATA_KEY, clazz)!! as Parcelable
+        } else @Suppress("Deprecation") bundle.getParcelable(DATA_KEY)!!
+    }
+
+    private companion object {
+        const val CLASS_NAME_KEY = "class"
+        const val DATA_KEY = "data"
+
+        fun createBundle(data: Parcelable) = Bundle().apply {
+            putParcelable(DATA_KEY, data)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) putString(
+                CLASS_NAME_KEY,
+                data::class.java.canonicalName
+            )
+        }
+    }
+}

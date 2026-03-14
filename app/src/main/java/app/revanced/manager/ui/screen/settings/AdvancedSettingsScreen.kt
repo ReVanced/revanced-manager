@@ -1,0 +1,316 @@
+package app.revanced.manager.ui.screen.settings
+
+import android.app.ActivityManager
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.os.Build
+import androidx.core.view.HapticFeedbackConstantsCompat
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Api
+import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.outlined.WorkOutline
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.core.content.getSystemService
+import androidx.lifecycle.viewModelScope
+import app.revanced.manager.BuildConfig
+import app.revanced.manager.R
+import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.ListSection
+import app.revanced.manager.ui.component.settings.BooleanItem
+import app.revanced.manager.ui.component.settings.IntegerItem
+import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
+import app.revanced.manager.util.toast
+import app.revanced.manager.util.withHapticFeedback
+import org.koin.androidx.compose.koinViewModel
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun AdvancedSettingsScreen(
+    onBackClick: () -> Unit,
+    viewModel: AdvancedSettingsViewModel = koinViewModel()
+) {
+    val context = LocalContext.current
+    val resources = LocalResources.current
+    val memoryLimit = remember(resources) {
+        val activityManager = context.getSystemService<ActivityManager>()!!
+        resources.getString(
+            R.string.device_memory_limit_format,
+            activityManager.memoryClass,
+            activityManager.largeMemoryClass
+        )
+    }
+    val scrollState = rememberScrollState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        canScroll = {
+            scrollState.canScrollBackward || scrollState.canScrollForward
+        }
+    )
+
+    val showDeveloperSettings by viewModel.prefs.showDeveloperSettings.getAsState()
+    var developerTaps by rememberSaveable { mutableIntStateOf(0) }
+
+    LaunchedEffect(developerTaps) {
+        if (developerTaps < 10) return@LaunchedEffect
+
+        if (showDeveloperSettings) {
+            context.toast(context.getString(R.string.developer_options_already_enabled))
+        } else {
+            viewModel.prefs.showDeveloperSettings.update(true)
+            context.toast(context.getString(R.string.developer_options_enabled))
+        }
+        developerTaps = 0
+    }
+
+    Scaffold(
+        topBar = {
+            MediumFlexibleTopAppBar(
+                title = { Text(stringResource(R.string.advanced)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
+            )
+        },
+        modifier = Modifier.then(
+            scrollBehavior.let { Modifier.nestedScroll(it.nestedScrollConnection) }
+        ),
+    ) { paddingValues ->
+        ColumnWithScrollbar(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            state = scrollState
+        ) {
+            ListSection(
+                title = stringResource(R.string.manager),
+                leadingContent = { Icon(Icons.Outlined.WorkOutline, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                val apiUrl by viewModel.prefs.api.getAsState()
+                var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
+
+                if (showApiUrlDialog) {
+                    APIUrlDialog(
+                        currentUrl = apiUrl,
+                        defaultUrl = viewModel.prefs.api.default,
+                        onSubmit = {
+                            showApiUrlDialog = false
+                            it?.let(viewModel::setApiUrl)
+                        }
+                    )
+                }
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.api_url),
+                    supportingContent = stringResource(R.string.api_url_description),
+                    onClick = { showApiUrlDialog = true }
+                )
+            }
+
+            ListSection(
+                title = stringResource(R.string.safeguards),
+                leadingContent = { Icon(Icons.Outlined.Security, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+            SafeguardBooleanItem(
+                preference = viewModel.prefs.disablePatchVersionCompatCheck,
+                coroutineScope = viewModel.viewModelScope,
+                headline = R.string.patch_compat_check,
+                description = R.string.patch_compat_check_description,
+                confirmationText = R.string.patch_compat_check_confirmation
+            )
+            SafeguardBooleanItem(
+                preference = viewModel.prefs.suggestedVersionSafeguard,
+                coroutineScope = viewModel.viewModelScope,
+                headline = R.string.suggested_version_safeguard,
+                description = R.string.suggested_version_safeguard_description,
+                confirmationText = R.string.suggested_version_safeguard_confirmation
+            )
+            SafeguardBooleanItem(
+                preference = viewModel.prefs.disableSelectionWarning,
+                coroutineScope = viewModel.viewModelScope,
+                headline = R.string.patch_selection_safeguard,
+                description = R.string.patch_selection_safeguard_description,
+                confirmationText = R.string.patch_selection_safeguard_confirmation
+            )
+                SafeguardBooleanItem(
+                    preference = viewModel.prefs.disableUniversalPatchCheck,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.universal_patches_safeguard,
+                    description = R.string.universal_patches_safeguard_description,
+                    confirmationText = R.string.universal_patches_safeguard_confirmation
+                )
+            }
+
+            ListSection(
+                title = stringResource(R.string.patcher),
+                leadingContent = { Icon(Icons.Outlined.Tune, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                val useProcessRuntime by viewModel.prefs.useProcessRuntime.getAsState()
+
+                BooleanItem(
+                    preference = viewModel.prefs.useProcessRuntime,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.process_runtime,
+                    description = R.string.process_runtime_description,
+                )
+                AnimatedVisibility(
+                    visible = useProcessRuntime,
+                ) {
+                    IntegerItem(
+                        preference = viewModel.prefs.patcherProcessMemoryLimit,
+                        coroutineScope = viewModel.viewModelScope,
+                        headline = R.string.process_runtime_memory_limit,
+                        description = R.string.process_runtime_memory_limit_description,
+                        unit = "MiB",
+                    )
+                }
+            }
+
+            ListSection(
+                title = stringResource(R.string.debugging),
+                leadingContent = { Icon(Icons.Outlined.BugReport, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                val exportDebugLogsLauncher =
+                    rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
+                        it?.let(viewModel::exportDebugLogs)
+                    }
+                val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
+                val deviceContent = """
+                    Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
+                    Build type: ${BuildConfig.BUILD_TYPE}
+                    Model: ${Build.MODEL}
+                    Android version: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
+                    Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
+                    Memory limit: $memoryLimit
+                """.trimIndent()
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.debug_logs_export),
+                    onClick = { exportDebugLogsLauncher.launch(viewModel.debugLogFileName) }
+                )
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.about_device),
+                    supportingContent = deviceContent,
+                    onClick = { developerTaps++ },
+                    onLongClickLabel = stringResource(R.string.copy_to_clipboard),
+                    onLongClick = {
+                        clipboard.setPrimaryClip(
+                            ClipData.newPlainText("Device Information", deviceContent)
+                        )
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
+                    }.withHapticFeedback(HapticFeedbackConstantsCompat.LONG_PRESS)
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (String?) -> Unit) {
+    var url by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
+
+    AlertDialog(
+        onDismissRequest = { onSubmit(null) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onSubmit(url)
+                },
+                shapes = ButtonDefaults.shapes()
+            ) {
+                Text(stringResource(R.string.api_url_dialog_save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onSubmit(null) }, shapes = ButtonDefaults.shapes()) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+        icon = {
+            Icon(Icons.Outlined.Api, null)
+        },
+        title = {
+            Text(
+                text = stringResource(R.string.api_url_dialog_title),
+                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.api_url_dialog_description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = stringResource(R.string.api_url_dialog_warning),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error
+                )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = url,
+                    onValueChange = { url = it },
+                    label = { Text(stringResource(R.string.api_url)) },
+                    trailingIcon = {
+                        IconButton(onClick = { url = defaultUrl }, shapes = IconButtonDefaults.shapes()) {
+                            Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
+                        }
+                    }
+                )
+            }
+        }
+    )
+}
