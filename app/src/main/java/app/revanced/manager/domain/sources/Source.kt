@@ -61,7 +61,6 @@ sealed class Source<T>(
 }
 
 object Extensions {
-    val PatchBundleSource.asRemoteOrNull inline get() = this as? RemotePatchBundle
+    val <T> Source<T>.asRemoteOrNull inline get() = this as? RemoteSource<T>
     val PatchBundleSource.version get() = loaded?.manifestAttributes?.version
-    val PatchBundleSource.isNameOutOfDate get() = loaded?.manifestAttributes?.name?.let { it != name } == true
 }

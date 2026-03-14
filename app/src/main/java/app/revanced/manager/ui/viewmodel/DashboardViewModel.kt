@@ -124,6 +124,7 @@ class DashboardViewModel(
     }
 
     // TODO: should this be nuked?
+    /*
     fun applyAutoUpdatePrefs(enabled: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
@@ -142,7 +143,7 @@ class DashboardViewModel(
                 updateCheck()
             }
         }
-    }
+    }*/
 
     private fun sendEvent(event: BundleListViewModel.Event) {
         viewModelScope.launch { bundleListEventsChannel.send(event) }

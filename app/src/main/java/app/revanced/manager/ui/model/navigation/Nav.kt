@@ -92,7 +92,7 @@ object Settings {
     data object Downloads : Destination
 
     @Serializable
-    data class DownloadersInfo(val packageName: String) : Destination
+    data class DownloadersInfo(val uid: Int) : Destination
 
     @Serializable
     data object ImportExport : Destination

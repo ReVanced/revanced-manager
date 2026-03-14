@@ -84,13 +84,12 @@ fun OnboardingScreen(
     val context = LocalContext.current
     val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
-    val apiDownloaderLabel by vm.apiDownloaderLabel.collectAsStateWithLifecycle()
-    val apiDownloaderSignature by vm.apiDownloaderSignature.collectAsStateWithLifecycle()
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
     var managerUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var patchesUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
+    var downloaderUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var showSkipPermissionsDialog by remember { mutableStateOf(false) }
 
     val installAppsLauncher = rememberLauncherForActivityResult(RequestInstallAppsContract) {
@@ -134,7 +133,8 @@ fun OnboardingScreen(
                     scope.launch {
                         vm.applyAutoUpdatePrefs(
                             managerEnabled = managerUpdatesEnabled,
-                            patchesEnabled = patchesUpdatesEnabled
+                            patchesEnabled = patchesUpdatesEnabled,
+                            downloadersEnabled = downloaderUpdatesEnabled,
                         )
                     }
                     vm.advance()
@@ -142,6 +142,7 @@ fun OnboardingScreen(
             )
         )
 
+        /*
         OnboardingStep.Sources -> Triple(
             stringResource(R.string.onboarding_sources_subtitle),
             stringResource(R.string.onboarding_sources_description),
@@ -153,6 +154,7 @@ fun OnboardingScreen(
                 } else null
             )
         )
+        */
 
         OnboardingStep.Apps -> Triple(
             stringResource(R.string.select_app),
@@ -215,10 +217,13 @@ fun OnboardingScreen(
                     OnboardingStep.Updates -> UpdatesStepContent(
                         managerEnabled = managerUpdatesEnabled,
                         patchesEnabled = patchesUpdatesEnabled,
+                        downloadersEnabled = downloaderUpdatesEnabled,
                         onManagerEnabledChange = { managerUpdatesEnabled = it },
-                        onPatchesEnabledChange = { patchesUpdatesEnabled = it }
+                        onPatchesEnabledChange = { patchesUpdatesEnabled = it },
+                        onDownloadersEnabledChange = { downloaderUpdatesEnabled = it },
                     )
 
+                    /*
                     OnboardingStep.Sources -> {
                         SourcesStepContent(
                         apiDownloaderState = vm.apiDownloaderState,
@@ -233,7 +238,7 @@ fun OnboardingScreen(
                             vm.apiDownloaderPackageName.value?.let { vm.trustDownloader(it) }
                         }
                     )
-                    }
+                    }*/
 
                     OnboardingStep.Apps -> AppsStepContent(
                         modifier = Modifier.weight(1f),

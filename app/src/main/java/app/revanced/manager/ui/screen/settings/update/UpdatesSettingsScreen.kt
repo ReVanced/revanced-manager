@@ -253,19 +253,6 @@ fun UpdatesSettingsScreen(
                     }
                 )
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            ListSection(
-                title = stringResource(R.string.downloaders),
-                leadingContent = { Icon(Icons.Outlined.Download, contentDescription = null, modifier = Modifier.size(18.dp)) }
-            ) {
-                BooleanItem(
-                    preference = vm.downloaderAutoUpdates,
-                    headline = R.string.update_checking_downloader,
-                    description = R.string.update_checking_downloader_description
-                )
-            }
         }
     }
 }

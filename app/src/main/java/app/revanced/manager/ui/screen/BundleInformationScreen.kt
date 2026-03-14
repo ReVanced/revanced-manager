@@ -55,11 +55,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.LocalPatchBundle
-import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
+import app.revanced.manager.domain.sources.LocalSource
+import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
@@ -67,7 +67,6 @@ import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
-import app.revanced.manager.ui.component.bundle.BundlePatchesDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
 
@@ -77,12 +76,13 @@ fun BundleInformationScreen(
     onBackClick: () -> Unit,
     viewModel: BundleInformationViewModel
 ) {
-    val src = viewModel.bundle ?: return
-    val patchCount = viewModel.patchCount
+    val srcState = viewModel.bundle.collectAsStateWithLifecycle(null)
+    val src = srcState.value ?: return
+    val patchCount by viewModel.patchCount.collectAsStateWithLifecycle(0)
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    val isLocal = src is LocalPatchBundle
-    val bundleManifestAttributes = src.patchBundle?.manifestAttributes
+    val isLocal = src is LocalSource<*>
+    val bundleManifestAttributes = src.loaded?.manifestAttributes
     val (autoUpdate, endpoint) = src.asRemoteOrNull?.let { it.autoUpdate to it.endpoint }
         ?: (null to null)
 
@@ -312,7 +312,7 @@ fun BundleInformationScreen(
                     )
                 }
 
-                if (src.state is PatchBundleSource.State.Missing && !isLocal) {
+                if (src.state is Source.State.Missing && !isLocal) {
                     SettingsListItem(
                         headlineContent = stringResource(R.string.patches_error),
                         supportingContent = stringResource(R.string.patches_not_downloaded),

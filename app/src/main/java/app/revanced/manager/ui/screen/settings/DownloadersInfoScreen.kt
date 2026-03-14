@@ -32,74 +32,51 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.network.downloader.DownloaderPackageState
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
+import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.ListSection
-import app.revanced.manager.ui.component.TrustDialog
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import org.koin.androidx.compose.koinViewModel
-import java.security.MessageDigest
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ExperimentalStdlibApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalStdlibApi::class
+)
 @Composable
 fun DownloaderInfoScreen(
-    packageName: String,
+    uid: Int,
     onBackClick: () -> Unit,
     viewModel: DownloadsViewModel = koinViewModel()
 ) {
-    val downloaderStates by viewModel.downloaderStates.collectAsStateWithLifecycle()
-    val apiDownloaderPackageName by viewModel.apiDownloaderPackageName.collectAsStateWithLifecycle(null)
-    val state = downloaderStates[packageName]
-    val packageInfo = remember(packageName, state) { viewModel.pm.getPackageInfo(packageName) }
-    if (packageInfo == null) {
-        LaunchedEffect(packageName) {
-            onBackClick()
-        }
-        return
-    }
+    val downloaderStates by viewModel.downloaderSources.collectAsStateWithLifecycle(emptyMap())
+    val source = downloaderStates[uid]
 
-    val context = LocalContext.current
-    val signature =
-        remember(packageName) {
-            val androidSignature = viewModel.pm.getSignature(packageName)
-            val hash = MessageDigest.getInstance("SHA-256")
-                .digest(androidSignature.toByteArray())
-            hash.toHexString(format = HexFormat.UpperCase)
-        }
-    val appName = remember {
-        packageInfo.applicationInfo?.loadLabel(context.packageManager)
-            ?.toString()
-            ?: packageName
+    val appName = source?.name.orEmpty()
+    val displayNames = remember(source) {
+        source?.loaded?.downloaders?.map { it.name }.orEmpty()
     }
-    val displayNames = remember(state) {
-        (state as? DownloaderPackageState.Loaded)?.downloaders?.map { it.name }.orEmpty()
-    }
-    val isEnabled = state is DownloaderPackageState.Loaded || state is DownloaderPackageState.Failed
-    val canUpdate = apiDownloaderPackageName == packageName
-    val versionName = packageInfo.versionName.orEmpty()
-    val isDeleting = viewModel.deletingDownloaderPackageName == packageName
+    val isEnabled = source?.let { it.state !is State.Missing } ?: true
+    val versionName = "TODO" // packageInfo.versionName.orEmpty()
+    val isDeleting = viewModel.deletingDownloaderUid == uid
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    var showTrustDialog by rememberSaveable { mutableStateOf(false) }
     val scrollState = androidx.compose.foundation.rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         canScroll = {
@@ -111,25 +88,11 @@ fun DownloaderInfoScreen(
         ConfirmDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
             onConfirm = {
-                viewModel.deleteDownloader(packageName)
+                source?.let(viewModel::deleteDownloader)
             },
             title = stringResource(R.string.delete),
             description = stringResource(R.string.downloader_delete_single_description, appName),
             icon = Icons.Outlined.Delete
-        )
-    }
-
-    if (showTrustDialog) {
-        TrustDialog(
-            title = R.string.downloader_trust_dialog_title,
-            body = stringResource(R.string.downloader_trust_dialog_body),
-            downloaderName = appName,
-            signature = signature ?: stringResource(R.string.field_not_set),
-            onDismiss = { showTrustDialog = false },
-            onConfirm = {
-                viewModel.trustDownloader(packageName)
-                showTrustDialog = false
-            }
         )
     }
 
@@ -156,14 +119,12 @@ fun DownloaderInfoScreen(
                     ) {
                         Icon(Icons.Filled.Delete, stringResource(R.string.delete))
                     }
-                    if (canUpdate) {
-                        IconButton(
-                            onClick = { viewModel.updateDownloader(packageName) },
-                            enabled = !isDeleting,
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
-                            Icon(Icons.Filled.Update, stringResource(R.string.update))
-                        }
+                    IconButton(
+                        onClick = { source?.asRemoteOrNull?.let(viewModel::updateDownloader) },
+                        enabled = !isDeleting,
+                        shapes = IconButtonDefaults.shapes()
+                    ) {
+                        Icon(Icons.Filled.Update, stringResource(R.string.update))
                     }
                 },
                 scrollBehavior = scrollBehavior
@@ -187,7 +148,7 @@ fun DownloaderInfoScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.api_downloader_deleting))
                     }
-                } else if (isEnabled) {
+                } /*else if (isEnabled) {
                     FilledTonalButton(
                         onClick = { viewModel.revokeDownloaderTrust(packageName) },
                         modifier = Modifier
@@ -211,11 +172,11 @@ fun DownloaderInfoScreen(
                     ) {
                         Text(stringResource(R.string.enable))
                     }
-                }
+                }*/
             }
         },
         modifier = Modifier.then(
-            scrollBehavior?.let { Modifier.nestedScroll(it.nestedScrollConnection) } ?: Modifier
+            scrollBehavior.let { Modifier.nestedScroll(it.nestedScrollConnection) }
         )
     ) { paddingValues ->
         if (displayNames.isNotEmpty()) {

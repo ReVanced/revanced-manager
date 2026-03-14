@@ -93,14 +93,12 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
-import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
-import app.revanced.manager.ui.viewmodel.DownloaderUpdateState
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
@@ -135,7 +133,6 @@ fun DashboardScreen(
 ) {
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
-    val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(false)
     val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
     val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
@@ -212,6 +209,7 @@ fun DashboardScreen(
         )
     }
 
+    /*
     val downloaderUpdate = vm.availableDownloaderUpdate
     val downloaderUpdateState = vm.downloaderUpdateState
     if (downloaderUpdate != null || downloaderUpdateState == DownloaderUpdateState.DOWNLOADING || downloaderUpdateState == DownloaderUpdateState.INSTALLING) {
@@ -280,7 +278,7 @@ fun DashboardScreen(
                 }
             }
         )
-    }
+    }*/
 
     var pendingAppSelectorLaunch by rememberSaveable { mutableStateOf(false) }
     var pendingPatchablePackage by rememberSaveable { mutableStateOf<String?>(null) }
@@ -536,23 +534,6 @@ fun DashboardScreen(
                                                 Uri.fromParts("package", androidContext.packageName, null)
                                             )
                                         )
-                                    }
-                                )
-                            }
-                        } else null,
-                        if (showNewDownloaderNotification) {
-                            {
-                                NotificationCard(
-                                    text = stringResource(R.string.new_downloader_notification),
-                                    icon = Icons.Outlined.Download,
-                                    modifier = Modifier.clickable(onClick = onDownloaderClick),
-                                    actions = {
-                                        TextButton(
-                                            onClick = vm::ignoreNewDownloaders,
-                                            shapes = ButtonDefaults.shapes()
-                                        ) {
-                                            Text(stringResource(R.string.dismiss))
-                                        }
                                     }
                                 )
                             }

@@ -6,15 +6,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
+import app.revanced.manager.domain.sources.RemoteSource
+import app.revanced.manager.domain.sources.Source
+import app.revanced.manager.network.downloader.DownloaderPackage
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.mutableStateSetOf
-import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
@@ -47,7 +48,7 @@ class DownloadsViewModel(
     var isUpdatingDownloader by mutableStateOf(false)
         private set
 
-    var deletingDownloaderPackageName by mutableStateOf<String?>(null)
+    var deletingDownloaderUid by mutableStateOf<Int?>(null)
         private set
 
     private var installDownloaderJob: Job? = null
@@ -75,5 +76,21 @@ class DownloadsViewModel(
         isRefreshingDownloaders = false
     }
 
-    // TODO: reimplement functions.
+    fun deleteDownloader(src: Source<DownloaderPackage>) = viewModelScope.launch {
+        try {
+            deletingDownloaderUid = src.uid
+            downloaderRepository.remove(src)
+        } finally {
+            deletingDownloaderUid = null
+        }
+    }
+
+    fun updateDownloader(src: RemoteSource<DownloaderPackage>) = viewModelScope.launch {
+        try {
+            isUpdatingDownloader = true
+            downloaderRepository.update(src)
+        } finally {
+            isUpdatingDownloader = false
+        }
+    }
 }

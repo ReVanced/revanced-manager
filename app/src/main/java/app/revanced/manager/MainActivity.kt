@@ -176,9 +176,11 @@ private fun ReVancedManager(vm: MainViewModel) {
         }
 
         composable<BundleInformation> {
+            val data = it.toRoute<BundleInformation>()
+
             BundleInformationScreen(
                 onBackClick = navController::popBackStackSafe,
-                viewModel = koinViewModel()
+                viewModel = koinViewModel { parametersOf(data.uid) }
             )
         }
 
@@ -357,8 +359,8 @@ private fun ReVancedManager(vm: MainViewModel) {
             deepLinkedComposable<Settings.Downloads>("settings/downloads") {
                 DownloadsSettingsScreen(
                     onBackClick = navController::popBackStackSafe,
-                    onDownloaderClick = { packageName ->
-                        navController.navigateSafe(Settings.DownloadersInfo(packageName))
+                    onDownloaderClick = { uid ->
+                        navController.navigateSafe(Settings.DownloadersInfo(uid))
                     }
                 )
             }
@@ -366,7 +368,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<Settings.DownloadersInfo> {
                 val route = it.toRoute<Settings.DownloadersInfo>()
                 DownloaderInfoScreen(
-                    packageName = route.packageName,
+                    uid = route.uid,
                     onBackClick = navController::popBackStackSafe
                 )
             }

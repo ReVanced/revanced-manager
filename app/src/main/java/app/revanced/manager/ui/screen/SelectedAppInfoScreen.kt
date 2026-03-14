@@ -159,8 +159,7 @@ fun SelectedAppInfoScreen(
             // Only hide the FAB for errors that genuinely block patching.
             // No-downloader errors are NOT blocking because the storage picker is the fallback.
             val blockingError = error?.takeIf {
-                it != SelectedAppInfoViewModel.Error.NoDownloadersInstalled &&
-                it != SelectedAppInfoViewModel.Error.NoDownloadersTrusted
+                it != SelectedAppInfoViewModel.Error.NoDownloadersInstalled
             }
             if (blockingError != null) return@Scaffold
 
@@ -304,8 +303,7 @@ fun SelectedAppInfoScreen(
             // Only show inline error text for truly blocking errors, not no-downloader
             // errors which are handled gracefully via the storage picker fallback.
             val inlineError = error?.takeIf {
-                it != SelectedAppInfoViewModel.Error.NoDownloadersInstalled &&
-                it != SelectedAppInfoViewModel.Error.NoDownloadersTrusted
+                it != SelectedAppInfoViewModel.Error.NoDownloadersInstalled
             }
             inlineError?.let {
                 Text(

@@ -37,6 +37,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -51,15 +52,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.sources.Source
+import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.network.downloader.DownloaderPackage
-import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.BottomContentBar
-import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.PillTab
@@ -81,17 +81,21 @@ private enum class DownloadsTab(
     Apps(R.string.tab_apps, Icons.Outlined.Apps)
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, ExperimentalStdlibApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalStdlibApi::class
+)
 @Composable
 fun DownloadsSettingsScreen(
     onBackClick: () -> Unit,
-    onDownloaderClick: (String) -> Unit,
+    onDownloaderClick: (Int) -> Unit,
     viewModel: DownloadsViewModel = koinViewModel()
 ) {
     val downloadedApps by viewModel.downloadedApps.collectAsStateWithLifecycle(emptyList())
     val downloaderSources by viewModel.downloaderSources.collectAsStateWithLifecycle(emptyMap())
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val downloaderStates by viewModel.downloaderStates.collectAsStateWithLifecycle()
+    // TODO: which is correct?
+    // val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val pagerState = rememberPagerState(pageCount = { DownloadsTab.entries.size })
     val scope = rememberCoroutineScope()
     val downloaderListState = rememberLazyListState()
@@ -112,7 +116,9 @@ fun DownloadsSettingsScreen(
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     var showCancelInstallConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val currentTab = DownloadsTab.entries[pagerState.currentPage]
-    val isInstallingDownloader = viewModel.downloaderInstallState != DownloadsViewModel.DownloaderInstallState.IDLE
+    // TODO: fix this.
+    val isInstallingDownloader =
+        false // viewModel.downloaderInstallState != DownloadsViewModel.DownloaderInstallState.IDLE
 
     val handleBack = {
         if (isInstallingDownloader) {
@@ -127,7 +133,8 @@ fun DownloadsSettingsScreen(
         try {
             progress.collect()
             showCancelInstallConfirmationDialog = true
-        } catch (_: CancellationException) {}
+        } catch (_: CancellationException) {
+        }
     }
 
     Scaffold(
@@ -145,7 +152,10 @@ fun DownloadsSettingsScreen(
                 scrollBehavior = scrollBehavior,
                 actions = {
                     if (currentTab == DownloadsTab.Apps && viewModel.appSelection.isNotEmpty()) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }, shapes = IconButtonDefaults.shapes()) {
+                        IconButton(
+                            onClick = { showDeleteConfirmationDialog = true },
+                            shapes = IconButtonDefaults.shapes()
+                        ) {
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }
@@ -186,17 +196,16 @@ fun DownloadsSettingsScreen(
                 ) { page ->
                     when (DownloadsTab.entries[page]) {
                         DownloadsTab.Downloaders -> DownloadersTabContent(
-                            downloaderStates = downloaderStates,
+                            sources = downloaderSources,
                             listState = downloaderListState,
-                            viewModel = viewModel,
                             onDownloaderClick = onDownloaderClick,
-                            onInstallDownloaderClick = viewModel::installDefaultDownloader
                         )
 
                         DownloadsTab.Apps -> AppsTabContent(
                             downloadedApps = downloadedApps,
                             listState = appsListState,
-                            viewModel = viewModel
+                            appSelection = viewModel.appSelection,
+                            onToggleApp = viewModel::toggleApp
                         )
                     }
                 }
@@ -217,85 +226,35 @@ private fun rememberSelectedListState(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun DownloadersTabContent(
-    downloaderStates: Map<String, DownloaderPackageState>,
+    sources: Map<Int, Source<DownloaderPackage>>,
     listState: LazyListState,
-    viewModel: DownloadsViewModel,
-    onDownloaderClick: (String) -> Unit,
-    onInstallDownloaderClick: () -> Unit
+    onDownloaderClick: (Int) -> Unit
 ) {
-    val installState = viewModel.downloaderInstallState
-
     Column(modifier = Modifier.fillMaxSize()) {
-        if (downloaderStates.isEmpty()) {
-            Box(modifier = Modifier.weight(1f)) {
-                EmptyState(
-                    icon = Icons.Outlined.Source,
-                    title = R.string.no_downloaders_installed,
-                    description = R.string.install_revanced_downloaders
-                )
-            }
-        } else {
-            LazyColumnWithScrollbar(
-                modifier = Modifier.weight(1f),
-                state = listState
-            ) {
-                downloaderStates.entries
-                    .sortedBy { it.key }
-                    .forEach { (packageName, state) ->
-                        item(key = packageName) {
-                            DownloaderItem(
-                                packageName = packageName,
-                                state = state,
-                                viewModel = viewModel,
-                                onClick = onDownloaderClick
-                            )
-                        }
-                }
-            }
-        }
-
-        if (downloaderStates.isEmpty()) {
-            BottomContentBar {
-                FilledTonalButton(
-                    onClick = onInstallDownloaderClick,
-                    enabled = installState == DownloadsViewModel.DownloaderInstallState.IDLE,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shapes = ButtonDefaults.shapes()
-                ) {
-                    if (installState != DownloadsViewModel.DownloaderInstallState.IDLE) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Outlined.Download,
-                            contentDescription = stringResource(R.string.install_revanced_downloader)
+        LazyColumnWithScrollbar(
+            modifier = Modifier.weight(1f),
+            state = listState
+        ) {
+            sources.entries
+                .sortedBy { it.key }
+                .forEach { (uid, source) ->
+                    item(key = uid) {
+                        DownloaderItem(
+                            source = source,
+                            onClick = { onDownloaderClick(uid) }
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        stringResource(
-                            when (installState) {
-                                DownloadsViewModel.DownloaderInstallState.DOWNLOADING -> R.string.api_downloader_downloading
-                                DownloadsViewModel.DownloaderInstallState.INSTALLING -> R.string.api_downloader_installing
-                                DownloadsViewModel.DownloaderInstallState.IDLE -> R.string.install_revanced_downloader
-                            }
-                        )
-                    )
                 }
-            }
         }
     }
 }
 
 @Composable
 private fun AppsTabContent(
-    downloadedApps: List<app.revanced.manager.data.room.apps.downloaded.DownloadedApp>,
+    downloadedApps: List<DownloadedApp>,
     listState: LazyListState,
-    viewModel: DownloadsViewModel
+    appSelection: Set<DownloadedApp>,
+    onToggleApp: (DownloadedApp) -> Unit,
 ) {
     if (downloadedApps.isEmpty()) {
         EmptyState(
@@ -310,17 +269,17 @@ private fun AppsTabContent(
         ) {
             downloadedApps.forEach { app ->
                 item(key = "${app.packageName}:${app.version}") {
-                    val selected = app in viewModel.appSelection
+                    val selected = app in appSelection
                     ListItem(
-                        modifier = Modifier.clickable { viewModel.toggleApp(app) },
+                        modifier = Modifier.clickable { onToggleApp(app) },
                         headlineContent = { Text(app.packageName) },
                         supportingContent = { Text(app.version) },
                         leadingContent = (@Composable {
                             HapticCheckbox(
                                 checked = selected,
-                                onCheckedChange = { viewModel.toggleApp(app) }
+                                onCheckedChange = { onToggleApp(app) }
                             )
-                        }).takeIf { viewModel.appSelection.isNotEmpty() }
+                        }).takeIf { appSelection.isNotEmpty() }
                     )
                 }
             }
@@ -328,42 +287,28 @@ private fun AppsTabContent(
     }
 }
 
-// TODO: fix this.
 @Composable
 private fun DownloaderItem(
-    packageName: String,
-    state: DownloaderPackageState,
-    viewModel: DownloadsViewModel,
-    onClick: (String) -> Unit
+    source: Source<DownloaderPackage>,
+    onClick: () -> Unit
 ) {
-    val packageInfo = remember(packageName) { viewModel.pm.getPackageInfo(packageName) } ?: return
-
     ListItem(
-        modifier = Modifier.clickable { onClick(packageName) },
+        modifier = Modifier.clickable(onClick = onClick),
         headlineContent = {
-            AppLabel(
-                packageInfo = packageInfo,
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Text(source.name, style = MaterialTheme.typography.bodyLarge)
         },
         supportingContent = {
             Text(
                 stringResource(
-                    when (state) {
-                        is DownloaderPackageState.Loaded -> R.string.downloader_state_enabled
-                        is DownloaderPackageState.Failed -> R.string.downloader_state_failed
-                        is DownloaderPackageState.Untrusted -> R.string.downloader_state_disabled
+                    when (source.state) {
+                        is State.Available<*> -> R.string.downloader_state_loaded
+                        is State.Failed -> R.string.downloader_state_failed
+                        is State.Missing -> R.string.downloader_state_missing
                     }
                 )
             )
         },
-        leadingContent = {
-            AppIcon(
-                packageInfo = packageInfo,
-                contentDescription = null,
-                modifier = Modifier.size(36.dp)
-            )
-        },
-        trailingContent = { Text(packageInfo.versionName.orEmpty()) }
+        // TODO: version
+        trailingContent = { Text("version here") }
     )
 }
