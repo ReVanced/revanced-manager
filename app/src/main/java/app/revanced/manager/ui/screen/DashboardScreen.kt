@@ -456,23 +456,6 @@ fun DashboardScreen(
                         pagerState = pagerState,
                         patchesSourceEditMode = patchesSourceEditMode,
                         onEnablePatchesSourceEditMode = { patchesSourceEditMode = true },
-                        onPatchAppClick = {
-                            vm.cancelSourceSelection()
-                            if (availablePatches < 1) {
-                                androidContext.toast(resources.getString(R.string.no_patch_found))
-                                composableScope.launch {
-                                    pagerState.animateScrollToPage(DashboardPage.BUNDLES.ordinal)
-                                }
-                                return@DashboardFab
-                            }
-                            if (vm.android11BugActive) {
-                                clearPendingSelection()
-                                pendingAppSelectorLaunch = true
-                                showAndroid11Dialog = true
-                                return@DashboardFab
-                            }
-                            onAppSelectorClick()
-                        },
                         onAddBundleClick = {
                             vm.cancelSourceSelection()
                             showAddBundleDialog = true
@@ -640,16 +623,10 @@ private fun DashboardFab(
     pagerState: PagerState,
     patchesSourceEditMode: Boolean,
     onEnablePatchesSourceEditMode: () -> Unit,
-    onPatchAppClick: () -> Unit,
     onAddBundleClick: () -> Unit
 ) {
     when (pagerState.currentPage) {
         DashboardPage.DASHBOARD.ordinal -> {
-            HapticExtendedFloatingActionButton(
-                onClick = onPatchAppClick,
-                icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                text = { Text(stringResource(R.string.fab_patch_app)) }
-            )
         }
 
         DashboardPage.BUNDLES.ordinal -> {
