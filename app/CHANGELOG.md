@@ -1,3 +1,10 @@
+# app [1.26.0-dev.37](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.36...v1.26.0-dev.37) (2026-03-14)
+
+
+### Bug Fixes
+
+* Make app source dialog string more accurate ([c8b429f](https://github.com/ReVanced/revanced-manager/commit/c8b429fa4741a28b9c29144939036d6fa8633cb4))
+
 # app [1.26.0-dev.36](https://github.com/ReVanced/revanced-manager/compare/v1.26.0-dev.35...v1.26.0-dev.36) (2026-03-14)
 
 
