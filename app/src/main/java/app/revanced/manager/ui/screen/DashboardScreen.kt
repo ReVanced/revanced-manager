@@ -41,6 +41,7 @@ import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
@@ -54,6 +55,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -94,14 +96,18 @@ import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.ui.viewmodel.DownloaderUpdateState
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
 import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -127,8 +133,6 @@ fun DashboardScreen(
     onStorageSelect: (SelectedApp.Local) -> Unit,
     onBundleClick: (Int) -> Unit
 ) {
-    var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
-    val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val showNewDownloaderNotification by vm.newDownloadersAvailable.collectAsStateWithLifecycle(false)
@@ -146,8 +150,39 @@ fun DashboardScreen(
         initialPageOffsetFraction = 0f
     ) { DashboardPage.entries.size }
 
+    val dashboardPatchesParams = remember {
+        SelectedApplicationInfo.PatchesSelector.ViewModelParams(
+            app = SelectedApp.Search("", null),
+            currentSelection = null,
+            options = emptyMap(),
+            readOnly = true,
+            browseAllBundles = true
+        )
+    }
+    val dashboardPatchesViewModel = koinViewModel<PatchesSelectorViewModel>(key = "dashboard-patches") {
+        parametersOf(dashboardPatchesParams)
+    }
+    val dashboardPatchesBundles by dashboardPatchesViewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+
+    var patchesSourceEditMode by rememberSaveable { mutableStateOf(false) }
+    var sourceDeleteUid by rememberSaveable { mutableStateOf<Int?>(null) }
+
     LaunchedEffect(pagerState.currentPage) {
-        if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
+        if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) {
+            patchesSourceEditMode = false
+        }
+    }
+
+    sourceDeleteUid?.let { uid ->
+        val sourceName = dashboardPatchesBundles.firstOrNull { it.uid == uid }?.name
+            ?: return@let
+        ConfirmDialog(
+            onDismiss = { sourceDeleteUid = null },
+            onConfirm = { vm.deleteSource(uid) },
+            title = stringResource(R.string.delete),
+            description = stringResource(R.string.patches_delete_single_dialog_description, sourceName),
+            icon = Icons.Outlined.Delete
+        )
     }
 
     var showAddBundleDialog by rememberSaveable { mutableStateOf(false) }
@@ -156,10 +191,12 @@ fun DashboardScreen(
             onDismiss = { showAddBundleDialog = false },
             onLocalSubmit = { patches ->
                 showAddBundleDialog = false
+                patchesSourceEditMode = false
                 vm.createLocalSource(patches)
             },
             onRemoteSubmit = { url, autoUpdate ->
                 showAddBundleDialog = false
+                patchesSourceEditMode = false
                 vm.createRemoteSource(url, autoUpdate)
             }
         )
@@ -319,17 +356,6 @@ fun DashboardScreen(
         onStorageSelect(app)
     }
 
-    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    if (showDeleteConfirmationDialog) {
-        ConfirmDialog(
-            onDismiss = { showDeleteConfirmationDialog = false },
-            onConfirm = vm::deleteSources,
-            title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_multiple_dialog_description),
-            icon = Icons.Outlined.Delete
-        )
-    }
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.surface
@@ -370,91 +396,66 @@ fun DashboardScreen(
 
             Scaffold(
                 topBar = {
-                    if (bundlesSelectable) {
-                        BundleTopBar(
-                            title = stringResource(R.string.patches_selected, selectedSourceCount),
-                            onBackClick = vm::cancelSourceSelection,
-                            backIcon = {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.back)
+                    TopAppBar(
+                        title = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Image(
+                                    painter = logoPainter,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(32.dp)
                                 )
-                            },
-                            actions = {
+                                Text(stringResource(R.string.app_name))
+                            }
+                        },
+                        actions = {
+                            if (availableUpdate != null) {
                                 IconButton(
-                                    onClick = { showDeleteConfirmationDialog = true },
+                                    onClick = onUpdateClick,
                                     shapes = IconButtonDefaults.shapes()
                                 ) {
-                                    Icon(Icons.Filled.Delete, stringResource(R.string.delete))
-                                }
-                                IconButton(
-                                    onClick = vm::updateSources,
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
-                                    Icon(Icons.Filled.Refresh, stringResource(R.string.refresh))
+                                    BadgedBox(badge = { Badge(modifier = Modifier.size(6.dp)) }) {
+                                        Icon(Icons.Filled.Update, stringResource(R.string.update))
+                                    }
                                 }
                             }
-                        )
-                    } else {
-                        TopAppBar(
-                            title = {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            IconButton(
+                                onClick = onAnnouncementsClick,
+                                shapes = IconButtonDefaults.shapes()
+                            ) {
+                                BadgedBox(
+                                    badge = {
+                                        if (vm.unreadAnnouncement != null) {
+                                            Badge(modifier = Modifier.size(6.dp))
+                                        }
+                                    }
                                 ) {
-                                    Image(
-                                        painter = logoPainter,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(32.dp)
+                                    Icon(
+                                        Icons.Filled.Notifications,
+                                        stringResource(R.string.announcements)
                                     )
-                                    Text(stringResource(R.string.app_name))
                                 }
-                            },
-                            actions = {
-                                if (availableUpdate != null) {
-                                    IconButton(
-                                        onClick = onUpdateClick,
-                                        shapes = IconButtonDefaults.shapes()
-                                    ) {
-                                        BadgedBox(badge = { Badge(modifier = Modifier.size(6.dp)) }) {
-                                            Icon(Icons.Filled.Update, stringResource(R.string.update))
-                                        }
-                                    }
-                                }
-                                IconButton(
-                                    onClick = onAnnouncementsClick,
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
-                                    BadgedBox(
-                                        badge = {
-                                            if (vm.unreadAnnouncement != null) {
-                                                Badge(modifier = Modifier.size(6.dp))
-                                            }
-                                        }
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.Notifications,
-                                            stringResource(R.string.announcements)
-                                        )
-                                    }
-                                }
-                                IconButton(
-                                    onClick = onSettingsClick,
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
-                                    Icon(Icons.Filled.Settings, stringResource(R.string.settings))
-                                }
-                            },
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = Color.Transparent
-                            )
+                            }
+                            IconButton(
+                                onClick = onSettingsClick,
+                                shapes = IconButtonDefaults.shapes()
+                            ) {
+                                Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                            }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent
                         )
-                    }
+                    )
                 },
                 containerColor = Color.Transparent,
                 floatingActionButton = {
                     DashboardFab(
                         pagerState = pagerState,
+                        patchesSourceEditMode = patchesSourceEditMode,
+                        onEnablePatchesSourceEditMode = { patchesSourceEditMode = true },
                         onPatchAppClick = {
                             vm.cancelSourceSelection()
                             if (availablePatches < 1) {
@@ -480,21 +481,19 @@ fun DashboardScreen(
                 }
             ) { paddingValues ->
                 Column(Modifier.padding(paddingValues)) {
-                    if (!bundlesSelectable) {
-                        PillTabBar(
-                            pagerState = pagerState,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp, vertical = 8.dp)
-                        ) {
-                            DashboardPage.entries.forEachIndexed { index, page ->
-                                PillTab(
-                                    index = index,
-                                    onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
-                                    text = { Text(stringResource(page.titleResId)) },
-                                    icon = { Icon(page.icon, null) }
-                                )
-                            }
+                    PillTabBar(
+                        pagerState = pagerState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                    ) {
+                        DashboardPage.entries.forEachIndexed { index, page ->
+                            PillTab(
+                                index = index,
+                                onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
+                                text = { Text(stringResource(page.titleResId)) },
+                                icon = { Icon(page.icon, null) }
+                            )
                         }
                     }
 
@@ -602,19 +601,30 @@ fun DashboardScreen(
 
                             DashboardPage.BUNDLES -> {
                                 BackHandler {
-                                    if (bundlesSelectable) {
-                                        vm.cancelSourceSelection()
-                                    } else {
-                                        composableScope.launch {
-                                            pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
-                                        }
+                                    if (patchesSourceEditMode) {
+                                        patchesSourceEditMode = false
+                                        return@BackHandler
+                                    }
+                                    composableScope.launch {
+                                        pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
                                     }
                                 }
 
-                                BundleListScreen(
-                                    eventsFlow = vm.bundleListEventsFlow,
-                                    setSelectedSourceCount = { selectedSourceCount = it },
-                                    onBundleClick = onBundleClick
+                                PatchesSelectorScreen(
+                                    onSave = { _, _ -> },
+                                    onBackClick = {
+                                        if (patchesSourceEditMode) {
+                                            patchesSourceEditMode = false
+                                            return@PatchesSelectorScreen
+                                        }
+                                        composableScope.launch {
+                                            pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
+                                        }
+                                    },
+                                    onBundleInfoClick = onBundleClick,
+                                    isSourceEditMode = patchesSourceEditMode,
+                                    onSourceDeleteRequest = { sourceDeleteUid = it },
+                                    viewModel = dashboardPatchesViewModel
                                 )
                             }
                         }
@@ -628,21 +638,34 @@ fun DashboardScreen(
 @Composable
 private fun DashboardFab(
     pagerState: PagerState,
+    patchesSourceEditMode: Boolean,
+    onEnablePatchesSourceEditMode: () -> Unit,
     onPatchAppClick: () -> Unit,
     onAddBundleClick: () -> Unit
 ) {
-    val swipeProgress = (pagerState.currentPage + pagerState.currentPageOffsetFraction).coerceIn(0f, 1f)
+    when (pagerState.currentPage) {
+        DashboardPage.DASHBOARD.ordinal -> {
+            HapticExtendedFloatingActionButton(
+                onClick = onPatchAppClick,
+                icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                text = { Text(stringResource(R.string.fab_patch_app)) }
+            )
+        }
 
-    HapticExtendedFloatingActionButton(
-        onClick = {
-            when (pagerState.currentPage) {
-                DashboardPage.DASHBOARD.ordinal -> onPatchAppClick()
-                DashboardPage.BUNDLES.ordinal -> onAddBundleClick()
+        DashboardPage.BUNDLES.ordinal -> {
+            if (patchesSourceEditMode) {
+                HapticExtendedFloatingActionButton(
+                    onClick = onAddBundleClick,
+                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                    text = { Text(stringResource(R.string.fab_add_patches)) }
+                )
+            } else {
+                HapticFloatingActionButton(onClick = onEnablePatchesSourceEditMode) {
+                    Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
+                }
             }
-        },
-        icon = { Icon(Icons.Default.Add, contentDescription = null) },
-        text = { FabTextCrossfade(swipeProgress) }
-    )
+        }
+    }
 }
 
 @Composable

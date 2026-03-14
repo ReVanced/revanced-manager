@@ -26,11 +26,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Deselect
@@ -55,6 +58,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -74,6 +78,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.FlowPreview
@@ -99,8 +104,10 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.PM
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.transparentListItemColors
+import org.koin.compose.koinInject
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -114,19 +121,26 @@ fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     onBundleInfoClick: (Int) -> Unit,
+    isSourceEditMode: Boolean = false,
+    onSourceDeleteRequest: ((Int) -> Unit)? = null,
     viewModel: PatchesSelectorViewModel
 ) {
     val stickyHeaderTopGap = 8.dp
+    val readOnly = viewModel.readOnly
     val bundles by viewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val pm: PM = koinInject()
+    val pmAppList by pm.appList.collectAsStateWithLifecycle(initialValue = emptyList())
     val patchLazyListState = rememberLazyListState()
     val searchLazyListState = rememberLazyListState()
     val (query, setQuery) = rememberSaveable { mutableStateOf("") }
     val (searchExpanded, setSearchExpanded) = rememberSaveable { mutableStateOf(false) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     var collapsedBundleUids by rememberSaveable { mutableStateOf(emptyList<Int>()) }
+    var selectedPackageFilters by rememberSaveable { mutableStateOf(emptySet<String>()) }
+    val effectiveSelectedPackageFilters = if (readOnly) selectedPackageFilters else emptySet()
 
     val showSaveButton by remember {
-        derivedStateOf { viewModel.selectionIsValid(bundles) }
+        derivedStateOf { !readOnly && viewModel.selectionIsValid(bundles) }
     }
 
     val defaultPatchSelectionCount by viewModel.defaultSelectionCount
@@ -143,6 +157,7 @@ fun PatchesSelectorScreen(
     var pendingScopeAction by remember { mutableStateOf<((Int?) -> Unit)?>(null) }
 
     fun toggleBundleExpanded(bundleUid: Int) {
+        if (isSourceEditMode) return
         collapsedBundleUids = if (bundleUid in collapsedBundleUids) {
             collapsedBundleUids - bundleUid
         } else {
@@ -151,6 +166,8 @@ fun PatchesSelectorScreen(
     }
 
     fun onBundleSelectionClick(bundle: PatchBundleInfo.Scoped) {
+        if (readOnly) return
+
         val selectionState = viewModel.getBundleSelectionState(bundle)
         when {
             viewModel.selectionWarningEnabled -> showSelectionWarning = true
@@ -159,22 +176,53 @@ fun PatchesSelectorScreen(
         }
     }
 
-    val sections = remember(bundles, viewModel.filter, collapsedBundleUids) {
+    val installedPackageLabels = remember(pmAppList) {
+        pmAppList.filter { it.packageInfo != null }
+            .associate { appInfo ->
+                appInfo.packageName to pm.run { appInfo.packageInfo!!.label() }
+            }
+    }
+
+    val packagePatchCounts = remember(bundles) {
+        bundles.asSequence()
+            .flatMap { it.patches.asSequence() }
+            .flatMap { it.compatiblePackages.orEmpty().asSequence() }
+            .groupingBy { it.packageName }
+            .eachCount()
+    }
+
+    val sections = remember(
+        bundles,
+        viewModel.filter,
+        collapsedBundleUids,
+        isSourceEditMode,
+        effectiveSelectedPackageFilters
+    ) {
         buildBundleSections(
             bundles = bundles,
             filter = viewModel.filter,
-            collapsedBundleUids = collapsedBundleUids
+            collapsedBundleUids = if (isSourceEditMode) bundles.map { it.uid } else collapsedBundleUids,
+            selectedPackageNames = effectiveSelectedPackageFilters
         )
     }
-    val searchSections = remember(bundles, query, viewModel.filter, collapsedBundleUids) {
+    val searchSections = remember(
+        bundles,
+        query,
+        viewModel.filter,
+        collapsedBundleUids,
+        isSourceEditMode,
+        effectiveSelectedPackageFilters
+    ) {
         buildBundleSections(
             bundles = bundles,
             query = query,
             filter = viewModel.filter,
-            collapsedBundleUids = collapsedBundleUids,
+            collapsedBundleUids = if (isSourceEditMode) bundles.map { it.uid } else collapsedBundleUids,
+            selectedPackageNames = effectiveSelectedPackageFilters,
             forceExpanded = query.isNotBlank()
         )
     }
+
     val sectionLayouts = remember(sections) { buildSectionLayouts(sections) }
     val currentBundle by remember(sectionLayouts, patchLazyListState) {
         derivedStateOf {
@@ -209,9 +257,7 @@ fun PatchesSelectorScreen(
     }
 
     if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false }
-        ) {
+        ModalBottomSheet(onDismissRequest = { showBottomSheet = false }) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,17 +284,51 @@ fun PatchesSelectorScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        CheckedFilterChip(
-                            selected = viewModel.filter and SHOW_INCOMPATIBLE == 0,
-                            onClick = { viewModel.toggleFlag(SHOW_INCOMPATIBLE) },
-                            label = { Text(stringResource(R.string.this_version)) }
-                        )
+                        if (viewModel.packageName.isNotBlank()) {
+                            CheckedFilterChip(
+                                selected = viewModel.filter and SHOW_INCOMPATIBLE == 0,
+                                onClick = { viewModel.toggleFlag(SHOW_INCOMPATIBLE) },
+                                label = { Text(stringResource(R.string.this_version)) }
+                            )
+                        }
 
                         CheckedFilterChip(
                             selected = viewModel.filter and SHOW_UNIVERSAL != 0,
                             onClick = { viewModel.toggleFlag(SHOW_UNIVERSAL) },
-                            label = { Text(stringResource(R.string.universal)) },
+                            label = { Text(stringResource(R.string.universal)) }
                         )
+                    }
+
+                    if (readOnly && packagePatchCounts.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.patch_selector_sheet_filter_packages_title),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(top = 12.dp)
+                        )
+
+                        FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            packagePatchCounts
+                                .toList()
+                                .sortedWith(compareByDescending<Pair<String, Int>> { it.second }.thenBy { it.first })
+                                .forEach { (packageName, count) ->
+                                    val label = installedPackageLabels[packageName] ?: packageName
+                                    CheckedFilterChip(
+                                        selected = packageName in selectedPackageFilters,
+                                        onClick = {
+                                            selectedPackageFilters = if (packageName in selectedPackageFilters) {
+                                                selectedPackageFilters - packageName
+                                            } else {
+                                                selectedPackageFilters + packageName
+                                            }
+                                        },
+                                        label = { Text("$label ($count)") }
+                                    )
+                                }
+                        }
                     }
                 }
 
@@ -261,84 +341,87 @@ fun PatchesSelectorScreen(
                     }
                 }
 
-                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                if (!readOnly) {
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-                Text(
-                    text = stringResource(R.string.patch_selector_sheet_actions_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-
-                ListSection(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    ActionItem(
-                        icon = Icons.Outlined.Restore,
-                        text = stringResource(R.string.restore_default_selection),
-                        onClick = {
-                            guardedAction {
-                                executeScopedAction { uid ->
-                                    viewModel.restoreDefaults(uid)
-                                }
-                            }
-                        }
+                    Text(
+                        text = stringResource(R.string.patch_selector_sheet_actions_title),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
-                    ActionItem(
-                        icon = Icons.Outlined.Deselect,
-                        text = stringResource(R.string.deselect_all),
-                        onClick = {
-                            guardedAction {
-                                executeScopedAction { uid ->
-                                    viewModel.deselectAll(bundles, uid)
-                                }
-                            }
-                        }
-                    )
-
-                    ActionItem(
-                        icon = Icons.Outlined.SwapHoriz,
-                        text = stringResource(R.string.invert_selection),
-                        onClick = {
-                            guardedAction {
-                                executeScopedAction { uid ->
-                                    viewModel.invertSelection(bundles, uid)
-                                }
-                            }
-                        }
-                    )
-
-                    currentBundle?.let { bundle ->
+                    ListSection(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
                         ActionItem(
-                            icon = Icons.Outlined.Deselect,
-                            text = stringResource(R.string.deselect_all_except, bundle.name),
+                            icon = Icons.Outlined.Restore,
+                            text = stringResource(R.string.restore_default_selection),
                             onClick = {
                                 guardedAction {
-                                    viewModel.deselectAllExcept(bundles, bundle.uid)
+                                    executeScopedAction { uid ->
+                                        viewModel.restoreDefaults(uid)
+                                    }
                                 }
                             }
                         )
+
+                        ActionItem(
+                            icon = Icons.Outlined.Deselect,
+                            text = stringResource(R.string.deselect_all),
+                            onClick = {
+                                guardedAction {
+                                    executeScopedAction { uid ->
+                                        viewModel.deselectAll(bundles, uid)
+                                    }
+                                }
+                            }
+                        )
+
+                        ActionItem(
+                            icon = Icons.Outlined.SwapHoriz,
+                            text = stringResource(R.string.invert_selection),
+                            onClick = {
+                                guardedAction {
+                                    executeScopedAction { uid ->
+                                        viewModel.invertSelection(bundles, uid)
+                                    }
+                                }
+                            }
+                        )
+
+                        currentBundle?.let { bundle ->
+                            ActionItem(
+                                icon = Icons.Outlined.Deselect,
+                                text = stringResource(R.string.deselect_all_except, bundle.name),
+                                onClick = {
+                                    guardedAction {
+                                        viewModel.deselectAllExcept(bundles, bundle.uid)
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
     }
 
-    if (viewModel.compatibleVersions.isNotEmpty())
+    if (viewModel.compatibleVersions.isNotEmpty() && !readOnly) {
         IncompatiblePatchDialog(
             appVersion = viewModel.appVersion ?: stringResource(R.string.any_version),
             compatibleVersions = viewModel.compatibleVersions,
             onDismissRequest = viewModel::dismissDialogs
         )
-    var showIncompatiblePatchesDialog by rememberSaveable {
-        mutableStateOf(false)
     }
-    if (showIncompatiblePatchesDialog)
+
+    var showIncompatiblePatchesDialog by rememberSaveable { mutableStateOf(false) }
+    if (showIncompatiblePatchesDialog) {
         IncompatiblePatchesDialog(
             appVersion = viewModel.appVersion ?: stringResource(R.string.any_version),
             onDismissRequest = { showIncompatiblePatchesDialog = false }
         )
+    }
 
     viewModel.optionsDialog?.let { (bundle, patch) ->
         OptionsDialog(
@@ -347,15 +430,18 @@ fun PatchesSelectorScreen(
             values = viewModel.getOptions(bundle, patch),
             reset = { viewModel.resetOptions(bundle, patch) },
             set = { key, value -> viewModel.setOption(bundle, patch, key, value) },
-            selectionWarningEnabled = viewModel.selectionWarningEnabled
+            selectionWarningEnabled = viewModel.selectionWarningEnabled,
+            readOnly = readOnly
         )
     }
 
-    if (showSelectionWarning)
+    if (showSelectionWarning) {
         SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
+    }
 
-    if (showUniversalWarning)
+    if (showUniversalWarning) {
         UniversalPatchWarningDialog(onDismiss = { showUniversalWarning = false })
+    }
 
     fun LazyListScope.patchList(
         uid: Int,
@@ -367,16 +453,14 @@ fun PatchesSelectorScreen(
         if (patches.isEmpty()) return
 
         header?.let {
-            item(key = "$keyPrefix-header", contentType = 0) {
-                it()
-            }
+            item(key = "$keyPrefix-header", contentType = 0) { it() }
         }
 
-        items(
+        itemsIndexed(
             items = patches,
-            key = { "$keyPrefix-${it.name}" },
-            contentType = { 1 }
-        ) { patch ->
+            key = { index, patch -> patchItemKey(keyPrefix, patch.name, index) },
+            contentType = { _, _ -> 1 }
+        ) { _, patch ->
             PatchItem(
                 patch = patch,
                 onOptionsDialog = { viewModel.optionsDialog = uid to patch },
@@ -389,7 +473,9 @@ fun PatchesSelectorScreen(
                         else -> viewModel.togglePatch(uid, patch)
                     }
                 },
-                compatible = compatible
+                compatible = compatible,
+                readOnly = readOnly,
+                scopedPackageName = viewModel.packageName.ifBlank { null }
             )
         }
     }
@@ -399,25 +485,28 @@ fun PatchesSelectorScreen(
         keyPrefix: String
     ) {
         sections.forEach { section ->
-             val bundle = section.bundle
+            val bundle = section.bundle
 
-             stickyHeader(key = "$keyPrefix-source-${bundle.uid}") {
-                 Column(
-                     modifier = Modifier
-                         .fillMaxWidth()
-                         .zIndex(1f)
-                         .background(MaterialTheme.colorScheme.surface)
-                 ) {
-                     SourceSectionHeader(
-                         bundle = bundle,
-                         expanded = section.expanded,
-                         selectionState = viewModel.getBundleSelectionState(bundle),
-                         onClick = { onBundleInfoClick(bundle.uid) },
-                         onSelectionClick = { onBundleSelectionClick(bundle) },
-                         onExpandToggle = { toggleBundleExpanded(bundle.uid) }
-                     )
-                 }
-             }
+            stickyHeader(key = "$keyPrefix-source-${bundle.uid}") {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .zIndex(1f)
+                        .background(MaterialTheme.colorScheme.surface)
+                ) {
+                    SourceSectionHeader(
+                        bundle = bundle,
+                        expanded = section.expanded,
+                        selectionState = viewModel.getBundleSelectionState(bundle),
+                        onClick = { onBundleInfoClick(bundle.uid) },
+                        onSelectionClick = { onBundleSelectionClick(bundle) },
+                        onExpandToggle = { toggleBundleExpanded(bundle.uid) },
+                        onDeleteClick = { onSourceDeleteRequest?.invoke(bundle.uid) },
+                        sourceEditMode = isSourceEditMode,
+                        readOnly = readOnly
+                    )
+                }
+            }
 
             if (!section.expanded) return@forEach
 
@@ -427,6 +516,7 @@ fun PatchesSelectorScreen(
                 compatible = true,
                 keyPrefix = "$keyPrefix-compatible-${bundle.uid}"
             )
+
             patchList(
                 uid = bundle.uid,
                 patches = section.universal,
@@ -435,6 +525,7 @@ fun PatchesSelectorScreen(
             ) {
                 ListHeader(title = stringResource(R.string.universal_patches))
             }
+
             patchList(
                 uid = bundle.uid,
                 patches = section.incompatible,
@@ -456,9 +547,7 @@ fun PatchesSelectorScreen(
                 onQueryChange = setQuery,
                 expanded = searchExpanded,
                 onExpandedChange = setSearchExpanded,
-                placeholder = {
-                    Text(stringResource(R.string.search_patches))
-                },
+                placeholder = { Text(stringResource(R.string.search_patches)) },
                 leadingIcon = {
                     val rotation by animateFloatAsState(
                         targetValue = if (searchExpanded) 360f else 0f,
@@ -467,11 +556,7 @@ fun PatchesSelectorScreen(
                     )
                     IconButton(
                         onClick = {
-                            if (searchExpanded) {
-                                setSearchExpanded(false)
-                            } else {
-                                onBackClick()
-                            }
+                            if (searchExpanded) setSearchExpanded(false) else onBackClick()
                         },
                         shapes = IconButtonDefaults.shapes()
                     ) {
@@ -487,8 +572,8 @@ fun PatchesSelectorScreen(
                         targetState = searchExpanded,
                         label = "Filter/Clear",
                         transitionSpec = { fadeIn() togetherWith fadeOut() }
-                    ) { searchExpanded ->
-                        if (searchExpanded) {
+                    ) { expanded ->
+                        if (expanded) {
                             IconButton(
                                 onClick = { setQuery("") },
                                 enabled = query.isNotEmpty(),
@@ -510,31 +595,25 @@ fun PatchesSelectorScreen(
                     }
                 }
             ) {
-                Spacer(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(stickyHeaderTopGap)
+                        .weight(1f)
                         .background(MaterialTheme.colorScheme.surface)
-                )
-
-                Box(
-                     modifier = Modifier
-                         .fillMaxWidth()
-                         .weight(1f)
-                 ) {
-                     LazyColumnWithScrollbar(
-                         modifier = Modifier.fillMaxSize(),
-                         state = searchLazyListState,
-                         contentPadding = PaddingValues(bottom = 16.dp)
-                     ) {
-                         sectionedPatchList(
-                             sections = searchSections,
-                             keyPrefix = "search"
-                         )
-                     }
-                 }
-             }
-         },
+                ) {
+                    LazyColumnWithScrollbar(
+                        modifier = Modifier.fillMaxSize(),
+                        state = searchLazyListState,
+                        contentPadding = PaddingValues(bottom = 16.dp)
+                    ) {
+                        sectionedPatchList(
+                            sections = searchSections,
+                            keyPrefix = "search"
+                        )
+                    }
+                }
+            }
+        },
         floatingActionButton = {
             if (!showSaveButton) return@Scaffold
 
@@ -557,22 +636,14 @@ fun PatchesSelectorScreen(
                     val isScrollingUp = patchLazyListState.isScrollingUp()
                     val expanded by produceState(true, isScrollingUp) {
                         value = isScrollingUp.value
-
                         snapshotFlow { isScrollingUp.value }
                             .sample(333L)
-                            .collect {
-                                value = it
-                            }
+                            .collect { value = it }
                     }
 
                     HapticExtendedFloatingActionButton(
                         text = {
-                            Text(
-                                stringResource(
-                                    R.string.save_with_count,
-                                    selectedPatchCount
-                                )
-                            )
+                            Text(stringResource(R.string.save_with_count, selectedPatchCount))
                         },
                         icon = {
                             Icon(
@@ -604,23 +675,23 @@ fun PatchesSelectorScreen(
             )
 
             Box(
-                 modifier = Modifier
-                     .fillMaxWidth()
-                     .weight(1f)
-             ) {
-                 LazyColumnWithScrollbar(
-                     modifier = Modifier.fillMaxSize(),
-                     state = patchLazyListState,
-                     contentPadding = PaddingValues(bottom = 16.dp)
-                 ) {
-                     sectionedPatchList(
-                         sections = sections,
-                         keyPrefix = "main"
-                     )
-                 }
-             }
-         }
-     }
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                LazyColumnWithScrollbar(
+                    modifier = Modifier.fillMaxSize(),
+                    state = patchLazyListState,
+                    contentPadding = PaddingValues(bottom = 16.dp)
+                ) {
+                    sectionedPatchList(
+                        sections = sections,
+                        keyPrefix = "main"
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -641,30 +712,87 @@ private fun PatchItem(
     onOptionsDialog: () -> Unit,
     selected: Boolean,
     onToggle: () -> Unit,
-    compatible: Boolean = true
-) = ListItem(
-    modifier = Modifier
-        .let { if (!compatible) it.alpha(0.5f) else it }
-        .clickable(onClick = onToggle)
-        .fillMaxSize(),
-    leadingContent = {
-        HapticCheckbox(
-            checked = selected,
-            onCheckedChange = { onToggle() },
-            enabled = compatible
-        )
-    },
-    headlineContent = { Text(patch.name) },
-    supportingContent = patch.description?.let { { Text(it) } },
-    trailingContent = {
-        if (patch.options?.isNotEmpty() == true) {
-            IconButton(onClick = onOptionsDialog, enabled = compatible, shapes = IconButtonDefaults.shapes()) {
-                Icon(Icons.Outlined.Settings, null)
+    compatible: Boolean = true,
+    readOnly: Boolean = false,
+    scopedPackageName: String? = null
+) {
+    val anyVersionLabel = stringResource(R.string.patches_view_any_version)
+    val anyAppLabel = stringResource(R.string.universal)
+
+    val chipLabels = remember(patch.compatiblePackages, scopedPackageName, anyVersionLabel, anyAppLabel) {
+        val pkgs = patch.compatiblePackages
+        when {
+            pkgs == null -> if (scopedPackageName == null) listOf(anyAppLabel) else emptyList()
+            scopedPackageName != null -> {
+                val pkg = pkgs.firstOrNull { it.packageName == scopedPackageName }
+                    ?: return@remember emptyList()
+                val versions = pkg.versions
+                if (versions.isNullOrEmpty()) listOf(anyVersionLabel) else versions.toList()
+            }
+            else -> {
+                pkgs.map { pkg ->
+                    val versions = pkg.versions
+                    if (versions.isNullOrEmpty()) {
+                        "${pkg.packageName} ($anyVersionLabel)"
+                    } else {
+                        "${pkg.packageName} (${versions.joinToString(", ")})"
+                    }
+                }
             }
         }
-    },
-    colors = transparentListItemColors
-)
+    }
+
+    ListItem(
+        modifier = Modifier
+            .let { if (!compatible) it.alpha(0.5f) else it }
+            .clickable(enabled = !readOnly, onClick = onToggle)
+            .fillMaxSize(),
+        leadingContent = {
+            HapticCheckbox(
+                checked = selected,
+                onCheckedChange = { onToggle() },
+                enabled = compatible && !readOnly
+            )
+        },
+        headlineContent = { Text(patch.name) },
+        supportingContent = {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                patch.description?.let { Text(it) }
+                if (chipLabels.isNotEmpty()) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        chipLabels.forEach { label ->
+                            Surface(
+                                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                shape = RoundedCornerShape(6.dp)
+                            ) {
+                                Text(
+                                    text = label,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = 11.sp,
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        trailingContent = {
+            if (patch.options?.isNotEmpty() == true) {
+                IconButton(onClick = onOptionsDialog, enabled = compatible || readOnly, shapes = IconButtonDefaults.shapes()) {
+                    Icon(
+                        imageVector = Icons.Outlined.Settings,
+                        contentDescription = stringResource(R.string.settings)
+                    )
+                }
+            }
+        },
+        colors = transparentListItemColors
+    )
+}
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -795,7 +923,8 @@ private fun OptionsDialog(
     reset: () -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
-    selectionWarningEnabled: Boolean
+    selectionWarningEnabled: Boolean,
+    readOnly: Boolean
 ) = FullscreenDialog(onDismissRequest = onDismissRequest) {
     Scaffold(
         topBar = {
@@ -803,8 +932,10 @@ private fun OptionsDialog(
                 title = patch.name,
                 onBackClick = onDismissRequest,
                 actions = {
-                    IconButton(onClick = reset, shapes = IconButtonDefaults.shapes()) {
-                        Icon(Icons.Filled.Restore, stringResource(R.string.reset))
+                    if (!readOnly) {
+                        IconButton(onClick = reset, shapes = IconButtonDefaults.shapes()) {
+                            Icon(Icons.Filled.Restore, stringResource(R.string.reset))
+                        }
                     }
                 }
             )
@@ -827,7 +958,8 @@ private fun OptionsDialog(
                     setValue = {
                         set(name, it)
                     },
-                    selectionWarningEnabled = selectionWarningEnabled
+                    selectionWarningEnabled = selectionWarningEnabled,
+                    readOnly = readOnly
                 )
             }
         }
@@ -855,12 +987,29 @@ private fun buildBundleSections(
     query: String = "",
     filter: Int,
     collapsedBundleUids: List<Int>,
+    selectedPackageNames: Set<String> = emptySet(),
     forceExpanded: Boolean = false
 ): List<BundleSection> {
+    fun PatchInfo.matchesPackageFilter(): Boolean {
+        if (selectedPackageNames.isEmpty()) return true
+        val packages = compatiblePackages ?: return true
+        return packages.any { it.packageName in selectedPackageNames }
+    }
+
+    fun PatchInfo.matchesSearchQuery(): Boolean {
+        if (query.isBlank()) return true
+
+        return name.contains(query, ignoreCase = true) ||
+            description?.contains(query, ignoreCase = true) == true ||
+            compatiblePackages?.any { pkg ->
+                pkg.packageName.contains(query, ignoreCase = true)
+            } == true
+    }
+
     fun List<PatchInfo>.searched() = if (query.isBlank()) {
-        this
+        filter { it.matchesPackageFilter() }
     } else {
-        filter { it.name.contains(query, ignoreCase = true) }
+        filter { it.matchesSearchQuery() && it.matchesPackageFilter() }
     }
 
     return bundles.mapNotNull { bundle ->
@@ -893,6 +1042,9 @@ private fun buildSectionLayouts(sections: List<BundleSection>) = buildList {
     }
 }
 
+private fun patchItemKey(keyPrefix: String, patchName: String, index: Int) =
+    "$keyPrefix-$index-$patchName"
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun SourceSectionHeader(
@@ -901,7 +1053,10 @@ private fun SourceSectionHeader(
     selectionState: Boolean?,
     onClick: () -> Unit,
     onSelectionClick: () -> Unit,
-    onExpandToggle: () -> Unit
+    onExpandToggle: () -> Unit,
+    onDeleteClick: () -> Unit,
+    sourceEditMode: Boolean,
+    readOnly: Boolean
 ) {
     val toggleableState = when (selectionState) {
         true -> ToggleableState.On
@@ -922,7 +1077,8 @@ private fun SourceSectionHeader(
             leadingContent = {
                 HapticTriStateCheckbox(
                     state = toggleableState,
-                    onClick = onSelectionClick
+                    onClick = onSelectionClick,
+                    enabled = !readOnly
                 )
             },
             headlineContent = {
@@ -937,18 +1093,31 @@ private fun SourceSectionHeader(
                 }
             },
             trailingContent = {
-                IconButton(onClick = onExpandToggle, shapes = IconButtonDefaults.shapes()) {
-                    Icon(
-                        imageVector = Icons.Filled.KeyboardArrowDown,
-                        contentDescription = stringResource(
-                            if (expanded) R.string.collapse_content else R.string.expand_content
-                        ),
-                        modifier = Modifier.rotate(arrowRotation)
-                    )
+                if (sourceEditMode) {
+                    IconButton(
+                        onClick = onDeleteClick,
+                        enabled = bundle.uid != 0,
+                        shapes = IconButtonDefaults.shapes()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = stringResource(R.string.delete)
+                        )
+                    }
+                } else {
+                    IconButton(onClick = onExpandToggle, shapes = IconButtonDefaults.shapes()) {
+                        Icon(
+                            imageVector = Icons.Filled.KeyboardArrowDown,
+                            contentDescription = stringResource(
+                                if (expanded) R.string.collapse_content else R.string.expand_content
+                            ),
+                            modifier = Modifier.rotate(arrowRotation)
+                        )
+                    }
                 }
             },
             colors = ListItemDefaults.colors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainer
+                containerColor = MaterialTheme.colorScheme.surface
             )
         )
         HorizontalDivider()

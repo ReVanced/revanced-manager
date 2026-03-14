@@ -50,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -79,7 +80,6 @@ fun BundleInformationScreen(
     val src = viewModel.bundle ?: return
     val patchCount = viewModel.patchCount
 
-    var viewCurrentBundlePatches by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val isLocal = src is LocalPatchBundle
     val bundleManifestAttributes = src.patchBundle?.manifestAttributes
@@ -92,13 +92,6 @@ fun BundleInformationScreen(
     val subtitleVersion = bundleManifestAttributes?.version?.let { "v$it" }
     val contentScrollState = rememberScrollState()
     val isContentScrollable by remember { derivedStateOf { contentScrollState.maxValue > 0 } }
-
-    if (viewCurrentBundlePatches) {
-        BundlePatchesDialog(
-            src = src,
-            onDismissRequest = { viewCurrentBundlePatches = false }
-        )
-    }
 
     if (showDeleteConfirmationDialog) {
         ConfirmDialog(
@@ -285,21 +278,15 @@ fun BundleInformationScreen(
                     )
                 }
 
-                val patchesClickable = patchCount > 0
                 SettingsListItem(
                     headlineContent = stringResource(R.string.patches),
-                    supportingContent = stringResource(R.string.view_patches),
-                    onClick = if (patchesClickable) {
-                        { viewCurrentBundlePatches = true }
-                    } else null,
-                    trailingContent = if (patchesClickable) {
-                        {
-                            Icon(
-                                Icons.AutoMirrored.Outlined.ArrowRight,
-                                stringResource(R.string.patches)
-                            )
-                        }
-                    } else null
+                    supportingContent = pluralStringResource(
+                        id = R.plurals.patch_count,
+                        count = patchCount,
+                        patchCount
+                    ),
+                    onClick = null,
+                    trailingContent = null
                 )
 
                 src.error?.let {

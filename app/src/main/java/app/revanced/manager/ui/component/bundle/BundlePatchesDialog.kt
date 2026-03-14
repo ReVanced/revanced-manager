@@ -329,7 +329,8 @@ fun PatchItem(
 fun PatchInfoChip(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    text: String
+    text: String,
+    wrapText: Boolean = false
 ) {
     val shape = RoundedCornerShape(8.0.dp)
     val cardModifier = if (onClick != null) {
@@ -358,8 +359,9 @@ fun PatchInfoChip(
         ) {
             Text(
                 text,
-                overflow = TextOverflow.Ellipsis,
-                softWrap = false,
+                overflow = if (wrapText) TextOverflow.Clip else TextOverflow.Ellipsis,
+                softWrap = wrapText,
+                maxLines = if (wrapText) Int.MAX_VALUE else 1,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

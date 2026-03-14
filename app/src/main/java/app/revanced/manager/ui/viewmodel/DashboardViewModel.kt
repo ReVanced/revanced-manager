@@ -27,6 +27,7 @@ import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -200,6 +201,11 @@ class DashboardViewModel(
     fun cancelSourceSelection() = sendEvent(BundleListViewModel.Event.CANCEL)
     fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
     fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
+
+    fun deleteSource(uid: Int) = viewModelScope.launch {
+        val source = patchBundleRepository.sources.first().firstOrNull { it.uid == uid } ?: return@launch
+        patchBundleRepository.remove(source)
+    }
 
     @SuppressLint("Recycle")
     fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {

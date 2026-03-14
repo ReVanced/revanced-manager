@@ -406,6 +406,7 @@ It is only compatible with the following version(s): %2$s</string>
 
     <string name="patch_selector_sheet_filter_title">Filter</string>
     <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
+    <string name="patch_selector_sheet_filter_packages_title">Packages</string>
 
     <string name="patch_selector_sheet_actions_title">Actions</string>
     <string name="restore_default_selection">Restore default selection</string>
