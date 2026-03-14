@@ -550,74 +550,80 @@ fun PatchesSelectorScreen(
 
     Scaffold(
         topBar = {
-            SearchBar(
-                query = query,
-                onQueryChange = setQuery,
-                expanded = searchExpanded,
-                onExpandedChange = setSearchExpanded,
-                placeholder = { Text(stringResource(R.string.search_patches)) },
-                leadingIcon = {
-                    val rotation by animateFloatAsState(
-                        targetValue = if (searchExpanded) 360f else 0f,
-                        animationSpec = tween(durationMillis = 400, easing = EaseInOut),
-                        label = "SearchBar back button"
-                    )
-                    IconButton(
-                        onClick = {
-                            if (searchExpanded) setSearchExpanded(false) else onBackClick()
-                        },
-                        shapes = IconButtonDefaults.shapes()
-                    ) {
-                        Icon(
-                            modifier = Modifier.rotate(rotation),
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+            Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                SearchBar(
+                    query = query,
+                    onQueryChange = setQuery,
+                    expanded = searchExpanded,
+                    onExpandedChange = setSearchExpanded,
+                    placeholder = { Text(stringResource(R.string.search_patches)) },
+                    windowInsets = if (readOnly) WindowInsets(0, 0, 0, 0) else WindowInsets.systemBars,
+                    leadingIcon = {
+                        val rotation by animateFloatAsState(
+                            targetValue = if (searchExpanded) 360f else 0f,
+                            animationSpec = tween(durationMillis = 400, easing = EaseInOut),
+                            label = "SearchBar back button"
                         )
-                    }
-                },
-                trailingIcon = {
-                    AnimatedContent(
-                        targetState = searchExpanded,
-                        label = "Filter/Clear",
-                        transitionSpec = { fadeIn() togetherWith fadeOut() }
-                    ) { expanded ->
-                        if (expanded) {
-                            IconButton(
-                                onClick = { setQuery("") },
-                                enabled = query.isNotEmpty(),
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Close,
-                                    contentDescription = stringResource(R.string.clear)
-                                )
-                            }
-                        } else {
-                            IconButton(onClick = { showBottomSheet = true }, shapes = IconButtonDefaults.shapes()) {
-                                Icon(
-                                    imageVector = Icons.Outlined.FilterList,
-                                    contentDescription = stringResource(R.string.more)
-                                )
+                        IconButton(
+                            onClick = {
+                                if (searchExpanded) setSearchExpanded(false) else onBackClick()
+                            },
+                            shapes = IconButtonDefaults.shapes()
+                        ) {
+                            Icon(
+                                modifier = Modifier.rotate(rotation),
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back)
+                            )
+                        }
+                    },
+                    trailingIcon = {
+                        AnimatedContent(
+                            targetState = searchExpanded,
+                            label = "Filter/Clear",
+                            transitionSpec = { fadeIn() togetherWith fadeOut() }
+                        ) { expanded ->
+                            if (expanded) {
+                                IconButton(
+                                    onClick = { setQuery("") },
+                                    enabled = query.isNotEmpty(),
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = stringResource(R.string.clear)
+                                    )
+                                }
+                            } else {
+                                IconButton(
+                                    onClick = { showBottomSheet = true },
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.FilterList,
+                                        contentDescription = stringResource(R.string.more)
+                                    )
+                                }
                             }
                         }
                     }
-                }
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .background(MaterialTheme.colorScheme.surface)
                 ) {
-                    LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize(),
-                        state = searchLazyListState,
-                        contentPadding = PaddingValues(bottom = 16.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .background(MaterialTheme.colorScheme.surface)
                     ) {
-                        sectionedPatchList(
-                            sections = searchSections,
-                            keyPrefix = "search"
-                        )
+                        LazyColumnWithScrollbar(
+                            modifier = Modifier.fillMaxSize(),
+                            state = searchLazyListState,
+                            contentPadding = PaddingValues(bottom = 16.dp)
+                        ) {
+                            sectionedPatchList(
+                                sections = searchSections,
+                                keyPrefix = "search"
+                            )
+                        }
                     }
                 }
             }

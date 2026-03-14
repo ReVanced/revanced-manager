@@ -2,6 +2,7 @@ package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +26,7 @@ fun SearchBar(
     placeholder: (@Composable () -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    windowInsets: WindowInsets = SearchBarDefaults.windowInsets,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val colors = SearchBarColors(
@@ -55,6 +57,7 @@ fun SearchBar(
             expanded = expanded,
             onExpandedChange = onExpandedChange,
             colors = colors,
+            windowInsets = windowInsets,
             content = content
         )
     }
