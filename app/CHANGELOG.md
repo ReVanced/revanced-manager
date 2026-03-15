@@ -1,3 +1,10 @@
+## app [2.0.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.0...v2.0.1-dev.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* Restore app deletion dialog ([65ce565](https://github.com/ReVanced/revanced-manager/commit/65ce565bbc45fb12020acee3e6f75f90c552f950))
+
 # app [2.0.0](https://github.com/ReVanced/revanced-manager/compare/v1.25.1...v2.0.0) (2026-03-14)
 
 
