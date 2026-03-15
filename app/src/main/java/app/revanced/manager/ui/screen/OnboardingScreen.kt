@@ -58,6 +58,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
@@ -84,6 +85,7 @@ fun OnboardingScreen(
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     var managerUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var patchesUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
@@ -116,8 +118,8 @@ fun OnboardingScreen(
             stringResource(R.string.onboarding_permissions_skip_description),
             StepButtons(
                 primaryAction = { vm.advance() },
-                primaryEnabled = vm.allPermissionsGranted,
-                secondaryAction = if (!vm.allPermissionsGranted) {
+                primaryEnabled = vm.requiredPermissionsGranted,
+                secondaryAction = if (!vm.requiredPermissionsGranted) {
                     { showSkipPermissionsDialog = true }
                 } else null
             )

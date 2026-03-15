@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -39,6 +40,12 @@ fun PermissionsStepContent(
     onRequestNotifications: () -> Unit,
     onRequestBatteryOptimization: () -> Unit
 ) {
+    Text(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        text = stringResource(R.string.generic_required),
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.labelLarge
+    )
     ListSection(contentPadding = PaddingValues(0.dp)) {
         PermissionItem(
             icon = Icons.Outlined.Security,
@@ -47,7 +54,14 @@ fun PermissionsStepContent(
             isGranted = canInstallUnknownApps,
             onRequest = onRequestInstallApps
         )
-
+    }
+    Text(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        text = stringResource(R.string.generic_optional),
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.labelLarge
+    )
+    ListSection(contentPadding = PaddingValues(0.dp)) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             PermissionItem(
                 icon = Icons.Outlined.Notifications,
