@@ -140,6 +140,7 @@ android {
 
     defaultConfig {
         applicationId = "app.revanced.manager.flutter"
+
         minSdk {
             version = release(26)
         }
@@ -182,12 +183,9 @@ android {
         }
 
         release {
-            if (!project.hasProperty("noProguard")) {
-                isMinifyEnabled = true
-                isShrinkResources = true
-                // Note: There are actually no optimisation since we disable it in proguard, AGP does not allow you to remove -optimize from this for some reason.
-                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            }
+            // Causes patching to not work properly, if enabled.
+            isMinifyEnabled = false
+            isShrinkResources = false
 
             val keystoreFile = file("keystore.jks")
 
