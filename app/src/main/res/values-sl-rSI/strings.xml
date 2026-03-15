@@ -19,6 +19,25 @@ Second \"item\" text"</string>
   <string name="patches">Popravki</string>
   <string name="cli">CLI</string>
   <string name="manager">Upravitelj</string>
+  <string name="onboarding_welcome_to">Dobrodošli v</string>
+  <string name="onboarding_welcome_back">Pozdravljeni! To je novi</string>
+  <string name="onboarding_apps_subtitle">Aplikacijo za popravljanje lahko izberete zdaj ali pozneje.</string>
+  <string name="onboarding_updates_subtitle">Konfigurirajte samodejne posodobitve, da bodo ReVanced Manager in popravki posodobljeni.</string>
+  <string name="onboarding_updates_note">ReVanced Manager se bo povezal z %s za prenos začetnih različic, če je vaša naprava povezana z internetom.</string>
+  <string name="retry">Ponovi</string>
+  <string name="onboarding_skip">Preskoči za zdaj</string>
+  <string name="onboarding_recommended_version">Priporočena različica: %s</string>
+  <string name="onboarding_permissions_skip_title">Preskoči dovoljenja?</string>
+  <string name="onboarding_permissions_skip_description">Brez zahtevanih dovoljenj nekatere funkcije morda ne bodo delovale pravilno. Dovoljenja lahko podelite pozneje v nastavitvah aplikacije.</string>
+  <string name="onboarding_permissions_skip_anyway">Preskoči vseeno</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager potrebuje nekaj dovoljenj za pravilno delovanje</string>
+  <string name="permission_install_apps">Namesti neznane aplikacije</string>
+  <string name="permission_install_apps_description">Potrebno za namestitev popravljenih aplikacij</string>
+  <string name="permission_notifications">Obvestila</string>
+  <string name="permission_notifications_description">Omogoča nemoteno popravljanje v ozadju na novejših različicah Androida</string>
+  <string name="permission_battery">Optimizacija baterije</string>
+  <string name="permission_battery_description">Preprečuje prekinitev popravljanja v ozadju</string>
+  <string name="permission_grant">Podeli</string>
   <string name="downloader_host_permission_label">Gostitelj prenosnika ReVanced Manager</string>
   <string name="downloader_host_permission_description">Uporablja se za nadzor dostopa do prenosnikov ReVanced Manager. To ima samo ReVanced Manager.</string>
   <string name="toast_copied_to_clipboard">Kopirano!</string>
@@ -27,7 +46,9 @@ Second \"item\" text"</string>
   <string name="settings">Nastavitve</string>
   <string name="select_app">Izberite aplikacijo</string>
   <string name="patches_count_selected">%1$d/%2$d izbranih</string>
-  <string name="new_downloader_notification">Na voljo so novi prenosniki. Kliknite tukaj za njihovo konfiguracijo.</string>
+  <string name="fab_patch_app">Popravi aplikacijo</string>
+  <string name="fab_add_patches">Dodaj popravke</string>
+  <string name="new_downloader_notification">Na voljo je nov prenosnik(-i). Kliknite tukaj za konfiguracijo.</string>
   <string name="unsupported_architecture_warning">Popravljanje na tej arhitekturi naprave ni podprto in bo najverjetneje neuspešno.</string>
   <string name="import_">Uvozi</string>
   <string name="import_patches">Uvozi popravke</string>
@@ -37,7 +58,7 @@ Second \"item\" text"</string>
   <string name="patches_missing">Manjka</string>
   <string name="patches_error">Napaka</string>
   <string name="patches_error_description">Popravkov ni bilo mogoče naložiti. Kliknite za ogled napake.</string>
-  <string name="patches_not_downloaded">Popravki niso bili preneseni. Kliknite tukaj za prenos.</string>
+  <string name="patches_not_downloaded">Popravki niso bili preneseni.</string>
   <string name="patches_name_default">Popravki</string>
   <string name="patches_name_fallback">Nepoimenovano</string>
   <string name="android_11_bug_dialog_title">Napaka v Androidu 11</string>
@@ -46,40 +67,51 @@ Second \"item\" text"</string>
   <string name="selected_app_meta_any_version">Katera koli razpoložljiva različica</string>
   <string name="app_source_dialog_title">Izberi vir</string>
   <string name="app_source_dialog_option_auto">Samodejno</string>
-  <string name="app_source_dialog_option_auto_description">Uporabite vse razpoložljive prenosnike za prenos aplikacije</string>
-  <string name="app_source_dialog_option_auto_unavailable">Noben prenosnik ni na voljo.</string>
-  <string name="app_source_dialog_option_installed_no_root">Nameščenih aplikacij ni mogoče ponovno popraviti brez korenskega dostopa</string>
+  <string name="app_source_dialog_option_auto_description">Uporabi nameščeno aplikacijo, nato preneseni APK, nato razpoložljive prenašalnike</string>
+  <string name="app_source_dialog_option_auto_unavailable">Na voljo ni združljive aplikacije ali prenašalnikov</string>
+  <string name="app_source_dialog_option_installed_no_root">Nameščenih aplikacij ni mogoče znova popraviti brez dostopa root</string>
   <string name="app_source_dialog_option_installed_version_not_suggested">Različica %s se ne ujema s predlagano različico</string>
   <string name="patch_item_description">Začnite popravljati aplikacijo</string>
   <string name="patch_selector_item">Izberite popravke</string>
   <string name="patch_selector_item_description">%d izbranih popravkov</string>
+  <string name="patch_selection_changed_warning">Izbor popravkov je bil spremenjen</string>
   <string name="no_patches_selected">Ni izbranih popravkov</string>
   <string name="network_unavailable_warning">Vaša naprava ni povezana z internetom. Prenos bo kasneje neuspešen.</string>
   <string name="network_metered_warning">Trenutno ste na omejeni povezavi. Morda se zaračunajo stroški prenosa podatkov vašega ponudnika storitev.</string>
   <string name="apk_source_selector_item">Izberite vir APK-ja</string>
-  <string name="apk_source_auto">Uporaba vseh prenosnikov APK-ja</string>
+  <string name="apk_source_auto">Samodejno</string>
+  <string name="apk_source_auto_installed">Samodejno · Uporaba nameščenega APK-ja</string>
+  <string name="apk_source_auto_downloaded">Samodejno · Uporaba prenesenega APK-ja</string>
+  <string name="apk_source_auto_downloader">Samodejno · Uporaba razpoložljivih prenosnikov</string>
+  <string name="apk_source_auto_storage">Samodejno · Izberi iz shrambe</string>
   <string name="apk_source_downloader">Uporaba %s</string>
   <string name="apk_source_installed">Uporaba nameščenega APK-ja</string>
   <string name="apk_source_local">Uporaba lokalne datoteke APK</string>
+  <string name="apk_source_downloaded">Že preneseno</string>
   <string name="legacy_import_failed">Neuspešen uvoz podedovanih nastavitev</string>
   <string name="auto_updates_dialog_title">Konfigurirajte posodobitve</string>
   <string name="auto_updates_dialog_description">Ali želite, da ReVanced Manager redno preverja posodobitve za naslednje komponente?</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
-  <string name="auto_updates_dialog_patches">Popravki ReVanced</string>
-  <string name="auto_updates_dialog_note">Te nastavitve lahko spremenite pozneje.</string>
+  <string name="auto_updates_dialog_patches">ReVanced popravki</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Prenosniki</string>
+  <string name="auto_updates_dialog_note">Te nastavitve lahko pozneje spremenite.
+
+    ReVanced Manager se bo povezal z %s za prenos začetnih različic, če je vaša naprava povezana z internetom.</string>
   <string name="announcements_filter_tag">Filtriraj po oznaki</string>
   <string name="announcements_show_archived">Prikaži arhivirano</string>
   <string name="general">Splošno</string>
   <string name="general_description">Jezik, tema, dinamična barva</string>
   <string name="updates">Posodobitve</string>
-  <string name="updates_description">Preverite posodobitve in si oglejte dnevnike sprememb</string>
+  <string name="updates_description">Preveri posodobitve in si oglej dnevnik sprememb</string>
   <string name="downloads">Prenosi</string>
   <string name="downloads_description">Prenosniki in prenesene aplikacije</string>
   <string name="import_export">Uvoz &amp; izvoz</string>
   <string name="import_export_description">Pomnilnik ključev, možnosti in izbira popravkov</string>
   <string name="advanced">Napredno</string>
   <string name="advanced_description">URL API-ja, omejitev pomnilnika, odpravljanje napak</string>
+  <string name="safeguards_toggled_warning">Varovalke so bile preklopljene</string>
   <string name="about">O programu</string>
+  <string name="about_app_name">O %1$s</string>
   <string name="opensource_licenses">Licence odprtokodne kode</string>
   <string name="opensource_licenses_description">Oglejte si vse knjižnice, uporabljene za izdelavo te aplikacije</string>
   <string name="contributors">Sodelujoči</string>
@@ -93,6 +125,7 @@ Second \"item\" text"</string>
   <string name="language">Jezik</string>
   <string name="language_description">Izberite jezik prikaza aplikacije</string>
   <string name="language_system_default">Privzeto sistemsko</string>
+  <string name="search_languages">Iskanje jezikov…</string>
   <string name="safeguards">Varovala</string>
   <string name="patch_compat_check">Onemogoči preverjanje združljivosti različic</string>
   <string name="patch_compat_check_description">Ne omejujte popravkov na združljive različice aplikacij</string>
@@ -114,6 +147,8 @@ Omogoči kljub temu?</string>
   <string name="universal_patches_safeguard_confirmation">Univerzalni popravki niso tako dobro preizkušeni kot tisti, ki so namenjeni določenim aplikacijam.
 
 Omogoči kljub temu?</string>
+  <string name="keystore">Shranjevalnik ključev</string>
+  <string name="patches_selections">Izbire popravkov</string>
   <string name="import_keystore">Uvozi pomnilnik ključev</string>
   <string name="import_keystore_description">Uvozi prilagojen pomnilnik ključev</string>
   <string name="import_keystore_dialog_title">Vnesite poverilnice pomnilnika ključev</string>
@@ -137,13 +172,18 @@ Prej nameščenih aplikacij s tega vira ne boste mogli posodobiti.</string>
   <string name="import_patch_selection_description">Uvozi izbiro popravkov iz datoteke JSON</string>
   <string name="import_patch_selection_fail">Izbire popravkov ni bilo mogoče uvoziti: %s</string>
   <string name="import_patch_selection_success">Uvožena izbira popravkov</string>
+  <string name="select_bundle_for_import">Izberite paket za uvoz</string>
   <string name="export_patch_selection">Izvozi izbiro popravkov</string>
   <string name="export_patch_selection_description">Izvozi izbiro popravkov v datoteko JSON</string>
   <string name="export_patch_selection_fail">Izbire popravkov ni bilo mogoče izvoziti: %s</string>
   <string name="export_patch_selection_success">Izvožena izbira popravkov</string>
-  <string name="reset_patch_selection">Ponastavi izbiro popravkov</string>
+  <string name="select_bundle_for_export">Izberite paket za izvoz</string>
+  <string name="patch_selection_packages">Aplikacije s shranjenimi izbirami</string>
+  <string name="patch_selection_entries">Skupno izbranih popravkov</string>
+  <string name="reset_configuration">Ponastavi konfiguracijo</string>
+  <string name="reset_patch_selection">Izbire popravkov</string>
   <string name="reset_patch_selection_description">Ponastavi shranjeno izbiro popravkov</string>
-  <string name="reset_patch_options">Ponastavi možnosti popravkov</string>
+  <string name="reset_patch_options">Možnosti popravkov</string>
   <string name="reset_patch_options_description">Ponastavi shranjene možnosti popravkov</string>
   <string name="reset_patch_selection_success">Izbira popravkov je bila ponastavljena</string>
   <string name="patch_selection_reset_all">Globalno ponastavi izbiro popravkov</string>
@@ -165,22 +205,29 @@ Prej nameščenih aplikacij s tega vira ne boste mogli posodobiti.</string>
   <string name="patch_options_reset_all_dialog_description">Ponastavili boste vse možnosti popravkov. Vsako možnost boste morali znova uporabiti.</string>
   <string name="patch_options_reset_all_description">Ponastavi vse možnosti popravkov</string>
   <string name="downloaders">Prenosniki</string>
-  <string name="downloader_state_trusted">Zaupanja vreden</string>
+  <string name="downloader_prereleases">Uporabi predizdaje</string>
+  <string name="downloader_prereleases_description">Uporabi predizdajne različice glavnega prenosnika</string>
+  <string name="downloader_state_loaded">Naloženo</string>
   <string name="downloader_state_failed">Nalaganje ni uspelo. Kliknite za več podrobnosti</string>
-  <string name="downloader_state_untrusted">Nezaupanja vreden</string>
-  <string name="downloader_trust_dialog_title">Zaupati prenosniku?</string>
-  <string name="downloader_revoke_trust_dialog_title">Preklicati zaupanje?</string>
-  <string name="downloader_trust_dialog_body">Če boste nadaljevali, se bo ta prenosnik lahko zagnal.
-
-Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da Manager izvede poljubno kodo.</string>
-  <string name="downloader_trust_dialog_signature">Podpis:
-
-%s</string>
-  <string name="downloader_trust_dialog_name">Prenosnik:
-%s</string>
+  <string name="downloader_state_missing">Manjka</string>
   <string name="downloader_delete_apps_title">Izbriši izbrane aplikacije</string>
   <string name="downloader_delete_apps_description">Ali ste prepričani, da želite izbrisati izbrane aplikacije?</string>
+  <string name="downloader_delete_single_description">Ali ste prepričani, da želite izbrisati \"%s\"?</string>
   <string name="downloader_settings_no_apps">Ni najdenih prenesenih aplikacij.</string>
+  <string name="downloader_settings_no_apps_description">Aplikacije, prenesene prek ReVanced Manager, se bodo prikazale tukaj.</string>
+  <string name="downloader_url">URL prenašalnika</string>
+  <string name="downloader_add">Dodaj prenašalnik</string>
+  <string name="select_downloader_type_dialog_description">Dodaj nove prenašalnike iz URL-ja ali lokalnih datotek</string>
+  <string name="local_downloaders_description">Dodaj prenašalnike iz lokalnega pomnilnika.</string>
+  <string name="remote_downloaders_description">Dodaj prenašalnike iz URL-ja. Lahko se samodejno posodobijo.</string>
+  <string name="install_revanced_downloaders">Namestite prenosnike za pridobivanje aplikacij neposredno znotraj ReVanced Manager.</string>
+  <string name="install_revanced_downloader">Namesti prenosnike ReVanced</string>
+  <string name="cancel_downloader_install_title">Prekliči namestitev prenosnikov?</string>
+  <string name="cancel_downloader_install_description">Namestitev prenosnikov je v teku. Če zdaj odidete, bo prenos preklican.</string>
+  <string name="downloader_sources_unavailable_title">Ti prenašalniki manjkajo</string>
+  <string name="downloader_sources_unavailable_description">Za popravilo kliknite gumb za posodobitev.</string>
+  <string name="downloader_update_failed">Posodobitev prenašalnika ni uspela: %s</string>
+  <string name="downloader_replace_fail">Uvoz prenašalnika ni uspel: %s</string>
   <string name="search_apps">Iskanje aplikacij…</string>
   <string name="loading_body">Nalaganje…</string>
   <string name="downloading_patches">Prenos popravkov…</string>
@@ -194,7 +241,7 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="share">Deli</string>
   <string name="patch">Popravek</string>
   <string name="select_from_storage">Izberi iz shrambe</string>
-  <string name="select_from_storage_description">Izberite datoteko APK iz shrambe z izbirnikom datotek</string>
+  <string name="select_from_storage_description">Izberite datoteko APK iz shrambe z uporabo izbirnika datotek</string>
   <string name="suggested_version_info">Predlagana različica: %s</string>
   <string name="type_anything">Vnesite karkoli za nadaljevanje</string>
   <string name="search">Iskanje popravkov…</string>
@@ -203,6 +250,8 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="back">Nazaj</string>
   <string name="warning">Opozorilo</string>
   <string name="add">Dodaj</string>
+  <string name="enable">Omogoči</string>
+  <string name="disable">Onemogoči</string>
   <string name="close">Zapri</string>
   <string name="clear">Počisti</string>
   <string name="system">Sistem</string>
@@ -216,7 +265,7 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="process_runtime">Zaženi Patcher v drugem procesu (eksperimentalno)</string>
   <string name="process_runtime_description">To je hitreje in omogoča Patcherju uporabo več pomnilnika</string>
   <string name="process_runtime_memory_limit">Omejitev pomnilnika procesa Patcher</string>
-  <string name="process_runtime_memory_limit_description">Največja količina pomnilnika, ki jo lahko uporablja proces Patcher (v megabajtih)</string>
+  <string name="process_runtime_memory_limit_description">Največja količina pomnilnika, ki jo lahko uporabi proces popravljalnika</string>
   <string name="debug_logs_export">Izvozi dnevnike razhroščevanja</string>
   <string name="debug_logs_export_read_failed">Branje dnevnikov ni uspelo (izhodna koda %d)</string>
   <string name="debug_logs_export_failed">Izvoz dnevnikov ni uspel</string>
@@ -236,6 +285,8 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="device_memory_limit_format">%1$dMB (Normalno) - %2$dMB (Veliko)</string>
   <string name="patches_force_download">Prisilni prenos vseh popravkov</string>
   <string name="patches_reset">Ponastavi popravke</string>
+  <string name="reset_onboarding">Ponastavi uvodni zaslon</string>
+  <string name="reset_onboarding_description">Prikaži uvodni zaslon ob naslednjem zagonu aplikacije</string>
   <string name="patching">Krpanje</string>
   <string name="signing">Podpisovanje</string>
   <string name="storage">Shramba</string>
@@ -249,8 +300,15 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="download_app">Prenesi aplikacijo</string>
   <string name="download_apk">Prenesi datoteko APK</string>
   <string name="patches_download_fail">Prenos popravkov ni uspel: %s</string>
+  <string name="api_not_working_title">Storitev API trenutno ne deluje</string>
+  <string name="api_not_working_description">Nekatere funkcije so morda prizadete. Preverite svojo povezavo ali URL API-ja v nastavitvah.</string>
   <string name="patches_replace_fail">Uvoz popravkov ni uspel: %s</string>
   <string name="no_patched_apps_found">Ni najdenih popravljenih aplikacij</string>
+  <string name="no_patched_apps_description">Trenutno nimate nobenih popravljenih aplikacij, za katere bi vedeli. To spremenite tako, da popravite svojo prvo aplikacijo!</string>
+  <string name="patched_apps_section_title">Popravljene aplikacije</string>
+  <string name="patchable_apps_section_title">Aplikacije, ki jih je mogoče popraviti</string>
+  <string name="no_patches_found">Ni najdenih popravkov</string>
+  <string name="no_patches_description">Še nimate nobenih popravkov. Dodajte popravke tako, da se dotaknete spodnjega gumba!</string>
   <string name="tap_on_patches">Tapnite na popravke za več informacij o njih</string>
   <string name="patches_selected">Izbrano: %s</string>
   <string name="incompatible_patches">Nezdružljivi popravki</string>
@@ -271,6 +329,7 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="download_application">Prenesi aplikacijo?</string>
   <string name="app_not_installed">Izbrana aplikacija ni nameščena. Jo želite prenesti?</string>
   <string name="failed_to_load_apk">Nalaganje APK ni uspelo</string>
+  <string name="split_apk_not_supported">Razdeljenih APK-jev ni mogoče popraviti</string>
   <string name="loading">Nalaganje…</string>
   <string name="not_installed">Ni nameščeno</string>
   <string name="installed">Nameščeno</string>
@@ -296,11 +355,12 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="downloader_invalid_version">Prenosnik ni prenesel pravilne različice</string>
   <string name="downloader_app_not_found">Prenosnik ni našel aplikacije</string>
   <string name="downloader_error">Napaka prenosnika: %s</string>
-  <string name="no_downloader_installed">Noben prenosnik ni nameščen.</string>
-  <string name="no_downloader_available">Nameščeni so prenosniki, vendar nobenemu ni zaupano. Preverite svoje nastavitve.</string>
+  <string name="no_downloaders_installed">Ni nameščenih prenosnikov aplikacij!</string>
+  <string name="no_downloaders_trusted">Noben prenosnik aplikacij ni zaupanja vreden! Prosimo, preverite svoje nastavitve.</string>
   <string name="already_patched">Že popravljeno</string>
   <string name="patch_selector_sheet_filter_title">Filter</string>
   <string name="patch_selector_sheet_filter_compat_title">Združljivost</string>
+  <string name="patch_selector_sheet_filter_packages_title">Paketi</string>
   <string name="patch_selector_sheet_actions_title">Dejanja</string>
   <string name="restore_default_selection">Obnovi privzeto izbiro</string>
   <string name="deselect_all">Prekliči izbiro vseh</string>
@@ -328,11 +388,14 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="save_apk_success">APK shranjen</string>
   <string name="sign_fail">Podpisovanje APK ni uspelo: %s</string>
   <string name="save_logs">Shrani dnevnike</string>
+  <string name="save_as_file">Shrani v datoteke</string>
+  <string name="export_patcher_logs">Izvozi dnevnike popravljalnika</string>
+  <string name="save_logs_success">Dnevniki shranjeni</string>
   <string name="downloader_activity_dialog_body">Za nadaljevanje s tem prenosnikom je potrebna uporabniška interakcija.</string>
   <string name="select_install_type">Izberite vrsto namestitve</string>
   <string name="patcher_step_group_preparing">Priprava</string>
   <string name="patcher_step_load_patches">Naloži popravke</string>
-  <string name="patcher_step_unpack">Preberi datoteko APK</string>
+  <string name="patcher_step_unpack">Pripravi popravljalnik</string>
   <string name="patcher_step_group_patching">Popravljanje</string>
   <string name="patcher_step_group_saving">Shranjevanje</string>
   <string name="patcher_step_write_patched">Zapiši popravljeno datoteko APK</string>
@@ -362,7 +425,12 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="website">Spletna stran</string>
   <string name="github">GitHub</string>
   <string name="contact">Stik</string>
+  <string name="license">Licenca</string>
+  <string name="source">Vir</string>
+  <string name="repository">Repozitorij</string>
+  <string name="bundle_information_by_author">Avtor: %1$s</string>
   <string name="version">Različica</string>
+  <string name="version_compatibility_warning">Izbrana različica morda ni združljiva z izbranimi popravki</string>
   <string name="submit_feedback">Pošlji težavo ali povratne informacije</string>
   <string name="submit_feedback_description">Pomagajte nam izboljšati to aplikacijo</string>
   <string name="developer_options">Možnosti za razvijalce</string>
@@ -388,12 +456,16 @@ Ta prenosnik omogočite samo, če mu zaupate. Prenosniki lahko povzročijo, da M
   <string name="update_completed">Posodobitev nameščena</string>
   <string name="install_update_manager_failed">Namestitev posodobitve ni uspela</string>
   <string name="manual_update_check">Preveri posodobitve</string>
+  <string name="view_update">Ogled posodobitve</string>
   <string name="manual_update_check_description">Ročno preveri posodobitve</string>
   <string name="update_checking_manager">Ob zagonu preveri posodobitve</string>
   <string name="update_checking_manager_description">Ob zagonu aplikacije preveri nove različice ReVanced Managerja</string>
+  <string name="update_checking_downloader">Preveri posodobitve prenosnikov ReVanced ob zagonu</string>
+  <string name="update_checking_downloader_description">Preveri posodobitve nameščenih prenosnikov ReVanced ob zagonu aplikacije</string>
   <string name="manager_prereleases">Uporabi predizdaje</string>
   <string name="manager_prereleases_description">Uporabi predizdajne različice ReVanced Managerja</string>
-  <string name="changelog">Ogled zgodovine sprememb</string>
+  <string name="prereleases_warning">Predizdajne različice so lahko nestabilne in vsebujejo napake. Lahko pride do zrušitev, izgube podatkov ali drugih nepričakovanih težav. Omogočite to samo, če ste pripravljeni sprejeti ta tveganja.</string>
+  <string name="changelog">Ogled dnevnika sprememb</string>
   <string name="changelog_loading">Nalaganje zgodovine sprememb</string>
   <string name="changelog_download_fail">Prenos zgodovine sprememb ni uspel: %s</string>
   <string name="changelog_description">Preverite najnovejše spremembe v tej posodobitvi</string>
@@ -478,4 +550,22 @@ Kliknite na popravke za več podrobnosti.</string>
   <string name="confirm">Potrdi</string>
   <string name="new_announcement">Novo obvestilo:
 %s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d popravek</item>
+    <item quantity="two">%d popravka</item>
+    <item quantity="few">%d popravki</item>
+    <item quantity="other">%d popravkov</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">Izvedi %d popravek</item>
+    <item quantity="two">Izvedi %d popravka</item>
+    <item quantity="few">Izvedi %d popravke</item>
+    <item quantity="other">Izvedi %d popravkov</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d izbran</item>
+    <item quantity="two">%d izbrana</item>
+    <item quantity="few">%d izbrani</item>
+    <item quantity="other">%d izbranih</item>
+  </plurals>
 </resources>
