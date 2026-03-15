@@ -125,7 +125,7 @@ fun OnboardingScreen(
 
         OnboardingStep.Updates -> Triple(
             stringResource(R.string.onboarding_updates_subtitle),
-            stringResource(R.string.auto_updates_dialog_note),
+            stringResource(R.string.auto_updates_dialog_note, vm.apiUrl),
             StepButtons(
                 primaryAction = {
                     scope.launch {

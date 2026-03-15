@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
@@ -29,12 +30,14 @@ class OnboardingViewModel(
     private val pm: PM,
     private val downloaderRepository: DownloaderRepository,
     private val patchBundleRepository: PatchBundleRepository,
+    private val networkInfo: NetworkInfo,
 ) : ViewModel() {
     private val powerManager = app.getSystemService<PowerManager>()!!
 
     val apps = pm.appList.map { apps ->
         apps.filter { (it.patches ?: 0) > 0 }.ifEmpty { null }
     }
+    val apiUrl = prefs.api.default
 
     val suggestedVersions = patchBundleRepository.suggestedVersions
 
@@ -77,22 +80,22 @@ class OnboardingViewModel(
         prefs.managerAutoUpdates.update(managerEnabled)
 
         with(patchBundleRepository) {
-            sources
+            val src = sources
                 .first()
-                .find { it.uid == 0 }
-                ?.asRemoteOrNull
-                ?.setAutoUpdate(patchesEnabled)
+                .find { it.isDefault }
+                ?.asRemoteOrNull ?: return@with
 
-            if (patchesEnabled) updateCheck()
+            src.setAutoUpdate(patchesEnabled)
+            if (networkInfo.isConnected()) update(src)
         }
 
         with(downloaderRepository) {
-            downloaderSources
+            val src = downloaderSources
                 .first()[0]
-                ?.asRemoteOrNull
-                ?.setAutoUpdate(downloadersEnabled)
+                ?.asRemoteOrNull ?: return@with
 
-            if (downloadersEnabled) updateCheck()
+            src.setAutoUpdate(downloadersEnabled)
+            if (networkInfo.isConnected()) update(src)
         }
     }
 
