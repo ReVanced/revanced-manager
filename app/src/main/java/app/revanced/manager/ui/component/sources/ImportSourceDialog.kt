@@ -25,6 +25,7 @@ import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.TextHorizontalPadding
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
+import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.BIN_MIMETYPE
 import app.revanced.manager.util.transparentListItemColors
 
@@ -79,7 +80,10 @@ fun ImportSourceDialog(
         }
 
     fun launchFileActivity() {
-        fileActivityLauncher.launch(BIN_MIMETYPE)
+        when(strings) {
+            ImportSourceDialogStrings.PATCHES -> fileActivityLauncher.launch(BIN_MIMETYPE)
+            ImportSourceDialogStrings.DOWNLOADERS -> fileActivityLauncher.launch(APK_MIMETYPE)
+        }
     }
 
     val steps = listOf<@Composable () -> Unit>(
