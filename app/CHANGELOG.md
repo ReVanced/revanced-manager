@@ -1,3 +1,11 @@
+## app [2.0.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.0.1-dev.1...v2.0.1-dev.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* Always download initial versions of patches and downloaders ([1ffcfca](https://github.com/ReVanced/revanced-manager/commit/1ffcfcafb883bfb500aa3611896e27215b8beb10))
+* Cleanup downloaded apps ([026b6a9](https://github.com/ReVanced/revanced-manager/commit/026b6a9a1eda240c21cfe2527bf1d8c09ac955ee))
+
 ## app [2.0.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.0...v2.0.1-dev.1) (2026-03-15)
 
 
