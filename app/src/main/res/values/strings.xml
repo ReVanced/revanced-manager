@@ -37,7 +37,7 @@ Second \"item\" text"</string>
     <string name="permission_install_apps">Install unknown apps</string>
     <string name="permission_install_apps_description">Required to install patched applications</string>
     <string name="permission_notifications">Notifications</string>
-    <string name="permission_notifications_description">Allows for uninterrupted patching in the background on newer versions of Android</string>
+    <string name="permission_notifications_description">Allows for uninterrupted patching in the background</string>
     <string name="permission_battery">Battery optimization</string>
     <string name="permission_battery_description">Prevents patching from being interrupted in the background</string>
     <string name="permission_grant">Grant</string>
@@ -608,6 +608,8 @@ Click on the patches to see more details.</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
     <string name="new_announcement">New announcement:\n%s</string>
+    <string name="generic_required">Required</string>
+    <string name="generic_optional">Optional</string>
 
     <plurals name="patch_count">
         <item quantity="one">%d patch</item>
