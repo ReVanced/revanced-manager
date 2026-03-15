@@ -1,3 +1,10 @@
+## app [2.0.1-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.0.1-dev.2...v2.0.1-dev.3) (2026-03-15)
+
+
+### Bug Fixes
+
+* Correct condition for displaying days ago in Util.kt ([#3027](https://github.com/ReVanced/revanced-manager/issues/3027)) ([467203a](https://github.com/ReVanced/revanced-manager/commit/467203a2fafb37e0ec790573e6acc1e221c31452))
+
 ## app [2.0.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.0.1-dev.1...v2.0.1-dev.2) (2026-03-15)
 
 
