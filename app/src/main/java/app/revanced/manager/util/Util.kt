@@ -173,8 +173,7 @@ fun LocalDateTime.relativeTime(context: Context): String {
                 R.string.hours_ago,
                 duration.inWholeHours.toString()
             )
-
-            duration.inWholeHours < 30 -> context.getString(
+            duration.inWholeDays < 30 -> context.getString(
                 R.string.days_ago,
                 duration.inWholeDays.toString()
             )
