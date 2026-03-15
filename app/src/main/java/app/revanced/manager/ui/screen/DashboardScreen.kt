@@ -489,7 +489,11 @@ fun DashboardScreen(
                                             Text(stringResource(R.string.view_announcement))
                                         }
                                     },
-                                    isWarning = announcement.level > 0
+                                    isWarning = announcement.level > 0,
+                                    onClick = {
+                                        vm.markUnreadAnnouncementRead()
+                                        onAnnouncementClick(announcement)
+                                    }
                                 )
                             }
                         }

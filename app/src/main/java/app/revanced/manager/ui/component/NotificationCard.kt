@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NotificationCard(
     text: String,
@@ -35,15 +36,20 @@ fun NotificationCard(
     modifier: Modifier = Modifier,
     actions: (@Composable RowScope.() -> Unit)? = null,
     title: String? = null,
-    isWarning: Boolean = false
+    isWarning: Boolean = false,
+    onDismiss: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null
 ) {
     val color =
         if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
 
-    NotificationCardInstance(modifier = modifier, isWarning = isWarning) {
+    NotificationCardInstance(modifier = modifier, isWarning = isWarning, onClick = onClick) {
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Box(
                 modifier = Modifier.size(28.dp),
@@ -56,8 +62,8 @@ fun NotificationCard(
                     tint = color,
                 )
             }
-
             Column(
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 title?.let {
@@ -72,73 +78,13 @@ fun NotificationCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = color,
                 )
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    actions?.invoke(this)
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-fun NotificationCard(
-    text: String,
-    icon: ImageVector,
-    modifier: Modifier = Modifier,
-    title: String? = null,
-    isWarning: Boolean = false,
-    onDismiss: (() -> Unit)? = null,
-    onClick: (() -> Unit)? = null
-) {
-    val color =
-        if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
-
-    NotificationCardInstance(modifier = modifier, isWarning = isWarning, onClick = onClick) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Box(
-                modifier = Modifier.size(28.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = color,
-                )
-            }
-            if (title != null) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = color,
-                    )
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = color,
+                actions?.let {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                        content = it
                     )
                 }
-            } else {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = text,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = color,
-                )
             }
             if (onDismiss != null) {
                 IconButton(
