@@ -28,10 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 
-enum class NotificationCardType {
-    NORMAL, WARNING, ERROR
-}
-
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NotificationCard(
@@ -40,18 +36,14 @@ fun NotificationCard(
     modifier: Modifier = Modifier,
     actions: (@Composable RowScope.() -> Unit)? = null,
     title: String? = null,
-    type: NotificationCardType = NotificationCardType.NORMAL,
+    isWarning: Boolean = false,
     onDismiss: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null
 ) {
     val color =
-        when (type) {
-            NotificationCardType.ERROR -> MaterialTheme.colorScheme.onError
-            NotificationCardType.WARNING -> MaterialTheme.colorScheme.onPrimaryContainer
-            else -> MaterialTheme.colorScheme.onTertiaryContainer
-        }
+        if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
 
-    NotificationCardInstance(modifier = modifier, type = type, onClick = onClick) {
+    NotificationCardInstance(modifier = modifier, isWarning = isWarning, onClick = onClick) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -113,18 +105,12 @@ fun NotificationCard(
 @Composable
 private fun NotificationCardInstance(
     modifier: Modifier = Modifier,
-    type: NotificationCardType = NotificationCardType.NORMAL,
+    isWarning: Boolean = false,
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     val colors =
-        CardDefaults.cardColors(
-            containerColor = when (type) {
-                NotificationCardType.ERROR -> MaterialTheme.colorScheme.error
-                NotificationCardType.WARNING -> MaterialTheme.colorScheme.primaryContainer
-                else -> MaterialTheme.colorScheme.tertiaryContainer
-            }
-        )
+        CardDefaults.cardColors(containerColor = if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)
     val defaultModifier = Modifier
         .fillMaxWidth()
         .clip(RoundedCornerShape(24.dp))

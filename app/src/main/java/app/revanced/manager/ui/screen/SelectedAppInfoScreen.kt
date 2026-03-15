@@ -54,7 +54,6 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NotificationCard
-import app.revanced.manager.ui.component.NotificationCardType
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
@@ -365,7 +364,7 @@ fun SelectedAppInfoScreen(
                     !needsInternet -> {}
                     !networkConnected -> {
                         NotificationCard(
-                            type = NotificationCardType.WARNING,
+                            isWarning = true,
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.network_unavailable_warning),
                             onDismiss = null
@@ -374,7 +373,7 @@ fun SelectedAppInfoScreen(
 
                     networkMetered -> {
                         NotificationCard(
-                            type = NotificationCardType.WARNING,
+                            isWarning = true,
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.network_metered_warning),
                             onDismiss = null
