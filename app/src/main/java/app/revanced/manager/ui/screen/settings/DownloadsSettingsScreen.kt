@@ -99,14 +99,14 @@ fun DownloadsSettingsScreen(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         canScroll = { canScroll }
     )
-    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val currentTab = DownloadsTab.entries[pagerState.currentPage]
     var showImportDialog by rememberSaveable { mutableStateOf(false) }
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showDeleteConfirmationDialog) {
         ConfirmDialog(
             onDismiss = { showDeleteConfirmationDialog = false },
-            onConfirm = { viewModel.deleteApps() },
+            onConfirm = viewModel::deleteApps,
             title = stringResource(R.string.downloader_delete_apps_title),
             description = stringResource(R.string.downloader_delete_apps_description),
             icon = Icons.Outlined.Delete
