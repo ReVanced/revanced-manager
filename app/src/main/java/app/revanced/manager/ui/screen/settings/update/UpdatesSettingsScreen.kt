@@ -244,6 +244,7 @@ fun UpdatesSettingsScreen(
                     preference = vm.useManagerPrereleases,
                     headline = R.string.manager_prereleases,
                     description = R.string.manager_prereleases_description,
+                    dialogTitle = R.string.prerelease_title,
                     confirmationText = R.string.prereleases_warning,
                     onValueChange = { value ->
                         coroutineScope.launch {

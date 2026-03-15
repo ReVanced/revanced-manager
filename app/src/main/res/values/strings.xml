@@ -153,21 +153,25 @@ Second \"item\" text"</string>
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">Do not restrict patches to compatible app versions</string>
+    <string name="patch_compat_check_title">Disable version compatibility check?</string>
     <string name="patch_compat_check_confirmation">Selecting incompatible patches can result in a broken app.
 
 Do you want to proceed anyways?</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
+    <string name="suggested_version_safeguard_title">Disable requiring suggested app version?</string>
     <string name="suggested_version_safeguard_confirmation">Selecting an app that is not the suggested version may cause unexpected issues.
 
 Do you want to proceed anyways?</string>
     <string name="patch_selection_safeguard">Allow changing patch selection and options</string>
     <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches and customization of options</string>
+    <string name="patch_selection_safeguard_title">Changing patch selection and options?</string>
     <string name="patch_selection_safeguard_confirmation">Changing the selection of patches may cause unexpected issues.
 
 Enable anyways?</string>
     <string name="universal_patches_safeguard">Allow using universal patches</string>
     <string name="universal_patches_safeguard_description">Do not prevent using universal patches</string>
+    <string name="universal_patches_safeguard_title">Use universal patches?</string>
     <string name="universal_patches_safeguard_confirmation">Universal patches are not as well tested as those that target specific apps.
 
 Enable anyways?</string>
@@ -515,6 +519,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="update_checking_downloader_description">Check for updates to installed ReVanced Downloaders when the application starts</string>
     <string name="manager_prereleases">Use pre-releases</string>
     <string name="manager_prereleases_description">Use pre-release versions of ReVanced Manager</string>
+    <string name="prerelease_title">Enable usage of pre-releases version?</string>
     <string name="prereleases_warning">Pre-release versions may be unstable and contain bugs. You may experience crashes, data loss, or other unexpected issues. Only enable this if you are comfortable with these risks.</string>
     <string name="changelog">View changelog</string>
     <string name="changelog_loading">Loading changelog</string>

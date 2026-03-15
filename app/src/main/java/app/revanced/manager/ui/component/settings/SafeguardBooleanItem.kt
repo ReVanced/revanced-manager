@@ -11,7 +11,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.revanced.manager.R
 import app.revanced.manager.domain.manager.base.Preference
 import app.revanced.manager.ui.component.ConfirmDialog
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +23,7 @@ fun SafeguardBooleanItem(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     @StringRes headline: Int,
     @StringRes description: Int,
+    @StringRes dialogTitle: Int,
     @StringRes confirmationText: Int,
     onValueChange: ((Boolean) -> Unit)? = null
 ) = SafeguardBooleanItem(
@@ -32,6 +32,7 @@ fun SafeguardBooleanItem(
     coroutineScope = coroutineScope,
     headline = headline,
     description = stringResource(description),
+    dialogTitle = dialogTitle,
     confirmationText = confirmationText,
     onValueChange = onValueChange
 )
@@ -43,6 +44,7 @@ fun SafeguardBooleanItem(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     @StringRes headline: Int,
     description: String,
+    @StringRes dialogTitle: Int,
     @StringRes confirmationText: Int,
     onValueChange: ((Boolean) -> Unit)? = null
 ) {
@@ -60,7 +62,7 @@ fun SafeguardBooleanItem(
                 update(!value)
                 showSafeguardWarning = false
             },
-            title = stringResource(id = R.string.warning),
+            title = stringResource(id = dialogTitle),
             description = stringResource(confirmationText),
             icon = Icons.Outlined.WarningAmber
         )

@@ -171,6 +171,7 @@ fun DownloaderInfoScreen(
                             R.string.downloader_prereleases_description,
                             source.name
                         ),
+                        dialogTitle = R.string.prerelease_title,
                         confirmationText = R.string.prereleases_warning,
                         onValueChange = viewModel::updateUsePrereleases
                     )
