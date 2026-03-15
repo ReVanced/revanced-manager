@@ -147,7 +147,9 @@ fun DownloaderInfoScreen(
                 .padding(paddingValues),
             state = scrollState,
         ) {
-            ListSection {
+            ListSection(
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
                 remote?.let { remoteSource ->
                     val autoUpdate = remoteSource.autoUpdate
                     SettingsListItem(
