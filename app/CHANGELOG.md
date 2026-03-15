@@ -1,3 +1,13 @@
+## app [2.0.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.0...v2.0.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* Always download initial versions of patches and downloaders ([1ffcfca](https://github.com/ReVanced/revanced-manager/commit/1ffcfcafb883bfb500aa3611896e27215b8beb10))
+* Cleanup downloaded apps ([026b6a9](https://github.com/ReVanced/revanced-manager/commit/026b6a9a1eda240c21cfe2527bf1d8c09ac955ee))
+* Correct condition for displaying days ago in Util.kt ([#3027](https://github.com/ReVanced/revanced-manager/issues/3027)) ([467203a](https://github.com/ReVanced/revanced-manager/commit/467203a2fafb37e0ec790573e6acc1e221c31452))
+* Restore app deletion dialog ([65ce565](https://github.com/ReVanced/revanced-manager/commit/65ce565bbc45fb12020acee3e6f75f90c552f950))
+
 ## app [2.0.1-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.0.1-dev.2...v2.0.1-dev.3) (2026-03-15)
 
 
