@@ -7,6 +7,7 @@ import android.util.Log
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.di.*
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.tag
@@ -30,6 +31,7 @@ class ManagerApplication : Application() {
     private val prefs: PreferencesManager by inject()
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val downloaderRepository: DownloaderRepository by inject()
+    private val downloadedAppsRepository: DownloadedAppRepository by inject()
     private val fs: Filesystem by inject()
 
     override fun onCreate() {
@@ -79,6 +81,9 @@ class ManagerApplication : Application() {
                     updateCheck()
                 }
             }
+        }
+        scope.launch(Dispatchers.Default) {
+            downloadedAppsRepository.cleanUp()
         }
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             private var firstActivityCreated = false

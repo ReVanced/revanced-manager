@@ -34,6 +34,7 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.WorkerRepository
@@ -103,6 +104,7 @@ class PatcherViewModel(
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val rootInstaller: RootInstaller by inject()
     private val prefs: PreferencesManager by inject()
+    private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val savedStateHandle: SavedStateHandle = get()
     private val ackpineInstaller: PackageInstaller = get()
 
@@ -543,6 +545,7 @@ class PatcherViewModel(
                     input.selectedPatches,
                     bundleInfo
                 )
+                downloadedAppRepository.deleteFor(installerPkgName)
             }
         }
     }
@@ -612,11 +615,11 @@ class PatcherViewModel(
                         )
 
                         rootInstaller.mount(packageName)
-
                         installedPackageName = packageName
 
                         app.toast(app.getString(R.string.install_app_success))
                         needsRootUninstall = false
+                        downloadedAppRepository.deleteFor(packageName)
                     }
                 }
             }

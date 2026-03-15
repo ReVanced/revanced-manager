@@ -23,27 +23,9 @@ Second \"item\" text"</string>
     <string name="onboarding_welcome_back">Hi! It\'s the new</string>
     <string name="onboarding_apps_subtitle">You can select an app to patch now or do it later</string>
     <string name="onboarding_updates_subtitle">Configure automatic updates to keep ReVanced Manager and patches up to date</string>
-    <string name="onboarding_sources_subtitle">Get apps to patch without leaving the app using ReVanced Manager downloaders.</string>
-    <string name="onboarding_sources_description">Before you can patch apps, you can download them with ReVanced Manager Downloaders.</string>
-    <string name="onboarding_no_sources">No sources installed. You can install sources later from settings.</string>
-    <string name="onboarding_sources_note">Sources can execute code inside ReVanced Manager. Only enable sources you trust.</string>
-    <string name="onboarding_sources_not_found">Downloader not found</string>
-    <string name="onboarding_sources_not_found_description">Couldn\'t find downloader to download</string>
-
-    <string name="api_downloader">ReVanced Manager Downloader</string>
-    <string name="api_downloader_checking">Checking for downloader…</string>
-    <string name="api_downloader_available">Tap to install</string>
-    <string name="api_downloader_update_available">Update available. Tap to install.</string>
-    <string name="api_downloader_downloading">Downloading…</string>
-    <string name="api_downloader_updating">Updating Downloaders…</string>
-    <string name="api_downloader_installing">Installing…</string>
-    <string name="api_downloader_deleting">Deleting…</string>
-    <string name="api_downloader_up_to_date">Installed and trusted</string>
-    <string name="api_downloader_failed">Failed to install. Tap to retry.</string>
+    <string name="onboarding_updates_note">ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet.</string>
 
     <string name="retry">Retry</string>
-    <string name="downloader_update_available">Downloader update available</string>
-    <string name="downloader_update_available_description">A new version (%s) of the ReVanced Downloader is available. Would you like to update now?</string>
     <string name="onboarding_skip">Skip for now</string>
     <string name="onboarding_recommended_version">Recommended version: %s</string>
 
@@ -132,7 +114,9 @@ Second \"item\" text"</string>
     <string name="auto_updates_dialog_manager">ReVanced Manager</string>
     <string name="auto_updates_dialog_patches">ReVanced Patches</string>
     <string name="auto_updates_dialog_downloaders">ReVanced Manager: Downloaders</string>
-    <string name="auto_updates_dialog_note">These settings can be changed later.</string>
+    <string name="auto_updates_dialog_note">These settings can be changed later.
+
+    ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet.</string>
 
     <string name="announcements_filter_tag">Filter by tag</string>
     <string name="announcements_show_archived">Show archived</string>

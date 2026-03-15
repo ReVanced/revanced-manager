@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import java.io.File
 import java.io.FilterOutputStream
@@ -36,6 +37,20 @@ class DownloadedAppRepository(
         getApkFileForDir(dir.resolve(app.directory))
 
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
+
+    suspend fun cleanUp() {
+        val threshold = 1000 * 60 * 60 * 6
+        val now = System.currentTimeMillis()
+
+        val targets = getAll().first().filter {
+            (now - it.lastUsed) > threshold
+        }
+        delete(targets)
+    }
+
+    suspend fun deleteFor(packageName: String) {
+        delete(getAll().first().filter { it.packageName == packageName })
+    }
 
     @OptIn(DownloaderHostApi::class)
     suspend fun download(
@@ -108,7 +123,9 @@ class DownloadedAppRepository(
 
             // Delete the previous copy (if present).
             dao.get(pkgInfo.packageName, pkgInfo.versionName!!)?.directory?.let {
-                if (!dir.resolve(it).deleteRecursively()) throw Exception("Failed to delete existing directory")
+                if (!dir.resolve(it)
+                        .deleteRecursively()
+                ) throw Exception("Failed to delete existing directory")
             }
             dao.upsert(
                 DownloadedApp(
