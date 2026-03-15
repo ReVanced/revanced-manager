@@ -15,31 +15,108 @@ Second \"item\" text"</string>
 -->
 <resources>
   <string name="patcher">ጠጋኝ</string>
+  <string name="onboarding_welcome_to">እንኳን ደህና መጡ</string>
+  <string name="onboarding_welcome_back">ሰላም! አዲሱ ReVanced Manager ነው</string>
+  <string name="onboarding_apps_subtitle">አሁን ለመጠገን መተግበሪያ መምረጥ ወይም በኋላ ማድረግ ይችላሉ</string>
+  <string name="onboarding_updates_subtitle">ReVanced Managerን እና መጠገኛዎችን ወቅታዊ ለማድረግ ራስ-ሰር ዝመናዎችን ያዋቅሩ</string>
+  <string name="onboarding_updates_note">ReVanced Manager የእርስዎ መሣሪያ ከበይነመረቡ ጋር የተገናኘ ከሆነ የመጀመሪያዎቹን ስሪቶች ለማውረድ ከ%s ጋር ይገናኛል።</string>
+  <string name="retry">እንደገና ይሞክሩ</string>
+  <string name="onboarding_skip">ለአሁኑ ይዝለሉ</string>
+  <string name="onboarding_recommended_version">የሚመከር ስሪት: %s</string>
+  <string name="onboarding_permissions_skip_title">ፈቃዶችን ዝለል?</string>
+  <string name="onboarding_permissions_skip_description">አስፈላጊ ፈቃዶች ከሌሉ አንዳንድ ባህሪያት በትክክል ላይሰሩ ይችላሉ። በኋላ በመተግበሪያ ቅንብሮች ውስጥ መስጠት ይችላሉ።</string>
+  <string name="onboarding_permissions_skip_anyway">ያም ሆነ ይህ ዝለል</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager በትክክል ለመስራት ጥቂት ፈቃዶች ያስፈልገዋል።</string>
+  <string name="permission_install_apps">ያልታወቁ መተግበሪያዎችን ጫን</string>
+  <string name="permission_install_apps_description">የተጠገኑ መተግበሪያዎችን ለመጫን ያስፈልጋል</string>
+  <string name="permission_notifications">ማሳወቂያዎች</string>
+  <string name="permission_notifications_description">በ Android አዳዲስ ስሪቶች ላይ ያለማቋረጥ ከበስተጀርባ መጠገንን ያስችላል</string>
+  <string name="permission_battery">የባትሪ ማመቻቸት</string>
+  <string name="permission_battery_description">ከበስተጀርባ እየተጠገነ እንዳይቋረጥ ይከላከላል</string>
+  <string name="permission_grant">ስጥ</string>
   <string name="downloader_host_permission_label">ReVanced Manager ማውረጃ አስተናጋጅ</string>
   <string name="downloader_host_permission_description">የ ReVanced Manager ማውረጃዎችን መዳረሻ ለመቆጣጠር ጥቅም ላይ ይውላል። ይህ ያለው ReVanced Manager ብቻ ነው።</string>
-  <string name="new_downloader_notification">አዲስ ማውረጃ(ዎች) ይገኛል። እነሱን ለማዋቀር እዚህ ጋር ይጫኑ።</string>
-  <string name="app_source_dialog_option_auto_unavailable">ምንም ማውረጃ አይገኝም</string>
+  <string name="fab_patch_app">መተግበሪያ ጠግን</string>
+  <string name="fab_add_patches">ጥገናዎችን ጨምር</string>
+  <string name="new_downloader_notification">አዲስ ማውረጃ(ዎች) ይገኛሉ። እነሱን ለማዋቀር እዚህ ይጫኑ።</string>
+  <string name="patches_not_downloaded">ፓች አልወረደም።</string>
+  <string name="app_source_dialog_option_auto_description">የተጫነ መተግበሪያ ተጠቀም፣ ከዚያ የወረደውን APK፣ ከዚያም የሚገኙ አውራጆችን</string>
+  <string name="app_source_dialog_option_auto_unavailable">ተኳኋኝ መተግበሪያ ወይም ማውረጃዎች አልተገኙም</string>
+  <string name="app_source_dialog_option_installed_no_root">የተሰቀሉ መተግበሪያዎች ያለ ስርወ መዳረሻ እንደገና ሊታደሱ አይችሉም</string>
+  <string name="patch_selector_item">ጥገናዎችን ይምረጡ</string>
+  <string name="patch_selector_item_description">%d ጥገናዎች ተመርጠዋል</string>
+  <string name="patch_selection_changed_warning">የፓቾች ምርጫ ተቀይሯል።</string>
+  <string name="apk_source_selector_item">የAPK ምንጭ ይምረጡ</string>
+  <string name="apk_source_auto">በራስ-ሰር</string>
+  <string name="apk_source_auto_installed">በራስ-ሰር · የተጫነውን APK በመጠቀም</string>
+  <string name="apk_source_auto_downloaded">በራስ-ሰር · የወረደውን APK በመጠቀም</string>
+  <string name="apk_source_auto_downloader">ራስ-ሰር · ያሉትን ማውረጃዎች በመጠቀም</string>
+  <string name="apk_source_auto_storage">ራስ-ሰር · ከማከማቻ ምረጥ</string>
+  <string name="apk_source_downloaded">አስቀድሞ ወርዷል</string>
+  <string name="auto_updates_dialog_description">ReVanced Manager ለሚከተሉት አካላት በየጊዜው ዝመናዎችን እንዲፈትሽ ይፈልጋሉ?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced Patches</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: አውራጆች</string>
+  <string name="auto_updates_dialog_note">እነዚህ ቅንብሮች በኋላ ላይ ሊለወጡ ይችላሉ።
+
+    ReVanced Manager የእርስዎ መሣሪያ ከበይነመረቡ ጋር የተገናኘ ከሆነ የመጀመሪያዎቹን ስሪቶች ለማውረድ ከ%s ጋር ይገናኛል።</string>
   <string name="announcements_filter_tag">በመለያ አጣራ</string>
   <string name="announcements_show_archived">በማህደር ያሉትን አሳይ</string>
+  <string name="updates_description">ዝመናዎችን ይፈትሹ እና የለውጥ መዝገብን ይመልከቱ</string>
   <string name="downloads_description">አውራጆች እና የወረዱ መተግበሪያዎች</string>
+  <string name="safeguards_toggled_warning">ጥበቃዎች ተቀያይረዋል።</string>
+  <string name="about_app_name">ስለ %1$s</string>
+  <string name="search_languages">ቋንቋዎችን ፈልግ…</string>
+  <string name="keystore">የቁልፍ ማከማቻ</string>
+  <string name="patches_selections">የጥገናዎች ምርጫዎች</string>
+  <string name="select_bundle_for_import">ለማስመጣት ጥቅል ይምረጡ</string>
+  <string name="select_bundle_for_export">ወደ ውጪ ለመላክ ጥቅል ይምረጡ</string>
+  <string name="patch_selection_packages">የተቀመጡ ምርጫዎች ያላቸው መተግበሪያዎች</string>
+  <string name="patch_selection_entries">የተመረጡ ጠቅላላ ጥገናዎች</string>
+  <string name="reset_configuration">ቅንብሮችን ዳግም አስጀምር</string>
+  <string name="reset_patch_selection">የጥገና ምርጫዎች</string>
+  <string name="reset_patch_options">የጥገና አማራጮች</string>
   <string name="downloaders">አውራጆች</string>
-  <string name="downloader_state_trusted">የታመነ</string>
+  <string name="downloader_prereleases">ቅድመ-መለቀቂያዎችን ተጠቀም</string>
+  <string name="downloader_prereleases_description">የዋናውን አውራጅ ቅድመ-መለቀቂያ ስሪቶችን ተጠቀም</string>
+  <string name="downloader_state_loaded">ተጭኗል</string>
   <string name="downloader_state_failed">መጫን አልተቻለም። ለበለጠ መረጃ ይጫኑ።</string>
-  <string name="downloader_state_untrusted">የማይታመን</string>
-  <string name="downloader_trust_dialog_title">አውራጅን ያምናሉ?</string>
-  <string name="downloader_revoke_trust_dialog_title">እምነትን ይሻራሉ?</string>
-  <string name="downloader_trust_dialog_body">መቀጠል ይህ አውራጅ እንዲሰራ ይፈቅዳል።
-
-ይህን አውራጅ የሚያምኑት ከሆነ ብቻ ያንቁት። አውራጆች Manager የዘፈቀደ ኮድ እንዲያከናውን ሊያደርጉ ይችላሉ።</string>
-  <string name="downloader_trust_dialog_signature">ፊርማ:
-
-%s</string>
-  <string name="downloader_trust_dialog_name">አውራጅ:
-%s</string>
+  <string name="downloader_state_missing">ጠፍቷል</string>
   <string name="downloader_delete_apps_title">የተመረጡ መተግበሪያዎችን ይሰርዙ</string>
   <string name="downloader_delete_apps_description">የተመረጡትን መተግበሪያዎች መሰረዝ እንደሚፈልጉ እርግጠኛ ነዎት?</string>
-  <string name="no_downloader_installed">ምንም አውራጆች አልተጫኑም።</string>
-  <string name="no_downloader_available">አውራጆች ተጭነዋል ግን አንዳቸውም የታመኑ አይደሉም። ቅንብሮችዎን ያረጋግጡ።</string>
+  <string name="downloader_delete_single_description">\"%s\" ን መሰረዝ ይፈልጋሉ?</string>
+  <string name="downloader_settings_no_apps_description">በReVanced Manager በኩል የወረዱ መተግበሪያዎች እዚህ ይታያሉ።</string>
+  <string name="downloader_url">ማውረጃ URL</string>
+  <string name="downloader_add">ማውረጃ ያክሉ</string>
+  <string name="select_downloader_type_dialog_description">አዳዲስ ማውረጃዎችን ከURL ወይም ከአካባቢያዊ ፋይሎች ያክሉ</string>
+  <string name="local_downloaders_description">ማውረጃዎችን ከአካባቢያዊ ማከማቻ ያክሉ</string>
+  <string name="remote_downloaders_description">ማውረጃዎችን ከURL ያክሉ። በራስ-ሰር ሊዘመኑ ይችላሉ።</string>
+  <string name="install_revanced_downloaders">መተግበሪያዎችን በቀጥታ በReVanced Manager ውስጥ ለማግኘት ማውረጃዎችን ይጫኑ።</string>
+  <string name="install_revanced_downloader">ReVanced Downloaders ጫን</string>
+  <string name="cancel_downloader_install_title">ማውረጃዎች መጫኑ ይሰረዝ?</string>
+  <string name="cancel_downloader_install_description">የማውረጃዎች መጫን በመካሄድ ላይ ነው። አሁን ከሄዱ፣ ውርዱ ይሰረዛል።</string>
+  <string name="downloader_sources_unavailable_title">እነዚህ ማውረጃዎች ጠፍተዋል</string>
+  <string name="downloader_sources_unavailable_description">ለማስተካከል የማዘመን አዝራርን ይጫኑ።</string>
+  <string name="downloader_update_failed">ማውረጃውን ማዘመን አልተሳካም: %s</string>
+  <string name="downloader_replace_fail">ማውረጃውን ማስመጣት አልተሳካም: %s</string>
+  <string name="select_from_storage_description">ፋይል መራጭን በመጠቀም ከማከማቻ የAPK ፋይል ይምረጡ</string>
+  <string name="enable">አንቃ</string>
+  <string name="disable">አሰናክል</string>
+  <string name="process_runtime_memory_limit_description">የፓቸር ሂደቱ ሊጠቀምበት የሚችለው ከፍተኛው የማህደረ ትውስታ መጠን</string>
+  <string name="reset_onboarding">የመግቢያ ማያ ገጹን ዳግም አስጀምር</string>
+  <string name="reset_onboarding_description">በሚቀጥለው የመተግበሪያ ማስጀመሪያ ላይ የመግቢያ ማያ ገጹን አሳይ</string>
+  <string name="api_not_working_title">የኤፒአይ አገልግሎት በአሁኑ ጊዜ ተቋርጧል</string>
+  <string name="api_not_working_description">አንዳንድ ባህሪያት ሊጎዱ ይችላሉ። ቅንብሮች ውስጥ ግንኙነትዎን ወይም የኤፒአይ ዩአርኤልን ያረጋግጡ።</string>
+  <string name="no_patched_apps_found">ምንም የተጠገኑ መተግበሪያዎች አልተገኙም።</string>
+  <string name="no_patched_apps_description">በአሁኑ ጊዜ የምናውቃቸው ምንም የተጠገኑ መተግበሪያዎች የሉዎትም። የመጀመሪያ መተግበሪያዎን በመጠገን ይለውጡት!</string>
+  <string name="patched_apps_section_title">የተጠገኑ አፕሊኬሽኖች</string>
+  <string name="patchable_apps_section_title">ሊጠገኑ የሚችሉ አፕሊኬሽኖች</string>
+  <string name="no_patches_found">ምንም ጥገናዎች አልተገኙም።</string>
+  <string name="no_patches_description">ገና ምንም ጥገናዎች የሉዎትም። ከታች ያለውን ቁልፍ በመንካት ጥገናዎችን ያክሉ!</string>
+  <string name="split_apk_not_supported">የተከፋፈሉ APKዎች መጠገን አይቻልም</string>
+  <string name="no_downloaders_installed">ምንም የመተግበሪያ ማውረጃዎች አልተጫኑም!</string>
+  <string name="no_downloaders_trusted">ምንም የመተግበሪያ ማውረጃዎች አልታመኑም! እባክዎ ቅንብሮችዎን ያረጋግጡ።</string>
+  <string name="patch_selector_sheet_filter_packages_title">ጥቅሎች</string>
   <string name="patch_selector_sheet_actions_title">ድርጊቶች</string>
   <string name="restore_default_selection">ነባሪ ምርጫን ወደ ነበረበት ይመልሱ</string>
   <string name="deselect_all">ሁሉንም ምርጫ አንሳ</string>
@@ -48,11 +125,37 @@ Second \"item\" text"</string>
   <string name="scope_dialog_title">ተግብር ለ</string>
   <string name="scope_all_patches">ሁሉም ጥገናዎች</string>
   <string name="scope_bundle_patches">%s ብቻ</string>
+  <string name="save_as_file">ወደ ፋይሎች አስቀምጥ</string>
+  <string name="export_patcher_logs">የጥገና ምዝግብ ማስታወሻዎችን ወደ ውጪ ላክ</string>
+  <string name="save_logs_success">ምዝግብ ማስታወሻዎች ተቀምጠዋል</string>
   <string name="downloader_activity_dialog_body">በዚህ አውራጅ ለመቀጠል የተጠቃሚ መስተጋብር ያስፈልጋል።</string>
+  <string name="patcher_step_unpack">ፓቸር አዘጋጅ</string>
   <string name="view_announcement">ማስታወቂያ እይ</string>
+  <string name="license">ፍቃድ</string>
+  <string name="source">ምንጭ</string>
+  <string name="repository">ማከማቻ</string>
+  <string name="bundle_information_by_author">በ %1$s</string>
+  <string name="version_compatibility_warning">የተመረጠው ስሪት ከተመረጡት ጥገናዎች ጋር ላይጣጣም ይችላል</string>
   <string name="announcements">ማስታወቂያዎች</string>
   <string name="archive">ማህደር</string>
+  <string name="view_update">ዝመናን ይመልከቱ</string>
+  <string name="update_checking_downloader">ReVanced Downloaders ሲጀመር ዝመናዎችን ይፈትሹ</string>
+  <string name="update_checking_downloader_description">መተግበሪያው ሲጀመር ለተጫኑ ReVanced Downloaders ዝመናዎችን ይፈትሹ</string>
+  <string name="prereleases_warning">ቅድመ-ልቀት ስሪቶች ያልተረጋጉ እና ስህተቶችን ሊይዙ ይችላሉ። ብልሽቶች፣ የውሂብ መጥፋት ወይም ሌሎች ያልተጠበቁ ችግሮች ሊያጋጥሙዎት ይችላሉ። ለእነዚህ አደጋዎች ምቾት የሚሰማዎት ከሆነ ብቻ ይህን ያንቁ።</string>
+  <string name="changelog">የለውጥ መዝገብን ይመልከቱ</string>
   <string name="no_announcements_found">ምንም ማስታወቂያዎች አልተገኙም</string>
   <string name="new_announcement">አዲስ ማስታወቂያ:
 %s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d ጥገና</item>
+    <item quantity="other">%d ጥገናዎች</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">%d ጥገና አስፈጽም</item>
+    <item quantity="other">%d ጥገናዎች አስፈጽም</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d ተመርጧል</item>
+    <item quantity="other">%d ተመርጠዋል</item>
+  </plurals>
 </resources>

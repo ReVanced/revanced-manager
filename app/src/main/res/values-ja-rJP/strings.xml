@@ -19,6 +19,25 @@ Second \"item\" text"</string>
   <string name="patches">パッチ</string>
   <string name="cli">CLI</string>
   <string name="manager">マネージャー</string>
+  <string name="onboarding_welcome_to">ようこそ</string>
+  <string name="onboarding_welcome_back">こんにちは！新しい</string>
+  <string name="onboarding_apps_subtitle">今すぐパッチを適用するアプリを選択することも、後で行うこともできます</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager とパッチを最新の状態に保つため、自動更新を設定してください</string>
+  <string name="onboarding_updates_note">ReVanced Manager は、お使いのデバイスがインターネットに接続されている場合、初期バージョンをダウンロードするために %s に接続します。</string>
+  <string name="retry">再試行</string>
+  <string name="onboarding_skip">今はスキップ</string>
+  <string name="onboarding_recommended_version">推奨バージョン: %s</string>
+  <string name="onboarding_permissions_skip_title">権限をスキップしますか？</string>
+  <string name="onboarding_permissions_skip_description">必要な権限がない場合、一部の機能が正しく動作しない可能性があります。権限は後でアプリ設定で付与できます。</string>
+  <string name="onboarding_permissions_skip_anyway">とにかくスキップ</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Managerが正しく動作するには、いくつかの権限が必要です</string>
+  <string name="permission_install_apps">不明なアプリのインストール</string>
+  <string name="permission_install_apps_description">パッチが適用されたアプリケーションをインストールするために必要です</string>
+  <string name="permission_notifications">通知</string>
+  <string name="permission_notifications_description">新しいバージョンのAndroidでバックグラウンドでの中断のないパッチ適用を許可します</string>
+  <string name="permission_battery">バッテリー最適化</string>
+  <string name="permission_battery_description">バックグラウンドでのパッチ適用が中断されるのを防ぎます</string>
+  <string name="permission_grant">許可</string>
   <string name="downloader_host_permission_label">ReVanced Manager ダウンローダーホスト</string>
   <string name="downloader_host_permission_description">ReVanced Managerのダウンローダーへのアクセスを制御するために使用されます。ReVanced Managerのみがこれを所有しています。</string>
   <string name="toast_copied_to_clipboard">コピーしました！</string>
@@ -27,6 +46,8 @@ Second \"item\" text"</string>
   <string name="settings">設定</string>
   <string name="select_app">アプリを選択</string>
   <string name="patches_count_selected">%1$d/%2$d個選択済み</string>
+  <string name="fab_patch_app">アプリにパッチを適用</string>
+  <string name="fab_add_patches">パッチを追加</string>
   <string name="new_downloader_notification">新しいダウンローダーが利用可能です。ここをクリックして設定してください。</string>
   <string name="unsupported_architecture_warning">このデバイスアーキテクチャでのパッチ適用はサポートされておらず、失敗する可能性が高いです。</string>
   <string name="import_">インポート</string>
@@ -37,7 +58,7 @@ Second \"item\" text"</string>
   <string name="patches_missing">不足</string>
   <string name="patches_error">エラー</string>
   <string name="patches_error_description">パッチを読み込めませんでした。クリックしてエラーを表示</string>
-  <string name="patches_not_downloaded">パッチがダウンロードされていません。ここをクリックしてダウンロードしてください</string>
+  <string name="patches_not_downloaded">パッチがダウンロードされていません。</string>
   <string name="patches_name_default">パッチ</string>
   <string name="patches_name_fallback">名無し</string>
   <string name="android_11_bug_dialog_title">Android 11 のバグ</string>
@@ -46,40 +67,51 @@ Second \"item\" text"</string>
   <string name="selected_app_meta_any_version">任意の利用可能なバージョン</string>
   <string name="app_source_dialog_title">ソースを選択</string>
   <string name="app_source_dialog_option_auto">自動</string>
-  <string name="app_source_dialog_option_auto_description">利用可能なすべてのダウンローダーを使用してアプリをダウンロードします</string>
-  <string name="app_source_dialog_option_auto_unavailable">ダウンローダーが利用できません</string>
-  <string name="app_source_dialog_option_installed_no_root">マウントされたアプリは、root アクセスなしでは再度パッチ適用できません</string>
+  <string name="app_source_dialog_option_auto_description">インストール済みのアプリを使用し、次にダウンロード済みのAPK、そして利用可能なダウンローダーを使用</string>
+  <string name="app_source_dialog_option_auto_unavailable">互換性のあるアプリまたはダウンローダーが見つかりません</string>
+  <string name="app_source_dialog_option_installed_no_root">マウントされたアプリは、rootアクセスなしでは再度パッチを適用できません</string>
   <string name="app_source_dialog_option_installed_version_not_suggested">バージョン %s は推奨バージョンと一致しません</string>
   <string name="patch_item_description">アプリケーションのパッチ適用を開始</string>
   <string name="patch_selector_item">パッチを選択</string>
-  <string name="patch_selector_item_description">%d 個のパッチが選択されました</string>
+  <string name="patch_selector_item_description">%d個のパッチが選択されました</string>
+  <string name="patch_selection_changed_warning">パッチの選択が変更されました</string>
   <string name="no_patches_selected">パッチが選択されていません</string>
   <string name="network_unavailable_warning">お使いのデバイスはインターネットに接続されていません。後でダウンロードに失敗します。</string>
   <string name="network_metered_warning">現在、従量制課金接続を使用しています。サービスプロバイダーからのデータ料金が適用される場合があります。</string>
-  <string name="apk_source_selector_item">APK ソースを選択</string>
-  <string name="apk_source_auto">すべての APK ダウンローダーを使用中</string>
+  <string name="apk_source_selector_item">APKソースを選択</string>
+  <string name="apk_source_auto">自動</string>
+  <string name="apk_source_auto_installed">自動 · インストール済みAPKを使用</string>
+  <string name="apk_source_auto_downloaded">自動 · ダウンロード済みAPKを使用</string>
+  <string name="apk_source_auto_downloader">自動 · 利用可能なダウンローダーを使用</string>
+  <string name="apk_source_auto_storage">自動 · ストレージから選択</string>
   <string name="apk_source_downloader">%s を使用中</string>
   <string name="apk_source_installed">インストール済みの APK を使用中</string>
   <string name="apk_source_local">ローカルの APK ファイルを使用中</string>
+  <string name="apk_source_downloaded">すでにダウンロード済み</string>
   <string name="legacy_import_failed">レガシー設定をインポートできませんでした</string>
   <string name="auto_updates_dialog_title">更新を構成</string>
-  <string name="auto_updates_dialog_description">ReVanced Manager に以下のコンポーネントの更新を定期的に確認させますか？</string>
+  <string name="auto_updates_dialog_description">ReVanced Managerで以下のコンポーネントのアップデートを定期的にチェックしますか？</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
   <string name="auto_updates_dialog_patches">ReVanced パッチ</string>
-  <string name="auto_updates_dialog_note">これらの設定は後で変更できます。</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: ダウンローダー</string>
+  <string name="auto_updates_dialog_note">これらの設定は後で変更できます。
+
+    ReVanced Manager は、お使いのデバイスがインターネットに接続されている場合、初期バージョンをダウンロードするために %s に接続します。</string>
   <string name="announcements_filter_tag">タグでフィルタ</string>
   <string name="announcements_show_archived">アーカイブ済みを表示</string>
   <string name="general">その他</string>
   <string name="general_description">言語、テーマ、ダイナミックカラー</string>
   <string name="updates">更新</string>
-  <string name="updates_description">更新を確認し、変更履歴を表示</string>
+  <string name="updates_description">アップデートを確認して変更履歴を表示</string>
   <string name="downloads">ダウンロード</string>
   <string name="downloads_description">ダウンローダーとダウンロードされたアプリ</string>
   <string name="import_export">インポート &amp; エクスポート</string>
   <string name="import_export_description">キーストア、パッチオプション、選択</string>
   <string name="advanced">高度な設定</string>
   <string name="advanced_description">API URL、メモリ制限、デバッグ</string>
+  <string name="safeguards_toggled_warning">セーフガードが切り替えられました</string>
   <string name="about">SponsorBlock について</string>
+  <string name="about_app_name">%1$sについて</string>
   <string name="opensource_licenses">オープンソースライセンス</string>
   <string name="opensource_licenses_description">このアプリケーションを作成するために使用されたすべてのライブラリを表示</string>
   <string name="contributors">貢献者</string>
@@ -93,6 +125,7 @@ Second \"item\" text"</string>
   <string name="language">言語</string>
   <string name="language_description">アプリの表示言語を選択</string>
   <string name="language_system_default">システムデフォルト</string>
+  <string name="search_languages">言語を検索…</string>
   <string name="safeguards">セーフガード</string>
   <string name="patch_compat_check">バージョン互換性チェックを無効にする</string>
   <string name="patch_compat_check_description">互換性のあるアプリバージョンにパッチを制限しない</string>
@@ -114,6 +147,8 @@ Second \"item\" text"</string>
   <string name="universal_patches_safeguard_confirmation">ユニバーサルパッチは、特定のアプリを対象とするパッチほど十分にテストされていません。
 
 いずれにしても有効にしますか？</string>
+  <string name="keystore">キーストア</string>
+  <string name="patches_selections">パッチの選択</string>
   <string name="import_keystore">キーストアをインポート</string>
   <string name="import_keystore_description">カスタムキーストアをインポート</string>
   <string name="import_keystore_dialog_title">キーストアの認証情報を入力</string>
@@ -137,13 +172,18 @@ Second \"item\" text"</string>
   <string name="import_patch_selection_description">JSON ファイルからパッチ選択をインポート</string>
   <string name="import_patch_selection_fail">パッチ選択をインポートできませんでした: %s</string>
   <string name="import_patch_selection_success">パッチ選択をインポートしました</string>
+  <string name="select_bundle_for_import">インポートするバンドルを選択</string>
   <string name="export_patch_selection">パッチ選択をエクスポート</string>
   <string name="export_patch_selection_description">JSON ファイルにパッチ選択をエクスポート</string>
   <string name="export_patch_selection_fail">パッチ選択をエクスポートできませんでした: %s</string>
   <string name="export_patch_selection_success">パッチ選択をエクスポートしました</string>
-  <string name="reset_patch_selection">パッチ選択をリセット</string>
+  <string name="select_bundle_for_export">エクスポートするバンドルを選択</string>
+  <string name="patch_selection_packages">選択が保存されたアプリ</string>
+  <string name="patch_selection_entries">選択されたパッチの合計</string>
+  <string name="reset_configuration">設定をリセット</string>
+  <string name="reset_patch_selection">パッチの選択</string>
   <string name="reset_patch_selection_description">保存されているパッチ選択をリセット</string>
-  <string name="reset_patch_options">パッチオプションをリセット</string>
+  <string name="reset_patch_options">パッチオプション</string>
   <string name="reset_patch_options_description">保存されているパッチオプションをリセット</string>
   <string name="reset_patch_selection_success">パッチ選択がリセットされました</string>
   <string name="patch_selection_reset_all">パッチ選択をグローバルにリセット</string>
@@ -165,22 +205,29 @@ Second \"item\" text"</string>
   <string name="patch_options_reset_all_dialog_description">すべてのパッチオプションをリセットしようとしています。各オプションを再度適用する必要があります。</string>
   <string name="patch_options_reset_all_description">すべてのパッチオプションをリセットします</string>
   <string name="downloaders">ダウンローダー</string>
-  <string name="downloader_state_trusted">信頼済み</string>
+  <string name="downloader_prereleases">プレリリース版を使用</string>
+  <string name="downloader_prereleases_description">メインダウンローダーのプレリリース版を使用する</string>
+  <string name="downloader_state_loaded">ロード済み</string>
   <string name="downloader_state_failed">読み込みに失敗しました。詳細についてはクリックしてください</string>
-  <string name="downloader_state_untrusted">信頼されていません</string>
-  <string name="downloader_trust_dialog_title">ダウンローダーを信頼しますか？</string>
-  <string name="downloader_revoke_trust_dialog_title">信頼を取り消しますか？</string>
-  <string name="downloader_trust_dialog_body">続行すると、このダウンローダーの実行が許可されます。
-
-信頼できる場合にのみ、このダウンローダーを有効にしてください。ダウンローダーはManagerに任意のコードを実行させることができます。</string>
-  <string name="downloader_trust_dialog_signature">署名：
-
-%s</string>
-  <string name="downloader_trust_dialog_name">ダウンローダー：
-%s</string>
+  <string name="downloader_state_missing">見つかりません</string>
   <string name="downloader_delete_apps_title">選択したアプリを削除</string>
   <string name="downloader_delete_apps_description">選択したアプリを本当に削除しますか？</string>
+  <string name="downloader_delete_single_description">「%s」を削除してもよろしいですか？</string>
   <string name="downloader_settings_no_apps">ダウンロードされたアプリは見つかりませんでした。</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Managerを通じてダウンロードされたアプリがここに表示されます。</string>
+  <string name="downloader_url">ダウンローダーURL</string>
+  <string name="downloader_add">ダウンローダーを追加</string>
+  <string name="select_downloader_type_dialog_description">URLまたはローカルファイルから新しいダウンローダーを追加</string>
+  <string name="local_downloaders_description">ローカルストレージからダウンローダーを追加します。</string>
+  <string name="remote_downloaders_description">URLからダウンローダーを追加します。自動的に更新できます。</string>
+  <string name="install_revanced_downloaders">ReVanced Manager内で直接アプリを取得するには、ダウンローダーをインストールしてください。</string>
+  <string name="install_revanced_downloader">ReVancedダウンローダーをインストール</string>
+  <string name="cancel_downloader_install_title">ダウンローダーのインストールをキャンセルしますか？</string>
+  <string name="cancel_downloader_install_description">ダウンローダーのインストールが進行中です。今終了すると、ダウンロードはキャンセルされます。</string>
+  <string name="downloader_sources_unavailable_title">これらのダウンローダーが見つかりません</string>
+  <string name="downloader_sources_unavailable_description">更新ボタンをクリックして修正してください。</string>
+  <string name="downloader_update_failed">ダウンローダーの更新に失敗しました: %s</string>
+  <string name="downloader_replace_fail">ダウンローダーのインポートに失敗しました: %s</string>
   <string name="search_apps">アプリを検索…</string>
   <string name="loading_body">読み込み中…</string>
   <string name="downloading_patches">パッチをダウンロード中…</string>
@@ -203,6 +250,8 @@ Second \"item\" text"</string>
   <string name="back">戻る</string>
   <string name="warning">警告</string>
   <string name="add">追加</string>
+  <string name="enable">有効にする</string>
+  <string name="disable">無効にする</string>
   <string name="close">閉じる</string>
   <string name="clear">クリア</string>
   <string name="system">システム</string>
@@ -217,7 +266,7 @@ Second \"item\" text"</string>
   <string name="process_runtime">Patcherを別のプロセスで実行 (実験的)</string>
   <string name="process_runtime_description">これにより処理が高速になり、Patcherがより多くのメモリを使用できるようになります</string>
   <string name="process_runtime_memory_limit">Patcherプロセス メモリ制限</string>
-  <string name="process_runtime_memory_limit_description">Patcherプロセスが使用できる最大メモリ量 (メガバイト単位)</string>
+  <string name="process_runtime_memory_limit_description">パッチャープロセスが使用できる最大メモリ量</string>
   <string name="debug_logs_export">デバッグログのエクスポート</string>
   <string name="debug_logs_export_read_failed">ログの読み取りに失敗しました (終了コード %d)</string>
   <string name="debug_logs_export_failed">ログのエクスポートに失敗しました</string>
@@ -237,6 +286,8 @@ Second \"item\" text"</string>
   <string name="device_memory_limit_format">%1$dMB (標準) - %2$dMB (大)</string>
   <string name="patches_force_download">すべてのパッチを強制ダウンロード</string>
   <string name="patches_reset">パッチをリセット</string>
+  <string name="reset_onboarding">オンボーディングをリセット</string>
+  <string name="reset_onboarding_description">次回のアプリ起動時にオンボーディング画面を表示</string>
   <string name="patching">パッチ適用中</string>
   <string name="signing">署名中</string>
   <string name="storage">ストレージ</string>
@@ -250,8 +301,15 @@ Second \"item\" text"</string>
   <string name="download_app">アプリをダウンロード</string>
   <string name="download_apk">APKファイルをダウンロード</string>
   <string name="patches_download_fail">パッチのダウンロードに失敗しました: %s</string>
+  <string name="api_not_working_title">APIサービスは現在停止しています</string>
+  <string name="api_not_working_description">一部の機能に影響が出る可能性があります。設定で接続またはAPI URLを確認してください。</string>
   <string name="patches_replace_fail">パッチのインポートに失敗しました: %s</string>
-  <string name="no_patched_apps_found">パッチが適用されたアプリは見つかりませんでした</string>
+  <string name="no_patched_apps_found">パッチ適用済みアプリが見つかりません</string>
+  <string name="no_patched_apps_description">現在、パッチ適用済みアプリはありません。最初のアプリにパッチを適用して変更しましょう！</string>
+  <string name="patched_apps_section_title">パッチ適用済みアプリ</string>
+  <string name="patchable_apps_section_title">パッチを適用できるアプリ</string>
+  <string name="no_patches_found">パッチが見つかりません</string>
+  <string name="no_patches_description">まだパッチがありません。下のボタンをタップしてパッチを追加してください！</string>
   <string name="tap_on_patches">パッチをタップして詳細情報を取得</string>
   <string name="patches_selected">%s を選択済み</string>
   <string name="incompatible_patches">互換性のないパッチ</string>
@@ -281,6 +339,7 @@ Second \"item\" text"</string>
   <string name="download_application">アプリケーションをダウンロードしますか？</string>
   <string name="app_not_installed">選択したアプリはインストールされていません。ダウンロードしますか？</string>
   <string name="failed_to_load_apk">APKの読み込みに失敗しました</string>
+  <string name="split_apk_not_supported">分割APKにはパッチを適用できません</string>
   <string name="loading">読み込み中…</string>
   <string name="not_installed">インストールされていません</string>
   <string name="installed">インストール済み</string>
@@ -306,11 +365,12 @@ Second \"item\" text"</string>
   <string name="downloader_invalid_version">ダウンローダーが正しいバージョンを取得しませんでした</string>
   <string name="downloader_app_not_found">ダウンローダーがアプリを見つけられませんでした</string>
   <string name="downloader_error">ダウンローダーエラー: %s</string>
-  <string name="no_downloader_installed">ダウンローダーはインストールされていません。</string>
-  <string name="no_downloader_available">ダウンローダーはインストールされていますが、どれも信頼されていません。設定を確認してください。</string>
+  <string name="no_downloaders_installed">アプリダウンローダーがインストールされていません！</string>
+  <string name="no_downloaders_trusted">アプリダウンローダーが信頼されていません！設定を確認してください。</string>
   <string name="already_patched">すでにパッチ適用済み</string>
   <string name="patch_selector_sheet_filter_title">フィルタ</string>
   <string name="patch_selector_sheet_filter_compat_title">互換性</string>
+  <string name="patch_selector_sheet_filter_packages_title">パッケージ</string>
   <string name="patch_selector_sheet_actions_title">アクション</string>
   <string name="restore_default_selection">デフォルトの選択に戻す</string>
   <string name="deselect_all">すべての選択を解除</string>
@@ -338,11 +398,14 @@ Second \"item\" text"</string>
   <string name="save_apk_success">APKを保存しました</string>
   <string name="sign_fail">APKの署名に失敗しました: %s</string>
   <string name="save_logs">ログを保存</string>
+  <string name="save_as_file">ファイルに保存</string>
+  <string name="export_patcher_logs">パッチャーログをエクスポート</string>
+  <string name="save_logs_success">ログを保存しました</string>
   <string name="downloader_activity_dialog_body">このダウンローダーを続行するには、ユーザーの操作が必要です。</string>
   <string name="select_install_type">インストールタイプを選択</string>
   <string name="patcher_step_group_preparing">準備中</string>
   <string name="patcher_step_load_patches">パッチを読み込み</string>
-  <string name="patcher_step_unpack">APKファイルを読み込み</string>
+  <string name="patcher_step_unpack">パッチャーを準備</string>
   <string name="patcher_step_group_patching">パッチ適用中</string>
   <string name="patcher_step_group_saving">保存中</string>
   <string name="patcher_step_write_patched">パッチ適用済みAPKファイルを書き込み</string>
@@ -372,7 +435,12 @@ Second \"item\" text"</string>
   <string name="website">ウェブサイト</string>
   <string name="github">GitHub</string>
   <string name="contact">お問い合わせ</string>
+  <string name="license">ライセンス</string>
+  <string name="source">ソース</string>
+  <string name="repository">リポジトリ</string>
+  <string name="bundle_information_by_author">%1$sによる</string>
   <string name="version">バージョン</string>
+  <string name="version_compatibility_warning">選択されたバージョンは、選択されたパッチと互換性がない可能性があります</string>
   <string name="submit_feedback">問題またはフィードバックを送信</string>
   <string name="submit_feedback_description">このアプリケーションの改善にご協力ください</string>
   <string name="developer_options">開発者向けオプション</string>
@@ -398,11 +466,15 @@ Second \"item\" text"</string>
   <string name="update_completed">更新をインストールしました</string>
   <string name="install_update_manager_failed">更新のインストールに失敗しました</string>
   <string name="manual_update_check">更新を確認</string>
+  <string name="view_update">アップデートを表示</string>
   <string name="manual_update_check_description">手動で更新を確認</string>
   <string name="update_checking_manager">起動時に更新を確認</string>
   <string name="update_checking_manager_description">アプリケーション起動時に ReVanced Manager の新しいバージョンを確認する</string>
+  <string name="update_checking_downloader">起動時にReVancedダウンローダーのアップデートを確認</string>
+  <string name="update_checking_downloader_description">アプリケーション起動時にインストール済みのReVancedダウンローダーのアップデートを確認</string>
   <string name="manager_prereleases">プレリリースを使用する</string>
   <string name="manager_prereleases_description">ReVanced Manager のプレリリースバージョンを使用する</string>
+  <string name="prereleases_warning">プレリリース版は不安定でバグが含まれている可能性があります。クラッシュ、データ損失、その他の予期せぬ問題が発生する可能性があります。これらのリスクを理解している場合にのみ有効にしてください。</string>
   <string name="changelog">変更履歴を表示</string>
   <string name="changelog_loading">変更履歴を読み込み中</string>
   <string name="changelog_download_fail">変更履歴のダウンロードに失敗しました: %s</string>
@@ -488,4 +560,13 @@ Second \"item\" text"</string>
   <string name="confirm">確認</string>
   <string name="new_announcement">新しいお知らせ:
 %s</string>
+  <plurals name="patch_count">
+    <item quantity="other">%d 個のパッチ</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="other">%d 個のパッチを実行</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="other">%d件選択済み</item>
+  </plurals>
 </resources>

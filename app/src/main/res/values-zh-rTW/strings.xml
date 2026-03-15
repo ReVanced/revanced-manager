@@ -19,6 +19,25 @@ Second \"item\" text"</string>
   <string name="patches">修補</string>
   <string name="cli">命令列介面</string>
   <string name="manager">Manager</string>
+  <string name="onboarding_welcome_to">歡迎使用</string>
+  <string name="onboarding_welcome_back">您好！這是全新的</string>
+  <string name="onboarding_apps_subtitle">您可以立即選擇要修補的應用程式，或稍後再進行</string>
+  <string name="onboarding_updates_subtitle">設定自動更新，以保持 ReVanced Manager 和修補程式為最新版本</string>
+  <string name="onboarding_updates_note">ReVanced Manager 將連接到 %s 以下載初始版本，如果您的裝置已連接到網際網路。</string>
+  <string name="retry">重試</string>
+  <string name="onboarding_skip">暫時跳過</string>
+  <string name="onboarding_recommended_version">建議版本：%s</string>
+  <string name="onboarding_permissions_skip_title">跳過權限嗎？</string>
+  <string name="onboarding_permissions_skip_description">如果沒有所需的權限，某些功能可能無法正常運作。您稍後可以在應用程式設定中授予它們。</string>
+  <string name="onboarding_permissions_skip_anyway">仍然跳過</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager 需要一些權限才能正常運作</string>
+  <string name="permission_install_apps">安裝不明應用程式</string>
+  <string name="permission_install_apps_description">安裝已修補應用程式所需</string>
+  <string name="permission_notifications">通知</string>
+  <string name="permission_notifications_description">允許在較新版本的 Android 上於背景不間斷地修補</string>
+  <string name="permission_battery">電池最佳化</string>
+  <string name="permission_battery_description">防止修補在背景中斷</string>
+  <string name="permission_grant">授予</string>
   <string name="downloader_host_permission_label">ReVanced Manager 下載器主機</string>
   <string name="downloader_host_permission_description">用於控制對 ReVanced Manager 下載器的存取。只有 ReVanced Manager 擁有這個權限。</string>
   <string name="toast_copied_to_clipboard">已複製！</string>
@@ -27,6 +46,8 @@ Second \"item\" text"</string>
   <string name="settings">設定</string>
   <string name="select_app">選擇應用程式</string>
   <string name="patches_count_selected">%1$d/%2$d 已選取</string>
+  <string name="fab_patch_app">修補應用程式</string>
+  <string name="fab_add_patches">新增修補</string>
   <string name="new_downloader_notification">有新的下載器可用。按這裡設定。</string>
   <string name="unsupported_architecture_warning">此裝置架構不支援修補，且極有可能失敗。</string>
   <string name="import_">匯入</string>
@@ -37,7 +58,7 @@ Second \"item\" text"</string>
   <string name="patches_missing">遺失</string>
   <string name="patches_error">錯誤</string>
   <string name="patches_error_description">無法載入修補程式。按一下以檢視錯誤</string>
-  <string name="patches_not_downloaded">修補程式尚未下載。按一下此處以下載</string>
+  <string name="patches_not_downloaded">修補程式尚未下載。</string>
   <string name="patches_name_default">修補程式</string>
   <string name="patches_name_fallback">未命名</string>
   <string name="android_11_bug_dialog_title">Android 11 錯誤</string>
@@ -46,40 +67,51 @@ Second \"item\" text"</string>
   <string name="selected_app_meta_any_version">任何可用版本</string>
   <string name="app_source_dialog_title">選取來源</string>
   <string name="app_source_dialog_option_auto">自動</string>
-  <string name="app_source_dialog_option_auto_description">使用所有可用的下載器以下載應用程式</string>
-  <string name="app_source_dialog_option_auto_unavailable">無可用的下載器</string>
-  <string name="app_source_dialog_option_installed_no_root">已掛載的應用程式若無根權限則無法再次修補</string>
+  <string name="app_source_dialog_option_auto_description">使用已安裝的應用程式，然後是下載的 APK，然後是可用的下載器</string>
+  <string name="app_source_dialog_option_auto_unavailable">沒有相容的應用程式或下載器可用</string>
+  <string name="app_source_dialog_option_installed_no_root">沒有 Root 權限無法再次修補已掛載的應用程式</string>
   <string name="app_source_dialog_option_installed_version_not_suggested">版本 %s 與建議版本不符</string>
   <string name="patch_item_description">開始修補應用程式</string>
-  <string name="patch_selector_item">選取修補程式</string>
-  <string name="patch_selector_item_description">%d 個修補程式已選取</string>
+  <string name="patch_selector_item">選取修補</string>
+  <string name="patch_selector_item_description">已選取 %d 個修補</string>
+  <string name="patch_selection_changed_warning">修補程式選擇已變更</string>
   <string name="no_patches_selected">未選取任何修補程式</string>
   <string name="network_unavailable_warning">您的裝置未連線到網際網路。稍後下載將會失敗。</string>
   <string name="network_metered_warning">您目前使用計量付費連線。您的服務供應商可能會收取數據費用。</string>
   <string name="apk_source_selector_item">選取 APK 來源</string>
-  <string name="apk_source_auto">使用所有 APK 下載器</string>
+  <string name="apk_source_auto">自動</string>
+  <string name="apk_source_auto_installed">自動 · 使用已安裝的 APK</string>
+  <string name="apk_source_auto_downloaded">自動 · 使用已下載的 APK</string>
+  <string name="apk_source_auto_downloader">自動 · 使用可用的下載器</string>
+  <string name="apk_source_auto_storage">自動 · 從儲存空間選取</string>
   <string name="apk_source_downloader">使用 %s</string>
   <string name="apk_source_installed">使用已安裝的 APK</string>
   <string name="apk_source_local">使用本機 APK 檔案</string>
+  <string name="apk_source_downloaded">已下載</string>
   <string name="legacy_import_failed">無法匯入舊版設定</string>
   <string name="auto_updates_dialog_title">設定更新</string>
-  <string name="auto_updates_dialog_description">您是否希望 ReVanced Manager 定期檢查下列元件的更新？</string>
+  <string name="auto_updates_dialog_description">您是否希望 ReVanced Manager 定期檢查以下元件的更新？</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
-  <string name="auto_updates_dialog_patches">ReVanced 修補程式</string>
-  <string name="auto_updates_dialog_note">這些設定稍後可以變更。</string>
+  <string name="auto_updates_dialog_patches">ReVanced 修補</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager：下載器</string>
+  <string name="auto_updates_dialog_note">這些設定稍後可以更改。
+
+    ReVanced Manager 將連接到 %s 以下載初始版本，如果您的裝置已連接到網際網路。</string>
   <string name="announcements_filter_tag">依標籤篩選</string>
   <string name="announcements_show_archived">顯示已封存</string>
   <string name="general">一般</string>
   <string name="general_description">語言、主題、動態顏色</string>
   <string name="updates">更新</string>
-  <string name="updates_description">檢查更新並檢視變更紀錄</string>
+  <string name="updates_description">檢查更新並檢視變更記錄</string>
   <string name="downloads">下載</string>
   <string name="downloads_description">下載器和已下載的應用程式</string>
   <string name="import_export">匯入 &amp; 匯出</string>
   <string name="import_export_description">金鑰儲存庫、修補程式選項和選取</string>
   <string name="advanced">進階</string>
   <string name="advanced_description">API 網址、記憶體限制、偵錯</string>
+  <string name="safeguards_toggled_warning">防護措施已切換</string>
   <string name="about">關於</string>
+  <string name="about_app_name">關於 %1$s</string>
   <string name="opensource_licenses">開放原始碼授權</string>
   <string name="opensource_licenses_description">檢視所有用於製作此應用程式的程式庫</string>
   <string name="contributors">貢獻者</string>
@@ -93,6 +125,7 @@ Second \"item\" text"</string>
   <string name="language">語言</string>
   <string name="language_description">選擇應用程式顯示語言</string>
   <string name="language_system_default">系統預設</string>
+  <string name="search_languages">搜尋語言…</string>
   <string name="safeguards">安全措施</string>
   <string name="patch_compat_check">停用版本相容性檢查</string>
   <string name="patch_compat_check_description">不將修補程式限制在相容的應用程式版本</string>
@@ -114,6 +147,8 @@ Second \"item\" text"</string>
   <string name="universal_patches_safeguard_confirmation">通用修補程式不如針對特定應用程式的修補程式經過充分測試。
 
 仍要啟用嗎？</string>
+  <string name="keystore">金鑰儲存區</string>
+  <string name="patches_selections">修補選取項目</string>
   <string name="import_keystore">匯入金鑰儲存庫</string>
   <string name="import_keystore_description">匯入自訂金鑰儲存庫</string>
   <string name="import_keystore_dialog_title">輸入金鑰儲存庫憑證</string>
@@ -137,13 +172,18 @@ Second \"item\" text"</string>
   <string name="import_patch_selection_description">從 JSON 檔案匯入修補程式選取</string>
   <string name="import_patch_selection_fail">無法匯入修補程式選取：%s</string>
   <string name="import_patch_selection_success">已匯入修補程式選取</string>
+  <string name="select_bundle_for_import">選取要匯入的捆綁包</string>
   <string name="export_patch_selection">匯出修補程式選取</string>
   <string name="export_patch_selection_description">將修補程式選取匯出到 JSON 檔案</string>
   <string name="export_patch_selection_fail">無法匯出修補程式選取：%s</string>
   <string name="export_patch_selection_success">已匯出修補程式選取</string>
-  <string name="reset_patch_selection">重設修補程式選取</string>
+  <string name="select_bundle_for_export">選取要匯出的捆綁包</string>
+  <string name="patch_selection_packages">已儲存選取項目的應用程式</string>
+  <string name="patch_selection_entries">總共選取的修補</string>
+  <string name="reset_configuration">重設設定</string>
+  <string name="reset_patch_selection">修補選取項目</string>
   <string name="reset_patch_selection_description">重設儲存的修補程式選取</string>
-  <string name="reset_patch_options">重設修補程式選項</string>
+  <string name="reset_patch_options">修補選項</string>
   <string name="reset_patch_options_description">重設儲存的修補程式選項</string>
   <string name="reset_patch_selection_success">修補程式選取已重設</string>
   <string name="patch_selection_reset_all">全域重設修補程式選取</string>
@@ -165,22 +205,29 @@ Second \"item\" text"</string>
   <string name="patch_options_reset_all_dialog_description">您即將重設所有修補程式選項。您將必須再次重新套用每個選項。</string>
   <string name="patch_options_reset_all_description">重設所有修補程式選項</string>
   <string name="downloaders">下載器</string>
-  <string name="downloader_state_trusted">受信任</string>
+  <string name="downloader_prereleases">使用預先發布版</string>
+  <string name="downloader_prereleases_description">使用主要下載器的預先發布版</string>
+  <string name="downloader_state_loaded">已載入</string>
   <string name="downloader_state_failed">載入失敗。按一下以取得更多詳細資料</string>
-  <string name="downloader_state_untrusted">不受信任</string>
-  <string name="downloader_trust_dialog_title">要信任下載器嗎？</string>
-  <string name="downloader_revoke_trust_dialog_title">要撤銷信任嗎？</string>
-  <string name="downloader_trust_dialog_body">繼續將允許此下載器運行。
-
-僅當您信任此下載器時才啟用它。下載器可以讓 Manager 執行任意程式碼。</string>
-  <string name="downloader_trust_dialog_signature">簽名：
-
-%s</string>
-  <string name="downloader_trust_dialog_name">下載器：
-%s</string>
+  <string name="downloader_state_missing">遺失</string>
   <string name="downloader_delete_apps_title">刪除所選應用程式</string>
   <string name="downloader_delete_apps_description">確定要刪除所選的應用程式嗎？</string>
+  <string name="downloader_delete_single_description">您確定要刪除「%s」嗎？</string>
   <string name="downloader_settings_no_apps">找不到已下載的應用程式。</string>
+  <string name="downloader_settings_no_apps_description">透過 ReVanced Manager 下載的應用程式將會顯示在這裡。</string>
+  <string name="downloader_url">下載器網址</string>
+  <string name="downloader_add">新增下載器</string>
+  <string name="select_downloader_type_dialog_description">從網址或本機檔案新增下載器</string>
+  <string name="local_downloaders_description">從本機儲存空間新增下載器。</string>
+  <string name="remote_downloaders_description">從網址新增下載器。可自動更新。</string>
+  <string name="install_revanced_downloaders">安裝下載器以直接在 ReVanced Manager 內取得應用程式。</string>
+  <string name="install_revanced_downloader">安裝 ReVanced 下載器</string>
+  <string name="cancel_downloader_install_title">取消下載器安裝？</string>
+  <string name="cancel_downloader_install_description">下載器安裝正在進行中。如果您現在離開，下載將會取消。</string>
+  <string name="downloader_sources_unavailable_title">這些下載器遺失了</string>
+  <string name="downloader_sources_unavailable_description">按一下更新按鈕以修正。</string>
+  <string name="downloader_update_failed">更新下載器失敗：%s</string>
+  <string name="downloader_replace_fail">匯入下載器失敗：%s</string>
   <string name="search_apps">搜尋應用程式…</string>
   <string name="loading_body">載入中…</string>
   <string name="downloading_patches">正在下載修補程式…</string>
@@ -194,7 +241,7 @@ Second \"item\" text"</string>
   <string name="share">分享</string>
   <string name="patch">修補</string>
   <string name="select_from_storage">從儲存空間選取</string>
-  <string name="select_from_storage_description">使用檔案選擇器從儲存空間選取 APK 檔案</string>
+  <string name="select_from_storage_description">使用檔案選擇器從儲存空間選取一個 APK 檔案</string>
   <string name="suggested_version_info">建議版本：%s</string>
   <string name="type_anything">輸入任何內容以繼續</string>
   <string name="search">搜尋修補程式…</string>
@@ -203,6 +250,8 @@ Second \"item\" text"</string>
   <string name="back">返回</string>
   <string name="warning">警告</string>
   <string name="add">新增</string>
+  <string name="enable">啟用</string>
+  <string name="disable">停用</string>
   <string name="close">關閉</string>
   <string name="clear">清除</string>
   <string name="system">系統</string>
@@ -217,7 +266,7 @@ Second \"item\" text"</string>
   <string name="process_runtime">在另一個程序中執行修補程式（實驗性）</string>
   <string name="process_runtime_description">這更快，並允許修補程式使用更多記憶體</string>
   <string name="process_runtime_memory_limit">修補程式程序記憶體限制</string>
-  <string name="process_runtime_memory_limit_description">修補程式程序可使用的最大記憶體量（MB）</string>
+  <string name="process_runtime_memory_limit_description">修補程式程序可使用的最大記憶體量</string>
   <string name="debug_logs_export">匯出偵錯記錄</string>
   <string name="debug_logs_export_read_failed">讀取記錄失敗（結束代碼 %d）</string>
   <string name="debug_logs_export_failed">匯出記錄失敗</string>
@@ -237,6 +286,8 @@ Second \"item\" text"</string>
   <string name="device_memory_limit_format">%1$d MB（正常）- %2$d MB（大）</string>
   <string name="patches_force_download">強制下載所有修補程式</string>
   <string name="patches_reset">重設修補程式</string>
+  <string name="reset_onboarding">重設新手引導</string>
+  <string name="reset_onboarding_description">在下次啟動應用程式時顯示新手引導畫面</string>
   <string name="patching">修補中</string>
   <string name="signing">簽署中</string>
   <string name="storage">儲存空間</string>
@@ -250,8 +301,15 @@ Second \"item\" text"</string>
   <string name="download_app">下載應用程式</string>
   <string name="download_apk">下載 APK 檔案</string>
   <string name="patches_download_fail">下載修補程式失敗：%s</string>
+  <string name="api_not_working_title">API 服務目前已停機</string>
+  <string name="api_not_working_description">部分功能可能會受到影響。請檢查您的連線或設定中的 API URL。</string>
   <string name="patches_replace_fail">匯入修補程式失敗：%s</string>
   <string name="no_patched_apps_found">找不到已修補的應用程式</string>
+  <string name="no_patched_apps_description">目前沒有任何已知已修補的應用程式。修補您的第一個應用程式來改變這個現狀！</string>
+  <string name="patched_apps_section_title">已修補的應用程式</string>
+  <string name="patchable_apps_section_title">可修補的應用程式</string>
+  <string name="no_patches_found">找不到修補</string>
+  <string name="no_patches_description">您還沒有任何修補。點擊下方按鈕來新增修補！</string>
   <string name="tap_on_patches">輕觸修補程式以取得更多資訊</string>
   <string name="patches_selected">已選取 %s</string>
   <string name="incompatible_patches">不相容的修補程式</string>
@@ -281,6 +339,7 @@ Second \"item\" text"</string>
   <string name="download_application">下載應用程式？</string>
   <string name="app_not_installed">您選擇的應用程式未安裝。您要下載它嗎？</string>
   <string name="failed_to_load_apk">載入 APK 失敗</string>
+  <string name="split_apk_not_supported">分割的 APK 無法修補</string>
   <string name="loading">載入中…</string>
   <string name="not_installed">未安裝</string>
   <string name="installed">已安裝</string>
@@ -306,11 +365,12 @@ Second \"item\" text"</string>
   <string name="downloader_invalid_version">下載器未抓取到正確版本</string>
   <string name="downloader_app_not_found">下載器未找到應用程式</string>
   <string name="downloader_error">下載器錯誤：%s</string>
-  <string name="no_downloader_installed">未安裝任何下載器。</string>
-  <string name="no_downloader_available">已安裝下載器，但沒有一個受信任。請檢查您的設定。</string>
+  <string name="no_downloaders_installed">未安裝任何應用程式下載器！</string>
+  <string name="no_downloaders_trusted">沒有任何應用程式下載器被信任！請檢查您的設定。</string>
   <string name="already_patched">已修補</string>
   <string name="patch_selector_sheet_filter_title">篩選</string>
   <string name="patch_selector_sheet_filter_compat_title">相容性</string>
+  <string name="patch_selector_sheet_filter_packages_title">套件</string>
   <string name="patch_selector_sheet_actions_title">行動</string>
   <string name="restore_default_selection">還原預設選取</string>
   <string name="deselect_all">取消全選</string>
@@ -338,11 +398,14 @@ Second \"item\" text"</string>
   <string name="save_apk_success">APK 已儲存</string>
   <string name="sign_fail">簽署 APK 失敗：%s</string>
   <string name="save_logs">儲存記錄</string>
+  <string name="save_as_file">儲存到檔案</string>
+  <string name="export_patcher_logs">匯出修補程式記錄</string>
+  <string name="save_logs_success">記錄已儲存</string>
   <string name="downloader_activity_dialog_body">需要使用者互動才能繼續使用此下載器。</string>
   <string name="select_install_type">選取安裝類型</string>
   <string name="patcher_step_group_preparing">準備中</string>
   <string name="patcher_step_load_patches">載入修補程式</string>
-  <string name="patcher_step_unpack">讀取 APK 檔案</string>
+  <string name="patcher_step_unpack">準備修補程式</string>
   <string name="patcher_step_group_patching">修補中</string>
   <string name="patcher_step_group_saving">儲存中</string>
   <string name="patcher_step_write_patched">寫入已修補的 APK 檔案</string>
@@ -372,7 +435,12 @@ Second \"item\" text"</string>
   <string name="website">網站</string>
   <string name="github">GitHub</string>
   <string name="contact">聯絡方式</string>
+  <string name="license">授權</string>
+  <string name="source">來源</string>
+  <string name="repository">儲存庫</string>
+  <string name="bundle_information_by_author">由 %1$s</string>
   <string name="version">版本</string>
+  <string name="version_compatibility_warning">所選版本可能與所選補丁不相容</string>
   <string name="submit_feedback">提交問題或回饋</string>
   <string name="submit_feedback_description">協助我們改進此應用程式</string>
   <string name="developer_options">開發人員選項</string>
@@ -398,12 +466,16 @@ Second \"item\" text"</string>
   <string name="update_completed">更新已安裝</string>
   <string name="install_update_manager_failed">安裝更新失敗</string>
   <string name="manual_update_check">檢查更新</string>
+  <string name="view_update">檢視更新</string>
   <string name="manual_update_check_description">手動檢查更新</string>
   <string name="update_checking_manager">啟動時檢查更新</string>
   <string name="update_checking_manager_description">應用程式啟動時檢查 ReVanced Manager 的新版本</string>
+  <string name="update_checking_downloader">啟動時檢查 ReVanced 下載器更新</string>
+  <string name="update_checking_downloader_description">應用程式啟動時檢查已安裝 ReVanced 下載器的更新</string>
   <string name="manager_prereleases">使用預先發布版</string>
   <string name="manager_prereleases_description">使用 ReVanced Manager 的預先發布版</string>
-  <string name="changelog">檢視變更日誌</string>
+  <string name="prereleases_warning">預發行版本可能不穩定並包含錯誤。您可能會遇到崩潰、資料遺失或其他意外問題。僅在您接受這些風險的情況下啟用此功能。</string>
+  <string name="changelog">檢視變更記錄</string>
   <string name="changelog_loading">正在載入變更日誌</string>
   <string name="changelog_download_fail">下載變更日誌失敗：%s</string>
   <string name="changelog_description">查看此更新中的最新變更</string>
@@ -482,4 +554,13 @@ Second \"item\" text"</string>
   <string name="export">匯出</string>
   <string name="confirm">確認</string>
   <string name="new_announcement">新公告：\n%s</string>
+  <plurals name="patch_count">
+    <item quantity="other">%d 修補</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="other">執行 %d 修補</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="other">已選取 %d 個</item>
+  </plurals>
 </resources>

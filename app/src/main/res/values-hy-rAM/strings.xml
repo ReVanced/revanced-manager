@@ -19,6 +19,25 @@ Second \"item\" text"</string>
   <string name="patches">Պատչեր</string>
   <string name="cli">CLI</string>
   <string name="manager">Մենեջեր</string>
+  <string name="onboarding_welcome_to">Բարի գալուստ</string>
+  <string name="onboarding_welcome_back">Ողջույն։ Սա նորն է</string>
+  <string name="onboarding_apps_subtitle">Դուք կարող եք ընտրել հավելվածը հիմա կարկատելու համար կամ անել դա ավելի ուշ</string>
+  <string name="onboarding_updates_subtitle">Կարգավորեք ավտոմատ թարմացումները՝ ReVanced Manager-ը և կարկատանները թարմ պահելու համար</string>
+  <string name="onboarding_updates_note">ReVanced Manager-ը կմիանա %s-ին՝ սկզբնական տարբերակները ներբեռնելու համար, եթե Ձեր սարքը միացված է ինտերնետին։</string>
+  <string name="retry">Կրկին փորձել</string>
+  <string name="onboarding_skip">Առայժմ բաց թողնել</string>
+  <string name="onboarding_recommended_version">Առաջարկվող տարբերակը՝ %s</string>
+  <string name="onboarding_permissions_skip_title">Բաց թողնել թույլտվությունները:</string>
+  <string name="onboarding_permissions_skip_description">Առանց պահանջվող թույլտվությունների, որոշ գործառույթներ կարող են ճիշտ չաշխատել: Դուք կարող եք դրանք տրամադրել ավելի ուշ հավելվածի կարգավորումներում:</string>
+  <string name="onboarding_permissions_skip_anyway">Ամեն դեպքում բաց թողնել</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager-ին անհրաժեշտ են մի քանի թույլտվություններ՝ ճիշտ աշխատելու համար</string>
+  <string name="permission_install_apps">Տեղադրել անհայտ հավելվածներ</string>
+  <string name="permission_install_apps_description">Անհրաժեշտ է կարկատված հավելվածներ տեղադրելու համար</string>
+  <string name="permission_notifications">Ծանուցումներ</string>
+  <string name="permission_notifications_description">Թույլ է տալիս անխափան կարկատել հետին պլանում Android-ի ավելի նոր տարբերակներում</string>
+  <string name="permission_battery">Մարտկոցի օպտիմալացում</string>
+  <string name="permission_battery_description">Կանխում է կարկատման ընդհատումը հետին պլանում</string>
+  <string name="permission_grant">Տրամադրել</string>
   <string name="downloader_host_permission_label">ReVanced Manager ներբեռնողի հոսթ</string>
   <string name="downloader_host_permission_description">Օգտագործվում է ReVanced Manager-ի ներբեռնողների մուտքը կառավարելու համար։ Միայն ReVanced Manager-ն ունի սա։</string>
   <string name="toast_copied_to_clipboard">Պատճենված է։</string>
@@ -27,7 +46,9 @@ Second \"item\" text"</string>
   <string name="settings">Կարգավորումներ</string>
   <string name="select_app">Ընտրել հավելված</string>
   <string name="patches_count_selected">%1$d/%2$d ընտրված է</string>
-  <string name="new_downloader_notification">Նոր ներբեռնող(ներ) հասանելի են։ Սեղմեք այստեղ՝ դրանք կարգավորելու համար։</string>
+  <string name="fab_patch_app">Կարկատել հավելվածը</string>
+  <string name="fab_add_patches">Ավելացնել կարկատաններ</string>
+  <string name="new_downloader_notification">Նոր ներբեռնող(ներ) հասանելի է/են: Սեղմեք այստեղ՝ դրանք կարգավորելու համար:</string>
   <string name="unsupported_architecture_warning">Կարկատումը այս սարքի ճարտարապետության վրա չի աջակցվում և ամենայն հավանականությամբ կձախողվի։</string>
   <string name="import_">Ներմուծել</string>
   <string name="import_patches">Ներմուծել կարկատաններ</string>
@@ -37,7 +58,7 @@ Second \"item\" text"</string>
   <string name="patches_missing">Բացակայում է</string>
   <string name="patches_error">Սխալ</string>
   <string name="patches_error_description">Կարկատանները չհաջողվեց բեռնել։ Կտտացրեք՝ սխալը դիտելու համար</string>
-  <string name="patches_not_downloaded">Կարկատանները չեն ներբեռնվել։ Կտտացրեք այստեղ՝ ներբեռնելու համար</string>
+  <string name="patches_not_downloaded">Կարկատանները չեն ներբեռնվել։</string>
   <string name="patches_name_default">Կարկատաններ</string>
   <string name="patches_name_fallback">Անանուն</string>
   <string name="android_11_bug_dialog_title">Android 11-ի սխալ</string>
@@ -46,40 +67,51 @@ Second \"item\" text"</string>
   <string name="selected_app_meta_any_version">Ցանկացած առկա տարբերակ</string>
   <string name="app_source_dialog_title">Ընտրել աղբյուր</string>
   <string name="app_source_dialog_option_auto">Ավտոմատ</string>
-  <string name="app_source_dialog_option_auto_description">Օգտագործել բոլոր առկա ներբեռնողները՝ հավելվածը ներբեռնելու համար</string>
-  <string name="app_source_dialog_option_auto_unavailable">Ներբեռնող հասանելի չէ</string>
-  <string name="app_source_dialog_option_installed_no_root">Մոնտաժված հավելվածները չեն կարող նորից կարկատվել առանց ռութ մուտքի</string>
+  <string name="app_source_dialog_option_auto_description">Օգտագործել տեղադրված հավելվածը, ապա ներբեռնված APK-ը, ապա հասանելի ներբեռնիչները</string>
+  <string name="app_source_dialog_option_auto_unavailable">Համատեղելի հավելված կամ ներբեռնիչներ առկա չեն</string>
+  <string name="app_source_dialog_option_installed_no_root">Մոնտաժված հավելվածները հնարավոր չէ նորից կարկատել առանց root մուտքի</string>
   <string name="app_source_dialog_option_installed_version_not_suggested">Տարբերակը %s չի համապատասխանում առաջարկվող տարբերակին</string>
   <string name="patch_item_description">Սկսել հավելվածի կարկատումը</string>
   <string name="patch_selector_item">Ընտրել կարկատաններ</string>
   <string name="patch_selector_item_description">%d կարկատան ընտրված է</string>
+  <string name="patch_selection_changed_warning">Կարկատանների ընտրությունը փոփոխվել է։</string>
   <string name="no_patches_selected">Կարկատաններ ընտրված չեն</string>
   <string name="network_unavailable_warning">Ձեր սարքը միացված չէ ինտերնետին։ Ներբեռնումը հետագայում կձախողվի։</string>
   <string name="network_metered_warning">Դուք այժմ օգտագործում եք չափազանցված կապ։ Կարող են կիրառվել տվյալների վճարներ ձեր ծառայություն մատուցողից։</string>
   <string name="apk_source_selector_item">Ընտրել APK աղբյուրը</string>
-  <string name="apk_source_auto">Օգտագործելով բոլոր APK ներբեռնողները</string>
+  <string name="apk_source_auto">Ավտո</string>
+  <string name="apk_source_auto_installed">Ավտո · Օգտագործելով տեղադրված APK-ը</string>
+  <string name="apk_source_auto_downloaded">Ավտո · Օգտագործելով ներբեռնված APK-ը</string>
+  <string name="apk_source_auto_downloader">Ավտոմատ · Օգտագործելով առկա ներբեռնիչները</string>
+  <string name="apk_source_auto_storage">Ավտոմատ · Ընտրել պահեստից</string>
   <string name="apk_source_downloader">Օգտագործելով %s</string>
   <string name="apk_source_installed">Օգտագործելով տեղադրված APK-ն</string>
   <string name="apk_source_local">Օգտագործելով տեղական APK ֆայլ</string>
+  <string name="apk_source_downloaded">Արդեն ներբեռնված է</string>
   <string name="legacy_import_failed">Հնարավոր չէր ներմուծել հին կարգավորումները</string>
   <string name="auto_updates_dialog_title">Կարգավորել թարմացումները</string>
-  <string name="auto_updates_dialog_description">Ցանկանու՞մ եք, որ ReVanced Manager-ը պարբերաբար ստուգի թարմացումները հետևյալ բաղադրիչների համար։</string>
+  <string name="auto_updates_dialog_description">Ցանկանու՞մ եք, որ ReVanced Manager-ը պարբերաբար ստուգի թարմացումները հետևյալ բաղադրիչների համար:</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
   <string name="auto_updates_dialog_patches">ReVanced Կարկատաններ</string>
-  <string name="auto_updates_dialog_note">Այս կարգավորումները կարող են փոփոխվել ավելի ուշ։</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Ներբեռնողներ</string>
+  <string name="auto_updates_dialog_note">Այս կարգավորումները հետագայում կարող են փոփոխվել:
+
+    ReVanced Manager-ը կմիանա %s-ին՝ սկզբնական տարբերակները ներբեռնելու համար, եթե Ձեր սարքը միացված է ինտերնետին։</string>
   <string name="announcements_filter_tag">Ֆիլտրել ըստ պիտակի</string>
   <string name="announcements_show_archived">Ցուցադրել արխիվացվածը</string>
   <string name="general">Ընդհանուր</string>
   <string name="general_description">Լեզու, թեմա, դինամիկ գույն</string>
   <string name="updates">Թարմացումներ</string>
-  <string name="updates_description">Ստուգել թարմացումները և դիտել փոփոխությունների մատյանները</string>
+  <string name="updates_description">Ստուգել թարմացումները և դիտել փոփոխությունների մատյանը</string>
   <string name="downloads">Ներբեռնումներ</string>
   <string name="downloads_description">Ներբեռնողներ և ներբեռնված հավելվածներ</string>
   <string name="import_export">Ներմուծում և արտահանում</string>
   <string name="import_export_description">Բանալիի պահեստ, կարկատման ընտրանքներ և ընտրություն</string>
   <string name="advanced">Ընդլայնված</string>
   <string name="advanced_description">API URL, հիշողության սահմանափակում, կարգաբերում</string>
+  <string name="safeguards_toggled_warning">Պաշտպանիչ միջոցները միացվել/անջատվել են։</string>
   <string name="about">Մեր մասին</string>
+  <string name="about_app_name">%1$s-ի մասին</string>
   <string name="opensource_licenses">Բաց կոդով լիցենզիաներ</string>
   <string name="opensource_licenses_description">Դիտել այս հավելվածը ստեղծելու համար օգտագործված բոլոր գրադարանները</string>
   <string name="contributors">Ներդրողներ</string>
@@ -93,6 +125,7 @@ Second \"item\" text"</string>
   <string name="language">Լեզու</string>
   <string name="language_description">Ընտրեք հավելվածի ցուցադրման լեզուն</string>
   <string name="language_system_default">Համակարգի լռելյայն</string>
+  <string name="search_languages">Որոնել լեզուներ…</string>
   <string name="safeguards">Ապահովիչներ</string>
   <string name="patch_compat_check">Անջատել տարբերակի համատեղելիության ստուգումը</string>
   <string name="patch_compat_check_description">Մի սահմանափակեք կարկատանները համատեղելի հավելվածի տարբերակներով</string>
@@ -114,6 +147,8 @@ Second \"item\" text"</string>
   <string name="universal_patches_safeguard_confirmation">Համընդհանուր կարկատանները այնքան լավ փորձարկված չեն, որքան հատուկ հավելվածների համար նախատեսվածները։
 
 Միացնե՞լ, այնուամենայնիվ։</string>
+  <string name="keystore">Գաղտնաբանալիների պահոց</string>
+  <string name="patches_selections">Կարկատանների ընտրանքներ</string>
   <string name="import_keystore">Ներմուծել բանալիի պահեստ</string>
   <string name="import_keystore_description">Ներմուծել անհատական բանալիի պահեստ</string>
   <string name="import_keystore_dialog_title">Մուտքագրեք բանալիի պահեստի հավատարմագրերը</string>
@@ -137,13 +172,18 @@ Second \"item\" text"</string>
   <string name="import_patch_selection_description">Ներմուծել կարկատանների ընտրություն JSON ֆայլից</string>
   <string name="import_patch_selection_fail">Հնարավոր չէր ներմուծել կարկատանների ընտրությունը՝ %s</string>
   <string name="import_patch_selection_success">Ներմուծված կարկատանների ընտրություն</string>
+  <string name="select_bundle_for_import">Ընտրել փաթեթը՝ ներմուծելու համար</string>
   <string name="export_patch_selection">Արտահանել կարկատանների ընտրություն</string>
   <string name="export_patch_selection_description">Արտահանել կարկատանների ընտրություն JSON ֆայլ</string>
   <string name="export_patch_selection_fail">Հնարավոր չէր արտահանել կարկատանների ընտրությունը՝ %s</string>
   <string name="export_patch_selection_success">Արտահանված կարկատանների ընտրություն</string>
-  <string name="reset_patch_selection">Վերականգնել կարկատանների ընտրությունը</string>
+  <string name="select_bundle_for_export">Ընտրել փաթեթը՝ արտահանելու համար</string>
+  <string name="patch_selection_packages">Հավելվածներ պահպանված ընտրանքներով</string>
+  <string name="patch_selection_entries">Ընդհանուր ընտրված կարկատաններ</string>
+  <string name="reset_configuration">Վերակայել կազմաձևումը</string>
+  <string name="reset_patch_selection">Կարկատանների ընտրանքներ</string>
   <string name="reset_patch_selection_description">Վերականգնել պահված կարկատանների ընտրությունը</string>
-  <string name="reset_patch_options">Վերականգնել կարկատանների ընտրանքները</string>
+  <string name="reset_patch_options">Կարկատման ընտրանքներ</string>
   <string name="reset_patch_options_description">Վերականգնել պահված կարկատանների ընտրանքները</string>
   <string name="reset_patch_selection_success">Կարկատանների ընտրությունը վերականգնվել է</string>
   <string name="patch_selection_reset_all">Գլոբալ վերականգնել կարկատանների ընտրությունը</string>
@@ -165,22 +205,29 @@ Second \"item\" text"</string>
   <string name="patch_options_reset_all_dialog_description">Դուք պատրաստվում եք վերակայել բոլոր կարկատանների ընտրանքները։ Դուք ստիպված կլինեք յուրաքանչյուր ընտրանք կրկին կիրառել։</string>
   <string name="patch_options_reset_all_description">Վերակայում է կարկատանների բոլոր ընտրանքները</string>
   <string name="downloaders">Ներբեռնողներ</string>
-  <string name="downloader_state_trusted">Վստահելի</string>
+  <string name="downloader_prereleases">Օգտագործել նախաթողարկումները</string>
+  <string name="downloader_prereleases_description">Օգտագործել հիմնական ներբեռնողի նախաթողարկման տարբերակները</string>
+  <string name="downloader_state_loaded">Բեռնված</string>
   <string name="downloader_state_failed">Բեռնումը ձախողվեց։ Սեղմեք՝ ավելին իմանալու համար</string>
-  <string name="downloader_state_untrusted">Անվստահելի</string>
-  <string name="downloader_trust_dialog_title">Վստահե՞լ ներբեռնողին:</string>
-  <string name="downloader_revoke_trust_dialog_title">Հետ կանչե՞լ վստահությունը:</string>
-  <string name="downloader_trust_dialog_body">Շարունակելը թույլ կտա այս ներբեռնողին աշխատել։
-
-Միացրեք այս ներբեռնողը միայն այն դեպքում, եթե վստահում եք նրան։ Ներբեռնողները կարող են ստիպել Manager-ին կատարել կամայական կոդ:</string>
-  <string name="downloader_trust_dialog_signature">Ստորագրություն:
-
-%s</string>
-  <string name="downloader_trust_dialog_name">Ներբեռնող:
-%s</string>
+  <string name="downloader_state_missing">Բացակայում է</string>
   <string name="downloader_delete_apps_title">Ջնջել ընտրված հավելվածները</string>
   <string name="downloader_delete_apps_description">Վստա՞հ եք, որ ցանկանում եք ջնջել ընտրված հավելվածները:</string>
+  <string name="downloader_delete_single_description">Վստա՞հ եք, որ ցանկանում եք ջնջել «%s»-ը:</string>
   <string name="downloader_settings_no_apps">Ներբեռնված հավելվածներ չեն գտնվել։</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager-ի միջոցով ներբեռնված հավելվածները կհայտնվեն այստեղ:</string>
+  <string name="downloader_url">Ներբեռնողի URL</string>
+  <string name="downloader_add">Ավելացնել Ներբեռնող</string>
+  <string name="select_downloader_type_dialog_description">Ավելացնել նոր ներբեռնողներ URL-ից կամ տեղական ֆայլերից</string>
+  <string name="local_downloaders_description">Ավելացնել ներբեռնողներ տեղական պահեստից։</string>
+  <string name="remote_downloaders_description">Ավելացնել ներբեռնողներ URL-ից։ Կարող են ավտոմատ կերպով թարմացվել։</string>
+  <string name="install_revanced_downloaders">Տեղադրել ներբեռնողներ՝ հավելվածներն անմիջապես ReVanced Manager-ի ներսում ստանալու համար:</string>
+  <string name="install_revanced_downloader">Տեղադրել ReVanced Ներբեռնողներ</string>
+  <string name="cancel_downloader_install_title">Չեղարկե՞լ ներբեռնողների տեղադրումը:</string>
+  <string name="cancel_downloader_install_description">Ներբեռնողների տեղադրումը ընթացքի մեջ է: Եթա հիմա հեռանաք, ներբեռնումը կչեղարկվի:</string>
+  <string name="downloader_sources_unavailable_title">Այս ներբեռնողները բացակայում են</string>
+  <string name="downloader_sources_unavailable_description">Սեղմեք թարմացման կոճակը՝ այն շտկելու համար։</string>
+  <string name="downloader_update_failed">Չհաջողվեց թարմացնել ներբեռնողը՝ %s</string>
+  <string name="downloader_replace_fail">Չհաջողվեց ներմուծել ներբեռնողը՝ %s</string>
   <string name="search_apps">Որոնել հավելվածներ…</string>
   <string name="loading_body">Բեռնվում է…</string>
   <string name="downloading_patches">Ներբեռնվում են կարկատանները…</string>
@@ -194,7 +241,7 @@ Second \"item\" text"</string>
   <string name="share">Կիսվել</string>
   <string name="patch">Կարկատան</string>
   <string name="select_from_storage">Ընտրել պահեստից</string>
-  <string name="select_from_storage_description">Ընտրեք APK ֆայլ պահեստից՝ օգտագործելով ֆայլի ընտրիչը</string>
+  <string name="select_from_storage_description">Ընտրեք APK ֆայլ պահեստից՝ ֆայլի ընտրիչի միջոցով</string>
   <string name="suggested_version_info">Առաջարկվող տարբերակը՝ %s</string>
   <string name="type_anything">Շարունակելու համար մուտքագրեք որևէ բան</string>
   <string name="search">Որոնել կարկատաններ…</string>
@@ -203,6 +250,8 @@ Second \"item\" text"</string>
   <string name="back">Հետ</string>
   <string name="warning">Զգուշացում</string>
   <string name="add">Ավելացնել</string>
+  <string name="enable">Միացնել</string>
+  <string name="disable">Անջատել</string>
   <string name="close">Փակել</string>
   <string name="clear">Մաքրել</string>
   <string name="system">Համակարգ</string>
@@ -216,7 +265,7 @@ Second \"item\" text"</string>
   <string name="process_runtime">Գործարկել Patcher-ը այլ պրոցեսում (փորձարարական)</string>
   <string name="process_runtime_description">Սա ավելի արագ է և թույլ է տալիս Patcher-ին ավելի շատ հիշողություն օգտագործել</string>
   <string name="process_runtime_memory_limit">Patcher պրոցեսի հիշողության սահմանափակում</string>
-  <string name="process_runtime_memory_limit_description">Հիշողության առավելագույն քանակը, որը Patcher պրոցեսը կարող է օգտագործել (մեգաբայթերով)</string>
+  <string name="process_runtime_memory_limit_description">Հիշողության առավելագույն քանակը, որը կարող է օգտագործել կարկատիչի գործընթացը</string>
   <string name="debug_logs_export">Արտահանել վրիպազերծման մատյանները</string>
   <string name="debug_logs_export_read_failed">Չհաջողվեց կարդալ մատյանները (ելքի կոդը՝ %d)</string>
   <string name="debug_logs_export_failed">Չհաջողվեց արտահանել մատյանները</string>
@@ -236,6 +285,8 @@ Second \"item\" text"</string>
   <string name="device_memory_limit_format">%1$dՄԲ (Նորմալ) - %2$dՄԲ (Մեծ)</string>
   <string name="patches_force_download">Պարտադրել ներբեռնել բոլոր կարկատանները</string>
   <string name="patches_reset">Վերակայել կարկատանները</string>
+  <string name="reset_onboarding">Վերակայել ինքնուսուցումը</string>
+  <string name="reset_onboarding_description">Ցույց տալ ինքնուսուցման էկրանը հավելվածի հաջորդ գործարկման ժամանակ</string>
   <string name="patching">Կարկատում</string>
   <string name="signing">Ստորագրում</string>
   <string name="storage">Պահեստ</string>
@@ -249,8 +300,15 @@ Second \"item\" text"</string>
   <string name="download_app">Ներբեռնել հավելվածը</string>
   <string name="download_apk">Ներբեռնել APK ֆայլը</string>
   <string name="patches_download_fail">Չհաջողվեց ներբեռնել կարկատանները. %s</string>
+  <string name="api_not_working_title">API ծառայությունը ներկայումս անհասանելի է</string>
+  <string name="api_not_working_description">Որոշ գործառույթներ կարող են ազդվել։ Ստուգեք ձեր կապը կամ API-ի URL-ը կարգավորումներում։</string>
   <string name="patches_replace_fail">Չհաջողվեց ներմուծել կարկատանները. %s</string>
   <string name="no_patched_apps_found">Կարկատված հավելվածներ չեն գտնվել</string>
+  <string name="no_patched_apps_description">Ներկայումս դուք չունեք որևէ կարկատված հավելված, որոնց մասին մենք տեղյակ ենք: Փոխեք դա՝ կարկատելով ձեր առաջին հավելվածը:</string>
+  <string name="patched_apps_section_title">Կարկատված հավելվածներ</string>
+  <string name="patchable_apps_section_title">Հավելվածներ, որոնք կարող են կարկատվել</string>
+  <string name="no_patches_found">Կարկատաններ չեն գտնվել</string>
+  <string name="no_patches_description">Դուք դեռ կարկատաններ չունեք: Ավելացրեք կարկատաններ՝ հպելով ներքևի կոճակին:</string>
   <string name="tap_on_patches">Սեղմեք կարկատանների վրա՝ դրանց մասին ավելի շատ տեղեկություն ստանալու համար</string>
   <string name="patches_selected">Ընտրված է %s</string>
   <string name="incompatible_patches">Անհամատեղելի կարկատաններ</string>
@@ -271,6 +329,7 @@ Second \"item\" text"</string>
   <string name="download_application">Ներբեռնե՞լ հավելվածը</string>
   <string name="app_not_installed">Ձեր ընտրած հավելվածը տեղադրված չէ։ Ցանկանու՞մ եք ներբեռնել այն։</string>
   <string name="failed_to_load_apk">Չհաջողվեց բեռնել APK-ն</string>
+  <string name="split_apk_not_supported">Բաժանված APK-ները չեն կարող կարկատվել</string>
   <string name="loading">Բեռնվում է…</string>
   <string name="not_installed">Տեղադրված չէ</string>
   <string name="installed">Տեղադրված է</string>
@@ -296,11 +355,12 @@ Second \"item\" text"</string>
   <string name="downloader_invalid_version">Ներբեռնիչը չբերեց ճիշտ տարբերակը</string>
   <string name="downloader_app_not_found">Ներբեռնիչը չգտավ հավելվածը</string>
   <string name="downloader_error">Ներբեռնիչի սխալ՝ %s</string>
-  <string name="no_downloader_installed">Ներբեռնողներ տեղադրված չեն:</string>
-  <string name="no_downloader_available">Տեղադրված են ներբեռնողներ, բայց դրանցից ոչ մեկը վստահելի չէ։ Ստուգեք ձեր կարգավորումները:</string>
+  <string name="no_downloaders_installed">Հավելվածների ներբեռնողներ տեղադրված չեն:</string>
+  <string name="no_downloaders_trusted">Հավելվածների ներբեռնողներին չի վստահվել: Խնդրում ենք ստուգել ձեր կարգավորումները:</string>
   <string name="already_patched">Արդեն կարկատված է</string>
   <string name="patch_selector_sheet_filter_title">Զտել</string>
   <string name="patch_selector_sheet_filter_compat_title">Համատեղելիություն</string>
+  <string name="patch_selector_sheet_filter_packages_title">Փաթեթներ</string>
   <string name="patch_selector_sheet_actions_title">Գործողություններ</string>
   <string name="restore_default_selection">Վերականգնել լռելյայն ընտրությունը</string>
   <string name="deselect_all">Ապաընտրել բոլորը</string>
@@ -328,11 +388,14 @@ Second \"item\" text"</string>
   <string name="save_apk_success">APK-ը պահպանված է</string>
   <string name="sign_fail">Չհաջողվեց ստորագրել APK-ն՝ %s</string>
   <string name="save_logs">Պահպանել մատյանները</string>
+  <string name="save_as_file">Պահպանել ֆայլերում</string>
+  <string name="export_patcher_logs">Արտահանել կարկատիչի մատյանները</string>
+  <string name="save_logs_success">Մատյանները պահպանվեցին</string>
   <string name="downloader_activity_dialog_body">Պահանջվում է օգտատիրոջ փոխազդեցություն՝ այս ներբեռնողով շարունակելու համար:</string>
   <string name="select_install_type">Ընտրել տեղադրման տեսակը</string>
   <string name="patcher_step_group_preparing">Պատրաստվում է</string>
   <string name="patcher_step_load_patches">Բեռնել կարկատանները</string>
-  <string name="patcher_step_unpack">Կարդալ APK ֆայլը</string>
+  <string name="patcher_step_unpack">Պատրաստել թարմացնողը</string>
   <string name="patcher_step_group_patching">Կարկատում</string>
   <string name="patcher_step_group_saving">Պահպանում</string>
   <string name="patcher_step_write_patched">Գրել կարկատված APK ֆայլը</string>
@@ -362,7 +425,12 @@ Second \"item\" text"</string>
   <string name="website">Կայք</string>
   <string name="github">GitHub</string>
   <string name="contact">Կապ</string>
+  <string name="license">Լիցենզիա</string>
+  <string name="source">Աղբյուր</string>
+  <string name="repository">Շտեմարան</string>
+  <string name="bundle_information_by_author">Ըստ %1$s-ի</string>
   <string name="version">Տարբերակ</string>
+  <string name="version_compatibility_warning">Ընտրված տարբերակը կարող է անհամատեղելի լինել ընտրված կարկատանների հետ:</string>
   <string name="submit_feedback">Ներկայացնել խնդիր կամ կարծիք</string>
   <string name="submit_feedback_description">Օգնեք մեզ բարելավել այս հավելվածը</string>
   <string name="developer_options">Ծրագրավորողի ընտրանքներ</string>
@@ -388,12 +456,16 @@ Second \"item\" text"</string>
   <string name="update_completed">Թարմացումը տեղադրված է</string>
   <string name="install_update_manager_failed">Չհաջողվեց տեղադրել թարմացումը</string>
   <string name="manual_update_check">Ստուգել թարմացումները</string>
+  <string name="view_update">Դիտել թարմացումը</string>
   <string name="manual_update_check_description">Ձեռքով ստուգել թարմացումները</string>
   <string name="update_checking_manager">Ստուգել թարմացումները գործարկման ժամանակ</string>
   <string name="update_checking_manager_description">Ստուգել ReVanced Manager-ի նոր տարբերակները հավելվածը գործարկելիս</string>
+  <string name="update_checking_downloader">Ստուգել ReVanced ներբեռնողների թարմացումները գործարկման ժամանակ</string>
+  <string name="update_checking_downloader_description">Ստուգել տեղադրված ReVanced ներբեռնողների թարմացումները, երբ հավելվածը գործարկվում է</string>
   <string name="manager_prereleases">Օգտագործել նախնական թողարկումներ</string>
   <string name="manager_prereleases_description">Օգտագործել ReVanced Manager-ի նախնական թողարկման տարբերակները</string>
-  <string name="changelog">Դիտել փոփոխությունների մատյանները</string>
+  <string name="prereleases_warning">Նախնական թողարկման տարբերակները կարող են անկայուն լինել և պարունակել սխալներ: Դուք կարող եք բախվել խափանումների, տվյալների կորստի կամ այլ անսպասելի խնդիրների: Միացրեք սա միայն այն դեպքում, եթե հարմարավետ եք այս ռիսկերի հետ:</string>
+  <string name="changelog">Դիտել փոփոխությունների մատյանը</string>
   <string name="changelog_loading">Բեռնվում է փոփոխությունների մատյանը</string>
   <string name="changelog_download_fail">Չհաջողվեց ներբեռնել փոփոխությունների մատյանը՝ %s</string>
   <string name="changelog_description">Դիտեք այս թարմացման վերջին փոփոխությունները</string>
@@ -473,4 +545,16 @@ Second \"item\" text"</string>
   <string name="confirm">Հաստատել</string>
   <string name="new_announcement">Նոր հայտարարություն՝
 %s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d կարկատան</item>
+    <item quantity="other">%d կարկատան</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">Կատարել %d կարկատան</item>
+    <item quantity="other">Կատարել %d կարկատան</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d ընտրված</item>
+    <item quantity="other">%d ընտրված</item>
+  </plurals>
 </resources>

@@ -19,6 +19,25 @@ Second \"item\" text"</string>
   <string name="patches">แพตช์</string>
   <string name="cli">CLI</string>
   <string name="manager">ตัวจัดการ</string>
+  <string name="onboarding_welcome_to">ยินดีต้อนรับสู่</string>
+  <string name="onboarding_welcome_back">สวัสดี! นี่คือ</string>
+  <string name="onboarding_apps_subtitle">คุณสามารถเลือกแอปที่จะแพตช์ตอนนี้หรือทำในภายหลัง</string>
+  <string name="onboarding_updates_subtitle">กำหนดค่าการอัปเดตอัตโนมัติเพื่อให้ ReVanced Manager และแพตช์เป็นปัจจุบันอยู่เสมอ</string>
+  <string name="onboarding_updates_note">ReVanced Manager จะเชื่อมต่อกับ %s เพื่อดาวน์โหลดเวอร์ชันเริ่มต้น หากอุปกรณ์ของคุณเชื่อมต่ออินเทอร์เน็ต</string>
+  <string name="retry">ลองใหม่</string>
+  <string name="onboarding_skip">ข้ามไปก่อน</string>
+  <string name="onboarding_recommended_version">เวอร์ชันที่แนะนำ: %s</string>
+  <string name="onboarding_permissions_skip_title">ข้ามการอนุญาตหรือไม่</string>
+  <string name="onboarding_permissions_skip_description">หากไม่มีการอนุญาตที่จำเป็น ฟีเจอร์บางอย่างอาจทำงานไม่ถูกต้อง คุณสามารถให้สิทธิ์ได้ในภายหลังในการตั้งค่าแอป</string>
+  <string name="onboarding_permissions_skip_anyway">ข้ามไปอยู่ดี</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager ต้องการการอนุญาตบางอย่างเพื่อให้ทำงานได้อย่างถูกต้อง</string>
+  <string name="permission_install_apps">ติดตั้งแอปที่ไม่รู้จัก</string>
+  <string name="permission_install_apps_description">จำเป็นสำหรับการติดตั้งแอปพลิเคชันที่ได้รับการแพตช์</string>
+  <string name="permission_notifications">บริค์ซ์</string>
+  <string name="permission_notifications_description">อนุญาตให้แพตช์ได้อย่างต่อเนื่องในเบื้องหลังบน Android เวอร์ชันใหม่กว่า</string>
+  <string name="permission_battery">การเพิ่มประสิทธิภาพแบตเตอรี่</string>
+  <string name="permission_battery_description">ป้องกันไม่ให้การแพตช์ถูกขัดจังหวะในเบื้องหลัง</string>
+  <string name="permission_grant">ให้สิทธิ์</string>
   <string name="downloader_host_permission_label">โฮสต์ดาวน์โหลด ReVanced Manager</string>
   <string name="downloader_host_permission_description">ใช้เพื่อควบคุมการเข้าถึงโปรแกรมดาวน์โหลด ReVanced Manager มีเพียง ReVanced Manager เท่านั้นที่มีสิ่งนี้</string>
   <string name="toast_copied_to_clipboard">คัดลอกแล้ว!</string>
@@ -27,7 +46,9 @@ Second \"item\" text"</string>
   <string name="settings">การตั้งค่า</string>
   <string name="select_app">เลือกแอป</string>
   <string name="patches_count_selected">เลือก %1$d/%2$d</string>
-  <string name="new_downloader_notification">มีโปรแกรมดาวน์โหลดใหม่พร้อมใช้งาน คลิกที่นี่เพื่อกำหนดค่า</string>
+  <string name="fab_patch_app">แพตช์แอป</string>
+  <string name="fab_add_patches">เพิ่มแพตช์</string>
+  <string name="new_downloader_notification">มีตัวดาวน์โหลดใหม่พร้อมใช้งาน คลิกที่นี่เพื่อกำหนดค่า</string>
   <string name="unsupported_architecture_warning">การแพตช์บนสถาปัตยกรรมอุปกรณ์นี้ไม่รองรับและมีแนวโน้มที่จะล้มเหลว</string>
   <string name="import_">นำเข้า</string>
   <string name="import_patches">นำเข้าแพตช์</string>
@@ -37,7 +58,7 @@ Second \"item\" text"</string>
   <string name="patches_missing">ขาดหายไป</string>
   <string name="patches_error">ข้อผิดพลาด</string>
   <string name="patches_error_description">ไม่สามารถโหลดแพตช์ได้ คลิกเพื่อดูข้อผิดพลาด</string>
-  <string name="patches_not_downloaded">ยังไม่ได้ดาวน์โหลดแพตช์ คลิกที่นี่เพื่อดาวน์โหลด</string>
+  <string name="patches_not_downloaded">ยังไม่ได้ดาวน์โหลดแพตช์</string>
   <string name="patches_name_default">แพตช์</string>
   <string name="patches_name_fallback">ไม่มีชื่อ</string>
   <string name="android_11_bug_dialog_title">ข้อผิดพลาด Android 11</string>
@@ -46,40 +67,51 @@ Second \"item\" text"</string>
   <string name="selected_app_meta_any_version">เวอร์ชันใดก็ได้ที่มี</string>
   <string name="app_source_dialog_title">เลือกแหล่งที่มา</string>
   <string name="app_source_dialog_option_auto">อัตโนมัติ</string>
-  <string name="app_source_dialog_option_auto_description">ใช้ตัวดาวน์โหลดทั้งหมดที่มีเพื่อดาวน์โหลดแอป</string>
-  <string name="app_source_dialog_option_auto_unavailable">ไม่มีโปรแกรมดาวน์โหลดพร้อมใช้งาน</string>
-  <string name="app_source_dialog_option_installed_no_root">ไม่สามารถแพตช์แอปที่ติดตั้งแล้วซ้ำได้หากไม่มีสิทธิ์รูท</string>
+  <string name="app_source_dialog_option_auto_description">ใช้แอปที่ติดตั้งแล้ว, จากนั้น APK ที่ดาวน์โหลดแล้ว, จากนั้นตัวดาวน์โหลดที่มีอยู่</string>
+  <string name="app_source_dialog_option_auto_unavailable">ไม่พบแอปหรือโปรแกรมดาวน์โหลดที่เข้ากันได้</string>
+  <string name="app_source_dialog_option_installed_no_root">แอปที่ติดตั้งแล้วจะไม่สามารถแพตช์ได้อีกโดยไม่มีสิทธิ์รูท</string>
   <string name="app_source_dialog_option_installed_version_not_suggested">เวอร์ชัน %s ไม่ตรงกับเวอร์ชันที่แนะนำ</string>
   <string name="patch_item_description">เริ่มแพตช์แอปพลิเคชัน</string>
   <string name="patch_selector_item">เลือกแพตช์</string>
-  <string name="patch_selector_item_description">เลือก %d แพตช์</string>
+  <string name="patch_selector_item_description">เลือกแพตช์แล้ว %d รายการ</string>
+  <string name="patch_selection_changed_warning">มีการเปลี่ยนแปลงการเลือกแพตช์</string>
   <string name="no_patches_selected">ไม่ได้เลือกแพตช์</string>
   <string name="network_unavailable_warning">อุปกรณ์ของคุณไม่ได้เชื่อมต่ออินเทอร์เน็ต การดาวน์โหลดจะล้มเหลวในภายหลัง</string>
   <string name="network_metered_warning">ขณะนี้คุณกำลังใช้การเชื่อมต่อแบบจำกัดปริมาณข้อมูล อาจมีค่าใช้จ่ายข้อมูลจากผู้ให้บริการของคุณ</string>
-  <string name="apk_source_selector_item">เลือกแหล่งที่มาของ APK</string>
-  <string name="apk_source_auto">กำลังใช้ตัวดาวน์โหลด APK ทั้งหมด</string>
+  <string name="apk_source_selector_item">เลือกแหล่งที่มา APK</string>
+  <string name="apk_source_auto">อัตโนมัติ</string>
+  <string name="apk_source_auto_installed">อัตโนมัติ · กำลังใช้ APK ที่ติดตั้งแล้ว</string>
+  <string name="apk_source_auto_downloaded">อัตโนมัติ · กำลังใช้ APK ที่ดาวน์โหลดแล้ว</string>
+  <string name="apk_source_auto_downloader">อัตโนมัติ · ใช้ตัวดาวน์โหลดที่มีอยู่</string>
+  <string name="apk_source_auto_storage">อัตโนมัติ · เลือกจากที่เก็บข้อมูล</string>
   <string name="apk_source_downloader">กำลังใช้ %s</string>
   <string name="apk_source_installed">กำลังใช้ APK ที่ติดตั้ง</string>
   <string name="apk_source_local">กำลังใช้ไฟล์ APK ในเครื่อง</string>
+  <string name="apk_source_downloaded">ดาวน์โหลดแล้ว</string>
   <string name="legacy_import_failed">ไม่สามารถนำเข้าการตั้งค่าเก่าได้</string>
   <string name="auto_updates_dialog_title">กำหนดค่าการอัปเดต</string>
-  <string name="auto_updates_dialog_description">คุณต้องการให้ ReVanced Manager ตรวจสอบการอัปเดตส่วนประกอบต่อไปนี้เป็นระยะหรือไม่?</string>
+  <string name="auto_updates_dialog_description">คุณต้องการให้ ReVanced Manager ตรวจสอบการอัปเดตเป็นระยะสำหรับส่วนประกอบต่อไปนี้หรือไม่</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
   <string name="auto_updates_dialog_patches">แพตช์ ReVanced</string>
-  <string name="auto_updates_dialog_note">การตั้งค่าเหล่านี้สามารถเปลี่ยนแปลงได้ในภายหลัง</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: ตัวดาวน์โหลด</string>
+  <string name="auto_updates_dialog_note">การตั้งค่าเหล่านี้สามารถเปลี่ยนแปลงได้ในภายหลัง
+
+    ReVanced Manager จะเชื่อมต่อกับ %s เพื่อดาวน์โหลดเวอร์ชันเริ่มต้น หากอุปกรณ์ของคุณเชื่อมต่ออินเทอร์เน็ต</string>
   <string name="announcements_filter_tag">กรองตามแท็ก</string>
   <string name="announcements_show_archived">แสดงที่เก็บถาวร</string>
   <string name="general">ทั่วไป</string>
   <string name="general_description">ภาษา, ธีม, สีไดนามิก</string>
   <string name="updates">การอัปเดต</string>
-  <string name="updates_description">ตรวจสอบการอัปเดตและดูบันทึกการเปลี่ยนแปลง</string>
+  <string name="updates_description">ตรวจสอบการอัปเดตและดูรายการเปลี่ยนแปลง</string>
   <string name="downloads">การดาวน์โหลด</string>
   <string name="downloads_description">ตัวดาวน์โหลดและแอปที่ดาวน์โหลด</string>
   <string name="import_export">นำเข้า &amp; ส่งออก</string>
   <string name="import_export_description">คีย์สโตร์, ตัวเลือกแพตช์และการเลือก</string>
   <string name="advanced">ขั้นสูง</string>
   <string name="advanced_description">URL API, ขีดจำกัดหน่วยความจำ, การดีบัก</string>
+  <string name="safeguards_toggled_warning">ได้สลับการป้องกัน</string>
   <string name="about">เกี่ยวกับ</string>
+  <string name="about_app_name">เกี่ยวกับ %1$s</string>
   <string name="opensource_licenses">ใบอนุญาตโอเพนซอร์ส</string>
   <string name="opensource_licenses_description">ดูไลบรารีทั้งหมดที่ใช้ในการสร้างแอปพลิเคชันนี้</string>
   <string name="contributors">ผู้ร่วมให้ข้อมูล</string>
@@ -93,6 +125,7 @@ Second \"item\" text"</string>
   <string name="language">ภาษา</string>
   <string name="language_description">เลือกภาษาที่แสดงผลของแอป</string>
   <string name="language_system_default">ค่าเริ่มต้นของระบบ</string>
+  <string name="search_languages">ค้นหาภาษา...</string>
   <string name="safeguards">มาตรการป้องกัน</string>
   <string name="patch_compat_check">ปิดใช้งานการตรวจสอบความเข้ากันได้ของเวอร์ชัน</string>
   <string name="patch_compat_check_description">ไม่ต้องจำกัดแพตช์สำหรับเวอร์ชันแอปที่เข้ากันได้</string>
@@ -114,6 +147,8 @@ Second \"item\" text"</string>
   <string name="universal_patches_safeguard_confirmation">แพตช์สากลยังไม่ได้รับการทดสอบดีเท่ากับแพตช์ที่กำหนดเป้าหมายแอปเฉพาะ
 
 ยังต้องการเปิดใช้งานหรือไม่?</string>
+  <string name="keystore">คีย์สโตร์</string>
+  <string name="patches_selections">การเลือกแพตช์</string>
   <string name="import_keystore">นำเข้าคีย์สโตร์</string>
   <string name="import_keystore_description">นำเข้าคีย์สโตร์ที่กำหนดเอง</string>
   <string name="import_keystore_dialog_title">ป้อนข้อมูลประจำตัวคีย์สโตร์</string>
@@ -137,13 +172,18 @@ Second \"item\" text"</string>
   <string name="import_patch_selection_description">นำเข้าการเลือกแพตช์จากไฟล์ JSON</string>
   <string name="import_patch_selection_fail">ไม่สามารถนำเข้าการเลือกแพตช์ได้: %s</string>
   <string name="import_patch_selection_success">นำเข้าการเลือกแพตช์แล้ว</string>
+  <string name="select_bundle_for_import">เลือกบันเดิลที่จะนำเข้า</string>
   <string name="export_patch_selection">ส่งออกการเลือกแพตช์</string>
   <string name="export_patch_selection_description">ส่งออกการเลือกแพตช์ไปยังไฟล์ JSON</string>
   <string name="export_patch_selection_fail">ไม่สามารถส่งออกการเลือกแพตช์ได้: %s</string>
   <string name="export_patch_selection_success">ส่งออกการเลือกแพตช์แล้ว</string>
-  <string name="reset_patch_selection">รีเซ็ตการเลือกแพตช์</string>
+  <string name="select_bundle_for_export">เลือกบันเดิลที่จะส่งออก</string>
+  <string name="patch_selection_packages">แอปที่มีการเลือกที่บันทึกไว้</string>
+  <string name="patch_selection_entries">แพตช์ที่เลือกทั้งหมด</string>
+  <string name="reset_configuration">รีเซ็ตการกำหนดค่า</string>
+  <string name="reset_patch_selection">การเลือกแพตช์</string>
   <string name="reset_patch_selection_description">รีเซ็ตการเลือกแพตช์ที่จัดเก็บไว้</string>
-  <string name="reset_patch_options">รีเซ็ตตัวเลือกแพตช์</string>
+  <string name="reset_patch_options">ตัวเลือกแพตช์</string>
   <string name="reset_patch_options_description">รีเซ็ตตัวเลือกแพตช์ที่จัดเก็บไว้</string>
   <string name="reset_patch_selection_success">การเลือกแพตช์ถูกรีเซ็ตแล้ว</string>
   <string name="patch_selection_reset_all">รีเซ็ตการเลือกแพตช์ทั่วโลก</string>
@@ -165,22 +205,29 @@ Second \"item\" text"</string>
   <string name="patch_options_reset_all_dialog_description">คุณกำลังจะรีเซ็ตตัวเลือกแพตช์ทั้งหมด คุณจะต้องใช้ตัวเลือกแต่ละอันซ้ำอีกครั้ง</string>
   <string name="patch_options_reset_all_description">รีเซ็ตตัวเลือกแพตช์ทั้งหมด</string>
   <string name="downloaders">ตัวดาวน์โหลด</string>
-  <string name="downloader_state_trusted">เชื่อถือได้</string>
+  <string name="downloader_prereleases">ใช้เวอร์ชันทดสอบ</string>
+  <string name="downloader_prereleases_description">ใช้เวอร์ชันทดสอบของตัวดาวน์โหลดหลัก</string>
+  <string name="downloader_state_loaded">โหลดสำเร็จ</string>
   <string name="downloader_state_failed">โหลดไม่สำเร็จ คลิกเพื่อดูรายละเอียดเพิ่มเติม</string>
-  <string name="downloader_state_untrusted">ไม่น่าเชื่อถือ</string>
-  <string name="downloader_trust_dialog_title">เชื่อถือตัวดาวน์โหลดหรือไม่?</string>
-  <string name="downloader_revoke_trust_dialog_title">เพิกถอนความน่าเชื่อถือหรือไม่?</string>
-  <string name="downloader_trust_dialog_body">การดำเนินการต่อจะอนุญาตให้ตัวดาวน์โหลดนี้ทำงานได้
-
-เปิดใช้งานตัวดาวน์โหลดนี้เฉพาะเมื่อคุณเชื่อถือเท่านั้น ตัวดาวน์โหลดสามารถทำให้ Manager เรียกใช้โค้ดตามอำเภอใจได้</string>
-  <string name="downloader_trust_dialog_signature">ลายเซ็น:
-
-%s</string>
-  <string name="downloader_trust_dialog_name">ตัวดาวน์โหลด:
-%s</string>
+  <string name="downloader_state_missing">ไม่พบ</string>
   <string name="downloader_delete_apps_title">ลบแอปที่เลือก</string>
   <string name="downloader_delete_apps_description">คุณแน่ใจหรือไม่ว่าต้องการลบแอปที่เลือก</string>
+  <string name="downloader_delete_single_description">คุณแน่ใจหรือไม่ว่าต้องการลบ \"%s\"</string>
   <string name="downloader_settings_no_apps">ไม่พบแอปที่ดาวน์โหลด</string>
+  <string name="downloader_settings_no_apps_description">แอปที่ดาวน์โหลดผ่าน ReVanced Manager จะปรากฏที่นี่</string>
+  <string name="downloader_url">URL ตัวดาวน์โหลด</string>
+  <string name="downloader_add">เพิ่มตัวดาวน์โหลด</string>
+  <string name="select_downloader_type_dialog_description">เพิ่มตัวดาวน์โหลดใหม่จาก URL หรือไฟล์ในเครื่อง</string>
+  <string name="local_downloaders_description">เพิ่มตัวดาวน์โหลดจากไฟล์ในเครื่อง</string>
+  <string name="remote_downloaders_description">เพิ่มตัวดาวน์โหลดจาก URL สามารถอัปเดตอัตโนมัติได้</string>
+  <string name="install_revanced_downloaders">ติดตั้งตัวดาวน์โหลดเพื่อรับแอปโดยตรงภายใน ReVanced Manager</string>
+  <string name="install_revanced_downloader">ติดตั้ง ReVanced Downloaders</string>
+  <string name="cancel_downloader_install_title">ยกเลิกการติดตั้งตัวดาวน์โหลดหรือไม่</string>
+  <string name="cancel_downloader_install_description">กำลังติดตั้งตัวดาวน์โหลด หากคุณออกตอนนี้ การดาวน์โหลดจะถูกยกเลิก</string>
+  <string name="downloader_sources_unavailable_title">ไม่พบตัวดาวน์โหลดเหล่านี้</string>
+  <string name="downloader_sources_unavailable_description">กดอัปเดตเพื่อแก้ไขปัญหานี้</string>
+  <string name="downloader_update_failed">อัปเดตตัวดาวน์โหลดไม่สำเร็จ: %s</string>
+  <string name="downloader_replace_fail">นำเข้าตัวดาวน์โหลดไม่สำเร็จ: %s</string>
   <string name="search_apps">ค้นหาแอป…</string>
   <string name="loading_body">กำลังโหลด…</string>
   <string name="downloading_patches">กำลังดาวน์โหลดแพตช์…</string>
@@ -194,7 +241,7 @@ Second \"item\" text"</string>
   <string name="share">แชร์</string>
   <string name="patch">แพตช์</string>
   <string name="select_from_storage">เลือกจากที่เก็บข้อมูล</string>
-  <string name="select_from_storage_description">เลือกไฟล์ APK จากที่เก็บข้อมูลโดยใช้ตัวเลือกไฟล์</string>
+  <string name="select_from_storage_description">เลือกไฟล์ APK จากที่จัดเก็บโดยใช้ตัวเลือกไฟล์</string>
   <string name="suggested_version_info">เวอร์ชันแนะนำ: %s</string>
   <string name="type_anything">พิมพ์อะไรก็ได้เพื่อดำเนินการต่อ</string>
   <string name="search">ค้นหาแพตช์…</string>
@@ -203,6 +250,8 @@ Second \"item\" text"</string>
   <string name="back">ย้อนกลับ</string>
   <string name="warning">คำเตือน</string>
   <string name="add">เพิ่ม</string>
+  <string name="enable">เปิดใช้งาน</string>
+  <string name="disable">ปิดการใช้งาน</string>
   <string name="close">ปิด</string>
   <string name="clear">ล้าง</string>
   <string name="system">ระบบ</string>
@@ -216,7 +265,7 @@ Second \"item\" text"</string>
   <string name="process_runtime">เรียกใช้ Patcher ในกระบวนการอื่น (ทดลอง)</string>
   <string name="process_runtime_description">วิธีนี้เร็วกว่าและทำให้ Patcher ใช้หน่วยความจำได้มากขึ้น</string>
   <string name="process_runtime_memory_limit">ขีดจำกัดหน่วยความจำของกระบวนการ Patcher</string>
-  <string name="process_runtime_memory_limit_description">จำนวนหน่วยความจำสูงสุดที่กระบวนการ Patcher สามารถใช้ได้ (ในหน่วยเมกะไบต์)</string>
+  <string name="process_runtime_memory_limit_description">ปริมาณหน่วยความจำสูงสุดที่กระบวนการ Patcher สามารถใช้ได้</string>
   <string name="debug_logs_export">ส่งออกบันทึกการดีบัก</string>
   <string name="debug_logs_export_read_failed">อ่านบันทึกไม่สำเร็จ (รหัสออก %d)</string>
   <string name="debug_logs_export_failed">ส่งออกบันทึกไม่สำเร็จ</string>
@@ -236,6 +285,8 @@ Second \"item\" text"</string>
   <string name="device_memory_limit_format">%1$dMB (ปกติ) - %2$dMB (ขนาดใหญ่)</string>
   <string name="patches_force_download">บังคับดาวน์โหลดแพตช์ทั้งหมด</string>
   <string name="patches_reset">รีเซ็ตแพตช์</string>
+  <string name="reset_onboarding">รีเซ็ตการเริ่มต้นใช้งาน</string>
+  <string name="reset_onboarding_description">แสดงหน้าจอเริ่มต้นใช้งานในการเปิดแอปครั้งถัดไป</string>
   <string name="patching">กำลังแพตช์</string>
   <string name="signing">กำลังลงนาม</string>
   <string name="storage">ที่เก็บข้อมูล</string>
@@ -249,8 +300,15 @@ Second \"item\" text"</string>
   <string name="download_app">ดาวน์โหลดแอป</string>
   <string name="download_apk">ดาวน์โหลดไฟล์ APK</string>
   <string name="patches_download_fail">ดาวน์โหลดแพตช์ไม่สำเร็จ: %s</string>
+  <string name="api_not_working_title">บริการ API ใช้งานไม่ได้ในขณะนี้</string>
+  <string name="api_not_working_description">คุณสมบัติบางอย่างอาจได้รับผลกระทบ โปรดตรวจสอบการเชื่อมต่อของคุณ หรือ URL API ในการตั้งค่า</string>
   <string name="patches_replace_fail">นำเข้าแพตช์ไม่สำเร็จ: %s</string>
-  <string name="no_patched_apps_found">ไม่พบแอปที่ได้รับการแพตช์</string>
+  <string name="no_patched_apps_found">ไม่พบแอปที่แพตช์แล้ว</string>
+  <string name="no_patched_apps_description">ขณะนี้คุณยังไม่มีแอปที่แพตช์แล้วที่เราทราบ เปลี่ยนแปลงได้โดยการแพตช์แอปแรกของคุณ!</string>
+  <string name="patched_apps_section_title">แอปที่ถูกแพตช์</string>
+  <string name="patchable_apps_section_title">แอปที่สามารถแพตช์ได้</string>
+  <string name="no_patches_found">ไม่พบแพตช์</string>
+  <string name="no_patches_description">คุณยังไม่มีแพตช์ใด ๆ เพิ่มแพตช์โดยการแตะปุ่มด้านล่าง!</string>
   <string name="tap_on_patches">แตะที่แพตช์เพื่อดูข้อมูลเพิ่มเติม</string>
   <string name="patches_selected">เลือก %s รายการ</string>
   <string name="incompatible_patches">แพตช์ที่เข้ากันไม่ได้</string>
@@ -271,6 +329,7 @@ Second \"item\" text"</string>
   <string name="download_application">ดาวน์โหลดแอปพลิเคชันใช่หรือไม่?</string>
   <string name="app_not_installed">แอปที่คุณเลือกยังไม่ได้ติดตั้ง คุณต้องการดาวน์โหลดหรือไม่?</string>
   <string name="failed_to_load_apk">โหลด APK ไม่สำเร็จ</string>
+  <string name="split_apk_not_supported">APK แบบแยกไม่สามารถแพตช์ได้</string>
   <string name="loading">กำลังโหลด…</string>
   <string name="not_installed">ไม่ได้ติดตั้ง</string>
   <string name="installed">ติดตั้งแล้ว</string>
@@ -296,11 +355,12 @@ Second \"item\" text"</string>
   <string name="downloader_invalid_version">ตัวดาวน์โหลดไม่ได้ดึงเวอร์ชันที่ถูกต้อง</string>
   <string name="downloader_app_not_found">ตัวดาวน์โหลดไม่พบแอป</string>
   <string name="downloader_error">ข้อผิดพลาดของตัวดาวน์โหลด: %s</string>
-  <string name="no_downloader_installed">ไม่มีตัวดาวน์โหลดติดตั้งอยู่</string>
-  <string name="no_downloader_available">มีตัวดาวน์โหลดติดตั้งอยู่ แต่ไม่มีตัวใดที่น่าเชื่อถือ โปรดตรวจสอบการตั้งค่าของคุณ</string>
+  <string name="no_downloaders_installed">ไม่มีตัวดาวน์โหลดแอปติดตั้งอยู่!</string>
+  <string name="no_downloaders_trusted">ไม่มีตัวดาวน์โหลดแอปใดที่ได้รับความเชื่อถือ! โปรดตรวจสอบการตั้งค่าของคุณ</string>
   <string name="already_patched">แพตช์แล้ว</string>
   <string name="patch_selector_sheet_filter_title">ตัวกรอง</string>
   <string name="patch_selector_sheet_filter_compat_title">ความเข้ากันได้</string>
+  <string name="patch_selector_sheet_filter_packages_title">แพ็กเกจ</string>
   <string name="patch_selector_sheet_actions_title">การกระทำ</string>
   <string name="restore_default_selection">คืนค่าการเลือกเริ่มต้น</string>
   <string name="deselect_all">ยกเลิกการเลือกทั้งหมด</string>
@@ -328,11 +388,14 @@ Second \"item\" text"</string>
   <string name="save_apk_success">บันทึก APK แล้ว</string>
   <string name="sign_fail">ลงชื่อ APK ไม่สำเร็จ: %s</string>
   <string name="save_logs">บันทึกบันทึก</string>
+  <string name="save_as_file">บันทึกลงในไฟล์</string>
+  <string name="export_patcher_logs">ส่งออกบันทึกของ patcher</string>
+  <string name="save_logs_success">บันทึกแล้ว</string>
   <string name="downloader_activity_dialog_body">จำเป็นต้องมีการโต้ตอบกับผู้ใช้เพื่อดำเนินการต่อด้วยตัวดาวน์โหลดนี้</string>
   <string name="select_install_type">เลือกประเภทการติดตั้ง</string>
   <string name="patcher_step_group_preparing">กำลังเตรียม</string>
   <string name="patcher_step_load_patches">โหลดแพตช์</string>
-  <string name="patcher_step_unpack">อ่านไฟล์ APK</string>
+  <string name="patcher_step_unpack">เตรียมแพตเชอร์</string>
   <string name="patcher_step_group_patching">กำลังแพตช์</string>
   <string name="patcher_step_group_saving">กำลังบันทึก</string>
   <string name="patcher_step_write_patched">เขียนไฟล์ APK ที่แพตช์แล้ว</string>
@@ -362,7 +425,12 @@ Second \"item\" text"</string>
   <string name="website">เว็บไซต์</string>
   <string name="github">GitHub</string>
   <string name="contact">ติดต่อ</string>
+  <string name="license">ใบอนุญาต</string>
+  <string name="source">แหล่งที่มา</string>
+  <string name="repository">ที่เก็บ</string>
+  <string name="bundle_information_by_author">โดย %1$s</string>
   <string name="version">เวอร์ชัน</string>
+  <string name="version_compatibility_warning">เวอร์ชันที่เลือกอาจไม่เข้ากันได้กับแพตช์ที่เลือก</string>
   <string name="submit_feedback">ส่งปัญหาหรือข้อเสนอแนะ</string>
   <string name="submit_feedback_description">ช่วยเราปรับปรุงแอปพลิเคชันนี้</string>
   <string name="developer_options">ตัวเลือกสำหรับนักพัฒนา</string>
@@ -388,12 +456,16 @@ Second \"item\" text"</string>
   <string name="update_completed">ติดตั้งอัปเดตแล้ว</string>
   <string name="install_update_manager_failed">ติดตั้งอัปเดตไม่สำเร็จ</string>
   <string name="manual_update_check">ตรวจสอบอัปเดต</string>
+  <string name="view_update">ดูการอัปเดต</string>
   <string name="manual_update_check_description">ตรวจสอบอัปเดตด้วยตนเอง</string>
   <string name="update_checking_manager">ตรวจสอบอัปเดตเมื่อเปิดใช้งาน</string>
   <string name="update_checking_manager_description">ตรวจสอบ ReVanced Manager เวอร์ชันใหม่เมื่อแอปพลิเคชันเริ่มต้น</string>
+  <string name="update_checking_downloader">ตรวจสอบการอัปเดต ReVanced Downloaders เมื่อเปิดใช้งาน</string>
+  <string name="update_checking_downloader_description">ตรวจสอบการอัปเดต ReVanced Downloaders ที่ติดตั้งแล้วเมื่อแอปพลิเคชันเริ่มต้น</string>
   <string name="manager_prereleases">ใช้เวอร์ชันก่อนเผยแพร่</string>
   <string name="manager_prereleases_description">ใช้ ReVanced Manager เวอร์ชันก่อนเผยแพร่</string>
-  <string name="changelog">ดูบันทึกการเปลี่ยนแปลง</string>
+  <string name="prereleases_warning">เวอร์ชันก่อนเผยแพร่อาจไม่เสถียรและมีข้อบกพร่อง คุณอาจประสบปัญหาแอปขัดข้อง, ข้อมูลสูญหาย หรือปัญหาที่ไม่คาดคิดอื่น ๆ โปรดเปิดใช้งานเฉพาะเมื่อคุณยอมรับความเสี่ยงเหล่านี้ได้</string>
+  <string name="changelog">ดูประวัติการเปลี่ยนแปลง</string>
   <string name="changelog_loading">กำลังโหลดบันทึกการเปลี่ยนแปลง</string>
   <string name="changelog_download_fail">ดาวน์โหลดบันทึกการเปลี่ยนแปลงไม่สำเร็จ: %s</string>
   <string name="changelog_description">ตรวจสอบการเปลี่ยนแปลงล่าสุดในการอัปเดตนี้</string>
@@ -472,4 +544,13 @@ Second \"item\" text"</string>
   <string name="export">ส่งออก</string>
   <string name="confirm">ยืนยัน</string>
   <string name="new_announcement">ประกาศใหม่:\n%s</string>
+  <plurals name="patch_count">
+    <item quantity="other">%d แพทช์</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="other">ดำเนินการ %d แพทช์</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="other">%d รายการที่เลือก</item>
+  </plurals>
 </resources>
