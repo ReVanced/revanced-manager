@@ -595,9 +595,7 @@ private fun AppSourceSelectorDialog(
                     )
                 }
 
-                items(
-                    downloaders,
-                    key = { "downloader_${it.packageName}_${it.className}" }) { downloader ->
+                items(downloaders) { downloader ->
                     ListItem(
                         modifier = Modifier.clickable(enabled = canSelect) {
                             onSelectDownloader(
