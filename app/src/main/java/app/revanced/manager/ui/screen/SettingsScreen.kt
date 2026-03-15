@@ -2,7 +2,10 @@ package app.revanced.manager.ui.screen
 
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +13,11 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import android.content.Intent
+import android.os.PowerManager
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Settings
@@ -28,10 +34,12 @@ import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -40,12 +48,15 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.getSystemService
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
+import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.NotificationCardType
 import app.revanced.manager.ui.component.settings.ExpressiveListIcon
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.model.navigation.Settings
@@ -88,6 +99,17 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
         }
     )
     val context = LocalContext.current
+    val powerManager = remember(context) { context.getSystemService<PowerManager>()!! }
+    
+    var showBatteryOptimizationsWarning by remember {
+        mutableStateOf(!powerManager.isIgnoringBatteryOptimizations(context.packageName))
+    }
+    
+    val batteryOptimizationsLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            showBatteryOptimizationsWarning = !powerManager.isIgnoringBatteryOptimizations(context.packageName)
+        }
+    
     val appIcon = rememberDrawablePainter(
         drawable = remember(context) {
             AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
@@ -189,6 +211,23 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
             state = scrollState
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                if (showBatteryOptimizationsWarning) {
+                    NotificationCard(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        type = NotificationCardType.WARNING,
+                        icon = Icons.Default.BatteryAlert,
+                        text = stringResource(R.string.battery_optimization_notification),
+                        onClick = {
+                            batteryOptimizationsLauncher.launch(
+                                Intent(
+                                    android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                                    Uri.fromParts("package", context.packageName, null)
+                                )
+                            )
+                        }
+                    )
+                }
+                
                 ListSection {
                     generalSections.forEach { (name, description, icon, destination) ->
                         SettingsListItem(
