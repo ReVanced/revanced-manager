@@ -57,6 +57,9 @@ class DashboardViewModel(
      */
     val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
 
+    var showBatteryOptimizationsWarning by mutableStateOf(false)
+        private set
+
     var unreadAnnouncement by mutableStateOf<ReVancedAnnouncement?>(null)
         private set
 
@@ -67,6 +70,7 @@ class DashboardViewModel(
         viewModelScope.launch {
             checkForManagerUpdates()
             checkForAnnouncements()
+            updateBatteryOptimizationsWarning()
         }
     }
 
@@ -108,6 +112,10 @@ class DashboardViewModel(
         }
     }
 
+    fun updateBatteryOptimizationsWarning() {
+        showBatteryOptimizationsWarning =
+            !powerManager.isIgnoringBatteryOptimizations(app.packageName)
+    }
 
     fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
         viewModelScope.launch {
