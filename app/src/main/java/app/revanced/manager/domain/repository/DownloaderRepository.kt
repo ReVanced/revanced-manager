@@ -55,8 +55,9 @@ class DownloaderRepository(
     override suspend fun dbReset() = dao.reset()
 
     private val loader = Loader { file ->
+        val dataDir = file.parentFile!!.resolve("data").also(File::mkdirs)
         val pkgInfo = pm.getPackageInfo(file) ?: error("Failed to get package info for $file")
-        loadPackage(pkgInfo)
+        loadPackage(pkgInfo, dataDir)
     }
 
     override fun loadEntity(entity: DownloaderEntity): Source<DownloaderPackage> = with(entity) {
@@ -113,9 +114,6 @@ class DownloaderRepository(
     val downloaderSources = store.state.map { it.sources }
     val loadedDownloadersFlow = store.state.map { it.data }
 
-    // TODO: clear data for removed downloaders.
-    private val dataDir = app.getDir("downloaders_data", Context.MODE_PRIVATE)
-
     fun findPackageByName(packageName: String) =
         store.state.value.sources.values.asSequence().mapNotNull { it.loaded }
             .find { it.context.packageName == packageName }
@@ -133,7 +131,7 @@ class DownloaderRepository(
         clazz.getMethod("createApplicationContext", ApplicationInfo::class.java, Int::class.java)
     }
 
-    private fun loadPackage(packageInfo: PackageInfo): DownloaderPackage {
+    private fun loadPackage(packageInfo: PackageInfo, dataDir: File): DownloaderPackage {
         val packageName = packageInfo.packageName
 
         // The context is technically only necessary for resources. On API levels 30 and above, it would be better to use the proper APIs for dynamic resource loading.
@@ -158,8 +156,7 @@ class DownloaderRepository(
         val scopeImpl = object : Scope {
             override val hostPackageName = app.packageName
             override val downloaderPackageName = downloaderContext.packageName
-            override val dataDir =
-                this@DownloaderRepository.dataDir.resolve(downloaderPackageName).also(File::mkdirs)
+            override val dataDir = dataDir
         }
 
         return DownloaderPackage(
