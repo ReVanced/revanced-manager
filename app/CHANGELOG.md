@@ -1,3 +1,10 @@
+# app [2.1.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.1.0-dev.1...v2.1.0-dev.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* Disable ProGuard to fix various patching errors ([5f79397](https://github.com/ReVanced/revanced-manager/commit/5f79397a7cc600ad16c18f807caccf72862c68e1))
+
 # app [2.1.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.2-dev.1...v2.1.0-dev.1) (2026-03-15)
 
 
