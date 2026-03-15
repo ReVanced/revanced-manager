@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import android.content.ActivityNotFoundException
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -28,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -46,6 +48,7 @@ import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 
@@ -58,6 +61,7 @@ fun InstalledAppsScreen(
     viewModel: InstalledAppsViewModel = koinViewModel(),
     selectorVm: AppSelectorViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     EventEffect(flow = selectorVm.storageSelectionFlow) {
         onStorageSelect(it)
     }
@@ -226,7 +230,11 @@ fun InstalledAppsScreen(
 
         item(key = "PATCHABLE_STORAGE") {
             ListItem(
-                modifier = Modifier.clickable { pickApkLauncher.launch(APK_MIMETYPE) },
+                modifier = Modifier.clickable { try {
+                    pickApkLauncher.launch(APK_MIMETYPE)
+                } catch (_: ActivityNotFoundException) {
+                    context.toast(R.string.no_file_picker_found)
+                } },
                 leadingContent = {
                     Box(Modifier.size(36.dp), Alignment.Center) {
                         Icon(

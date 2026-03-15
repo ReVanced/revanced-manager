@@ -83,6 +83,10 @@ fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, duration).show()
 }
 
+fun Context.toast(@StringRes stringRes: Int, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, getString(stringRes), duration).show()
+}
+
 /**
  * Safely perform an operation that may fail to avoid crashing the app.
  * If [block] fails, the error will be logged and a toast will be shown to the user to inform them that the action failed.
