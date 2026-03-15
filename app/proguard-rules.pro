@@ -1,7 +1,9 @@
 -dontobfuscate
+-dontoptimize
+-keepattributes *
 
 -keep class app.revanced.manager.patcher.runtime.process.* { *; }
--keep class app.revanced.manager.plugin.** { *; }
+-keep class app.revanced.manager.downloader.** { *; }
 -keep class app.revanced.patcher.** { *; }
 -keep class com.android.tools.smali.** { *; }
 -keep class kotlin.** { *; }
@@ -12,3 +14,6 @@
 -dontwarn java.awt.**
 -dontwarn javax.**
 -dontwarn org.slf4j.**
+
+-dontwarn org.immutables.value.Generated
+-dontwarn reactor.blockhound.integration.BlockHoundIntegration

@@ -30,6 +30,10 @@ class PatchSelectionRepository(db: AppDatabase) {
     fun getPackagesWithSavedSelection() =
         dao.getPackagesWithSelection().map(Iterable<String>::toSet).distinctUntilChanged()
 
+    fun getSelectionPackageCount() = dao.getSelectionPackageCount().distinctUntilChanged()
+
+    fun getSelectedPatchCount() = dao.getSelectedPatchCount().distinctUntilChanged()
+
     suspend fun resetSelectionForPackage(packageName: String) {
         dao.resetForPackage(packageName)
     }

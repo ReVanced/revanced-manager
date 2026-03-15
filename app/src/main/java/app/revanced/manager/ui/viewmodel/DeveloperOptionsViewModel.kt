@@ -4,9 +4,10 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.RemotePatchBundle
+import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 
@@ -17,11 +18,16 @@ class DeveloperOptionsViewModel(
 ) : ViewModel() {
     fun redownloadBundles() = viewModelScope.launch {
         uiSafe(app, R.string.patches_download_fail, RemotePatchBundle.updateFailMsg) {
-            patchBundleRepository.redownloadRemoteBundles()
+            patchBundleRepository.redownloadRemote()
         }
     }
 
     fun resetBundles() = viewModelScope.launch {
         patchBundleRepository.reset()
+    }
+
+    fun resetOnboarding() = viewModelScope.launch {
+        prefs.completedOnboarding.update(false)
+        app.toast(app.getString(R.string.reset_onboarding_description))
     }
 }

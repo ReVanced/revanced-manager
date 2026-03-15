@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import app.revanced.manager.BuildConfig
@@ -116,9 +117,11 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
             val binder = awaitBinderConnection()
 
             // Android Studio's fast deployment feature causes an issue where the other process will be running older code compared to the main process.
-            // The patcher process is running outdated code if the randomly generated BUILD_ID numbers don't match.
+            // The patcher process might be running outdated code if the fast deployment feature is used.
             // To fix it, clear the cache in the Android settings or disable fast deployment (Run configurations -> Edit Configurations -> app -> Enable "always deploy with package manager").
-            if (binder.buildId() != BuildConfig.BUILD_ID) throw Exception("app_process is running outdated code. Clear the app cache or disable disable Android 11 deployment optimizations in your IDE")
+            if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                logger.warn("External patcher process: app_process could be running outdated code. To resolve stale code, clear the app cache or disable Android 11 deployment optimizations in your IDE.")
+            }
 
             val eventHandler = object : IPatcherEvents.Stub() {
                 override fun log(level: String, msg: String) = logger.log(enumValueOf(level), msg)

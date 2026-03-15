@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.model.navigation
 
 import android.os.Parcelable
+import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
@@ -9,6 +10,9 @@ import kotlinx.parcelize.RawValue
 import kotlinx.serialization.Serializable
 
 interface ComplexParameter<T : Parcelable>
+
+@Serializable
+object Onboarding
 
 @Serializable
 object Dashboard
@@ -20,7 +24,16 @@ object AppSelector
 data class InstalledApplicationInfo(val packageName: String)
 
 @Serializable
+data class BundleInformation(val uid: Int)
+
+@Serializable
 data class Update(val downloadOnScreenEntry: Boolean = false)
+
+@Serializable
+data object Announcements
+
+@Serializable
+data object Announcement : ComplexParameter<ReVancedAnnouncement>
 
 @Serializable
 data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.ViewModelParams> {
@@ -40,6 +53,8 @@ data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.V
             val app: SelectedApp,
             val currentSelection: PatchSelection?,
             val options: @RawValue Options,
+            val readOnly: Boolean = false,
+            val browseAllBundles: Boolean = false,
         ) : Parcelable
     }
 
@@ -75,6 +90,9 @@ object Settings {
 
     @Serializable
     data object Downloads : Destination
+
+    @Serializable
+    data class DownloadersInfo(val uid: Int) : Destination
 
     @Serializable
     data object ImportExport : Destination

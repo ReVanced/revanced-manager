@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">ಪ್ಯಾಚರ್</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ಡೌನ್‌ಲೋಡರ್ ಹೋಸ್ಟ್</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ಡೌನ್‌ಲೋಡರ್‌ಗಳಿಗೆ ಪ್ರವೇಶವನ್ನು ನಿಯಂತ್ರಿಸಲು ಬಳಸಲಾಗುತ್ತದೆ. ಕೇವಲ ReVanced Manager ಮಾತ್ರ ಇದನ್ನು ಹೊಂದಿದೆ.</string>
+  <string name="new_downloader_notification">ಹೊಸ ಡೌನ್‌ಲೋಡರ್(ಗಳು) ಲಭ್ಯವಿದೆ. ಅವುಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</string>
+  <string name="app_source_dialog_option_auto_unavailable">ಯಾವುದೇ ಡೌನ್‌ಲೋಡರ್ ಲಭ್ಯವಿಲ್ಲ</string>
+  <string name="announcements_filter_tag">ಟ್ಯಾಗ್ ಮೂಲಕ ಫಿಲ್ಟರ್ ಮಾಡಿ</string>
+  <string name="announcements_show_archived">ಆರ್ಕೈವ್ ಮಾಡಿದವುಗಳನ್ನು ತೋರಿಸಿ</string>
+  <string name="downloads_description">ಡೌನ್‌ಲೋಡರ್‌ಗಳು ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</string>
+  <string name="downloaders">ಡೌನ್‌ಲೋಡರ್‌ಗಳು</string>
+  <string name="downloader_state_trusted">ವಿಶ್ವಾಸಾರ್ಹ</string>
+  <string name="downloader_state_failed">ಲೋಡ್ ಆಗುವಲ್ಲಿ ವಿಫಲವಾಗಿದೆ. ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
+  <string name="downloader_state_untrusted">ಅವಿಶ್ವಾಸಾರ್ಹ</string>
+  <string name="downloader_trust_dialog_title">ಡೌನ್‌ಲೋಡರ್ ಅನ್ನು ನಂಬುವುದೇ?</string>
+  <string name="downloader_revoke_trust_dialog_title">ನಂಬಿಕೆಯನ್ನು ಹಿಂತೆಗೆದುಕೊಳ್ಳುವುದೇ?</string>
+  <string name="downloader_trust_dialog_body">ಮುಂದುವರಿಯುವುದರಿಂದ ಈ ಡೌನ್‌ಲೋಡರ್ ರನ್ ಆಗಲು ಅನುಮತಿಸುತ್ತದೆ.\n\nನೀವು ಅದನ್ನು ನಂಬಿದರೆ ಮಾತ್ರ ಈ ಡೌನ್‌ಲೋಡರ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ. ಡೌನ್‌ಲೋಡರ್‌ಗಳು Manager ಅನ್ನು ಅನಿಯಂತ್ರಿತ ಕೋಡ್ ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಂತೆ ಮಾಡಬಹುದು.</string>
+  <string name="downloader_trust_dialog_signature">ಸಹಿ:\n\n%s</string>
+  <string name="downloader_trust_dialog_name">ಡೌನ್‌ಲೋಡರ್:\n%s</string>
+  <string name="downloader_delete_apps_title">ಆಯ್ಕೆಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಅಳಿಸಿ</string>
+  <string name="downloader_delete_apps_description">ಆಯ್ಕೆಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ?</string>
+  <string name="no_downloader_installed">ಯಾವುದೇ ಡೌನ್‌ಲೋಡರ್‌ಗಳು ಇನ್‌ಸ್ಟಾಲ್ ಆಗಿಲ್ಲ.</string>
+  <string name="no_downloader_available">ಡೌನ್‌ಲೋಡರ್‌ಗಳು ಇನ್‌ಸ್ಟಾಲ್ ಆಗಿವೆ ಆದರೆ ಯಾವುದೂ ವಿಶ್ವಾಸಾರ್ಹವಾಗಿಲ್ಲ. ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.</string>
+  <string name="patch_selector_sheet_actions_title">ಕ್ರಮಗಳು</string>
+  <string name="restore_default_selection">ಡೀಫಾಲ್ಟ್ ಆಯ್ಕೆಯನ್ನು ಮರುಸ್ಥಾಪಿಸಿ</string>
+  <string name="deselect_all">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ರದ್ದುಗೊಳಿಸಿ</string>
+  <string name="invert_selection">ಆಯ್ಕೆಯನ್ನು ವಿಲೋಮಗೊಳಿಸಿ</string>
+  <string name="deselect_all_except">%s ಹೊರತುಪಡಿಸಿ ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ರದ್ದುಮಾಡಿ</string>
+  <string name="scope_dialog_title">ಇದಕ್ಕೆ ಅನ್ವಯಿಸು</string>
+  <string name="scope_all_patches">ಎಲ್ಲಾ ಪ್ಯಾಚ್‌ಗಳು</string>
+  <string name="scope_bundle_patches">%s ಮಾತ್ರ</string>
+  <string name="downloader_activity_dialog_body">ಈ ಡೌನ್‌ಲೋಡರ್‌ನೊಂದಿಗೆ ಮುಂದುವರಿಯಲು ಬಳಕೆದಾರರ ಸಂವಹನ ಅಗತ್ಯವಿದೆ.</string>
+  <string name="view_announcement">ಪ್ರಕಟಣೆಯನ್ನು ವೀಕ್ಷಿಸಿ</string>
+  <string name="announcements">ಪ್ರಕಟಣೆಗಳು</string>
+  <string name="archive">ಆರ್ಕೈವ್</string>
+  <string name="no_announcements_found">ಯಾವುದೇ ಪ್ರಕಟಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
+  <string name="new_announcement">ಹೊಸ ಪ್ರಕಟಣೆ:
+%s</string>
+</resources>

@@ -58,6 +58,7 @@ dependencies {
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.foundation.layout)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
 
@@ -65,7 +66,7 @@ dependencies {
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
 
-    // Downloader plugins
+    // Downloaders
     implementation(project(":api"))
 
     // Native processes
@@ -132,19 +133,26 @@ buildscript {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 36
-    buildToolsVersion = "35.0.1"
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
-        applicationId = "app.revanced.manager"
-        minSdk = 26
-        targetSdk = 35
+        applicationId = "app.revanced.manager.flutter"
+        minSdk {
+            version = release(26)
+        }
+        targetSdk {
+            version = release(36)
+        }
 
         val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
         versionName = versionStr
         versionCode = with(versionStr.toVersion()) {
-            major * 10_000_000 +
-                    minor * 10_000 +
+            major * 100_000_000 +
+                    minor * 100_000 +
                     patch * 100 +
                     (preRelease?.substringAfterLast('.')?.toInt() ?: 99)
         }
@@ -162,27 +170,29 @@ android {
             .joinToString(prefix = "{", separator = ",", postfix = "}") { "\"$it\"" }
 
         buildConfigField("String[]", "SUPPORTED_LOCALES", locales)
+
+        val deepLinkScheme = "revanced-manager"
+        manifestPlaceholders["deepLinkScheme"] = deepLinkScheme
+
+        buildConfigField("String", "DEEP_LINK_SCHEME", "\"$deepLinkScheme\"")
     }
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (Debug)")
-
-            buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
 
         release {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
+                // Note: There are actually no optimisation since we disable it in proguard, AGP does not allow you to remove -optimize from this for some reason.
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
             val keystoreFile = file("keystore.jks")
 
             if (project.hasProperty("signAsDebug") || !keystoreFile.exists()) {
-                applicationIdSuffix = ".debug_signed"
                 resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs.getByName("debug")
 
@@ -195,8 +205,6 @@ android {
                     keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
                 }
             }
-
-            buildConfigField("long", "BUILD_ID", "0L")
         }
     }
 
@@ -218,23 +226,6 @@ android {
         includeInBundle = false
     }
 
-    packaging {
-        resources.excludes.addAll(
-            listOf(
-                "/prebuilt/**",
-                "META-INF/DEPENDENCIES",
-                "META-INF/**.version",
-                "DebugProbesKt.bin",
-                "kotlin-tooling-metadata.json",
-                "org/bouncycastle/pqc/**.properties",
-                "org/bouncycastle/x509/**.properties",
-            )
-        )
-        jniLibs {
-            useLegacyPackaging = true
-        }
-    }
-
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
@@ -249,10 +240,59 @@ android {
         generateLocaleConfig = true
     }
 
+    android {
+        lint {
+            disable.add("ExtraTranslation")
+        }
+    }
+
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
+        }
+    }
+
+    packaging {
+        resources {
+            // Useless files
+            excludes += "/XPP3_*_VERSION"
+            excludes += "/font-awesome-license.txt"
+            excludes += "/smali.properties"
+            excludes += "/baksmali.properties"
+            excludes += "/properties/apktool.properties"
+            excludes += "/org/antlr/**"
+            excludes += "/org/mockito/**"
+            excludes += "/org/bouncycastle/pqc/**.properties"
+            excludes += "/org/bouncycastle/x509/**.properties"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/**/*.txt"
+            excludes += "/META-INF/**/*.properties"
+            excludes += "/META-INF/DEPENDENCIES"
+
+            // AAPT
+            excludes += "/prebuilt/**/*"
+        }
+        jniLibs {
+            // 32-bit x86 is dead
+            excludes += "/lib/x86/*.so"
+
+            // Equivalent of AndroidManifest's extractNativeLibs=true to ensure libs are compressed
+            useLegacyPackaging = true
+        }
+    }
+}
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) {
+        it.packaging.resources.excludes.apply {
+            // Debug metadata
+            add("/META-INF/*.version")
+            add("/META-INF/*.kotlin_module")
+            add("/kotlin-tooling-metadata.json")
+
+            // Kotlin debugging (https://github.com/Kotlin/kotlinx.coroutines/issues/2274)
+            add("/DebugProbesKt.bin")
         }
     }
 }
@@ -261,6 +301,17 @@ kotlin {
     jvmToolchain(17)
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-Xexplicit-backing-fields",
+            "-Xcontext-parameters",
+        )
+    }
+}
+
+configurations {
+    all {
+        // ReVanced Library has a dependency which conflicts with whatever this is. We don't use protobuf, so it should be fine.
+        exclude(group = "com.google.api.grpc", module = "proto-google-common-protos")
     }
 }
 

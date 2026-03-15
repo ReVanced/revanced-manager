@@ -7,50 +7,65 @@ import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Source
-import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
@@ -58,22 +73,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
-import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.AvailableUpdateDialog
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.ConfirmDialog
-import app.revanced.manager.ui.component.bundle.BundleTopBar
-import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
+import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.PillTab
+import app.revanced.manager.ui.component.PillTabBar
+import app.revanced.manager.ui.component.bundle.ImportSourceDialog
+import app.revanced.manager.ui.component.bundle.ImportSourceDialogStrings
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
-import app.revanced.manager.ui.component.haptics.HapticTab
+import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.util.RequestInstallAppsContract
-import app.revanced.manager.util.toast
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+import kotlin.collections.emptyList
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -84,276 +105,469 @@ enum class DashboardPage(
 }
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
-    onDownloaderPluginClick: () -> Unit,
-    onAppClick: (String) -> Unit
+    onAnnouncementsClick: () -> Unit,
+    onAnnouncementClick: (ReVancedAnnouncement) -> Unit,
+    onAppClick: (String) -> Unit,
+    onPatchableAppClick: (String) -> Unit,
+    onStorageSelect: (SelectedApp.Local) -> Unit,
+    onBundleClick: (Int) -> Unit
 ) {
-    var selectedSourceCount by rememberSaveable { mutableIntStateOf(0) }
-    val bundlesSelectable by remember { derivedStateOf { selectedSourceCount > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
-    val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
-        false
-    )
+    val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
+    val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
+    val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
+    val disablePatchVersionCompatCheck by vm.prefs.disablePatchVersionCompatCheck.getAsState()
+    val disableSelectionWarning by vm.prefs.disableSelectionWarning.getAsState()
+    val disableUniversalPatchCheck by vm.prefs.disableUniversalPatchCheck.getAsState()
+    val suggestedVersionSafeguard by vm.prefs.suggestedVersionSafeguard.getAsState()
+    val safeguardsToggled by remember(
+        disablePatchVersionCompatCheck,
+        disableSelectionWarning,
+        disableUniversalPatchCheck,
+        suggestedVersionSafeguard
+    ) {
+        derivedStateOf {
+            disablePatchVersionCompatCheck ||
+                disableSelectionWarning ||
+                disableUniversalPatchCheck ||
+                !suggestedVersionSafeguard
+        }
+    }
+    val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
     val androidContext = LocalContext.current
     val resources = LocalResources.current
+    val logoPainter = rememberDrawablePainter(drawable = remember(resources) {
+        AppCompatResources.getDrawable(androidContext, R.drawable.ic_logo_ring)
+    })
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         initialPage = DashboardPage.DASHBOARD.ordinal,
         initialPageOffsetFraction = 0f
     ) { DashboardPage.entries.size }
 
+    val dashboardPatchesParams = remember {
+        SelectedApplicationInfo.PatchesSelector.ViewModelParams(
+            app = SelectedApp.Search("", null),
+            currentSelection = null,
+            options = emptyMap(),
+            readOnly = true,
+            browseAllBundles = true
+        )
+    }
+    val dashboardPatchesViewModel = koinViewModel<PatchesSelectorViewModel>(key = "dashboard-patches") {
+        parametersOf(dashboardPatchesParams)
+    }
+    val dashboardPatchesBundles by dashboardPatchesViewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+
+    var patchesSourceEditMode by rememberSaveable { mutableStateOf(false) }
+    var sourceDeleteUid by rememberSaveable { mutableStateOf<Int?>(null) }
+
     LaunchedEffect(pagerState.currentPage) {
-        if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
+        if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) {
+            patchesSourceEditMode = false
+        }
     }
 
-    val firstLaunch by vm.prefs.firstLaunch.getAsState()
-    if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
+    sourceDeleteUid?.let { uid ->
+        val sourceName = dashboardPatchesBundles.firstOrNull { it.uid == uid }?.name
+            ?: return@let
+        ConfirmDialog(
+            onDismiss = { sourceDeleteUid = null },
+            onConfirm = { vm.deleteSource(uid) },
+            title = stringResource(R.string.delete),
+            description = stringResource(R.string.patches_delete_single_dialog_description, sourceName),
+            icon = Icons.Outlined.Delete
+        )
+    }
 
     var showAddBundleDialog by rememberSaveable { mutableStateOf(false) }
     if (showAddBundleDialog) {
-        ImportPatchBundleDialog(
+        ImportSourceDialog(
+            strings = ImportSourceDialogStrings.PATCHES,
             onDismiss = { showAddBundleDialog = false },
             onLocalSubmit = { patches ->
                 showAddBundleDialog = false
+                patchesSourceEditMode = false
                 vm.createLocalSource(patches)
             },
             onRemoteSubmit = { url, autoUpdate ->
                 showAddBundleDialog = false
+                patchesSourceEditMode = false
                 vm.createRemoteSource(url, autoUpdate)
             }
         )
     }
 
-    var showUpdateDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialogOnLaunch.getBlocking()) }
-    val availableUpdate by remember {
-        derivedStateOf { vm.updatedManagerVersion.takeIf { showUpdateDialog } }
-    }
-
-    availableUpdate?.let { version ->
+    var showUpdateDialog by rememberSaveable { mutableStateOf(true) }
+    if (managerAutoUpdates && showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
         AvailableUpdateDialog(
             onDismiss = { showUpdateDialog = false },
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
-            newVersion = version
+            newVersion = availableUpdate!!
         )
+    }
+
+    var pendingAppSelectorLaunch by rememberSaveable { mutableStateOf(false) }
+    var pendingPatchablePackage by rememberSaveable { mutableStateOf<String?>(null) }
+    var pendingStorageSelection by rememberSaveable { mutableStateOf<SelectedApp.Local?>(null) }
+
+    fun clearPendingSelection() {
+        pendingAppSelectorLaunch = false
+        pendingPatchablePackage = null
+        pendingStorageSelection = null
+    }
+
+    fun resumePendingSelection() {
+        if (pendingAppSelectorLaunch) {
+            clearPendingSelection()
+            onAppSelectorClick()
+            return
+        }
+
+        pendingPatchablePackage?.let {
+            clearPendingSelection()
+            onPatchableAppClick(it)
+            return
+        }
+
+        pendingStorageSelection?.let {
+            clearPendingSelection()
+            onStorageSelect(it)
+        }
     }
 
     var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
     val installAppsPermissionLauncher =
         rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
             showAndroid11Dialog = false
-            if (granted) onAppSelectorClick()
+            if (granted) {
+                resumePendingSelection()
+            } else {
+                clearPendingSelection()
+            }
         }
-    if (showAndroid11Dialog) Android11Dialog(
-        onDismissRequest = {
-            showAndroid11Dialog = false
-        },
-        onContinue = {
-            installAppsPermissionLauncher.launch(androidContext.packageName)
-        }
-    )
 
-    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    if (showDeleteConfirmationDialog) {
-        ConfirmDialog(
-            onDismiss = { showDeleteConfirmationDialog = false },
-            onConfirm = vm::deleteSources,
-            title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_multiple_dialog_description),
-            icon = Icons.Outlined.Delete
+    if (showAndroid11Dialog) {
+        Android11Dialog(
+            onDismissRequest = {
+                showAndroid11Dialog = false
+                clearPendingSelection()
+            },
+            onContinue = {
+                installAppsPermissionLauncher.launch(androidContext.packageName)
+            }
         )
     }
 
-    Scaffold(
-        topBar = {
-            if (bundlesSelectable) {
-                BundleTopBar(
-                    title = stringResource(R.string.patches_selected, selectedSourceCount),
-                    onBackClick = vm::cancelSourceSelection,
-                    backIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.back)
+    fun onPatchableSelection(packageName: String) {
+        if (vm.android11BugActive) {
+            clearPendingSelection()
+            pendingPatchablePackage = packageName
+            showAndroid11Dialog = true
+            return
+        }
+
+        onPatchableAppClick(packageName)
+    }
+
+    fun onStorageSelection(app: SelectedApp.Local) {
+        if (vm.android11BugActive) {
+            clearPendingSelection()
+            pendingStorageSelection = app
+            showAndroid11Dialog = true
+            return
+        }
+
+        onStorageSelect(app)
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.surface
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(statusBarHeight + 96.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                Color.Transparent
+                            )
                         )
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                showDeleteConfirmationDialog = true
-                            }
-                        ) {
-                            Icon(
-                                Icons.Outlined.DeleteOutline,
-                                stringResource(R.string.delete)
+                    )
+            )
+
+            val navBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            if (navBarHeight > 0.dp) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(navBarHeight)
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    MaterialTheme.colorScheme.primary.copy(alpha = 0.05f)
+                                )
                             )
-                        }
-                        IconButton(
-                            onClick = vm::updateSources
-                        ) {
-                            Icon(
-                                Icons.Outlined.Refresh,
-                                stringResource(R.string.refresh)
-                            )
-                        }
-                    }
+                        )
                 )
-            } else {
-                AppTopBar(
-                    title = stringResource(R.string.app_name),
-                    actions = {
-                        if (!vm.updatedManagerVersion.isNullOrEmpty()) {
+            }
+
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Image(
+                                    painter = logoPainter,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                                Text(stringResource(R.string.app_name))
+                            }
+                        },
+                        actions = {
+                            if (availableUpdate != null) {
+                                IconButton(
+                                    onClick = onUpdateClick,
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    BadgedBox(badge = { Badge(modifier = Modifier.size(6.dp)) }) {
+                                        Icon(Icons.Filled.Update, stringResource(R.string.update))
+                                    }
+                                }
+                            }
                             IconButton(
-                                onClick = onUpdateClick,
+                                onClick = onAnnouncementsClick,
+                                shapes = IconButtonDefaults.shapes()
                             ) {
                                 BadgedBox(
                                     badge = {
-                                        Badge(modifier = Modifier.size(6.dp))
+                                        if (vm.unreadAnnouncement != null) {
+                                            Badge(modifier = Modifier.size(6.dp))
+                                        }
                                     }
                                 ) {
-                                    Icon(Icons.Outlined.Update, stringResource(R.string.update))
-                                }
-                            }
-                        }
-                        IconButton(onClick = onSettingsClick) {
-                            Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
-                        }
-                    },
-                    applyContainerColor = true
-                )
-            }
-        },
-        floatingActionButton = {
-            HapticFloatingActionButton(
-                onClick = {
-                    vm.cancelSourceSelection()
-
-                    when (pagerState.currentPage) {
-                        DashboardPage.DASHBOARD.ordinal -> {
-                            if (availablePatches < 1) {
-                                androidContext.toast(resources.getString(R.string.no_patch_found))
-                                composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        DashboardPage.BUNDLES.ordinal
+                                    Icon(
+                                        Icons.Filled.Notifications,
+                                        stringResource(R.string.announcements)
                                     )
                                 }
-                                return@HapticFloatingActionButton
                             }
-                            if (vm.android11BugActive) {
-                                showAndroid11Dialog = true
-                                return@HapticFloatingActionButton
+                            IconButton(
+                                onClick = onSettingsClick,
+                                shapes = IconButtonDefaults.shapes()
+                            ) {
+                                BadgedBox(
+                                    badge = {
+                                        if (safeguardsToggled) {
+                                            Badge(
+                                                modifier = Modifier.size(6.dp),
+                                                containerColor = MaterialTheme.colorScheme.error
+                                            )
+                                        }
+                                    }
+                                ) {
+                                    Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                                }
                             }
-
-                            onAppSelectorClick()
-                        }
-
-                        DashboardPage.BUNDLES.ordinal -> {
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent
+                        )
+                    )
+                },
+                containerColor = Color.Transparent,
+                floatingActionButton = {
+                    DashboardFab(
+                        pagerState = pagerState,
+                        patchesSourceEditMode = patchesSourceEditMode,
+                        onEnablePatchesSourceEditMode = { patchesSourceEditMode = true },
+                        onAddBundleClick = {
+                            vm.cancelSourceSelection()
                             showAddBundleDialog = true
                         }
-                    }
-                }
-            ) { Icon(Icons.Default.Add, stringResource(R.string.add)) }
-        }
-    ) { paddingValues ->
-        Column(Modifier.padding(paddingValues)) {
-            SecondaryTabRow(
-                selectedTabIndex = pagerState.currentPage,
-                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
-            ) {
-                DashboardPage.entries.forEachIndexed { index, page ->
-                    HapticTab(
-                        selected = pagerState.currentPage == index,
-                        onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
-                        text = { Text(stringResource(page.titleResId)) },
-                        icon = { Icon(page.icon, null) },
-                        selectedContentColor = MaterialTheme.colorScheme.primary,
-                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-            }
-
-            Notifications(
-                if (!Aapt.supportsDevice()) {
-                    {
-                        NotificationCard(
-                            isWarning = true,
-                            icon = Icons.Outlined.WarningAmber,
-                            text = stringResource(R.string.unsupported_architecture_warning),
-                            onDismiss = null
-                        )
-                    }
-                } else null,
-                if (vm.showBatteryOptimizationsWarning) {
-                    {
-                        val batteryOptimizationsLauncher =
-                            rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                                vm.updateBatteryOptimizationsWarning()
-                            }
-                        NotificationCard(
-                            isWarning = true,
-                            icon = Icons.Default.BatteryAlert,
-                            text = stringResource(R.string.battery_optimization_notification),
-                            onClick = {
-                                batteryOptimizationsLauncher.launch(
-                                    Intent(
-                                        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                                        Uri.fromParts("package", androidContext.packageName, null)
-                                    )
-                                )
-                            }
-                        )
-                    }
-                } else null,
-                if (showNewDownloaderPluginsNotification) {
-                    {
-                        NotificationCard(
-                            text = stringResource(R.string.new_downloader_plugins_notification),
-                            icon = Icons.Outlined.Download,
-                            modifier = Modifier.clickable(onClick = onDownloaderPluginClick),
-                            actions = {
-                                TextButton(onClick = vm::ignoreNewDownloaderPlugins) {
-                                    Text(stringResource(R.string.dismiss))
-                                }
-                            }
-                        )
-                    }
-                } else null
-            )
-
-            HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = true,
-                modifier = Modifier.fillMaxSize(),
-                pageContent = { index ->
-                    when (DashboardPage.entries[index]) {
-                        DashboardPage.DASHBOARD -> {
-                            InstalledAppsScreen(
-                                onAppClick = { onAppClick(it.currentPackageName) }
+            ) { paddingValues ->
+                Column(Modifier.padding(paddingValues)) {
+                    PillTabBar(
+                        pagerState = pagerState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                    ) {
+                        DashboardPage.entries.forEachIndexed { index, page ->
+                            PillTab(
+                                index = index,
+                                onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
+                                text = { Text(stringResource(page.titleResId)) },
+                                icon = { Icon(page.icon, null) }
                             )
                         }
+                    }
 
-                        DashboardPage.BUNDLES -> {
-                            BackHandler {
-                                if (bundlesSelectable) vm.cancelSourceSelection() else composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        DashboardPage.DASHBOARD.ordinal
-                                    )
-                                }
+                    Notifications(
+                        if (!Aapt.supportsDevice()) {
+                            {
+                                NotificationCard(
+                                    isWarning = true,
+                                    icon = Icons.Outlined.WarningAmber,
+                                    text = stringResource(R.string.unsupported_architecture_warning),
+                                    onDismiss = null
+                                )
+                            }
+                        } else null,
+                        if (bundleDownloadError != null) {
+                            {
+                                NotificationCard(
+                                    isWarning = true,
+                                    icon = Icons.Outlined.WarningAmber,
+                                    title = stringResource(R.string.api_not_working_title),
+                                    text = stringResource(R.string.api_not_working_description),
+                                    onClick = onSettingsClick
+                                )
+                            }
+                        } else null,
+                        if (vm.showBatteryOptimizationsWarning) {
+                            {
+                                val batteryOptimizationsLauncher =
+                                    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                                        vm.updateBatteryOptimizationsWarning()
+                                    }
+                                NotificationCard(
+                                    isWarning = true,
+                                    icon = Icons.Default.BatteryAlert,
+                                    text = stringResource(R.string.battery_optimization_notification),
+                                    onClick = {
+                                        batteryOptimizationsLauncher.launch(
+                                            Intent(
+                                                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                                                Uri.fromParts("package", androidContext.packageName, null)
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+                        } else null,
+                        vm.unreadAnnouncement?.let { announcement ->
+                            {
+                                NotificationCard(
+                                    text = stringResource(R.string.new_announcement, announcement.title),
+                                    icon = Icons.Filled.Notifications,
+                                    actions = {
+                                        TextButton(
+                                            onClick = vm::markUnreadAnnouncementRead,
+                                            shapes = ButtonDefaults.shapes()
+                                        ) {
+                                            Text(stringResource(R.string.dismiss))
+                                        }
+                                        TextButton(
+                                            onClick = {
+                                                vm.markUnreadAnnouncementRead()
+                                                onAnnouncementClick(announcement)
+                                            },
+                                            shapes = ButtonDefaults.shapes()
+                                        ) {
+                                            Text(stringResource(R.string.view_announcement))
+                                        }
+                                    },
+                                    isWarning = announcement.level > 0
+                                )
+                            }
+                        }
+                    )
+
+                    HorizontalPager(
+                        state = pagerState,
+                        userScrollEnabled = true,
+                        modifier = Modifier.fillMaxSize()
+                    ) { index ->
+                        when (DashboardPage.entries[index]) {
+                            DashboardPage.DASHBOARD -> {
+                                InstalledAppsScreen(
+                                    onAppClick = { onAppClick(it.currentPackageName) },
+                                    onPatchableAppClick = ::onPatchableSelection,
+                                    onStorageSelect = { selectedApp -> onStorageSelection(selectedApp) }
+                                )
                             }
 
-                            BundleListScreen(
-                                eventsFlow = vm.bundleListEventsFlow,
-                                setSelectedSourceCount = { selectedSourceCount = it }
-                            )
+                            DashboardPage.BUNDLES -> {
+                                BackHandler {
+                                    if (patchesSourceEditMode) {
+                                        patchesSourceEditMode = false
+                                        return@BackHandler
+                                    }
+                                    composableScope.launch {
+                                        pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
+                                    }
+                                }
+
+                                PatchesSelectorScreen(
+                                    onSave = { _, _ -> },
+                                    onBackClick = {
+                                        if (patchesSourceEditMode) {
+                                            patchesSourceEditMode = false
+                                            return@PatchesSelectorScreen
+                                        }
+                                        composableScope.launch {
+                                            pagerState.animateScrollToPage(DashboardPage.DASHBOARD.ordinal)
+                                        }
+                                    },
+                                    onBundleInfoClick = onBundleClick,
+                                    isSourceEditMode = patchesSourceEditMode,
+                                    onSourceDeleteRequest = { sourceDeleteUid = it },
+                                    viewModel = dashboardPatchesViewModel
+                                )
+                            }
                         }
                     }
                 }
-            )
+            }
+        }
+    }
+}
+
+@Composable
+private fun DashboardFab(
+    pagerState: PagerState,
+    patchesSourceEditMode: Boolean,
+    onEnablePatchesSourceEditMode: () -> Unit,
+    onAddBundleClick: () -> Unit
+) {
+    when (pagerState.currentPage) {
+        DashboardPage.DASHBOARD.ordinal -> {
+        }
+
+        DashboardPage.BUNDLES.ordinal -> {
+            if (patchesSourceEditMode) {
+                HapticExtendedFloatingActionButton(
+                    onClick = onAddBundleClick,
+                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                    text = { Text(stringResource(R.string.fab_add_patches)) }
+                )
+            } else {
+                HapticFloatingActionButton(onClick = onEnablePatchesSourceEditMode) {
+                    Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
+                }
+            }
         }
     }
 }
@@ -376,12 +590,13 @@ fun Notifications(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
     AlertDialogExtended(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(onClick = onContinue) {
+            TextButton(onClick = onContinue, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.continue_))
             }
         },

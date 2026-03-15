@@ -49,7 +49,8 @@ sealed class PatchBundleInfo {
             relevantPatches.forEach {
                 val targetList = when {
                     it.compatiblePackages == null -> universal
-                    it.supports(
+                    // Before a concrete version is chosen, keep version-targeted patches visible.
+                    version == null || it.supports(
                         packageName,
                         version
                     ) -> compatible
@@ -137,7 +138,7 @@ sealed class PatchBundleInfo {
                     it.options.all option@{ option ->
                         if (!option.required || option.default != null) return@option true
 
-                        option.key in opts
+                        option.name in opts
                     }
                 }
         }

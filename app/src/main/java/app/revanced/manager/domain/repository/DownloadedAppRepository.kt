@@ -6,8 +6,10 @@ import android.os.Parcelable
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
-import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
-import app.revanced.manager.plugin.downloader.OutputDownloadScope
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.network.downloader.LoadedDownloader
+import app.revanced.manager.downloader.OutputDownloadScope
+import app.revanced.manager.downloader.Scope
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.channelFlow
@@ -21,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong
 import kotlin.io.path.outputStream
 
 class DownloadedAppRepository(
-    private val app: Application,
+    app: Application,
     db: AppDatabase,
     private val pm: PM
 ) {
@@ -35,8 +37,9 @@ class DownloadedAppRepository(
 
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
+    @OptIn(DownloaderHostApi::class)
     suspend fun download(
-        plugin: LoadedDownloaderPlugin,
+        downloader: LoadedDownloader,
         data: Parcelable,
         expectedPackageName: String,
         expectedVersion: String?,
@@ -54,9 +57,7 @@ class DownloadedAppRepository(
             val downloadedBytes = AtomicLong(0)
 
             channelFlow {
-                val scope = object : OutputDownloadScope {
-                    override val pluginPackageName = plugin.packageName
-                    override val hostPackageName = app.packageName
+                val scope = object : OutputDownloadScope, Scope by downloader.scopeImpl {
                     override suspend fun reportSize(size: Long) {
                         require(size > 0) { "Size must be greater than zero" }
                         require(
@@ -87,7 +88,7 @@ class DownloadedAppRepository(
                                 )
                             }
                     }
-                    plugin.download(scope, data, stream)
+                    downloader.impl.download(scope, data, stream)
                 }
             }
                 .conflate()
@@ -128,6 +129,13 @@ class DownloadedAppRepository(
     suspend fun get(packageName: String, version: String, markUsed: Boolean = false) =
         dao.get(packageName, version)?.also {
             if (markUsed) dao.markUsed(packageName, version)
+        }
+
+    suspend fun getAllByPackage(packageName: String) = dao.getAllByPackage(packageName)
+
+    suspend fun getLatestByPackage(packageName: String, markUsed: Boolean = false) =
+        dao.getLatestByPackage(packageName)?.also {
+            if (markUsed) dao.markUsed(it.packageName, it.version)
         }
 
     suspend fun delete(downloadedApps: Collection<DownloadedApp>) {

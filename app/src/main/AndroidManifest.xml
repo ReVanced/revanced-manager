@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <permission
-        android:name="app.revanced.manager.permission.PLUGIN_HOST"
+        android:name="app.revanced.manager.permission.DOWNLOADER_HOST"
         android:protectionLevel="signature"
-        android:label="@string/plugin_host_permission_label"
-        android:description="@string/plugin_host_permission_description"
+        android:label="@string/downloader_host_permission_label"
+        android:description="@string/downloader_host_permission_description"
         />
 
-    <uses-permission android:name="app.revanced.manager.permission.PLUGIN_HOST" />
+    <uses-permission android:name="app.revanced.manager.permission.DOWNLOADER_HOST" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -38,15 +38,24 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:configChanges="layoutDirection|locale"
             android:theme="@style/Theme.ReVancedManager">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="${deepLinkScheme}" />
+            </intent-filter>
         </activity>
 
-        <activity android:name=".plugin.downloader.webview.WebViewActivity" android:exported="false" android:theme="@style/Theme.WebViewActivity" />
+        <activity android:name=".DownloaderActivity" android:exported="false" android:theme="@style/Theme.DownloaderActivity" />
 
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
@@ -70,14 +79,15 @@
                     tools:node="remove" />
         </provider>
 
+
         <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
+            android:name=".ManagerFileProvider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            tools:node="merge">
+            android:grantUriPermissions="true">
             <meta-data
-                android:name="ru.solrudev.ackpine.AckpineInitializer"
-                tools:node="remove" />
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
         </provider>
     </application>
 </manifest>

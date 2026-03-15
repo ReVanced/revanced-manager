@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.*
@@ -18,6 +20,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.util.transparentListItemColors
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AvailableUpdateDialog(
     onDismiss: () -> Unit,
@@ -38,14 +41,16 @@ fun AvailableUpdateDialog(
                 onClick = {
                     dismissDialog()
                     onConfirm()
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.show))
             }
         },
         dismissButton = {
             TextButton(
-                onClick = dismissDialog
+                onClick = dismissDialog,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.dismiss))
             }
@@ -58,7 +63,9 @@ fun AvailableUpdateDialog(
         },
         text = {
             Column(
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(

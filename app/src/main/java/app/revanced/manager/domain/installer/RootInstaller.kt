@@ -54,7 +54,11 @@ class RootInstaller(
         await()
     }
 
-    suspend fun execute(vararg commands: String) = getShell().newJob().add(*commands).exec()
+    suspend fun execute(vararg commands: String): Shell.Result {
+        val stdout = mutableListOf<String>()
+        val stderr = mutableListOf<String>()
+        return getShell().newJob().add(*commands).to(stdout, stderr).exec()
+    }
 
     fun hasRootAccess() = Shell.isAppGrantedRoot() ?: false
 
@@ -108,20 +112,18 @@ class RootInstaller(
         unmount(packageName)
 
         stockAPK?.let { stockApp ->
-            pm.getPackageInfo(packageName)?.let { packageInfo ->
-                // TODO: get user id programmatically
-                if (pm.getVersionCode(packageInfo) <= pm.getVersionCode(
-                        pm.getPackageInfo(patchedAPK)
-                            ?: error("Failed to get package info for patched app")
-                    )
-                )
-                    execute("pm uninstall -k --user 0 $packageName").assertSuccess("Failed to uninstall stock app")
-            }
+            // TODO: get user id programmatically
+            execute("pm uninstall -k --user 0 $packageName")
 
-            execute("pm install \"${stockApp.absolutePath}\"").assertSuccess("Failed to install stock app")
+            execute("pm install -r -d --user 0 \"${stockApp.absolutePath}\"")
+                .assertSuccess("Failed to install stock app")
         }
 
-        remoteFS.getFile(modulePath).mkdir()
+        remoteFS.getFile(modulePath).apply {
+            if (!mkdirs() && !exists()) {
+                throw Exception("Failed to create module directory")
+            }
+        }
 
         listOf(
             "service.sh",
@@ -142,7 +144,6 @@ class RootInstaller(
         }
 
         "$modulePath/$packageName.apk".let { apkPath ->
-
             remoteFS.getFile(patchedAPK.absolutePath)
                 .also { if (!it.exists()) throw Exception("File doesn't exist") }
                 .newInputStream().use { inputStream ->
@@ -173,8 +174,47 @@ class RootInstaller(
         const val modulesPath = "/data/adb/modules"
 
         private fun Shell.Result.assertSuccess(errorMessage: String) {
-            if (!isSuccess) throw Exception(errorMessage)
+            if (!isSuccess) {
+                throw ShellCommandException(
+                    errorMessage,
+                    code,
+                    out,
+                    err
+                )
+            }
         }
+    }
+}
+
+class ShellCommandException(
+    val userMessage: String,
+    val exitCode: Int,
+    val stdout: List<String>,
+    val stderr: List<String>
+) : Exception(format(userMessage, exitCode, stdout, stderr)) {
+    companion object {
+        private fun format(
+            message: String,
+            exitCode: Int,
+            stdout: List<String>,
+            stderr: List<String>
+        ): String =
+            buildString {
+                appendLine(message)
+                appendLine("Exit code: $exitCode")
+
+                val output = stdout.filter { it.isNotBlank() }
+                val errors = stderr.filter { it.isNotBlank() }
+
+                if (output.isNotEmpty()) {
+                    appendLine("stdout:")
+                    output.forEach(::appendLine)
+                }
+                if (errors.isNotEmpty()) {
+                    appendLine("stderr:")
+                    errors.forEach(::appendLine)
+                }
+            }
     }
 }
 

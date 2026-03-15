@@ -1,80 +1,83 @@
 name: Release
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - dev
+    workflow_dispatch:
+    push:
+        branches:
+            - main
+            - dev
 
 jobs:
-  release:
-    name: Release
-    permissions:
-      contents: write
-      packages: write
-      id-token: write
-      attestations: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    release:
+        name: Release
+        permissions:
+            contents: write
+            packages: write
+            id-token: write
+            attestations: write
+            artifact-metadata: write
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+            - name: Setup Java
+              uses: actions/setup-java@v5
+              with:
+                  distribution: "temurin"
+                  java-version: "17"
 
-      - name: Cache Gradle
-        uses: burrunan/gradle-cache-action@v3
+            - name: Cache Gradle
+              uses: burrunan/gradle-cache-action@v3
 
-      - name: Build
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew assembleRelease
+            - name: Build
+              env:
+                  ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
+                  ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ secrets.GITHUB_TOKEN }}
+              run: ./gradlew assembleRelease
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          cache: 'npm'
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "lts/*"
+                  cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
+            - name: Install dependencies
+              run: npm ci
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          fingerprint: ${{ vars.GPG_FINGERPRINT }}
+            - name: Import GPG key
+              uses: crazy-max/ghaction-import-gpg@v7
+              with:
+                  gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+                  passphrase: ${{ secrets.GPG_PASSPHRASE }}
+                  fingerprint: ${{ vars.GPG_FINGERPRINT }}
 
-      - name: Setup keystore
-        run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
+            - name: Setup keystore
+              run: |
+                  echo "${{ secrets.KEYSTORE }}" | base64 --decode > "app/keystore.jks"
 
-      - name: Release API
-        run: npx multi-semantic-release --tag-format 'api@${version}' --ignore-packages app
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Release API
+              run: npx multi-semantic-release --tag-format 'api@${version}' --ignore-packages app
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
+                  ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Release
-        id: release
-        run: |
-          echo "NEW_TAG=$(npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api | tee | grep 'Created tag ' | sed -E 's/.*Created tag ([^ ]+).*/\1/')" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
-          KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
+            - name: Release
+              id: release
+              run: |
+                  npx multi-semantic-release --tag-format 'v${version}' --ignore-packages api
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
+                  ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ secrets.GITHUB_TOKEN }}
+                  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+                  KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
+                  KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
 
-      - name: Attest
-        if: steps.release.outputs.NEW_TAG != ''
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-name: 'ReVanced Manager ${{ steps.release.outputs.NEW_TAG }}'
-          subject-path: app/build/outputs/apk/release/revanced-manager*.apk
+            - name: Attest
+              if: steps.release.outputs.NEW_TAG != ''
+              uses: actions/attest@v4
+              with:
+                  subject-name: "ReVanced Manager ${{ steps.release.outputs.NEW_TAG }}"
+                  subject-path: app/build/outputs/apk/release/revanced-manager*.apk

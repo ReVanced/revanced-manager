@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageInfo
+import android.net.Uri
 import android.os.Parcelable
 import android.util.Log
 import androidx.activity.result.ActivityResult
@@ -19,31 +20,38 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.DownloaderPluginRepository
+import app.revanced.manager.domain.repository.DownloadedAppRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.patcher.patch.PatchBundleInfo
-import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
-import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
+import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
+import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
-import app.revanced.manager.plugin.downloader.GetScope
-import app.revanced.manager.plugin.downloader.PluginHostApi
-import app.revanced.manager.plugin.downloader.UserInteractionException
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
+import app.revanced.manager.downloader.GetScope
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.Scope
+import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
+import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.isSplitApk
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import java.nio.file.Files
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +67,7 @@ import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
-@OptIn(SavedStateHandleSaveableApi::class, PluginHostApi::class)
+@OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
 class SelectedAppInfoViewModel(
     input: SelectedApplicationInfo.ViewModelParams
 ) : ViewModel(), KoinComponent {
@@ -67,20 +75,24 @@ class SelectedAppInfoViewModel(
     private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
-    private val pluginsRepository: DownloaderPluginRepository = get()
+    private val downloadedAppRepository: DownloadedAppRepository = get()
+    private val downloaderRepository: DownloaderRepository = get()
     private val installedAppRepository: InstalledAppRepository = get()
     private val rootInstaller: RootInstaller = get()
+    private val fs: Filesystem = get()
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
-    val plugins = pluginsRepository.loadedPluginsFlow
-    val desiredVersion = input.app.version
+    val downloaders = downloaderRepository.loadedDownloadersFlow
+    val allDownloaders = downloaderRepository.downloaderSources
     val packageName = input.app.packageName
 
     private val persistConfiguration = input.patches == null
 
     val hasRoot = rootInstaller.hasRootAccess()
     var installedAppData: Pair<SelectedApp.Installed, InstalledApp?>? by mutableStateOf(null)
+        private set
+    var downloadedApps: List<SelectedApp.Local> by mutableStateOf(emptyList())
         private set
 
     private var _selectedApp by savedStateHandle.saveable {
@@ -97,30 +109,46 @@ class SelectedAppInfoViewModel(
             invalidateSelectedAppInfo()
         }
 
+    val desiredVersion get() = selectedApp.version
+
     init {
         invalidateSelectedAppInfo()
         viewModelScope.launch(Dispatchers.Main) {
             val packageInfo = async(Dispatchers.IO) { pm.getPackageInfo(packageName) }
             val installedAppDeferred =
                 async(Dispatchers.IO) { installedAppRepository.get(packageName) }
+            val downloadedAppsDeferred =
+                async(Dispatchers.IO) { downloadedAppRepository.getAllByPackage(packageName) }
 
-            installedAppData =
-                packageInfo.await()?.let {
+        installedAppData =
+            packageInfo.await()?.let {
+                    // Split APKs cannot be used as a patch source.
+                    if (it.isSplitApk()) return@let null
                     SelectedApp.Installed(
                         packageName,
                         it.versionName!!
                     ) to installedAppDeferred.await()
                 }
+
+            downloadedApps = downloadedAppsDeferred.await().mapNotNull {
+                val file = try {
+                    downloadedAppRepository.getApkFileForApp(it)
+                } catch (_: Exception) {
+                    return@mapNotNull null
+                }
+                SelectedApp.Local(it.packageName, it.version, file, false)
+            }
+
+            // Eagerly apply the resolved auto source so the app info screen
+            // (icon, label, version) is populated immediately without the user
+            // having to open and re-select the source selector.
+            if (selectedApp is SelectedApp.Search) {
+                val resolved = resolveAutoSource(selectedApp.version)
+                if (resolved !is SelectedApp.Search) {
+                    selectedApp = resolved
+                }
+            }
         }
-    }
-
-    val requiredVersion = combine(
-        prefs.suggestedVersionSafeguard.flow,
-        bundleRepository.suggestedVersions
-    ) { suggestedVersionSafeguard, suggestedVersions ->
-        if (!suggestedVersionSafeguard) return@combine null
-
-        suggestedVersions[input.app.packageName]
     }
 
     val bundleInfoFlow by derivedStateOf {
@@ -158,17 +186,39 @@ class SelectedAppInfoViewModel(
         mutableStateOf(SelectionState.Default)
     }
 
+    init {
+        viewModelScope.launch {
+            prefs.disableSelectionWarning.flow.collect { customizationAllowed ->
+                // When customization safeguard is enabled again, return to defaults immediately.
+                if (!customizationAllowed) {
+                    selectionState = SelectionState.Default
+                }
+            }
+        }
+    }
+
     var showSourceSelector by mutableStateOf(false)
         private set
-    private var pluginAction: Pair<LoadedDownloaderPlugin, Job>? by mutableStateOf(null)
-    val activePluginAction get() = pluginAction?.first?.packageName
+    private var downloaderAction: Pair<LoadedDownloader, Job>? by mutableStateOf(null)
+    val activeDownloader get() = downloaderAction?.first
     private var launchedActivity by mutableStateOf<CompletableDeferred<ActivityResult>?>(null)
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
+    private val storageSelectionChannel = Channel<SelectedApp.Local>()
+    val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
-    val errorFlow = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
-        when {
-            app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
+    private val sourceInputFile by savedStateHandle.saveable(key = "sourceInputFile") {
+        mutableStateOf(
+            java.io.File(
+                fs.uiTempDir,
+                "selected_source.apk"
+            ).also(java.io.File::delete)
+        )
+    }
+
+    val errorFlow = combine(allDownloaders, snapshotFlow { selectedApp }) { allDownloaders, app ->
+        when (app) {
+            is SelectedApp.Search if allDownloaders.isEmpty() -> Error.NoDownloadersInstalled
             else -> null
         }
     }
@@ -178,23 +228,90 @@ class SelectedAppInfoViewModel(
         showSourceSelector = true
     }
 
-    private fun cancelPluginAction() {
-        pluginAction?.second?.cancel()
-        pluginAction = null
+    fun setTargetVersion(version: String?) {
+        val current = selectedApp
+        selectedApp = when (current) {
+            is SelectedApp.Search -> current.copy(version = version)
+            is SelectedApp.Download -> if (current.version == version) current else SelectedApp.Search(packageName, version)
+            is SelectedApp.Installed -> if (current.version == version) current else SelectedApp.Search(packageName, version)
+            is SelectedApp.Local -> if (current.version == version) current else SelectedApp.Search(packageName, version)
+        }
+    }
+
+    fun resolveAutoSource(requiredVersion: String?): SelectedApp {
+        installedAppData?.let { (installed, meta) ->
+            val matchesVersion = requiredVersion == null || installed.version == requiredVersion
+            val usable = when {
+                meta?.installType == InstallType.MOUNT && !hasRoot -> false
+                meta?.installType == InstallType.DEFAULT -> false
+                else -> true
+            }
+            if (matchesVersion && usable) return installed
+        }
+
+        downloadedApps.firstOrNull { app ->
+            requiredVersion == null || app.version == requiredVersion
+        }?.let { return it }
+
+        return SelectedApp.Search(packageName, requiredVersion)
+    }
+
+    fun handleStorageResult(uri: Uri) = viewModelScope.launch {
+        val selectedApp = withContext(Dispatchers.IO) { loadSelectedStorageFile(uri) }
+
+        if (selectedApp == null) {
+            app.toast(app.getString(R.string.failed_to_load_apk))
+            return@launch
+        }
+
+        if (selectedApp.packageName != packageName) {
+            app.toast(app.getString(R.string.downloader_app_not_found))
+            return@launch
+        }
+
+        val pkgInfo = withContext(Dispatchers.IO) { pm.getPackageInfo(selectedApp.file) }
+        if (pkgInfo != null && pkgInfo.isSplitApk()) {
+            app.toast(app.getString(R.string.split_apk_not_supported))
+            return@launch
+        }
+
+        storageSelectionChannel.send(selectedApp)
+    }
+
+    private fun loadSelectedStorageFile(uri: Uri) =
+        app.contentResolver.getType(uri)?.takeIf { it == APK_MIMETYPE || it.startsWith("application/") }
+            ?.let {
+                app.contentResolver.openInputStream(uri)?.use { stream ->
+                    with(sourceInputFile) {
+                        delete()
+                        Files.copy(stream, toPath())
+                        pm.getPackageInfo(this)?.let { info ->
+                            SelectedApp.Local(
+                                packageName = info.packageName,
+                                version = info.versionName!!,
+                                file = this,
+                                temporary = true
+                            )
+                        }
+                    }
+                }
+            }
+
+    private fun cancelDownloaderAction() {
+        downloaderAction?.second?.cancel()
+        downloaderAction = null
     }
 
     fun dismissSourceSelector() {
-        cancelPluginAction()
+        cancelDownloaderAction()
         showSourceSelector = false
     }
 
-    fun searchUsingPlugin(plugin: LoadedDownloaderPlugin) {
-        cancelPluginAction()
-        pluginAction = plugin to viewModelScope.launch {
+    fun searchUsingDownloader(downloader: LoadedDownloader) {
+        cancelDownloaderAction()
+        downloaderAction = downloader to viewModelScope.launch {
             try {
-                val scope = object : GetScope {
-                    override val hostPackageName = app.packageName
-                    override val pluginPackageName = plugin.packageName
+                val scope = object : GetScope, Scope by downloader.scopeImpl {
                     override suspend fun requestStartActivity(intent: Intent) =
                         withContext(Dispatchers.Main) {
                             if (launchedActivity != null) error("Previous activity has not finished")
@@ -219,7 +336,7 @@ class SelectedAppInfoViewModel(
                 }
 
                 withContext(Dispatchers.IO) {
-                    plugin.get(scope, packageName, desiredVersion)
+                    downloader.impl.get(scope, packageName, desiredVersion)
                 }?.let { (data, version) ->
                     if (desiredVersion != null && version != desiredVersion) {
                         app.toast(app.getString(R.string.downloader_invalid_version))
@@ -228,7 +345,7 @@ class SelectedAppInfoViewModel(
                     selectedApp = SelectedApp.Download(
                         packageName,
                         version,
-                        ParceledDownloaderData(plugin, data)
+                        ParceledDownloaderData(downloader, data)
                     )
                 } ?: app.toast(app.getString(R.string.downloader_app_not_found))
             } catch (e: UserInteractionException.Activity) {
@@ -239,13 +356,13 @@ class SelectedAppInfoViewModel(
                 app.toast(app.getString(R.string.downloader_error, e.simpleMessage()))
                 Log.e(tag, "Downloader.get threw an exception", e)
             } finally {
-                pluginAction = null
+                downloaderAction = null
                 dismissSourceSelector()
             }
         }
     }
 
-    fun handlePluginActivityResult(result: ActivityResult) {
+    fun handleDownloaderActivityResult(result: ActivityResult) {
         launchedActivity?.complete(result)
     }
 
@@ -260,10 +377,13 @@ class SelectedAppInfoViewModel(
     }
 
     fun getOptionsFiltered(bundles: List<PatchBundleInfo.Scoped>) = options.filtered(bundles)
-    suspend fun hasSetRequiredOptions(patchSelection: PatchSelection) = bundleInfoFlow
+    suspend fun hasSetRequiredOptions(
+        patchSelection: PatchSelection,
+        allowIncompatible: Boolean
+    ) = bundleInfoFlow
         .first()
         .requiredOptionsSet(
-            allowIncompatible = prefs.disablePatchVersionCompatCheck.get(),
+            allowIncompatible = allowIncompatible,
             isSelected = { bundle, patch -> patch.name in patchSelection[bundle.uid]!! },
             optionsForPatch = { bundle, patch -> options[bundle.uid]?.get(patch.name) },
         )
@@ -280,6 +400,15 @@ class SelectedAppInfoViewModel(
 
     fun getPatches(bundles: List<PatchBundleInfo.Scoped>, allowIncompatible: Boolean) =
         selectionState.patches(bundles, allowIncompatible)
+
+    fun hasModifiedPatchSelection(
+        bundles: List<PatchBundleInfo.Scoped>,
+        allowIncompatible: Boolean
+    ): Boolean {
+        val selected = getPatches(bundles, allowIncompatible)
+        val defaults = bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
+        return selected != defaults
+    }
 
     fun getCustomPatches(
         bundles: List<PatchBundleInfo.Scoped>,
@@ -307,7 +436,7 @@ class SelectedAppInfoViewModel(
     }
 
     enum class Error(@param:StringRes val resourceId: Int) {
-        NoPlugins(R.string.downloader_no_plugins_available)
+        NoDownloadersInstalled(R.string.no_downloaders_installed),
     }
 
     private companion object {
@@ -325,7 +454,7 @@ class SelectedAppInfoViewModel(
                         bundleOptions.forEach patch@{ (patchName, values) ->
                             // Get all valid option keys for the patch.
                             val validOptionKeys =
-                                patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
+                                patches[patchName]?.options?.map { it.name }?.toSet() ?: return@patch
 
                             this@bundleOptions[patchName] = values.filterKeys { key ->
                                 key in validOptionKeys
@@ -356,4 +485,3 @@ private sealed interface SelectionState : Parcelable {
             bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
     }
 }
-

@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,62 +27,149 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SearchView
 import kotlinx.coroutines.flow.mapNotNull
 import org.koin.compose.koinInject
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BundlePatchesDialog(
     onDismissRequest: () -> Unit,
     src: PatchBundleSource,
 ) {
-    var showAllVersions by rememberSaveable { mutableStateOf(false) }
-    var showOptions by rememberSaveable { mutableStateOf(false) }
     val patchBundleRepository: PatchBundleRepository = koinInject()
+    var query by rememberSaveable { mutableStateOf("") }
+    var isSearchActive by rememberSaveable { mutableStateOf(false) }
     val patches by remember(src.uid) {
         patchBundleRepository.bundleInfoFlow.mapNotNull { it[src.uid]?.patches }
     }.collectAsStateWithLifecycle(emptyList())
+    val filteredPatches = remember(patches, query) {
+        if (query.isEmpty()) {
+            patches
+        } else {
+            patches.filter { patch ->
+                patch.name.contains(query, ignoreCase = true) ||
+                patch.description?.contains(query, ignoreCase = true) == true ||
+                patch.compatiblePackages?.any { compatiblePackage ->
+                    compatiblePackage.packageName.contains(query, ignoreCase = true) ||
+                    compatiblePackage.versions?.any { version ->
+                        version.contains(query, ignoreCase = true)
+                    } == true
+                } == true
+            }
+        }
+    }
 
     FullscreenDialog(
         onDismissRequest = onDismissRequest,
     ) {
-        Scaffold(
-            topBar = {
-                BundleTopBar(
-                    title = stringResource(R.string.patches),
-                    onBackClick = onDismissRequest,
-                    backIcon = {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    },
-                )
-            },
-        ) { paddingValues ->
-            LazyColumnWithScrollbar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(16.dp)
+        if (isSearchActive) {
+            SearchView(
+                query = query,
+                onQueryChange = { query = it },
+                onActiveChange = {
+                    isSearchActive = it
+                    if (!it) query = ""
+                },
+                placeholder = { Text(stringResource(R.string.search)) }
             ) {
-                items(patches) { patch ->
-                    PatchItem(
-                        patch,
-                        showAllVersions,
-                        onExpandVersions = { showAllVersions = !showAllVersions },
-                        showOptions,
-                        onExpandOptions = { showOptions = !showOptions }
-                    )
+                when {
+                    query.isEmpty() -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Search,
+                                contentDescription = stringResource(R.string.search_patches),
+                                modifier = Modifier.size(64.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                text = stringResource(R.string.type_anything),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
+                    filteredPatches.isEmpty() -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.no_patch_found),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
+                    else -> {
+                        PatchList(
+                            patches = filteredPatches,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
+        } else {
+            Scaffold(
+                topBar = {
+                    BundleTopBar(
+                        title = stringResource(R.string.patches),
+                        onBackClick = onDismissRequest,
+                        actions = {
+                            IconButton(
+                                onClick = { isSearchActive = true },
+                                shapes = IconButtonDefaults.shapes(),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Search,
+                                    contentDescription = stringResource(R.string.search_patches)
+                                )
+                            }
+                        },
+                        backIcon = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back)
+                            )
+                        },
+                    )
+                },
+            ) { paddingValues ->
+                PatchList(
+                    patches = patches,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(paddingValues)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PatchList(
+    patches: List<PatchInfo>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumnWithScrollbar(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(items = patches) { patch ->
+            PatchItem(patch)
         }
     }
 }
@@ -88,19 +177,18 @@ fun BundlePatchesDialog(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PatchItem(
-    patch: PatchInfo,
-    expandVersions: Boolean,
-    onExpandVersions: () -> Unit,
-    expandOptions: Boolean,
-    onExpandOptions: () -> Unit
+    patch: PatchInfo
 ) {
+    var expandedVersionPackages by rememberSaveable { mutableStateOf(setOf<String>()) }
+    var expandOptions by rememberSaveable { mutableStateOf(false) }
+
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .then(
                 if (patch.options.isNullOrEmpty()) Modifier else Modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable(onClick = onExpandOptions),
+                    .clickable { expandOptions = !expandOptions },
             )
     ) {
         Column(
@@ -148,6 +236,7 @@ fun PatchItem(
                     patch.compatiblePackages.forEach { compatiblePackage ->
                         val packageName = compatiblePackage.packageName
                         val versions = compatiblePackage.versions.orEmpty().reversed()
+                        val expandVersions = packageName in expandedVersionPackages
 
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -174,7 +263,13 @@ fun PatchItem(
                                 }
                                 if (versions.size > 1) {
                                     PatchInfoChip(
-                                        onClick = onExpandVersions,
+                                        onClick = {
+                                            expandedVersionPackages = if (expandVersions) {
+                                                expandedVersionPackages - packageName
+                                            } else {
+                                                expandedVersionPackages + packageName
+                                            }
+                                        },
                                         text = if (expandVersions) stringResource(R.string.less) else "+${versions.size - 1}"
                                     )
                                 }
@@ -212,7 +307,7 @@ fun PatchItem(
                                     verticalArrangement = Arrangement.spacedBy(4.dp),
                                 ) {
                                     Text(
-                                        text = option.title,
+                                        text = option.name,
                                         style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.primary
                                     )
@@ -234,7 +329,8 @@ fun PatchItem(
 fun PatchInfoChip(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    text: String
+    text: String,
+    wrapText: Boolean = false
 ) {
     val shape = RoundedCornerShape(8.0.dp)
     val cardModifier = if (onClick != null) {
@@ -263,8 +359,9 @@ fun PatchInfoChip(
         ) {
             Text(
                 text,
-                overflow = TextOverflow.Ellipsis,
-                softWrap = false,
+                overflow = if (wrapText) TextOverflow.Clip else TextOverflow.Ellipsis,
+                softWrap = wrapText,
+                maxLines = if (wrapText) Int.MAX_VALUE else 1,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

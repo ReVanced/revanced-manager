@@ -1,11 +1,15 @@
 package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarColors
@@ -20,13 +24,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SearchView(
     query: String,
     onQueryChange: (String) -> Unit,
     onActiveChange: (Boolean) -> Unit,
     placeholder: (@Composable () -> Unit)? = null,
+    trailingContent: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val colors = SearchBarColors(
@@ -49,11 +54,25 @@ fun SearchView(
                 onExpandedChange = onActiveChange,
                 placeholder = placeholder,
                 leadingIcon = {
-                    IconButton(onClick = { onActiveChange(false) }) {
+                    IconButton(onClick = { onActiveChange(false) }, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             stringResource(R.string.back)
                         )
+                    }
+                },
+                trailingIcon = {
+                    Row {
+                        trailingContent?.invoke()
+
+                        if (query.isNotEmpty()) {
+                            IconButton(onClick = { onQueryChange("") }, shapes = IconButtonDefaults.shapes()) {
+                                Icon(
+                                    Icons.Filled.Close,
+                                    contentDescription = stringResource(R.string.clear)
+                                )
+                            }
+                        }
                     }
                 }
             )

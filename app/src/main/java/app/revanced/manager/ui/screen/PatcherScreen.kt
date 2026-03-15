@@ -23,10 +23,14 @@ import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -48,6 +52,7 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
+import app.revanced.manager.ui.component.ShareSheet
 import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
@@ -58,7 +63,7 @@ import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.toast
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PatcherScreen(
     onBackClick: () -> Unit,
@@ -71,8 +76,13 @@ fun PatcherScreen(
 
     val context = LocalContext.current
     val resources = LocalResources.current
-    val exportApkLauncher =
-        rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
+    var showLogExportSheet by rememberSaveable { mutableStateOf(false) }
+    val exportApkLauncher = rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
+    val saveLogsLauncher = rememberLauncherForActivityResult(CreateDocument("text/plain")) { uri ->
+            viewModel.saveLogs(uri)
+            showLogExportSheet = false
+            viewModel.clearPreparedLogExport()
+        }
 
     val patcherSucceeded by viewModel.patcherSucceeded.observeAsState(null)
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (viewModel.installedPackageName != null || !viewModel.isInstalling) } }
@@ -119,6 +129,21 @@ fun PatcherScreen(
         )
     }
 
+    if (showLogExportSheet) {
+        ShareSheet(
+            onDismissRequest = {
+                showLogExportSheet = false
+                viewModel.clearPreparedLogExport()
+            },
+            title = stringResource(R.string.export_patcher_logs),
+            preview = viewModel.logPreviewText,
+            shareUri = viewModel.preparedLogUri,
+            onSaveToFilesClick = {
+                saveLogsLauncher.launch(viewModel.logFileName())
+            }
+        )
+    }
+
     viewModel.packageInstallerStatus?.let {
         InstallerStatusDialog(it, viewModel, viewModel::dismissPackageInstallerDialog)
     }
@@ -136,21 +161,23 @@ fun PatcherScreen(
             onDismissRequest = viewModel::rejectInteraction,
             confirmButton = {
                 TextButton(
-                    onClick = viewModel::allowInteraction
+                    onClick = viewModel::allowInteraction,
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.continue_))
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = viewModel::rejectInteraction
+                    onClick = viewModel::rejectInteraction,
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
             },
             title = { Text(title) },
             text = {
-                Text(stringResource(R.string.plugin_activity_dialog_body))
+                Text(stringResource(R.string.downloader_activity_dialog_body))
             }
         )
     }
@@ -168,13 +195,18 @@ fun PatcherScreen(
                 actions = {
                     IconButton(
                         onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
-                        enabled = patcherSucceeded == true
+                        enabled = patcherSucceeded == true,
+                        shapes = IconButtonDefaults.shapes(),
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
                     IconButton(
-                        onClick = { viewModel.exportLogs(context) },
-                        enabled = patcherSucceeded != null
+                        onClick = {
+                            viewModel.prepareLogExport()
+                            showLogExportSheet = true
+                        },
+                        enabled = patcherSucceeded != null,
+                        shapes = IconButtonDefaults.shapes(),
                     ) {
                         Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
                     }
@@ -203,7 +235,13 @@ fun PatcherScreen(
                                     if (viewModel.isDeviceRooted()) showInstallPicker = true
                                     else viewModel.install(InstallType.DEFAULT)
                                 else viewModel.open()
-                            }
+                            },
+                            elevation = FloatingActionButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                focusedElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                            )
                         )
                     }
                 }
@@ -221,7 +259,7 @@ fun PatcherScreen(
                 expandedCategory = category
             }
 
-            LinearProgressIndicator(
+            LinearWavyProgressIndicator(
                 progress = { viewModel.progress },
                 modifier = Modifier.fillMaxWidth()
             )

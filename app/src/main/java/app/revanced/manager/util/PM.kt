@@ -128,6 +128,33 @@ class PM(
         return pkgInfo
     }
 
+    @SuppressLint("InlinedApi")
+    fun getApkSignature(file: File): Signature? {
+        val path = file.absolutePath
+        val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            app.packageManager.getPackageArchiveInfo(
+                path,
+                PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES.toLong())
+            )
+        else
+            app.packageManager.getPackageArchiveInfo(
+                path,
+                PackageManager.GET_SIGNING_CERTIFICATES
+            )
+
+        return pkgInfo?.signingInfo?.let { signingInfo ->
+            if (signingInfo.hasMultipleSigners()) {
+                val managerSignature = getManagerSignature()
+                signingInfo.apkContentsSigners.firstOrNull { it == managerSignature }
+                    ?: signingInfo.apkContentsSigners.lastOrNull()
+            } else {
+                signingInfo.signingCertificateHistory.lastOrNull()
+            }
+        }
+    }
+
+    fun getManagerSignature(): Signature = getSignature(app.packageName)
+
     fun PackageInfo.label() = this.applicationInfo!!.loadLabel(app.packageManager).toString()
 
     fun getVersionCode(packageInfo: PackageInfo) = PackageInfoCompat.getLongVersionCode(packageInfo)
@@ -158,3 +185,11 @@ class PM(
 
     fun canInstallPackages() = app.packageManager.canRequestPackageInstalls()
 }
+
+/**
+ * Returns true if this package is a split APK (i.e. has multiple split source dirs).
+ * Split APKs cannot be used directly as a patch source.
+ */
+fun PackageInfo.isSplitApk(): Boolean =
+    !applicationInfo?.splitSourceDirs.isNullOrEmpty() || !splitNames.isNullOrEmpty()
+
