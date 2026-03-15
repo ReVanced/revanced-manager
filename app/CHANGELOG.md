@@ -1,3 +1,10 @@
+# app [2.1.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.2-dev.1...v2.1.0-dev.1) (2026-03-15)
+
+
+### Features
+
+* Change source filepicker type for downloaders ([#3045](https://github.com/ReVanced/revanced-manager/issues/3045)) ([dcc30cd](https://github.com/ReVanced/revanced-manager/commit/dcc30cdae9c0f46bce6d11df763cf1519b42a4af))
+
 ## app [2.0.2-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.1...v2.0.2-dev.1) (2026-03-15)
 
 
