@@ -567,11 +567,6 @@ fun PatchesSelectorScreen(
                     placeholder = { Text(stringResource(R.string.search_patches)) },
                     windowInsets = if (readOnly) WindowInsets(0, 0, 0, 0) else WindowInsets.systemBars,
                     leadingIcon = {
-                        val rotation by animateFloatAsState(
-                            targetValue = if (searchExpanded) 360f else 0f,
-                            animationSpec = tween(durationMillis = 400, easing = EaseInOut),
-                            label = "SearchBar back button"
-                        )
                         IconButton(
                             onClick = {
                                 if (searchExpanded) setSearchExpanded(false) else onBackClick()
@@ -579,7 +574,6 @@ fun PatchesSelectorScreen(
                             shapes = IconButtonDefaults.shapes()
                         ) {
                             Icon(
-                                modifier = Modifier.rotate(rotation),
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(R.string.back)
                             )
