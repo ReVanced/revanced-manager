@@ -370,6 +370,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="version_not_compatible">Not all patches are compatible with this version (%s). Do you want to continue anyway?</string>
     <string name="download_application">Download application?</string>
     <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
+    <string name="wrong_app_loading">The app you selected has the wrong package name!</string>
     <string name="failed_to_load_apk">Failed to load APK</string>
     <string name="split_apk_not_supported">Split APKs cannot be patched</string>
     <string name="loading">Loading…</string>
