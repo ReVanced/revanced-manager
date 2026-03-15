@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.outlined.Circle
@@ -167,7 +168,7 @@ fun InstalledAppInfoScreen(
                                     it
                                 )
                             },
-                    trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = stringResource(R.string.view_applied_patches)) },
+                    trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) },
                     onClick = { showAppliedPatchesDialog = true },
                     )
 
