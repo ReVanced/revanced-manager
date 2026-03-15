@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -70,6 +71,7 @@ private data class Section(
     val destination: Settings.Destination,
 )
 
+@SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> Unit) {
