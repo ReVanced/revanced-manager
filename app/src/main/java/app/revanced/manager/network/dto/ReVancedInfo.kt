@@ -7,7 +7,9 @@ import kotlinx.serialization.Serializable
 data class ReVancedInfo(
     val name: String,
     val about: String,
+    val keys: String,
     val branding: ReVancedBranding,
+    val status: String,
     val contact: ReVancedContact,
     val socials: List<ReVancedSocial>,
     val donations: ReVancedDonation,
@@ -27,7 +29,7 @@ data class ReVancedContact(
 data class ReVancedSocial(
     val name: String,
     val url: String,
-    val preferred: Boolean,
+    val preferred: Boolean = false,
 )
 
 @Serializable
@@ -42,12 +44,12 @@ data class ReVancedWallet(
     @SerialName("currency_code")
     val currencyCode: String,
     val address: String,
-    val preferred: Boolean
+    val preferred: Boolean = false
 )
 
 @Serializable
 data class ReVancedDonationLink(
     val name: String,
     val url: String,
-    val preferred: Boolean,
+    val preferred: Boolean = false,
 )
