@@ -1,3 +1,16 @@
+# app [2.1.0](https://github.com/ReVanced/revanced-manager/compare/v2.0.1...v2.1.0) (2026-03-15)
+
+
+### Bug Fixes
+
+* Disable ProGuard to fix various patching errors ([5f79397](https://github.com/ReVanced/revanced-manager/commit/5f79397a7cc600ad16c18f807caccf72862c68e1))
+* Source list crash when using multiple downloaders ([#3043](https://github.com/ReVanced/revanced-manager/issues/3043)) ([8170837](https://github.com/ReVanced/revanced-manager/commit/8170837e2c2a57c3cc6d1d3f36fc0cf627b69f28))
+
+
+### Features
+
+* Change source filepicker type for downloaders ([#3045](https://github.com/ReVanced/revanced-manager/issues/3045)) ([dcc30cd](https://github.com/ReVanced/revanced-manager/commit/dcc30cdae9c0f46bce6d11df763cf1519b42a4af))
+
 # app [2.1.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.1.0-dev.1...v2.1.0-dev.2) (2026-03-15)
 
 
