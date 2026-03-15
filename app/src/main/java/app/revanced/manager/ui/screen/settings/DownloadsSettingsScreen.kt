@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -46,6 +47,7 @@ import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.network.downloader.DownloaderPackage
+import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.PillTab
@@ -100,6 +102,16 @@ fun DownloadsSettingsScreen(
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val currentTab = DownloadsTab.entries[pagerState.currentPage]
     var showImportDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showDeleteConfirmationDialog) {
+        ConfirmDialog(
+            onDismiss = { showDeleteConfirmationDialog = false },
+            onConfirm = { viewModel.deleteApps() },
+            title = stringResource(R.string.downloader_delete_apps_title),
+            description = stringResource(R.string.downloader_delete_apps_description),
+            icon = Icons.Outlined.Delete
+        )
+    }
 
     if (showImportDialog) {
         ImportSourceDialog(
