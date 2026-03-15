@@ -1,3 +1,10 @@
+## app [2.0.2-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.1...v2.0.2-dev.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* Source list crash when using multiple downloaders ([#3043](https://github.com/ReVanced/revanced-manager/issues/3043)) ([8170837](https://github.com/ReVanced/revanced-manager/commit/8170837e2c2a57c3cc6d1d3f36fc0cf627b69f28))
+
 ## app [2.0.1](https://github.com/ReVanced/revanced-manager/compare/v2.0.0...v2.0.1) (2026-03-15)
 
 
