@@ -3,11 +3,11 @@
 Learn how to configure ReVanced Manager.
 
 ## 🔧 Settings
-
-- **Downloads**: Enable or disable ReVanced Manager downloader and manage past downloaded apps here
-- **Import & export**: Import or export patch selections, patch options and the signing keystore
+- **General**: Change app language, adjust the appearances of ReVanced Manager app, or enable or disable metered networks check.
+- **Updates**: Check for ReVanced Manager app update, or use a pre-release version.
+- **Downloads**: Enable or disable ReVanced Manager downloader and manage past downloaded apps here.
+- **Import & export**: Import or export patch selections, patch options and the signing keystore.
 - **Advanced**:
-  - **API URL**: Set the URL of the ReVanced API, ReVanced Manager will use
   - **Disable version compatibility check**: Patching versions of apps the patches are explicitly compatible with is enforced.
     Disabling this will allow patching versions of apps the patches are not explicitly compatible with
     >   ⚠️ Warning  
@@ -28,6 +28,8 @@ Learn how to configure ReVanced Manager.
     >   ⚠️ Warning  
     >   Universal patches do not specify compatibility with an app and may not work on all apps regardless.
     >   Unless you know what you are doing, it is recommended to keep this disabled.
+  - **(Experimental) Run patcher in another process**: Allow patcher to run faster and use more memory than limit.
+  - **Export debug logs**: Export debug logs of _ReVanced Manager_ app.
 - **About**: View more information and links about ReVanced and ReVanced Manager.
 
 ## ⏭️ What's next

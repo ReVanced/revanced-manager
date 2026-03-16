@@ -9,7 +9,7 @@ Learn how to update ReVanced Manager.
 3. Configure the update settings accordingly[^1]
 
 [^1]: By default, ReVanced Manager will check for updates automatically on launch
-and let you know when an update is available.
+and let you know when an update is available by showing a badge above the icon.
 
 ## ⏭️ What's next
 
