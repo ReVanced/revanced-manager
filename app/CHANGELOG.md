@@ -1,3 +1,16 @@
+# app [2.2.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.1.1-dev.2...v2.2.0-dev.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* Consistent circle separator between text across patchesinfoscreen and announcements ([a7792db](https://github.com/ReVanced/revanced-manager/commit/a7792dbf4d947982e343ff2aa2ce71bd5692c09a))
+
+
+### Features
+
+* Change all arrow right icons to chevron rights ([ff25d4e](https://github.com/ReVanced/revanced-manager/commit/ff25d4eb5d2177f7ab0f3aeb6d2df32e2e783306))
+* Move API settings to Developer Options ([3067478](https://github.com/ReVanced/revanced-manager/commit/3067478ebbe9db06833d8d31545c65985309c48f))
+
 ## app [2.1.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.1.1-dev.1...v2.1.1-dev.2) (2026-03-16)
 
 
