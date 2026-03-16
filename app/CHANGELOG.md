@@ -1,3 +1,10 @@
+## app [2.1.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.1.0...v2.1.1-dev.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* About page content and log API requests ([62111e2](https://github.com/ReVanced/revanced-manager/commit/62111e2499d9fc0f4e7b364236e90d5a5f46981f))
+
 # app [2.1.0](https://github.com/ReVanced/revanced-manager/compare/v2.0.1...v2.1.0) (2026-03-15)
 
 
