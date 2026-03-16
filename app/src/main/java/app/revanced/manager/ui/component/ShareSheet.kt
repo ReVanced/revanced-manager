@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -95,7 +96,8 @@ fun ShareSheet(
     title: String,
     preview: String? = null,
     shareUri: Uri?,
-    onSaveToFilesClick: () -> Unit
+    onSaveToFilesClick: () -> Unit,
+    onCopyToClipboard: () -> Unit,
 ) {
     val context = LocalContext.current
     val shareTargets = remember(shareUri) {
@@ -188,6 +190,19 @@ fun ShareSheet(
             ListSection(
                 contentPadding = PaddingValues(horizontal = 16.dp)
             ) {
+                SegmentedListItem(
+                    onClick = onCopyToClipboard,
+                    shapes = ListItemDefaults.segmentedShapes(index = 0, count = 1),
+                    colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    leadingContent = {
+                        Icon(
+                            imageVector = Icons.Outlined.ContentCopy,
+                            contentDescription = null
+                        )
+                    }
+                ) {
+                    Text(text = stringResource(R.string.copy_to_clipboard))
+                }
                 SegmentedListItem(
                     onClick = onSaveToFilesClick,
                     shapes = ListItemDefaults.segmentedShapes(index = 0, count = 1),

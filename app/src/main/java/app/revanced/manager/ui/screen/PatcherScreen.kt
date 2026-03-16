@@ -1,6 +1,9 @@
 package app.revanced.manager.ui.screen
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -140,6 +143,11 @@ fun PatcherScreen(
             shareUri = viewModel.preparedLogUri,
             onSaveToFilesClick = {
                 saveLogsLauncher.launch(viewModel.logFileName())
+            },
+            onCopyToClipboard = {
+                viewModel.copyLogs()
+                showLogExportSheet = false
+                viewModel.clearPreparedLogExport()
             }
         )
     }

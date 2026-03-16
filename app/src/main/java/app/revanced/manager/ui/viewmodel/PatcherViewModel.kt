@@ -2,6 +2,8 @@ package app.revanced.manager.ui.viewmodel
 
 import android.app.ActivityManager
 import android.app.Application
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -373,6 +375,16 @@ class PatcherViewModel(
         }
 
         preparedLogUri = uri
+    }
+
+    fun copyLogs() = viewModelScope.launch {
+        val logSnapshot = logs.toList()
+        withContext(Dispatchers.Main) {
+            val clipboardManager = app.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val content = buildLogExportText(app, logSnapshot)
+            val clip = ClipData.newPlainText("Logs", content)
+            clipboardManager.setPrimaryClip(clip)
+        }
     }
 
     fun saveLogs(target: Uri?) = viewModelScope.launch {
