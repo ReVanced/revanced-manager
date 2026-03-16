@@ -1,3 +1,10 @@
+# app [2.2.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.0-dev.1...v2.2.0-dev.2) (2026-03-16)
+
+
+### Features
+
+* Add copy to clipboard on ShareSheet ([7e1416e](https://github.com/ReVanced/revanced-manager/commit/7e1416ecef13e2ea4289a6cfb64eb3bba8d6f331))
+
 # app [2.2.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.1.1-dev.2...v2.2.0-dev.1) (2026-03-16)
 
 
