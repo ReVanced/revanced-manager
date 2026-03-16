@@ -4,6 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -71,6 +76,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -84,7 +91,6 @@ import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.sources.ImportSourceDialog
 import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
-import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
@@ -556,24 +562,51 @@ private fun DashboardFab(
     onEnablePatchesSourceEditMode: () -> Unit,
     onAddBundleClick: () -> Unit
 ) {
-    when (pagerState.currentPage) {
-        DashboardPage.DASHBOARD.ordinal -> {
+    val fabState = when (pagerState.currentPage) {
+        DashboardPage.BUNDLES.ordinal -> {
+            if (patchesSourceEditMode) DashboardFabState.AddBundles else DashboardFabState.EditBundles
         }
 
-        DashboardPage.BUNDLES.ordinal -> {
-            if (patchesSourceEditMode) {
-                HapticExtendedFloatingActionButton(
-                    onClick = onAddBundleClick,
-                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                    text = { Text(stringResource(R.string.fab_add_patches)) }
-                )
-            } else {
-                HapticFloatingActionButton(onClick = onEnablePatchesSourceEditMode) {
-                    Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
+        else -> DashboardFabState.Hidden
+    }
+
+    if (fabState == DashboardFabState.Hidden) return
+
+    HapticExtendedFloatingActionButton(
+        onClick = if (fabState == DashboardFabState.AddBundles) onAddBundleClick else onEnablePatchesSourceEditMode,
+        expanded = fabState == DashboardFabState.AddBundles,
+        icon = {
+            AnimatedContent(
+                targetState = fabState,
+                transitionSpec = {
+                    (fadeIn(animationSpec = tween(durationMillis = 180, delayMillis = 60)) +
+                        scaleIn(animationSpec = tween(durationMillis = 180, delayMillis = 60), initialScale = 0.85f)) togetherWith
+                        (fadeOut(animationSpec = tween(durationMillis = 90)) +
+                            scaleOut(animationSpec = tween(durationMillis = 90), targetScale = 0.85f))
+                },
+                label = "dashboard_fab_icon_transition"
+            ) { state ->
+                when (state) {
+                    DashboardFabState.EditBundles -> {
+                        Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
+                    }
+
+                    DashboardFabState.AddBundles -> {
+                        Icon(Icons.Default.Add, contentDescription = null)
+                    }
+
+                    DashboardFabState.Hidden -> Unit
                 }
             }
-        }
-    }
+        },
+        text = { Text(stringResource(R.string.fab_add_patches)) }
+    )
+}
+
+private enum class DashboardFabState {
+    Hidden,
+    EditBundles,
+    AddBundles,
 }
 
 @Composable
