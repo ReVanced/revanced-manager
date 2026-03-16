@@ -3,6 +3,7 @@ package app.revanced.manager.ui.component.patches
 import android.app.Application
 import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -27,9 +29,11 @@ import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -51,6 +55,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
@@ -59,6 +64,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.documentfile.provider.DocumentFile
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
@@ -77,13 +83,18 @@ import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import java.io.File
 import java.io.Serializable
+import java.util.UUID
 import kotlin.random.Random
 import kotlin.reflect.typeOf
 
@@ -309,20 +320,76 @@ private object StringOptionEditor : OptionEditor<String> {
         val validatorFailed by remember {
             derivedStateOf { !scope.option.validator(fieldValue) }
         }
-
-        val fs: Filesystem = koinInject()
-        val (contract, permissionName) = fs.permissionContract()
-        val permissionLauncher = rememberLauncherForActivityResult(contract = contract) {
-            showFileDialog = it
+        var copyingDataToCache by remember {
+            mutableStateOf(false)
         }
 
-        if (showFileDialog) {
-            PathSelectorDialog(
-                root = fs.externalFilesDir()
-            ) {
-                showFileDialog = false
-                it?.let { path ->
-                    fieldValue = path.toString()
+        val fs: Filesystem = koinInject()
+
+        val coroutineScope = rememberCoroutineScope()
+
+        suspend fun copyFile(documentFile: DocumentFile): String {
+            val filename = documentFile.name ?: UUID.randomUUID().toString()
+            withContext(Dispatchers.Main) {
+                copyingDataToCache = true
+            }
+            try {
+                return withContext(Dispatchers.IO) {
+                    val tempDir = File(fs.tempDir, "options")
+                    val tempFile = File(tempDir, filename)
+                    if (tempFile.exists()) {
+                        tempFile.deleteRecursively()
+                    }
+                    if (documentFile.isDirectory) {
+                        tempFile.mkdirs()
+                        documentFile.listFiles().forEach { documentFile ->
+                            val filename = documentFile.name ?: return@forEach
+                            val tempFile = File(tempFile, filename).apply {
+                                createNewFile()
+                            }
+                            fs.contentResolver.openInputStream(documentFile.uri)?.use { input ->
+                                tempFile.outputStream().use { output ->
+                                    input.copyTo(output)
+                                }
+                            }
+                        }
+                    } else {
+                        tempDir.mkdirs()
+                        tempFile.createNewFile()
+                        fs.contentResolver.openInputStream(documentFile.uri)?.use { input ->
+                            tempFile.outputStream().use { output ->
+                                input.copyTo(output)
+                            }
+                        }
+                    }
+
+                    return@withContext tempFile.path
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return ""
+            } finally {
+                withContext(Dispatchers.Main) {
+                    copyingDataToCache = false
+                }
+            }
+        }
+
+        val filePathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) {
+            it?.let { uri ->
+                fs.openFileDocument(uri)?.let { documentFile ->
+                    coroutineScope.launch {
+                        fieldValue = copyFile(documentFile)
+                    }
+                }
+            }
+        }
+        val folderPathLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocumentTree()) {
+            it?.let { uri ->
+                fs.openFolderDocument(uri)?.let { documentFile ->
+                    coroutineScope.launch {
+                        fieldValue = copyFile(documentFile)
+                    }
                 }
             }
         }
@@ -337,9 +404,10 @@ private object StringOptionEditor : OptionEditor<String> {
                     placeholder = {
                         Text(stringResource(R.string.dialog_input_placeholder))
                     },
-                    isError = validatorFailed,
+                    enabled = !copyingDataToCache,
+                    isError = validatorFailed && !copyingDataToCache,
                     supportingText = {
-                        if (validatorFailed) {
+                        if (validatorFailed && !copyingDataToCache) {
                             Text(
                                 stringResource(R.string.input_dialog_value_invalid),
                                 modifier = Modifier.fillMaxWidth(),
@@ -348,37 +416,51 @@ private object StringOptionEditor : OptionEditor<String> {
                         }
                     },
                     trailingIcon = {
-                        var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
-                        IconButton(
-                            onClick = { showDropdownMenu = true },
-                            shapes = IconButtonDefaults.shapes(),
-                        ) {
-                            Icon(
-                                Icons.Outlined.MoreVert,
-                                stringResource(R.string.string_option_menu_description)
-                            )
-                        }
+                        if (copyingDataToCache) {
+                            CircularProgressIndicator(modifier = Modifier.size(16.dp))
+                        } else {
+                            var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
+                            IconButton(
+                                onClick = { showDropdownMenu = true },
+                                shapes = IconButtonDefaults.shapes(),
+                            ) {
+                                Icon(
+                                    Icons.Outlined.MoreVert,
+                                    stringResource(R.string.string_option_menu_description)
+                                )
+                            }
 
-                        DropdownMenu(
-                            expanded = showDropdownMenu,
-                            onDismissRequest = { showDropdownMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(Icons.Outlined.Folder, null)
-                                },
-                                text = {
-                                    Text(stringResource(R.string.path_selector))
-                                },
-                                onClick = {
-                                    showDropdownMenu = false
-                                    if (fs.hasStoragePermission()) {
-                                        showFileDialog = true
-                                    } else {
-                                        permissionLauncher.launch(permissionName)
+                            DropdownMenu(
+                                expanded = showDropdownMenu,
+                                onDismissRequest = { showDropdownMenu = false }
+                            ) {
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        // InsertDriveFile is the only icon that actually represents a file.
+                                        // I don't think we need automirroring here as suggested by a warning.
+                                        Icon(Icons.Outlined.InsertDriveFile, null)
+                                    },
+                                    text = {
+                                        Text(stringResource(R.string.path_selector_file))
+                                    },
+                                    onClick = {
+                                        showDropdownMenu = false
+                                        filePathLauncher.launch(arrayOf("*/*"))
                                     }
-                                }
-                            )
+                                )
+                                DropdownMenuItem(
+                                    leadingIcon = {
+                                        Icon(Icons.Outlined.Folder, null)
+                                    },
+                                    text = {
+                                        Text(stringResource(R.string.path_selector_dir))
+                                    },
+                                    onClick = {
+                                        showDropdownMenu = false
+                                        folderPathLauncher.launch(null)
+                                    }
+                                )
+                            }
                         }
                     }
                 )

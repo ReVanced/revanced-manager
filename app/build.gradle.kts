@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.work.runtime.ktx)
     implementation(libs.preferences.datastore)
     implementation(libs.appcompat)
+    implementation(libs.documentfile)
 
     // Compose
     implementation(platform(libs.compose.bom))
