@@ -353,7 +353,7 @@ fun PatchesSelectorScreen(
                     }
                 }
 
-                if (!readOnly && !viewModel.selectionWarningEnabled) {
+                if (!readOnly) {
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
                     Text(
