@@ -558,7 +558,7 @@ fun PatchesSelectorScreen(
 
     Scaffold(
         topBar = {
-            Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Box(modifier = Modifier.padding(horizontal = if (searchExpanded) 0.dp else 16.dp)) {
                 SearchBar(
                     query = query,
                     onQueryChange = setQuery,
