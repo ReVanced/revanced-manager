@@ -524,7 +524,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="update_checking_downloader_description">Check for updates to installed ReVanced Downloaders when the application starts</string>
     <string name="manager_prereleases">Use pre-releases</string>
     <string name="manager_prereleases_description">Use pre-release versions of ReVanced Manager</string>
-    <string name="prerelease_title">Use pre-releases version?</string>
+    <string name="prerelease_title">Use pre-releases?</string>
     <string name="prereleases_warning">Pre-release versions may be unstable and contain bugs. You may experience crashes, data loss, or other unexpected issues. Only enable this if you are comfortable with these risks.</string>
     <string name="changelog">View changelog</string>
     <string name="changelog_loading">Loading changelog</string>

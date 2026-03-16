@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Search
@@ -39,10 +42,9 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.EmptyState
-import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.component.SearchView
+import app.revanced.manager.ui.component.SearchBar
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
@@ -83,15 +85,43 @@ fun InstalledAppsScreen(
 
     var search by rememberSaveable { mutableStateOf(false) }
 
+    val TITLE_HORIZONTAL = 16.dp
+    val TITLE_VERTICAL = 8.dp
+
     if (search) {
         val filterText by selectorVm.filterText.collectAsStateWithLifecycle()
         val patchedPackageNames = patchedPackageNames(installedApps)
         val appsFiltered = filteredApps?.filter { it.packageName !in patchedPackageNames }
 
-        SearchView(
+        SearchBar(
             query = filterText,
             onQueryChange = selectorVm::setFilterText,
-            onActiveChange = { search = it },
+            expanded = search,
+            onExpandedChange = { search = it },
+            autoFocus = true,
+            leadingIcon = {
+                IconButton(
+                    onClick = { search = false },
+                    shapes = IconButtonDefaults.shapes()
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back)
+                    )
+                }
+            },
+            trailingIcon = {
+                IconButton(
+                    onClick = { selectorVm.setFilterText("") },
+                    enabled = filterText.isNotEmpty(),
+                    shapes = IconButtonDefaults.shapes()
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = stringResource(R.string.clear)
+                    )
+                }
+            },
             placeholder = { Text(stringResource(R.string.search_apps)) }
         ) {
             if (!appsFiltered.isNullOrEmpty() && filterText.isNotEmpty()) {
@@ -171,12 +201,16 @@ fun InstalledAppsScreen(
 
         item(key = "HEADER_PATCHED") {
             Row(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                GroupHeader(
-                    title = stringResource(R.string.patched_apps_section_title),
-                    modifier = Modifier.weight(1f)
+                Text(
+                    text = stringResource(R.string.patched_apps_section_title),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.labelLarge,
                 )
             }
         }
@@ -215,15 +249,22 @@ fun InstalledAppsScreen(
 
         item(key = "HEADER_PATCHABLE") {
             Row(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                GroupHeader(
-                    title = stringResource(R.string.patchable_apps_section_title),
-                    modifier = Modifier.weight(1f)
+                Text(
+                    text = stringResource(R.string.patchable_apps_section_title),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.labelLarge,
                 )
-                IconButton(onClick = { search = true }, shapes = IconButtonDefaults.shapes()) {
-                    Icon(Icons.Outlined.Search, stringResource(R.string.search))
+                IconButton(
+                    onClick = { search = true },
+                    shapes = IconButtonDefaults.shapes()
+                ) {
+                    Icon(Icons.Outlined.Search, contentDescription = stringResource(R.string.search))
                 }
             }
         }

@@ -11,7 +11,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,7 +32,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Update
@@ -45,6 +43,7 @@ import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -86,6 +85,7 @@ import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.NotificationCardType
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.sources.ImportSourceDialog
@@ -434,7 +434,7 @@ fun DashboardScreen(
                         if (!Aapt.supportsDevice()) {
                             {
                                 NotificationCard(
-                                    isWarning = true,
+                                    type = NotificationCardType.ERROR,
                                     icon = Icons.Outlined.WarningAmber,
                                     text = stringResource(R.string.unsupported_architecture_warning),
                                     onDismiss = null
@@ -444,32 +444,11 @@ fun DashboardScreen(
                         if (bundleDownloadError != null) {
                             {
                                 NotificationCard(
-                                    isWarning = true,
+                                    type = NotificationCardType.ERROR,
                                     icon = Icons.Outlined.WarningAmber,
                                     title = stringResource(R.string.api_not_working_title),
                                     text = stringResource(R.string.api_not_working_description),
                                     onClick = onSettingsClick
-                                )
-                            }
-                        } else null,
-                        if (vm.showBatteryOptimizationsWarning) {
-                            {
-                                val batteryOptimizationsLauncher =
-                                    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                                        vm.updateBatteryOptimizationsWarning()
-                                    }
-                                NotificationCard(
-                                    isWarning = true,
-                                    icon = Icons.Default.BatteryAlert,
-                                    text = stringResource(R.string.battery_optimization_notification),
-                                    onClick = {
-                                        batteryOptimizationsLauncher.launch(
-                                            Intent(
-                                                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                                                Uri.fromParts("package", androidContext.packageName, null)
-                                            )
-                                        )
-                                    }
                                 )
                             }
                         } else null,
@@ -481,7 +460,13 @@ fun DashboardScreen(
                                     actions = {
                                         TextButton(
                                             onClick = vm::markUnreadAnnouncementRead,
-                                            shapes = ButtonDefaults.shapes()
+                                            shapes = ButtonDefaults.shapes(),
+                                            colors = ButtonColors(
+                                                contentColor = MaterialTheme.colorScheme.tertiary,
+                                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0f),
+                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
+                                            )
                                         ) {
                                             Text(stringResource(R.string.dismiss))
                                         }
@@ -490,12 +475,18 @@ fun DashboardScreen(
                                                 vm.markUnreadAnnouncementRead()
                                                 onAnnouncementClick(announcement)
                                             },
-                                            shapes = ButtonDefaults.shapes()
+                                            shapes = ButtonDefaults.shapes(),
+                                            colors = ButtonColors(
+                                                contentColor = MaterialTheme.colorScheme.tertiary,
+                                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0f),
+                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
+                                            )
                                         ) {
                                             Text(stringResource(R.string.view_announcement))
                                         }
                                     },
-                                    isWarning = announcement.level > 0,
+                                    type = if (announcement.level > 0) NotificationCardType.ERROR else NotificationCardType.NORMAL,
                                     onClick = {
                                         vm.markUnreadAnnouncementRead()
                                         onAnnouncementClick(announcement)
