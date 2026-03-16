@@ -42,6 +42,11 @@ class DeveloperOptionsViewModel(
 
     fun resetOnboarding() = viewModelScope.launch {
         prefs.completedOnboarding.update(false)
-        app.toast(app.getString(R.string.reset_onboarding_description))
+        app.toast(app.getString(R.string.sideeffect_restart))
+    }
+
+    fun resetAnnouncement() = viewModelScope.launch {
+        prefs.readAnnouncements.update(emptySet())
+        app.toast(app.getString(R.string.sideeffect_restart))
     }
 }
