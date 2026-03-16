@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -117,8 +117,14 @@ fun DownloadsSettingsScreen(
         ImportSourceDialog(
             strings = ImportSourceDialogStrings.DOWNLOADERS,
             onDismiss = { showImportDialog = false },
-            onLocalSubmit = viewModel::createLocalSource,
-            onRemoteSubmit =  viewModel::createRemoteSource,
+            onLocalSubmit = { uri ->
+                showImportDialog = false
+                viewModel.createLocalSource(uri)
+            },
+            onRemoteSubmit = { url, autoUpdate ->
+                showImportDialog = false
+                viewModel.createRemoteSource(url, autoUpdate)
+            }
         )
     }
 
