@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import android.webkit.URLUtil.isValidUrl
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,10 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
@@ -30,7 +28,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
@@ -65,9 +62,9 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
-import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -101,7 +98,10 @@ fun BundleInformationScreen(
                 onBackClick()
             },
             title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_single_dialog_description, src.name),
+            description = stringResource(
+                R.string.patches_delete_single_dialog_description,
+                src.name
+            ),
             icon = Icons.Outlined.Delete
         )
     }
@@ -118,22 +118,10 @@ fun BundleInformationScreen(
                 title = { Text(src.name) },
                 subtitle = if (subtitleAuthor != null || subtitleVersion != null) {
                     {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            subtitleAuthor?.let { Text(it) }
-                            if (subtitleAuthor != null && subtitleVersion != null) {
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Spacer(
-                                    modifier = Modifier
-                                        .size(3.dp)
-                                        .background(
-                                            color = LocalContentColor.current,
-                                            shape = CircleShape
-                                        )
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                            }
-                            subtitleVersion?.let { Text(it) }
-                        }
+                        val dot = "\u2022"          // •
+                        val emSpace = "\u2002"      // en space, roughly half character width
+                        val separator = "$emSpace$dot$emSpace"
+                        Text("$subtitleAuthor$separator$subtitleVersion")
                     }
                 } else {
                     null
@@ -148,7 +136,10 @@ fun BundleInformationScreen(
                 },
                 actions = {
                     if (!src.isDefault) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }, shapes = IconButtonDefaults.shapes()) {
+                        IconButton(
+                            onClick = { showDeleteConfirmationDialog = true },
+                            shapes = IconButtonDefaults.shapes()
+                        ) {
                             Icon(
                                 Icons.Filled.Delete,
                                 stringResource(R.string.delete)
@@ -157,7 +148,10 @@ fun BundleInformationScreen(
                     }
                     val hasNetwork = remember { viewModel.networkInfo.isConnected() }
                     if (!isLocal && hasNetwork) {
-                        IconButton(onClick = viewModel::refresh, shapes = IconButtonDefaults.shapes()) {
+                        IconButton(
+                            onClick = viewModel::refresh,
+                            shapes = IconButtonDefaults.shapes()
+                        ) {
                             Icon(
                                 Icons.Filled.Update,
                                 stringResource(R.string.refresh)
@@ -183,7 +177,12 @@ fun BundleInformationScreen(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp)
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 8.dp,
+                        bottom = 16.dp
+                    )
                 )
             }
 
@@ -244,7 +243,10 @@ fun BundleInformationScreen(
                     SafeguardBooleanItem(
                         preference = viewModel.prefs.usePatchesPrereleases,
                         headline = R.string.patches_prereleases,
-                        description = stringResource(R.string.patches_prereleases_description, src.name),
+                        description = stringResource(
+                            R.string.patches_prereleases_description,
+                            src.name
+                        ),
                         confirmationText = R.string.prereleases_warning,
                         onValueChange = viewModel::updateUsePrereleases
                     )
@@ -337,7 +339,8 @@ private fun TagValue(
         {
             try {
                 uriHandler.openUri(targetUri)
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
         }
     }
 
