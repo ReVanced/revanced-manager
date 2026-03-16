@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen.settings
 
-import android.annotation.SuppressLint
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

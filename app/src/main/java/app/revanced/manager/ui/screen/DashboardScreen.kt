@@ -81,8 +81,8 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
-import app.revanced.manager.ui.component.bundle.ImportSourceDialog
-import app.revanced.manager.ui.component.bundle.ImportSourceDialogStrings
+import app.revanced.manager.ui.component.sources.ImportSourceDialog
+import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp

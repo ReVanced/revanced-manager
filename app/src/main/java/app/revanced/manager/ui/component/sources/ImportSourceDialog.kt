@@ -1,4 +1,4 @@
-package app.revanced.manager.ui.component.bundle
+package app.revanced.manager.ui.component.sources
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
