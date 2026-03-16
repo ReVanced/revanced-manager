@@ -51,14 +51,14 @@ class OnboardingViewModel(
     var currentStep by mutableStateOf(OnboardingStep.Permissions)
         private set
 
-    val requiredPermissionsGranted
-        get() = canInstallUnknownApps
+    val allPermissionsGranted
+        get() = canInstallUnknownApps && isNotificationsEnabled && isBatteryOptimizationExempt
 
     init {
         refreshPermissionStates()
 
         currentStep =
-            if (requiredPermissionsGranted) OnboardingStep.Updates else OnboardingStep.Permissions
+            if (allPermissionsGranted) OnboardingStep.Updates else OnboardingStep.Permissions
     }
 
     fun refreshPermissionStates() {
