@@ -1,3 +1,10 @@
+## app [2.1.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.1.1-dev.1...v2.1.1-dev.2) (2026-03-16)
+
+
+### Bug Fixes
+
+* Close "Add downloaders" dialog on add ([f60ce02](https://github.com/ReVanced/revanced-manager/commit/f60ce02a8193bf71b4b37329c3e8004e569e2b67))
+
 ## app [2.1.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.1.0...v2.1.1-dev.1) (2026-03-16)
 
 
