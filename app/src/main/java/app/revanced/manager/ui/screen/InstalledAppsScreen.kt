@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -45,7 +44,6 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
-import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.SearchBar
@@ -220,23 +218,23 @@ fun InstalledAppsScreen(
             val patchedPackageNames = patchedPackageNames(patched)
             val visiblePatchableApps = patchable.filter { it.packageName !in patchedPackageNames }
 
-            item(key = "HEADER_PATCHED") {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(R.string.patched_apps_section_title),
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                }
-            }
-
             if (patched.isNotEmpty()) {
+                item(key = "HEADER_PATCHED") {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(R.string.patched_apps_section_title),
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
+                }
+
                 items(
                     items = patched,
                     key = { "PATCHED-${it.currentPackageName}" },
@@ -256,14 +254,6 @@ fun InstalledAppsScreen(
                         headlineContent = { AppLabel(packageInfo, defaultText = null) },
                         supportingContent = { Text(installedApp.currentPackageName) },
                         colors = transparentListItemColors
-                    )
-                }
-            } else {
-                item(key = "PATCHED_EMPTY") {
-                    EmptyState(
-                        icon = Icons.Outlined.Apps,
-                        title = R.string.no_patched_apps_found,
-                        description = R.string.no_patched_apps_description
                     )
                 }
             }
