@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Search
@@ -44,7 +42,7 @@ import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.component.SearchBar
+import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
@@ -93,35 +91,10 @@ fun InstalledAppsScreen(
         val patchedPackageNames = patchedPackageNames(installedApps)
         val appsFiltered = filteredApps?.filter { it.packageName !in patchedPackageNames }
 
-        SearchBar(
+        SearchView(
             query = filterText,
             onQueryChange = selectorVm::setFilterText,
-            expanded = search,
-            onExpandedChange = { search = it },
-            autoFocus = true,
-            leadingIcon = {
-                IconButton(
-                    onClick = { search = false },
-                    shapes = IconButtonDefaults.shapes()
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back)
-                    )
-                }
-            },
-            trailingIcon = {
-                IconButton(
-                    onClick = { selectorVm.setFilterText("") },
-                    enabled = filterText.isNotEmpty(),
-                    shapes = IconButtonDefaults.shapes()
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = stringResource(R.string.clear)
-                    )
-                }
-            },
+            onActiveChange = { search = it },
             placeholder = { Text(stringResource(R.string.search_apps)) }
         ) {
             if (!appsFiltered.isNullOrEmpty() && filterText.isNotEmpty()) {
