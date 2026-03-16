@@ -10,6 +10,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
@@ -133,7 +134,7 @@ fun DownloaderInfoScreen(
                             enabled = !isDeleting,
                             shapes = IconButtonDefaults.shapes()
                         ) {
-                            Icon(Icons.Filled.Update, stringResource(R.string.update))
+                            Icon(Icons.Filled.Refresh, stringResource(R.string.update))
                         }
                     }
                 },
