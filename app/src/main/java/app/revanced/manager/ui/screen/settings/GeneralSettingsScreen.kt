@@ -13,11 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Public
@@ -51,7 +51,6 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
-import app.revanced.manager.ui.component.SearchView as SearchViewComponent
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
@@ -62,6 +61,7 @@ import app.revanced.manager.ui.viewmodel.GeneralSettingsViewModel
 import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
+import app.revanced.manager.ui.component.SearchView as SearchViewComponent
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -153,7 +153,7 @@ fun GeneralSettingsScreen(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Icon(
-                                Icons.AutoMirrored.Outlined.ArrowRight,
+                                Icons.Default.ChevronRight,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )

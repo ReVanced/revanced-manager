@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,9 +30,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,10 +55,10 @@ import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
+import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
-import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.enabled
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
@@ -426,7 +426,7 @@ private fun PageItem(
             }
         },
         trailingContent = {
-            Icon(Icons.AutoMirrored.Outlined.ArrowRight, null)
+            Icon(Icons.Default.ChevronRight, null)
         }
     )
 }

@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
@@ -306,7 +306,7 @@ fun BundleInformationScreen(
                         supportingContent = stringResource(R.string.patches_error_description),
                         trailingContent = {
                             Icon(
-                                Icons.AutoMirrored.Outlined.ArrowRight,
+                                Icons.Default.ChevronRight,
                                 null
                             )
                         },
