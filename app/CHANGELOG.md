@@ -1,3 +1,10 @@
+## app [2.2.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.0...v2.2.1-dev.1) (2026-03-17)
+
+
+### Bug Fixes
+
+*  Handle null value when selecting APK from storage ([879eb74](https://github.com/ReVanced/revanced-manager/commit/879eb742ced4a778cac35557c47b09e6c44048ac))
+
 # app [2.2.0](https://github.com/ReVanced/revanced-manager/compare/v2.1.0...v2.2.0) (2026-03-17)
 
 
