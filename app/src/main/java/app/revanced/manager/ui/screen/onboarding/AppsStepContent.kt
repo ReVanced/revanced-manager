@@ -54,7 +54,7 @@ fun AppsStepContent(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = stringResource(R.string.onboarding_apps_network_error),
+                    text = stringResource(R.string.sideeffect_no_network),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center

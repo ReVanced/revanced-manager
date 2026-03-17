@@ -22,7 +22,6 @@ Second \"item\" text"</string>
     <string name="onboarding_welcome_to">Welcome to</string>
     <string name="onboarding_welcome_back">Hi! It\'s the new</string>
     <string name="onboarding_apps_subtitle">You can select an app to patch now or do it later</string>
-    <string name="onboarding_apps_network_error">Network is unstable or unavailable!</string>
     <string name="onboarding_updates_subtitle">Configure automatic updates to keep ReVanced Manager and patches up to date</string>
     <string name="onboarding_updates_note">ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet.</string>
 
@@ -321,7 +320,6 @@ You will not be able to update the previously installed apps from this source.</
     <string name="patches_reset">Reset patches</string>
     <string name="reset_onboarding">Reset onboarding</string>
     <string name="reset_onboarding_description">Show the onboarding screen on next app launch</string>
-    <string name="sideeffect_restart">Restart to see changes</string>
     <string name="reset_announcement">Reset announcement read</string>
     <string name="reset_announcement_description">Forget that announcements have been read</string>
     <string name="patching">Patching</string>
@@ -613,8 +611,12 @@ Click on the patches to see more details.</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
     <string name="new_announcement">New announcement:\n%s</string>
+
     <string name="generic_required">Required</string>
     <string name="generic_optional">Optional</string>
+
+    <string name="sideeffect_restart">Restart to see changes</string>
+    <string name="sideeffect_no_network">Network is unstable or unavailable!</string>
 
     <plurals name="patch_count">
         <item quantity="one">%d patch</item>
