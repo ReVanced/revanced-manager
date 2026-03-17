@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Gavel
@@ -156,7 +157,7 @@ fun BundleInformationScreen(
                             shapes = IconButtonDefaults.shapes()
                         ) {
                             Icon(
-                                Icons.Filled.Update,
+                                Icons.Filled.Refresh,
                                 stringResource(R.string.refresh)
                             )
                         }
