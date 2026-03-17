@@ -76,13 +76,28 @@ fun InstalledAppsScreen(
 
     val installedApps by viewModel.apps.collectAsStateWithLifecycle()
     val patchableApps by selectorVm.apps.collectAsStateWithLifecycle()
-    val filteredApps by selectorVm.filteredApps.collectAsStateWithLifecycle()
 
     fun patchedPackageNames(apps: List<InstalledApp>?): Set<String> =
         apps
             ?.flatMap { listOf(it.currentPackageName, it.originalPackageName) }
             ?.toSet()
             .orEmpty()
+
+    fun InstalledApp.matchesQuery(query: String): Boolean {
+        if (query.isBlank()) return true
+
+        val packageInfo = viewModel.packageInfoMap[currentPackageName]
+        return currentPackageName.contains(query, ignoreCase = true) ||
+            originalPackageName.contains(query, ignoreCase = true) ||
+            selectorVm.loadLabel(packageInfo).contains(query, ignoreCase = true)
+    }
+
+    fun patchableMatchesQuery(packageName: String, label: String?, query: String): Boolean {
+        if (query.isBlank()) return true
+
+        return packageName.contains(query, ignoreCase = true) ||
+            label?.contains(query, ignoreCase = true) == true
+    }
 
     var searchExpanded by rememberSaveable { mutableStateOf(false) }
     val filterText by selectorVm.filterText.collectAsStateWithLifecycle()
@@ -135,8 +150,23 @@ fun InstalledAppsScreen(
                         }
                     },
                 ) {
-                    val patchedPkgNames = patchedPackageNames(installedApps)
-                    val appsFiltered = filteredApps?.filter { it.packageName !in patchedPkgNames }
+                    val query = filterText.trim()
+                    val patched = installedApps
+                    val patchable = patchableApps
+                    val patchedPkgNames = patchedPackageNames(patched)
+                    val filteredPatchedApps = patched
+                        ?.filter { it.matchesQuery(query) }
+                        .orEmpty()
+                    val filteredPatchableApps = patchable
+                        ?.filter { app ->
+                            app.packageName !in patchedPkgNames &&
+                                patchableMatchesQuery(
+                                    packageName = app.packageName,
+                                    label = selectorVm.loadLabel(app.packageInfo),
+                                    query = query
+                                )
+                        }
+                        .orEmpty()
 
                     Box(
                         modifier = Modifier
@@ -144,11 +174,80 @@ fun InstalledAppsScreen(
                             .weight(1f)
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
-                        if (!appsFiltered.isNullOrEmpty()) {
+                        if (patched == null || patchable == null) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                LoadingIndicator()
+                            }
+                        } else {
                             LazyColumnWithScrollbar(modifier = Modifier.fillMaxSize()) {
+                                if (filteredPatchedApps.isNotEmpty()) {
+                                    item(key = "SEARCH_HEADER_PATCHED") {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.patched_apps_section_title),
+                                                color = MaterialTheme.colorScheme.primary,
+                                                style = MaterialTheme.typography.labelLarge,
+                                            )
+                                        }
+                                    }
+                                }
+
                                 items(
-                                    items = appsFiltered,
-                                    key = { it.packageName }
+                                    items = filteredPatchedApps,
+                                    key = { "SEARCH_PATCHED-${it.currentPackageName}" },
+                                    contentType = { "SEARCH_PATCHED" }
+                                ) { installedApp ->
+                                    val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
+
+                                    ListItem(
+                                        modifier = Modifier.clickable {
+                                            searchExpanded = false
+                                            selectorVm.setFilterText("")
+                                            onAppClick(installedApp)
+                                        },
+                                        leadingContent = {
+                                            AppIcon(
+                                                packageInfo = packageInfo,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(36.dp)
+                                            )
+                                        },
+                                        headlineContent = {
+                                            AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
+                                        },
+                                        supportingContent = {
+                                            Text(installedApp.currentPackageName)
+                                        },
+                                        colors = transparentListItemColors
+                                    )
+                                }
+
+                                if (filteredPatchableApps.isNotEmpty()) {
+                                    item(key = "SEARCH_HEADER_PATCHABLE") {
+                                        Text(
+                                            text = stringResource(R.string.patchable_apps_section_title),
+                                            color = MaterialTheme.colorScheme.primary,
+                                            style = MaterialTheme.typography.labelLarge,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
+                                        )
+                                    }
+                                }
+
+                                items(
+                                    items = filteredPatchableApps,
+                                    key = { "SEARCH_PATCHABLE-${it.packageName}" },
+                                    contentType = { "SEARCH_PATCHABLE" }
                                 ) { app ->
                                     ListItem(
                                         modifier = Modifier.clickable {
