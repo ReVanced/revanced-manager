@@ -1,9 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -31,8 +28,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -55,8 +50,9 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ConfirmDialog
-import app.revanced.manager.ui.component.ShareSheet
 import app.revanced.manager.ui.component.InstallerStatusDialog
+import app.revanced.manager.ui.component.ShareSheet
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
@@ -201,27 +197,30 @@ fun PatcherScreen(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(
+                    TooltipIconButton(
                         onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
+                        tooltip = stringResource(id = R.string.save_apk),
                         enabled = patcherSucceeded == true,
-                        shapes = IconButtonDefaults.shapes(),
-                    ) {
-                        Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
+                    ) { contentDescription ->
+                        Icon(Icons.Outlined.Save, contentDescription)
                     }
-                    IconButton(
+                    TooltipIconButton(
                         onClick = {
                             viewModel.prepareLogExport()
                             showLogExportSheet = true
                         },
+                        tooltip = stringResource(id = R.string.save_logs),
                         enabled = patcherSucceeded != null,
-                        shapes = IconButtonDefaults.shapes(),
-                    ) {
-                        Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
+                    ) { contentDescription ->
+                        Icon(Icons.Outlined.PostAdd, contentDescription)
                     }
                 },
                 floatingActionButton = {
                     AnimatedVisibility(visible = canInstall) {
                         HapticExtendedFloatingActionButton(
+                            tooltip = stringResource(
+                                if (viewModel.installedPackageName == null) R.string.install_app else R.string.open_app
+                            ),
                             text = {
                                 Text(
                                     stringResource(if (viewModel.installedPackageName == null) R.string.install_app else R.string.open_app)

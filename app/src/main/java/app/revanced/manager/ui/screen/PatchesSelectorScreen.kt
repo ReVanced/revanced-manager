@@ -41,7 +41,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Deselect
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
@@ -100,6 +99,8 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchBar
+import app.revanced.manager.ui.component.TooltipHost
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTriStateCheckbox
@@ -567,15 +568,15 @@ fun PatchesSelectorScreen(
                     placeholder = { Text(stringResource(R.string.search_patches)) },
                     windowInsets = if (readOnly) WindowInsets(0, 0, 0, 0) else WindowInsets.systemBars,
                     leadingIcon = {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = {
                                 if (searchExpanded) setSearchExpanded(false) else onBackClick()
                             },
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
+                            tooltip = stringResource(R.string.back),
+                        ) { contentDescription ->
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.back)
+                                contentDescription = contentDescription
                             )
                         }
                     },
@@ -586,24 +587,24 @@ fun PatchesSelectorScreen(
                             transitionSpec = { fadeIn() togetherWith fadeOut() }
                         ) { expanded ->
                             if (expanded) {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = { setQuery("") },
                                     enabled = query.isNotEmpty(),
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
+                                    tooltip = stringResource(R.string.clear),
+                                ) { contentDescription ->
                                     Icon(
                                         imageVector = Icons.Filled.Close,
-                                        contentDescription = stringResource(R.string.clear)
+                                        contentDescription = contentDescription
                                     )
                                 }
                             } else {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = { showBottomSheet = true },
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
+                                    tooltip = stringResource(R.string.more),
+                                ) { contentDescription ->
                                     Icon(
                                         imageVector = Icons.Outlined.FilterList,
-                                        contentDescription = stringResource(R.string.more)
+                                        contentDescription = contentDescription
                                     )
                                 }
                             }
@@ -642,11 +643,14 @@ fun PatchesSelectorScreen(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    SmallFloatingActionButton(
-                        onClick = viewModel::reset,
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                    ) {
-                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                    TooltipHost(tooltip = stringResource(R.string.reset)) { tooltipModifier ->
+                        SmallFloatingActionButton(
+                            onClick = viewModel::reset,
+                            modifier = tooltipModifier,
+                            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                        ) {
+                            Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                        }
                     }
 
                     val isScrollingUp = patchLazyListState.isScrollingUp()
@@ -661,6 +665,7 @@ fun PatchesSelectorScreen(
                         text = {
                             Text(stringResource(R.string.save_with_count, selectedPatchCount))
                         },
+                        tooltip = stringResource(R.string.save),
                         icon = {
                             Icon(
                                 imageVector = Icons.Outlined.Save,

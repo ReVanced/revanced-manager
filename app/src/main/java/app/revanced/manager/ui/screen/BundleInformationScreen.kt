@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Language
@@ -29,8 +28,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
@@ -66,6 +63,7 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -131,34 +129,37 @@ fun BundleInformationScreen(
                     null
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back),
+                    ) { contentDescription ->
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = contentDescription
                         )
                     }
                 },
                 actions = {
                     if (!src.isDefault) {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { showDeleteConfirmationDialog = true },
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
+                            tooltip = stringResource(R.string.delete),
+                        ) { contentDescription ->
                             Icon(
                                 Icons.Filled.Delete,
-                                stringResource(R.string.delete)
+                                contentDescription
                             )
                         }
                     }
                     val hasNetwork = remember { viewModel.networkInfo.isConnected() }
                     if (!isLocal && hasNetwork) {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = viewModel::refresh,
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
+                            tooltip = stringResource(R.string.refresh),
+                        ) { contentDescription ->
                             Icon(
                                 Icons.Filled.Refresh,
-                                stringResource(R.string.refresh)
+                                contentDescription
                             )
                         }
                     }

@@ -1,9 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -48,8 +45,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -88,6 +83,7 @@ import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.NotificationCardType
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.sources.ImportSourceDialog
 import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
@@ -352,19 +348,19 @@ fun DashboardScreen(
                         },
                         actions = {
                             if (availableUpdate != null) {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = onUpdateClick,
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
+                                    tooltip = stringResource(R.string.update),
+                                ) { contentDescription ->
                                     BadgedBox(badge = { Badge(modifier = Modifier.size(6.dp)) }) {
-                                        Icon(Icons.Filled.Update, stringResource(R.string.update))
+                                        Icon(Icons.Filled.Update, contentDescription)
                                     }
                                 }
                             }
-                            IconButton(
+                            TooltipIconButton(
                                 onClick = onAnnouncementsClick,
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
+                                tooltip = stringResource(R.string.announcements),
+                            ) { contentDescription ->
                                 BadgedBox(
                                     badge = {
                                         if (vm.unreadAnnouncement != null) {
@@ -374,14 +370,14 @@ fun DashboardScreen(
                                 ) {
                                     Icon(
                                         Icons.Filled.Notifications,
-                                        stringResource(R.string.announcements)
+                                        contentDescription
                                     )
                                 }
                             }
-                            IconButton(
+                            TooltipIconButton(
                                 onClick = onSettingsClick,
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
+                                tooltip = stringResource(R.string.settings),
+                            ) { contentDescription ->
                                 BadgedBox(
                                     badge = {
                                         if (safeguardsToggled) {
@@ -392,7 +388,7 @@ fun DashboardScreen(
                                         }
                                     }
                                 ) {
-                                    Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                                    Icon(Icons.Filled.Settings, contentDescription)
                                 }
                             }
                         },
@@ -568,6 +564,9 @@ private fun DashboardFab(
 
     HapticExtendedFloatingActionButton(
         onClick = if (fabState == DashboardFabState.AddBundles) onAddBundleClick else onEnablePatchesSourceEditMode,
+        tooltip = stringResource(
+            if (fabState == DashboardFabState.AddBundles) R.string.fab_add_patches else R.string.edit
+        ),
         expanded = fabState == DashboardFabState.AddBundles,
         icon = {
             AnimatedContent(

@@ -62,6 +62,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.TooltipIconButton
 import kotlin.math.roundToInt
 
 @Stable
@@ -366,7 +367,10 @@ fun BannerScaffold(
                 title = { Text(title) },
                 navigationIcon = {
                     if (onBackClick != null) {
-                        IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                        TooltipIconButton(
+                            onClick = onBackClick,
+                            tooltip = stringResource(R.string.back)
+                        ) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(R.string.back),

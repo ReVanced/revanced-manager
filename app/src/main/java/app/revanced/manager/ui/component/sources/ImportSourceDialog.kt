@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.TextHorizontalPadding
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.util.APK_MIMETYPE
@@ -232,9 +233,9 @@ private fun ImportSourceStep(
                         },
                         supportingContent = { Text(stringResource(if (local != null) R.string.file_field_set else R.string.file_field_not_set)) },
                         trailingContent = {
-                            IconButton(
+                            TooltipIconButton(
                                 onClick = launchFileActivity,
-                                shapes = IconButtonDefaults.shapes()
+                                tooltip = stringResource(strings.import_local)
                             ) {
                                 Icon(imageVector = Icons.Default.Topic, contentDescription = null)
                             }
