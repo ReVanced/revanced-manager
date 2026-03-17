@@ -349,12 +349,6 @@ private fun AnnouncementListItem(
                 )
             }
         },
-        trailingContent = {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = stringResource(R.string.view_announcement)
-            )
-        }
     )
 }
 
