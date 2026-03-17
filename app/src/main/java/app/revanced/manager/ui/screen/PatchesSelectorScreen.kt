@@ -5,10 +5,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -32,6 +30,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -198,17 +197,24 @@ fun PatchesSelectorScreen(
             .eachCount()
     }
 
+    val effectiveCollapsedBundleUids = remember(bundles, collapsedBundleUids, readOnly, isSourceEditMode) {
+        when {
+            isSourceEditMode -> bundles.map { it.uid }
+            readOnly -> bundles.map { it.uid }.filter { it !in collapsedBundleUids }
+            else -> collapsedBundleUids
+        }
+    }
+
     val sections = remember(
         bundles,
         viewModel.filter,
-        collapsedBundleUids,
-        isSourceEditMode,
+        effectiveCollapsedBundleUids,
         effectiveSelectedPackageFilters
     ) {
         buildBundleSections(
             bundles = bundles,
             filter = viewModel.filter,
-            collapsedBundleUids = if (isSourceEditMode) bundles.map { it.uid } else collapsedBundleUids,
+            collapsedBundleUids = effectiveCollapsedBundleUids,
             selectedPackageNames = effectiveSelectedPackageFilters
         )
     }
@@ -216,15 +222,14 @@ fun PatchesSelectorScreen(
         bundles,
         query,
         viewModel.filter,
-        collapsedBundleUids,
-        isSourceEditMode,
+        effectiveCollapsedBundleUids,
         effectiveSelectedPackageFilters
     ) {
         buildBundleSections(
             bundles = bundles,
             query = query,
             filter = viewModel.filter,
-            collapsedBundleUids = if (isSourceEditMode) bundles.map { it.uid } else collapsedBundleUids,
+            collapsedBundleUids = effectiveCollapsedBundleUids,
             selectedPackageNames = effectiveSelectedPackageFilters,
             forceExpanded = query.isNotBlank()
         )
@@ -455,75 +460,40 @@ fun PatchesSelectorScreen(
         UniversalPatchWarningDialog(onDismiss = { showUniversalWarning = false })
     }
 
-    @Composable
-    fun PatchList(
+    fun LazyListScope.patchList(
         uid: Int,
         patches: List<PatchInfo>,
         compatible: Boolean,
+        keyPrefix: String,
         header: (@Composable () -> Unit)? = null
     ) {
         if (patches.isEmpty()) return
 
-        Column(modifier = Modifier.fillMaxWidth()) {
-            header?.invoke()
-
-            patches.forEach { patch ->
-                PatchItem(
-                    patch = patch,
-                    onOptionsDialog = { viewModel.optionsDialog = uid to patch },
-                    selected = compatible && viewModel.isSelected(uid, patch),
-                    onToggle = {
-                        when {
-                            !compatible -> viewModel.openIncompatibleDialog(patch)
-                            viewModel.selectionWarningEnabled -> showSelectionWarning = true
-                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
-                            else -> viewModel.togglePatch(uid, patch)
-                        }
-                    },
-                    compatible = compatible,
-                    readOnly = readOnly,
-                    scopedPackageName = viewModel.packageName.ifBlank { null }
-                )
-            }
+        header?.let {
+            item(key = "$keyPrefix-header", contentType = 0) { it() }
         }
-    }
 
-    @Composable
-    fun SectionBody(section: BundleSection) {
-        AnimatedVisibility(
-            visible = section.expanded && section.hasVisiblePatches,
-            enter = expandVertically(MaterialTheme.motionScheme.fastSpatialSpec()) +
-                fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
-            exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) +
-                fadeOut(MaterialTheme.motionScheme.defaultEffectsSpec()),
-            label = "Bundle section visibility"
-        ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                PatchList(
-                    uid = section.bundle.uid,
-                    patches = section.compatible,
-                    compatible = true
-                )
-
-                PatchList(
-                    uid = section.bundle.uid,
-                    patches = section.universal,
-                    compatible = true
-                ) {
-                    ListHeader(title = stringResource(R.string.universal_patches))
-                }
-
-                PatchList(
-                    uid = section.bundle.uid,
-                    patches = section.incompatible,
-                    compatible = viewModel.allowIncompatiblePatches
-                ) {
-                    ListHeader(
-                        title = stringResource(R.string.incompatible_patches),
-                        onHelpClick = { showIncompatiblePatchesDialog = true }
-                    )
-                }
-            }
+        itemsIndexed(
+            items = patches,
+            key = { index, patch -> patchItemKey(keyPrefix, patch.name, index) },
+            contentType = { _, _ -> 1 }
+        ) { _, patch ->
+            PatchItem(
+                patch = patch,
+                onOptionsDialog = { viewModel.optionsDialog = uid to patch },
+                selected = compatible && viewModel.isSelected(uid, patch),
+                onToggle = {
+                    when {
+                        !compatible -> viewModel.openIncompatibleDialog(patch)
+                        viewModel.selectionWarningEnabled -> showSelectionWarning = true
+                        patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
+                        else -> viewModel.togglePatch(uid, patch)
+                    }
+                },
+                compatible = compatible,
+                readOnly = readOnly,
+                scopedPackageName = viewModel.packageName.ifBlank { null }
+            )
         }
     }
 
@@ -559,8 +529,34 @@ fun PatchesSelectorScreen(
                 }
             }
 
-            item(key = "$keyPrefix-body-${bundle.uid}", contentType = 1) {
-                SectionBody(section)
+            if (!section.expanded) return@forEach
+
+            patchList(
+                uid = bundle.uid,
+                patches = section.compatible,
+                compatible = true,
+                keyPrefix = "$keyPrefix-compatible-${bundle.uid}"
+            )
+
+            patchList(
+                uid = bundle.uid,
+                patches = section.universal,
+                compatible = true,
+                keyPrefix = "$keyPrefix-universal-${bundle.uid}"
+            ) {
+                ListHeader(title = stringResource(R.string.universal_patches))
+            }
+
+            patchList(
+                uid = bundle.uid,
+                patches = section.incompatible,
+                compatible = viewModel.allowIncompatiblePatches,
+                keyPrefix = "$keyPrefix-incompatible-${bundle.uid}"
+            ) {
+                ListHeader(
+                    title = stringResource(R.string.incompatible_patches),
+                    onHelpClick = { showIncompatiblePatchesDialog = true }
+                )
             }
         }
     }
@@ -1064,9 +1060,22 @@ private fun buildSectionLayouts(sections: List<BundleSection>) = buildList {
 
     sections.forEach { section ->
         add(BundleSectionLayout(section.bundle, itemIndex))
-        itemIndex += 2
+        itemIndex += 1
+
+        if (!section.expanded) return@forEach
+
+        itemIndex += section.compatible.size
+        if (section.universal.isNotEmpty()) {
+            itemIndex += 1 + section.universal.size
+        }
+        if (section.incompatible.isNotEmpty()) {
+            itemIndex += 1 + section.incompatible.size
+        }
     }
 }
+
+private fun patchItemKey(keyPrefix: String, patchName: String, index: Int) =
+    "$keyPrefix-$index-$patchName"
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
