@@ -22,7 +22,10 @@ Second \"item\" text"</string>
     <string name="onboarding_welcome_to">Welcome to</string>
     <string name="onboarding_welcome_back">Hi! It\'s the new</string>
     <string name="onboarding_apps_subtitle">You can select an app to patch now or do it later</string>
+    <string name="onboarding_apps_network_error">Could not load patches because the network is unavailable or unstable. Connect to a stable network and try again.</string>
     <string name="onboarding_updates_subtitle">Configure automatic updates to keep ReVanced Manager and patches up to date</string>
+
+    <string name="banner_sources_not_downloaded_description">Patches and downloaders could not be downloaded during setup. Tap update to download them.</string>
     <string name="onboarding_updates_note">ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet.</string>
 
     <string name="retry">Retry</string>

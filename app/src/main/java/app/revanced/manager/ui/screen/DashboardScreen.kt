@@ -77,6 +77,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -126,6 +127,7 @@ fun DashboardScreen(
 ) {
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
+    val sourcesNotDownloaded by vm.sourcesNotDownloaded.collectAsStateWithLifecycle(false)
     val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
     val disablePatchVersionCompatCheck by vm.prefs.disablePatchVersionCompatCheck.getAsState()
@@ -438,6 +440,32 @@ fun DashboardScreen(
                                     title = stringResource(R.string.api_not_working_title),
                                     text = stringResource(R.string.api_not_working_description),
                                     onClick = onSettingsClick
+                                )
+                            }
+                        } else null,
+                        if (sourcesNotDownloaded && bundleDownloadError == null) {
+                            {
+                                NotificationCard(
+                                    type = NotificationCardType.WARNING,
+                                    icon = Icons.Outlined.Refresh,
+                                    text = stringResource(R.string.sources_not_downloaded_description),
+                                    actions = {
+                                        TextButton(
+                                            onClick = { vm.downloadSources() },
+                                            shapes = ButtonDefaults.shapes(),
+                                            colors = ButtonColors(
+                                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0f),
+                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
+                                            )
+                                        ) {
+                                            Text(stringResource(R.string.sources_download_now))
+                                        }
+                                    },
+                                    onClick = {
+                                        vm.downloadSources()
+                                    }
                                 )
                             }
                         } else null,

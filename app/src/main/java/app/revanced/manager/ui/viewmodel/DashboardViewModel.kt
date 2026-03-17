@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
+    private val downloaderRepository: DownloaderRepository,
     private val announcementRepository: AnnouncementRepository,
     private val managerUpdateRepository: ManagerUpdateRepository,
     private val networkInfo: NetworkInfo,
@@ -48,6 +49,13 @@ class DashboardViewModel(
     private val powerManager = app.getSystemService<PowerManager>()!!
 
     val availableManagerUpdate = managerUpdateRepository.availableVersion
+
+    val sourcesNotDownloaded = patchBundleRepository.bundleInfoFlow.map { it.isEmpty() }
+
+    fun downloadSources() = viewModelScope.launch(Dispatchers.Default) {
+        patchBundleRepository.updateCheck()
+        downloaderRepository.updateCheck()
+    }
 
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
