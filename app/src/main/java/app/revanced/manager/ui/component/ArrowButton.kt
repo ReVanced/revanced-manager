@@ -5,8 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -30,10 +28,13 @@ fun ArrowButton(
     )
 
     onClick?.let {
-        IconButton(onClick = it, shapes = IconButtonDefaults.shapes()) {
+        TooltipIconButton(
+            onClick = it,
+            tooltip = stringResource(description),
+        ) { contentDescription ->
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowUp,
-                contentDescription = stringResource(description),
+                contentDescription = contentDescription,
                 modifier = Modifier
                     .rotate(rotation)
                     .then(modifier)

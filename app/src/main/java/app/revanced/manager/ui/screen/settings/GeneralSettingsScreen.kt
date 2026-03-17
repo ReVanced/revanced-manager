@@ -17,7 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Public
@@ -26,8 +26,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -52,6 +50,7 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -99,7 +98,10 @@ fun GeneralSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.general)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back)
+                    ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -153,7 +155,7 @@ fun GeneralSettingsScreen(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Icon(
-                                Icons.Default.ChevronRight,
+                                Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -301,7 +303,10 @@ private fun LanguagePicker(
                     MediumFlexibleTopAppBar(
                         title = { Text(stringResource(R.string.language)) },
                         navigationIcon = {
-                            IconButton(onClick = onDismiss, shapes = IconButtonDefaults.shapes()) {
+                            TooltipIconButton(
+                                onClick = onDismiss,
+                                tooltip = stringResource(R.string.back)
+                            ) {
                                 Icon(
                                     Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = stringResource(R.string.back)
@@ -309,10 +314,13 @@ private fun LanguagePicker(
                             }
                         },
                         actions = {
-                            IconButton(onClick = { isSearchActive = true }, shapes = IconButtonDefaults.shapes()) {
+                            TooltipIconButton(
+                                onClick = { isSearchActive = true },
+                                tooltip = stringResource(R.string.search_languages)
+                            ) {
                                 Icon(
                                     Icons.Filled.Search,
-                                    contentDescription = stringResource(R.string.search)
+                                    contentDescription = stringResource(R.string.search_languages)
                                 )
                             }
                         },

@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.automirrored.outlined.Send
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Language
@@ -26,11 +28,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -62,6 +63,7 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -127,34 +129,37 @@ fun BundleInformationScreen(
                     null
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back),
+                    ) { contentDescription ->
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = contentDescription
                         )
                     }
                 },
                 actions = {
                     if (!src.isDefault) {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { showDeleteConfirmationDialog = true },
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
+                            tooltip = stringResource(R.string.delete),
+                        ) { contentDescription ->
                             Icon(
                                 Icons.Filled.Delete,
-                                stringResource(R.string.delete)
+                                contentDescription
                             )
                         }
                     }
                     val hasNetwork = remember { viewModel.networkInfo.isConnected() }
                     if (!isLocal && hasNetwork) {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = viewModel::refresh,
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
+                            tooltip = stringResource(R.string.refresh),
+                        ) { contentDescription ->
                             Icon(
-                                Icons.Filled.Update,
-                                stringResource(R.string.refresh)
+                                Icons.Filled.Refresh,
+                                contentDescription
                             )
                         }
                     }
@@ -232,7 +237,24 @@ fun BundleInformationScreen(
                         trailingContent = {
                             HapticSwitch(
                                 checked = autoUpdate,
-                                onCheckedChange = viewModel::setAutoUpdate
+                                onCheckedChange = viewModel::setAutoUpdate,
+                                thumbContent = if (autoUpdate) {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.Check,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                                        )
+                                    }
+                                } else {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.Close,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                                        )
+                                    }
+                                }
                             )
                         },
                         onClick = { viewModel.setAutoUpdate(!autoUpdate) }
@@ -247,6 +269,7 @@ fun BundleInformationScreen(
                             R.string.patches_prereleases_description,
                             src.name
                         ),
+                        dialogTitle = R.string.prerelease_title,
                         confirmationText = R.string.prereleases_warning,
                         onValueChange = viewModel::updateUsePrereleases
                     )
@@ -306,7 +329,7 @@ fun BundleInformationScreen(
                         supportingContent = stringResource(R.string.patches_error_description),
                         trailingContent = {
                             Icon(
-                                Icons.Default.ChevronRight,
+                                Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 null
                             )
                         },

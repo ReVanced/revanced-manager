@@ -5,8 +5,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -30,7 +32,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,7 +42,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Deselect
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
@@ -54,8 +54,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -100,6 +98,8 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchBar
+import app.revanced.manager.ui.component.TooltipHost
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTriStateCheckbox
@@ -455,40 +455,75 @@ fun PatchesSelectorScreen(
         UniversalPatchWarningDialog(onDismiss = { showUniversalWarning = false })
     }
 
-    fun LazyListScope.patchList(
+    @Composable
+    fun PatchList(
         uid: Int,
         patches: List<PatchInfo>,
         compatible: Boolean,
-        keyPrefix: String,
         header: (@Composable () -> Unit)? = null
     ) {
         if (patches.isEmpty()) return
 
-        header?.let {
-            item(key = "$keyPrefix-header", contentType = 0) { it() }
-        }
+        Column(modifier = Modifier.fillMaxWidth()) {
+            header?.invoke()
 
-        itemsIndexed(
-            items = patches,
-            key = { index, patch -> patchItemKey(keyPrefix, patch.name, index) },
-            contentType = { _, _ -> 1 }
-        ) { _, patch ->
-            PatchItem(
-                patch = patch,
-                onOptionsDialog = { viewModel.optionsDialog = uid to patch },
-                selected = compatible && viewModel.isSelected(uid, patch),
-                onToggle = {
-                    when {
-                        !compatible -> viewModel.openIncompatibleDialog(patch)
-                        viewModel.selectionWarningEnabled -> showSelectionWarning = true
-                        patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
-                        else -> viewModel.togglePatch(uid, patch)
-                    }
-                },
-                compatible = compatible,
-                readOnly = readOnly,
-                scopedPackageName = viewModel.packageName.ifBlank { null }
-            )
+            patches.forEach { patch ->
+                PatchItem(
+                    patch = patch,
+                    onOptionsDialog = { viewModel.optionsDialog = uid to patch },
+                    selected = compatible && viewModel.isSelected(uid, patch),
+                    onToggle = {
+                        when {
+                            !compatible -> viewModel.openIncompatibleDialog(patch)
+                            viewModel.selectionWarningEnabled -> showSelectionWarning = true
+                            patch.compatiblePackages == null && viewModel.universalPatchWarningEnabled -> showUniversalWarning = true
+                            else -> viewModel.togglePatch(uid, patch)
+                        }
+                    },
+                    compatible = compatible,
+                    readOnly = readOnly,
+                    scopedPackageName = viewModel.packageName.ifBlank { null }
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun SectionBody(section: BundleSection) {
+        AnimatedVisibility(
+            visible = section.expanded && section.hasVisiblePatches,
+            enter = expandVertically(MaterialTheme.motionScheme.fastSpatialSpec()) +
+                fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+            exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) +
+                fadeOut(MaterialTheme.motionScheme.defaultEffectsSpec()),
+            label = "Bundle section visibility"
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                PatchList(
+                    uid = section.bundle.uid,
+                    patches = section.compatible,
+                    compatible = true
+                )
+
+                PatchList(
+                    uid = section.bundle.uid,
+                    patches = section.universal,
+                    compatible = true
+                ) {
+                    ListHeader(title = stringResource(R.string.universal_patches))
+                }
+
+                PatchList(
+                    uid = section.bundle.uid,
+                    patches = section.incompatible,
+                    compatible = viewModel.allowIncompatiblePatches
+                ) {
+                    ListHeader(
+                        title = stringResource(R.string.incompatible_patches),
+                        onHelpClick = { showIncompatiblePatchesDialog = true }
+                    )
+                }
+            }
         }
     }
 
@@ -524,41 +559,15 @@ fun PatchesSelectorScreen(
                 }
             }
 
-            if (!section.expanded) return@forEach
-
-            patchList(
-                uid = bundle.uid,
-                patches = section.compatible,
-                compatible = true,
-                keyPrefix = "$keyPrefix-compatible-${bundle.uid}"
-            )
-
-            patchList(
-                uid = bundle.uid,
-                patches = section.universal,
-                compatible = true,
-                keyPrefix = "$keyPrefix-universal-${bundle.uid}"
-            ) {
-                ListHeader(title = stringResource(R.string.universal_patches))
-            }
-
-            patchList(
-                uid = bundle.uid,
-                patches = section.incompatible,
-                compatible = viewModel.allowIncompatiblePatches,
-                keyPrefix = "$keyPrefix-incompatible-${bundle.uid}"
-            ) {
-                ListHeader(
-                    title = stringResource(R.string.incompatible_patches),
-                    onHelpClick = { showIncompatiblePatchesDialog = true }
-                )
+            item(key = "$keyPrefix-body-${bundle.uid}", contentType = 1) {
+                SectionBody(section)
             }
         }
     }
 
     Scaffold(
         topBar = {
-            Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Box(modifier = Modifier.padding(horizontal = if (searchExpanded) 0.dp else 16.dp)) {
                 SearchBar(
                     query = query,
                     onQueryChange = setQuery,
@@ -567,21 +576,15 @@ fun PatchesSelectorScreen(
                     placeholder = { Text(stringResource(R.string.search_patches)) },
                     windowInsets = if (readOnly) WindowInsets(0, 0, 0, 0) else WindowInsets.systemBars,
                     leadingIcon = {
-                        val rotation by animateFloatAsState(
-                            targetValue = if (searchExpanded) 360f else 0f,
-                            animationSpec = tween(durationMillis = 400, easing = EaseInOut),
-                            label = "SearchBar back button"
-                        )
-                        IconButton(
+                        TooltipIconButton(
                             onClick = {
                                 if (searchExpanded) setSearchExpanded(false) else onBackClick()
                             },
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
+                            tooltip = stringResource(R.string.back),
+                        ) { contentDescription ->
                             Icon(
-                                modifier = Modifier.rotate(rotation),
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.back)
+                                contentDescription = contentDescription
                             )
                         }
                     },
@@ -592,24 +595,24 @@ fun PatchesSelectorScreen(
                             transitionSpec = { fadeIn() togetherWith fadeOut() }
                         ) { expanded ->
                             if (expanded) {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = { setQuery("") },
                                     enabled = query.isNotEmpty(),
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
+                                    tooltip = stringResource(R.string.clear),
+                                ) { contentDescription ->
                                     Icon(
                                         imageVector = Icons.Filled.Close,
-                                        contentDescription = stringResource(R.string.clear)
+                                        contentDescription = contentDescription
                                     )
                                 }
                             } else {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = { showBottomSheet = true },
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
+                                    tooltip = stringResource(R.string.more),
+                                ) { contentDescription ->
                                     Icon(
                                         imageVector = Icons.Outlined.FilterList,
-                                        contentDescription = stringResource(R.string.more)
+                                        contentDescription = contentDescription
                                     )
                                 }
                             }
@@ -648,11 +651,14 @@ fun PatchesSelectorScreen(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    SmallFloatingActionButton(
-                        onClick = viewModel::reset,
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                    ) {
-                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                    TooltipHost(tooltip = stringResource(R.string.reset)) { tooltipModifier ->
+                        SmallFloatingActionButton(
+                            onClick = viewModel::reset,
+                            modifier = tooltipModifier,
+                            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                        ) {
+                            Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                        }
                     }
 
                     val isScrollingUp = patchLazyListState.isScrollingUp()
@@ -667,6 +673,7 @@ fun PatchesSelectorScreen(
                         text = {
                             Text(stringResource(R.string.save_with_count, selectedPatchCount))
                         },
+                        tooltip = stringResource(R.string.save),
                         icon = {
                             Icon(
                                 imageVector = Icons.Outlined.Save,
@@ -804,7 +811,11 @@ private fun PatchItem(
         },
         trailingContent = {
             if (patch.options?.isNotEmpty() == true) {
-                IconButton(onClick = onOptionsDialog, enabled = compatible || readOnly, shapes = IconButtonDefaults.shapes()) {
+                TooltipIconButton(
+                    onClick = onOptionsDialog,
+                    enabled = compatible || readOnly,
+                    tooltip = stringResource(R.string.settings)
+                ) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(R.string.settings)
@@ -832,7 +843,7 @@ fun ListHeader(
         },
         trailingContent = onHelpClick?.let {
             {
-                IconButton(onClick = it, shapes = IconButtonDefaults.shapes()) {
+                TooltipIconButton(onClick = it, tooltip = stringResource(R.string.help)) {
                     Icon(
                         Icons.AutoMirrored.Outlined.HelpOutline,
                         stringResource(R.string.help)
@@ -955,7 +966,10 @@ private fun OptionsDialog(
                 onBackClick = onDismissRequest,
                 actions = {
                     if (!readOnly) {
-                        IconButton(onClick = reset, shapes = IconButtonDefaults.shapes()) {
+                        TooltipIconButton(
+                            onClick = reset,
+                            tooltip = stringResource(R.string.reset)
+                        ) {
                             Icon(Icons.Filled.Restore, stringResource(R.string.reset))
                         }
                     }
@@ -1050,22 +1064,9 @@ private fun buildSectionLayouts(sections: List<BundleSection>) = buildList {
 
     sections.forEach { section ->
         add(BundleSectionLayout(section.bundle, itemIndex))
-        itemIndex += 1
-
-        if (!section.expanded) return@forEach
-
-        itemIndex += section.compatible.size
-        if (section.universal.isNotEmpty()) {
-            itemIndex += 1 + section.universal.size
-        }
-        if (section.incompatible.isNotEmpty()) {
-            itemIndex += 1 + section.incompatible.size
-        }
+        itemIndex += 2
     }
 }
-
-private fun patchItemKey(keyPrefix: String, patchName: String, index: Int) =
-    "$keyPrefix-$index-$patchName"
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -1129,10 +1130,10 @@ private fun SourceSectionHeader(
             },
             trailingContent = {
                 if (sourceEditMode) {
-                    IconButton(
+                    TooltipIconButton(
                         onClick = onDeleteClick,
                         enabled = bundle.uid != 0,
-                        shapes = IconButtonDefaults.shapes()
+                        tooltip = stringResource(R.string.delete)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
@@ -1140,7 +1141,12 @@ private fun SourceSectionHeader(
                         )
                     }
                 } else {
-                    IconButton(onClick = onExpandToggle, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onExpandToggle,
+                        tooltip = stringResource(
+                            if (expanded) R.string.collapse_content else R.string.expand_content
+                        )
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowDown,
                             contentDescription = stringResource(

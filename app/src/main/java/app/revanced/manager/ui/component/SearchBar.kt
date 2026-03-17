@@ -11,8 +11,12 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarColors
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 
@@ -23,6 +27,7 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
+    autoFocus: Boolean = false,
     placeholder: (@Composable () -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -35,10 +40,13 @@ fun SearchBar(
         inputFieldColors = SearchBarDefaults.inputFieldColors()
     )
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
 
     Box(modifier = Modifier.fillMaxWidth()) {
         SearchBar(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .then(if (autoFocus) Modifier.focusRequester(focusRequester) else Modifier),
             inputField = {
                 SearchBarDefaults.InputField(
                     modifier = Modifier.sizeIn(minWidth = 380.dp),
@@ -60,5 +68,11 @@ fun SearchBar(
             windowInsets = windowInsets,
             content = content
         )
+    }
+
+    LaunchedEffect(autoFocus, expanded) {
+        if (autoFocus && expanded) {
+            focusRequester.requestFocus()
+        }
     }
 }

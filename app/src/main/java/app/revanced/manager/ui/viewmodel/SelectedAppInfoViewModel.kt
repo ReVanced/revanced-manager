@@ -265,7 +265,7 @@ class SelectedAppInfoViewModel(
         }
 
         if (selectedApp.packageName != packageName) {
-            app.toast(app.getString(R.string.downloader_app_not_found))
+            app.toast(app.getString(R.string.wrong_app_loading))
             return@launch
         }
 

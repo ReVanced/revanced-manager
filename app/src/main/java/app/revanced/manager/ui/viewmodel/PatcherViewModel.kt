@@ -377,13 +377,16 @@ class PatcherViewModel(
         preparedLogUri = uri
     }
 
-    fun copyLogs() = viewModelScope.launch {
+    fun copyLogs(context: Context) = viewModelScope.launch {
         val logSnapshot = logs.toList()
         withContext(Dispatchers.Main) {
             val clipboardManager = app.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val content = buildLogExportText(app, logSnapshot)
             val clip = ClipData.newPlainText("Logs", content)
             clipboardManager.setPrimaryClip(clip)
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                context.toast(R.string.toast_copied_to_clipboard)
+            }
         }
     }
 

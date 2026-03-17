@@ -8,8 +8,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarColors
@@ -54,10 +52,13 @@ fun SearchView(
                 onExpandedChange = onActiveChange,
                 placeholder = placeholder,
                 leadingIcon = {
-                    IconButton(onClick = { onActiveChange(false) }, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = { onActiveChange(false) },
+                        tooltip = stringResource(R.string.back),
+                    ) { contentDescription ->
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(R.string.back)
+                            contentDescription
                         )
                     }
                 },
@@ -66,10 +67,13 @@ fun SearchView(
                         trailingContent?.invoke()
 
                         if (query.isNotEmpty()) {
-                            IconButton(onClick = { onQueryChange("") }, shapes = IconButtonDefaults.shapes()) {
+                            TooltipIconButton(
+                                onClick = { onQueryChange("") },
+                                tooltip = stringResource(R.string.clear),
+                            ) { contentDescription ->
                                 Icon(
                                     Icons.Filled.Close,
-                                    contentDescription = stringResource(R.string.clear)
+                                    contentDescription = contentDescription
                                 )
                             }
                         }

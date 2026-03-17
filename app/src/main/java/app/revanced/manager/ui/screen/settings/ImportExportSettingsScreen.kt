@@ -41,8 +41,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -79,6 +77,7 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.PasswordField
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -180,7 +179,10 @@ fun ImportExportSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.import_export)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back)
+                    ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -217,7 +219,7 @@ fun ImportExportSettingsScreen(
                                 title = stringResource(R.string.import_keystore_dialog_alias_field),
                                 value = keystoreAlias,
                                 leadingContent = {
-                                    IconButton(
+                                    TooltipIconButton(
                                         onClick = {
                                             clipboard.setPrimaryClip(
                                                 ClipData.newPlainText(
@@ -227,7 +229,7 @@ fun ImportExportSettingsScreen(
                                             )
                                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
                                         },
-                                        shapes = IconButtonDefaults.shapes()
+                                        tooltip = stringResource(R.string.copy_to_clipboard)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Outlined.ContentCopy,
@@ -241,7 +243,14 @@ fun ImportExportSettingsScreen(
                                 value = if (showKeystorePassword) keystorePass else "•".repeat(keystorePass.length),
                                 leadingContent = {
                                     val hidePassword = showKeystorePassword
-                                    IconButton(onClick = { showKeystorePassword = !showKeystorePassword }, shapes = IconButtonDefaults.shapes()) {
+                                    TooltipIconButton(
+                                        onClick = { showKeystorePassword = !showKeystorePassword },
+                                        tooltip = if (hidePassword) {
+                                            stringResource(R.string.hide_password_field)
+                                        } else {
+                                            stringResource(R.string.show_password_field)
+                                        }
+                                    ) {
                                         Icon(
                                             imageVector = if (hidePassword) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
                                             contentDescription = if (hidePassword) {
@@ -251,7 +260,7 @@ fun ImportExportSettingsScreen(
                                             }
                                         )
                                     }
-                                    IconButton(
+                                    TooltipIconButton(
                                         onClick = {
                                             clipboard.setPrimaryClip(
                                                 ClipData.newPlainText(
@@ -267,7 +276,7 @@ fun ImportExportSettingsScreen(
                                             )
                                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
                                         },
-                                        shapes = IconButtonDefaults.shapes()
+                                        tooltip = stringResource(R.string.copy_to_clipboard)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Outlined.ContentCopy,

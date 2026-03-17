@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
+import android.os.Build
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
@@ -81,6 +82,10 @@ fun Context.openUrl(url: String) {
 
 fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, duration).show()
+}
+
+fun Context.toast(@StringRes stringRes: Int, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, getString(stringRes), duration).show()
 }
 
 /**

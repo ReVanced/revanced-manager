@@ -19,8 +19,6 @@ import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,6 +43,7 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
@@ -97,7 +96,10 @@ fun AdvancedSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.advanced)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back)
+                    ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -132,6 +134,7 @@ fun AdvancedSettingsScreen(
                     coroutineScope = viewModel.viewModelScope,
                     headline = R.string.patch_compat_check,
                     description = R.string.patch_compat_check_description,
+                dialogTitle = R.string.patch_compat_check_title,
                     confirmationText = R.string.patch_compat_check_confirmation
                 )
                 SafeguardBooleanItem(
@@ -139,6 +142,7 @@ fun AdvancedSettingsScreen(
                     coroutineScope = viewModel.viewModelScope,
                     headline = R.string.suggested_version_safeguard,
                     description = R.string.suggested_version_safeguard_description,
+                dialogTitle = R.string.suggested_version_safeguard_title,
                     confirmationText = R.string.suggested_version_safeguard_confirmation
                 )
                 SafeguardBooleanItem(
@@ -146,6 +150,7 @@ fun AdvancedSettingsScreen(
                     coroutineScope = viewModel.viewModelScope,
                     headline = R.string.patch_selection_safeguard,
                     description = R.string.patch_selection_safeguard_description,
+                dialogTitle = R.string.patch_selection_safeguard_title,
                     confirmationText = R.string.patch_selection_safeguard_confirmation
                 )
                 SafeguardBooleanItem(
@@ -153,6 +158,7 @@ fun AdvancedSettingsScreen(
                     coroutineScope = viewModel.viewModelScope,
                     headline = R.string.universal_patches_safeguard,
                     description = R.string.universal_patches_safeguard_description,
+                    dialogTitle = R.string.universal_patches_safeguard_title,
                     confirmationText = R.string.universal_patches_safeguard_confirmation
                 )
             }

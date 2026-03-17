@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,6 +52,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.NotificationCardType
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
@@ -362,7 +363,7 @@ fun SelectedAppInfoScreen(
                     !needsInternet -> {}
                     !networkConnected -> {
                         NotificationCard(
-                            isWarning = true,
+                            type = NotificationCardType.WARNING,
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.network_unavailable_warning),
                             onDismiss = null
@@ -371,7 +372,7 @@ fun SelectedAppInfoScreen(
 
                     networkMetered -> {
                         NotificationCard(
-                            isWarning = true,
+                            type = NotificationCardType.WARNING,
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.network_metered_warning),
                             onDismiss = null
@@ -426,7 +427,7 @@ private fun PageItem(
             }
         },
         trailingContent = {
-            Icon(Icons.Default.ChevronRight, null)
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null)
         }
     )
 }

@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.outlined.History
@@ -28,8 +28,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -63,6 +61,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
@@ -102,9 +101,9 @@ fun AnnouncementsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (tags != null) {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { showFilterSheet = true },
-                            shapes = IconButtonDefaults.shapes()
+                            tooltip = stringResource(R.string.announcements_filter_tag)
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.FilterAlt,
@@ -268,7 +267,7 @@ private fun ArchivedAnnouncementsHeader(
     modifier: Modifier = Modifier
 ) {
     val rotation by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
+        targetValue = if (expanded) 0f else 180f,
         label = "archivedChevronRotation"
     )
     Row(
@@ -324,8 +323,8 @@ private fun AnnouncementListItem(
                         spacing = MarqueeSpacing.fractionOfContainer(1f / 5f),
                         velocity = 55.dp,
                     ),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = if (unread) FontWeight.ExtraBold else null,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = if (unread) FontWeight.Bold else null,
                     maxLines = 1
                 )
                 Row(
@@ -336,17 +335,10 @@ private fun AnnouncementListItem(
                     val emSpace = "\u2002"      // en space, roughly half character width
                     val separator = "$emSpace$dot$emSpace"
                     Text("$date$separator$author",
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = if (unread) FontWeight.ExtraBold else FontWeight.Normal
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = if (unread) FontWeight.Bold else FontWeight.Normal
                         )
                     )
-                    if (archived) {
-                        Icon(
-                            Icons.Outlined.Inventory2,
-                            contentDescription = null,
-                            modifier = Modifier.size(12.dp)
-                        )
-                    }
                     if (unread) {
                         Badge(modifier = Modifier.size(6.dp))
                     }
@@ -357,12 +349,6 @@ private fun AnnouncementListItem(
                 )
             }
         },
-        trailingContent = {
-            Icon(
-                imageVector = Icons.Default.ChevronRight,
-                contentDescription = stringResource(R.string.view_announcement)
-            )
-        }
     )
 }
 

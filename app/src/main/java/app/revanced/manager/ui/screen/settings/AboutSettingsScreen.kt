@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen.settings
 
-import android.annotation.SuppressLint
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -22,8 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -55,6 +52,7 @@ import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.viewmodel.AboutViewModel
@@ -262,10 +260,10 @@ fun AboutSettingsScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
                 socialButtons.forEach { (icon, text, onClick) ->
-                    IconButton(
+                    TooltipIconButton(
                         onClick = onClick,
                         modifier = Modifier.padding(end = 8.dp),
-                        shapes = IconButtonDefaults.shapes()
+                        tooltip = text
                     ) {
                         Icon(
                             icon,
