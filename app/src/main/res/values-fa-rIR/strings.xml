@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">نصب برنامه‌های ناشناس</string>
   <string name="permission_install_apps_description">برای نصب برنامه‌های پچ شده لازم است</string>
   <string name="permission_notifications">اعلان‌ها</string>
-  <string name="permission_notifications_description">اجازه می‌دهد تا پچ‌کردن بدون وقفه در پس‌زمینه در نسخه‌های جدیدتر اندروید انجام شود</string>
   <string name="permission_battery">بهینه‌سازی باتری</string>
   <string name="permission_battery_description">از قطع شدن پچ‌کردن در پس‌زمینه جلوگیری می‌کند</string>
   <string name="permission_grant">اعطا</string>

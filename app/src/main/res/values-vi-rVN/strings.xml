@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Cài đặt ứng dụng không rõ nguồn gốc</string>
   <string name="permission_install_apps_description">Bắt buộc để cài đặt các ứng dụng đã vá</string>
   <string name="permission_notifications">Thông báo</string>
-  <string name="permission_notifications_description">Cho phép vá lỗi không bị gián đoạn ở chế độ nền trên các phiên bản Android mới hơn</string>
   <string name="permission_battery">Tối ưu hóa pin</string>
   <string name="permission_battery_description">Ngăn chặn quá trình vá bị gián đoạn ở chế độ nền</string>
   <string name="permission_grant">Cấp</string>

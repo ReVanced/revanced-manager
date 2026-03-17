@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Sakinisha programu zisizojulikana</string>
   <string name="permission_install_apps_description">Inahitajika kusakinisha programu zilizorekebishwa</string>
   <string name="permission_notifications">Arifa</string>
-  <string name="permission_notifications_description">Inaruhusu urekebishaji usioingiliwa chinichini kwenye matoleo mapya zaidi ya Android</string>
   <string name="permission_battery">Uboreshaji wa betri</string>
   <string name="permission_battery_description">Inazuia urekebishaji kusiingiliwe chinichini</string>
   <string name="permission_grant">Ruhusu</string>

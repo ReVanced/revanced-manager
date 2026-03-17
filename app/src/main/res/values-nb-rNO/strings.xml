@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Installer ukjente apper</string>
   <string name="permission_install_apps_description">Kreves for å installere lappede applikasjoner</string>
   <string name="permission_notifications">Varsler</string>
-  <string name="permission_notifications_description">Tillater uavbrutt lapping i bakgrunnen på nyere versjoner av Android</string>
   <string name="permission_battery">Batterioptimalisering</string>
   <string name="permission_battery_description">Forhindrer at lapping avbrytes i bakgrunnen</string>
   <string name="permission_grant">Gi</string>

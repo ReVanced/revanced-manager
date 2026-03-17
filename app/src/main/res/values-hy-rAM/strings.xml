@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Բարի գալուստ</string>
   <string name="onboarding_welcome_back">Ողջույն։ Սա նորն է</string>
   <string name="onboarding_apps_subtitle">Դուք կարող եք ընտրել հավելվածը հիմա կարկատելու համար կամ անել դա ավելի ուշ</string>
+  <string name="onboarding_apps_network_error">Հնարավոր չեղավ բեռնել թարմացումները, քանի որ ցանցը հասանելի չէ կամ անկայուն է։ Միացեք կայուն ցանցի և նորից փորձեք։</string>
   <string name="onboarding_updates_subtitle">Կարգավորեք ավտոմատ թարմացումները՝ ReVanced Manager-ը և կարկատանները թարմ պահելու համար</string>
+  <string name="banner_sources_not_downloaded_description">Կարգավորման ընթացքում թարմացումները և ներբեռնողները հնարավոր չեղավ ներբեռնել։ Հպեք «թարմացնել»՝ դրանք ներբեռնելու համար։</string>
   <string name="onboarding_updates_note">ReVanced Manager-ը կմիանա %s-ին՝ սկզբնական տարբերակները ներբեռնելու համար, եթե Ձեր սարքը միացված է ինտերնետին։</string>
   <string name="retry">Կրկին փորձել</string>
   <string name="onboarding_skip">Առայժմ բաց թողնել</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Տեղադրել անհայտ հավելվածներ</string>
   <string name="permission_install_apps_description">Անհրաժեշտ է կարկատված հավելվածներ տեղադրելու համար</string>
   <string name="permission_notifications">Ծանուցումներ</string>
-  <string name="permission_notifications_description">Թույլ է տալիս անխափան կարկատել հետին պլանում Android-ի ավելի նոր տարբերակներում</string>
+  <string name="permission_notifications_description">Թույլ է տալիս անխափան թարմացումներ կատարել հետին պլանում</string>
   <string name="permission_battery">Մարտկոցի օպտիմալացում</string>
   <string name="permission_battery_description">Կանխում է կարկատման ընդհատումը հետին պլանում</string>
   <string name="permission_grant">Տրամադրել</string>

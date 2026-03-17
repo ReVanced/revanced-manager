@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Добро пожаловать в</string>
   <string name="onboarding_welcome_back">Привет! Это новый</string>
   <string name="onboarding_apps_subtitle">Вы можете выбрать приложение для патчинга сейчас или сделать это позже</string>
+  <string name="onboarding_apps_network_error">Не удалось загрузить патчи, так как сеть недоступна или нестабильна. Подключитесь к стабильной сети и попробуйте снова.</string>
   <string name="onboarding_updates_subtitle">Настройте автоматические обновления, чтобы ReVanced Manager и патчи были актуальными</string>
+  <string name="banner_sources_not_downloaded_description">Патчи и загрузчики не удалось загрузить во время установки. Нажмите «Обновить», чтобы загрузить их.</string>
   <string name="onboarding_updates_note">ReVanced Manager подключится к %s для загрузки первоначальных версий, если ваше устройство подключено к Интернету.</string>
   <string name="retry">Повторить</string>
   <string name="onboarding_skip">Пока пропустить</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Установка неизвестных приложений</string>
   <string name="permission_install_apps_description">Требуется для установки пропатченных приложений</string>
   <string name="permission_notifications">Уведомления</string>
-  <string name="permission_notifications_description">Позволяет выполнять непрерывное патчинг в фоновом режиме на новых версиях Android</string>
+  <string name="permission_notifications_description">Позволяет выполнять непрерывное патчинг в фоновом режиме</string>
   <string name="permission_battery">Оптимизация батареи</string>
   <string name="permission_battery_description">Предотвращает прерывание патчинга в фоновом режиме</string>
   <string name="permission_grant">Предоставить</string>

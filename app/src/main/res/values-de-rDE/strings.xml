@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Willkommen bei</string>
   <string name="onboarding_welcome_back">Hallo! Es ist der neue</string>
   <string name="onboarding_apps_subtitle">Du kannst jetzt eine App zum Patchen auswählen oder es später tun</string>
+  <string name="onboarding_apps_network_error">Patches konnten nicht geladen werden, da das Netzwerk nicht verfügbar oder instabil ist. Verbinden Sie sich mit einem stabilen Netzwerk und versuchen Sie es erneut.</string>
   <string name="onboarding_updates_subtitle">Konfiguriere automatische Updates, um ReVanced Manager und Patches auf dem neuesten Stand zu halten</string>
+  <string name="banner_sources_not_downloaded_description">Patches und Downloader konnten während der Einrichtung nicht heruntergeladen werden. Tippen Sie auf Aktualisieren, um sie herunterzuladen.</string>
   <string name="onboarding_updates_note">ReVanced Manager wird sich mit %s verbinden, um initiale Versionen herunterzuladen, wenn Ihr Gerät mit dem Internet verbunden ist.</string>
   <string name="retry">Wiederholen</string>
   <string name="onboarding_skip">Vorläufig überspringen</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Unbekannte Apps installieren</string>
   <string name="permission_install_apps_description">Erforderlich, um gepatchte Anwendungen zu installieren</string>
   <string name="permission_notifications">Benachrichtigungen</string>
-  <string name="permission_notifications_description">Ermöglicht ununterbrochenes Patchen im Hintergrund auf neueren Android-Versionen</string>
+  <string name="permission_notifications_description">Ermöglicht ununterbrochenes Patchen im Hintergrund</string>
   <string name="permission_battery">Akku-Optimierung</string>
   <string name="permission_battery_description">Verhindert, dass das Patchen im Hintergrund unterbrochen wird</string>
   <string name="permission_grant">Erteilen</string>

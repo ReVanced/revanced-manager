@@ -21,11 +21,13 @@ Second \"item\" text"</string>
   <string name="manager">매니저</string>
   <string name="onboarding_welcome_to">환영합니다</string>
   <string name="onboarding_welcome_back">안녕하세요!</string>
-  <string name="onboarding_apps_subtitle">지금 패치할 앱을 선택하거나 나중에 할 수 있습니다</string>
+  <string name="onboarding_apps_subtitle">지금 앱을 선택하여 패치하거나 나중에 패치할 수 있습니다</string>
+  <string name="onboarding_apps_network_error">네트워크를 사용할 수 없거나 불안정하여 패치를 로드할 수 없습니다. 안정적인 네트워크에 연결하여 다시 시도하십시오.</string>
   <string name="onboarding_updates_subtitle">ReVanced Manager 및 패치를 최신 상태로 유지하려면 자동 업데이트를 설정하세요</string>
+  <string name="banner_sources_not_downloaded_description">설정 중에 패치 및 다운로더를 다운로드할 수 없습니다. 다운로드하려면 업데이트를 누르십시오.</string>
   <string name="onboarding_updates_note">ReVanced Manager는 기기가 인터넷에 연결되어 있으면 초기 버전을 다운로드하기 위해 %s에 연결됩니다.</string>
   <string name="retry">다시 시도</string>
-  <string name="onboarding_skip">지금은 건너뛰기</string>
+  <string name="onboarding_skip">건너뛰기</string>
   <string name="onboarding_recommended_version">권장 버전: %s</string>
   <string name="onboarding_permissions_skip_title">권한을 건너뛰시겠습니까?</string>
   <string name="onboarding_permissions_skip_description">필수 권한이 없으면 일부 기능이 제대로 작동하지 않을 수 있습니다. 나중에 앱 설정에서 권한을 부여할 수 있습니다.</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">알 수 없는 앱 설치</string>
   <string name="permission_install_apps_description">패치된 애플리케이션을 설치하는 데 필요합니다</string>
   <string name="permission_notifications">알림</string>
-  <string name="permission_notifications_description">최신 Android 버전에서 백그라운드에서 중단 없이 패치할 수 있도록 허용합니다</string>
+  <string name="permission_notifications_description">백그라운드에서 중단 없이 패치할 수 있도록 허용합니다</string>
   <string name="permission_battery">배터리 최적화</string>
   <string name="permission_battery_description">백그라운드에서 패치 작업이 중단되는 것을 방지합니다</string>
   <string name="permission_grant">허용</string>
@@ -93,7 +95,7 @@ Second \"item\" text"</string>
   <string name="auto_updates_dialog_description">ReVanced Manager에서 다음 구성 요소에 대한 업데이트를 주기적으로 확인하시겠습니까?</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
   <string name="auto_updates_dialog_patches">ReVanced Patches</string>
-  <string name="auto_updates_dialog_downloaders">ReVanced Manager: 다운로더</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Downloaders</string>
   <string name="auto_updates_dialog_note">이 설정은 나중에 변경할 수 있습니다.
 
     ReVanced Manager는 기기가 인터넷에 연결되어 있으면 초기 버전을 다운로드하기 위해 %s에 연결됩니다.</string>
@@ -109,7 +111,7 @@ Second \"item\" text"</string>
   <string name="import_export_description">키스토어, 패치 옵션 및 선택 목록</string>
   <string name="advanced">고급</string>
   <string name="advanced_description">API URL, 메모리 제한 및 디버그</string>
-  <string name="safeguards_toggled_warning">안전 장치가 토글되었습니다.</string>
+  <string name="safeguards_toggled_warning">보안 설정이 토글되어 있습니다</string>
   <string name="about">정보</string>
   <string name="about_app_name">%1$s에 대한 정보</string>
   <string name="opensource_licenses">오픈소스 라이선스</string>
@@ -117,7 +119,7 @@ Second \"item\" text"</string>
   <string name="contributors">도움을 주신 분들</string>
   <string name="contributors_description">ReVanced 개발에 도움을 주신 분들</string>
   <string name="dynamic_color">동적 색상</string>
-  <string name="dynamic_color_description">배경화면에 맞게 색상을 조정할 수 있습니다</string>
+  <string name="dynamic_color_description">배경화면에 맞게 색상을 조정합니다</string>
   <string name="pure_black_theme">순수 검정 테마</string>
   <string name="pure_black_theme_description">어두운 테마에서 순수 검정 배경을 사용합니다</string>
   <string name="theme">앱 테마</string>
@@ -178,7 +180,7 @@ Second \"item\" text"</string>
   <string name="export_patch_selection_fail">패치 선택 목록을 내보낼 수 없습니다: %s</string>
   <string name="export_patch_selection_success">패치 선택 목록을 내보냈습니다</string>
   <string name="select_bundle_for_export">내보낼 번들 선택</string>
-  <string name="patch_selection_packages">저장된 선택 목록이 있는 앱</string>
+  <string name="patch_selection_packages">선택 목록이 저장된 앱</string>
   <string name="patch_selection_entries">총 선택된 패치</string>
   <string name="reset_configuration">설정 초기화</string>
   <string name="reset_patch_selection">패치 선택</string>
@@ -213,7 +215,7 @@ Second \"item\" text"</string>
   <string name="downloader_delete_apps_title">선택된 앱 삭제</string>
   <string name="downloader_delete_apps_description">선택된 앱을 삭제하시겠습니까?</string>
   <string name="downloader_delete_single_description">\'%s\'를 삭제하시겠습니까?</string>
-  <string name="downloader_settings_no_apps">다운로드된 앱을 찾을 수 없습니다.</string>
+  <string name="downloader_settings_no_apps">다운로드된 앱을 찾을 수 없습니다</string>
   <string name="downloader_settings_no_apps_description">ReVanced Manager를 통해 다운로드된 앱이 여기에 표시됩니다.</string>
   <string name="downloader_url">다운로더 URL</string>
   <string name="downloader_add">다운로더 추가</string>
@@ -261,7 +263,7 @@ Second \"item\" text"</string>
   <string name="networking">네트워크</string>
   <string name="allow_metered_networks">모바일 데이터 허용</string>
   <string name="allow_metered_networks_description">모바일 데이터를 사용 시 자동 업데이트를 허용합니다.
-    수동으로 작업을 할 경우에 애플리케이션에서 모바일 데이터에 대한 경고가 표시될 수 있습니다.</string>
+    허용하지 않는다면 앱 사용 중에 모바일 데이터에 대한 경고 메시지가 표시될 수 있습니다</string>
   <string name="downloaded_apps">다운로드된 앱</string>
   <string name="process_runtime">다른 프로세스에서 패처 실행</string>
   <string name="process_runtime_description">별도 프로세스를 사용하여 패치 속도를 향상시킬 수 있습니다 (실험 기능)</string>
@@ -305,7 +307,7 @@ Second \"item\" text"</string>
   <string name="api_not_working_description">일부 기능에 영향을 받을 수 있습니다. 설정에서 연결 상태 또는 API URL을 확인하세요.</string>
   <string name="patches_replace_fail">패치를 가져올 수 없습니다: %s</string>
   <string name="no_patched_apps_found">패치된 앱을 찾을 수 없습니다</string>
-  <string name="no_patched_apps_description">현재 알려진 패치된 앱이 없습니다. 첫 번째 앱을 패치하여 변경해 보세요!</string>
+  <string name="no_patched_apps_description">아직 패치된 앱이 없습니다. 첫 번째 앱을 패치해보세요!</string>
   <string name="patched_apps_section_title">패치된 앱</string>
   <string name="patchable_apps_section_title">패치 가능한 앱</string>
   <string name="no_patches_found">패치를 찾을 수 없습니다</string>

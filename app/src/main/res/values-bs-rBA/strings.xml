@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instaliraj nepoznate aplikacije</string>
   <string name="permission_install_apps_description">Potrebno za instalaciju patchovanih aplikacija</string>
   <string name="permission_notifications">Obavještenja</string>
-  <string name="permission_notifications_description">Omogućava neprekidno patchovanje u pozadini na novijim verzijama Androida</string>
   <string name="permission_battery">Optimizacija baterije</string>
   <string name="permission_battery_description">Sprečava prekid patchovanja u pozadini</string>
   <string name="permission_grant">Dodijeli</string>

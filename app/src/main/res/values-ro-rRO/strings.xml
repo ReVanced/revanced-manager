@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Bine ați venit la</string>
   <string name="onboarding_welcome_back">Salut! Este noul</string>
   <string name="onboarding_apps_subtitle">Puteți selecta o aplicație pentru a o patch-ui acum sau mai târziu</string>
+  <string name="onboarding_apps_network_error">Nu s-au putut încărca patch-urile deoarece rețeaua este indisponibilă sau instabilă. Conectați-vă la o rețea stabilă și încercați din nou.</string>
   <string name="onboarding_updates_subtitle">Configurați actualizări automate pentru a menține ReVanced Manager și patch-urile la zi</string>
+  <string name="banner_sources_not_downloaded_description">Patch-urile și descărcătoarele nu au putut fi descărcate în timpul configurării. Atingeți actualizare pentru a le descărca.</string>
   <string name="onboarding_updates_note">ReVanced Manager se va conecta la %s pentru a descărca versiunile inițiale dacă dispozitivul tău este conectat la internet.</string>
   <string name="retry">Reîncercați</string>
   <string name="onboarding_skip">Omiteți pentru moment</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalați aplicații necunoscute</string>
   <string name="permission_install_apps_description">Necesar pentru a instala aplicațiile patch-uite</string>
   <string name="permission_notifications">Notificări</string>
-  <string name="permission_notifications_description">Permite patch-uirea neîntreruptă în fundal pe versiuni mai noi de Android</string>
+  <string name="permission_notifications_description">Permite aplicarea patch-urilor neîntreruptă în fundal</string>
   <string name="permission_battery">Optimizare baterie</string>
   <string name="permission_battery_description">Previne întreruperea patch-uirii în fundal</string>
   <string name="permission_grant">Acordă</string>

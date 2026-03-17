@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Üdvözöljük a</string>
   <string name="onboarding_welcome_back">Szia! Ez az új</string>
   <string name="onboarding_apps_subtitle">Most vagy később is kiválaszthatja a javítandó alkalmazást</string>
+  <string name="onboarding_apps_network_error">Nem sikerült betölteni a javításokat, mert a hálózat nem elérhető vagy instabil. Csatlakozzon egy stabil hálózathoz, és próbálja újra.</string>
   <string name="onboarding_updates_subtitle">Konfigurálja az automatikus frissítéseket, hogy a ReVanced Manager és a javítások naprakészek maradjanak</string>
+  <string name="banner_sources_not_downloaded_description">A javítások és letöltők nem tölthetők le a beállítás során. Koppintson a frissítésre a letöltésükhöz.</string>
   <string name="onboarding_updates_note">A ReVanced Manager csatlakozni fog a(z) %s-hez, hogy letöltse a kezdeti verziókat, amennyiben az eszköze csatlakozik az internethez.</string>
   <string name="retry">Újrapróbálkozás</string>
   <string name="onboarding_skip">Most kihagyom</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Ismeretlen alkalmazások telepítése</string>
   <string name="permission_install_apps_description">Szükséges a javított alkalmazások telepítéséhez</string>
   <string name="permission_notifications">Értesítések</string>
-  <string name="permission_notifications_description">Lehetővé teszi a megszakítás nélküli javítást a háttérben Android újabb verzióin</string>
+  <string name="permission_notifications_description">Lehetővé teszi a zavartalan javítást a háttérben</string>
   <string name="permission_battery">Akkumulátor-optimalizálás</string>
   <string name="permission_battery_description">Megakadályozza a javítás megszakítását a háttérben</string>
   <string name="permission_grant">Megadás</string>

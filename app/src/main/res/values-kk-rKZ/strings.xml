@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Белгісіз қолданбаларды орнату</string>
   <string name="permission_install_apps_description">Патчталған қолданбаларды орнату үшін қажет</string>
   <string name="permission_notifications">Хабарландырулар</string>
-  <string name="permission_notifications_description">Android-тың жаңа нұсқаларында фондық режимде үздіксіз патчтауға мүмкіндік береді</string>
   <string name="permission_battery">Батареяны оңтайландыру</string>
   <string name="permission_battery_description">Патчтаудың фондық режимде үзілуіне жол бермейді</string>
   <string name="permission_grant">Рұқсат беру</string>

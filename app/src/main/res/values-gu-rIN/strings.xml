@@ -18,7 +18,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">માં આપનું સ્વાગત છે</string>
   <string name="onboarding_welcome_back">હાય! તે નવું છે</string>
   <string name="onboarding_apps_subtitle">તમે અત્યારે જ પેચ કરવા માટે કોઈ એપ્લિકેશન પસંદ કરી શકો છો અથવા પછીથી કરી શકો છો</string>
+  <string name="onboarding_apps_network_error">નેટવર્ક અનુપલબ્ધ અથવા અસ્થિર હોવાને કારણે પેચ લોડ કરી શકાયા નથી. સ્થિર નેટવર્કથી કનેક્ટ થાઓ અને ફરી પ્રયાસ કરો.</string>
   <string name="onboarding_updates_subtitle">ReVanced Manager અને પેચને અપ ટુ ડેટ રાખવા માટે સ્વચાલિત અપડેટ્સ ગોઠવો</string>
+  <string name="banner_sources_not_downloaded_description">સેટઅપ દરમિયાન પેચ અને ડાઉનલોડર ડાઉનલોડ કરી શકાયા નથી. તેમને ડાઉનલોડ કરવા માટે અપડેટ પર ટેપ કરો.</string>
   <string name="onboarding_updates_note">જો તમારું ઉપકરણ ઇન્ટરનેટથી કનેક્ટેડ હોય તો પ્રારંભિક સંસ્કરણો ડાઉનલોડ કરવા માટે ReVanced Manager %s થી કનેક્ટ થશે.</string>
   <string name="retry">ફરીથી પ્રયાસ કરો</string>
   <string name="onboarding_skip">અત્યારે છોડો</string>
@@ -30,7 +32,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">અજાણી ઍપ ઇન્સ્ટોલ કરો</string>
   <string name="permission_install_apps_description">પેચ કરેલી એપ્લિકેશનો ઇન્સ્ટોલ કરવા માટે જરૂરી છે</string>
   <string name="permission_notifications">સૂચનાઓ</string>
-  <string name="permission_notifications_description">Android ના નવા સંસ્કરણો પર પૃષ્ઠભૂમિમાં અવિરત પેચિંગ માટે પરવાનગી આપે છે</string>
+  <string name="permission_notifications_description">બેકગ્રાઉન્ડમાં અવિરત પેચિંગની પરવાનગી આપે છે</string>
   <string name="permission_battery">બૅટરી ઑપ્ટિમાઇઝેશન</string>
   <string name="permission_battery_description">પૃષ્ઠભૂમિમાં પેચિંગને વિક્ષેપિત થતું અટકાવે છે</string>
   <string name="permission_grant">મંજૂર કરો</string>

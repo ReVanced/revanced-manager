@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Tervetuloa</string>
   <string name="onboarding_welcome_back">Hei! Se on uusi</string>
   <string name="onboarding_apps_subtitle">Voit valita paikattavan sovelluksen nyt tai tehdä sen myöhemmin</string>
+  <string name="onboarding_apps_network_error">Päivityksiä ei voitu ladata, koska verkko ei ole käytettävissä tai on epävakaa. Yhdistä vakaaseen verkkoon ja yritä uudelleen.</string>
   <string name="onboarding_updates_subtitle">Määritä automaattiset päivitykset pitääksesi ReVanced Managerin ja paikat ajan tasalla</string>
+  <string name="banner_sources_not_downloaded_description">Päivityksiä ja latausohjelmia ei voitu ladata asennuksen aikana. Napauta päivitä ladataksesi ne.</string>
   <string name="onboarding_updates_note">ReVanced Manager muodostaa yhteyden kohteeseen %s ladatakseen alkuperäiset versiot, jos laitteesi on yhdistetty internetiin.</string>
   <string name="retry">Yritä uudelleen</string>
   <string name="onboarding_skip">Ohita toistaiseksi</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Asenna tuntemattomia sovelluksia</string>
   <string name="permission_install_apps_description">Vaaditaan paikattujen sovellusten asentamiseen</string>
   <string name="permission_notifications">Ilmoitukset</string>
-  <string name="permission_notifications_description">Mahdollistaa keskeytymättömän paikkauksen taustalla Androidin uudemmissa versioissa</string>
+  <string name="permission_notifications_description">Mahdollistaa keskeytymättömän korjaamisen taustalla</string>
   <string name="permission_battery">Akun optimointi</string>
   <string name="permission_battery_description">Estää paikkauksen keskeytymisen taustalla</string>
   <string name="permission_grant">Myönnä</string>

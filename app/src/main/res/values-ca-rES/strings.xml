@@ -18,7 +18,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Benvingut a</string>
   <string name="onboarding_welcome_back">Hola! És el nou</string>
   <string name="onboarding_apps_subtitle">Pots seleccionar una aplicació per aplicar el pegat ara o fer-ho més tard</string>
+  <string name="onboarding_apps_network_error">No s\'han pogut carregar els pegats perquè la xarxa no està disponible o és inestable. Connecta\'t a una xarxa estable i torna-ho a provar.</string>
   <string name="onboarding_updates_subtitle">Configura les actualitzacions automàtiques per mantenir ReVanced Manager i els pegats actualitzats</string>
+  <string name="banner_sources_not_downloaded_description">No s\'han pogut baixar els pegats i els descarregadors durant la configuració. Toca Actualitza per baixar-los.</string>
   <string name="onboarding_updates_note">ReVanced Manager es connectarà a %s per descarregar les versions inicials si el teu dispositiu està connectat a internet.</string>
   <string name="retry">Torna-ho a provar</string>
   <string name="onboarding_skip">Omet-ho per ara</string>
@@ -30,7 +32,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instal·la aplicacions desconegudes</string>
   <string name="permission_install_apps_description">Necessari per instal·lar aplicacions amb pegats</string>
   <string name="permission_notifications">Notificacions</string>
-  <string name="permission_notifications_description">Permet l\'aplicació ininterrompuda de pegats en segon pla en versions més noves d\'Android</string>
+  <string name="permission_notifications_description">Permet aplicar pegats ininterrompudament en segon pla</string>
   <string name="permission_battery">Optimització de la bateria</string>
   <string name="permission_battery_description">Evita que l\'aplicació de pegats s\'interrompi en segon pla</string>
   <string name="permission_grant">Concedeix</string>

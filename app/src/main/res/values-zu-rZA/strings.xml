@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Faka izinhlelo zokusebenza ezingaziwa</string>
   <string name="permission_install_apps_description">Kuyadingeka ukufaka izinhlelo zokusebenza ezilungisiwe</string>
   <string name="permission_notifications">Izaziso</string>
-  <string name="permission_notifications_description">Ivumela ukulungisa okungaphazamiseki ngemuva kuzinguqulo ezintsha ze-Android</string>
   <string name="permission_battery">Ukulungiswa kwebhethri</string>
   <string name="permission_battery_description">Ivikela ukuthi ukulungisa kungaphazamiseki ngemuva</string>
   <string name="permission_grant">Nikeza</string>

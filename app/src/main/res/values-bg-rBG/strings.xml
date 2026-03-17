@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Добре дошли в</string>
   <string name="onboarding_welcome_back">Здравейте! Това е новият</string>
   <string name="onboarding_apps_subtitle">Можете да изберете приложение за пач сега или да го направите по-късно</string>
+  <string name="onboarding_apps_network_error">Не можаха да се заредят пачове, защото мрежата е недостъпна или нестабилна. Свържете се със стабилна мрежа и опитайте отново.</string>
   <string name="onboarding_updates_subtitle">Конфигурирайте автоматични актуализации, за да поддържате ReVanced Manager и пачовете актуални</string>
+  <string name="banner_sources_not_downloaded_description">Пачовете и програмите за изтегляне не можаха да бъдат изтеглени по време на настройката. Докоснете актуализиране, за да ги изтеглите.</string>
   <string name="onboarding_updates_note">ReVanced Manager ще се свърже с %s, за да изтегли първоначалните версии, ако вашето устройство е свързано с интернет.</string>
   <string name="retry">Повторен опит</string>
   <string name="onboarding_skip">Пропусни засега</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Инсталиране на неизвестни приложения</string>
   <string name="permission_install_apps_description">Изисква се за инсталиране на пачнати приложения</string>
   <string name="permission_notifications">Известия</string>
-  <string name="permission_notifications_description">Позволява непрекъснато пачване във фонов режим на по-нови версии на Android</string>
+  <string name="permission_notifications_description">Позволява непрекъснато кръпкане във фонов режим</string>
   <string name="permission_battery">Оптимизация на батерията</string>
   <string name="permission_battery_description">Предотвратява прекъсването на пачването във фонов режим</string>
   <string name="permission_grant">Предостави</string>

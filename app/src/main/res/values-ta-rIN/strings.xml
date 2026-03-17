@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">அறியப்படாத பயன்பாடுகளை நிறுவவும்</string>
   <string name="permission_install_apps_description">பேட்ச் செய்யப்பட்ட பயன்பாடுகளை நிறுவத் தேவை</string>
   <string name="permission_notifications">அறிவிப்புகள்</string>
-  <string name="permission_notifications_description">Android இன் புதிய பதிப்புகளில் பின்னணியில் தடையின்றி பேட்சிங் செய்ய அனுமதிக்கிறது</string>
   <string name="permission_battery">பேட்டரி மேம்படுத்தல்</string>
   <string name="permission_battery_description">பின்னணியில் பேட்சிங் தடைபடுவதைத் தடுக்கிறது</string>
   <string name="permission_grant">அனுமதி</string>

@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">නොදන්නා යෙදුම් ස්ථාපනය කරන්න</string>
   <string name="permission_install_apps_description">පැච් කරන ලද යෙදුම් ස්ථාපනය කිරීමට අවශ්‍ය වේ</string>
   <string name="permission_notifications">දැනුම්දීම්</string>
-  <string name="permission_notifications_description">ඇන්ඩ්‍රොයිඩ් හි නව අනුවාද වල පසුබිමේ බාධාවකින් තොරව පැච් කිරීමට ඉඩ දෙයි</string>
   <string name="permission_battery">බැටරි ප්‍රශස්තකරණය</string>
   <string name="permission_battery_description">පසුබිමේ පැච් කිරීම බාධා වීම වළක්වයි</string>
   <string name="permission_grant">ලබා දෙන්න</string>

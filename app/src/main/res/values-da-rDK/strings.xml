@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Velkommen til</string>
   <string name="onboarding_welcome_back">Hej! Det er den nye</string>
   <string name="onboarding_apps_subtitle">Du kan vælge en app, der skal patches nu, eller gøre det senere</string>
+  <string name="onboarding_apps_network_error">Kunne ikke indlæse patches, fordi netværket er utilgængeligt eller ustabilt. Opret forbindelse til et stabilt netværk, og prøv igen.</string>
   <string name="onboarding_updates_subtitle">Konfigurer automatiske opdateringer for at holde ReVanced Manager og patches opdaterede</string>
+  <string name="banner_sources_not_downloaded_description">Patches og downloadere kunne ikke downloades under opsætningen. Tryk på opdater for at downloade dem.</string>
   <string name="onboarding_updates_note">ReVanced Manager vil oprette forbindelse til %s for at downloade indledende versioner, hvis din enhed er forbundet til internettet.</string>
   <string name="retry">Prøv igen</string>
   <string name="onboarding_skip">Spring over for nu</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Installer ukendte apps</string>
   <string name="permission_install_apps_description">Påkrævet for at installere patched applikationer</string>
   <string name="permission_notifications">Notifikationer</string>
-  <string name="permission_notifications_description">Tillader uafbrudt patching i baggrunden på nyere versioner af Android</string>
+  <string name="permission_notifications_description">Tillader uafbrudt patching i baggrunden</string>
   <string name="permission_battery">Batterioptimering</string>
   <string name="permission_battery_description">Forhindrer patching i at blive afbrudt i baggrunden</string>
   <string name="permission_grant">Giv tilladelse</string>

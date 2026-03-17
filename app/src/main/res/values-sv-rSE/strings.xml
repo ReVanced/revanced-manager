@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Installera okända appar</string>
   <string name="permission_install_apps_description">Krävs för att installera korrigerade applikationer</string>
   <string name="permission_notifications">Aviseringar</string>
-  <string name="permission_notifications_description">Tillåter oavbruten korrigering i bakgrunden på nyare versioner av Android</string>
   <string name="permission_battery">Batterioptimering</string>
   <string name="permission_battery_description">Förhindrar att korrigering avbryts i bakgrunden</string>
   <string name="permission_grant">Bevilja</string>

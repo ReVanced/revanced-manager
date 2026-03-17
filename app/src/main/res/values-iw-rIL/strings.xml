@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">ברוך הבא ל</string>
   <string name="onboarding_welcome_back">היי! זה ה-חדש</string>
   <string name="onboarding_apps_subtitle">באפשרותך לבחור אפליקציה לתיקון כעת או לעשות זאת מאוחר יותר</string>
+  <string name="onboarding_apps_network_error">לא ניתן לטעון תיקונים מכיוון שהרשת אינה זמינה או יציבה. התחבר לרשת יציבה ונסה שוב.</string>
   <string name="onboarding_updates_subtitle">הגדר עדכונים אוטומטיים כדי לשמור על ReVanced Manager וטלאים מעודכנים</string>
+  <string name="banner_sources_not_downloaded_description">לא ניתן היה להוריד תיקונים ומורדים במהלך ההתקנה. הקש על עדכן כדי להוריד אותם.</string>
   <string name="onboarding_updates_note">ReVanced Manager יתחבר אל %s כדי להוריד גרסאות ראשוניות אם המכשיר שלך מחובר לאינטרנט.</string>
   <string name="retry">נסה שוב</string>
   <string name="onboarding_skip">דלג לעת עתה</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">התקן יישומים לא ידועים</string>
   <string name="permission_install_apps_description">נדרש כדי להתקין יישומים מתוקנים</string>
   <string name="permission_notifications">עדכונים</string>
-  <string name="permission_notifications_description">מאפשר תיקון בלתי מופרע ברקע בגרסאות חדשות יותר של Android</string>
+  <string name="permission_notifications_description">מאפשר תיקון בלתי פוסק ברקע</string>
   <string name="permission_battery">אופטימיזציית סוללה</string>
   <string name="permission_battery_description">מונע הפרעה של תהליך התיקון ברקע</string>
   <string name="permission_grant">הענק</string>

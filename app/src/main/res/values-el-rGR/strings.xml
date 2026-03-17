@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Καλώς ήρθατε στο</string>
   <string name="onboarding_welcome_back">Γεια! Είναι το νέο</string>
   <string name="onboarding_apps_subtitle">Μπορείτε να επιλέξετε εφαρμογή για τροποποίηση τώρα ή να το κάνετε αργότερα</string>
+  <string name="onboarding_apps_network_error">Δεν ήταν δυνατή η φόρτωση των ενημερώσεων κώδικα επειδή το δίκτυο είναι μη διαθέσιμο ή ασταθές. Συνδεθείτε σε ένα σταθερό δίκτυο και δοκιμάστε ξανά.</string>
   <string name="onboarding_updates_subtitle">Ρυθμίστε τις αυτόματες ενημερώσεις για να διατηρείτε τον ReVanced Manager και τις τροποποιήσεις ενημερωμένα</string>
+  <string name="banner_sources_not_downloaded_description">Οι ενημερώσεις κώδικα και οι λήψεις δεν ήταν δυνατό να ληφθούν κατά τη διάρκεια της ρύθμισης. Πατήστε ενημέρωση για να τις κατεβάσετε.</string>
   <string name="onboarding_updates_note">Ο ReVanced Manager θα συνδεθεί στο %s για να κατεβάσει τις αρχικές εκδόσεις εάν η συσκευή σας είναι συνδεδεμένη στο διαδίκτυο.</string>
   <string name="retry">Επανάληψη</string>
   <string name="onboarding_skip">Παράλειψη προς το παρόν</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Εγκατάσταση άγνωστων εφαρμογών</string>
   <string name="permission_install_apps_description">Απαιτείται για την εγκατάσταση τροποποιημένων εφαρμογών</string>
   <string name="permission_notifications">Ειδοποιήσεις</string>
-  <string name="permission_notifications_description">Επιτρέπει την αδιάλειπτη τροποποίηση στο παρασκήνιο σε νεότερες εκδόσεις του Android</string>
+  <string name="permission_notifications_description">Επιτρέπει την αδιάλειπτη τροποποίηση στο παρασκήνιο</string>
   <string name="permission_battery">Βελτιστοποίηση μπαταρίας</string>
   <string name="permission_battery_description">Αποτρέπει τη διακοπή της τροποποίησης στο παρασκήνιο</string>
   <string name="permission_grant">Παραχώρηση</string>

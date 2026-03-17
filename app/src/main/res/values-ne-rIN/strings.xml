@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">अज्ञात एपहरू स्थापना गर्नुहोस्</string>
   <string name="permission_install_apps_description">प्याच गरिएका अनुप्रयोगहरू स्थापना गर्न आवश्यक छ</string>
   <string name="permission_notifications">अधिसूचनाहरू</string>
-  <string name="permission_notifications_description">एन्ड्रोइडका नयाँ संस्करणहरूमा पृष्ठभूमिमा निर्बाध प्याचिङका लागि अनुमति दिन्छ</string>
   <string name="permission_battery">ब्याट्री अनुकूलन</string>
   <string name="permission_battery_description">पृष्ठभूमिमा प्याचिङ अवरुद्ध हुनबाट रोक्छ</string>
   <string name="permission_grant">अनुदान</string>

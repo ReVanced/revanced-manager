@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">ようこそ</string>
   <string name="onboarding_welcome_back">こんにちは！新しい</string>
   <string name="onboarding_apps_subtitle">今すぐパッチを適用するアプリを選択することも、後で行うこともできます</string>
+  <string name="onboarding_apps_network_error">ネットワークが利用できないか不安定なため、パッチを読み込めませんでした。安定したネットワークに接続して、もう一度お試しください。</string>
   <string name="onboarding_updates_subtitle">ReVanced Manager とパッチを最新の状態に保つため、自動更新を設定してください</string>
+  <string name="banner_sources_not_downloaded_description">セットアップ中にパッチとダウンローダーをダウンロードできませんでした。更新をタップしてダウンロードしてください。</string>
   <string name="onboarding_updates_note">ReVanced Manager は、お使いのデバイスがインターネットに接続されている場合、初期バージョンをダウンロードするために %s に接続します。</string>
   <string name="retry">再試行</string>
   <string name="onboarding_skip">今はスキップ</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">不明なアプリのインストール</string>
   <string name="permission_install_apps_description">パッチが適用されたアプリケーションをインストールするために必要です</string>
   <string name="permission_notifications">通知</string>
-  <string name="permission_notifications_description">新しいバージョンのAndroidでバックグラウンドでの中断のないパッチ適用を許可します</string>
+  <string name="permission_notifications_description">バックグラウンドで中断することなくパッチを適用できます</string>
   <string name="permission_battery">バッテリー最適化</string>
   <string name="permission_battery_description">バックグラウンドでのパッチ適用が中断されるのを防ぎます</string>
   <string name="permission_grant">許可</string>
@@ -67,9 +69,9 @@ Second \"item\" text"</string>
   <string name="selected_app_meta_any_version">任意の利用可能なバージョン</string>
   <string name="app_source_dialog_title">ソースを選択</string>
   <string name="app_source_dialog_option_auto">自動</string>
-  <string name="app_source_dialog_option_auto_description">インストール済みのアプリを使用し、次にダウンロード済みのAPK、そして利用可能なダウンローダーを使用</string>
+  <string name="app_source_dialog_option_auto_description">インストール済みのアプリを使用し、次にダウンロード済みの APK、そして利用可能なダウンローダーを使用</string>
   <string name="app_source_dialog_option_auto_unavailable">互換性のあるアプリまたはダウンローダーが見つかりません</string>
-  <string name="app_source_dialog_option_installed_no_root">マウントされたアプリは、rootアクセスなしでは再度パッチを適用できません</string>
+  <string name="app_source_dialog_option_installed_no_root">マウントされたアプリは、root アクセスなしでは再度パッチを適用できません</string>
   <string name="app_source_dialog_option_installed_version_not_suggested">バージョン %s は推奨バージョンと一致しません</string>
   <string name="patch_item_description">アプリケーションのパッチ適用を開始</string>
   <string name="patch_selector_item">パッチを選択</string>
@@ -80,8 +82,8 @@ Second \"item\" text"</string>
   <string name="network_metered_warning">現在、従量制課金接続を使用しています。サービスプロバイダーからのデータ料金が適用される場合があります。</string>
   <string name="apk_source_selector_item">APKソースを選択</string>
   <string name="apk_source_auto">自動</string>
-  <string name="apk_source_auto_installed">自動 · インストール済みAPKを使用</string>
-  <string name="apk_source_auto_downloaded">自動 · ダウンロード済みAPKを使用</string>
+  <string name="apk_source_auto_installed">自動 · インストール済み APK を使用</string>
+  <string name="apk_source_auto_downloaded">自動 · ダウンロード済み APK を使用</string>
   <string name="apk_source_auto_downloader">自動 · 利用可能なダウンローダーを使用</string>
   <string name="apk_source_auto_storage">自動 · ストレージから選択</string>
   <string name="apk_source_downloader">%s を使用中</string>
@@ -217,9 +219,9 @@ Second \"item\" text"</string>
   <string name="downloader_settings_no_apps_description">ReVanced Managerを通じてダウンロードされたアプリがここに表示されます。</string>
   <string name="downloader_url">ダウンローダーURL</string>
   <string name="downloader_add">ダウンローダーを追加</string>
-  <string name="select_downloader_type_dialog_description">URLまたはローカルファイルから新しいダウンローダーを追加</string>
+  <string name="select_downloader_type_dialog_description">URL またはローカルファイルから新しいダウンローダーを追加</string>
   <string name="local_downloaders_description">ローカルストレージからダウンローダーを追加します。</string>
-  <string name="remote_downloaders_description">URLからダウンローダーを追加します。自動的に更新できます。</string>
+  <string name="remote_downloaders_description">URL からダウンローダーを追加します。自動的に更新できます。</string>
   <string name="install_revanced_downloaders">ReVanced Manager内で直接アプリを取得するには、ダウンローダーをインストールしてください。</string>
   <string name="install_revanced_downloader">ReVancedダウンローダーをインストール</string>
   <string name="cancel_downloader_install_title">ダウンローダーのインストールをキャンセルしますか？</string>
@@ -339,7 +341,7 @@ Second \"item\" text"</string>
   <string name="download_application">アプリケーションをダウンロードしますか？</string>
   <string name="app_not_installed">選択したアプリはインストールされていません。ダウンロードしますか？</string>
   <string name="failed_to_load_apk">APKの読み込みに失敗しました</string>
-  <string name="split_apk_not_supported">分割APKにはパッチを適用できません</string>
+  <string name="split_apk_not_supported">分割 APK にはパッチを適用できません</string>
   <string name="loading">読み込み中…</string>
   <string name="not_installed">インストールされていません</string>
   <string name="installed">インストール済み</string>

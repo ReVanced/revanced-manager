@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">അജ്ഞാത ആപ്പുകൾ ഇൻസ്റ്റാൾ ചെയ്യുക</string>
   <string name="permission_install_apps_description">പാച്ച് ചെയ്ത ആപ്ലിക്കേഷനുകൾ ഇൻസ്റ്റാൾ ചെയ്യാൻ ആവശ്യമാണ്</string>
   <string name="permission_notifications">അറിയിപ്പുകൾ</string>
-  <string name="permission_notifications_description">Android-ന്റെ പുതിയ പതിപ്പുകളിൽ പശ്ചാത്തലത്തിൽ തടസ്സമില്ലാതെ പാച്ച് ചെയ്യാൻ ഇത് അനുവദിക്കുന്നു</string>
   <string name="permission_battery">ബാറ്ററി ഒപ്റ്റിമൈസേഷൻ</string>
   <string name="permission_battery_description">പശ്ചാത്തലത്തിൽ പാച്ചിംഗ് തടസ്സപ്പെടുന്നത് തടയുന്നു</string>
   <string name="permission_grant">അനുവദിക്കുക</string>

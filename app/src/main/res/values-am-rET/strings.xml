@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">ያልታወቁ መተግበሪያዎችን ጫን</string>
   <string name="permission_install_apps_description">የተጠገኑ መተግበሪያዎችን ለመጫን ያስፈልጋል</string>
   <string name="permission_notifications">ማሳወቂያዎች</string>
-  <string name="permission_notifications_description">በ Android አዳዲስ ስሪቶች ላይ ያለማቋረጥ ከበስተጀርባ መጠገንን ያስችላል</string>
   <string name="permission_battery">የባትሪ ማመቻቸት</string>
   <string name="permission_battery_description">ከበስተጀርባ እየተጠገነ እንዳይቋረጥ ይከላከላል</string>
   <string name="permission_grant">ስጥ</string>
