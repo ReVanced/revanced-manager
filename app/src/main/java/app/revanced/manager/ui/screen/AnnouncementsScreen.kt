@@ -339,13 +339,6 @@ private fun AnnouncementListItem(
                             fontWeight = if (unread) FontWeight.Bold else FontWeight.Normal
                         )
                     )
-                    if (archived) {
-                        Icon(
-                            Icons.Outlined.Inventory2,
-                            contentDescription = null,
-                            modifier = Modifier.size(12.dp)
-                        )
-                    }
                     if (unread) {
                         Badge(modifier = Modifier.size(6.dp))
                     }
