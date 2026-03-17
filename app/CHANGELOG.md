@@ -1,3 +1,15 @@
+## app [2.2.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.1...v2.2.2) (2026-03-17)
+
+
+### Bug Fixes
+
+* Collapse patches list by default in Dashboard ([a53890f](https://github.com/ReVanced/revanced-manager/commit/a53890f574e515d01656b1f5b3c1abb8e6d3e8a6))
+
+
+### Reverts
+
+* Revert "fix: Patches being expanded instantly" ([4d48ccd](https://github.com/ReVanced/revanced-manager/commit/4d48ccdd28545a63d02a8430b4fb9a090662bdc5))
+
 ## app [2.2.2-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.1...v2.2.2-dev.1) (2026-03-17)
 
 
