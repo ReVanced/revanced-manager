@@ -14,6 +14,7 @@ import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -52,6 +53,8 @@ class OnboardingViewModel(
         private set
     var isBatteryOptimizationExempt by mutableStateOf(false)
         private set
+
+    val isDeviceSupported = Aapt.supportsDevice()
 
     var currentStep by mutableStateOf(OnboardingStep.Permissions)
         private set

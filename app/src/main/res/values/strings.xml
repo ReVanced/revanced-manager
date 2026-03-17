@@ -58,6 +58,8 @@ Second \"item\" text"</string>
 
     <string name="new_downloader_notification">New downloader(s) available. Click here to configure them.</string>
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
+    <string name="onboarding_unsupported_device_title">Device not supported</string>
+    <string name="onboarding_unsupported_device_description">Your device\'s architecture is not supported by ReVanced Manager. Patching will not work on this device.</string>
 
     <string name="import_">Import</string>
     <string name="import_patches">Import patches</string>

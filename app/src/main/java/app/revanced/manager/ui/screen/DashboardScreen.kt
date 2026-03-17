@@ -80,7 +80,6 @@ import androidx.compose.animation.core.tween
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.ConfirmDialog
@@ -431,16 +430,6 @@ fun DashboardScreen(
                     }
 
                     Notifications(
-                        if (!Aapt.supportsDevice()) {
-                            {
-                                NotificationCard(
-                                    type = NotificationCardType.ERROR,
-                                    icon = Icons.Outlined.WarningAmber,
-                                    text = stringResource(R.string.unsupported_architecture_warning),
-                                    onDismiss = null
-                                )
-                            }
-                        } else null,
                         if (bundleDownloadError != null) {
                             {
                                 NotificationCard(
