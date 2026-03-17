@@ -448,21 +448,7 @@ fun DashboardScreen(
                                 NotificationCard(
                                     type = NotificationCardType.WARNING,
                                     icon = Icons.Outlined.Refresh,
-                                    text = stringResource(R.string.sources_not_downloaded_description),
-                                    actions = {
-                                        TextButton(
-                                            onClick = { vm.downloadSources() },
-                                            shapes = ButtonDefaults.shapes(),
-                                            colors = ButtonColors(
-                                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0f),
-                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
-                                            )
-                                        ) {
-                                            Text(stringResource(R.string.sources_download_now))
-                                        }
-                                    },
+                                    text = stringResource(R.string.banner_sources_not_downloaded_description),
                                     onClick = {
                                         vm.downloadSources()
                                     }
