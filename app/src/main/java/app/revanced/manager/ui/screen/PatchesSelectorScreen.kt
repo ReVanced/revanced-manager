@@ -53,8 +53,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -803,7 +801,11 @@ private fun PatchItem(
         },
         trailingContent = {
             if (patch.options?.isNotEmpty() == true) {
-                IconButton(onClick = onOptionsDialog, enabled = compatible || readOnly, shapes = IconButtonDefaults.shapes()) {
+                TooltipIconButton(
+                    onClick = onOptionsDialog,
+                    enabled = compatible || readOnly,
+                    tooltip = stringResource(R.string.settings)
+                ) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(R.string.settings)
@@ -831,7 +833,7 @@ fun ListHeader(
         },
         trailingContent = onHelpClick?.let {
             {
-                IconButton(onClick = it, shapes = IconButtonDefaults.shapes()) {
+                TooltipIconButton(onClick = it, tooltip = stringResource(R.string.help)) {
                     Icon(
                         Icons.AutoMirrored.Outlined.HelpOutline,
                         stringResource(R.string.help)
@@ -954,7 +956,10 @@ private fun OptionsDialog(
                 onBackClick = onDismissRequest,
                 actions = {
                     if (!readOnly) {
-                        IconButton(onClick = reset, shapes = IconButtonDefaults.shapes()) {
+                        TooltipIconButton(
+                            onClick = reset,
+                            tooltip = stringResource(R.string.reset)
+                        ) {
                             Icon(Icons.Filled.Restore, stringResource(R.string.reset))
                         }
                     }
@@ -1128,10 +1133,10 @@ private fun SourceSectionHeader(
             },
             trailingContent = {
                 if (sourceEditMode) {
-                    IconButton(
+                    TooltipIconButton(
                         onClick = onDeleteClick,
                         enabled = bundle.uid != 0,
-                        shapes = IconButtonDefaults.shapes()
+                        tooltip = stringResource(R.string.delete)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
@@ -1139,7 +1144,12 @@ private fun SourceSectionHeader(
                         )
                     }
                 } else {
-                    IconButton(onClick = onExpandToggle, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onExpandToggle,
+                        tooltip = stringResource(
+                            if (expanded) R.string.collapse_content else R.string.expand_content
+                        )
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowDown,
                             contentDescription = stringResource(

@@ -18,8 +18,6 @@ import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -47,6 +45,7 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -109,7 +108,10 @@ fun DownloaderInfoScreen(
                     { Text("v$it") }
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back)
+                    ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -117,10 +119,10 @@ fun DownloaderInfoScreen(
                     }
                 },
                 actions = {
-                    if (!source.isDefault) IconButton(
+                    if (!source.isDefault) TooltipIconButton(
                         onClick = { showDeleteConfirmationDialog = true },
                         enabled = !isDeleting,
-                        shapes = IconButtonDefaults.shapes()
+                        tooltip = stringResource(R.string.delete)
                     ) {
                         Icon(Icons.Filled.Delete, stringResource(R.string.delete))
                     }
@@ -129,10 +131,10 @@ fun DownloaderInfoScreen(
                         val hasNetwork = remember { viewModel.networkInfo.isConnected() }
                         if (!hasNetwork) return@let
 
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { viewModel.updateDownloader(it) },
                             enabled = !isDeleting,
-                            shapes = IconButtonDefaults.shapes()
+                            tooltip = stringResource(R.string.update)
                         ) {
                             Icon(Icons.Filled.Refresh, stringResource(R.string.update))
                         }

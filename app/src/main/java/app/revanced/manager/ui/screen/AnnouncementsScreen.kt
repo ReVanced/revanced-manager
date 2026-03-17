@@ -28,8 +28,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -63,6 +61,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
@@ -102,9 +101,9 @@ fun AnnouncementsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (tags != null) {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { showFilterSheet = true },
-                            shapes = IconButtonDefaults.shapes()
+                            tooltip = stringResource(R.string.announcements_filter_tag)
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.FilterAlt,
