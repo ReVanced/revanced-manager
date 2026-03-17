@@ -17,6 +17,7 @@ import app.revanced.manager.data.room.apps.installed.InstalledPatchBundle
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.patches.PatchesListHeader
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.transparentListItemColors
 
@@ -51,7 +52,7 @@ fun AppliedPatchesDialog(
                     val bundle = bundleMap[bundleUid]
 
                     item(key = "header_$bundleUid") {
-                        ListHeader(title = bundle?.let {
+                        PatchesListHeader(title = bundle?.let {
                             it.bundleVersion?.let { version ->
                                 "${it.bundleName} v$version"
                             } ?: it.bundleName

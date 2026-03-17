@@ -3,7 +3,6 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
@@ -142,11 +141,10 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     }
 
     /**
-     * Show the patch options dialog for this patch.
+     * Active dialog or bottom sheet state. Only one can be shown at a time.
      */
-    var optionsDialog by mutableStateOf<Pair<Int, PatchInfo>?>(null)
-
-    val compatibleVersions = mutableStateListOf<String>()
+    var activeDialog by mutableStateOf<DialogState?>(null)
+        private set
 
     var filter by mutableIntStateOf(SHOW_UNIVERSAL)
         private set
@@ -238,12 +236,29 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     }
 
     fun dismissDialogs() {
-        optionsDialog = null
-        compatibleVersions.clear()
+        activeDialog = null
     }
 
     fun openIncompatibleDialog(incompatiblePatch: PatchInfo) {
-        compatibleVersions.addAll(incompatiblePatch.compatiblePackages?.find { it.packageName == packageName }?.versions.orEmpty())
+        val versions = incompatiblePatch.compatiblePackages
+            ?.find { it.packageName == packageName }?.versions.orEmpty()
+        activeDialog = DialogState.IncompatiblePatch(versions)
+    }
+
+    fun openOptionsDialog(bundle: Int, patch: PatchInfo) {
+        activeDialog = DialogState.Options(bundle, patch)
+    }
+
+    fun showSelectionWarning() {
+        activeDialog = DialogState.SelectionWarning
+    }
+
+    fun showUniversalPatchWarning() {
+        activeDialog = DialogState.UniversalPatchWarning
+    }
+
+    fun showIncompatiblePatchesInfo() {
+        activeDialog = DialogState.IncompatiblePatchesInfo
     }
 
     fun toggleFlag(flag: Int) {
@@ -332,6 +347,14 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
 
         private val selectionSaver: Saver<PersistentPatchSelection?, Nullable<PatchSelection>> =
             nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
+    }
+
+    sealed interface DialogState {
+        data class Options(val bundle: Int, val patch: PatchInfo) : DialogState
+        data class IncompatiblePatch(val compatibleVersions: Set<String>) : DialogState
+        data object IncompatiblePatchesInfo : DialogState
+        data object SelectionWarning : DialogState
+        data object UniversalPatchWarning : DialogState
     }
 
     private fun mergeSourcesWithBundleInfo(

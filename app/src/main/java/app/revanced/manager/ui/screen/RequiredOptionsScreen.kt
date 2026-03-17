@@ -36,6 +36,7 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
+import app.revanced.manager.ui.component.patches.PatchesListHeader
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
@@ -140,7 +141,7 @@ fun RequiredOptionsScreen(
                         state = patchLazyListStates[index]
                     ) {
                         items(patches, key = { it.name }) {
-                            ListHeader(it.name)
+                            PatchesListHeader(it.name)
 
                             val values = vm.getOptions(bundle.uid, it)
                             it.options?.forEach { option ->
