@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -82,6 +83,7 @@ fun OnboardingScreen(
     val context = LocalContext.current
     val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
+    val hasNetworkError by vm.hasNetworkError.collectAsStateWithLifecycle(initialValue = false)
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
@@ -210,6 +212,7 @@ fun OnboardingScreen(
                     OnboardingStep.Apps -> AppsStepContent(
                         modifier = Modifier.weight(1f),
                         apps = apps,
+                        hasNetworkError = hasNetworkError,
                         suggestedVersions = suggestedVersions,
                         onAppClick = { packageName ->
                             scope.launch {
@@ -300,6 +303,22 @@ fun OnboardingScreen(
                         Text(stringResource(R.string.cancel))
                     }
                 }
+            )
+        }
+
+        if (!vm.isDeviceSupported) {
+            AlertDialog(
+                onDismissRequest = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Outlined.WarningAmber,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                },
+                title = { Text(stringResource(R.string.onboarding_unsupported_device_title)) },
+                text = { Text(stringResource(R.string.onboarding_unsupported_device_description)) },
+                confirmButton = {}
             )
         }
     }

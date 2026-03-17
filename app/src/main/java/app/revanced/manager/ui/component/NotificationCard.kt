@@ -15,8 +15,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,59 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 
-@Composable
-fun NotificationCard(
-    text: String,
-    icon: ImageVector,
-    modifier: Modifier = Modifier,
-    actions: (@Composable RowScope.() -> Unit)? = null,
-    title: String? = null,
-    isWarning: Boolean = false
-) {
-    val color =
-        if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
-
-    NotificationCardInstance(modifier = modifier, isWarning = isWarning) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Box(
-                modifier = Modifier.size(28.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = color,
-                )
-            }
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                title?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = color,
-                    )
-                }
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = color,
-                )
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    actions?.invoke(this)
-                }
-            }
-        }
-    }
+enum class NotificationCardType {
+    NORMAL, WARNING, ERROR
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -89,20 +36,25 @@ fun NotificationCard(
     text: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
+    actions: (@Composable RowScope.() -> Unit)? = null,
     title: String? = null,
-    isWarning: Boolean = false,
+    type: NotificationCardType = NotificationCardType.NORMAL,
     onDismiss: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null
 ) {
     val color =
-        if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+        when (type) {
+            NotificationCardType.ERROR -> MaterialTheme.colorScheme.onError
+            NotificationCardType.WARNING -> MaterialTheme.colorScheme.onPrimaryContainer
+            else -> MaterialTheme.colorScheme.onTertiaryContainer
+        }
 
-    NotificationCardInstance(modifier = modifier, isWarning = isWarning, onClick = onClick) {
+    NotificationCardInstance(modifier = modifier, type = type, onClick = onClick) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Box(
@@ -116,34 +68,34 @@ fun NotificationCard(
                     tint = color,
                 )
             }
-            if (title != null) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                title?.let {
                     Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = color,
-                    )
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodyMedium,
+                        text = it,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = color,
                     )
                 }
-            } else {
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = text,
                     style = MaterialTheme.typography.bodyMedium,
                     color = color,
                 )
+                actions?.let {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                        content = it
+                    )
+                }
             }
             if (onDismiss != null) {
-                IconButton(
+                TooltipIconButton(
                     onClick = onDismiss,
-                    shapes = IconButtonDefaults.shapes(),
+                    tooltip = stringResource(R.string.close),
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Close,
@@ -159,12 +111,18 @@ fun NotificationCard(
 @Composable
 private fun NotificationCardInstance(
     modifier: Modifier = Modifier,
-    isWarning: Boolean = false,
+    type: NotificationCardType = NotificationCardType.NORMAL,
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     val colors =
-        CardDefaults.cardColors(containerColor = if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)
+        CardDefaults.cardColors(
+            containerColor = when (type) {
+                NotificationCardType.ERROR -> MaterialTheme.colorScheme.error
+                NotificationCardType.WARNING -> MaterialTheme.colorScheme.primaryContainer
+                else -> MaterialTheme.colorScheme.tertiaryContainer
+            }
+        )
     val defaultModifier = Modifier
         .fillMaxWidth()
         .clip(RoundedCornerShape(24.dp))

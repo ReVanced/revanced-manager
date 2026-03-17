@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Vitajte v</string>
   <string name="onboarding_welcome_back">Ahoj! Je to nový</string>
   <string name="onboarding_apps_subtitle">Aplikáciu na patchovanie si môžete vybrať teraz alebo neskôr</string>
+  <string name="onboarding_apps_network_error">Nepodarilo sa načítať záplaty, pretože sieť je nedostupná alebo nestabilná. Pripojte sa k stabilnej sieti a skúste to znova.</string>
   <string name="onboarding_updates_subtitle">Nakonfigurujte automatické aktualizácie, aby bol ReVanced Manager a patche aktuálne</string>
+  <string name="banner_sources_not_downloaded_description">Záplaty a sťahovače sa nepodarilo stiahnuť počas nastavenia. Klepnite na aktualizovať, aby ste ich stiahli.</string>
   <string name="onboarding_updates_note">ReVanced Manager sa pripojí k %s, aby stiahol počiatočné verzie, ak je vaše zariadenie pripojené k internetu.</string>
   <string name="retry">Opakovať</string>
   <string name="onboarding_skip">Preskočiť zatiaľ</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Inštalácia neznámych aplikácií</string>
   <string name="permission_install_apps_description">Vyžaduje sa na inštaláciu záplatovaných aplikácií</string>
   <string name="permission_notifications">Upozornenia</string>
-  <string name="permission_notifications_description">Umožňuje nepretržité záplatovanie na pozadí v novších verziách Androidu</string>
+  <string name="permission_notifications_description">Umožňuje neprerušované opravy na pozadí</string>
   <string name="permission_battery">Optimalizácia batérie</string>
   <string name="permission_battery_description">Zabraňuje prerušeniu záplatovania na pozadí</string>
   <string name="permission_grant">Udeliť</string>

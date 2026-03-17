@@ -14,7 +14,9 @@ import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.util.PM
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -39,6 +41,10 @@ class OnboardingViewModel(
     }
     val apiUrl = prefs.api.default
 
+    val hasNetworkError = combine(apps, patchBundleRepository.updateError) { apps, updateError ->
+        apps == null && (!networkInfo.isConnected() || updateError != null)
+    }
+
     val suggestedVersions = patchBundleRepository.suggestedVersions
 
     var canInstallUnknownApps by mutableStateOf(false)
@@ -47,6 +53,8 @@ class OnboardingViewModel(
         private set
     var isBatteryOptimizationExempt by mutableStateOf(false)
         private set
+
+    val isDeviceSupported = Aapt.supportsDevice()
 
     var currentStep by mutableStateOf(OnboardingStep.Permissions)
         private set

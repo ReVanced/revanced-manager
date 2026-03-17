@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Bienvenido a</string>
   <string name="onboarding_welcome_back">¡Hola! Es el nuevo</string>
   <string name="onboarding_apps_subtitle">Puedes seleccionar una aplicación para parchear ahora o hacerlo más tarde</string>
+  <string name="onboarding_apps_network_error">No se pudieron cargar los parches porque la red no está disponible o es inestable. Conéctese a una red estable y vuelva a intentarlo.</string>
   <string name="onboarding_updates_subtitle">Configura las actualizaciones automáticas para mantener ReVanced Manager y los parches al día</string>
+  <string name="banner_sources_not_downloaded_description">Los parches y los descargadores no se pudieron descargar durante la configuración. Toque actualizar para descargarlos.</string>
   <string name="onboarding_updates_note">ReVanced Manager se conectará a %s para descargar las versiones iniciales si tu dispositivo está conectado a internet.</string>
   <string name="retry">Reintentar</string>
   <string name="onboarding_skip">Omitir por ahora</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalar aplicaciones desconocidas</string>
   <string name="permission_install_apps_description">Necesario para instalar aplicaciones parcheadas</string>
   <string name="permission_notifications">Notificaciones</string>
-  <string name="permission_notifications_description">Permite el parcheo ininterrumpido en segundo plano en versiones más recientes de Android</string>
+  <string name="permission_notifications_description">Permite la aplicación ininterrumpida de parches en segundo plano</string>
   <string name="permission_battery">Optimización de batería</string>
   <string name="permission_battery_description">Evita que el parcheo se interrumpa en segundo plano</string>
   <string name="permission_grant">Conceder</string>

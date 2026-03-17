@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Добро дошли у</string>
   <string name="onboarding_welcome_back">Здраво! То је нови</string>
   <string name="onboarding_apps_subtitle">Можете да изаберете апликацију за закрпу сада или касније</string>
+  <string name="onboarding_apps_network_error">Није могуће учитати закрпе јер мрежа није доступна или је нестабилна. Повежите се на стабилну мрежу и покушајте поново.</string>
   <string name="onboarding_updates_subtitle">Конфигуришите аутоматска ажурирања да бисте ReVanced Manager и закрпе одржавали ажурним</string>
+  <string name="banner_sources_not_downloaded_description">Закрпе и програми за преузимање нису могли бити преузети током подешавања. Додирните ажурирање да бисте их преузели.</string>
   <string name="onboarding_updates_note">ReVanced Manager ће се повезати са %s како би преузео почетне верзије ако је ваш уређај повезан на интернет.</string>
   <string name="retry">Понови покушај</string>
   <string name="onboarding_skip">Прескочи за сада</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Инсталирај непознате апликације</string>
   <string name="permission_install_apps_description">Потребно за инсталацију закрпљених апликација</string>
   <string name="permission_notifications">Обавештења</string>
-  <string name="permission_notifications_description">Омогућава несметано закрпљивање у позадини на новијим верзијама Android-а</string>
+  <string name="permission_notifications_description">Омогућава непрекидно закрпљивање у позадини</string>
   <string name="permission_battery">Оптимизација батерије</string>
   <string name="permission_battery_description">Спречава прекид закрпљивања у позадини</string>
   <string name="permission_grant">Додели</string>

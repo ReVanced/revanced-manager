@@ -2,18 +2,22 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.MarqueeSpacing
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.outlined.History
@@ -24,8 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -45,7 +48,10 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,6 +61,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AnnouncementsViewModel
 import app.revanced.manager.util.relativeTime
@@ -94,7 +101,10 @@ fun AnnouncementsScreen(
                 onBackClick = onBackClick,
                 actions = {
                     if (tags != null) {
-                        IconButton(onClick = { showFilterSheet = true }, shapes = IconButtonDefaults.shapes()) {
+                        TooltipIconButton(
+                            onClick = { showFilterSheet = true },
+                            tooltip = stringResource(R.string.announcements_filter_tag)
+                        ) {
                             Icon(
                                 imageVector = Icons.Filled.FilterAlt,
                                 contentDescription = stringResource(R.string.announcements_filter_tag)
@@ -141,7 +151,8 @@ fun AnnouncementsScreen(
                                             onAnnouncementClick(announcement)
                                         },
                                         title = announcement.title,
-                                        date = announcement.createdAt.toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current),
+                                        date = announcement.createdAt.toLocalDateTime(TimeZone.UTC)
+                                            .relativeTime(LocalContext.current),
                                         author = announcement.author,
                                         tags = announcement.tags,
                                         unread = announcement.id !in readAnnouncements,
@@ -173,7 +184,8 @@ fun AnnouncementsScreen(
                                             onAnnouncementClick(announcement)
                                         },
                                         title = announcement.title,
-                                        date = announcement.createdAt.toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current),
+                                        date = announcement.createdAt.toLocalDateTime(TimeZone.UTC)
+                                            .relativeTime(LocalContext.current),
                                         author = announcement.author,
                                         tags = announcement.tags,
                                         unread = announcement.id !in readAnnouncements,
@@ -255,12 +267,15 @@ private fun ArchivedAnnouncementsHeader(
     modifier: Modifier = Modifier
 ) {
     val rotation by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
+        targetValue = if (expanded) 0f else 180f,
         label = "archivedChevronRotation"
     )
     Row(
         modifier = modifier
-            .padding(horizontal = 8.dp).clip(MaterialTheme.shapes.small).clickable(onClick = onToggle).padding(16.dp),
+            .padding(horizontal = 8.dp)
+            .clip(MaterialTheme.shapes.small)
+            .clickable(onClick = onToggle)
+            .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -277,7 +292,9 @@ private fun ArchivedAnnouncementsHeader(
         )
         Icon(
             imageVector = Icons.Default.ExpandMore,
-            contentDescription = if (expanded) stringResource(R.string.collapse_content) else stringResource(R.string.expand_content),
+            contentDescription = if (expanded) stringResource(R.string.collapse_content) else stringResource(
+                R.string.expand_content
+            ),
             modifier = Modifier.rotate(rotation)
         )
     }
@@ -306,26 +323,22 @@ private fun AnnouncementListItem(
                         spacing = MarqueeSpacing.fractionOfContainer(1f / 5f),
                         velocity = 55.dp,
                     ),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = if (unread) FontWeight.ExtraBold else null,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = if (unread) FontWeight.Bold else null,
                     maxLines = 1
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(
-                        text = "$date • $author",
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = if (unread) FontWeight.ExtraBold else null
-                    )
-                    if (archived) {
-                        Icon(
-                            Icons.Outlined.Inventory2,
-                            contentDescription = null,
-                            modifier = Modifier.size(12.dp)
+                    val dot = "\u2022"          // •
+                    val emSpace = "\u2002"      // en space, roughly half character width
+                    val separator = "$emSpace$dot$emSpace"
+                    Text("$date$separator$author",
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = if (unread) FontWeight.Bold else FontWeight.Normal
                         )
-                    }
+                    )
                     if (unread) {
                         Badge(modifier = Modifier.size(6.dp))
                     }
@@ -336,12 +349,6 @@ private fun AnnouncementListItem(
                 )
             }
         },
-        trailingContent = {
-            Icon(
-                imageVector = Icons.Default.ChevronRight,
-                contentDescription = stringResource(R.string.view_announcement)
-            )
-        }
     )
 }
 

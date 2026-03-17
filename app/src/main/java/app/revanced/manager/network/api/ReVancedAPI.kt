@@ -1,5 +1,6 @@
 package app.revanced.manager.network.api
 
+import android.util.Log
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.manager.base.Preference
@@ -21,11 +22,18 @@ class ReVancedAPI(
     private suspend fun apiUrl() = prefs.api.get()
 
     private suspend inline fun <reified T> request(api: String, route: String): APIResponse<T> =
-        withContext(
-            Dispatchers.IO
-        ) {
-            client.request {
-                url("$api/v5/$route")
+        withContext(Dispatchers.IO) {
+            val fullUrl = "$api/v5/$route"
+            try {
+                Log.d("API", "Requesting: $fullUrl")
+
+                client.request {
+                    url(fullUrl)
+                }
+
+            } catch (e: Exception) {
+                Log.e("API", "Failed request: $fullUrl", e)
+                throw e
             }
         }
 

@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalar aplicativos desconhecidos</string>
   <string name="permission_install_apps_description">Necessário para instalar aplicativos com patches</string>
   <string name="permission_notifications">Notificações</string>
-  <string name="permission_notifications_description">Permite aplicar patches ininterruptamente em segundo plano em versões mais recentes do Android</string>
   <string name="permission_battery">Otimização de bateria</string>
   <string name="permission_battery_description">Impede que a aplicação de patches seja interrompida em segundo plano</string>
   <string name="permission_grant">Conceder</string>

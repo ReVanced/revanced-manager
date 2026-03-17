@@ -20,9 +20,11 @@ Second \"item\" text"</string>
   <string name="cli">CLI</string>
   <string name="manager">Bainisteoir</string>
   <string name="onboarding_welcome_to">Fáilte chuig</string>
-  <string name="onboarding_welcome_back">Haigh! Seo an nua</string>
+  <string name="onboarding_welcome_back">Haigh! Is é an ceann nua é</string>
   <string name="onboarding_apps_subtitle">Is féidir leat aip a roghnú chun paiste a chur air anois nó é a dhéanamh níos déanaí</string>
+  <string name="onboarding_apps_network_error">Níorbh fhéidir paistí a luchtú toisc go bhfuil an líonra neamhshábháilte nó ar fáil. Ceangail le líonra cobhsaí agus bain triail as arís.</string>
   <string name="onboarding_updates_subtitle">Cumraigh nuashonruithe uathoibríocha chun ReVanced Manager agus paistí a choinneáil cothrom le dáta</string>
+  <string name="banner_sources_not_downloaded_description">Níorbh fhéidir paistí agus íoslódóirí a íoslódáil le linn an tsocraithe. Tapáil nuashonrú chun iad a íoslódáil.</string>
   <string name="onboarding_updates_note">Déanfaidh ReVanced Manager nasc le %s chun leaganacha tosaigh a íoslódáil má tá do ghléas ceangailte leis an idirlíon.</string>
   <string name="retry">Bain triail eile as</string>
   <string name="onboarding_skip">Scipáil anois</string>
@@ -34,10 +36,10 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Suiteáil aipeanna anaithnid</string>
   <string name="permission_install_apps_description">Riachtanach chun feidhmchláir phaisteáilte a shuiteáil</string>
   <string name="permission_notifications">Fógraí</string>
-  <string name="permission_notifications_description">Ceadaíonn paisteáil gan bhriseadh sa chúlra ar leaganacha níos nuaí de Android</string>
+  <string name="permission_notifications_description">Ceadaíonn paisteáil gan bhriseadh sa chúlra</string>
   <string name="permission_battery">Optamú ceallraí</string>
   <string name="permission_battery_description">Coscann paisteáil ó bheith curtha isteach sa chúlra</string>
-  <string name="permission_grant">Deonaigh</string>
+  <string name="permission_grant">Deontas</string>
   <string name="downloader_host_permission_label">Óstach íoslódálaí ReVanced Manager</string>
   <string name="downloader_host_permission_description">Úsáidtear é chun rochtain ar íoslódálaithe ReVanced Manager a rialú. Níl sé seo ach ag ReVanced Manager.</string>
   <string name="toast_copied_to_clipboard">Cóipeáilte!</string>
@@ -74,7 +76,7 @@ Second \"item\" text"</string>
   <string name="patch_item_description">Tosaigh ag paisteáil an fheidhmchláir</string>
   <string name="patch_selector_item">Roghnaigh paistí</string>
   <string name="patch_selector_item_description">%d paistí roghnaithe</string>
-  <string name="patch_selection_changed_warning">Athraíodh rogha na bpaitseanna.</string>
+  <string name="patch_selection_changed_warning">Tá athrú tagtha ar roghnú na bpaistí</string>
   <string name="no_patches_selected">Níl aon phaistí roghnaithe</string>
   <string name="network_unavailable_warning">Níl do ghléas ceangailte leis an idirlíon. Teipfidh ar an íoslódáil níos déanaí.</string>
   <string name="network_metered_warning">Tá tú ar nasc méadraithe faoi láthair. D\'fhéadfadh táillí sonraí ón do sholáthraí seirbhíse a bheith i gceist.</string>
@@ -82,8 +84,8 @@ Second \"item\" text"</string>
   <string name="apk_source_auto">Uath</string>
   <string name="apk_source_auto_installed">Uath · Ag úsáid APK suiteáilte</string>
   <string name="apk_source_auto_downloaded">Uath · Ag úsáid APK íoslódáilte</string>
-  <string name="apk_source_auto_downloader">Uathoibríoch · Ag baint úsáide as íoslódálaithe atá ar fáil</string>
-  <string name="apk_source_auto_storage">Uathoibríoch · Roghnaigh ó stóráil</string>
+  <string name="apk_source_auto_downloader">Uath · Ag baint úsáide as íoslódálaithe atá ar fáil</string>
+  <string name="apk_source_auto_storage">Uath · Roghnaigh ón stóras</string>
   <string name="apk_source_downloader">Ag úsáid %s</string>
   <string name="apk_source_installed">Ag úsáid APK suiteáilte</string>
   <string name="apk_source_local">Ag úsáid comhad APK áitiúil</string>
@@ -94,7 +96,9 @@ Second \"item\" text"</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
   <string name="auto_updates_dialog_patches">Paistí ReVanced</string>
   <string name="auto_updates_dialog_downloaders">ReVanced Manager: Íoslódálaithe</string>
-  <string name="auto_updates_dialog_note">Is féidir na socruithe seo a athrú níos déanaí.\n\n    Déanfaidh ReVanced Manager nasc le %s chun leaganacha tosaigh a íoslódáil má tá do ghléas ceangailte leis an idirlíon.</string>
+  <string name="auto_updates_dialog_note">Is féidir na socruithe seo a athrú níos déanaí.
+
+Ceanglóidh ReVanced Manager le %s chun leaganacha tosaigh a íoslódáil má tá do ghléas ceangailte leis an idirlíon.</string>
   <string name="announcements_filter_tag">Scag de réir clibe</string>
   <string name="announcements_show_archived">Taispeáin cartlannaithe</string>
   <string name="general">Ginearálta</string>
@@ -145,8 +149,8 @@ Cumasaigh ar aon nós?</string>
   <string name="universal_patches_safeguard_confirmation">Níl paistí uilíocha tástáilte chomh maith le paistí a dhíríonn ar aipeanna sonracha.
 
 Cumasaigh ar aon nós?</string>
-  <string name="keystore">Eochairstór</string>
-  <string name="patches_selections">Roghanna paiste</string>
+  <string name="keystore">Eochracha</string>
+  <string name="patches_selections">Roghanna paistí</string>
   <string name="import_keystore">Iompórtáil stóras eochrach</string>
   <string name="import_keystore_description">Iompórtáil stóras eochrach saincheaptha</string>
   <string name="import_keystore_dialog_title">Iontráil dintiúir stóras eochrach</string>
@@ -170,15 +174,15 @@ Ní bheidh tú in ann na haipeanna a suiteáladh roimhe seo ón bhfoinse seo a n
   <string name="import_patch_selection_description">Iompórtáil roghnú paiste ó chomhad JSON</string>
   <string name="import_patch_selection_fail">Níorbh fhéidir roghnú paiste a iompórtáil: %s</string>
   <string name="import_patch_selection_success">Roghú paiste iompórtáilte</string>
-  <string name="select_bundle_for_import">Roghnaigh beartán le hiompórtáil isteach</string>
+  <string name="select_bundle_for_import">Roghnaigh pacáiste le hallmhairiú isteach ann</string>
   <string name="export_patch_selection">Easpórtáil roghnú paiste</string>
   <string name="export_patch_selection_description">Easpórtáil roghnú paiste chuig comhad JSON</string>
   <string name="export_patch_selection_fail">Níorbh fhéidir roghnú paiste a easpórtáil: %s</string>
   <string name="export_patch_selection_success">Rogha paiste easpórtáilte</string>
-  <string name="select_bundle_for_export">Roghnaigh beartán le heaspórtáil as</string>
+  <string name="select_bundle_for_export">Roghnaigh pacáiste le honnmhairiú uaidh</string>
   <string name="patch_selection_packages">Aipeanna le roghanna sábháilte</string>
-  <string name="patch_selection_entries">Iomlán paistí roghnaithe</string>
-  <string name="reset_configuration">Athshocraigh cumraíocht</string>
+  <string name="patch_selection_entries">Líon iomlán na bpaistí roghnaithe</string>
+  <string name="reset_configuration">Athshocraigh an chumraíocht</string>
   <string name="reset_patch_selection">Roghanna paiste</string>
   <string name="reset_patch_selection_description">Athshocraigh an roghnú paiste stóráilte</string>
   <string name="reset_patch_options">Roghanna paiste</string>
@@ -214,16 +218,16 @@ Ní bheidh tú in ann na haipeanna a suiteáladh roimhe seo ón bhfoinse seo a n
   <string name="downloader_settings_no_apps">Níor aimsíodh aon aipeanna íoslódáilte.</string>
   <string name="downloader_settings_no_apps_description">Tiocfaidh aipeanna a íoslódáladh trí ReVanced Manager anseo.</string>
   <string name="downloader_url">URL Íoslódálaí</string>
-  <string name="downloader_add">Cuir Íoslódálaí Leis</string>
+  <string name="downloader_add">Cuir Íoslódálaí leis</string>
   <string name="select_downloader_type_dialog_description">Cuir íoslódálaithe nua leis ó URL nó ó chomhaid áitiúla</string>
   <string name="local_downloaders_description">Cuir íoslódálaithe leis ó stóráil áitiúil.</string>
   <string name="remote_downloaders_description">Cuir íoslódálaithe leis ó URL. Is féidir iad a nuashonrú go huathoibríoch.</string>
   <string name="install_revanced_downloaders">Suiteáil íoslódálaithe chun aipeanna a fháil go díreach laistigh de ReVanced Manager.</string>
   <string name="install_revanced_downloader">Suiteáil Íoslódálaithe ReVanced</string>
-  <string name="cancel_downloader_install_title">Cealaigh suiteáil íoslódálaithe?</string>
+  <string name="cancel_downloader_install_title">Cealaigh suiteáil na n-íoslódálaithe?</string>
   <string name="cancel_downloader_install_description">Tá suiteáil íoslódálaithe ar siúl. Má fhágann tú anois, cuirfear an íoslódáil ar ceal.</string>
   <string name="downloader_sources_unavailable_title">Tá na híoslódálaithe seo ar iarraidh</string>
-  <string name="downloader_sources_unavailable_description">Cliceáil ar an cnaipe nuashonraithe chun é a shocrú.</string>
+  <string name="downloader_sources_unavailable_description">Cliceáil ar an gcnaipe nuashonraithe chun é a dheisiú.</string>
   <string name="downloader_update_failed">Theip ar nuashonrú an íoslódálaí: %s</string>
   <string name="downloader_replace_fail">Theip ar iompórtáil an íoslódálaí: %s</string>
   <string name="search_apps">Cuardaigh aipeanna…</string>
@@ -284,7 +288,7 @@ D’fhéadfadh an feidhmchlár rabhadh a thabhairt fós faoi líonraí méadrait
   <string name="device_memory_limit_format">%1$dMB (Gnáth) - %2$dMB (Mór)</string>
   <string name="patches_force_download">Éigean-íoslódáil gach paiste</string>
   <string name="patches_reset">Athshocraigh paistí</string>
-  <string name="reset_onboarding">Athshocraigh an bordáil</string>
+  <string name="reset_onboarding">Athshocraigh an clárú</string>
   <string name="reset_onboarding_description">Taispeáin an scáileán bordála ar an gcéad seoladh aip eile</string>
   <string name="patching">Paisteáil</string>
   <string name="signing">Síniú</string>
@@ -337,7 +341,7 @@ Níl sé comhoiriúnach ach leis an leagan(acha) seo a leanas: %2$s</string>
   <string name="download_application">Íoslódáil an feidhmchlár?</string>
   <string name="app_not_installed">Níl an aip a roghnaigh tú suiteáilte. An bhfuil tú ag iarraidh é a íoslódáil?</string>
   <string name="failed_to_load_apk">Theip ar an APK a luchtú</string>
-  <string name="split_apk_not_supported">Ní féidir APKnna scoilte a phaisteáil</string>
+  <string name="split_apk_not_supported">Ní féidir paistí a dhéanamh ar APKanna scoilte</string>
   <string name="loading">Ag lódáil…</string>
   <string name="not_installed">Gan suiteáilte</string>
   <string name="installed">Suiteáilte</string>
@@ -363,8 +367,8 @@ Níl sé comhoiriúnach ach leis an leagan(acha) seo a leanas: %2$s</string>
   <string name="downloader_invalid_version">Níor fuair an íoslódálaí an leagan ceart</string>
   <string name="downloader_app_not_found">Níor aimsigh an íoslódálaí an aip</string>
   <string name="downloader_error">Earráid íoslódálaí: %s</string>
-  <string name="no_downloaders_installed">Níl aon íoslódálaithe aip suiteáilte!</string>
-  <string name="no_downloaders_trusted">Níor cuireadh muinín in aon íoslódálaithe aip! Seiceáil do shocruithe le do thoil.</string>
+  <string name="no_downloaders_installed">Níl aon íoslódálaithe aipeanna suiteáilte!</string>
+  <string name="no_downloaders_trusted">Níl muinín curtha in aon íoslódálaithe aipeanna! Seiceáil do shocruithe le do thoil.</string>
   <string name="already_patched">Paistithe cheana féin</string>
   <string name="patch_selector_sheet_filter_title">Scagaire</string>
   <string name="patch_selector_sheet_filter_compat_title">Comhoiriúnacht</string>
@@ -397,13 +401,13 @@ Níl sé comhoiriúnach ach leis an leagan(acha) seo a leanas: %2$s</string>
   <string name="sign_fail">Theip ar an APK a shíniú: %s</string>
   <string name="save_logs">Sábháil logaí</string>
   <string name="save_as_file">Sábháil chuig comhaid</string>
-  <string name="export_patcher_logs">Easpórtáil logaí paisteálaí</string>
+  <string name="export_patcher_logs">Easpórtáil logaí paistí</string>
   <string name="save_logs_success">Logaí sábháilte</string>
   <string name="downloader_activity_dialog_body">Teastaíonn idirghníomhú úsáideora chun dul ar aghaidh leis an íoslódálaí seo.</string>
   <string name="select_install_type">Roghnaigh cineál suiteála</string>
   <string name="patcher_step_group_preparing">Ag ullmhú</string>
   <string name="patcher_step_load_patches">Luchtaigh paistí</string>
-  <string name="patcher_step_unpack">Ullmhaigh paisteálaí</string>
+  <string name="patcher_step_unpack">Ullmhaigh an paisteálaí</string>
   <string name="patcher_step_group_patching">Ag paisteáil</string>
   <string name="patcher_step_group_saving">Ag sábháil</string>
   <string name="patcher_step_write_patched">Scríobh comhad APK paistithe</string>
@@ -438,7 +442,7 @@ Níl sé comhoiriúnach ach leis an leagan(acha) seo a leanas: %2$s</string>
   <string name="repository">Stór</string>
   <string name="bundle_information_by_author">Le %1$s</string>
   <string name="version">Leagan</string>
-  <string name="version_compatibility_warning">Seans nach bhfuil an leagan roghnaithe ag luí leis na paistí roghnaithe</string>
+  <string name="version_compatibility_warning">B’fhéidir nach bhfuil an leagan roghnaithe comhoiriúnach leis na paistí roghnaithe</string>
   <string name="submit_feedback">Cuir saincheist nó aiseolas isteach</string>
   <string name="submit_feedback_description">Cabhraigh linn an feidhmchlár seo a fheabhsú</string>
   <string name="developer_options">Roghanna forbróra</string>

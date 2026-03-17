@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen
 
 import android.webkit.URLUtil.isValidUrl
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,17 +8,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Language
@@ -28,12 +28,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -65,9 +63,10 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.TooltipIconButton
+import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
-import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -101,7 +100,10 @@ fun BundleInformationScreen(
                 onBackClick()
             },
             title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_single_dialog_description, src.name),
+            description = stringResource(
+                R.string.patches_delete_single_dialog_description,
+                src.name
+            ),
             icon = Icons.Outlined.Delete
         )
     }
@@ -118,49 +120,46 @@ fun BundleInformationScreen(
                 title = { Text(src.name) },
                 subtitle = if (subtitleAuthor != null || subtitleVersion != null) {
                     {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            subtitleAuthor?.let { Text(it) }
-                            if (subtitleAuthor != null && subtitleVersion != null) {
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Spacer(
-                                    modifier = Modifier
-                                        .size(3.dp)
-                                        .background(
-                                            color = LocalContentColor.current,
-                                            shape = CircleShape
-                                        )
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                            }
-                            subtitleVersion?.let { Text(it) }
-                        }
+                        val dot = "\u2022"          // •
+                        val emSpace = "\u2002"      // en space, roughly half character width
+                        val separator = "$emSpace$dot$emSpace"
+                        Text("$subtitleAuthor$separator$subtitleVersion")
                     }
                 } else {
                     null
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back),
+                    ) { contentDescription ->
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = contentDescription
                         )
                     }
                 },
                 actions = {
                     if (!src.isDefault) {
-                        IconButton(onClick = { showDeleteConfirmationDialog = true }, shapes = IconButtonDefaults.shapes()) {
+                        TooltipIconButton(
+                            onClick = { showDeleteConfirmationDialog = true },
+                            tooltip = stringResource(R.string.delete),
+                        ) { contentDescription ->
                             Icon(
                                 Icons.Filled.Delete,
-                                stringResource(R.string.delete)
+                                contentDescription
                             )
                         }
                     }
                     val hasNetwork = remember { viewModel.networkInfo.isConnected() }
                     if (!isLocal && hasNetwork) {
-                        IconButton(onClick = viewModel::refresh, shapes = IconButtonDefaults.shapes()) {
+                        TooltipIconButton(
+                            onClick = viewModel::refresh,
+                            tooltip = stringResource(R.string.refresh),
+                        ) { contentDescription ->
                             Icon(
-                                Icons.Filled.Update,
-                                stringResource(R.string.refresh)
+                                Icons.Filled.Refresh,
+                                contentDescription
                             )
                         }
                     }
@@ -183,7 +182,12 @@ fun BundleInformationScreen(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp)
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 8.dp,
+                        bottom = 16.dp
+                    )
                 )
             }
 
@@ -233,7 +237,24 @@ fun BundleInformationScreen(
                         trailingContent = {
                             HapticSwitch(
                                 checked = autoUpdate,
-                                onCheckedChange = viewModel::setAutoUpdate
+                                onCheckedChange = viewModel::setAutoUpdate,
+                                thumbContent = if (autoUpdate) {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.Check,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                                        )
+                                    }
+                                } else {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.Close,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                                        )
+                                    }
+                                }
                             )
                         },
                         onClick = { viewModel.setAutoUpdate(!autoUpdate) }
@@ -244,7 +265,11 @@ fun BundleInformationScreen(
                     SafeguardBooleanItem(
                         preference = viewModel.prefs.usePatchesPrereleases,
                         headline = R.string.patches_prereleases,
-                        description = stringResource(R.string.patches_prereleases_description, src.name),
+                        description = stringResource(
+                            R.string.patches_prereleases_description,
+                            src.name
+                        ),
+                        dialogTitle = R.string.prerelease_title,
                         confirmationText = R.string.prereleases_warning,
                         onValueChange = viewModel::updateUsePrereleases
                     )
@@ -304,7 +329,7 @@ fun BundleInformationScreen(
                         supportingContent = stringResource(R.string.patches_error_description),
                         trailingContent = {
                             Icon(
-                                Icons.AutoMirrored.Outlined.ArrowRight,
+                                Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 null
                             )
                         },
@@ -337,7 +362,8 @@ private fun TagValue(
         {
             try {
                 uriHandler.openUri(targetUri)
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
         }
     }
 

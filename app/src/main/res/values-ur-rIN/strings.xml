@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">نامعلوم ایپس انسٹال کریں</string>
   <string name="permission_install_apps_description">پیچ کی گئی ایپلیکیشنز کو انسٹال کرنے کے لیے درکار ہے۔</string>
   <string name="permission_notifications">اطلاعات</string>
-  <string name="permission_notifications_description">اینڈرائیڈ کے نئے ورژن پر بیک گراؤنڈ میں بلا تعطل پیچنگ کی اجازت دیتا ہے۔</string>
   <string name="permission_battery">بیٹری کی آپٹیمائزیشن</string>
   <string name="permission_battery_description">بیک گراؤنڈ میں پیچنگ کو منقطع ہونے سے روکتا ہے۔</string>
   <string name="permission_grant">اجازت دیں</string>

@@ -18,7 +18,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Тавтай морилно уу</string>
   <string name="onboarding_welcome_back">Сайн уу! Энэ бол шинэ</string>
   <string name="onboarding_apps_subtitle">Та одоо засварлах апп сонгох эсвэл дараа хийх боломжтой</string>
+  <string name="onboarding_apps_network_error">Сүлжээ боломжгүй эсвэл тогтворгүй байгаа тул нөхөөсүүдийг ачаалж чадсангүй. Тогтвортой сүлжээнд холбогдоод дахин оролдоно уу.</string>
   <string name="onboarding_updates_subtitle">ReVanced Manager болон засваруудыг орчин үеийн байлгахын тулд автомат шинэчлэлтүүдийг тохируулах</string>
+  <string name="banner_sources_not_downloaded_description">Тохируулах явцад нөхөөс болон татагчдыг татаж авч чадаагүй. Татаж авахын тулд шинэчлэх товчийг дарна уу.</string>
   <string name="onboarding_updates_note">ReVanced Manager таны төхөөрөмж интернетэд холбогдсон бол анхны хувилбаруудыг татаж авахын тулд %s-т холбогдоно.</string>
   <string name="retry">Дахин оролдох</string>
   <string name="onboarding_skip">Одоохондоо алгасах</string>
@@ -30,7 +32,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Үл мэдэгдэх апп-уудыг суулгах</string>
   <string name="permission_install_apps_description">Нөхсөн аппликешнүүдийг суулгахад шаардлагатай</string>
   <string name="permission_notifications">Мэдэгдлүүд</string>
-  <string name="permission_notifications_description">Андройдын шинэ хувилбаруудад нөхөлтийг тасалдалгүйгээр цаана нь ажиллуулахыг зөвшөөрнө</string>
+  <string name="permission_notifications_description">Арын дэвсгэр дээр тасралтгүй нөхөөс хийх боломжийг олгоно</string>
   <string name="permission_battery">Зайны оновчлол</string>
   <string name="permission_battery_description">Нөхөлтийг цаана нь тасалдахаас сэргийлнэ</string>
   <string name="permission_grant">Олгох</string>

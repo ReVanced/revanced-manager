@@ -34,6 +34,7 @@ import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SearchView
+import app.revanced.manager.ui.component.TooltipIconButton
 import kotlinx.coroutines.flow.mapNotNull
 import org.koin.compose.koinInject
 
@@ -128,9 +129,9 @@ fun BundlePatchesDialog(
                         title = stringResource(R.string.patches),
                         onBackClick = onDismissRequest,
                         actions = {
-                            IconButton(
+                            TooltipIconButton(
                                 onClick = { isSearchActive = true },
-                                shapes = IconButtonDefaults.shapes(),
+                                tooltip = stringResource(R.string.search_patches)
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.Search,

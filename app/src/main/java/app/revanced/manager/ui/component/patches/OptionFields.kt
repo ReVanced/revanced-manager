@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DragHandle
@@ -36,12 +38,11 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -68,6 +69,7 @@ import app.revanced.manager.ui.component.FloatInputDialog
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.IntInputDialog
 import app.revanced.manager.ui.component.LongInputDialog
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
@@ -131,9 +133,9 @@ private interface OptionEditor<T : Any> {
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        IconButton(
+        TooltipIconButton(
             onClick = { scope.checkSafeguard { clickAction(scope) } },
-            shapes = IconButtonDefaults.shapes(),
+            tooltip = stringResource(if (scope.readOnly) R.string.show else R.string.edit)
         ) {
             Icon(
                 if (scope.readOnly) Icons.Outlined.Visibility else Icons.Outlined.Edit,
@@ -349,9 +351,9 @@ private object StringOptionEditor : OptionEditor<String> {
                     },
                     trailingIcon = {
                         var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { showDropdownMenu = true },
-                            shapes = IconButtonDefaults.shapes(),
+                            tooltip = stringResource(R.string.string_option_menu_description)
                         ) {
                             Icon(
                                 Icons.Outlined.MoreVert,
@@ -480,7 +482,24 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
                     scope.setValue(value)
                 }
             },
-            enabled = !scope.readOnly
+            enabled = !scope.readOnly,
+            thumbContent = if (scope.current) {
+                {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = null,
+                        modifier = Modifier.size(SwitchDefaults.IconSize)
+                    )
+                }
+            } else {
+                {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(SwitchDefaults.IconSize)
+                    )
+                }
+            }
         )
     }
 
@@ -774,25 +793,25 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                         },
                         actions = {
                             if (deleteMode) {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = {
                                         if (items.size == deletionTargets.size) deletionTargets.clear()
                                         else deletionTargets.addAll(items.map { it.key })
                                     },
-                                    shapes = IconButtonDefaults.shapes(),
+                                    tooltip = stringResource(R.string.select_deselect_all)
                                 ) {
                                     Icon(
                                         Icons.Filled.SelectAll,
                                         stringResource(R.string.select_deselect_all)
                                     )
                                 }
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = {
                                         items.removeIf { it.key in deletionTargets }
                                         deletionTargets.clear()
                                         deleteMode = false
                                     },
-                                    shapes = IconButtonDefaults.shapes(),
+                                    tooltip = stringResource(R.string.delete)
                                 ) {
                                     Icon(
                                         Icons.Filled.Delete,
@@ -800,11 +819,14 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     )
                                 }
                             } else {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = items::clear,
-                                    shapes = IconButtonDefaults.shapes(),
+                                    tooltip = stringResource(R.string.reset)
                                 ) {
-                                    Icon(Icons.Filled.Restore, stringResource(R.string.reset))
+                                    Icon(
+                                        Icons.Filled.Restore,
+                                        stringResource(R.string.reset)
+                                    )
                                 }
                             }
                         }
@@ -873,10 +895,10 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                     ),
                                     tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
                                     leadingContent = {
-                                        IconButton(
+                                        TooltipIconButton(
                                             modifier = Modifier.draggableHandle(interactionSource = interactionSource),
                                             onClick = {},
-                                            shapes = IconButtonDefaults.shapes(),
+                                            tooltip = stringResource(R.string.drag_handle),
                                         ) {
                                             Icon(
                                                 Icons.Filled.DragHandle,

@@ -96,12 +96,13 @@ private fun ThemeOption(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val onClickHaptic = onClick.withHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .clickable(
-                onClick = onClick.withHapticFeedback(HapticFeedbackConstantsCompat.VIRTUAL_KEY),
+                onClick = onClickHaptic,
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
@@ -110,7 +111,7 @@ private fun ThemeOption(
     ) {
         FilledTonalIconToggleButton(
             checked = isSelected,
-            onCheckedChange = { onClick() },
+            onCheckedChange = { onClickHaptic() },
             modifier = Modifier.size(56.dp),
             shapes = IconToggleButtonShapes(
                 shape = CircleShape,

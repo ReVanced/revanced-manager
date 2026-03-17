@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Benvenuto in</string>
   <string name="onboarding_welcome_back">Ciao! È il nuovo</string>
   <string name="onboarding_apps_subtitle">Puoi selezionare un\'app da patchare ora o farlo più tardi</string>
+  <string name="onboarding_apps_network_error">Impossibile caricare le patch perché la rete non è disponibile o è instabile. Connettiti a una rete stabile e riprova.</string>
   <string name="onboarding_updates_subtitle">Configura gli aggiornamenti automatici per mantenere ReVanced Manager e le patch aggiornati</string>
+  <string name="banner_sources_not_downloaded_description">Le patch e i downloader non sono stati scaricati durante la configurazione. Tocca aggiorna per scaricarli.</string>
   <string name="onboarding_updates_note">ReVanced Manager si connetterà a %s per scaricare le versioni iniziali se il tuo dispositivo è connesso a internet.</string>
   <string name="retry">Riprova</string>
   <string name="onboarding_skip">Salta per ora</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Installa app sconosciute</string>
   <string name="permission_install_apps_description">Richiesto per installare le applicazioni patchate</string>
   <string name="permission_notifications">Notifiche</string>
-  <string name="permission_notifications_description">Consente la patch ininterrotta in background sulle versioni più recenti di Android</string>
+  <string name="permission_notifications_description">Consente il patching ininterrotto in background</string>
   <string name="permission_battery">Ottimizzazione batteria</string>
   <string name="permission_battery_description">Impedisce che la patch venga interrotta in background</string>
   <string name="permission_grant">Concedi</string>

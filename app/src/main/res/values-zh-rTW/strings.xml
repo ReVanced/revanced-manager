@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">安裝不明應用程式</string>
   <string name="permission_install_apps_description">安裝已修補應用程式所需</string>
   <string name="permission_notifications">通知</string>
-  <string name="permission_notifications_description">允許在較新版本的 Android 上於背景不間斷地修補</string>
   <string name="permission_battery">電池最佳化</string>
   <string name="permission_battery_description">防止修補在背景中斷</string>
   <string name="permission_grant">授予</string>

@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Welkom bij</string>
   <string name="onboarding_welcome_back">Hoi! Het is de nieuwe</string>
   <string name="onboarding_apps_subtitle">U kunt nu een app selecteren om te patchen of dit later doen</string>
+  <string name="onboarding_apps_network_error">Kon patches niet laden omdat het netwerk niet beschikbaar of instabiel is. Maak verbinding met een stabiel netwerk en probeer het opnieuw.</string>
   <string name="onboarding_updates_subtitle">Configureer automatische updates om ReVanced Manager en patches up-to-date te houden</string>
+  <string name="banner_sources_not_downloaded_description">Patches en downloaders konden niet worden gedownload tijdens de installatie. Tik op \"update\" om ze te downloaden.</string>
   <string name="onboarding_updates_note">ReVanced Manager zal verbinding maken met %s om initiële versies te downloaden als uw apparaat met het internet is verbonden.</string>
   <string name="retry">Opnieuw proberen</string>
   <string name="onboarding_skip">Nu overslaan</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Onbekende apps installeren</string>
   <string name="permission_install_apps_description">Vereist om gepatchte applicaties te installeren</string>
   <string name="permission_notifications">Meldingen</string>
-  <string name="permission_notifications_description">Maakt ononderbroken patchen op de achtergrond mogelijk op nieuwere Android-versies</string>
+  <string name="permission_notifications_description">Maakt ononderbroken patchen op de achtergrond mogelijk</string>
   <string name="permission_battery">Batterijoptimalisatie</string>
   <string name="permission_battery_description">Voorkomt dat patchen op de achtergrond wordt onderbroken</string>
   <string name="permission_grant">Verlenen</string>

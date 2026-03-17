@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">ติดตั้งแอปที่ไม่รู้จัก</string>
   <string name="permission_install_apps_description">จำเป็นสำหรับการติดตั้งแอปพลิเคชันที่ได้รับการแพตช์</string>
   <string name="permission_notifications">บริค์ซ์</string>
-  <string name="permission_notifications_description">อนุญาตให้แพตช์ได้อย่างต่อเนื่องในเบื้องหลังบน Android เวอร์ชันใหม่กว่า</string>
   <string name="permission_battery">การเพิ่มประสิทธิภาพแบตเตอรี่</string>
   <string name="permission_battery_description">ป้องกันไม่ให้การแพตช์ถูกขัดจังหวะในเบื้องหลัง</string>
   <string name="permission_grant">ให้สิทธิ์</string>

@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -19,8 +19,6 @@ import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
@@ -52,8 +50,9 @@ import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
-import app.revanced.manager.ui.component.bundle.ImportSourceDialog
-import app.revanced.manager.ui.component.bundle.ImportSourceDialogStrings
+import app.revanced.manager.ui.component.TooltipIconButton
+import app.revanced.manager.ui.component.sources.ImportSourceDialog
+import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -117,8 +116,14 @@ fun DownloadsSettingsScreen(
         ImportSourceDialog(
             strings = ImportSourceDialogStrings.DOWNLOADERS,
             onDismiss = { showImportDialog = false },
-            onLocalSubmit = viewModel::createLocalSource,
-            onRemoteSubmit =  viewModel::createRemoteSource,
+            onLocalSubmit = { uri ->
+                showImportDialog = false
+                viewModel.createLocalSource(uri)
+            },
+            onRemoteSubmit = { url, autoUpdate ->
+                showImportDialog = false
+                viewModel.createRemoteSource(url, autoUpdate)
+            }
         )
     }
 
@@ -127,21 +132,24 @@ fun DownloadsSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.downloads)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back),
+                    ) { contentDescription ->
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = contentDescription
                         )
                     }
                 },
                 scrollBehavior = scrollBehavior,
                 actions = {
                     if (currentTab == DownloadsTab.Apps && viewModel.appSelection.isNotEmpty()) {
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { showDeleteConfirmationDialog = true },
-                            shapes = IconButtonDefaults.shapes()
-                        ) {
-                            Icon(Icons.Default.Delete, stringResource(R.string.delete))
+                            tooltip = stringResource(R.string.delete),
+                        ) { contentDescription ->
+                            Icon(Icons.Default.Delete, contentDescription)
                         }
                     }
                 }
@@ -151,6 +159,7 @@ fun DownloadsSettingsScreen(
             if (pagerState.currentPage != DownloadsTab.Downloaders.ordinal) return@Scaffold
             HapticExtendedFloatingActionButton(
                 onClick = { showImportDialog = true },
+                tooltip = stringResource(R.string.add),
                 icon = { Icon(Icons.Default.Add, contentDescription = null) },
                 text = { Text(stringResource(R.string.add)) }
             )

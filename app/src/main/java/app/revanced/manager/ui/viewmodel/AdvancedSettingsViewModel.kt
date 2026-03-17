@@ -36,17 +36,6 @@ class AdvancedSettingsViewModel(
             return "revanced-manager_logcat_$time"
         }
 
-    fun setApiUrl(value: String) = viewModelScope.launch(Dispatchers.Default) {
-        if (value == prefs.api.get()) return@launch
-
-        prefs.api.update(value)
-
-        arrayOf(patchBundleRepository, downloaderRepository).forEach {
-            it.reloadApiSources()
-            it.updateCheck()
-        }
-    }
-
     fun exportDebugLogs(target: Uri) = viewModelScope.launch {
         val exitCode = try {
             withContext(Dispatchers.IO) {

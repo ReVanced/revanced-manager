@@ -1,13 +1,12 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Delete
@@ -168,7 +167,7 @@ fun InstalledAppInfoScreen(
                                     it
                                 )
                             },
-                    trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) },
+                    trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) },
                     onClick = { showAppliedPatchesDialog = true },
                     )
 

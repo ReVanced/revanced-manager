@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Bem-vindo ao</string>
   <string name="onboarding_welcome_back">Olá! É o novo ReVanced Manager</string>
   <string name="onboarding_apps_subtitle">Você pode selecionar um aplicativo para aplicar o patch agora ou fazer isso mais tarde</string>
+  <string name="onboarding_apps_network_error">Não foi possível carregar patches porque a rede está indisponível ou instável. Conecte-se a uma rede estável e tente novamente.</string>
   <string name="onboarding_updates_subtitle">Configure as atualizações automáticas para manter o ReVanced Manager e os patches atualizados</string>
+  <string name="banner_sources_not_downloaded_description">Patches e baixadores não puderam ser baixados durante a configuração. Toque em atualizar para baixá-los.</string>
   <string name="onboarding_updates_note">ReVanced Manager irá se conectar a %s para baixar as versões iniciais se o seu dispositivo estiver conectado à internet.</string>
   <string name="retry">Tentar novamente</string>
   <string name="onboarding_skip">Pular por enquanto</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalar aplicativos desconhecidos</string>
   <string name="permission_install_apps_description">Necessário para instalar aplicativos com patches</string>
   <string name="permission_notifications">Notificações</string>
-  <string name="permission_notifications_description">Permite aplicar patches ininterruptamente em segundo plano em versões mais recentes do Android</string>
+  <string name="permission_notifications_description">Permite aplicação de patches ininterrupta em segundo plano</string>
   <string name="permission_battery">Otimização da bateria</string>
   <string name="permission_battery_description">Evita que a aplicação de patches seja interrompida em segundo plano</string>
   <string name="permission_grant">Conceder</string>

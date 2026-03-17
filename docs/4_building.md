@@ -11,7 +11,7 @@ This page will guide you through building ReVanced Manager from source.
    
    Using [SDKMAN!](https://sdkman.io/):
    ```sh
-   sdk install java 17.0.15-tem
+   sdk install java 17.0.18-tem
    ```
 
 2. Clone the repository
@@ -33,6 +33,6 @@ This page will guide you through building ReVanced Manager from source.
 > Example `gradle.properties` file:
 >
 > ```properties
-> gpr.user = <GitHub username>
-> gpr.key = <Personal access token>
+> githubPackagesUsername = <GitHub username>
+> githubPackagesPassword = <Personal access token>
 > ```

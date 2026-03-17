@@ -6,8 +6,6 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,12 +34,13 @@ fun PasswordField(modifier: Modifier = Modifier, value: String, onValueChange: (
         label = label,
         modifier = modifier,
         trailingIcon = {
-            IconButton(onClick = {
-                visible = !visible
-            }, shapes = IconButtonDefaults.shapes()) {
-                val (icon, description) = remember(visible) {
-                    if (visible) Icons.Outlined.VisibilityOff to R.string.hide_password_field else Icons.Outlined.Visibility to R.string.show_password_field
-                }
+            val (icon, description) = remember(visible) {
+                if (visible) Icons.Outlined.VisibilityOff to R.string.hide_password_field else Icons.Outlined.Visibility to R.string.show_password_field
+            }
+            TooltipIconButton(
+                onClick = { visible = !visible },
+                tooltip = stringResource(description)
+            ) {
                 Icon(icon, stringResource(description))
             }
         },

@@ -1,12 +1,13 @@
 package app.revanced.manager.ui.screen
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,7 +29,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Update
@@ -40,12 +40,11 @@ import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -71,20 +70,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.NotificationCardType
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
-import app.revanced.manager.ui.component.bundle.ImportSourceDialog
-import app.revanced.manager.ui.component.bundle.ImportSourceDialogStrings
+import app.revanced.manager.ui.component.TooltipIconButton
+import app.revanced.manager.ui.component.sources.ImportSourceDialog
+import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
-import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
@@ -121,6 +123,7 @@ fun DashboardScreen(
 ) {
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
+    val sourcesNotDownloaded by vm.sourcesNotDownloaded.collectAsStateWithLifecycle(false)
     val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
     val disablePatchVersionCompatCheck by vm.prefs.disablePatchVersionCompatCheck.getAsState()
@@ -345,19 +348,19 @@ fun DashboardScreen(
                         },
                         actions = {
                             if (availableUpdate != null) {
-                                IconButton(
+                                TooltipIconButton(
                                     onClick = onUpdateClick,
-                                    shapes = IconButtonDefaults.shapes()
-                                ) {
+                                    tooltip = stringResource(R.string.update),
+                                ) { contentDescription ->
                                     BadgedBox(badge = { Badge(modifier = Modifier.size(6.dp)) }) {
-                                        Icon(Icons.Filled.Update, stringResource(R.string.update))
+                                        Icon(Icons.Filled.Update, contentDescription)
                                     }
                                 }
                             }
-                            IconButton(
+                            TooltipIconButton(
                                 onClick = onAnnouncementsClick,
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
+                                tooltip = stringResource(R.string.announcements),
+                            ) { contentDescription ->
                                 BadgedBox(
                                     badge = {
                                         if (vm.unreadAnnouncement != null) {
@@ -367,14 +370,14 @@ fun DashboardScreen(
                                 ) {
                                     Icon(
                                         Icons.Filled.Notifications,
-                                        stringResource(R.string.announcements)
+                                        contentDescription
                                     )
                                 }
                             }
-                            IconButton(
+                            TooltipIconButton(
                                 onClick = onSettingsClick,
-                                shapes = IconButtonDefaults.shapes()
-                            ) {
+                                tooltip = stringResource(R.string.settings),
+                            ) { contentDescription ->
                                 BadgedBox(
                                     badge = {
                                         if (safeguardsToggled) {
@@ -385,7 +388,7 @@ fun DashboardScreen(
                                         }
                                     }
                                 ) {
-                                    Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                                    Icon(Icons.Filled.Settings, contentDescription)
                                 }
                             }
                         },
@@ -425,20 +428,10 @@ fun DashboardScreen(
                     }
 
                     Notifications(
-                        if (!Aapt.supportsDevice()) {
-                            {
-                                NotificationCard(
-                                    isWarning = true,
-                                    icon = Icons.Outlined.WarningAmber,
-                                    text = stringResource(R.string.unsupported_architecture_warning),
-                                    onDismiss = null
-                                )
-                            }
-                        } else null,
                         if (bundleDownloadError != null) {
                             {
                                 NotificationCard(
-                                    isWarning = true,
+                                    type = NotificationCardType.ERROR,
                                     icon = Icons.Outlined.WarningAmber,
                                     title = stringResource(R.string.api_not_working_title),
                                     text = stringResource(R.string.api_not_working_description),
@@ -446,23 +439,14 @@ fun DashboardScreen(
                                 )
                             }
                         } else null,
-                        if (vm.showBatteryOptimizationsWarning) {
+                        if (sourcesNotDownloaded && bundleDownloadError == null) {
                             {
-                                val batteryOptimizationsLauncher =
-                                    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                                        vm.updateBatteryOptimizationsWarning()
-                                    }
                                 NotificationCard(
-                                    isWarning = true,
-                                    icon = Icons.Default.BatteryAlert,
-                                    text = stringResource(R.string.battery_optimization_notification),
+                                    type = NotificationCardType.WARNING,
+                                    icon = Icons.Outlined.Refresh,
+                                    text = stringResource(R.string.banner_sources_not_downloaded_description),
                                     onClick = {
-                                        batteryOptimizationsLauncher.launch(
-                                            Intent(
-                                                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                                                Uri.fromParts("package", androidContext.packageName, null)
-                                            )
-                                        )
+                                        vm.downloadSources()
                                     }
                                 )
                             }
@@ -475,7 +459,13 @@ fun DashboardScreen(
                                     actions = {
                                         TextButton(
                                             onClick = vm::markUnreadAnnouncementRead,
-                                            shapes = ButtonDefaults.shapes()
+                                            shapes = ButtonDefaults.shapes(),
+                                            colors = ButtonColors(
+                                                contentColor = MaterialTheme.colorScheme.tertiary,
+                                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0f),
+                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
+                                            )
                                         ) {
                                             Text(stringResource(R.string.dismiss))
                                         }
@@ -484,12 +474,22 @@ fun DashboardScreen(
                                                 vm.markUnreadAnnouncementRead()
                                                 onAnnouncementClick(announcement)
                                             },
-                                            shapes = ButtonDefaults.shapes()
+                                            shapes = ButtonDefaults.shapes(),
+                                            colors = ButtonColors(
+                                                contentColor = MaterialTheme.colorScheme.tertiary,
+                                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0f),
+                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
+                                            )
                                         ) {
                                             Text(stringResource(R.string.view_announcement))
                                         }
                                     },
-                                    isWarning = announcement.level > 0
+                                    type = if (announcement.level > 0) NotificationCardType.ERROR else NotificationCardType.NORMAL,
+                                    onClick = {
+                                        vm.markUnreadAnnouncementRead()
+                                        onAnnouncementClick(announcement)
+                                    }
                                 )
                             }
                         }
@@ -552,24 +552,54 @@ private fun DashboardFab(
     onEnablePatchesSourceEditMode: () -> Unit,
     onAddBundleClick: () -> Unit
 ) {
-    when (pagerState.currentPage) {
-        DashboardPage.DASHBOARD.ordinal -> {
+    val fabState = when (pagerState.currentPage) {
+        DashboardPage.BUNDLES.ordinal -> {
+            if (patchesSourceEditMode) DashboardFabState.AddBundles else DashboardFabState.EditBundles
         }
 
-        DashboardPage.BUNDLES.ordinal -> {
-            if (patchesSourceEditMode) {
-                HapticExtendedFloatingActionButton(
-                    onClick = onAddBundleClick,
-                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                    text = { Text(stringResource(R.string.fab_add_patches)) }
-                )
-            } else {
-                HapticFloatingActionButton(onClick = onEnablePatchesSourceEditMode) {
-                    Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
+        else -> DashboardFabState.Hidden
+    }
+
+    if (fabState == DashboardFabState.Hidden) return
+
+    HapticExtendedFloatingActionButton(
+        onClick = if (fabState == DashboardFabState.AddBundles) onAddBundleClick else onEnablePatchesSourceEditMode,
+        tooltip = stringResource(
+            if (fabState == DashboardFabState.AddBundles) R.string.fab_add_patches else R.string.edit
+        ),
+        expanded = fabState == DashboardFabState.AddBundles,
+        icon = {
+            AnimatedContent(
+                targetState = fabState,
+                transitionSpec = {
+                    (fadeIn(animationSpec = tween(durationMillis = 180, delayMillis = 60)) +
+                        scaleIn(animationSpec = tween(durationMillis = 180, delayMillis = 60), initialScale = 0.85f)) togetherWith
+                        (fadeOut(animationSpec = tween(durationMillis = 90)) +
+                            scaleOut(animationSpec = tween(durationMillis = 90), targetScale = 0.85f))
+                },
+                label = "dashboard_fab_icon_transition"
+            ) { state ->
+                when (state) {
+                    DashboardFabState.EditBundles -> {
+                        Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
+                    }
+
+                    DashboardFabState.AddBundles -> {
+                        Icon(Icons.Default.Add, contentDescription = null)
+                    }
+
+                    DashboardFabState.Hidden -> Unit
                 }
             }
-        }
-    }
+        },
+        text = { Text(stringResource(R.string.fab_add_patches)) }
+    )
+}
+
+private enum class DashboardFabState {
+    Hidden,
+    EditBundles,
+    AddBundles,
 }
 
 @Composable

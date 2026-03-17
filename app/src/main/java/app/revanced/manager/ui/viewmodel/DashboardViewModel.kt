@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
+    private val downloaderRepository: DownloaderRepository,
     private val announcementRepository: AnnouncementRepository,
     private val managerUpdateRepository: ManagerUpdateRepository,
     private val networkInfo: NetworkInfo,
@@ -49,6 +50,13 @@ class DashboardViewModel(
 
     val availableManagerUpdate = managerUpdateRepository.availableVersion
 
+    val sourcesNotDownloaded = patchBundleRepository.bundleInfoFlow.map { it.isEmpty() }
+
+    fun downloadSources() = viewModelScope.launch(Dispatchers.Default) {
+        patchBundleRepository.updateCheck()
+        downloaderRepository.updateCheck()
+    }
+
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
      * This value is true when the conditions that trigger the bug are met.
@@ -56,9 +64,6 @@ class DashboardViewModel(
      * See: https://github.com/ReVanced/revanced-manager/issues/2138
      */
     val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
-
-    var showBatteryOptimizationsWarning by mutableStateOf(false)
-        private set
 
     var unreadAnnouncement by mutableStateOf<ReVancedAnnouncement?>(null)
         private set
@@ -70,7 +75,6 @@ class DashboardViewModel(
         viewModelScope.launch {
             checkForManagerUpdates()
             checkForAnnouncements()
-            updateBatteryOptimizationsWarning()
         }
     }
 
@@ -112,10 +116,6 @@ class DashboardViewModel(
         }
     }
 
-    fun updateBatteryOptimizationsWarning() {
-        showBatteryOptimizationsWarning =
-            !powerManager.isIgnoringBatteryOptimizations(app.packageName)
-    }
 
     fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
         viewModelScope.launch {

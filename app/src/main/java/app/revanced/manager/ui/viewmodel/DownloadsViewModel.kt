@@ -62,8 +62,8 @@ class DownloadsViewModel(
     }
 
     @SuppressLint("Recycle")
-    fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
-        downloaderRepository.createLocal { contentResolver.openInputStream(patchBundle)!! }
+    fun createLocalSource(downloaderUri: Uri) = viewModelScope.launch {
+        downloaderRepository.createLocal { contentResolver.openInputStream(downloaderUri)!! }
     }
 
     fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {

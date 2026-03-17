@@ -1,3 +1,94 @@
+# app [2.2.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.2.0-dev.2...v2.2.0-dev.3) (2026-03-17)
+
+
+### Bug Fixes
+
+* Add padding for initial screen ([68da359](https://github.com/ReVanced/revanced-manager/commit/68da3592521d18f2f298bb74e72097a1efe57dc7))
+* Correctly 180 the back arrow for expansible list ([6c62e57](https://github.com/ReVanced/revanced-manager/commit/6c62e57f09b72191de328c277787db80c4bb62af))
+* Custom ROM crashed with their file picker deleted somehow ([00aedda](https://github.com/ReVanced/revanced-manager/commit/00aeddac67031534bfef60183db6a124b16f24c4))
+* Don't 360 the back arrow button for no reason ([5a175e2](https://github.com/ReVanced/revanced-manager/commit/5a175e2c347f824124feb977110ff6be6cf7edcb))
+* Don't show user that you can do this when you clearly can't ([716ecdd](https://github.com/ReVanced/revanced-manager/commit/716ecdd5f30dc58725026f3b6e4021001c174aef))
+* Downloader string being use for incorrect app selection ([b9865df](https://github.com/ReVanced/revanced-manager/commit/b9865dfbf542ea0a82a341349b117c4a9c61fc10))
+* FAB animations in dashboard being instant ([6805ba1](https://github.com/ReVanced/revanced-manager/commit/6805ba18e0470e49dd304aa989dfa6c1e3da2668))
+* Hide installed section if no app are installed ([a6b7517](https://github.com/ReVanced/revanced-manager/commit/a6b7517e8f9c3055db88a5e42b718505d7ad5885))
+* Inconsistent announcement list ([06c5cff](https://github.com/ReVanced/revanced-manager/commit/06c5cffe1fa68349c342734f3743bc5d1b16b7d0))
+* Language picker using patch search string ([8c2be24](https://github.com/ReVanced/revanced-manager/commit/8c2be242ef95d11b96c705c9d4494f4be50e7786))
+* List being stuck too close together ([5ccf2e4](https://github.com/ReVanced/revanced-manager/commit/5ccf2e48a4fd155a7d8fad0ee3c295bd06194339))
+* Make safeguard dialog title more clearer ([7691a7e](https://github.com/ReVanced/revanced-manager/commit/7691a7e144f0777c0d71ea6af4b75a9fb17aeddf))
+* Make the card actually clickable ([979728a](https://github.com/ReVanced/revanced-manager/commit/979728a4cf504b77c50e3a3202e18b7cebe0bed2))
+* Make title notification card follow general preferred-ish visual size ([fc7a97c](https://github.com/ReVanced/revanced-manager/commit/fc7a97c98c52f3ec2e683fde6d1a24c85a2be801))
+* Make weight in unread AnnouncementList look so nicer on certain device density ([c2abfa5](https://github.com/ReVanced/revanced-manager/commit/c2abfa576afda3b8d792e316b2e07ce7ce44d59c))
+* Merge chervon style doppelgirl design to public dev ([ae5dc83](https://github.com/ReVanced/revanced-manager/commit/ae5dc835aa8b6c0f0e30df3ee48f8f3128c34c2f))
+* Merge chervon style doppelgirl design to public dev ([603ff91](https://github.com/ReVanced/revanced-manager/commit/603ff91a4ed34cdf2d48b5def3c9aece205f7fef))
+* Merge expressive switch doppelgirl design to public dev ([698b6ed](https://github.com/ReVanced/revanced-manager/commit/698b6ed1881357a3fbd692987305b93ed6ecaca2))
+* Onboarding screen perpetually loading on unavailable network ([4b9841b](https://github.com/ReVanced/revanced-manager/commit/4b9841b876b63747095a510ca0b517c09c9910a2))
+* Patches being expanded instantly ([83d7506](https://github.com/ReVanced/revanced-manager/commit/83d7506dbc6a15116e4e6a0dd8174da5c6e7e15d))
+* Performance impact with lots of app entries ([fb08890](https://github.com/ReVanced/revanced-manager/commit/fb0889052e1cb7fc3d115bc0825e074903ede385))
+* Redundant string information ([ab80c53](https://github.com/ReVanced/revanced-manager/commit/ab80c53c04a45f8587ad9ebdc06271c152a3ddcd))
+* Remove currently not applicable workaround code for building release ([aa0d59f](https://github.com/ReVanced/revanced-manager/commit/aa0d59f86fac7c497bf245e2d20b40a65d3fd0d0))
+* Remove useless archive icon when it's under archive list ([6d5ecd3](https://github.com/ReVanced/revanced-manager/commit/6d5ecd3d541c008b15cbb3e24c4c21a79ff353d1))
+* Search bar padding being set when fully expanded ([05e6ca1](https://github.com/ReVanced/revanced-manager/commit/05e6ca18ab6f2a65fdd75ce3d0efc16dc7b8f3b5))
+* Show copy logs toast on less than Android 12.1 ([940778b](https://github.com/ReVanced/revanced-manager/commit/940778b7a26b8a3d36d130e0f9bd42a948a596c0))
+* Some haptic constant are not working ([7954128](https://github.com/ReVanced/revanced-manager/commit/79541280df5dadef1628044e818d37f8b60e9da8))
+* Use refresh icon to indicate instant update check ([cf8b986](https://github.com/ReVanced/revanced-manager/commit/cf8b986e5ef76a03db5965d4bca80633cd41032f))
+* Use refresh icon to indicate instant update check (2/?) ([3120aff](https://github.com/ReVanced/revanced-manager/commit/3120affc9cd766a1188392eb46da43d955851d27))
+
+
+### Features
+
+* Add refresh banner when nothing is loaded after setup ([2f46e3b](https://github.com/ReVanced/revanced-manager/commit/2f46e3b52e3a06f8a96e50c617fdd47e356ca1d9))
+* App search bar on initial screen ([05c09da](https://github.com/ReVanced/revanced-manager/commit/05c09da3a274328a5a002828b582d65d85c39a23))
+* Move optional notification to settings screen ([7638ec7](https://github.com/ReVanced/revanced-manager/commit/7638ec720292e33c938c14add000431a6347e3f5))
+* Notification priority system ([74ca361](https://github.com/ReVanced/revanced-manager/commit/74ca36119a98b3f7bf963e56494b55d83e2ceec9))
+* Required permission onboarding ([193315b](https://github.com/ReVanced/revanced-manager/commit/193315b69e665c5ab8940c9c9b473ac8949d29eb))
+* Search patched app and patchable app ([0586e76](https://github.com/ReVanced/revanced-manager/commit/0586e7671d5d8c693fa362cf2685622eb03a2537))
+* Tooltip for icon button and FAB ([197f37b](https://github.com/ReVanced/revanced-manager/commit/197f37b653a5b2426d5ddf6123db69819763cfd2))
+* Update default colour specification to Expressive 2025 ([cfdd62e](https://github.com/ReVanced/revanced-manager/commit/cfdd62ecff0aecf010a53d3b46d6529f8a01d5ac))
+
+
+### Reverts
+
+* Revert "feat: Move optional notification to settings screen" ([82adf9c](https://github.com/ReVanced/revanced-manager/commit/82adf9c8e3122ca32c913b628cf2576cd9112341))
+* Revert "feat: Notification priority system" ([b13157a](https://github.com/ReVanced/revanced-manager/commit/b13157a0fd216b4e3a4a8ef6b2f21beabaf10930))
+* Revert "feat: Required permission onboarding" ([efda212](https://github.com/ReVanced/revanced-manager/commit/efda212e92d31066bee0bb6174d4d483aed81aa8))
+* Revert "fix: Don't show user that you can do this when you clearly can't" ([ec261db](https://github.com/ReVanced/revanced-manager/commit/ec261db374f8b7d89e01a446b66c248bf28aad89))
+* Revert "Reapply "feat: Required permission onboarding"" ([3a8c26c](https://github.com/ReVanced/revanced-manager/commit/3a8c26c897e7dabc04a6a19e845d09f44a562d08))
+* Revert "Revert "feat: Move optional notification to settings screen"" ([8513cd1](https://github.com/ReVanced/revanced-manager/commit/8513cd15f8c5618464360d5ceca0213883f2c9f3))
+
+# app [2.2.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.0-dev.1...v2.2.0-dev.2) (2026-03-16)
+
+
+### Features
+
+* Add copy to clipboard on ShareSheet ([7e1416e](https://github.com/ReVanced/revanced-manager/commit/7e1416ecef13e2ea4289a6cfb64eb3bba8d6f331))
+
+# app [2.2.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.1.1-dev.2...v2.2.0-dev.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* Consistent circle separator between text across patchesinfoscreen and announcements ([a7792db](https://github.com/ReVanced/revanced-manager/commit/a7792dbf4d947982e343ff2aa2ce71bd5692c09a))
+
+
+### Features
+
+* Change all arrow right icons to chevron rights ([ff25d4e](https://github.com/ReVanced/revanced-manager/commit/ff25d4eb5d2177f7ab0f3aeb6d2df32e2e783306))
+* Move API settings to Developer Options ([3067478](https://github.com/ReVanced/revanced-manager/commit/3067478ebbe9db06833d8d31545c65985309c48f))
+
+## app [2.1.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.1.1-dev.1...v2.1.1-dev.2) (2026-03-16)
+
+
+### Bug Fixes
+
+* Close "Add downloaders" dialog on add ([f60ce02](https://github.com/ReVanced/revanced-manager/commit/f60ce02a8193bf71b4b37329c3e8004e569e2b67))
+
+## app [2.1.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.1.0...v2.1.1-dev.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* About page content and log API requests ([62111e2](https://github.com/ReVanced/revanced-manager/commit/62111e2499d9fc0f4e7b364236e90d5a5f46981f))
+
 # app [2.1.0](https://github.com/ReVanced/revanced-manager/compare/v2.0.1...v2.1.0) (2026-03-15)
 
 

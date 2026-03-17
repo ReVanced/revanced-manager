@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Dobrodošli v</string>
   <string name="onboarding_welcome_back">Pozdravljeni! To je novi</string>
   <string name="onboarding_apps_subtitle">Aplikacijo za popravljanje lahko izberete zdaj ali pozneje.</string>
+  <string name="onboarding_apps_network_error">Popravkov ni bilo mogoče naložiti, ker je omrežje nedosegljivo ali nestabilno. Povežite se s stabilnim omrežjem in poskusite znova.</string>
   <string name="onboarding_updates_subtitle">Konfigurirajte samodejne posodobitve, da bodo ReVanced Manager in popravki posodobljeni.</string>
+  <string name="banner_sources_not_downloaded_description">Popravkov in programov za prenos ni bilo mogoče prenesti med namestitvijo. Tapnite posodobi, da jih prenesete.</string>
   <string name="onboarding_updates_note">ReVanced Manager se bo povezal z %s za prenos začetnih različic, če je vaša naprava povezana z internetom.</string>
   <string name="retry">Ponovi</string>
   <string name="onboarding_skip">Preskoči za zdaj</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Namesti neznane aplikacije</string>
   <string name="permission_install_apps_description">Potrebno za namestitev popravljenih aplikacij</string>
   <string name="permission_notifications">Obvestila</string>
-  <string name="permission_notifications_description">Omogoča nemoteno popravljanje v ozadju na novejših različicah Androida</string>
+  <string name="permission_notifications_description">Omogoča nemoteno popravljanje v ozadju</string>
   <string name="permission_battery">Optimizacija baterije</string>
   <string name="permission_battery_description">Preprečuje prekinitev popravljanja v ozadju</string>
   <string name="permission_grant">Podeli</string>

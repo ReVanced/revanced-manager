@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">ଅଜଣା ଆପ୍ସ ସ୍ଥାପନ କରନ୍ତୁ</string>
   <string name="permission_install_apps_description">ପ୍ୟାଚ୍ କରାଯାଇଥିବା ଆପ୍ଲିକେସନ୍ ସ୍ଥାପନ କରିବା ପାଇଁ ଆବଶ୍ୟକ</string>
   <string name="permission_notifications">ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକ</string>
-  <string name="permission_notifications_description">Android ର ନୂତନ ସଂସ୍କରଣଗୁଡ଼ିକରେ ପୃଷ୍ଠଭୂମିରେ ନିରବଚ୍ଛିନ୍ନ ପ୍ୟାଚ୍ କରିବାକୁ ଅନୁମତି ଦିଏ</string>
   <string name="permission_battery">ବ୍ୟାଟେରୀ ଅପ୍ଟିମାଇଜେସନ୍</string>
   <string name="permission_battery_description">ପୃଷ୍ଠଭୂମିରେ ପ୍ୟାଚ୍ କରିବାକୁ ବାଧାପ୍ରାପ୍ତ ହେବାରୁ ରୋକେ</string>
   <string name="permission_grant">ଅନୁମତି ଦିଅନ୍ତୁ</string>

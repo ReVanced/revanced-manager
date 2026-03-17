@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Installi tundmatud rakendused</string>
   <string name="permission_install_apps_description">Vajalik paigatud rakenduste installimiseks</string>
   <string name="permission_notifications">Teatised</string>
-  <string name="permission_notifications_description">Võimaldab katkematut paikamist taustal uuematel Androidi versioonidel</string>
   <string name="permission_battery">Aku optimeerimine</string>
   <string name="permission_battery_description">Takistab paigamise katkemist taustal</string>
   <string name="permission_grant">Anna luba</string>

@@ -27,8 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
@@ -53,6 +51,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
@@ -91,7 +90,10 @@ fun UpdatesSettingsScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(stringResource(R.string.updates)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back)
+                    ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -244,6 +246,7 @@ fun UpdatesSettingsScreen(
                     preference = vm.useManagerPrereleases,
                     headline = R.string.manager_prereleases,
                     description = R.string.manager_prereleases_description,
+                    dialogTitle = R.string.prerelease_title,
                     confirmationText = R.string.prereleases_warning,
                     onValueChange = { value ->
                         coroutineScope.launch {

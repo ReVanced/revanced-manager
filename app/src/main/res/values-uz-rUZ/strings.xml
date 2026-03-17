@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Noma\'lum ilovalarni o\'rnatish</string>
   <string name="permission_install_apps_description">Patch o\'rnatilgan ilovalarni o\'rnatish uchun talab qilinadi</string>
   <string name="permission_notifications">Bildirishnomalar</string>
-  <string name="permission_notifications_description">Android\'ning yangiroq versiyalarida fonda uzluksiz patch o\'rnatish imkonini beradi</string>
   <string name="permission_battery">Batareya optimizatsiyasi</string>
   <string name="permission_battery_description">Patch o\'rnatishning fonda to\'xtatilishini oldini oladi</string>
   <string name="permission_grant">Ruxsat berish</string>

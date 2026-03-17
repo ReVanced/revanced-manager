@@ -18,7 +18,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Welkom by</string>
   <string name="onboarding_welcome_back">Hallo! Dit is die nuwe</string>
   <string name="onboarding_apps_subtitle">Jy kan nou \'n toepassing kies om te pleister of dit later doen</string>
+  <string name="onboarding_apps_network_error">Kon nie pleisters laai nie omdat die netwerk onbeskikbaar of onstabiel is. Koppel aan \'n stabiele netwerk en probeer weer.</string>
   <string name="onboarding_updates_subtitle">Stel outomatiese opdaterings in om ReVanced Manager en pleisters op datum te hou</string>
+  <string name="banner_sources_not_downloaded_description">Pleisters en aflaaiers kon nie tydens opstelling afgelaai word nie. Tik werk by om dit af te laai.</string>
   <string name="onboarding_updates_note">ReVanced Manager sal aan %s koppel om aanvanklike weergawes af te laai as jou toestel aan die internet gekoppel is.</string>
   <string name="retry">Probeer weer</string>
   <string name="onboarding_skip">Slaan oor vir nou</string>
@@ -30,7 +32,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Installeer onbekende toepassings</string>
   <string name="permission_install_apps_description">Vereis om gepatchte toepassings te installeer</string>
   <string name="permission_notifications">Kennisgewings</string>
-  <string name="permission_notifications_description">Laat ononderbroke patching in die agtergrond toe op nuwer weergawes van Android</string>
+  <string name="permission_notifications_description">Laat ononderbroke pleistering in die agtergrond toe</string>
   <string name="permission_battery">Batteryoptimalisering</string>
   <string name="permission_battery_description">Voorkom dat patching in die agtergrond onderbreek word</string>
   <string name="permission_grant">Verleen</string>

@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">I-install ang hindi kilalang apps</string>
   <string name="permission_install_apps_description">Kinakailangan upang i-install ang mga patched na application</string>
   <string name="permission_notifications">Mga Abiso</string>
-  <string name="permission_notifications_description">Nagbibigay-daan para sa walang patid na pag-patch sa background sa mga mas bagong bersyon ng Android</string>
   <string name="permission_battery">Pag-optimize ng baterya</string>
   <string name="permission_battery_description">Pinipigilan ang pag-patch na maantala sa background</string>
   <string name="permission_grant">Ibigay</string>

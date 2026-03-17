@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
@@ -15,13 +18,12 @@ import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedListItem
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -43,6 +45,7 @@ import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -105,7 +108,10 @@ fun DownloaderInfoScreen(
                     { Text("v$it") }
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                    TooltipIconButton(
+                        onClick = onBackClick,
+                        tooltip = stringResource(R.string.back)
+                    ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -113,10 +119,10 @@ fun DownloaderInfoScreen(
                     }
                 },
                 actions = {
-                    if (!source.isDefault) IconButton(
+                    if (!source.isDefault) TooltipIconButton(
                         onClick = { showDeleteConfirmationDialog = true },
                         enabled = !isDeleting,
-                        shapes = IconButtonDefaults.shapes()
+                        tooltip = stringResource(R.string.delete)
                     ) {
                         Icon(Icons.Filled.Delete, stringResource(R.string.delete))
                     }
@@ -125,12 +131,12 @@ fun DownloaderInfoScreen(
                         val hasNetwork = remember { viewModel.networkInfo.isConnected() }
                         if (!hasNetwork) return@let
 
-                        IconButton(
+                        TooltipIconButton(
                             onClick = { viewModel.updateDownloader(it) },
                             enabled = !isDeleting,
-                            shapes = IconButtonDefaults.shapes()
+                            tooltip = stringResource(R.string.update)
                         ) {
-                            Icon(Icons.Filled.Update, stringResource(R.string.update))
+                            Icon(Icons.Filled.Refresh, stringResource(R.string.update))
                         }
                     }
                 },
@@ -147,7 +153,9 @@ fun DownloaderInfoScreen(
                 .padding(paddingValues),
             state = scrollState,
         ) {
-            ListSection {
+            ListSection(
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
                 remote?.let { remoteSource ->
                     val autoUpdate = remoteSource.autoUpdate
                     SettingsListItem(
@@ -156,7 +164,24 @@ fun DownloaderInfoScreen(
                         trailingContent = {
                             HapticSwitch(
                                 checked = autoUpdate,
-                                onCheckedChange = { viewModel.setAutoUpdate(remoteSource, it) }
+                                onCheckedChange = { viewModel.setAutoUpdate(remoteSource, it) },
+                                thumbContent = if (autoUpdate) {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.Check,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                                        )
+                                    }
+                                } else {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.Close,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                                        )
+                                    }
+                                }
                             )
                         },
                         onClick = { viewModel.setAutoUpdate(remoteSource, !autoUpdate) }
@@ -171,6 +196,7 @@ fun DownloaderInfoScreen(
                             R.string.downloader_prereleases_description,
                             source.name
                         ),
+                        dialogTitle = R.string.prerelease_title,
                         confirmationText = R.string.prereleases_warning,
                         onValueChange = viewModel::updateUsePrereleases
                     )

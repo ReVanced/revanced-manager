@@ -28,8 +28,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -62,6 +60,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.TooltipIconButton
 import kotlin.math.roundToInt
 
 @Stable
@@ -366,7 +365,10 @@ fun BannerScaffold(
                 title = { Text(title) },
                 navigationIcon = {
                     if (onBackClick != null) {
-                        IconButton(onClick = onBackClick, shapes = IconButtonDefaults.shapes()) {
+                        TooltipIconButton(
+                            onClick = onBackClick,
+                            tooltip = stringResource(R.string.back)
+                        ) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(R.string.back),

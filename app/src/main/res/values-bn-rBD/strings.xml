@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">অজানা অ্যাপ ইনস্টল করুন</string>
   <string name="permission_install_apps_description">প্যাচ করা অ্যাপ্লিকেশন ইনস্টল করার জন্য প্রয়োজনীয়</string>
   <string name="permission_notifications">নোটিস্য়াসেগ</string>
-  <string name="permission_notifications_description">Android-এর নতুন সংস্করণগুলিতে ব্যাকগ্রাউন্ডে নিরবচ্ছিন্ন প্যাচিং-এর অনুমতি দেয়</string>
   <string name="permission_battery">ব্যাটারি অপ্টিমাইজেশন</string>
   <string name="permission_battery_description">ব্যাকগ্রাউন্ডে প্যাচিং-এর বাধা বন্ধ করে</string>
   <string name="permission_grant">অনুমতি দিন</string>

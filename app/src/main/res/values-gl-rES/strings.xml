@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalar aplicacións descoñecidas</string>
   <string name="permission_install_apps_description">Necesario para instalar aplicacións parcheadas</string>
   <string name="permission_notifications">Notificacións</string>
-  <string name="permission_notifications_description">Permite o parcheado ininterrompido en segundo plano en versións máis recentes de Android</string>
   <string name="permission_battery">Optimización da batería</string>
   <string name="permission_battery_description">Evita que o parcheado sexa interrompido en segundo plano</string>
   <string name="permission_grant">Conceder</string>
