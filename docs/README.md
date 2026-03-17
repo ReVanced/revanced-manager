@@ -15,6 +15,22 @@ This documentation explains how to use [ReVanced Manager](https://github.com/rev
    5. [⚙️ Configuring ReVanced Manager](2_6_settings.md)
 3. [❔ Troubleshooting](3_troubleshooting.md)
 4. [🔨 Building from source](4_building.md)
+5. [🏗️ Quick architecture overview](#️-quick-architecture-overview)
+
+## 🏗️ Quick architecture overview
+
+The [`visual/`](visual/) directory contains Mermaid-generated architecture diagrams that give new contributors a high-level understanding of the project structure, module dependencies, and data flow before diving into the source code.
+
+| Diagram | Description |
+|---------|-------------|
+| *More diagrams welcome — see below* | |
+
+> **Currently included:** baseline architecture diagrams covering the core module layout and key component interactions.
+> Contributions of additional diagrams (e.g. patch lifecycle, plugin system, network layer) are encouraged — simply export a Mermaid diagram as an image and place it in `docs/visual/`.
+
+### 🚀 Want a deeper visual exploration?
+
+Fork this repository and connect it to [archtocode.com](https://archtocode.com) — the platform generates interactive, navigable architecture visualizations directly from your codebase. This is especially useful for understanding cross-module relationships and onboarding faster as a new contributor.
 
 ## ⏭️ Start here
 
