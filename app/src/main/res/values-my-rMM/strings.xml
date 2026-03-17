@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">မသိသော အက်ပ်များကို ထည့်သွင်းပါ။</string>
   <string name="permission_install_apps_description">ပြင်ဆင်ထားသော အက်ပ်များ ထည့်သွင်းရန် လိုအပ်ပါသည်။</string>
   <string name="permission_notifications">အကြောင်းကြားချက်များ</string>
-  <string name="permission_notifications_description">Android ဗားရှင်းအသစ်များတွင် နောက်ခံ၌ ပြင်ဆင်ခြင်းကို အနှောင့်အယှက်မရှိ ခွင့်ပြုပါသည်။</string>
   <string name="permission_battery">ဘက်ထရီ အကောင်းဆုံး ဖြစ်အောင်လုပ်ခြင်း</string>
   <string name="permission_battery_description">နောက်ခံ၌ ပြင်ဆင်ခြင်းကို အနှောင့်အယှက်မဖြစ်စေရန် ကာကွယ်ပေးသည်။</string>
   <string name="permission_grant">ခွင့်ပြုပါ။</string>

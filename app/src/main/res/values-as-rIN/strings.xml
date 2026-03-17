@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">অচিনাকি এপ ইনষ্টল কৰক</string>
   <string name="permission_install_apps_description">পেচ কৰা এপ্লিকেচন ইনষ্টল কৰিবলৈ প্ৰয়োজন</string>
   <string name="permission_notifications">জাননীসমূহ</string>
-  <string name="permission_notifications_description">Android-ৰ নতুন সংস্কৰণসমূহত পৃষ্ঠভূমিত নিৰৱচ্ছিন্ন পেচ কৰাৰ অনুমতি দিয়ে।</string>
   <string name="permission_battery">বেটাৰী অনুকূলন</string>
   <string name="permission_battery_description">পৃষ্ঠভূমিত পেচ কৰাত বাধা নপৰাকৈ ৰাখে</string>
   <string name="permission_grant">অনুমোদন কৰক</string>

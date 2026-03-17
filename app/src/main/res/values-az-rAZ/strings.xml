@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Naməlum tətbiqləri quraşdırın</string>
   <string name="permission_install_apps_description">Yamaqlanmış tətbiqləri quraşdırmaq üçün tələb olunur</string>
   <string name="permission_notifications">Bildirişlər</string>
-  <string name="permission_notifications_description">Android-in yeni versiyalarında arxa planda fasiləsiz yamaqlamağa imkan verir</string>
   <string name="permission_battery">Batareya optimallaşdırılması</string>
   <string name="permission_battery_description">Arxa planda yamaqlamanın kəsilməsinin qarşısını alır</string>
   <string name="permission_grant">İcazə ver</string>

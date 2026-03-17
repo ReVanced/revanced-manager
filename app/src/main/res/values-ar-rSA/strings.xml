@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">مرحباً بك في</string>
   <string name="onboarding_welcome_back">مرحباً! إنه الجديد</string>
   <string name="onboarding_apps_subtitle">يمكنك تحديد تطبيق لتصحيحه الآن أو القيام بذلك لاحقاً</string>
+  <string name="onboarding_apps_network_error">تعذر تحميل التعديلات لأن الشبكة غير متاحة أو غير مستقرة. اتصل بشبكة مستقرة وحاول مرة أخرى.</string>
   <string name="onboarding_updates_subtitle">قم بتكوين التحديثات التلقائية للحفاظ على ReVanced Manager والتصحيحات محدثة</string>
+  <string name="banner_sources_not_downloaded_description">تعذر تنزيل التعديلات وأدوات التنزيل أثناء الإعداد. انقر على تحديث لتنزيلها.</string>
   <string name="onboarding_updates_note">ReVanced Manager سيتصل بـ %s لتنزيل الإصدارات الأولية إذا كان جهازك متصلاً بالإنترنت.</string>
   <string name="retry">إعادة المحاولة</string>
   <string name="onboarding_skip">تخطي الآن</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">تثبيت تطبيقات غير معروفة</string>
   <string name="permission_install_apps_description">مطلوب لتثبيت التطبيقات المعدلة</string>
   <string name="permission_notifications">الإشعارات</string>
-  <string name="permission_notifications_description">يسمح بالتعديل المتواصل في الخلفية على إصدارات Android الأحدث</string>
+  <string name="permission_notifications_description">يسمح بإجراء التعديلات دون انقطاع في الخلفية</string>
   <string name="permission_battery">تحسين البطارية</string>
   <string name="permission_battery_description">يمنع مقاطعة التعديل في الخلفية</string>
   <string name="permission_grant">منح</string>

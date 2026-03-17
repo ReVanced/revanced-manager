@@ -18,7 +18,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ</string>
   <string name="onboarding_welcome_back">ਹੈਲੋ! ਇਹ ਨਵਾਂ ਹੈ</string>
   <string name="onboarding_apps_subtitle">ਤੁਸੀਂ ਹੁਣ ਪੈਚ ਕਰਨ ਲਈ ਇੱਕ ਐਪ ਚੁਣ ਸਕਦੇ ਹੋ ਜਾਂ ਬਾਅਦ ਵਿੱਚ ਕਰ ਸਕਦੇ ਹੋ</string>
+  <string name="onboarding_apps_network_error">ਪੈਚ ਲੋਡ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ ਕਿਉਂਕਿ ਨੈੱਟਵਰਕ ਉਪਲਬਧ ਨਹੀਂ ਹੈ ਜਾਂ ਅਸਥਿਰ ਹੈ। ਇੱਕ ਸਥਿਰ ਨੈੱਟਵਰਕ ਨਾਲ ਕਨੈਕਟ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
   <string name="onboarding_updates_subtitle">ReVanced Manager ਅਤੇ ਪੈਚਾਂ ਨੂੰ ਅੱਪ-ਟੂ-ਡੇਟ ਰੱਖਣ ਲਈ ਆਟੋਮੈਟਿਕ ਅੱਪਡੇਟਾਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰੋ</string>
+  <string name="banner_sources_not_downloaded_description">ਸੈੱਟਅੱਪ ਦੌਰਾਨ ਪੈਚ ਅਤੇ ਡਾਊਨਲੋਡਰ ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ। ਉਹਨਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਅੱਪਡੇਟ \'ਤੇ ਟੈਪ ਕਰੋ।</string>
   <string name="onboarding_updates_note">ReVanced Manager ਤੁਹਾਡੇ ਜੰਤਰ ਦੇ ਇੰਟਰਨੈੱਟ ਨਾਲ ਕਨੈਕਟ ਹੋਣ \'ਤੇ ਸ਼ੁਰੂਆਤੀ ਸੰਸਕਰਣਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ %s ਨਾਲ ਕਨੈਕਟ ਕਰੇਗਾ।</string>
   <string name="retry">ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
   <string name="onboarding_skip">ਹੁਣੇ ਛੱਡੋ</string>
@@ -30,7 +32,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">ਅਣਜਾਣ ਐਪਸ ਸਥਾਪਤ ਕਰੋ</string>
   <string name="permission_install_apps_description">ਪੈਚ ਕੀਤੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਸਥਾਪਤ ਕਰਨ ਲਈ ਲੋੜੀਂਦਾ ਹੈ</string>
   <string name="permission_notifications">ਸੂਚਨਾਵਾਂ</string>
-  <string name="permission_notifications_description">ਐਂਡਰਾਇਡ ਦੇ ਨਵੇਂ ਸੰਸਕਰਣਾਂ \'ਤੇ ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਬਿਨਾਂ ਰੁਕਾਵਟ ਪੈਚਿੰਗ ਦੀ ਆਗਿਆ ਦਿੰਦਾ ਹੈ</string>
+  <string name="permission_notifications_description">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਬਿਨਾਂ ਕਿਸੇ ਰੁਕਾਵਟ ਦੇ ਪੈਚਿੰਗ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦਾ ਹੈ</string>
   <string name="permission_battery">ਬੈਟਰੀ ਅਨੁਕੂਲਨ</string>
   <string name="permission_battery_description">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਪੈਚਿੰਗ ਨੂੰ ਰੁਕਣ ਤੋਂ ਰੋਕਦਾ ਹੈ</string>
   <string name="permission_grant">ਦੇਵੋ</string>

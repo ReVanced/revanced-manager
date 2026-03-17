@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Sveiki atvykę į</string>
   <string name="onboarding_welcome_back">Sveiki! Tai naujas</string>
   <string name="onboarding_apps_subtitle">Galite pasirinkti programą, kurią norite pataisyti dabar arba vėliau</string>
+  <string name="onboarding_apps_network_error">Nepavyko įkelti pataisų, nes tinklas nepasiekiamas arba nestabilus. Prisijunkite prie stabilaus tinklo ir bandykite dar kartą.</string>
   <string name="onboarding_updates_subtitle">Konfigūruokite automatinius naujinimus, kad ReVanced Manager ir pataisymai būtų atnaujinti</string>
+  <string name="banner_sources_not_downloaded_description">Nepavyko atsisiųsti pataisų ir atsisiuntimo programų sąrankos metu. Norėdami jas atsisiųsti, bakstelėkite atnaujinti.</string>
   <string name="onboarding_updates_note">„ReVanced Manager“ prisijungs prie %s, kad atsisiųstų pradines versijas, jei jūsų įrenginys bus prijungtas prie interneto.</string>
   <string name="retry">Bandyti dar kartą</string>
   <string name="onboarding_skip">Praleisti dabar</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Diegti nežinomas programas</string>
   <string name="permission_install_apps_description">Reikalingas norint įdiegti pataisytas programas</string>
   <string name="permission_notifications">Pranešimai</string>
-  <string name="permission_notifications_description">Leidžia nepertraukiamai taisyti fone naujesnėse Android versijose</string>
+  <string name="permission_notifications_description">Leidžia nepertraukiamai vykdyti pataisymus fone</string>
   <string name="permission_battery">Akumuliatoriaus optimizavimas</string>
   <string name="permission_battery_description">Neleidžia, kad taisymas būtų nutrauktas fone</string>
   <string name="permission_grant">Suteikti</string>

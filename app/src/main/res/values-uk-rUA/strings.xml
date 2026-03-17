@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Встановлення невідомих програм</string>
   <string name="permission_install_apps_description">Потрібно для встановлення пропатчених застосунків</string>
   <string name="permission_notifications">Сповіщення</string>
-  <string name="permission_notifications_description">Дозволяє безперебійне патчінг у фоновому режимі на новіших версіях Android</string>
   <string name="permission_battery">Оптимізація батареї</string>
   <string name="permission_battery_description">Запобігає перериванню патчингу у фоновому режимі</string>
   <string name="permission_grant">Надати</string>

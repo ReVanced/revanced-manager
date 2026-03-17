@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Сардэчна запрашаем у</string>
   <string name="onboarding_welcome_back">Прывітанне! Гэта новы</string>
   <string name="onboarding_apps_subtitle">Вы можаце выбраць праграму для выпраўлення зараз ці зрабіць гэта пазней</string>
+  <string name="onboarding_apps_network_error">Не ўдалося загрузіць патчы, бо сетка недаступная ці нестабільная. Падключыцеся да стабільнай сеткі і паспрабуйце зноў.</string>
   <string name="onboarding_updates_subtitle">Наладзьце аўтаматычныя абнаўленні, каб ReVanced Manager і патчы былі актуальнымі</string>
+  <string name="banner_sources_not_downloaded_description">Патчы і загрузчыкі не былі загружаны падчас усталявання. Націсніце “Абнавіць”, каб загрузіць іх.</string>
   <string name="onboarding_updates_note">ReVanced Manager падключыцца да %s, каб спампаваць першапачатковыя версіі, калі ваша прылада падключана да Інтэрнэту.</string>
   <string name="retry">Паўтарыць</string>
   <string name="onboarding_skip">Прапусціць пакуль</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Устаноўка невядомых праграм</string>
   <string name="permission_install_apps_description">Патрабуецца для ўстаноўкі патчаных праграм</string>
   <string name="permission_notifications">Апавяшчэнні</string>
-  <string name="permission_notifications_description">Дазваляе бесперапыннае патчаванне ў фонавым рэжыме на новых версіях Android</string>
+  <string name="permission_notifications_description">Дазваляе бесперапынную ўстаноўку патчаў у фонавым рэжыме</string>
   <string name="permission_battery">Аптымізацыя батарэі</string>
   <string name="permission_battery_description">Прадухіляе перарыванне патчавання ў фонавым рэжыме</string>
   <string name="permission_grant">Даць</string>

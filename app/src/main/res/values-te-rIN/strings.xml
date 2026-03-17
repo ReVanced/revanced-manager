@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">తెలియని యాప్‌లను ఇన్‌స్టాల్ చేయండి</string>
   <string name="permission_install_apps_description">ప్యాచ్ చేయబడిన అప్లికేషన్‌లను ఇన్‌స్టాల్ చేయడానికి అవసరం</string>
   <string name="permission_notifications">నోటిఫికేషన్‌లు</string>
-  <string name="permission_notifications_description">Android యొక్క కొత్త వెర్షన్‌లలో బ్యాక్‌గ్రౌండ్‌లో అంతరాయం లేని ప్యాచింగ్‌ను అనుమతిస్తుంది</string>
   <string name="permission_battery">బ్యాటరీ ఆప్టిమైజేషన్</string>
   <string name="permission_battery_description">బ్యాక్‌గ్రౌండ్‌లో ప్యాచింగ్ అంతరాయం లేకుండా నిరోధిస్తుంది</string>
   <string name="permission_grant">మంజూరు చేయండి</string>

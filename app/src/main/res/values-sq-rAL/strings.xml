@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalo aplikacione të panjohura</string>
   <string name="permission_install_apps_description">Kërkohet për të instaluar aplikacione të patch-uara</string>
   <string name="permission_notifications">Njoftimet</string>
-  <string name="permission_notifications_description">Lejon patch-imin e pandërprerë në sfond në versionet më të reja të Android</string>
   <string name="permission_battery">Optimizimi i baterisë</string>
   <string name="permission_battery_description">Parandalon ndërprerjen e patch-imit në sfond</string>
   <string name="permission_grant">Jep</string>

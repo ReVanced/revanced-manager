@@ -22,7 +22,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Witaj w</string>
   <string name="onboarding_welcome_back">Cześć! To nowy</string>
   <string name="onboarding_apps_subtitle">Możesz wybrać aplikację do łatania teraz lub zrobić to później</string>
+  <string name="onboarding_apps_network_error">Nie można załadować poprawek, ponieważ sieć jest niedostępna lub niestabilna. Połącz się ze stabilną siecią i spróbuj ponownie.</string>
   <string name="onboarding_updates_subtitle">Skonfiguruj automatyczne aktualizacje, aby ReVanced Manager i łatki były zawsze aktualne</string>
+  <string name="banner_sources_not_downloaded_description">Nie można pobrać poprawek i programów do pobierania podczas konfiguracji. Dotknij „Aktualizuj”, aby je pobrać.</string>
   <string name="onboarding_updates_note">ReVanced Manager połączy się z %s w celu pobrania początkowych wersji, jeśli Twoje urządzenie jest połączone z internetem.</string>
   <string name="retry">Spróbuj ponownie</string>
   <string name="onboarding_skip">Pomiń na razie</string>
@@ -34,7 +36,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instaluj nieznane aplikacje</string>
   <string name="permission_install_apps_description">Wymagane do instalacji załatanych aplikacji</string>
   <string name="permission_notifications">Powiadomienia</string>
-  <string name="permission_notifications_description">Umożliwia nieprzerwane łatanie w tle na nowszych wersjach Androida</string>
+  <string name="permission_notifications_description">Umożliwia nieprzerwane łatanie w tle.</string>
   <string name="permission_battery">Optymalizacja baterii</string>
   <string name="permission_battery_description">Zapobiega przerwaniu łatania w tle</string>
   <string name="permission_grant">Przyznaj</string>

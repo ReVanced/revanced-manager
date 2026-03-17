@@ -18,7 +18,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">კეთილი იყოს თქვენი მობრძანება</string>
   <string name="onboarding_welcome_back">გამარჯობა! ეს არის ახალი</string>
   <string name="onboarding_apps_subtitle">შეგიძლიათ აირჩიოთ აპლიკაცია დასაპატჩად ახლავე ან მოგვიანებით</string>
+  <string name="onboarding_apps_network_error">ვერ ჩაიტვირთა პატჩები, რადგან ქსელი მიუწვდომელია ან არასტაბილურია. დაუკავშირდით სტაბილურ ქსელს და სცადეთ ხელახლა.</string>
   <string name="onboarding_updates_subtitle">დააკონფიგურირეთ ავტომატური განახლებები, რათა ReVanced Manager და პატჩები იყოს განახლებული</string>
+  <string name="banner_sources_not_downloaded_description">პატჩები და გადმომწერები ვერ ჩაიტვირთა ინსტალაციის დროს. შეეხეთ განახლებას მათ ჩამოსატვირთად.</string>
   <string name="onboarding_updates_note">ReVanced Manager დაუკავშირდება %s-ს საწყისი ვერსიების ჩამოსატვირთად, თუ თქვენი მოწყობილობა დაკავშირებულია ინტერნეტთან.</string>
   <string name="retry">ხელახლა ცდა</string>
   <string name="onboarding_skip">ამ ეტაპზე გამოტოვება</string>
@@ -30,7 +32,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">უცნობი აპების ინსტალაცია</string>
   <string name="permission_install_apps_description">საჭიროა დაპაჩული აპლიკაციების ინსტალაციისთვის</string>
   <string name="permission_notifications">შეტყობინებები</string>
-  <string name="permission_notifications_description">Android-ის უახლეს ვერსიებზე ფონურ რეჟიმში შეუწყვეტელი დაპაჩვის საშუალებას იძლევა</string>
+  <string name="permission_notifications_description">უშვებს უწყვეტ პატჩინგს ფონურ რეჟიმში</string>
   <string name="permission_battery">ბატარეის ოპტიმიზაცია</string>
   <string name="permission_battery_description">ხელს უშლის დაპაჩვის შეწყვეტას ფონურ რეჟიმში</string>
   <string name="permission_grant">მინიჭება</string>

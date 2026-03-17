@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">ຕິດຕັ້ງແອັບທີ່ບໍ່ຮູ້ຈັກ</string>
   <string name="permission_install_apps_description">ຈຳເປັນສຳລັບການຕິດຕັ້ງແອັບພລິເຄຊັນທີ່ແພັດແລ້ວ</string>
   <string name="permission_notifications">ການແຈ້ງເຕືອນ</string>
-  <string name="permission_notifications_description">ອະນຸຍາດໃຫ້ແພັດແບບບໍ່ຢຸດຢັ້ງໃນພື້ນຫຼັງໃນ Android ເວີຊັນໃໝ່ກວ່າ</string>
   <string name="permission_battery">ການເພີ່ມປະສິດທິພາບແບັດເຕີຣີ</string>
   <string name="permission_battery_description">ປ້ອງກັນບໍ່ໃຫ້ການແພັດຖືກຂັດຈັງຫວະໃນພື້ນຫຼັງ</string>
   <string name="permission_grant">ອະນຸຍາດ</string>

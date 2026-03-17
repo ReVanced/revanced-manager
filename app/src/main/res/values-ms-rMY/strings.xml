@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Pasang aplikasi tidak diketahui</string>
   <string name="permission_install_apps_description">Diperlukan untuk memasang aplikasi yang ditampal</string>
   <string name="permission_notifications">Pemberitahuan</string>
-  <string name="permission_notifications_description">Membenarkan penampalan tanpa gangguan di latar belakang pada versi Android yang lebih baharu</string>
   <string name="permission_battery">Pengoptimuman bateri</string>
   <string name="permission_battery_description">Mencegah penampalan daripada terganggu di latar belakang</string>
   <string name="permission_grant">Beri</string>

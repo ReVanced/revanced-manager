@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalēt nezināmas lietotnes</string>
   <string name="permission_install_apps_description">Nepieciešams, lai instalētu labotās lietotnes</string>
   <string name="permission_notifications">Paziņojumi</string>
-  <string name="permission_notifications_description">Ļauj veikt nepārtrauktu labošanu fonā Android jaunākajās versijās</string>
   <string name="permission_battery">Akumulatora optimizācija</string>
   <string name="permission_battery_description">Novērš labošanas pārtraukšanu fonā</string>
   <string name="permission_grant">Piešķirt</string>

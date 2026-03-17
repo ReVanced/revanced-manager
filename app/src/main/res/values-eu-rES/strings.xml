@@ -18,7 +18,9 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Ongi etorri</string>
   <string name="onboarding_welcome_back">Kaixo! Berria da</string>
   <string name="onboarding_apps_subtitle">Aplikazio bat aukeratu dezakezu orain adabakitzeko edo geroago egiteko</string>
+  <string name="onboarding_apps_network_error">Ezin izan dira adabakiak kargatu sarea erabilgarri edo ezegonkorra delako. Konektatu sare egonkor batera eta saiatu berriro.</string>
   <string name="onboarding_updates_subtitle">Eguneratze automatikoak konfiguratu ReVanced Manager eta adabakiak eguneratuta mantentzeko</string>
+  <string name="banner_sources_not_downloaded_description">Adabakiak eta deskargatzaileak ezin izan dira deskargatu konfigurazioan zehar. Sakatu \"eguneratu\" deskargatzeko.</string>
   <string name="onboarding_updates_note">ReVanced Manager konektatu egingo da %s-rekin, hasierako bertsioak deskargatzeko, zure gailua internetera konektatuta badago.</string>
   <string name="retry">Berriro saiatu</string>
   <string name="onboarding_skip">Orain arte saltatu</string>
@@ -30,7 +32,7 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Instalatu aplikazio ezezagunak</string>
   <string name="permission_install_apps_description">Adabakitutako aplikazioak instalatzeko beharrezkoa</string>
   <string name="permission_notifications">Jakinarazpenak</string>
-  <string name="permission_notifications_description">Android-en bertsio berriagoetan atzeko planoan etengabe adabakitzen uzten du</string>
+  <string name="permission_notifications_description">Atzeko planoan adabakitzea etengabe ahalbidetzen du</string>
   <string name="permission_battery">Bateriaren optimizazioa</string>
   <string name="permission_battery_description">Atzeko planoan adabakitzea etetea eragozten du</string>
   <string name="permission_grant">Eman</string>

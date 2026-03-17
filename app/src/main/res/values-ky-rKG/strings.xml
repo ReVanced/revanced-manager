@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Белгисиз колдонмолорду орнотуу</string>
   <string name="permission_install_apps_description">Оңдолгон колдонмолорду орнотуу үчүн талап кылынат</string>
   <string name="permission_notifications">Эскертмелер</string>
-  <string name="permission_notifications_description">Android\'дин жаңы версияларында фондо үзгүлтүксүз оңдоого мүмкүндүк берет</string>
   <string name="permission_battery">Батареяны оптималдаштыруу</string>
   <string name="permission_battery_description">Фондо оңдоонун үзгүлтүккө учурашына жол бербейт</string>
   <string name="permission_grant">Уруксат берүү</string>

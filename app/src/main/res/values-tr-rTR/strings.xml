@@ -34,7 +34,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Bilinmeyen uygulamaları yükle</string>
   <string name="permission_install_apps_description">Yamalanmış uygulamaları yüklemek için gerekli</string>
   <string name="permission_notifications">Bildirimler</string>
-  <string name="permission_notifications_description">Android\'in yeni sürümlerinde arka planda kesintisiz yamalamaya olanak tanır</string>
   <string name="permission_battery">Pil optimizasyonu</string>
   <string name="permission_battery_description">Yamalamanın arka planda kesintiye uğramasını önler</string>
   <string name="permission_grant">Ver</string>
@@ -74,7 +73,7 @@ Second \"item\" text"</string>
   <string name="patch_item_description">Uygulamayı yamalamaya başla</string>
   <string name="patch_selector_item">Yamaları seç</string>
   <string name="patch_selector_item_description">%d yama seçildi</string>
-  <string name="patch_selection_changed_warning">Yama seçimi değiştirildi.</string>
+  <string name="patch_selection_changed_warning">Yama seçimi değiştirildi</string>
   <string name="no_patches_selected">Hiç yama seçilmedi</string>
   <string name="network_unavailable_warning">Cihazınız internete bağlı değil. İndirme işlemi başarısız olacaktır.</string>
   <string name="network_metered_warning">Şu anda tarifeli bir bağlantıdasınız. Hizmet sağlayıcınızdan veri ücretleri uygulanabilir.</string>
@@ -109,7 +108,7 @@ Second \"item\" text"</string>
   <string name="import_export_description">Anahtar deposu, yama seçenekleri ve seçimi</string>
   <string name="advanced">Gelişmiş</string>
   <string name="advanced_description">API URL\'si, bellek sınırı, hata ayıklama</string>
-  <string name="safeguards_toggled_warning">Koruyucular açılıp kapatıldı.</string>
+  <string name="safeguards_toggled_warning">Koruyucular açılıp kapatıldı</string>
   <string name="about">Hakkında</string>
   <string name="about_app_name">%1$s hakkında</string>
   <string name="opensource_licenses">Açık kaynak lisansları</string>
@@ -179,7 +178,7 @@ Daha önce bu kaynaktan yüklenmiş uygulamaları güncelleyemeyeceksiniz.</stri
   <string name="export_patch_selection_success">Yama seçimi dışa aktarıldı</string>
   <string name="select_bundle_for_export">Dışa aktarılacak paketi seçin</string>
   <string name="patch_selection_packages">Kaydedilmiş seçimlere sahip uygulamalar</string>
-  <string name="patch_selection_entries">Toplam seçilen yama</string>
+  <string name="patch_selection_entries">Toplam seçilen yamalar</string>
   <string name="reset_configuration">Yapılandırmayı sıfırla</string>
   <string name="reset_patch_selection">Yama seçimleri</string>
   <string name="reset_patch_selection_description">Kaydedilmiş yama seçimini sıfırla</string>
@@ -302,7 +301,7 @@ ReVanced Manager, yamaları ve güncellemeleri indirmek için API\'yi kullanır.
   <string name="download_app">Uygulamayı indir</string>
   <string name="download_apk">APK dosyasını indir</string>
   <string name="patches_download_fail">Yamalar indirilemedi: %s</string>
-  <string name="api_not_working_title">API hizmeti şu anda devre dışı.</string>
+  <string name="api_not_working_title">API hizmeti şu anda devre dışı</string>
   <string name="api_not_working_description">Bazı özellikler etkilenebilir. Ayarlardan bağlantınızı veya API URL\'nizi kontrol edin.</string>
   <string name="patches_replace_fail">Yamalar içe aktarılamadı: %s</string>
   <string name="no_patched_apps_found">Yamalanmış uygulama bulunamadı</string>
@@ -441,7 +440,7 @@ Yalnızca şu sürüm(ler) ile uyumludur: %2$s</string>
   <string name="repository">Depo</string>
   <string name="bundle_information_by_author">Yazan: %1$s</string>
   <string name="version">Sürüm</string>
-  <string name="version_compatibility_warning">Seçilen sürüm, seçilen yamalarla uyumsuz olabilir.</string>
+  <string name="version_compatibility_warning">Seçilen sürüm, seçilen yamalarla uyumsuz olabilir</string>
   <string name="submit_feedback">Sorun veya geri bildirim gönder</string>
   <string name="submit_feedback_description">Bu uygulamayı geliştirmemize yardımcı olun</string>
   <string name="developer_options">Geliştirici seçenekleri</string>

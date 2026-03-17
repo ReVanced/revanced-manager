@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">Setja upp óþekkt forrit</string>
   <string name="permission_install_apps_description">Nauðsynlegt til að setja upp plástruð forrit</string>
   <string name="permission_notifications">Tilkynningar</string>
-  <string name="permission_notifications_description">Gerir kleift að plástra ótruflað í bakgrunni á nýrri útgáfum af Android</string>
   <string name="permission_battery">Hagræðing rafhlöðu</string>
   <string name="permission_battery_description">Kemur í veg fyrir að plástrun sé trufluð í bakgrunni</string>
   <string name="permission_grant">Veita</string>

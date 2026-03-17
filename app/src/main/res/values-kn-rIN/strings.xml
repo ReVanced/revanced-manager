@@ -30,7 +30,6 @@ Second \"item\" text"</string>
   <string name="permission_install_apps">ಅಜ್ಞಾತ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ</string>
   <string name="permission_install_apps_description">ಪ್ಯಾಚ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಲು ಅಗತ್ಯವಿದೆ</string>
   <string name="permission_notifications">ಅಧಿಸೂಚನೆಗಳು</string>
-  <string name="permission_notifications_description">Android ನ ಹೊಸ ಆವೃತ್ತಿಗಳಲ್ಲಿ ಹಿನ್ನೆಲೆಯಲ್ಲಿ ತಡೆರಹಿತ ಪ್ಯಾಚಿಂಗ್‌ಗೆ ಅನುಮತಿಸುತ್ತದೆ</string>
   <string name="permission_battery">ಬ್ಯಾಟರಿ ಆಪ್ಟಿಮೈಸೇಶನ್</string>
   <string name="permission_battery_description">ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಪ್ಯಾಚಿಂಗ್‌ಗೆ ಅಡ್ಡಿಯಾಗುವುದನ್ನು ತಡೆಯುತ್ತದೆ</string>
   <string name="permission_grant">ಅನುಮತಿ ನೀಡಿ</string>
