@@ -82,6 +82,7 @@ fun OnboardingScreen(
     val context = LocalContext.current
     val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
     val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
+    val hasNetworkError by vm.hasNetworkError.collectAsStateWithLifecycle(initialValue = false)
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
 
@@ -210,6 +211,7 @@ fun OnboardingScreen(
                     OnboardingStep.Apps -> AppsStepContent(
                         modifier = Modifier.weight(1f),
                         apps = apps,
+                        hasNetworkError = hasNetworkError,
                         suggestedVersions = suggestedVersions,
                         onAppClick = { packageName ->
                             scope.launch {

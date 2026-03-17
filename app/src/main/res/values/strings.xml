@@ -22,6 +22,7 @@ Second \"item\" text"</string>
     <string name="onboarding_welcome_to">Welcome to</string>
     <string name="onboarding_welcome_back">Hi! It\'s the new</string>
     <string name="onboarding_apps_subtitle">You can select an app to patch now or do it later</string>
+    <string name="onboarding_apps_network_error">Network is unstable or unavailable!</string>
     <string name="onboarding_updates_subtitle">Configure automatic updates to keep ReVanced Manager and patches up to date</string>
     <string name="onboarding_updates_note">ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet.</string>
 

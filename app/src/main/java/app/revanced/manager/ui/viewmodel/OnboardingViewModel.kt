@@ -15,6 +15,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.PM
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -38,6 +39,10 @@ class OnboardingViewModel(
         apps.filter { (it.patches ?: 0) > 0 }.ifEmpty { null }
     }
     val apiUrl = prefs.api.default
+
+    val hasNetworkError = combine(apps, patchBundleRepository.updateError) { apps, updateError ->
+        apps == null && (!networkInfo.isConnected() || updateError != null)
+    }
 
     val suggestedVersions = patchBundleRepository.suggestedVersions
 
