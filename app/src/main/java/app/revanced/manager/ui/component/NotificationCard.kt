@@ -77,7 +77,7 @@ fun NotificationCard(
                 title?.let {
                     Text(
                         text = it,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = color,
                     )
                 }
