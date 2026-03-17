@@ -197,17 +197,24 @@ fun PatchesSelectorScreen(
             .eachCount()
     }
 
+    val effectiveCollapsedBundleUids = remember(bundles, collapsedBundleUids, readOnly, isSourceEditMode) {
+        when {
+            isSourceEditMode -> bundles.map { it.uid }
+            readOnly -> bundles.map { it.uid }.filter { it !in collapsedBundleUids }
+            else -> collapsedBundleUids
+        }
+    }
+
     val sections = remember(
         bundles,
         viewModel.filter,
-        collapsedBundleUids,
-        isSourceEditMode,
+        effectiveCollapsedBundleUids,
         effectiveSelectedPackageFilters
     ) {
         buildBundleSections(
             bundles = bundles,
             filter = viewModel.filter,
-            collapsedBundleUids = if (isSourceEditMode) bundles.map { it.uid } else collapsedBundleUids,
+            collapsedBundleUids = effectiveCollapsedBundleUids,
             selectedPackageNames = effectiveSelectedPackageFilters
         )
     }
@@ -215,15 +222,14 @@ fun PatchesSelectorScreen(
         bundles,
         query,
         viewModel.filter,
-        collapsedBundleUids,
-        isSourceEditMode,
+        effectiveCollapsedBundleUids,
         effectiveSelectedPackageFilters
     ) {
         buildBundleSections(
             bundles = bundles,
             query = query,
             filter = viewModel.filter,
-            collapsedBundleUids = if (isSourceEditMode) bundles.map { it.uid } else collapsedBundleUids,
+            collapsedBundleUids = effectiveCollapsedBundleUids,
             selectedPackageNames = effectiveSelectedPackageFilters,
             forceExpanded = query.isNotBlank()
         )
