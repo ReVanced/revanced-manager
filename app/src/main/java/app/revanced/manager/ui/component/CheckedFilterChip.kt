@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.core.view.HapticFeedbackConstantsCompat
+import app.revanced.manager.util.withHapticFeedback
 
 @Composable
 fun CheckedFilterChip(
@@ -34,7 +36,7 @@ fun CheckedFilterChip(
 ) {
     FilterChip(
         selected = selected,
-        onClick = onClick,
+        onClick = onClick.withHapticFeedback(HapticFeedbackConstantsCompat.CONFIRM),
         label = label,
         modifier = modifier,
         enabled = enabled,

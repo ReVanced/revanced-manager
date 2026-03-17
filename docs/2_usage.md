@@ -8,8 +8,9 @@ manage patches, and update or configure ReVanced Manager.
 1. [💉 Patching apps](2_1_patching.md)
 2. [🧰 Managing apps](2_2_managing_apps.md)
 3. [🧩 Managing patches](2_3_managing_patches.md)
-4. [🔄 Updating ReVanced Manager](2_4_updating.md)
-5. [⚙️ Configuring ReVanced Manager](2_5_settings.md)
+4. [🧩 Managing downloaders](2_4_managing_downloaders.md)
+4. [🔄 Updating ReVanced Manager](2_5_updating.md)
+5. [⚙️ Configuring ReVanced Manager](2_6_settings.md)
 
 ## ⏭️ What's next
 

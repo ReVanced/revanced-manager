@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">ਪੈਚਰ</string>
+  <string name="onboarding_welcome_to">ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ</string>
+  <string name="onboarding_welcome_back">ਹੈਲੋ! ਇਹ ਨਵਾਂ ਹੈ</string>
+  <string name="onboarding_apps_subtitle">ਤੁਸੀਂ ਹੁਣ ਪੈਚ ਕਰਨ ਲਈ ਇੱਕ ਐਪ ਚੁਣ ਸਕਦੇ ਹੋ ਜਾਂ ਬਾਅਦ ਵਿੱਚ ਕਰ ਸਕਦੇ ਹੋ</string>
+  <string name="onboarding_apps_network_error">ਪੈਚ ਲੋਡ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ ਕਿਉਂਕਿ ਨੈੱਟਵਰਕ ਉਪਲਬਧ ਨਹੀਂ ਹੈ ਜਾਂ ਅਸਥਿਰ ਹੈ। ਇੱਕ ਸਥਿਰ ਨੈੱਟਵਰਕ ਨਾਲ ਕਨੈਕਟ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager ਅਤੇ ਪੈਚਾਂ ਨੂੰ ਅੱਪ-ਟੂ-ਡੇਟ ਰੱਖਣ ਲਈ ਆਟੋਮੈਟਿਕ ਅੱਪਡੇਟਾਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰੋ</string>
+  <string name="banner_sources_not_downloaded_description">ਸੈੱਟਅੱਪ ਦੌਰਾਨ ਪੈਚ ਅਤੇ ਡਾਊਨਲੋਡਰ ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ। ਉਹਨਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਅੱਪਡੇਟ \'ਤੇ ਟੈਪ ਕਰੋ।</string>
+  <string name="onboarding_updates_note">ReVanced Manager ਤੁਹਾਡੇ ਜੰਤਰ ਦੇ ਇੰਟਰਨੈੱਟ ਨਾਲ ਕਨੈਕਟ ਹੋਣ \'ਤੇ ਸ਼ੁਰੂਆਤੀ ਸੰਸਕਰਣਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ %s ਨਾਲ ਕਨੈਕਟ ਕਰੇਗਾ।</string>
+  <string name="retry">ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
+  <string name="onboarding_skip">ਹੁਣੇ ਛੱਡੋ</string>
+  <string name="onboarding_recommended_version">ਸਿਫ਼ਾਰਸ਼ੀ ਸੰਸਕਰਣ: %s</string>
+  <string name="onboarding_permissions_skip_title">ਇਜਾਜ਼ਤਾਂ ਛੱਡੋ?</string>
+  <string name="onboarding_permissions_skip_description">ਲੋੜੀਂਦੀਆਂ ਇਜਾਜ਼ਤਾਂ ਤੋਂ ਬਿਨਾਂ, ਕੁਝ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਸਹੀ ਢੰਗ ਨਾਲ ਕੰਮ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ। ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਬਾਅਦ ਵਿੱਚ ਐਪ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਦੇ ਸਕਦੇ ਹੋ।</string>
+  <string name="onboarding_permissions_skip_anyway">ਫਿਰ ਵੀ ਛੱਡੋ</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager ਨੂੰ ਸਹੀ ਢੰਗ ਨਾਲ ਕੰਮ ਕਰਨ ਲਈ ਕੁਝ ਇਜਾਜ਼ਤਾਂ ਦੀ ਲੋੜ ਹੈ</string>
+  <string name="permission_install_apps">ਅਣਜਾਣ ਐਪਸ ਸਥਾਪਤ ਕਰੋ</string>
+  <string name="permission_install_apps_description">ਪੈਚ ਕੀਤੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਸਥਾਪਤ ਕਰਨ ਲਈ ਲੋੜੀਂਦਾ ਹੈ</string>
+  <string name="permission_notifications">ਸੂਚਨਾਵਾਂ</string>
+  <string name="permission_notifications_description">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਬਿਨਾਂ ਕਿਸੇ ਰੁਕਾਵਟ ਦੇ ਪੈਚਿੰਗ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦਾ ਹੈ</string>
+  <string name="permission_battery">ਬੈਟਰੀ ਅਨੁਕੂਲਨ</string>
+  <string name="permission_battery_description">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਪੈਚਿੰਗ ਨੂੰ ਰੁਕਣ ਤੋਂ ਰੋਕਦਾ ਹੈ</string>
+  <string name="permission_grant">ਦੇਵੋ</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ਡਾਊਨਲੋਡਰ ਹੋਸਟ</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ਡਾਊਨਲੋਡਰਾਂ ਤੱਕ ਪਹੁੰਚ ਨੂੰ ਕੰਟਰੋਲ ਕਰਨ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। ਸਿਰਫ਼ ReVanced Manager ਕੋਲ ਇਹ ਹੈ।</string>
+  <string name="fab_patch_app">ਇੱਕ ਐਪ ਪੈਚ ਕਰੋ</string>
+  <string name="fab_add_patches">ਪੈਚ ਸ਼ਾਮਲ ਕਰੋ</string>
+  <string name="new_downloader_notification">ਨਵੇਂ ਡਾਊਨਲੋਡਰ ਉਪਲਬਧ ਹਨ। ਉਹਨਾਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰਨ ਲਈ ਇੱਥੇ ਕਲਿੱਕ ਕਰੋ।</string>
+  <string name="patches_not_downloaded">ਪੈਚ ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੇ ਗਏ ਹਨ।</string>
+  <string name="app_source_dialog_option_auto_description">ਪਹਿਲਾਂ ਇੰਸਟਾਲ ਕੀਤੀ ਐਪ ਵਰਤੋ, ਫਿਰ ਡਾਊਨਲੋਡ ਕੀਤੀ APK, ਫਿਰ ਉਪਲਬਧ ਡਾਊਨਲੋਡਰ</string>
+  <string name="app_source_dialog_option_auto_unavailable">ਕੋਈ ਅਨੁਕੂਲ ਐਪ ਜਾਂ ਡਾਉਨਲੋਡਰ ਉਪਲਬਧ ਨਹੀਂ ਮਿਲਿਆ</string>
+  <string name="app_source_dialog_option_installed_no_root">ਰੂਟ ਐਕਸੈਸ ਤੋਂ ਬਿਨਾਂ ਮਾਊਂਟ ਕੀਤੀਆਂ ਐਪਾਂ ਨੂੰ ਦੁਬਾਰਾ ਪੈਚ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</string>
+  <string name="patch_selector_item">ਪੈਚ ਚੁਣੋ</string>
+  <string name="patch_selector_item_description">%d ਪੈਚ ਚੁਣੇ ਗਏ</string>
+  <string name="patch_selection_changed_warning">ਪੈਚਾਂ ਦੀ ਚੋਣ ਬਦਲ ਦਿੱਤੀ ਗਈ ਹੈ</string>
+  <string name="apk_source_selector_item">APK ਸਰੋਤ ਚੁਣੋ</string>
+  <string name="apk_source_auto">ਆਟੋ</string>
+  <string name="apk_source_auto_installed">ਆਟੋ · ਇੰਸਟਾਲ ਕੀਤੀ APK ਵਰਤ ਰਿਹਾ ਹੈ</string>
+  <string name="apk_source_auto_downloaded">ਆਟੋ · ਡਾਊਨਲੋਡ ਕੀਤੀ APK ਵਰਤ ਰਿਹਾ ਹੈ</string>
+  <string name="apk_source_auto_downloader">ਆਟੋ · ਉਪਲਬਧ ਡਾਊਨਲੋਡਰਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ</string>
+  <string name="apk_source_auto_storage">ਆਟੋ · ਸਟੋਰੇਜ ਤੋਂ ਚੁਣੋ</string>
+  <string name="apk_source_downloaded">ਪਹਿਲਾਂ ਹੀ ਡਾਊਨਲੋਡ ਕੀਤਾ ਗਿਆ</string>
+  <string name="auto_updates_dialog_description">ਕੀ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਕਿ ReVanced Manager ਨਿਯਮਿਤ ਤੌਰ \'ਤੇ ਹੇਠਾਂ ਦਿੱਤੇ ਭਾਗਾਂ ਲਈ ਅੱਪਡੇਟ ਦੀ ਜਾਂਚ ਕਰੇ?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced ਪੈਚ</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: ਡਾਊਨਲੋਡਰ</string>
+  <string name="auto_updates_dialog_note">ਇਹ ਸੈਟਿੰਗਾਂ ਬਾਅਦ ਵਿੱਚ ਬਦਲੀਆਂ ਜਾ ਸਕਦੀਆਂ ਹਨ।
+
+    ReVanced Manager ਤੁਹਾਡੇ ਜੰਤਰ ਦੇ ਇੰਟਰਨੈੱਟ ਨਾਲ ਕਨੈਕਟ ਹੋਣ \'ਤੇ ਸ਼ੁਰੂਆਤੀ ਸੰਸਕਰਣਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ %s ਨਾਲ ਕਨੈਕਟ ਕਰੇਗਾ।</string>
+  <string name="announcements_filter_tag">ਟੈਗ ਅਨੁਸਾਰ ਫਿਲਟਰ ਕਰੋ</string>
+  <string name="announcements_show_archived">ਪੁਰਾਲੇਖਬੱਧ ਦਿਖਾਓ</string>
+  <string name="updates_description">ਅੱਪਡੇਟ ਲਈ ਜਾਂਚ ਕਰੋ ਅਤੇ ਬਦਲਾਵ ਦਾ ਲੌਗ ਵੇਖੋ</string>
+  <string name="downloads_description">ਡਾਊਨਲੋਡਰ ਅਤੇ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਐਪਾਂ</string>
+  <string name="safeguards_toggled_warning">ਸੁਰੱਖਿਆ ਉਪਾਅ ਟੌਗਲ ਕੀਤੇ ਗਏ ਹਨ</string>
+  <string name="about_app_name">%1$s ਬਾਰੇ</string>
+  <string name="search_languages">ਭਾਸ਼ਾਵਾਂ ਖੋਜੋ…</string>
+  <string name="keystore">ਕੀਸਟੋਰ</string>
+  <string name="patches_selections">ਪੈਚ ਚੋਣਾਂ</string>
+  <string name="select_bundle_for_import">ਆਯਾਤ ਕਰਨ ਲਈ ਬੰਡਲ ਚੁਣੋ</string>
+  <string name="select_bundle_for_export">ਨਿਰਯਾਤ ਕਰਨ ਲਈ ਬੰਡਲ ਚੁਣੋ</string>
+  <string name="patch_selection_packages">ਸੁਰੱਖਿਅਤ ਕੀਤੀਆਂ ਚੋਣਾਂ ਵਾਲੀਆਂ ਐਪਸ</string>
+  <string name="patch_selection_entries">ਕੁੱਲ ਚੁਣੇ ਗਏ ਪੈਚ</string>
+  <string name="reset_configuration">ਸੰਰਚਨਾ ਰੀਸੈਟ ਕਰੋ</string>
+  <string name="reset_patch_selection">ਪੈਚ ਚੋਣਾਂ</string>
+  <string name="reset_patch_options">ਪੈਚ ਵਿਕਲਪ</string>
+  <string name="downloaders">ਡਾਊਨਲੋਡਰ</string>
+  <string name="downloader_prereleases">ਪ੍ਰੀ-ਰੀਲੀਜ਼ਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+  <string name="downloader_prereleases_description">ਮੁੱਖ ਡਾਊਨਲੋਡਰ ਦੇ ਪ੍ਰੀ-ਰੀਲੀਜ਼ ਸੰਸਕਰਣਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+  <string name="downloader_state_loaded">ਲੋਡ ਕੀਤਾ ਗਿਆ</string>
+  <string name="downloader_state_failed">ਲੋਡ ਕਰਨ ਵਿੱਚ ਅਸਫਲ। ਹੋਰ ਵੇਰਵਿਆਂ ਲਈ ਕਲਿੱਕ ਕਰੋ</string>
+  <string name="downloader_state_missing">ਗੁੰਮ ਹੈ</string>
+  <string name="downloader_delete_apps_title">ਚੁਣੀਆਂ ਹੋਈਆਂ ਐਪਾਂ ਨੂੰ ਮਿਟਾਓ</string>
+  <string name="downloader_delete_apps_description">ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਹੋ ਕਿ ਤੁਸੀਂ ਚੁਣੀਆਂ ਹੋਈਆਂ ਐਪਾਂ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+  <string name="downloader_delete_single_description">ਕੀ ਤੁਸੀਂ ਨਿਸ਼ਚਤ ਹੋ ਕਿ ਤੁਸੀਂ \"%s\" ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager ਰਾਹੀਂ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਐਪਸ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੀਆਂ।</string>
+  <string name="downloader_url">ਡਾਊਨਲੋਡਰ URL</string>
+  <string name="downloader_add">ਡਾਊਨਲੋਡਰ ਸ਼ਾਮਲ ਕਰੋ</string>
+  <string name="select_downloader_type_dialog_description">URL ਜਾਂ ਸਥਾਨਕ ਫਾਈਲਾਂ ਤੋਂ ਨਵੇਂ ਡਾਊਨਲੋਡਰ ਸ਼ਾਮਲ ਕਰੋ</string>
+  <string name="local_downloaders_description">ਸਥਾਨਕ ਸਟੋਰੇਜ ਤੋਂ ਡਾਊਨਲੋਡਰ ਸ਼ਾਮਲ ਕਰੋ।</string>
+  <string name="remote_downloaders_description">URL ਤੋਂ ਡਾਊਨਲੋਡਰ ਸ਼ਾਮਲ ਕਰੋ। ਆਟੋਮੈਟਿਕਲੀ ਅੱਪਡੇਟ ਕੀਤੇ ਜਾ ਸਕਦੇ ਹਨ।</string>
+  <string name="install_revanced_downloaders">ReVanced Manager ਦੇ ਅੰਦਰ ਸਿੱਧੇ ਐਪਸ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਡਾਊਨਲੋਡਰ ਸਥਾਪਤ ਕਰੋ।</string>
+  <string name="install_revanced_downloader">ReVanced ਡਾਊਨਲੋਡਰ ਸਥਾਪਤ ਕਰੋ</string>
+  <string name="cancel_downloader_install_title">ਡਾਊਨਲੋਡਰ ਸਥਾਪਨਾ ਰੱਦ ਕਰੀਏ?</string>
+  <string name="cancel_downloader_install_description">ਇੱਕ ਡਾਊਨਲੋਡਰਾਂ ਦੀ ਸਥਾਪਨਾ ਚੱਲ ਰਹੀ ਹੈ। ਜੇਕਰ ਤੁਸੀਂ ਹੁਣ ਛੱਡਦੇ ਹੋ, ਤਾਂ ਡਾਊਨਲੋਡ ਰੱਦ ਹੋ ਜਾਵੇਗਾ।</string>
+  <string name="downloader_sources_unavailable_title">ਇਹ ਡਾਊਨਲੋਡਰ ਗੁੰਮ ਹਨ</string>
+  <string name="downloader_sources_unavailable_description">ਇਸਨੂੰ ਠੀਕ ਕਰਨ ਲਈ ਅੱਪਡੇਟ ਬਟਨ \'ਤੇ ਕਲਿੱਕ ਕਰੋ।</string>
+  <string name="downloader_update_failed">ਡਾਊਨਲੋਡਰ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ ਵਿੱਚ ਅਸਫਲ: %s</string>
+  <string name="downloader_replace_fail">ਡਾਊਨਲੋਡਰ ਨੂੰ ਆਯਾਤ ਕਰਨ ਵਿੱਚ ਅਸਫਲ: %s</string>
+  <string name="select_from_storage_description">ਫਾਈਲ ਚੋਣਕਾਰ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਸਟੋਰੇਜ ਤੋਂ ਇੱਕ APK ਫਾਈਲ ਚੁਣੋ</string>
+  <string name="enable">ਸਮਰੱਥ ਕਰੋ</string>
+  <string name="disable">ਅਯੋਗ ਕਰੋ</string>
+  <string name="process_runtime_memory_limit_description">ਪੈਚਰ ਪ੍ਰਕਿਰਿਆ ਦੁਆਰਾ ਵਰਤੀ ਜਾ ਸਕਣ ਵਾਲੀ ਵੱਧ ਤੋਂ ਵੱਧ ਮੈਮੋਰੀ</string>
+  <string name="reset_onboarding">ਆਨਬੋਰਡਿੰਗ ਰੀਸੈਟ ਕਰੋ</string>
+  <string name="reset_onboarding_description">ਅਗਲੀ ਐਪ ਲਾਂਚ \'ਤੇ ਆਨਬੋਰਡਿੰਗ ਸਕ੍ਰੀਨ ਦਿਖਾਓ</string>
+  <string name="api_not_working_title">API ਸੇਵਾ ਵਰਤਮਾਨ ਵਿੱਚ ਬੰਦ ਹੈ</string>
+  <string name="api_not_working_description">ਕੁਝ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਪ੍ਰਭਾਵਿਤ ਹੋ ਸਕਦੀਆਂ ਹਨ। ਆਪਣੀ ਕਨੈਕਸ਼ਨ ਜਾਂ API URL ਨੂੰ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਜਾਂਚੋ।</string>
+  <string name="no_patched_apps_found">ਕੋਈ ਪੈਚ ਕੀਤੀਆਂ ਐਪਸ ਨਹੀਂ ਮਿਲੀਆਂ</string>
+  <string name="no_patched_apps_description">ਤੁਹਾਡੇ ਕੋਲ ਵਰਤਮਾਨ ਵਿੱਚ ਕੋਈ ਪੈਚ ਕੀਤੀਆਂ ਐਪਸ ਨਹੀਂ ਹਨ ਜਿਨ੍ਹਾਂ ਬਾਰੇ ਅਸੀਂ ਜਾਣਦੇ ਹਾਂ। ਆਪਣੀ ਪਹਿਲੀ ਐਪ ਨੂੰ ਪੈਚ ਕਰਕੇ ਇਸਨੂੰ ਬਦਲੋ!</string>
+  <string name="patched_apps_section_title">ਪੈਚ ਕੀਤੀਆਂ ਐਪਾਂ</string>
+  <string name="patchable_apps_section_title">ਐਪਾਂ ਜਿਹਨਾਂ ਨੂੰ ਪੈਚ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ</string>
+  <string name="no_patches_found">ਕੋਈ ਪੈਚ ਨਹੀਂ ਮਿਲੇ</string>
+  <string name="no_patches_description">ਤੁਹਾਡੇ ਕੋਲ ਅਜੇ ਕੋਈ ਪੈਚ ਨਹੀਂ ਹਨ। ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ \'ਤੇ ਟੈਪ ਕਰਕੇ ਪੈਚ ਸ਼ਾਮਲ ਕਰੋ!</string>
+  <string name="split_apk_not_supported">ਸਪਲਿਟ APKs ਪੈਚ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕਦੇ</string>
+  <string name="no_downloaders_installed">ਕੋਈ ਐਪ ਡਾਊਨਲੋਡਰ ਸਥਾਪਤ ਨਹੀਂ ਹਨ!</string>
+  <string name="no_downloaders_trusted">ਕਿਸੇ ਵੀ ਐਪ ਡਾਊਨਲੋਡਰ \'ਤੇ ਭਰੋਸਾ ਨਹੀਂ ਕੀਤਾ ਗਿਆ! ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀਆਂ ਸੈਟਿੰਗਾਂ ਦੀ ਜਾਂਚ ਕਰੋ।</string>
+  <string name="patch_selector_sheet_filter_packages_title">ਪੈਕੇਜ</string>
+  <string name="patch_selector_sheet_actions_title">ਕਾਰਵਾਈਆਂ</string>
+  <string name="restore_default_selection">ਮੂਲ ਚੋਣ ਨੂੰ ਬਹਾਲ ਕਰੋ</string>
+  <string name="deselect_all">ਸਾਰਿਆਂ ਨੂੰ ਅਣਚੁਣੋ</string>
+  <string name="invert_selection">ਚੋਣ ਨੂੰ ਉਲਟਾਓ</string>
+  <string name="deselect_all_except">%s ਨੂੰ ਛੱਡ ਕੇ ਸਭ ਦੀ ਚੋਣ ਹਟਾਓ</string>
+  <string name="scope_dialog_title">ਇਸ \'ਤੇ ਲਾਗੂ ਕਰੋ</string>
+  <string name="scope_all_patches">ਸਾਰੇ ਪੈਚ</string>
+  <string name="scope_bundle_patches">ਸਿਰਫ਼ %s</string>
+  <string name="save_as_file">ਫਾਈਲਾਂ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਕਰੋ</string>
+  <string name="export_patcher_logs">ਪੈਚਰ ਲੌਗ ਨਿਰਯਾਤ ਕਰੋ</string>
+  <string name="save_logs_success">ਲੌਗ ਸੁਰੱਖਿਅਤ ਕੀਤੇ ਗਏ</string>
+  <string name="downloader_activity_dialog_body">ਇਸ ਡਾਊਨਲੋਡਰ ਨਾਲ ਅੱਗੇ ਵਧਣ ਲਈ ਉਪਭੋਗਤਾ ਦੀ ਆਪਸੀ ਕਾਰਵਾਈ ਦੀ ਲੋੜ ਹੈ।</string>
+  <string name="patcher_step_unpack">ਪੈਚਰ ਤਿਆਰ ਕਰੋ</string>
+  <string name="view_announcement">ਘੋਸ਼ਣਾ ਵੇਖੋ</string>
+  <string name="license">ਲਾਇਸੰਸ</string>
+  <string name="source">ਸਰੋਤ</string>
+  <string name="repository">ਰਿਪੋਜ਼ਟਰੀ</string>
+  <string name="bundle_information_by_author">%1$s ਦੁਆਰਾ</string>
+  <string name="version_compatibility_warning">ਚੁਣਿਆ ਗਿਆ ਸੰਸਕਰਣ ਚੁਣੇ ਗਏ ਪੈਚਾਂ ਨਾਲ ਅਸੰਗਤ ਹੋ ਸਕਦਾ ਹੈ</string>
+  <string name="announcements">ਘੋਸ਼ਣਾਵਾਂ</string>
+  <string name="archive">ਪੁਰਾਲੇਖ</string>
+  <string name="view_update">ਅੱਪਡੇਟ ਵੇਖੋ</string>
+  <string name="update_checking_downloader">ਲਾਂਚ \'ਤੇ ReVanced ਡਾਊਨਲੋਡਰਾਂ ਦੇ ਅੱਪਡੇਟ ਲਈ ਜਾਂਚ ਕਰੋ</string>
+  <string name="update_checking_downloader_description">ਐਪਲੀਕੇਸ਼ਨ ਸ਼ੁਰੂ ਹੋਣ \'ਤੇ ਸਥਾਪਤ ReVanced ਡਾਊਨਲੋਡਰਾਂ ਦੇ ਅੱਪਡੇਟ ਲਈ ਜਾਂਚ ਕਰੋ</string>
+  <string name="prereleases_warning">ਪ੍ਰੀ-ਰਿਲੀਜ਼ ਸੰਸਕਰਣ ਅਸਥਿਰ ਹੋ ਸਕਦੇ ਹਨ ਅਤੇ ਬੱਗ ਸ਼ਾਮਲ ਕਰ ਸਕਦੇ ਹਨ। ਤੁਹਾਨੂੰ ਕਰੈਸ਼, ਡੇਟਾ ਦਾ ਨੁਕਸਾਨ, ਜਾਂ ਹੋਰ ਅਣਚਾਹੇ ਮੁੱਦੇ ਅਨੁਭਵ ਹੋ ਸਕਦੇ ਹਨ। ਇਸਨੂੰ ਤਾਂ ਹੀ ਸਮਰੱਥ ਕਰੋ ਜੇਕਰ ਤੁਸੀਂ ਇਹਨਾਂ ਜੋਖਮਾਂ ਨਾਲ ਸਹਿਜ ਹੋ।</string>
+  <string name="changelog">ਬਦਲਾਵ ਦਾ ਲੌਗ ਵੇਖੋ</string>
+  <string name="no_announcements_found">ਕੋਈ ਘੋਸ਼ਣਾ ਨਹੀਂ ਮਿਲੀ</string>
+  <string name="new_announcement">ਨਵੀਂ ਘੋਸ਼ਣਾ:\n%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d ਪੈਚ</item>
+    <item quantity="other">%d ਪੈਚ</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">%d ਪੈਚ ਚਲਾਓ</item>
+    <item quantity="other">%d ਪੈਚ ਚਲਾਓ</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d ਚੁਣਿਆ ਗਿਆ</item>
+    <item quantity="other">%d ਚੁਣੇ ਗਏ</item>
+  </plurals>
+</resources>

@@ -16,7 +16,6 @@ class GeneralSettingsViewModel(
 ) : ViewModel() {
     fun setTheme(theme: Theme) = viewModelScope.launch {
         prefs.theme.update(theme)
-        resetListItemColorsCached()
     }
 
     fun getSupportedLocales() = SupportedLocales.getSupportedLocales(app)

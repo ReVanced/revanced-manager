@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Parcheador</string>
+  <string name="onboarding_welcome_to">Benvido a</string>
+  <string name="onboarding_welcome_back">Ola! É o novo</string>
+  <string name="onboarding_apps_subtitle">Podes seleccionar unha aplicación para parchear agora ou facelo máis tarde</string>
+  <string name="onboarding_updates_subtitle">Configura as actualizacións automáticas para manter ReVanced Manager e os parches actualizados</string>
+  <string name="onboarding_updates_note">ReVanced Manager conectarase a %s para descargar as versións iniciais se o teu dispositivo está conectado a internet.</string>
+  <string name="retry">Reintentar</string>
+  <string name="onboarding_skip">Omitir por agora</string>
+  <string name="onboarding_recommended_version">Versión recomendada: %s</string>
+  <string name="onboarding_permissions_skip_title">Omitir permisos?</string>
+  <string name="onboarding_permissions_skip_description">Sen os permisos necesarios, algunhas funcións poden non funcionar correctamente. Podes concedelos máis tarde na configuración da aplicación.</string>
+  <string name="onboarding_permissions_skip_anyway">Omitir de todos os xeitos</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager necesita algúns permisos para funcionar correctamente</string>
+  <string name="permission_install_apps">Instalar aplicacións descoñecidas</string>
+  <string name="permission_install_apps_description">Necesario para instalar aplicacións parcheadas</string>
+  <string name="permission_notifications">Notificacións</string>
+  <string name="permission_battery">Optimización da batería</string>
+  <string name="permission_battery_description">Evita que o parcheado sexa interrompido en segundo plano</string>
+  <string name="permission_grant">Conceder</string>
+  <string name="downloader_host_permission_label">Servidor de descarga de ReVanced Manager</string>
+  <string name="downloader_host_permission_description">Utilízase para controlar o acceso aos descargadores de ReVanced Manager. Só ReVanced Manager ten isto.</string>
+  <string name="fab_patch_app">Parchear unha aplicación</string>
+  <string name="fab_add_patches">Engadir parches</string>
+  <string name="new_downloader_notification">Hai novos descargadores dispoñibles. Fai clic aquí para configuralos.</string>
+  <string name="patches_not_downloaded">Os parches non se descargaron.</string>
+  <string name="app_source_dialog_option_auto_description">Usar a aplicación instalada, logo o APK descargado, logo os descargadores dispoñibles</string>
+  <string name="app_source_dialog_option_auto_unavailable">Non se atopou ningunha aplicación compatible nin descargadores dispoñibles</string>
+  <string name="app_source_dialog_option_installed_no_root">As aplicacións montadas non se poden parchear de novo sen acceso root</string>
+  <string name="patch_selector_item">Seleccionar parches</string>
+  <string name="patch_selector_item_description">%d parches seleccionados</string>
+  <string name="patch_selection_changed_warning">A selección de parches cambiouse</string>
+  <string name="apk_source_selector_item">Seleccionar fonte do APK</string>
+  <string name="apk_source_auto">Automático</string>
+  <string name="apk_source_auto_installed">Automático · Usando o APK instalado</string>
+  <string name="apk_source_auto_downloaded">Automático · Usando o APK descargado</string>
+  <string name="apk_source_auto_downloader">Automático · Usando descargadores dispoñibles</string>
+  <string name="apk_source_auto_storage">Automático · Seleccionar desde o almacenamento</string>
+  <string name="apk_source_downloaded">Xa descargado</string>
+  <string name="auto_updates_dialog_description">Queres que ReVanced Manager comprobe periodicamente as actualizacións dos seguintes compoñentes?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">Parches de ReVanced</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Descargadores</string>
+  <string name="auto_updates_dialog_note">Estes axustes pódense cambiar máis tarde.
+
+    ReVanced Manager conectarase a %s para descargar as versións iniciais se o teu dispositivo está conectado a internet.</string>
+  <string name="announcements_filter_tag">Filtrar por etiqueta</string>
+  <string name="announcements_show_archived">Mostrar arquivados</string>
+  <string name="updates_description">Comprobar actualizacións e ver o rexistro de cambios</string>
+  <string name="downloads_description">Descargadores e aplicacións descargadas</string>
+  <string name="safeguards_toggled_warning">As salvagardas cambiaron o seu estado.</string>
+  <string name="about_app_name">Acerca de %1$s</string>
+  <string name="search_languages">Buscar idiomas…</string>
+  <string name="keystore">Almacén de claves</string>
+  <string name="patches_selections">Seleccións de parches</string>
+  <string name="select_bundle_for_import">Seleccionar paquete para importar</string>
+  <string name="select_bundle_for_export">Seleccionar paquete para exportar</string>
+  <string name="patch_selection_packages">Aplicacións con seleccións gardadas</string>
+  <string name="patch_selection_entries">Total de parches seleccionados</string>
+  <string name="reset_configuration">Restablecer configuración</string>
+  <string name="reset_patch_selection">Seleccións de parches</string>
+  <string name="reset_patch_options">Opcións de parche</string>
+  <string name="downloaders">Descargadores</string>
+  <string name="downloader_prereleases">Usar versións preliminares</string>
+  <string name="downloader_prereleases_description">Usar versións preliminares do descargador principal</string>
+  <string name="downloader_state_loaded">Cargado</string>
+  <string name="downloader_state_failed">Erro ao cargar. Prema para obter máis detalles</string>
+  <string name="downloader_state_missing">Falta</string>
+  <string name="downloader_delete_apps_title">Eliminar aplicacións seleccionadas</string>
+  <string name="downloader_delete_apps_description">Está seguro de que quere eliminar as aplicacións seleccionadas?</string>
+  <string name="downloader_delete_single_description">Seguro que queres eliminar \"%s\"?</string>
+  <string name="downloader_settings_no_apps_description">As aplicacións descargadas a través de ReVanced Manager aparecerán aquí.</string>
+  <string name="downloader_url">URL do descargador</string>
+  <string name="downloader_add">Engadir descargador</string>
+  <string name="select_downloader_type_dialog_description">Engadir novos descargadores desde URL ou ficheiros locais</string>
+  <string name="local_downloaders_description">Engadir descargadores desde o almacenamento local.</string>
+  <string name="remote_downloaders_description">Engadir descargadores desde URL. Pódense actualizar automaticamente.</string>
+  <string name="install_revanced_downloaders">Instala descargadores para obter aplicacións directamente dentro de ReVanced Manager.</string>
+  <string name="install_revanced_downloader">Instalar descargadores de ReVanced</string>
+  <string name="cancel_downloader_install_title">Cancelar instalación de descargadores?</string>
+  <string name="cancel_downloader_install_description">Unha instalación de descargadores está en progreso. Se saes agora, a descarga cancelarase.</string>
+  <string name="downloader_sources_unavailable_title">Faltan estes descargadores</string>
+  <string name="downloader_sources_unavailable_description">Fai clic no botón de actualizar para corrixilo.</string>
+  <string name="downloader_update_failed">Fallou a actualización do descargador: %s</string>
+  <string name="downloader_replace_fail">Fallou a importación do descargador: %s</string>
+  <string name="select_from_storage_description">Selecciona un ficheiro APK do almacenamento usando o selector de ficheiros</string>
+  <string name="enable">Activar</string>
+  <string name="disable">Desactivar</string>
+  <string name="process_runtime_memory_limit_description">A cantidade máxima de memoria que o proceso Patcher pode usar</string>
+  <string name="reset_onboarding">Restablecer a benvida</string>
+  <string name="reset_onboarding_description">Mostrar a pantalla de benvida no seguinte inicio da aplicación</string>
+  <string name="api_not_working_title">O servizo da API non está dispoñible actualmente</string>
+  <string name="api_not_working_description">Algunhas funcionalidades poden verse afectadas. Comprobe a súa conexión ou o URL da API na configuración.</string>
+  <string name="no_patched_apps_found">Non se atoparon aplicacións parcheadas</string>
+  <string name="no_patched_apps_description">Actualmente non tes ningunha aplicación parcheada que coñezamos. Cambia iso parcheando a túa primeira aplicación!</string>
+  <string name="patched_apps_section_title">Aplicacións parcheadas</string>
+  <string name="patchable_apps_section_title">Aplicacións que se poden parchear</string>
+  <string name="no_patches_found">Non se atoparon parches</string>
+  <string name="no_patches_description">Aínda non tes parches. Engade parches tocando o botón de abaixo!</string>
+  <string name="split_apk_not_supported">Os APKs divididos non se poden parchear</string>
+  <string name="no_downloaders_installed">Non hai descargadores de aplicacións instalados!</string>
+  <string name="no_downloaders_trusted">Non se confiou en ningún descargador de aplicacións! Comproba a túa configuración.</string>
+  <string name="patch_selector_sheet_filter_packages_title">Paquetes</string>
+  <string name="patch_selector_sheet_actions_title">Accións</string>
+  <string name="restore_default_selection">Restaurar selección predeterminada</string>
+  <string name="deselect_all">Desmarcar todo</string>
+  <string name="invert_selection">Inverter selección</string>
+  <string name="deselect_all_except">Desmarcar todo excepto %s</string>
+  <string name="scope_dialog_title">Aplicar a</string>
+  <string name="scope_all_patches">Todos os parches</string>
+  <string name="scope_bundle_patches">Só %s</string>
+  <string name="save_as_file">Gardar en ficheiros</string>
+  <string name="export_patcher_logs">Exportar rexistros do parcheador</string>
+  <string name="save_logs_success">Rexistros gardados</string>
+  <string name="downloader_activity_dialog_body">Requírese a interacción do usuario para continuar con este descargador.</string>
+  <string name="patcher_step_unpack">Preparar parcheador</string>
+  <string name="view_announcement">Ver anuncio</string>
+  <string name="license">Licenza</string>
+  <string name="source">Orixe</string>
+  <string name="repository">Repositorio</string>
+  <string name="bundle_information_by_author">Por %1$s</string>
+  <string name="version_compatibility_warning">A versión seleccionada pode ser incompatible cos parches seleccionados</string>
+  <string name="announcements">Anuncios</string>
+  <string name="archive">Arquivo</string>
+  <string name="view_update">Ver actualización</string>
+  <string name="update_checking_downloader">Comprobar actualizacións dos descargadores de ReVanced no inicio</string>
+  <string name="update_checking_downloader_description">Comprobar actualizacións dos descargadores de ReVanced instalados cando a aplicación se inicia</string>
+  <string name="prereleases_warning">As versións preliminares poden ser inestables e conter erros. Podes experimentar fallos, perda de datos ou outros problemas inesperados. Activa isto só se te sentes cómodo con estes riscos.</string>
+  <string name="changelog">Ver rexistro de cambios</string>
+  <string name="no_announcements_found">Non se atoparon anuncios</string>
+  <string name="new_announcement">Novo anuncio:\n%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d parche</item>
+    <item quantity="other">%d parches</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">Executar %d parche</item>
+    <item quantity="other">Executar %d parches</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d seleccionado</item>
+    <item quantity="other">%d seleccionados</item>
+  </plurals>
+</resources>

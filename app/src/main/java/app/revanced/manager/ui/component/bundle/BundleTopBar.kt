@@ -2,7 +2,7 @@ package app.revanced.manager.ui.component.bundle
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -11,8 +11,11 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import app.revanced.manager.R
+import app.revanced.manager.ui.component.TooltipIconButton
+import androidx.compose.ui.res.stringResource
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BundleTopBar(
     title: String,
@@ -33,7 +36,10 @@ fun BundleTopBar(
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
+                TooltipIconButton(
+                    onClick = onBackClick,
+                    tooltip = stringResource(R.string.back),
+                ) {
                     backIcon()
                 }
             }

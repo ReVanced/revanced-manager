@@ -14,23 +14,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
+import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAnnouncement
+import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
-import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -39,18 +37,25 @@ class DashboardViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val downloaderRepository: DownloaderRepository,
     private val announcementRepository: AnnouncementRepository,
-    private val reVancedAPI: ReVancedAPI,
+    private val managerUpdateRepository: ManagerUpdateRepository,
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager,
     private val pm: PM,
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
+    val bundleDownloadError = patchBundleRepository.apiOutageError
     private val contentResolver: ContentResolver = app.contentResolver
     private val powerManager = app.getSystemService<PowerManager>()!!
 
-    val newDownloadersAvailable =
-        downloaderRepository.newDownloaderPackageNames.map { it.isNotEmpty() }
+    val availableManagerUpdate = managerUpdateRepository.availableVersion
+
+    val sourcesNotDownloaded = patchBundleRepository.bundleInfoFlow.map { it.isEmpty() }
+
+    fun downloadSources() = viewModelScope.launch(Dispatchers.Default) {
+        patchBundleRepository.updateCheck()
+        downloaderRepository.updateCheck()
+    }
 
     /**
      * Android 11 kills the app process after granting the "install apps" permission, which is a problem for the patcher screen.
@@ -59,11 +64,6 @@ class DashboardViewModel(
      * See: https://github.com/ReVanced/revanced-manager/issues/2138
      */
     val android11BugActive get() = Build.VERSION.SDK_INT == Build.VERSION_CODES.R && !pm.canInstallPackages()
-
-    var updatedManagerVersion: String? by mutableStateOf(null)
-        private set
-    var showBatteryOptimizationsWarning by mutableStateOf(false)
-        private set
 
     var unreadAnnouncement by mutableStateOf<ReVancedAnnouncement?>(null)
         private set
@@ -75,19 +75,14 @@ class DashboardViewModel(
         viewModelScope.launch {
             checkForManagerUpdates()
             checkForAnnouncements()
-            updateBatteryOptimizationsWarning()
         }
-    }
-
-    fun ignoreNewDownloaders() = viewModelScope.launch {
-        downloaderRepository.acknowledgeAll()
     }
 
     private suspend fun checkForManagerUpdates() {
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
-            updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
+            managerUpdateRepository.refreshAvailableVersion()
         }
     }
 
@@ -98,22 +93,14 @@ class DashboardViewModel(
             } ?: throw IllegalStateException("Announcements could not be retrieved")
 
             val readAnnouncements = prefs.readAnnouncements.get()
-            if (readAnnouncements.isEmpty()) {
-                val announcementIds = announcements.mapTo(mutableSetOf()) { it.id }
-                prefs.readAnnouncements.update(announcementIds)
-                return@uiSafe
-            }
 
             unreadAnnouncement = announcements.firstOrNull { announcement ->
-                val isNotArchived =
-                    announcement.archivedAt.toInstant(TimeZone.UTC) > Clock.System.now()
-
-                val hasRelevantTag = "revanced" in announcement.tags ||
-                        "manager" in announcement.tags
-
+                val hasRelevantTag = announcement.tags.any {
+                    it == "✨ ReVanced" || it == "💊 Manager"
+                }
                 val isUnread = announcement.id !in readAnnouncements
 
-                isNotArchived && hasRelevantTag && isUnread
+                !announcement.isArchived && hasRelevantTag && isUnread
             }
         }
     }
@@ -129,34 +116,10 @@ class DashboardViewModel(
         }
     }
 
-    fun updateBatteryOptimizationsWarning() {
-        showBatteryOptimizationsWarning =
-            !powerManager.isIgnoringBatteryOptimizations(app.packageName)
-    }
 
     fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
         viewModelScope.launch {
             prefs.showManagerUpdateDialogOnLaunch.update(value)
-        }
-    }
-
-    fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
-        prefs.firstLaunch.update(false)
-
-        prefs.managerAutoUpdates.update(manager)
-
-        if (manager) checkForManagerUpdates()
-
-        if (patches) {
-            with(patchBundleRepository) {
-                sources
-                    .first()
-                    .find { it.uid == 0 }
-                    ?.asRemoteOrNull
-                    ?.setAutoUpdate(true)
-
-                updateCheck()
-            }
         }
     }
 
@@ -167,6 +130,11 @@ class DashboardViewModel(
     fun cancelSourceSelection() = sendEvent(BundleListViewModel.Event.CANCEL)
     fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
     fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
+
+    fun deleteSource(uid: Int) = viewModelScope.launch {
+        val source = patchBundleRepository.sources.first().firstOrNull { it.uid == uid } ?: return@launch
+        patchBundleRepository.remove(source)
+    }
 
     @SuppressLint("Recycle")
     fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {

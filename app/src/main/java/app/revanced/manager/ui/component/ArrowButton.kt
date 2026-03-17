@@ -3,8 +3,8 @@ package app.revanced.manager.ui.component
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ArrowButton(
     modifier: Modifier = Modifier,
@@ -27,10 +28,13 @@ fun ArrowButton(
     )
 
     onClick?.let {
-        IconButton(onClick = it) {
+        TooltipIconButton(
+            onClick = it,
+            tooltip = stringResource(description),
+        ) { contentDescription ->
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowUp,
-                contentDescription = stringResource(description),
+                contentDescription = contentDescription,
                 modifier = Modifier
                     .rotate(rotation)
                     .then(modifier)

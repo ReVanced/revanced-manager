@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -25,7 +26,8 @@ import java.time.format.DateTimeFormatter
 class AdvancedSettingsViewModel(
     val prefs: PreferencesManager,
     private val app: Application,
-    private val patchBundleRepository: PatchBundleRepository
+    private val patchBundleRepository: PatchBundleRepository,
+    private val downloaderRepository: DownloaderRepository
 ) : ViewModel() {
     val debugLogFileName: String
         get() {
@@ -33,13 +35,6 @@ class AdvancedSettingsViewModel(
 
             return "revanced-manager_logcat_$time"
         }
-
-    fun setApiUrl(value: String) = viewModelScope.launch(Dispatchers.Default) {
-        if (value == prefs.api.get()) return@launch
-
-        prefs.api.update(value)
-        patchBundleRepository.reloadApiBundles()
-    }
 
     fun exportDebugLogs(target: Uri) = viewModelScope.launch {
         val exitCode = try {

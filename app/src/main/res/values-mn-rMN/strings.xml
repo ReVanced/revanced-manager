@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Нөхөгч</string>
+  <string name="onboarding_welcome_to">Тавтай морилно уу</string>
+  <string name="onboarding_welcome_back">Сайн уу! Энэ бол шинэ</string>
+  <string name="onboarding_apps_subtitle">Та одоо засварлах апп сонгох эсвэл дараа хийх боломжтой</string>
+  <string name="onboarding_apps_network_error">Сүлжээ боломжгүй эсвэл тогтворгүй байгаа тул нөхөөсүүдийг ачаалж чадсангүй. Тогтвортой сүлжээнд холбогдоод дахин оролдоно уу.</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager болон засваруудыг орчин үеийн байлгахын тулд автомат шинэчлэлтүүдийг тохируулах</string>
+  <string name="banner_sources_not_downloaded_description">Тохируулах явцад нөхөөс болон татагчдыг татаж авч чадаагүй. Татаж авахын тулд шинэчлэх товчийг дарна уу.</string>
+  <string name="onboarding_updates_note">ReVanced Manager таны төхөөрөмж интернетэд холбогдсон бол анхны хувилбаруудыг татаж авахын тулд %s-т холбогдоно.</string>
+  <string name="retry">Дахин оролдох</string>
+  <string name="onboarding_skip">Одоохондоо алгасах</string>
+  <string name="onboarding_recommended_version">Санал болгосон хувилбар: %s</string>
+  <string name="onboarding_permissions_skip_title">Зөвшөөрлүүдийг алгасах уу?</string>
+  <string name="onboarding_permissions_skip_description">Шаардлагатай зөвшөөрөлгүйгээр зарим функцууд зөв ажиллахгүй байж болно. Та дараа нь аппын тохиргооноос зөвшөөрөл олгож болно.</string>
+  <string name="onboarding_permissions_skip_anyway">Ямар ч байсан алгасах</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager зөв ажиллахын тулд хэд хэдэн зөвшөөрөл шаардлагатай.</string>
+  <string name="permission_install_apps">Үл мэдэгдэх апп-уудыг суулгах</string>
+  <string name="permission_install_apps_description">Нөхсөн аппликешнүүдийг суулгахад шаардлагатай</string>
+  <string name="permission_notifications">Мэдэгдлүүд</string>
+  <string name="permission_notifications_description">Арын дэвсгэр дээр тасралтгүй нөхөөс хийх боломжийг олгоно</string>
+  <string name="permission_battery">Зайны оновчлол</string>
+  <string name="permission_battery_description">Нөхөлтийг цаана нь тасалдахаас сэргийлнэ</string>
+  <string name="permission_grant">Олгох</string>
+  <string name="downloader_host_permission_label">ReVanced Manager татагчийн хост</string>
+  <string name="downloader_host_permission_description">ReVanced Manager татагчид нэвтрэх эрхийг хянах зорилгоор ашиглана. Зөвхөн ReVanced Manager-т энэ нь бий.</string>
+  <string name="fab_patch_app">Апп нөхөх</string>
+  <string name="fab_add_patches">Нөхөлтүүд нэмэх</string>
+  <string name="new_downloader_notification">Шинэ татагч(ууд) бэлэн байна. Тохируулахын тулд энд дарна уу.</string>
+  <string name="patches_not_downloaded">Нөхөөсийг татаагүй байна.</string>
+  <string name="app_source_dialog_option_auto_description">Суулгасан апп-ыг ашиглана, дараа нь татаж авсан APK, дараа нь боломжтой татагчдыг</string>
+  <string name="app_source_dialog_option_auto_unavailable">Тохиромжтой апп эсвэл татагч олдсонгүй</string>
+  <string name="app_source_dialog_option_installed_no_root">Суулгасан апп-уудыг root хандалтгүйгээр дахин засварлах боломжгүй</string>
+  <string name="patch_selector_item">Нөхөлтүүдийг сонгох</string>
+  <string name="patch_selector_item_description">%d нөхөлт сонгогдсон</string>
+  <string name="patch_selection_changed_warning">Нөхөөсний сонголтыг өөрчилсөн байна</string>
+  <string name="apk_source_selector_item">APK эх үүсвэрийг сонгох</string>
+  <string name="apk_source_auto">Авто</string>
+  <string name="apk_source_auto_installed">Авто · Суулгасан APK-г ашиглах</string>
+  <string name="apk_source_auto_downloaded">Авто · Татаж авсан APK-г ашиглах</string>
+  <string name="apk_source_auto_downloader">Автомат · боломжтой татагчдыг ашиглан</string>
+  <string name="apk_source_auto_storage">Автомат · санах ойн хэсгээс сонгох</string>
+  <string name="apk_source_downloaded">Аль хэдийн татагдсан</string>
+  <string name="auto_updates_dialog_description">ReVanced Manager-ийг дараах бүрэлдэхүүн хэсгүүдийн шинэчлэлтийг үе үе шалгахыг хүсэж байна уу?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced Нөхөлтүүд</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Татагчид</string>
+  <string name="auto_updates_dialog_note">Эдгээр тохиргоог дараа нь өөрчилж болно.
+
+    ReVanced Manager таны төхөөрөмж интернетэд холбогдсон бол анхны хувилбаруудыг татаж авахын тулд %s-т холбогдоно.</string>
+  <string name="announcements_filter_tag">Шошгоор шүүх</string>
+  <string name="announcements_show_archived">Архивлагдсаныг харуулах</string>
+  <string name="updates_description">Шинэчлэлтүүдийг шалгах ба өөрчлөлтийн бүртгэлийг харах</string>
+  <string name="downloads_description">Татаж авагчид болон татагдсан аппууд</string>
+  <string name="safeguards_toggled_warning">Хамгаалалтыг асааж/унтраасан байна</string>
+  <string name="about_app_name">%1$s-ийн тухай</string>
+  <string name="search_languages">Хэл хайх…</string>
+  <string name="keystore">Кейсторе</string>
+  <string name="patches_selections">Нөхөлтийн сонголтууд</string>
+  <string name="select_bundle_for_import">Импортлох багцыг сонгоно уу</string>
+  <string name="select_bundle_for_export">Экспортлох багцыг сонгоно уу</string>
+  <string name="patch_selection_packages">Хадгалсан сонголттой апп-ууд</string>
+  <string name="patch_selection_entries">Нийт сонгогдсон нөхөлтүүд</string>
+  <string name="reset_configuration">Тохиргоог дахин тохируулах</string>
+  <string name="reset_patch_selection">Нөхөлтийн сонголтууд</string>
+  <string name="reset_patch_options">Нөхөлтийн сонголтууд</string>
+  <string name="downloaders">Татаж авагчид</string>
+  <string name="downloader_prereleases">Урьдчилан гаргасан хувилбаруудыг ашиглах</string>
+  <string name="downloader_prereleases_description">Үндсэн татагчийн урьдчилан гаргасан хувилбаруудыг ашиглах</string>
+  <string name="downloader_state_loaded">Ачааллагдсан</string>
+  <string name="downloader_state_failed">Ачаалж чадсангүй. Дэлгэрэнгүй мэдээлэл авахыг хүсвэл дарна уу</string>
+  <string name="downloader_state_missing">Алдагдсан</string>
+  <string name="downloader_delete_apps_title">Сонгосон аппуудыг устгах</string>
+  <string name="downloader_delete_apps_description">Сонгосон аппуудыг устгахдаа итгэлтэй байна уу?</string>
+  <string name="downloader_delete_single_description">\"%s\"-ийг устгахдаа итгэлтэй байна уу?</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager-ээр татагдсан апп-ууд энд харагдах болно.</string>
+  <string name="downloader_url">Татаж авагчийн URL</string>
+  <string name="downloader_add">Татаж авагч нэмэх</string>
+  <string name="select_downloader_type_dialog_description">Шинэ татаж авагчдыг URL эсвэл дотоод файлуудаас нэмнэ үү</string>
+  <string name="local_downloaders_description">Дотоод санах ойгоос татаж авагчдыг нэмнэ үү.</string>
+  <string name="remote_downloaders_description">URL-ээс татаж авагчдыг нэмнэ үү. Автоматаар шинэчлэгдэх боломжтой.</string>
+  <string name="install_revanced_downloaders">ReVanced Manager дотор апп-уудыг шууд авахын тулд татагчуудыг суулгана уу.</string>
+  <string name="install_revanced_downloader">ReVanced Татагчуудыг суулгах</string>
+  <string name="cancel_downloader_install_title">Татагчуудын суулгалтыг цуцлах уу?</string>
+  <string name="cancel_downloader_install_description">Татагчуудын суулгалт явагдаж байна. Хэрэв та одоо гарах юм бол таталт цуцлагдах болно.</string>
+  <string name="downloader_sources_unavailable_title">Эдгээр татаж авагчид алдагдсан байна</string>
+  <string name="downloader_sources_unavailable_description">Шийдэхийн тулд шинэчлэх товчийг дарна уу.</string>
+  <string name="downloader_update_failed">Татаж авагчийг шинэчлэх амжилтгүй боллоо: %s</string>
+  <string name="downloader_replace_fail">Татаж авагчийг импортлох амжилтгүй боллоо: %s</string>
+  <string name="select_from_storage_description">Файлын сонгогч ашиглан хадгалахаас APK файлыг сонгоно уу</string>
+  <string name="enable">Идэвхжүүлэх</string>
+  <string name="disable">Идэвхгүй болгох</string>
+  <string name="process_runtime_memory_limit_description">Нөхөгч процессийн ашиглах боломжтой хамгийн их санах ойн хэмжээ</string>
+  <string name="reset_onboarding">Анхны тохиргоог дахин тохируулах</string>
+  <string name="reset_onboarding_description">Дараагийн апп эхлүүлэхэд анхны тохиргооны дэлгэцийг харуулах</string>
+  <string name="api_not_working_title">API үйлчилгээ одоогоор ажиллахгүй байна</string>
+  <string name="api_not_working_description">Зарим функцэд нөлөөлж болзошгүй. Тохиргооноос холболт эсвэл API URL-ээ шалгана уу.</string>
+  <string name="no_patched_apps_found">Нөхсөн апп олдсонгүй</string>
+  <string name="no_patched_apps_description">Та одоогоор бидний мэдэх нэг ч нөхсөн апп байхгүй байна. Эхний апп-аа нөхөж үүнийг өөрчил!</string>
+  <string name="patched_apps_section_title">Нөхсөн аппууд</string>
+  <string name="patchable_apps_section_title">Нөхөж болох аппууд</string>
+  <string name="no_patches_found">Нөхөлт олдсонгүй</string>
+  <string name="no_patches_description">Та одоогоор нөхөлтгүй байна. Доорх товчийг товшиж нөхөлтүүд нэмнэ үү!</string>
+  <string name="split_apk_not_supported">Хуваагдсан APK-уудыг засварлах боломжгүй</string>
+  <string name="no_downloaders_installed">Апп татагч суулгаагүй байна!</string>
+  <string name="no_downloaders_trusted">Апп татагчдад итгэмжлээгүй байна! Тохиргоогоо шалгана уу.</string>
+  <string name="patch_selector_sheet_filter_packages_title">Багцууд</string>
+  <string name="patch_selector_sheet_actions_title">Үйлдлүүд</string>
+  <string name="restore_default_selection">Өгөгдмөл сонголтыг сэргээх</string>
+  <string name="deselect_all">Бүгдийг болиулах</string>
+  <string name="invert_selection">Сонголтыг эргүүлэх</string>
+  <string name="deselect_all_except">%s-ээс бусдыг нь сонгохгүй байх</string>
+  <string name="scope_dialog_title">Хэрэглэх</string>
+  <string name="scope_all_patches">Бүх нөхөөс</string>
+  <string name="scope_bundle_patches">Зөвхөн %s</string>
+  <string name="save_as_file">Файл руу хадгалах</string>
+  <string name="export_patcher_logs">Нөхөгчийн бүртгэлүүдийг экспортлох</string>
+  <string name="save_logs_success">Бүртгэлүүд хадгалагдсан</string>
+  <string name="downloader_activity_dialog_body">Энэ татаж авагчаар үргэлжлүүлэхийн тулд хэрэглэгчийн оролцоо шаардлагатай.</string>
+  <string name="patcher_step_unpack">Паатчер бэлтгэх</string>
+  <string name="view_announcement">Мэдэгдлийг харах</string>
+  <string name="license">Лиценз</string>
+  <string name="source">Эх үүсвэр</string>
+  <string name="repository">Репозитор</string>
+  <string name="bundle_information_by_author">%1$s-ээр</string>
+  <string name="version_compatibility_warning">Сонгосон хувилбар нь сонгосон засваруудтай таарахгүй байж болзошгүй</string>
+  <string name="announcements">Мэдэгдлүүд</string>
+  <string name="archive">Архив</string>
+  <string name="view_update">Шинэчлэлтийг харах</string>
+  <string name="update_checking_downloader">Эхлүүлэх үед ReVanced Татагчуудын шинэчлэлтийг шалгах</string>
+  <string name="update_checking_downloader_description">Аппликешн эхлэх үед суулгасан ReVanced Татагчуудын шинэчлэлтийг шалгах</string>
+  <string name="prereleases_warning">Урьдчилсан хувилбарууд тогтворгүй байж, алдаатай байж болно. Та апп унах, өгөгдөл алдагдах эсвэл бусад гэнэтийн асуудлуудтай тулгарч болно. Эдгээр эрсдлүүдийг хүлээн зөвшөөрч байвал л үүнийг идэвхжүүлнэ үү.</string>
+  <string name="changelog">Өөрчлөлтийн бүртгэлийг харах</string>
+  <string name="no_announcements_found">Зар олдоогүй байна</string>
+  <string name="new_announcement">Шинэ зар:\n%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d нөхөөс</item>
+    <item quantity="other">%d нөхөөс</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">%d нөхөөс гүйцэтгэх</item>
+    <item quantity="other">%d нөхөөс гүйцэтгэх</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d сонгогдсон</item>
+    <item quantity="other">%d сонгогдсон</item>
+  </plurals>
+</resources>

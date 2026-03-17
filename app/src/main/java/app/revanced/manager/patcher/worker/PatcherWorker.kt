@@ -38,6 +38,7 @@ import app.revanced.manager.patcher.runtime.ProcessRuntime
 import app.revanced.manager.patcher.toRemoteError
 import app.revanced.manager.downloader.GetScope
 import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.Scope
 import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
@@ -185,11 +186,7 @@ class PatcherWorker(
                         downloaderRepository.loadedDownloadersFlow.first()
                             .firstNotNullOfOrNull { downloader ->
                                 try {
-                                    val getScope = object : GetScope {
-                                        override val downloaderPackageName = downloader.packageName
-                                        override val hostPackageName =
-                                            applicationContext.packageName
-
+                                    val getScope = object : GetScope, Scope by downloader.scopeImpl {
                                         override suspend fun requestStartActivity(intent: Intent): Intent? {
                                             val result =
                                                 args.handleStartActivityRequest(downloader, intent)
@@ -204,7 +201,7 @@ class PatcherWorker(
                                         }
                                     }
                                     withContext(Dispatchers.IO) {
-                                        downloader.get(
+                                        downloader.impl.get(
                                             getScope,
                                             selectedApp.packageName,
                                             selectedApp.version

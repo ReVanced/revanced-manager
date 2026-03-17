@@ -2,6 +2,8 @@ package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -18,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private inline fun <T> NumberInputDialog(
     current: T?,
     name: String,
+    unit: String?,
     crossinline onSubmit: (T?) -> Unit,
     crossinline validator: @DisallowComposableCalls (T) -> Boolean,
     crossinline toNumberOrNull: @DisallowComposableCalls String.() -> T?
@@ -47,6 +51,7 @@ private inline fun <T> NumberInputDialog(
                     Text(stringResource(R.string.dialog_input_placeholder))
                 },
                 isError = validatorFailed,
+                suffix = unit?.let { { Text(it) } },
                 supportingText = {
                     if (validatorFailed) {
                         Text(
@@ -62,12 +67,13 @@ private inline fun <T> NumberInputDialog(
             TextButton(
                 onClick = { numberFieldValue?.let(onSubmit) },
                 enabled = numberFieldValue != null && !validatorFailed,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = { onSubmit(null) }) {
+            TextButton(onClick = { onSubmit(null) }, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },
@@ -78,22 +84,25 @@ private inline fun <T> NumberInputDialog(
 fun IntInputDialog(
     current: Int?,
     name: String,
+    unit: String? = null,
     validator: (Int) -> Boolean = { true },
     onSubmit: (Int?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toIntOrNull)
+) = NumberInputDialog(current, name, unit, onSubmit, validator, String::toIntOrNull)
 
 @Composable
 fun LongInputDialog(
     current: Long?,
     name: String,
+    unit: String? = null,
     validator: (Long) -> Boolean = { true },
     onSubmit: (Long?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toLongOrNull)
+) = NumberInputDialog(current, name, unit, onSubmit, validator, String::toLongOrNull)
 
 @Composable
 fun FloatInputDialog(
     current: Float?,
     name: String,
+    unit: String? = null,
     validator: (Float) -> Boolean = { true },
     onSubmit: (Float?) -> Unit
-) = NumberInputDialog(current, name, onSubmit, validator, String::toFloatOrNull)
+) = NumberInputDialog(current, name, unit, onSubmit, validator, String::toFloatOrNull)

@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,7 +42,7 @@ fun AppScaffold(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppTopBar(
     title: String,
@@ -69,7 +69,10 @@ fun AppTopBar(
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
+                TooltipIconButton(
+                    onClick = onBackClick,
+                    tooltip = stringResource(R.string.back),
+                ) {
                     backIcon()
                 }
             }
@@ -81,7 +84,7 @@ fun AppTopBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppTopBar(
     title: @Composable () -> Unit,
@@ -108,7 +111,10 @@ fun AppTopBar(
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
+                TooltipIconButton(
+                    onClick = onBackClick,
+                    tooltip = stringResource(R.string.back),
+                ) {
                     backIcon()
                 }
             }

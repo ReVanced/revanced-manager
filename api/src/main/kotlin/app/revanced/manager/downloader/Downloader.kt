@@ -6,13 +6,17 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.app.Activity
+import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import kotlinx.coroutines.withTimeout
+import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.jvm.java
 
 @RequiresOptIn(
     level = RequiresOptIn.Level.ERROR,
@@ -34,6 +38,11 @@ interface Scope {
      * The package name of the downloader.
      */
     val downloaderPackageName: String
+
+    /**
+     * A data directory for this downloader package.
+     */
+    val dataDir: File
 }
 
 /**
@@ -49,6 +58,25 @@ interface GetScope : Scope {
      * @throws UserInteractionException.Activity.NotCompleted The activity finished with an unknown result code.
      */
     suspend fun requestStartActivity(intent: Intent): Intent?
+
+    /**
+     * Starts an [Activity] using [requestStartActivity] which loads the specified [Fragment].
+     * The fragment may reside in the downloader package.
+     *
+     * @param clazz The class of the fragment to launch.
+     * @param args The fragment arguments.
+     */
+    suspend fun requestStartFragment(clazz: Class<out Fragment>, args: Bundle?) =
+        requestStartActivity(Intent().apply {
+            setClassName(hostPackageName, "app.revanced.manager.DownloaderActivity")
+            // We shouldn't use the downloader's resources if it is launching a fragment that resides in manager itself.
+            if (clazz.classLoader != GetScope::class.java.classLoader) putExtra(
+                "DOWNLOADER_NAME",
+                downloaderPackageName
+            )
+            putExtra("FRAGMENT_CLASS_NAME", clazz.name)
+            putExtra("FRAGMENT_ARGS", args)
+        })
 }
 
 interface BaseDownloadScope : Scope

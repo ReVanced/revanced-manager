@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.component.haptics
 
-import android.view.HapticFeedbackConstants
+import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
@@ -21,7 +21,7 @@ fun HapticCheckbox(
 ) {
     Checkbox(
         checked = checked,
-        onCheckedChange = onCheckedChange?.withHapticFeedback(HapticFeedbackConstants.CLOCK_TICK),
+        onCheckedChange = onCheckedChange?.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK),
         modifier = modifier,
         enabled = enabled,
         colors = colors,

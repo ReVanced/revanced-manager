@@ -12,6 +12,9 @@ import kotlinx.serialization.Serializable
 interface ComplexParameter<T : Parcelable>
 
 @Serializable
+object Onboarding
+
+@Serializable
 object Dashboard
 
 @Serializable
@@ -19,6 +22,9 @@ object AppSelector
 
 @Serializable
 data class InstalledApplicationInfo(val packageName: String)
+
+@Serializable
+data class BundleInformation(val uid: Int)
 
 @Serializable
 data class Update(val downloadOnScreenEntry: Boolean = false)
@@ -47,6 +53,8 @@ data object SelectedApplicationInfo : ComplexParameter<SelectedApplicationInfo.V
             val app: SelectedApp,
             val currentSelection: PatchSelection?,
             val options: @RawValue Options,
+            val readOnly: Boolean = false,
+            val browseAllBundles: Boolean = false,
         ) : Parcelable
     }
 
@@ -82,6 +90,9 @@ object Settings {
 
     @Serializable
     data object Downloads : Destination
+
+    @Serializable
+    data class DownloadersInfo(val uid: Int) : Destination
 
     @Serializable
     data object ImportExport : Destination

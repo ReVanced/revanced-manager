@@ -6,6 +6,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModelOf(::MainViewModel)
+    viewModelOf(::OnboardingViewModel)
     viewModelOf(::DashboardViewModel)
     viewModelOf(::SelectedAppInfoViewModel)
     viewModelOf(::PatchesSelectorViewModel)
@@ -25,4 +26,5 @@ val viewModelModule = module {
     viewModelOf(::InstalledAppInfoViewModel)
     viewModelOf(::UpdatesSettingsViewModel)
     viewModelOf(::BundleListViewModel)
+    viewModelOf(::BundleInformationViewModel)
 }

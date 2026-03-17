@@ -1,6 +1,8 @@
 package app.revanced.manager.ui.component
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -11,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TextInputDialog(
     initial: String,
@@ -31,13 +34,14 @@ fun TextInputDialog(
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(value) },
-                enabled = valid
+                enabled = valid,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.ok))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismissRequest) {
+            TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         },

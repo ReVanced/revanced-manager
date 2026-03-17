@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Закрпувач</string>
+  <string name="onboarding_welcome_to">Добредојдовте во</string>
+  <string name="onboarding_welcome_back">Здраво! Тоа е новиот</string>
+  <string name="onboarding_apps_subtitle">Можете да изберете апликација за закрпување сега или да го направите тоа подоцна</string>
+  <string name="onboarding_apps_network_error">Не можеше да се вчитаат закрпите бидејќи мрежата е недостапна или нестабилна. Поврзете се на стабилна мрежа и обидете се повторно.</string>
+  <string name="onboarding_updates_subtitle">Конфигурирајте автоматски ажурирања за да ги одржувате ReVanced Manager и закрпите ажурирани</string>
+  <string name="banner_sources_not_downloaded_description">Закрпите и преземачите не можеа да бидат преземени за време на поставувањето. Допрете ажурирање за да ги преземете.</string>
+  <string name="onboarding_updates_note">ReVanced Manager ќе се поврзе со %s за да преземе почетни верзии доколку вашиот уред е поврзан на интернет.</string>
+  <string name="retry">Повторен обид</string>
+  <string name="onboarding_skip">Прескокни засега</string>
+  <string name="onboarding_recommended_version">Препорачана верзија: %s</string>
+  <string name="onboarding_permissions_skip_title">Прескокни дозволи?</string>
+  <string name="onboarding_permissions_skip_description">Без потребните дозволи, некои функции може да не работат правилно. Можете да ги доделите подоцна во поставките на апликацијата.</string>
+  <string name="onboarding_permissions_skip_anyway">Сепак прескокни</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager има потреба од неколку дозволи за правилно функционирање</string>
+  <string name="permission_install_apps">Инсталирај непознати апликации</string>
+  <string name="permission_install_apps_description">Потребно за инсталирање закрпени апликации</string>
+  <string name="permission_notifications">Известувања</string>
+  <string name="permission_notifications_description">Овозможува непречено закрпување во позадина</string>
+  <string name="permission_battery">Оптимизација на батерија</string>
+  <string name="permission_battery_description">Спречува прекин на закрпувањето во заднина</string>
+  <string name="permission_grant">Додели</string>
+  <string name="downloader_host_permission_label">Домаќин за преземање ReVanced Manager</string>
+  <string name="downloader_host_permission_description">Се користи за контрола на пристап до преземачите на ReVanced Manager. Само ReVanced Manager го има ова.</string>
+  <string name="fab_patch_app">Закрпи апликација</string>
+  <string name="fab_add_patches">Додај закрпи</string>
+  <string name="new_downloader_notification">Достапен(ни) е(се) нов(и) преземач(и). Кликнете тука за да ги конфигурирате.</string>
+  <string name="patches_not_downloaded">Закрпите не се преземени.</string>
+  <string name="app_source_dialog_option_auto_description">Користи инсталирана апликација, потоа преземена APK, потоа достапни преземачи</string>
+  <string name="app_source_dialog_option_auto_unavailable">Не се пронајдени компатибилни апликации или достапни преземачи</string>
+  <string name="app_source_dialog_option_installed_no_root">Поставените апликации не може повторно да се закрпат без root пристап</string>
+  <string name="patch_selector_item">Изберете закрпи</string>
+  <string name="patch_selector_item_description">%d закрпи избрани</string>
+  <string name="patch_selection_changed_warning">Изборот на закрпи е променет</string>
+  <string name="apk_source_selector_item">Изберете извор на APK</string>
+  <string name="apk_source_auto">Автоматски</string>
+  <string name="apk_source_auto_installed">Автоматски · Користи инсталирана APK</string>
+  <string name="apk_source_auto_downloaded">Автоматски · Користи преземена APK</string>
+  <string name="apk_source_auto_downloader">Авто · Користење достапни преземачи</string>
+  <string name="apk_source_auto_storage">Авто · Избери од складиште</string>
+  <string name="apk_source_downloaded">Веќе преземено</string>
+  <string name="auto_updates_dialog_description">Дали сакате ReVanced Manager периодично да проверува за ажурирања на следните компоненти?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced закрпи</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Преземачи</string>
+  <string name="auto_updates_dialog_note">Овие поставки може да се променат подоцна.
+
+    ReVanced Manager ќе се поврзе со %s за да преземе почетни верзии доколку вашиот уред е поврзан на интернет.</string>
+  <string name="announcements_filter_tag">Филтрирај по ознака</string>
+  <string name="announcements_show_archived">Прикажи архивирани</string>
+  <string name="updates_description">Проверете за ажурирања и прегледајте го дневникот на промени</string>
+  <string name="downloads_description">Преземачи и преземени апликации</string>
+  <string name="safeguards_toggled_warning">Заштитните мерки се променети</string>
+  <string name="about_app_name">За %1$s</string>
+  <string name="search_languages">Пребарај јазици…</string>
+  <string name="keystore">Хранилиште на клучеви</string>
+  <string name="patches_selections">Избори на закрпи</string>
+  <string name="select_bundle_for_import">Изберете пакет за увоз</string>
+  <string name="select_bundle_for_export">Изберете пакет за извоз</string>
+  <string name="patch_selection_packages">Апликации со зачувани избори</string>
+  <string name="patch_selection_entries">Вкупно избрани закрпи</string>
+  <string name="reset_configuration">Ресетирај конфигурација</string>
+  <string name="reset_patch_selection">Избори на закрпи</string>
+  <string name="reset_patch_options">Опции за закрпување</string>
+  <string name="downloaders">Преземачи</string>
+  <string name="downloader_prereleases">Користи претходни изданија</string>
+  <string name="downloader_prereleases_description">Користи претходни верзии на главниот преземач</string>
+  <string name="downloader_state_loaded">Вчитано</string>
+  <string name="downloader_state_failed">Неуспешно вчитување. Кликнете за повеќе детали</string>
+  <string name="downloader_state_missing">Недостасува</string>
+  <string name="downloader_delete_apps_title">Избриши избрани апликации</string>
+  <string name="downloader_delete_apps_description">Дали сте сигурни дека сакате да ги избришете избраните апликации?</string>
+  <string name="downloader_delete_single_description">Дали сте сигурни дека сакате да го избришете \"%s\"?</string>
+  <string name="downloader_settings_no_apps_description">Апликациите преземени преку ReVanced Manager ќе се појават тука.</string>
+  <string name="downloader_url">URL на преземачот</string>
+  <string name="downloader_add">Додај преземач</string>
+  <string name="select_downloader_type_dialog_description">Додај нови преземачи од URL или локални датотеки</string>
+  <string name="local_downloaders_description">Додај преземачи од локално складирање.</string>
+  <string name="remote_downloaders_description">Додај преземачи од URL. Може автоматски да се ажурира.</string>
+  <string name="install_revanced_downloaders">Инсталирајте преземачи за да добиете апликации директно во ReVanced Manager.</string>
+  <string name="install_revanced_downloader">Инсталирај ReVanced преземачи</string>
+  <string name="cancel_downloader_install_title">Откажи инсталација на преземачи?</string>
+  <string name="cancel_downloader_install_description">Инсталацијата на преземачи е во тек. Ако заминете сега, преземањето ќе биде откажано.</string>
+  <string name="downloader_sources_unavailable_title">Овие преземачи недостасуваат</string>
+  <string name="downloader_sources_unavailable_description">Кликнете на копчето за ажурирање за да го поправите.</string>
+  <string name="downloader_update_failed">Неуспешно ажурирање на преземачот: %s</string>
+  <string name="downloader_replace_fail">Неуспешно увезување на преземачот: %s</string>
+  <string name="select_from_storage_description">Изберете APK датотека од складиштето користејќи избирач на датотеки</string>
+  <string name="enable">Овозможи</string>
+  <string name="disable">Оневозможи</string>
+  <string name="process_runtime_memory_limit_description">Максимална количина на меморија што може да ја користи процесот на закрпување</string>
+  <string name="reset_onboarding">Ресетирај го воведот</string>
+  <string name="reset_onboarding_description">Прикажи го воведниот екран при следното стартување на апликацијата</string>
+  <string name="api_not_working_title">Услугата API моментално не е достапна</string>
+  <string name="api_not_working_description">Некои функции може да бидат засегнати. Проверете ја вашата врска или API URL-то во поставките.</string>
+  <string name="no_patched_apps_found">Не се пронајдени закрпени апликации</string>
+  <string name="no_patched_apps_description">Моментално немате закрпени апликации за кои знаеме. Променете го тоа со закрпување на вашата прва апликација!</string>
+  <string name="patched_apps_section_title">Закрпени апликации</string>
+  <string name="patchable_apps_section_title">Апликации кои може да се закрпат</string>
+  <string name="no_patches_found">Не се пронајдени закрпи</string>
+  <string name="no_patches_description">Сè уште немате закрпи. Додадете закрпи со допирање на копчето подолу!</string>
+  <string name="split_apk_not_supported">Поделени APK-и не можат да се закрпат</string>
+  <string name="no_downloaders_installed">Нема инсталирани преземачи на апликации!</string>
+  <string name="no_downloaders_trusted">Нема доделено доверба на ниту еден преземач на апликации! Ве молиме проверете ги вашите поставки.</string>
+  <string name="patch_selector_sheet_filter_packages_title">Пакети</string>
+  <string name="patch_selector_sheet_actions_title">Дејства</string>
+  <string name="restore_default_selection">Врати го стандардниот избор</string>
+  <string name="deselect_all">Поништи го изборот на сите</string>
+  <string name="invert_selection">Инвертирај избор</string>
+  <string name="deselect_all_except">Отштиклирај ги сите освен %s</string>
+  <string name="scope_dialog_title">Примени на</string>
+  <string name="scope_all_patches">Сите закрпи</string>
+  <string name="scope_bundle_patches">%s само</string>
+  <string name="save_as_file">Зачувај во датотеки</string>
+  <string name="export_patcher_logs">Извези дневници на закрпувачот</string>
+  <string name="save_logs_success">Дневниците се зачувани</string>
+  <string name="downloader_activity_dialog_body">Потребна е интеракција со корисникот за да се продолжи со овој преземач.</string>
+  <string name="patcher_step_unpack">Подготви крпач</string>
+  <string name="view_announcement">Погледни објава</string>
+  <string name="license">Лиценца</string>
+  <string name="source">Извор</string>
+  <string name="repository">Складиште</string>
+  <string name="bundle_information_by_author">Од %1$s</string>
+  <string name="version_compatibility_warning">Избраната верзија може да е некомпатибилна со избраните закрпи</string>
+  <string name="announcements">Објави</string>
+  <string name="archive">Архива</string>
+  <string name="view_update">Погледни ажурирање</string>
+  <string name="update_checking_downloader">Провери за ажурирања на ReVanced Downloaders при стартување</string>
+  <string name="update_checking_downloader_description">Проверете за ажурирања на инсталираните ReVanced Downloaders кога ќе се стартува апликацијата</string>
+  <string name="prereleases_warning">Пред-изданијата може да бидат нестабилни и да содржат грешки. Може да доживеете падови, губење податоци или други неочекувани проблеми. Овозможете го ова само ако сте запознаени со овие ризици.</string>
+  <string name="changelog">Погледни дневник на промени</string>
+  <string name="no_announcements_found">Не се пронајдени објави</string>
+  <string name="new_announcement">Нова објава:
+%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d крпка</item>
+    <item quantity="other">%d крпки</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">Изврши %d крпка</item>
+    <item quantity="other">Изврши %d крпки</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d избрано</item>
+    <item quantity="other">%d избрани</item>
+  </plurals>
+</resources>

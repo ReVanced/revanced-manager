@@ -6,13 +6,16 @@ import android.os.Parcelable
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
+import app.revanced.manager.downloader.DownloaderHostApi
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.downloader.OutputDownloadScope
+import app.revanced.manager.downloader.Scope
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import java.io.File
 import java.io.FilterOutputStream
@@ -21,7 +24,7 @@ import java.util.concurrent.atomic.AtomicLong
 import kotlin.io.path.outputStream
 
 class DownloadedAppRepository(
-    private val app: Application,
+    app: Application,
     db: AppDatabase,
     private val pm: PM
 ) {
@@ -35,6 +38,21 @@ class DownloadedAppRepository(
 
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
+    suspend fun cleanUp() {
+        val threshold = 1000 * 60 * 60 * 6
+        val now = System.currentTimeMillis()
+
+        val targets = getAll().first().filter {
+            (now - it.lastUsed) > threshold
+        }
+        delete(targets)
+    }
+
+    suspend fun deleteFor(packageName: String) {
+        delete(getAll().first().filter { it.packageName == packageName })
+    }
+
+    @OptIn(DownloaderHostApi::class)
     suspend fun download(
         downloader: LoadedDownloader,
         data: Parcelable,
@@ -54,9 +72,7 @@ class DownloadedAppRepository(
             val downloadedBytes = AtomicLong(0)
 
             channelFlow {
-                val scope = object : OutputDownloadScope {
-                    override val downloaderPackageName = downloader.packageName
-                    override val hostPackageName = app.packageName
+                val scope = object : OutputDownloadScope, Scope by downloader.scopeImpl {
                     override suspend fun reportSize(size: Long) {
                         require(size > 0) { "Size must be greater than zero" }
                         require(
@@ -87,7 +103,7 @@ class DownloadedAppRepository(
                                 )
                             }
                     }
-                    downloader.download(scope, data, stream)
+                    downloader.impl.download(scope, data, stream)
                 }
             }
                 .conflate()
@@ -107,7 +123,9 @@ class DownloadedAppRepository(
 
             // Delete the previous copy (if present).
             dao.get(pkgInfo.packageName, pkgInfo.versionName!!)?.directory?.let {
-                if (!dir.resolve(it).deleteRecursively()) throw Exception("Failed to delete existing directory")
+                if (!dir.resolve(it)
+                        .deleteRecursively()
+                ) throw Exception("Failed to delete existing directory")
             }
             dao.upsert(
                 DownloadedApp(
@@ -128,6 +146,13 @@ class DownloadedAppRepository(
     suspend fun get(packageName: String, version: String, markUsed: Boolean = false) =
         dao.get(packageName, version)?.also {
             if (markUsed) dao.markUsed(packageName, version)
+        }
+
+    suspend fun getAllByPackage(packageName: String) = dao.getAllByPackage(packageName)
+
+    suspend fun getLatestByPackage(packageName: String, markUsed: Boolean = false) =
+        dao.getLatestByPackage(packageName)?.also {
+            if (markUsed) dao.markUsed(it.packageName, it.version)
         }
 
     suspend fun delete(downloadedApps: Collection<DownloadedApp>) {

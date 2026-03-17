@@ -49,7 +49,8 @@ sealed class PatchBundleInfo {
             relevantPatches.forEach {
                 val targetList = when {
                     it.compatiblePackages == null -> universal
-                    it.supports(
+                    // Before a concrete version is chosen, keep version-targeted patches visible.
+                    version == null || it.supports(
                         packageName,
                         version
                     ) -> compatible

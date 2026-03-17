@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.data.room.apps.installed.InstalledPatchBundle
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.util.PM
@@ -41,6 +42,8 @@ class InstalledAppInfoViewModel(
     var appInfo: PackageInfo? by mutableStateOf(null)
         private set
     var appliedPatches: PatchSelection? by mutableStateOf(null)
+    var patchBundles: List<InstalledPatchBundle> by mutableStateOf(emptyList())
+        private set
     var isMounted by mutableStateOf(false)
         private set
 
@@ -53,6 +56,9 @@ class InstalledAppInfoViewModel(
                 }
                 appliedPatches = withContext(Dispatchers.IO) {
                     installedAppRepository.getAppliedPatches(it.currentPackageName)
+                }
+                patchBundles = withContext(Dispatchers.IO) {
+                    installedAppRepository.getInstalledPatchBundles(it.currentPackageName)
                 }
             }
         }
@@ -87,13 +93,15 @@ class InstalledAppInfoViewModel(
                 InstallType.DEFAULT -> {
                     when (val result = pm.uninstallPackage(app.currentPackageName)) {
                         is Session.State.Failed<UninstallFailure> -> {
-                            val msg = result.failure.message.orEmpty()
-                            context.toast(
-                                this@InstalledAppInfoViewModel.context.getString(
-                                    R.string.uninstall_app_fail,
-                                    msg
+                            if (result.failure !is UninstallFailure.Aborted) {
+                                val msg = result.failure.message.orEmpty()
+                                context.toast(
+                                    this@InstalledAppInfoViewModel.context.getString(
+                                        R.string.uninstall_app_fail,
+                                        msg
+                                    )
                                 )
-                            )
+                            }
                             return@launch
                         }
                         Session.State.Succeeded -> {}

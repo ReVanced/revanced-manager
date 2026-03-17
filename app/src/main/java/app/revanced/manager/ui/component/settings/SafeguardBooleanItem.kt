@@ -11,7 +11,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.revanced.manager.R
 import app.revanced.manager.domain.manager.base.Preference
 import app.revanced.manager.ui.component.ConfirmDialog
 import kotlinx.coroutines.CoroutineScope
@@ -24,21 +23,46 @@ fun SafeguardBooleanItem(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     @StringRes headline: Int,
     @StringRes description: Int,
-    @StringRes confirmationText: Int
+    @StringRes dialogTitle: Int,
+    @StringRes confirmationText: Int,
+    onValueChange: ((Boolean) -> Unit)? = null
+) = SafeguardBooleanItem(
+    modifier = modifier,
+    preference = preference,
+    coroutineScope = coroutineScope,
+    headline = headline,
+    description = stringResource(description),
+    dialogTitle = dialogTitle,
+    confirmationText = confirmationText,
+    onValueChange = onValueChange
+)
+
+@Composable
+fun SafeguardBooleanItem(
+    modifier: Modifier = Modifier,
+    preference: Preference<Boolean>,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    @StringRes headline: Int,
+    description: String,
+    @StringRes dialogTitle: Int,
+    @StringRes confirmationText: Int,
+    onValueChange: ((Boolean) -> Unit)? = null
 ) {
     val value by preference.getAsState()
     var showSafeguardWarning by rememberSaveable {
         mutableStateOf(false)
     }
 
+    val update = onValueChange ?: { coroutineScope.launch { preference.update(it) } }
+
     if (showSafeguardWarning) {
         ConfirmDialog(
             onDismiss = { showSafeguardWarning = false },
             onConfirm = {
-                coroutineScope.launch { preference.update(!value) }
+                update(!value)
                 showSafeguardWarning = false
             },
-            title = stringResource(id = R.string.warning),
+            title = stringResource(id = dialogTitle),
             description = stringResource(confirmationText),
             icon = Icons.Outlined.WarningAmber
         )
@@ -51,7 +75,7 @@ fun SafeguardBooleanItem(
             if (it != preference.default) {
                 showSafeguardWarning = true
             } else {
-                coroutineScope.launch { preference.update(it) }
+                update(it)
             }
         },
         headline = headline,

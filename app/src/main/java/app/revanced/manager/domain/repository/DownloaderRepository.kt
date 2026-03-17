@@ -2,174 +2,192 @@ package app.revanced.manager.domain.repository
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.os.Parcelable
-import android.util.Log
+import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
-import app.revanced.manager.data.room.downloader.TrustedDownloader
-import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.network.downloader.DownloaderPackageState
+import app.revanced.manager.data.room.downloader.DownloaderEntity
+import app.revanced.manager.data.room.sources.SourceProperties
+import app.revanced.manager.domain.manager.SourceManager
+import app.revanced.manager.domain.sources.APISource
+import app.revanced.manager.domain.sources.JsonSource
+import app.revanced.manager.domain.sources.Loader
+import app.revanced.manager.domain.sources.LocalSource
+import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.downloader.DownloaderBuilder
 import app.revanced.manager.downloader.DownloaderHostApi
 import app.revanced.manager.downloader.Scope
+import app.revanced.manager.network.downloader.DownloaderPackage
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.tag
 import dalvik.system.PathClassLoader
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
+import java.io.File
 import java.lang.reflect.Modifier
+import app.revanced.manager.data.room.sources.Source as SourceInfo
 
 @OptIn(DownloaderHostApi::class)
 class DownloaderRepository(
     private val pm: PM,
-    private val prefs: PreferencesManager,
-    private val app: Application,
+    app: Application,
     db: AppDatabase
+) : SourceManager<DownloaderEntity, DownloaderPackage, List<LoadedDownloader>>(
+    emptyList(),
+    app.getDir("downloaders", Context.MODE_PRIVATE)
 ) {
-    private val trustDao = db.trustedDownloaderDao()
-    private val _downloaderPackageStates =
-        MutableStateFlow(emptyMap<String, DownloaderPackageState>())
-    val downloaderPackageStates = _downloaderPackageStates.asStateFlow()
-    val loadedDownloadersFlow = downloaderPackageStates.map { states ->
-        states.values.filterIsInstance<DownloaderPackageState.Loaded>().flatMap { it.downloaders }
+    private val dao = db.downloaderDao()
+
+    override val defaultSource = DownloaderEntity(
+        uid = 0,
+        name = "",
+        versionHash = null,
+        source = SourceInfo.API,
+        autoUpdate = false
+    )
+
+    override suspend fun dbGetAll() = dao.all()
+    override suspend fun dbGetProps(uid: Int) = dao.getProps(uid)
+    override suspend fun dbUpsert(entity: DownloaderEntity) = dao.upsert(entity)
+    override suspend fun dbRemove(uid: Int) = dao.remove(uid)
+    override suspend fun dbReset() = dao.reset()
+
+    private val loader = Loader { file ->
+        val pkgInfo = pm.getPackageInfo(file) ?: error("Failed to get package info for $file")
+        loadPackage(pkgInfo)
     }
 
-    private val acknowledgedPackageNames = prefs.acknowledgedDownloaders
-    private val installedDownloaderPackageNames = MutableStateFlow(emptySet<String>())
-    val newDownloaderPackageNames = combine(
-        installedDownloaderPackageNames,
-        acknowledgedPackageNames.flow
-    ) { installed, acknowledged ->
-        installed subtract acknowledged
-    }
+    override fun loadEntity(entity: DownloaderEntity): Source<DownloaderPackage> = with(entity) {
+        val file = directoryOf(uid).resolve("downloader.jar")
 
-    suspend fun reload() {
-        val downloaderPackages =
-            withContext(Dispatchers.IO) {
-                pm.getPackagesWithFeature(DOWNLOADER_FEATURE)
-                    .associate { it.packageName to loadPackage(it) }
-            }
+        return when (source) {
+            is SourceInfo.Local -> LocalSource(name, uid, null, file, loader)
+            is SourceInfo.API -> APISource(
+                name,
+                uid,
+                versionHash,
+                null,
+                file,
+                SourceInfo.API.SENTINEL,
+                autoUpdate,
+                loader
+            ) { getDownloaderUpdate() }
 
-        _downloaderPackageStates.value = downloaderPackages
-        installedDownloaderPackageNames.value = downloaderPackages.keys
-
-        val acknowledgedDownloader = this@DownloaderRepository.acknowledgedPackageNames.get()
-        val uninstalledDownloader =
-            acknowledgedDownloader subtract installedDownloaderPackageNames.value
-        if (uninstalledDownloader.isNotEmpty()) {
-            Log.d(tag, "Uninstalled downloader: ${uninstalledDownloader.joinToString(", ")}")
-            this@DownloaderRepository.acknowledgedPackageNames.update(acknowledgedDownloader subtract uninstalledDownloader)
-            trustDao.removeAll(uninstalledDownloader)
+            is SourceInfo.Remote -> JsonSource(
+                name,
+                uid,
+                versionHash,
+                null,
+                file,
+                source.url.toString(),
+                autoUpdate,
+                loader
+            )
         }
     }
+
+    override fun entityFromProps(
+        uid: Int,
+        props: SourceProperties
+    ) = DownloaderEntity(
+        uid,
+        name = props.name,
+        versionHash = props.versionHash,
+        source = props.source,
+        autoUpdate = props.autoUpdate
+    )
+
+    override fun uidOf(entity: DownloaderEntity) = entity.uid
+    override fun realNameOf(loaded: DownloaderPackage) = loaded.name
+
+    override val updateFailed = R.string.downloader_update_failed
+    override val updateSuccess = R.string.patches_update_success
+    override val updateUnavailable = R.string.patches_update_unavailable
+    override val replaceFail = R.string.downloader_replace_fail
+
+    override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<DownloaderPackage>>) =
+        sources.values.flatMap { src -> src.loaded?.downloaders.orEmpty() }
+
+    val downloaderSources = store.state.map { it.sources }
+    val loadedDownloadersFlow = store.state.map { it.data }
+
+    // TODO: clear data for removed downloaders.
+    private val dataDir = app.getDir("downloaders_data", Context.MODE_PRIVATE)
+
+    fun findPackageByName(packageName: String) =
+        store.state.value.sources.values.asSequence().mapNotNull { it.loaded }
+            .find { it.context.packageName == packageName }
 
     fun unwrapParceledData(data: ParceledDownloaderData): Pair<LoadedDownloader, Parcelable> {
-        val state =
-            (_downloaderPackageStates.value[data.downloaderPackageName] as? DownloaderPackageState.Loaded)
-                ?: throw Exception("Downloader package name ${data.downloaderPackageName} is not available")
-        val downloader = state.downloaders.firstOrNull { it.className == data.downloaderClassName }
+        val pkg = findPackageByName(data.downloaderPackageName) ?: throw Exception("Downloader package ${data.downloaderPackageName} is not available")
+        val downloader = pkg.downloaders.firstOrNull { it.className == data.downloaderClassName }
             ?: throw Exception("No downloader with name ${data.downloaderClassName} found in ${data.downloaderPackageName}")
 
-        return downloader to data.unwrapWith(state.classLoader)
+        return downloader to data.unwrapWith(pkg.classLoader)
     }
 
-    private suspend fun loadPackage(packageInfo: PackageInfo): DownloaderPackageState {
+    private val createApplicationContext by lazy {
+        val clazz = Context::class.java
+        clazz.getMethod("createApplicationContext", ApplicationInfo::class.java, Int::class.java)
+    }
+
+    private fun loadPackage(packageInfo: PackageInfo): DownloaderPackage {
         val packageName = packageInfo.packageName
-        try {
-            if (!verify(packageName)) return DownloaderPackageState.Untrusted
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Log.e(tag, "Got exception while verifying downloader $packageName", e)
-            return DownloaderPackageState.Failed(e)
+
+        // The context is technically only necessary for resources. On API levels 30 and above, it would be better to use the proper APIs for dynamic resource loading.
+        val downloaderContext = createApplicationContext(
+            app,
+            packageInfo.applicationInfo,
+            0
+        ) as Context
+
+        val classNamesResId =
+            @SuppressLint("DiscouragedApi") downloaderContext.resources.getIdentifier(
+                CLASSES_RESOURCE_NAME,
+                "array",
+                downloaderContext.packageName
+            )
+        if (classNamesResId == 0) throw Exception("Class names resource not found (array/$CLASSES_RESOURCE_NAME)")
+        val classNames = downloaderContext.resources.getStringArray(classNamesResId)
+
+        val classLoader =
+            PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
+
+        val scopeImpl = object : Scope {
+            override val hostPackageName = app.packageName
+            override val downloaderPackageName = downloaderContext.packageName
+            override val dataDir =
+                this@DownloaderRepository.dataDir.resolve(downloaderPackageName).also(File::mkdirs)
         }
 
-        return try {
-            val downloaderContext = app.createPackageContext(packageName, 0)
-
-            val classNamesResId =
-                @SuppressLint("DiscouragedApi") downloaderContext.resources.getIdentifier(
-                    CLASSES_RESOURCE_NAME,
-                    "array",
-                    downloaderContext.packageName
-                )
-            if (classNamesResId == 0) throw Exception("Class names resource not found (array/$CLASSES_RESOURCE_NAME)")
-            val classNames = downloaderContext.resources.getStringArray(classNamesResId)
-
-            val classLoader =
-                PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
-
-            val scopeImpl = object : Scope {
-                override val hostPackageName = app.packageName
-                override val downloaderPackageName = downloaderContext.packageName
-            }
-
-            DownloaderPackageState.Loaded(
-                classNames.map { className ->
-                    val downloader = classLoader
-                        .loadClass(className)
-                        .getDownloaderBuilder()
-                        .build(
-                            scopeImpl = scopeImpl,
-                            context = downloaderContext
-                        )
-
-                    LoadedDownloader(
-                        packageName,
-                        className,
-                        downloaderContext.getString(downloader.name),
-                        packageInfo.versionName!!,
-                        downloader.get,
-                        downloader.download
+        return DownloaderPackage(
+            classNames.map { className ->
+                val downloader = classLoader
+                    .loadClass(className)
+                    .getDownloaderBuilder()
+                    .build(
+                        scopeImpl = scopeImpl,
+                        context = downloaderContext
                     )
-                },
-                classLoader,
-                with(pm) { packageInfo.label() }
-            )
-        } catch (e: CancellationException) {
-            throw e
-        } catch (t: Throwable) {
-            Log.e(tag, "Failed to load downloader $packageName", t)
-            DownloaderPackageState.Failed(t)
-        }
-    }
 
-    suspend fun trustPackage(packageName: String) {
-        trustDao.upsertTrust(
-            TrustedDownloader(
-                packageName,
-                pm.getSignature(packageName).toByteArray()
-            )
+                LoadedDownloader(
+                    packageName,
+                    className,
+                    downloaderContext.getString(downloader.name),
+                    scopeImpl,
+                    downloader
+                )
+            },
+            classLoader,
+            downloaderContext,
+            with(pm) { packageInfo.label() },
+            packageInfo.versionName.orEmpty()
         )
-
-        reload()
-        prefs.edit {
-            acknowledgedPackageNames += packageName
-        }
-    }
-
-    suspend fun revokeTrustForPackage(packageName: String) =
-        trustDao.remove(packageName).also { reload() }
-
-    suspend fun acknowledgeAll() =
-        acknowledgedPackageNames.update(installedDownloaderPackageNames.value)
-
-    private suspend fun verify(packageName: String): Boolean {
-        val expectedSignature =
-            trustDao.getTrustedSignature(packageName) ?: return false
-
-        return pm.hasSignature(packageName, expectedSignature)
     }
 
     private companion object {
-        const val DOWNLOADER_FEATURE = "app.revanced.manager.downloader"
         const val CLASSES_RESOURCE_NAME = "app.revanced.manager.downloader.classes"
 
         const val PUBLIC_STATIC = Modifier.PUBLIC or Modifier.STATIC

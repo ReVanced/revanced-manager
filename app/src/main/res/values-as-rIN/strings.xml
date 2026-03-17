@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">পেচাৰ</string>
+  <string name="onboarding_welcome_to">স্বাগতম</string>
+  <string name="onboarding_welcome_back">নমস্কাৰ! এইটো নতুন</string>
+  <string name="onboarding_apps_subtitle">আপুনি এতিয়া পেচ কৰিবলৈ এটা এপ বাছনি কৰিব পাৰে অথবা পিছত কৰিব পাৰে</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager আৰু পেচসমূহ আপডেট ৰাখিবলৈ স্বয়ংক্ৰিয় আপডেটসমূহ ছেট আপ কৰক</string>
+  <string name="onboarding_updates_note">ReVanced Manager-এ আপোনাৰ ডিভাইচ ইন্টাৰনেটৰ সৈতে সংযুক্ত থাকিলে প্ৰাৰম্ভিক সংস্কৰণসমূহ ডাউনল\'ড কৰিবলৈ %s লৈ সংযোগ কৰিব।</string>
+  <string name="retry">পুনৰ চেষ্টা কৰক</string>
+  <string name="onboarding_skip">এতিয়াৰ বাবে এৰি দিয়ক</string>
+  <string name="onboarding_recommended_version">পৰামৰ্শিত সংস্কৰণ: %s</string>
+  <string name="onboarding_permissions_skip_title">অনুমতিসমূহ এৰি দিবনে?</string>
+  <string name="onboarding_permissions_skip_description">প্ৰয়োজনীয় অনুমতিসমূহ অবিহনে, কিছুমান বৈশিষ্ট্য সঠিকভাৱে কাম নকৰিবও পাৰে। আপুনি পিছত এপ ছেটিংছত সেইবোৰ প্ৰদান কৰিব পাৰে।</string>
+  <string name="onboarding_permissions_skip_anyway">তথাপিও এৰি দিয়ক</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager-ক সঠিকভাৱে কাম কৰিবলৈ কিছুমান অনুমতিৰ প্ৰয়োজন।</string>
+  <string name="permission_install_apps">অচিনাকি এপ ইনষ্টল কৰক</string>
+  <string name="permission_install_apps_description">পেচ কৰা এপ্লিকেচন ইনষ্টল কৰিবলৈ প্ৰয়োজন</string>
+  <string name="permission_notifications">জাননীসমূহ</string>
+  <string name="permission_battery">বেটাৰী অনুকূলন</string>
+  <string name="permission_battery_description">পৃষ্ঠভূমিত পেচ কৰাত বাধা নপৰাকৈ ৰাখে</string>
+  <string name="permission_grant">অনুমোদন কৰক</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ডাউনল\'ডাৰ হ\'ষ্ট</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ডাউনল\'ডাৰবোৰলৈ অভিগম নিয়ন্ত্ৰণ কৰিবলৈ ব্যৱহাৰ কৰা হয়। কেৱল ReVanced Manager ৰ ওচৰত এইটো আছে।</string>
+  <string name="fab_patch_app">এটা এপ পেচ কৰক</string>
+  <string name="fab_add_patches">পেচসমূহ যোগ কৰক</string>
+  <string name="new_downloader_notification">নতুন ডাউনলোডৰ(সমূহ) উপলব্ধ। সেইবোৰ কনফিগাৰ কৰিবলৈ ইয়াত ক্লিক কৰক।</string>
+  <string name="patches_not_downloaded">পেচসমূহ ডাউনলোড কৰা হোৱা নাই।</string>
+  <string name="app_source_dialog_option_auto_description">ইনষ্টল কৰা এপ ব্যৱহাৰ কৰক, তাৰ পিছত ডাউনলোড কৰা APK, তাৰ পিছত উপলব্ধ ডাউনলোডাৰসমূহ</string>
+  <string name="app_source_dialog_option_auto_unavailable">কোনো সুসংগত এপ বা ডাউনল’ডাৰ উপলব্ধ নহয়</string>
+  <string name="app_source_dialog_option_installed_no_root">ৰুট এক্সেছ অবিহনে মাউণ্ট কৰা এপবোৰ পুনৰ পেচ কৰিব নোৱাৰি</string>
+  <string name="patch_selector_item">পেচসমূহ নিৰ্বাচন কৰক</string>
+  <string name="patch_selector_item_description">%d পেচ নিৰ্বাচিত হৈছে</string>
+  <string name="patch_selection_changed_warning">পেচসমূহৰ নিৰ্বাচন সলনি কৰা হৈছে</string>
+  <string name="apk_source_selector_item">APK উৎস নিৰ্বাচন কৰক</string>
+  <string name="apk_source_auto">স্বয়ংক্ৰিয়</string>
+  <string name="apk_source_auto_installed">স্বয়ংক্ৰিয় · ইনষ্টল কৰা APK ব্যৱহাৰ কৰি</string>
+  <string name="apk_source_auto_downloaded">স্বয়ংক্ৰিয় · ডাউনলোড কৰা APK ব্যৱহাৰ কৰি</string>
+  <string name="apk_source_auto_downloader">স্বয়ংক্রিয় · উপলব্ধ ডাউনলোডাৰ ব্যৱহাৰ কৰি</string>
+  <string name="apk_source_auto_storage">স্বয়ংক্রিয় · সংৰক্ষণৰ পৰা বাছক</string>
+  <string name="apk_source_downloaded">ইতিমধ্যে ডাউনলোড কৰা হৈছে</string>
+  <string name="auto_updates_dialog_description">আপুনি ReVanced Manager-ক তলত দিয়া উপাদানসমূহৰ বাবে সময়ে সময়ে আপডেট পৰীক্ষা কৰিবলৈ বিচাৰেনে?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced পেচসমূহ</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: ডাউনলোডারসমূহ</string>
+  <string name="auto_updates_dialog_note">এই ছেটিংসমূহ পিছত সলনি কৰিব পাৰি।
+
+    ReVanced Manager-এ আপোনাৰ ডিভাইচ ইন্টাৰনেটৰ সৈতে সংযুক্ত থাকিলে প্ৰাৰম্ভিক সংস্কৰণসমূহ ডাউনল\'ড কৰিবলৈ %s লৈ সংযোগ কৰিব।</string>
+  <string name="announcements_filter_tag">টেগ অনুসৰি ফিল্টাৰ কৰক</string>
+  <string name="announcements_show_archived">আৰ্কাইভ কৰা দেখুৱাওক</string>
+  <string name="updates_description">আপডেটৰ বাবে পৰীক্ষা কৰক আৰু সলনি তালিকাসমূহ চাওক</string>
+  <string name="downloads_description">ডাউনলোডাৰসকল আৰু ডাউনলোড কৰা এপসমূহ</string>
+  <string name="safeguards_toggled_warning">নিৰাপত্তাসমূহ টগল কৰা হৈছে</string>
+  <string name="about_app_name">%1$s বিষয়ে</string>
+  <string name="search_languages">ভাষাসমূহ বিচাৰক…</string>
+  <string name="keystore">কীষ্ট\'ৰ</string>
+  <string name="patches_selections">পেচ নিৰ্বাচনসমূহ</string>
+  <string name="select_bundle_for_import">আমদানি কৰিবলৈ বাণ্ডিল নিৰ্বাচন কৰক</string>
+  <string name="select_bundle_for_export">ৰপ্তানি কৰিবলৈ বাণ্ডিল নিৰ্বাচন কৰক</string>
+  <string name="patch_selection_packages">সংৰক্ষিত নিৰ্বাচন থকা এপসমূহ</string>
+  <string name="patch_selection_entries">মুঠ নিৰ্বাচিত পেচসমূহ</string>
+  <string name="reset_configuration">কনফিগাৰেশ্বন ৰিছেট কৰক</string>
+  <string name="reset_patch_selection">পেচ নিৰ্বাচনসমূহ</string>
+  <string name="reset_patch_options">পেচ বিকল্পসমূহ</string>
+  <string name="downloaders">ডাউনলোডাৰসকল</string>
+  <string name="downloader_prereleases">প্ৰি-ৰিলিজ ব্যৱহাৰ কৰক</string>
+  <string name="downloader_prereleases_description">মূল ডাউনলোডাৰৰ প্ৰি-ৰিলিজ সংস্কৰণসমূহ ব্যৱহাৰ কৰক</string>
+  <string name="downloader_state_loaded">ল\'ড কৰা হৈছে</string>
+  <string name="downloader_state_failed">লোড কৰাত ব্যৰ্থ হৈছে। অধিক বিৱৰণৰ বাবে ক্লিক কৰক</string>
+  <string name="downloader_state_missing">নাই</string>
+  <string name="downloader_delete_apps_title">নিৰ্বাচিত এপসমূহ বিলোপ কৰক</string>
+  <string name="downloader_delete_apps_description">আপুনি নিশ্চিতনে যে আপুনি নিৰ্বাচিত এপসমূহ বিলোপ কৰিব বিচাৰে?</string>
+  <string name="downloader_delete_single_description">আপুনি নিশ্চিতনে যে আপুনি \"%s\" বিলোপ কৰিব বিচাৰে?</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager-ৰ জৰিয়তে ডাউনলোড কৰা এপসমূহ ইয়াত দেখা যাব।</string>
+  <string name="downloader_url">ডাউনলোডাৰ URL</string>
+  <string name="downloader_add">ডাউনলোডাৰ যোগ কৰক</string>
+  <string name="select_downloader_type_dialog_description">URL বা স্থানীয় ফাইলৰ পৰা নতুন ডাউনলোডাৰ যোগ কৰক</string>
+  <string name="local_downloaders_description">স্থানীয় সংৰক্ষণৰ পৰা ডাউনলোডাৰ যোগ কৰক।</string>
+  <string name="remote_downloaders_description">URL ৰ পৰা ডাউনলোডাৰ যোগ কৰক। আপোনা-আপুনি আপডেইট কৰিব পাৰি।</string>
+  <string name="install_revanced_downloaders">ReVanced Manager-ৰ ভিতৰতে এপসমূহ পাবলৈ ডাউনলোডৰসমূহ ইনষ্টল কৰক।</string>
+  <string name="install_revanced_downloader">ReVanced ডাউনলোডৰসমূহ ইনষ্টল কৰক</string>
+  <string name="cancel_downloader_install_title">ডাউনলোডৰসমূহৰ ইনষ্টলেচন বাতিল কৰিবনে?</string>
+  <string name="cancel_downloader_install_description">ডাউনলোডৰসমূহৰ ইনষ্টলেচন চলি আছে। যদি আপুনি এতিয়া এৰি দিয়ে, ডাউনলোডটো বাতিল কৰা হ\'ব।</string>
+  <string name="downloader_sources_unavailable_title">এই ডাউনলোডাৰবোৰ হেৰাই গৈছে</string>
+  <string name="downloader_sources_unavailable_description">ইয়াক ঠিক কৰিবলৈ আপডেইট বুটামত ক্লিক কৰক।</string>
+  <string name="downloader_update_failed">ডাউনলোডাৰ আপডেইট কৰাত ব্যৰ্থ হৈছে: %s</string>
+  <string name="downloader_replace_fail">ডাউনলোডাৰ আমদানি কৰাত ব্যৰ্থ হৈছে: %s</string>
+  <string name="select_from_storage_description">ফাইল পিকাৰ ব্যৱহাৰ কৰি ষ্টোৰেজৰ পৰা এটা APK ফাইল নিৰ্বাচন কৰক</string>
+  <string name="enable">সক্ৰিয় কৰক</string>
+  <string name="disable">নিষ্ক্ৰিয় কৰক</string>
+  <string name="process_runtime_memory_limit_description">পেচাৰ প্ৰক্ৰিয়াই ব্যৱহাৰ কৰিব পৰা স্মৃতিৰ সৰ্বোচ্চ পৰিমাণ</string>
+  <string name="reset_onboarding">অনব\'ৰ্ডিং ৰিছেট কৰক</string>
+  <string name="reset_onboarding_description">পৰৱৰ্তী এপ মুকলি কৰোঁতে অনব\'ৰ্ডিং স্ক্ৰীণ দেখুৱাওক</string>
+  <string name="api_not_working_title">API সেৱা বৰ্তমান বন্ধ আছে।</string>
+  <string name="api_not_working_description">কিছুমান বৈশিষ্ট্য প্ৰভাৱিত হ\'ব পাৰে। আপোনাৰ সংযোগ বা ছেটিংছত API URL পৰীক্ষা কৰক।</string>
+  <string name="no_patched_apps_found">কোনো পেচ কৰা এপ পোৱা নগ\'ল</string>
+  <string name="no_patched_apps_description">আমি জনা মতে আপোনাৰ বৰ্তমান কোনো পেচ কৰা এপ নাই। আপোনাৰ প্ৰথম এপটো পেচ কৰি সেইটো সলনি কৰক!</string>
+  <string name="patched_apps_section_title">পেচ কৰা এপ্লিকেচনসমূহ</string>
+  <string name="patchable_apps_section_title">পেচ কৰিব পৰা এপ্লিকেচনসমূহ</string>
+  <string name="no_patches_found">কোনো পেচ পোৱা নগ\'ল</string>
+  <string name="no_patches_description">আপোনাৰ এতিয়ালৈকে কোনো পেচ নাই। তলৰ বুটামত টেপ কৰি পেচসমূহ যোগ কৰক!</string>
+  <string name="split_apk_not_supported">বিভক্ত APK পেচ কৰিব নোৱাৰি</string>
+  <string name="no_downloaders_installed">কোনো এপ ডাউনলোডৰ ইনষ্টল কৰা হোৱা নাই!</string>
+  <string name="no_downloaders_trusted">কোনো এপ ডাউনলোডৰ বিশ্বাসযোগ্য কৰা হোৱা নাই! অনুগ্ৰহ কৰি আপোনাৰ ছেটিংছ পৰীক্ষা কৰক।</string>
+  <string name="patch_selector_sheet_filter_packages_title">প্যাকেজসমূহ</string>
+  <string name="patch_selector_sheet_actions_title">কাৰ্য্যসমূহ</string>
+  <string name="restore_default_selection">ডিফল্ট বাছনি পুনৰুদ্ধাৰ কৰক</string>
+  <string name="deselect_all">সকলো বাছনিমুক্ত কৰক</string>
+  <string name="invert_selection">বাছনি ওলোটা কৰক</string>
+  <string name="deselect_all_except">%s বাহিৰে সকলোবোৰ বাছনিহীন কৰক</string>
+  <string name="scope_dialog_title">প্ৰয়োগ কৰক</string>
+  <string name="scope_all_patches">সকলো পেচ</string>
+  <string name="scope_bundle_patches">কেৱল %s</string>
+  <string name="save_as_file">ফাইললৈ সংৰক্ষণ কৰক</string>
+  <string name="export_patcher_logs">পেচাৰ ল\'গসমূহ ৰপ্তানি কৰক</string>
+  <string name="save_logs_success">ল\'গসমূহ সংৰক্ষিত হৈছে</string>
+  <string name="downloader_activity_dialog_body">এই ডাউনলোডাৰৰ সৈতে আগবাঢ়িবলৈ ব্যৱহাৰকাৰীৰ ক্ৰিয়া-কলাপৰ প্ৰয়োজন।</string>
+  <string name="patcher_step_unpack">পেচাৰ প্ৰস্তুত কৰক</string>
+  <string name="view_announcement">ঘোষণা চাওক</string>
+  <string name="license">অনুজ্ঞাপত্ৰ</string>
+  <string name="source">উৎস</string>
+  <string name="repository">ৰিপ\'জিটৰী</string>
+  <string name="bundle_information_by_author">%1$s দ্বাৰা</string>
+  <string name="version_compatibility_warning">নিৰ্বাচিত সংস্কৰণটো নিৰ্বাচিত পেচসমূহৰ সৈতে অসঙ্গতিপূৰ্ণ হ\'ব পাৰে</string>
+  <string name="announcements">ঘোষণাসমূহ</string>
+  <string name="archive">আৰ্কাইভ</string>
+  <string name="view_update">আপডেট চাওক</string>
+  <string name="update_checking_downloader">মুকলি কৰোঁতে ReVanced ডাউনলোডৰৰ আপডেটসমূহৰ বাবে পৰীক্ষা কৰক</string>
+  <string name="update_checking_downloader_description">যেতিয়া এপ্লিকেচন আৰম্ভ হয়, ইনষ্টল কৰা ReVanced ডাউনলোডৰসমূহৰ আপডেটসমূহৰ বাবে পৰীক্ষা কৰক।</string>
+  <string name="prereleases_warning">প্ৰি-ৰিলিজ সংস্কৰণসমূহ অস্থিৰ হ\'ব পাৰে আৰু বাগ থাকিব পাৰে। আপুনি ক্ৰেচ, ডেটা হেৰুৱা, অথবা অন্য অপ্রত্যাশিত সমস্যাৰ সন্মুখীন হ\'ব পাৰে। যদি আপুনি এই বিপদাশংকাবোৰৰ সৈতে স্বস্তিবোধ কৰে তেন্তেহে এইটো সক্ৰিয় কৰক।</string>
+  <string name="changelog">সলনি তালিকাসমূহ চাওক</string>
+  <string name="no_announcements_found">কোনো জাননী পোৱা নগ\'ল</string>
+  <string name="new_announcement">নতুন জাননী:
+%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d পেচ</item>
+    <item quantity="other">%d পেচবোৰ</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">%d পেচ কাৰ্যকৰী কৰক</item>
+    <item quantity="other">%d পেচবোৰ কাৰ্যকৰী কৰক</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d নিৰ্বাচিত</item>
+    <item quantity="other">%d নিৰ্বাচিত</item>
+  </plurals>
+</resources>

@@ -57,6 +57,7 @@ dependencies {
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.foundation.layout)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
 
@@ -64,7 +65,7 @@ dependencies {
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
 
-    // Downloader plugins
+    // Downloaders
     implementation(project(":api"))
 
     // Native processes
@@ -131,13 +132,21 @@ buildscript {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 36
-    buildToolsVersion = "35.0.1"
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "app.revanced.manager.flutter"
-        minSdk = 26
-        targetSdk = 35
+
+        minSdk {
+            version = release(26)
+        }
+        targetSdk {
+            version = release(36)
+        }
 
         val versionStr = if (version == "unspecified") "1.0.0" else version.toString()
         versionName = versionStr
@@ -161,27 +170,26 @@ android {
             .joinToString(prefix = "{", separator = ",", postfix = "}") { "\"$it\"" }
 
         buildConfigField("String[]", "SUPPORTED_LOCALES", locales)
+
+        val deepLinkScheme = "revanced-manager"
+        manifestPlaceholders["deepLinkScheme"] = deepLinkScheme
+
+        buildConfigField("String", "DEEP_LINK_SCHEME", "\"$deepLinkScheme\"")
     }
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (Debug)")
-
-            buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
 
         release {
-            if (!project.hasProperty("noProguard")) {
-                isMinifyEnabled = true
-                isShrinkResources = true
-                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            }
+            // Causes patching to not work properly, if enabled.
+            isMinifyEnabled = false
+            isShrinkResources = false
 
             val keystoreFile = file("keystore.jks")
 
             if (project.hasProperty("signAsDebug") || !keystoreFile.exists()) {
-                applicationIdSuffix = ".debug_signed"
                 resValue("string", "app_name", "ReVanced Manager (Debug signed)")
                 signingConfig = signingConfigs.getByName("debug")
 
@@ -194,8 +202,6 @@ android {
                     keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
                 }
             }
-
-            buildConfigField("long", "BUILD_ID", "0L")
         }
     }
 
@@ -255,11 +261,8 @@ android {
             excludes += "/META-INF/**/*.properties"
             excludes += "/META-INF/DEPENDENCIES"
 
-            // Desktop AAPT binaries
-            excludes += "/prebuilt/**"
-
-            // Reflection symbol list (https://stackoverflow.com/a/41073782/13964629)
-            excludes += "/**/*.kotlin_builtins"
+            // AAPT
+            excludes += "/prebuilt/**/*"
         }
         jniLibs {
             // 32-bit x86 is dead

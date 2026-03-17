@@ -25,11 +25,20 @@ interface InstalledAppDao {
         "patch_name"
     ) String>>
 
+    @Query("SELECT * FROM installed_patch_bundle WHERE package_name = :packageName")
+    suspend fun getInstalledPatchBundles(packageName: String): List<InstalledPatchBundle>
+
     @Transaction
-    suspend fun upsertApp(installedApp: InstalledApp, appliedPatches: List<AppliedPatch>) {
+    suspend fun upsertApp(
+        installedApp: InstalledApp,
+        appliedPatches: List<AppliedPatch>,
+        patchBundles: List<InstalledPatchBundle>
+    ) {
         upsertApp(installedApp)
         deleteAppliedPatches(installedApp.currentPackageName)
+        deleteInstalledPatchBundles(installedApp.currentPackageName)
         insertAppliedPatches(appliedPatches)
+        insertInstalledPatchBundles(patchBundles)
     }
 
     @Upsert
@@ -38,8 +47,14 @@ interface InstalledAppDao {
     @Insert
     suspend fun insertAppliedPatches(appliedPatches: List<AppliedPatch>)
 
+    @Insert
+    suspend fun insertInstalledPatchBundles(patchBundles: List<InstalledPatchBundle>)
+
     @Query("DELETE FROM applied_patch WHERE package_name = :packageName")
     suspend fun deleteAppliedPatches(packageName: String)
+
+    @Query("DELETE FROM installed_patch_bundle WHERE package_name = :packageName")
+    suspend fun deleteInstalledPatchBundles(packageName: String)
 
     @Delete
     suspend fun delete(installedApp: InstalledApp)

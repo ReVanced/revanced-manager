@@ -1,10 +1,19 @@
+@file:Suppress("DEPRECATION")
+
 package app.revanced.manager.util
 
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.graphics.Bitmap
+import android.os.Build
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.FloatRange
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
@@ -23,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
+import androidx.core.graphics.scale
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -30,6 +40,11 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -67,6 +82,10 @@ fun Context.openUrl(url: String) {
 
 fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, duration).show()
+}
+
+fun Context.toast(@StringRes stringRes: Int, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, getString(stringRes), duration).show()
 }
 
 /**
@@ -159,8 +178,7 @@ fun LocalDateTime.relativeTime(context: Context): String {
                 R.string.hours_ago,
                 duration.inWholeHours.toString()
             )
-
-            duration.inWholeHours < 30 -> context.getString(
+            duration.inWholeDays < 30 -> context.getString(
                 R.string.days_ago,
                 duration.inWholeDays.toString()
             )
@@ -292,3 +310,69 @@ fun <T : Any> SavedStateHandle.saveableVar(): ReadWriteProperty<Any?, T?> =
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
             set(property.name, value)
     }
+
+inline fun <reified T : Any> NavGraphBuilder.deepLinkedComposable(
+    path: String,
+    noinline content: @Composable (NavBackStackEntry) -> Unit
+) {
+    val uri = "${BuildConfig.DEEP_LINK_SCHEME}://${path.trim('/')}"
+    composable<T>(
+        deepLinks = setOf(uri, "$uri/").map { navDeepLink<T>(basePath = it) }
+    ) {
+        content(it)
+    }
+}
+
+fun androidx.navigation.NavController.navigateSafe(route: Any) {
+    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        navigate(route)
+    }
+}
+
+fun androidx.navigation.NavController.navigateSafe(
+    route: Any,
+    builder: androidx.navigation.NavOptionsBuilder.() -> Unit
+) {
+    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        navigate(route, builder)
+    }
+}
+
+fun androidx.navigation.NavController.popBackStackSafe(): Boolean {
+    return if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        popBackStack()
+    } else {
+        false
+    }
+}
+
+// Renderscript is deprecated on new Android, but it works perfectly for what is needed
+fun blurBackground(
+    context: Context,
+    image: Bitmap,
+    @Suppress("SameParameterValue")
+    @FloatRange(0.0, 25.0)
+    radius: Float,
+): Bitmap {
+    val rs = RenderScript.create(context)
+    val workingBitmap = image.scale(64, 64)
+
+    val input = Allocation.createFromBitmap(
+        rs,
+        workingBitmap,
+        Allocation.MipmapControl.MIPMAP_NONE,
+        Allocation.USAGE_SCRIPT,
+    )
+    val output = Allocation.createTyped(rs, input.type)
+
+    ScriptIntrinsicBlur.create(rs, Element.U8_4(rs)).apply {
+        setRadius(radius)
+        setInput(input)
+        forEach(output)
+    }
+
+    output.copyTo(workingBitmap)
+    rs.destroy()
+
+    return workingBitmap
+}
