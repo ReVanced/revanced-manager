@@ -316,11 +316,11 @@ private fun LanguagePicker(
                         actions = {
                             TooltipIconButton(
                                 onClick = { isSearchActive = true },
-                                tooltip = stringResource(R.string.search)
+                                tooltip = stringResource(R.string.search_languages)
                             ) {
                                 Icon(
                                     Icons.Filled.Search,
-                                    contentDescription = stringResource(R.string.search)
+                                    contentDescription = stringResource(R.string.search_languages)
                                 )
                             }
                         },
