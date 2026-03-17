@@ -323,8 +323,8 @@ private fun AnnouncementListItem(
                         spacing = MarqueeSpacing.fractionOfContainer(1f / 5f),
                         velocity = 55.dp,
                     ),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = if (unread) FontWeight.ExtraBold else null,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = if (unread) FontWeight.Bold else null,
                     maxLines = 1
                 )
                 Row(
@@ -335,8 +335,8 @@ private fun AnnouncementListItem(
                     val emSpace = "\u2002"      // en space, roughly half character width
                     val separator = "$emSpace$dot$emSpace"
                     Text("$date$separator$author",
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = if (unread) FontWeight.ExtraBold else FontWeight.Normal
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = if (unread) FontWeight.Bold else FontWeight.Normal
                         )
                     )
                     if (archived) {
