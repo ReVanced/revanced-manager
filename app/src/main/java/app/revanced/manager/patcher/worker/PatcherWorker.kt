@@ -45,6 +45,7 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
+import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -265,7 +266,8 @@ class PatcherWorker(
             Result.failure()
         } finally {
             patchedApk.delete()
-            if (args.input is SelectedApp.Local && args.input.temporary) {
+            // Only delete the input APK when the user isn't rooted, since it would be needed for mounting
+            if (args.input is SelectedApp.Local && args.input.temporary && Shell.isAppGrantedRoot() == false) {
                 args.input.file.delete()
             }
         }
