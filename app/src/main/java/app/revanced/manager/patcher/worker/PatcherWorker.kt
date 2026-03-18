@@ -266,7 +266,8 @@ class PatcherWorker(
             Result.failure()
         } finally {
             patchedApk.delete()
-            // Only delete the input APK when the user isn't rooted, since it would be needed for mounting
+            // Only delete the input APK right after patching finishes when the user isn't rooted, since it would be needed for mounting
+            // (it would be deleted right after installing with root)
             if (args.input is SelectedApp.Local && args.input.temporary && Shell.isAppGrantedRoot() == false) {
                 args.input.file.delete()
             }
