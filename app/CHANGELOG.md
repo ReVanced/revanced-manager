@@ -1,3 +1,10 @@
+## app [2.2.3-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.2...v2.2.3-dev.1) (2026-03-18)
+
+
+### Bug Fixes
+
+* **NotificationCard:** Use the right colors for buttons ([#3101](https://github.com/ReVanced/revanced-manager/issues/3101)) ([88fbc24](https://github.com/ReVanced/revanced-manager/commit/88fbc2491cce82bab38792528ac82d40fe76d3d9))
+
 ## app [2.2.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.1...v2.2.2) (2026-03-17)
 
 

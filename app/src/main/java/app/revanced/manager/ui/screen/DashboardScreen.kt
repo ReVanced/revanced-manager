@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.LocalContentColor
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -138,9 +139,9 @@ fun DashboardScreen(
     ) {
         derivedStateOf {
             disablePatchVersionCompatCheck ||
-                disableSelectionWarning ||
-                disableUniversalPatchCheck ||
-                !suggestedVersionSafeguard
+                    disableSelectionWarning ||
+                    disableUniversalPatchCheck ||
+                    !suggestedVersionSafeguard
         }
     }
     val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
@@ -457,15 +458,14 @@ fun DashboardScreen(
                                     text = stringResource(R.string.new_announcement, announcement.title),
                                     icon = Icons.Filled.Notifications,
                                     actions = {
+                                        val colors = ButtonDefaults.textButtonColors(
+                                            contentColor = LocalContentColor.current
+                                        )
+
                                         TextButton(
                                             onClick = vm::markUnreadAnnouncementRead,
                                             shapes = ButtonDefaults.shapes(),
-                                            colors = ButtonColors(
-                                                contentColor = MaterialTheme.colorScheme.tertiary,
-                                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0f),
-                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
-                                            )
+                                            colors = colors
                                         ) {
                                             Text(stringResource(R.string.dismiss))
                                         }
@@ -475,12 +475,7 @@ fun DashboardScreen(
                                                 onAnnouncementClick(announcement)
                                             },
                                             shapes = ButtonDefaults.shapes(),
-                                            colors = ButtonColors(
-                                                contentColor = MaterialTheme.colorScheme.tertiary,
-                                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0f),
-                                                disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0f)
-                                            )
+                                            colors = colors
                                         ) {
                                             Text(stringResource(R.string.view_announcement))
                                         }
@@ -573,9 +568,9 @@ private fun DashboardFab(
                 targetState = fabState,
                 transitionSpec = {
                     (fadeIn(animationSpec = tween(durationMillis = 180, delayMillis = 60)) +
-                        scaleIn(animationSpec = tween(durationMillis = 180, delayMillis = 60), initialScale = 0.85f)) togetherWith
-                        (fadeOut(animationSpec = tween(durationMillis = 90)) +
-                            scaleOut(animationSpec = tween(durationMillis = 90), targetScale = 0.85f))
+                            scaleIn(animationSpec = tween(durationMillis = 180, delayMillis = 60), initialScale = 0.85f)) togetherWith
+                            (fadeOut(animationSpec = tween(durationMillis = 90)) +
+                                    scaleOut(animationSpec = tween(durationMillis = 90), targetScale = 0.85f))
                 },
                 label = "dashboard_fab_icon_transition"
             ) { state ->
