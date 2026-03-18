@@ -1,3 +1,10 @@
+## app [2.2.3-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.3-dev.1...v2.2.3-dev.2) (2026-03-18)
+
+
+### Bug Fixes
+
+* **NotificationCard:** Fix card background contrast with action text ([#3103](https://github.com/ReVanced/revanced-manager/issues/3103)) ([947ac8a](https://github.com/ReVanced/revanced-manager/commit/947ac8ad4441cc1bfb8d3618eddb59f3765f4191))
+
 ## app [2.2.3-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.2...v2.2.3-dev.1) (2026-03-18)
 
 
