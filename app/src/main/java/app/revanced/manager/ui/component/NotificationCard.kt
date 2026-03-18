@@ -52,61 +52,58 @@ fun NotificationCard(
         }
 
     NotificationCardInstance(modifier = modifier, type = type, onClick = onClick) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Box(
-                modifier = Modifier.size(28.dp),
-                contentAlignment = Alignment.Center
+        CompositionLocalProvider(LocalContentColor provides color) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = color,
-                )
-            }
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                title?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = color,
-                    )
-                }
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = color,
-                )
-                actions?.let {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        CompositionLocalProvider(LocalContentColor provides color) {
-                            it()
-                        }
-                    }
-                }
-            }
-            if (onDismiss != null) {
-                TooltipIconButton(
-                    onClick = onDismiss,
-                    tooltip = stringResource(R.string.close),
+                Box(
+                    modifier = Modifier.size(28.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Close,
-                        contentDescription = stringResource(R.string.close),
-                        tint = color,
+                        modifier = Modifier.size(24.dp),
+                        imageVector = icon,
+                        contentDescription = null,
                     )
+                }
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    title?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = LocalContentColor.current,
+                        )
+                    }
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = LocalContentColor.current,
+                    )
+                    actions?.let {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
+                            content = { it() }
+                        )
+                    }
+                }
+                if (onDismiss != null) {
+                    TooltipIconButton(
+                        onClick = onDismiss,
+                        tooltip = stringResource(R.string.close),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Close,
+                            contentDescription = stringResource(R.string.close),
+                        )
+                    }
                 }
             }
         }
@@ -136,16 +133,14 @@ private fun NotificationCardInstance(
         Card(
             onClick = onClick,
             colors = colors,
-            modifier = modifier.then(defaultModifier)
-        ) {
-            content()
-        }
+            modifier = modifier.then(defaultModifier),
+            content = { content() }
+        )
     } else {
         Card(
             colors = colors,
-            modifier = modifier.then(defaultModifier)
-        ) {
-            content()
-        }
+            modifier = modifier.then(defaultModifier),
+            content = { content() }
+        )
     }
 }
