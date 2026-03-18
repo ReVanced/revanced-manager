@@ -15,9 +15,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,58 +52,60 @@ fun NotificationCard(
         }
 
     NotificationCardInstance(modifier = modifier, type = type, onClick = onClick) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Box(
-                modifier = Modifier.size(28.dp),
-                contentAlignment = Alignment.Center
+        CompositionLocalProvider(LocalContentColor provides color) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = color,
-                )
-            }
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                title?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = color,
-                    )
-                }
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = color,
-                )
-                actions?.let {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                        content = it
-                    )
-                }
-            }
-            if (onDismiss != null) {
-                TooltipIconButton(
-                    onClick = onDismiss,
-                    tooltip = stringResource(R.string.close),
+                Box(
+                    modifier = Modifier.size(28.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Close,
-                        contentDescription = stringResource(R.string.close),
-                        tint = color,
+                        modifier = Modifier.size(24.dp),
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = LocalContentColor.current,
                     )
+                }
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    title?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = LocalContentColor.current,
+                        )
+                    }
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = LocalContentColor.current,
+                    )
+                    actions?.let {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
+                            content = { it() }
+                        )
+                    }
+                }
+                if (onDismiss != null) {
+                    TooltipIconButton(
+                        onClick = onDismiss,
+                        tooltip = stringResource(R.string.close),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Close,
+                            contentDescription = stringResource(R.string.close),
+                            tint = LocalContentColor.current,
+                        )
+                    }
                 }
             }
         }
