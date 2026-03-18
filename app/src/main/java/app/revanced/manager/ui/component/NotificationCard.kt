@@ -68,7 +68,6 @@ fun NotificationCard(
                         modifier = Modifier.size(24.dp),
                         imageVector = icon,
                         contentDescription = null,
-                        tint = LocalContentColor.current,
                     )
                 }
                 Column(
@@ -103,7 +102,6 @@ fun NotificationCard(
                         Icon(
                             imageVector = Icons.Outlined.Close,
                             contentDescription = stringResource(R.string.close),
-                            tint = LocalContentColor.current,
                         )
                     }
                 }
@@ -135,16 +133,14 @@ private fun NotificationCardInstance(
         Card(
             onClick = onClick,
             colors = colors,
-            modifier = modifier.then(defaultModifier)
-        ) {
-            content()
-        }
+            modifier = modifier.then(defaultModifier),
+            content = { content() }
+        )
     } else {
         Card(
             colors = colors,
-            modifier = modifier.then(defaultModifier)
-        ) {
-            content()
-        }
+            modifier = modifier.then(defaultModifier),
+            content = { content() }
+        )
     }
 }
