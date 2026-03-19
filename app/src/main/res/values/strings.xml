@@ -43,6 +43,8 @@ Second \"item\" text"</string>
     <string name="permission_notifications_description">Allows for uninterrupted patching in the background</string>
     <string name="permission_battery">Battery optimization</string>
     <string name="permission_battery_description">Prevents patching from being interrupted in the background</string>
+    <string name="permission_shizuku">Shizuku</string>
+    <string name="permission_shizuku_description">Optional: Safely install apps in the background</string>
     <string name="permission_grant">Grant</string>
 
     <string name="downloader_host_permission_label">ReVanced Manager downloader host</string>
@@ -379,6 +381,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
     <string name="wrong_app_loading">The app you selected has the wrong package name!</string>
     <string name="failed_to_load_apk">Failed to load APK</string>
+    <string name="failed_to_load_app_info">Failed to load application info</string>
     <string name="split_apk_not_supported">Split APKs cannot be patched</string>
     <string name="loading">Loading…</string>
     <string name="not_installed">Not installed</string>
@@ -401,6 +404,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="not_mounted">Not mounted</string>
     <string name="mount">Mount</string>
     <string name="unmount">Unmount</string>
+    <string name="shizuku_not_authorized">Shizuku permission not granted. Please authorize ReVanced Manager in the Shizuku app.</string>
     <string name="failed_to_mount">Failed to mount: %s</string>
     <string name="failed_to_unmount">Failed to unmount: %s</string>
     <string name="unpatch_app">Unpatch app?</string>
@@ -439,6 +443,7 @@ It is only compatible with the following version(s): %2$s</string>
 
     <string name="installer">Installer</string>
     <string name="install_app">Install</string>
+    <string name="installing">Installing</string>
     <string name="install_app_success">App installed</string>
     <string name="install_app_fail">Failed to install app: %s</string>
     <string name="reinstall_app_fail">Failed to reinstall app: %s</string>
@@ -591,6 +596,7 @@ Do you still want to continue?</string>
     <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
     <string name="installation_incompatible_description">The app is incompatible with this device. Use an APK that is compatible by this device and try again.</string>
     <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
+    <string name="installation_restricted_description">Installation is restricted on this device or user.</string>
     <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
     <string name="installation_timeout_description">The installation took too long. Try again?</string>
     <string name="reinstall">Reinstall</string>
