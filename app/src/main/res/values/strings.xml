@@ -177,7 +177,7 @@ Proceed anyway?</string>
     <string name="universal_patches_safeguard">Allow using universal patches</string>
     <string name="universal_patches_safeguard_description">Allows the use of general-purpose patches not made for specific apps</string>
     <string name="universal_patches_safeguard_title">Use universal patches?</string>
-    <string name="universal_patches_safeguard_confirmation">Universal patches aren’t tested as much as those that target specific apps.
+    <string name="universal_patches_safeguard_confirmation">Universal patches aren’t as well tested as app-specific patches. Using them may cause unexpected issues.
 
 Proceed anyway?</string>
     <string name="keystore">Keystore</string>
