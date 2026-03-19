@@ -31,6 +31,7 @@ class OnboardingViewModel(
     private val pm: PM,
     private val downloaderRepository: DownloaderRepository,
     private val patchBundleRepository: PatchBundleRepository,
+    private val shizukuInstaller: app.revanced.manager.domain.installer.ShizukuInstaller
 ) : ViewModel() {
     private val powerManager = app.getSystemService<PowerManager>()!!
 
@@ -51,6 +52,10 @@ class OnboardingViewModel(
         private set
     var isBatteryOptimizationExempt by mutableStateOf(false)
         private set
+    var isShizukuAvailable by mutableStateOf(false)
+        private set
+    var isShizukuAuthorized by mutableStateOf(false)
+        private set
 
     val isDeviceSupported = Aapt.supportsDevice()
 
@@ -58,7 +63,7 @@ class OnboardingViewModel(
         private set
 
     val allPermissionsGranted
-        get() = canInstallUnknownApps && isNotificationsEnabled && isBatteryOptimizationExempt
+        get() = canInstallUnknownApps && isNotificationsEnabled && isBatteryOptimizationExempt && (!isShizukuAvailable || isShizukuAuthorized)
 
     init {
         refreshPermissionStates()
@@ -72,6 +77,8 @@ class OnboardingViewModel(
         isNotificationsEnabled = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
                 NotificationManagerCompat.from(app).areNotificationsEnabled()
         isBatteryOptimizationExempt = powerManager.isIgnoringBatteryOptimizations(app.packageName)
+        isShizukuAvailable = shizukuInstaller.isAvailable()
+        isShizukuAuthorized = shizukuInstaller.hasPermission()
     }
 
     fun advance() {
