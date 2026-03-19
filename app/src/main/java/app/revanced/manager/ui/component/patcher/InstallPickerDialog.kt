@@ -20,6 +20,7 @@ import app.revanced.manager.util.transparentListItemColors
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun InstallPickerDialog(
+    installTypes: List<InstallType>,
     onDismiss: () -> Unit,
     onConfirm: (InstallType) -> Unit
 ) {
@@ -46,7 +47,7 @@ fun InstallPickerDialog(
         title = { Text(stringResource(R.string.select_install_type)) },
         text = {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                InstallType.entries.forEach {
+                installTypes.forEach {
                     ListItem(
                         modifier = Modifier.clickable { selectedInstallType = it },
                         leadingContent = {

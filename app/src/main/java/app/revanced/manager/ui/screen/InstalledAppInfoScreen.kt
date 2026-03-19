@@ -120,7 +120,7 @@ fun InstalledAppInfoScreen(
                 )
 
                 when (installedApp.installType) {
-                    InstallType.DEFAULT -> SegmentedButton(
+                    InstallType.DEFAULT, InstallType.SHIZUKU -> SegmentedButton(
                         icon = Icons.Outlined.Delete,
                         text = stringResource(R.string.uninstall),
                         onClick = viewModel::uninstall
