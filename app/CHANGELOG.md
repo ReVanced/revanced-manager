@@ -1,3 +1,38 @@
+# app [2.3.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.4-dev.1...v2.3.0-dev.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* Revert "Remove currently not applicable workaround code for building release" ([3613e4d](https://github.com/ReVanced/revanced-manager/commit/3613e4d752a1efc86137817d6bf859ffd1b71eac))
+
+
+### Features
+
+* Improve source system and fix connectivity issues ([#3137](https://github.com/ReVanced/revanced-manager/issues/3137)) ([a4e3266](https://github.com/ReVanced/revanced-manager/commit/a4e3266e9097ef6af8e97d1ac856371535e8ccc5))
+
+## app [2.2.4-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.3...v2.2.4-dev.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* Mount install ([#3111](https://github.com/ReVanced/revanced-manager/issues/3111)) ([3ef22a3](https://github.com/ReVanced/revanced-manager/commit/3ef22a351a20bc497a03092f58f8a3a60e68024e))
+
+## app [2.2.3](https://github.com/ReVanced/revanced-manager/compare/v2.2.2...v2.2.3) (2026-03-19)
+
+
+### Bug Fixes
+
+* Disable network check on updating patches and downloaders ([c4a5ea8](https://github.com/ReVanced/revanced-manager/commit/c4a5ea8790ad17b497555042fd2171794eebc216))
+* **NotificationCard:** Fix card background contrast with action text ([#3103](https://github.com/ReVanced/revanced-manager/issues/3103)) ([947ac8a](https://github.com/ReVanced/revanced-manager/commit/947ac8ad4441cc1bfb8d3618eddb59f3765f4191))
+* **NotificationCard:** Use the right colors for buttons ([#3101](https://github.com/ReVanced/revanced-manager/issues/3101)) ([88fbc24](https://github.com/ReVanced/revanced-manager/commit/88fbc2491cce82bab38792528ac82d40fe76d3d9))
+
+## app [2.2.3-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.2.3-dev.2...v2.2.3-dev.3) (2026-03-19)
+
+
+### Bug Fixes
+
+* Disable network check on updating patches and downloaders ([c4a5ea8](https://github.com/ReVanced/revanced-manager/commit/c4a5ea8790ad17b497555042fd2171794eebc216))
+
 ## app [2.2.3-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.3-dev.1...v2.2.3-dev.2) (2026-03-18)
 
 

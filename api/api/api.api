@@ -1,12 +1,7 @@
 public abstract interface class app/revanced/manager/downloader/BaseDownloadScope : app/revanced/manager/downloader/Scope {
 }
 
-public final class app/revanced/manager/downloader/ConstantsKt {
-	public static final field DOWNLOADER_HOST_PERMISSION Ljava/lang/String;
-}
-
 public final class app/revanced/manager/downloader/DownloadUrl : android/os/Parcelable {
-	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Ljava/lang/String;Ljava/util/Map;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -25,11 +20,9 @@ public final class app/revanced/manager/downloader/DownloadUrl : android/os/Parc
 }
 
 public final class app/revanced/manager/downloader/Downloader {
-	public static final field $stable I
 }
 
 public final class app/revanced/manager/downloader/DownloaderBuilder {
-	public static final field $stable I
 }
 
 public abstract interface annotation class app/revanced/manager/downloader/DownloaderHostApi : java/lang/annotation/Annotation {
@@ -40,9 +33,9 @@ public final class app/revanced/manager/downloader/DownloaderKt {
 }
 
 public final class app/revanced/manager/downloader/DownloaderScope : app/revanced/manager/downloader/Scope {
-	public static final field $stable I
 	public final fun download (Lkotlin/jvm/functions/Function3;)V
 	public final fun get (Lkotlin/jvm/functions/Function4;)V
+	public fun getDataDir ()Ljava/io/File;
 	public fun getDownloaderPackageName ()Ljava/lang/String;
 	public fun getHostPackageName ()Ljava/lang/String;
 	public final fun useService (Landroid/content/Intent;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -54,6 +47,11 @@ public final class app/revanced/manager/downloader/ExtensionsKt {
 
 public abstract interface class app/revanced/manager/downloader/GetScope : app/revanced/manager/downloader/Scope {
 	public abstract fun requestStartActivity (Landroid/content/Intent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun requestStartFragment (Ljava/lang/Class;Landroid/os/Bundle;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class app/revanced/manager/downloader/GetScope$DefaultImpls {
+	public static fun requestStartFragment (Lapp/revanced/manager/downloader/GetScope;Ljava/lang/Class;Landroid/os/Bundle;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class app/revanced/manager/downloader/InputDownloadScope : app/revanced/manager/downloader/BaseDownloadScope {
@@ -64,7 +62,6 @@ public abstract interface class app/revanced/manager/downloader/OutputDownloadSc
 }
 
 public final class app/revanced/manager/downloader/Package : android/os/Parcelable {
-	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
@@ -81,32 +78,28 @@ public final class app/revanced/manager/downloader/Package : android/os/Parcelab
 }
 
 public abstract interface class app/revanced/manager/downloader/Scope {
+	public abstract fun getDataDir ()Ljava/io/File;
 	public abstract fun getDownloaderPackageName ()Ljava/lang/String;
 	public abstract fun getHostPackageName ()Ljava/lang/String;
 }
 
 public abstract class app/revanced/manager/downloader/UserInteractionException : java/lang/Exception {
-	public static final field $stable I
 	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
 public abstract class app/revanced/manager/downloader/UserInteractionException$Activity : app/revanced/manager/downloader/UserInteractionException {
-	public static final field $stable I
 	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
 public final class app/revanced/manager/downloader/UserInteractionException$Activity$Cancelled : app/revanced/manager/downloader/UserInteractionException$Activity {
-	public static final field $stable I
 }
 
 public final class app/revanced/manager/downloader/UserInteractionException$Activity$NotCompleted : app/revanced/manager/downloader/UserInteractionException$Activity {
-	public static final field $stable I
 	public final fun getIntent ()Landroid/content/Intent;
 	public final fun getResultCode ()I
 }
 
 public final class app/revanced/manager/downloader/UserInteractionException$RequestDenied : app/revanced/manager/downloader/UserInteractionException {
-	public static final field $stable I
 }
 
 public final class app/revanced/manager/downloader/webview/APIKt {
@@ -149,8 +142,8 @@ public abstract interface class app/revanced/manager/downloader/webview/WebViewC
 }
 
 public final class app/revanced/manager/downloader/webview/WebViewScope : app/revanced/manager/downloader/Scope {
-	public static final field $stable I
 	public final fun download (Lkotlin/jvm/functions/Function5;)V
+	public fun getDataDir ()Ljava/io/File;
 	public fun getDownloaderPackageName ()Ljava/lang/String;
 	public fun getHostPackageName ()Ljava/lang/String;
 	public final fun pageLoad (Lkotlin/jvm/functions/Function3;)V

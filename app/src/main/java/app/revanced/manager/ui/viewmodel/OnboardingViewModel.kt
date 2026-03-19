@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
-import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
@@ -32,7 +31,6 @@ class OnboardingViewModel(
     private val pm: PM,
     private val downloaderRepository: DownloaderRepository,
     private val patchBundleRepository: PatchBundleRepository,
-    private val networkInfo: NetworkInfo,
 ) : ViewModel() {
     private val powerManager = app.getSystemService<PowerManager>()!!
 
@@ -41,8 +39,8 @@ class OnboardingViewModel(
     }
     val apiUrl = prefs.api.default
 
-    val hasNetworkError = combine(apps, patchBundleRepository.updateError) { apps, updateError ->
-        apps == null && (!networkInfo.isConnected() || updateError != null)
+    val hasNetworkError = combine(apps, patchBundleRepository.updateErrors) { apps, updateErrors ->
+        apps == null && updateErrors.isNotEmpty()
     }
 
     val suggestedVersions = patchBundleRepository.suggestedVersions
@@ -94,7 +92,7 @@ class OnboardingViewModel(
                 ?.asRemoteOrNull ?: return@with
 
             src.setAutoUpdate(patchesEnabled)
-            if (networkInfo.isConnected()) update(src)
+            update(src)
         }
 
         with(downloaderRepository) {
@@ -103,7 +101,7 @@ class OnboardingViewModel(
                 ?.asRemoteOrNull ?: return@with
 
             src.setAutoUpdate(downloadersEnabled)
-            if (networkInfo.isConnected()) update(src)
+            update(src)
         }
     }
 
@@ -122,5 +120,4 @@ class OnboardingViewModel(
         OnboardingStep.Updates -> OnboardingStep.Permissions
         OnboardingStep.Apps -> OnboardingStep.Updates
     }
-
 }

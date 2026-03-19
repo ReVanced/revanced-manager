@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Закрпе нису могле да буду учитане. Кликните да бисте видели грешку.</string>
   <string name="patches_not_downloaded">Закрпе нису преузете.</string>
   <string name="patches_name_default">Закрпе</string>
-  <string name="patches_name_fallback">Неименовано</string>
+  <string name="source_name_fallback">Неименовано</string>
   <string name="android_11_bug_dialog_title">Грешка Android-а 11</string>
   <string name="android_11_bug_dialog_description">Дозвола за инсталацију апликације мора бити додељена унапред да би се избегла грешка у систему Android 11 која ће негативно утицати на корисничко искуство.</string>
   <string name="no_network_toast">Нема доступне интернет везе</string>

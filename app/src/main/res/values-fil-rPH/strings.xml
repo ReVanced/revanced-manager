@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Hindi ma-load ang mga patch. Mag-click upang tingnan ang error</string>
   <string name="patches_not_downloaded">Hindi pa na-download ang mga patch.</string>
   <string name="patches_name_default">Mga patch</string>
-  <string name="patches_name_fallback">Walang pangalan</string>
+  <string name="source_name_fallback">Walang pangalan</string>
   <string name="android_11_bug_dialog_title">Bug sa Android 11</string>
   <string name="android_11_bug_dialog_description">Ang pahintulot sa pag-install ng app ay dapat ibigay nang maaga upang maiwasan ang isang bug sa sistema ng Android 11 na magdulot ng negatibong epekto sa karanasan ng gumagamit.</string>
   <string name="no_network_toast">Walang available na koneksyon sa internet</string>

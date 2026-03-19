@@ -117,6 +117,8 @@ class RootInstaller(
 
             execute("pm install -r -d --user 0 \"${stockApp.absolutePath}\"")
                 .assertSuccess("Failed to install stock app")
+
+            stockApp.delete()
         }
 
         remoteFS.getFile(modulePath).apply {

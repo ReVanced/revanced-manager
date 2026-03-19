@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Patche sa nepodarilo načítať. Kliknutím zobrazíte chybu.</string>
   <string name="patches_not_downloaded">Záplaty neboli stiahnuté.</string>
   <string name="patches_name_default">Patche</string>
-  <string name="patches_name_fallback">Bez názvu</string>
+  <string name="source_name_fallback">Bez názvu</string>
   <string name="android_11_bug_dialog_title">Chyba systému Android 11</string>
   <string name="android_11_bug_dialog_description">Povolenie na inštaláciu aplikácií musí byť udelené vopred, aby sa predišlo chybe v systéme Android 11, ktorá negatívne ovplyvní používateľský zážitok.</string>
   <string name="no_network_toast">Nie je k dispozícii žiadne internetové pripojenie</string>

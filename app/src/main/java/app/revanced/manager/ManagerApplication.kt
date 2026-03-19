@@ -78,7 +78,7 @@ class ManagerApplication : Application() {
             arrayOf(patchBundleRepository, downloaderRepository).forEach {
                 with(it) {
                     reload()
-                    updateCheck()
+                    updateCheck(force = false)
                 }
             }
         }

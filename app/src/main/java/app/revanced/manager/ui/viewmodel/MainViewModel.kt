@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
@@ -154,17 +153,6 @@ class MainViewModel(
         }
         settings.experimentalPatchesEnabled?.let { allowExperimental ->
             prefs.disablePatchVersionCompatCheck.update(allowExperimental)
-        }
-        settings.patchesAutoUpdate?.let { autoUpdate ->
-            with(patchBundleRepository) {
-                sources
-                    .first()
-                    .find { it.uid == 0 }
-                    ?.asRemoteOrNull
-                    ?.setAutoUpdate(autoUpdate)
-
-                updateCheck()
-            }
         }
         settings.patchesChangeEnabled?.let { disableSelectionWarning ->
             prefs.disableSelectionWarning.update(disableSelectionWarning)

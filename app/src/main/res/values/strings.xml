@@ -26,6 +26,7 @@ Second \"item\" text"</string>
     <string name="onboarding_updates_subtitle">Configure automatic updates to keep ReVanced Manager and patches up to date</string>
 
     <string name="banner_sources_not_downloaded_description">Patches and downloaders couldn’t be downloaded during setup. Tap Update to download them.</string>
+    <string name="banner_sources_not_updated_description">Patches or downloaders have updates, but were not downloaded because the network is metered. Tap update to download them.</string>
     <string name="onboarding_updates_note">ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet.</string>
 
     <string name="retry">Retry</string>
@@ -76,12 +77,10 @@ Second \"item\" text"</string>
     <string name="patches_error_description">Couldn’t load patches, tap for details</string>
     <string name="patches_not_downloaded">Patches haven’t been downloaded</string>
     <string name="patches_name_default">Patches</string>
-    <string name="patches_name_fallback">Unnamed</string>
+    <string name="source_name_fallback">Unnamed</string>
 
     <string name="android_11_bug_dialog_title">Android 11 bug</string>
     <string name="android_11_bug_dialog_description">The app installation permission must be granted ahead of time to avoid a bug in the Android 11 system that would negatively affect your experience.</string>
-
-    <string name="no_network_toast">No internet connection available</string>
 
     <string name="selected_app_meta_any_version">Any available version</string>
     <string name="app_source_dialog_title">Select source</string>
@@ -97,7 +96,6 @@ Second \"item\" text"</string>
     <string name="patch_selection_changed_warning">Patch selection has been changed</string>
     <string name="no_patches_selected">No patches selected</string>
 
-    <string name="network_unavailable_warning">Your device is offline. Downloading will fail.</string>
     <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
     <string name="apk_source_selector_item">Select APK source</string>
@@ -118,7 +116,7 @@ Second \"item\" text"</string>
     <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
     <string name="auto_updates_dialog_manager">ReVanced Manager</string>
     <string name="auto_updates_dialog_patches">ReVanced Patches</string>
-    <string name="auto_updates_dialog_downloaders">ReVanced Manager: Downloaders</string>
+    <string name="auto_updates_dialog_downloaders">APK Downloaders</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.
 
     ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet.</string>
@@ -323,6 +321,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="device_memory_limit_format">%1$dMB (Normal) – %2$dMB (Large)</string>
     <string name="patches_force_download">Force download all patches</string>
     <string name="patches_reset">Reset patches</string>
+    <string name="downloaders_reset">Reset downloaders</string>
     <string name="reset_onboarding">Reset onboarding</string>
     <string name="reset_onboarding_description">Show the onboarding screen on next app launch</string>
     <string name="reset_announcement">Reset announcement read</string>

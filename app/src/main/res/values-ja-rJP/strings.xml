@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">パッチを読み込めませんでした。クリックしてエラーを表示</string>
   <string name="patches_not_downloaded">パッチがダウンロードされていません。</string>
   <string name="patches_name_default">パッチ</string>
-  <string name="patches_name_fallback">名無し</string>
+  <string name="source_name_fallback">名無し</string>
   <string name="android_11_bug_dialog_title">Android 11 のバグ</string>
   <string name="android_11_bug_dialog_description">アプリのインストール権限は、Android 11 システムのバグがユーザーエクスペリエンスに悪影響を与えるのを避けるため、事前に付与しておく必要があります。</string>
   <string name="no_network_toast">インターネット接続がありません</string>
