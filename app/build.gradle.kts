@@ -119,6 +119,10 @@ dependencies {
     // Ackpine
     implementation(libs.ackpine.core)
     implementation(libs.ackpine.ktx)
+
+    // Shizuku
+    implementation(libs.shizuku.api)
+    implementation(libs.shizuku.provider)
 }
 
 buildscript {

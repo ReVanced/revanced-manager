@@ -91,6 +91,16 @@ fun PatcherScreen(
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
     var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
+    val installTypes by remember {
+        derivedStateOf {
+            buildList {
+                add(InstallType.DEFAULT)
+                if (viewModel.isDeviceRooted()) add(InstallType.MOUNT)
+                if (viewModel.isShizukuAvailable()) add(InstallType.SHIZUKU)
+            }
+        }
+    }
+
     fun onPageBack() = when {
         patcherSucceeded == null -> showDismissConfirmationDialog = true
         viewModel.isInstalling -> context.toast(resources.getString(R.string.patcher_install_in_progress))
@@ -117,6 +127,7 @@ fun PatcherScreen(
 
     if (showInstallPicker)
         InstallPickerDialog(
+            installTypes = installTypes,
             onDismiss = { showInstallPicker = false },
             onConfirm = viewModel::install
         )
@@ -244,7 +255,7 @@ fun PatcherScreen(
                             },
                             onClick = {
                                 if (viewModel.installedPackageName == null)
-                                    if (viewModel.isDeviceRooted()) showInstallPicker = true
+                                    if (installTypes.size > 1) showInstallPicker = true
                                     else viewModel.install(InstallType.DEFAULT)
                                 else viewModel.open()
                             },
