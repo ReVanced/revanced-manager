@@ -205,7 +205,11 @@ fun PatcherScreen(
     AppScaffold(
         topBar = { scrollBehavior ->
             AppTopBar(
-                title = stringResource(R.string.patcher),
+                title = when {
+                    viewModel.isInstalling -> stringResource(R.string.installing)
+                    patcherSucceeded == null -> stringResource(R.string.patching)
+                    else -> stringResource(R.string.patcher)
+                },
                 scrollBehavior = scrollBehavior,
                 onBackClick = ::onPageBack
             )
