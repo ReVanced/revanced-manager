@@ -273,10 +273,10 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
         override suspend fun ActionContext.execute(
             current: State<LOADED, OUTPUT>
         ) = coroutineScope {
-            if (!networkInfo.isSafe(force)) {
-                Log.d(tag, "Skipping update check because the network is down or metered.")
-                return@coroutineScope current
-            }
+            // if (!networkInfo.isSafe(force)) {
+            //     Log.d(tag, "Skipping update check because the network is down or metered.")
+            //     return@coroutineScope current
+            // }
 
             val updated = current.sources.values
                 .filterIsInstance<RemoteSource<LOADED>>()

@@ -1,3 +1,24 @@
+## app [2.2.3-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.2.3-dev.2...v2.2.3-dev.3) (2026-03-19)
+
+
+### Bug Fixes
+
+* Disable network check on updating patches and downloaders ([c4a5ea8](https://github.com/ReVanced/revanced-manager/commit/c4a5ea8790ad17b497555042fd2171794eebc216))
+
+## app [2.2.3-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.3-dev.1...v2.2.3-dev.2) (2026-03-18)
+
+
+### Bug Fixes
+
+* **NotificationCard:** Fix card background contrast with action text ([#3103](https://github.com/ReVanced/revanced-manager/issues/3103)) ([947ac8a](https://github.com/ReVanced/revanced-manager/commit/947ac8ad4441cc1bfb8d3618eddb59f3765f4191))
+
+## app [2.2.3-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.2...v2.2.3-dev.1) (2026-03-18)
+
+
+### Bug Fixes
+
+* **NotificationCard:** Use the right colors for buttons ([#3101](https://github.com/ReVanced/revanced-manager/issues/3101)) ([88fbc24](https://github.com/ReVanced/revanced-manager/commit/88fbc2491cce82bab38792528ac82d40fe76d3d9))
+
 ## app [2.2.2](https://github.com/ReVanced/revanced-manager/compare/v2.2.1...v2.2.2) (2026-03-17)
 
 
