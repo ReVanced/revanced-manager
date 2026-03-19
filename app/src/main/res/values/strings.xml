@@ -379,7 +379,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="app_not_installed">The app you selected is not installed. Download it?</string>
     <string name="wrong_app_loading">The app you selected has the wrong package name</string>
     <string name="failed_to_load_apk">Couldn’t load the APK file</string>
-    <string name="split_apk_not_supported">Split APKs can’t be patched</string>
+    <string name="split_apk_not_supported">Split APKs aren’t supported</string>
     <string name="loading">Loading…</string>
     <string name="not_installed">Not installed</string>
     <string name="installed">Installed</string>
@@ -403,7 +403,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="failed_to_mount">Failed to mount: %s</string>
     <string name="failed_to_unmount">Failed to unmount: %s</string>
     <string name="unpatch_app">Unpatch app?</string>
-    <string name="unpatch_description">All patches will be removed, and the initial version of the app will be restored</string>
+    <string name="unpatch_description">All patches will be removed, and the initial version of the app will be restored.</string>
 
     <string name="downloader_invalid_version">Downloader couldn’t fetch the correct version</string>
     <string name="downloader_app_not_found">Downloader couldn’t find the app</string>
@@ -463,8 +463,8 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="patcher_notification_title">Patching in progress</string>
     <string name="patcher_notification_text">Tap to return to the patcher</string>
     <string name="patcher_stop_confirm_title">Stop patcher</string>
-    <string name="patcher_stop_confirm_description">The patching process will be stopped</string>
-    <string name="patcher_install_in_progress">Installation is in progress, please wait</string>
+    <string name="patcher_stop_confirm_description">The patching process will be stopped.</string>
+    <string name="patcher_install_in_progress">Installing, please wait…</string>
     <string name="execute_patches">Execute patches</string>
     <string name="executing_patch">Execute %s</string>
     <string name="failed_to_execute_patch">Couldn’t execute %s</string>
@@ -499,7 +499,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="developer_options">Developer options</string>
     <string name="developer_options_description">Options for debugging issues</string>
     <string name="patches_update_success">Update successful</string>
-    <string name="patches_update_unavailable">No update is available</string>
+    <string name="patches_update_unavailable">No updates available</string>
     <string name="view_patches">View patches</string>
     <string name="patches_view_any_version">Any version</string>
     <string name="patches_view_any_package">Any package</string>
@@ -525,7 +525,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="update_checking_manager">Check for updates on launch</string>
     <string name="update_checking_manager_description">Automatically check for new versions of ReVanced Manager when you open the app</string>
     <string name="update_checking_downloader">Check for ReVanced downloaders updates on launch</string>
-    <string name="update_checking_downloader_description">Automatically check for updates to installed ReVanced downloaders when you open the app</string>
+    <string name="update_checking_downloader_description">Automatically check for ReVanced downloaders updates when you open the app</string>
     <string name="manager_prereleases">Use pre-releases</string>
     <string name="manager_prereleases_description">Use pre-release versions of ReVanced Manager</string>
     <string name="prerelease_title">Use pre-releases?</string>
