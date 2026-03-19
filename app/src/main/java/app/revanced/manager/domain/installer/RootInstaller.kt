@@ -112,10 +112,11 @@ class RootInstaller(
         unmount(packageName)
 
         stockAPK?.let { stockApp ->
-            // TODO: get user id programmatically
-            execute("pm uninstall -k --user 0 $packageName")
+            // removed the "--user 0" so it uninstalls the stock app globally on all users
+            execute("pm uninstall -k $packageName")
 
-            execute("pm install -r -d --user 0 \"${stockApp.absolutePath}\"")
+            // programmably gets the current user
+            execute("pm install -r -d --user ${android.os.Process.myUid() / 100000} \"${stockApp.absolutePath}\"")
                 .assertSuccess("Failed to install stock app")
         }
 
