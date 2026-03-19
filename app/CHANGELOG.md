@@ -1,3 +1,10 @@
+## app [2.2.4-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.3...v2.2.4-dev.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* Mount install ([#3111](https://github.com/ReVanced/revanced-manager/issues/3111)) ([3ef22a3](https://github.com/ReVanced/revanced-manager/commit/3ef22a351a20bc497a03092f58f8a3a60e68024e))
+
 ## app [2.2.3](https://github.com/ReVanced/revanced-manager/compare/v2.2.2...v2.2.3) (2026-03-19)
 
 
