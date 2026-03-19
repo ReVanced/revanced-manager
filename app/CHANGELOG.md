@@ -1,3 +1,15 @@
+# app [2.3.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.4-dev.1...v2.3.0-dev.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* Revert "Remove currently not applicable workaround code for building release" ([3613e4d](https://github.com/ReVanced/revanced-manager/commit/3613e4d752a1efc86137817d6bf859ffd1b71eac))
+
+
+### Features
+
+* Improve source system and fix connectivity issues ([#3137](https://github.com/ReVanced/revanced-manager/issues/3137)) ([a4e3266](https://github.com/ReVanced/revanced-manager/commit/a4e3266e9097ef6af8e97d1ac856371535e8ccc5))
+
 ## app [2.2.4-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.3...v2.2.4-dev.1) (2026-03-19)
 
 
