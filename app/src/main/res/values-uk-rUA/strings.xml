@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Не вдалося завантажити патчі. Натисніть, щоб переглянути помилку</string>
   <string name="patches_not_downloaded">Патчі не завантажено.</string>
   <string name="patches_name_default">Патчі</string>
-  <string name="patches_name_fallback">Без назви</string>
+  <string name="source_name_fallback">Без назви</string>
   <string name="android_11_bug_dialog_title">Помилка Android 11</string>
   <string name="android_11_bug_dialog_description">Дозвіл на встановлення програми має бути наданий заздалегідь, щоб уникнути помилки в системі Android 11, яка негативно вплине на взаємодію з користувачем.</string>
   <string name="no_network_toast">Немає підключення до Інтернету</string>

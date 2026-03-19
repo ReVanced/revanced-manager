@@ -36,9 +36,8 @@ class DownloaderActivity : FragmentActivity() {
         val fragmentClassName = intent.getStringExtra("FRAGMENT_CLASS_NAME")!!
         val args = intent.getBundleExtra("FRAGMENT_ARGS")
 
-        res =
-            downloaderPkgState?.context?.createConfigurationContext(super.resources.configuration)?.resources
-
+        // See DownloaderRepository.ResourceImpl.
+        res = downloaderPkgState?.resourceImpl?.apply(super.resources)
 
         if (savedInstanceState == null) {
             @Suppress("UNCHECKED_CAST")

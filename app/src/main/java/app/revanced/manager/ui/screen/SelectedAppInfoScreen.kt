@@ -76,7 +76,6 @@ fun SelectedAppInfoScreen(
 ) {
     val resources = LocalResources.current
     val networkInfo = koinInject<NetworkInfo>()
-    val networkConnected = remember { networkInfo.isConnected() }
     val networkMetered = remember { !networkInfo.isUnmetered() }
 
     val packageName = vm.selectedApp.packageName
@@ -131,8 +130,8 @@ fun SelectedAppInfoScreen(
         derivedStateOf {
             val selectedVersion = vm.selectedApp.version ?: return@derivedStateOf false
             allowIncompatiblePatches &&
-                strictVersionOptions.versions.isNotEmpty() &&
-                selectedVersion !in strictVersionOptions.versions
+                    strictVersionOptions.versions.isNotEmpty() &&
+                    selectedVersion !in strictVersionOptions.versions
         }
     }
 
@@ -359,26 +358,12 @@ fun SelectedAppInfoScreen(
                 val needsInternet =
                     vm.selectedApp.let { it is SelectedApp.Search || it is SelectedApp.Download }
 
-                when {
-                    !needsInternet -> {}
-                    !networkConnected -> {
-                        NotificationCard(
-                            type = NotificationCardType.WARNING,
-                            icon = Icons.Outlined.WarningAmber,
-                            text = stringResource(R.string.network_unavailable_warning),
-                            onDismiss = null
-                        )
-                    }
-
-                    networkMetered -> {
-                        NotificationCard(
-                            type = NotificationCardType.WARNING,
-                            icon = Icons.Outlined.WarningAmber,
-                            text = stringResource(R.string.network_metered_warning),
-                            onDismiss = null
-                        )
-                    }
-                }
+                if (needsInternet && networkMetered) NotificationCard(
+                    type = NotificationCardType.WARNING,
+                    icon = Icons.Outlined.WarningAmber,
+                    text = stringResource(R.string.network_metered_warning),
+                    onDismiss = null
+                )
             }
         }
     }
@@ -562,8 +547,10 @@ private fun AppSourceSelectorDialog(
             LazyColumn {
                 item(key = "auto") {
                     val hasDownloader = downloaders.isNotEmpty()
-                    val hasDownloaded = downloadedApps.any { app -> requiredVersion == null || app.version == requiredVersion }
-                    val hasAutoSource = hasDownloader || hasDownloaded || autoSelection is SelectedApp.Installed
+                    val hasDownloaded =
+                        downloadedApps.any { app -> requiredVersion == null || app.version == requiredVersion }
+                    val hasAutoSource =
+                        hasDownloader || hasDownloaded || autoSelection is SelectedApp.Installed
                     ListItem(
                         modifier = Modifier
                             .clickable(enabled = canSelect && hasAutoSource) { onSelectAuto() }

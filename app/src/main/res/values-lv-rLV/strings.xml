@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Ielāpus nevarēja ielādēt. Noklikšķiniet, lai apskatītu kļūdu</string>
   <string name="patches_not_downloaded">Plāksteri nav lejupielādēti.</string>
   <string name="patches_name_default">Ielāpi</string>
-  <string name="patches_name_fallback">Bez nosaukuma</string>
+  <string name="source_name_fallback">Bez nosaukuma</string>
   <string name="android_11_bug_dialog_title">Android 11 kļūda</string>
   <string name="android_11_bug_dialog_description">Lietotņu instalēšanas atļauja jāpiešķir iepriekš, lai izvairītos no kļūdas Android 11 sistēmā, kas negatīvi ietekmēs lietotāja pieredzi.</string>
   <string name="no_network_toast">Nav pieejams interneta savienojums</string>

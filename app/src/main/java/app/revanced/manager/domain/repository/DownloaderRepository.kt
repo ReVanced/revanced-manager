@@ -3,9 +3,14 @@ package app.revanced.manager.domain.repository
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.content.res.Resources
+import android.content.res.loader.ResourcesLoader
+import android.content.res.loader.ResourcesProvider
+import android.os.Build
+import android.os.ParcelFileDescriptor
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.downloader.DownloaderEntity
@@ -26,6 +31,7 @@ import app.revanced.manager.util.PM
 import dalvik.system.PathClassLoader
 import kotlinx.coroutines.flow.map
 import java.io.File
+import java.lang.ref.WeakReference
 import java.lang.reflect.Modifier
 import app.revanced.manager.data.room.sources.Source as SourceInfo
 
@@ -39,14 +45,6 @@ class DownloaderRepository(
     app.getDir("downloaders", Context.MODE_PRIVATE)
 ) {
     private val dao = db.downloaderDao()
-
-    override val defaultSource = DownloaderEntity(
-        uid = 0,
-        name = "",
-        versionHash = null,
-        source = SourceInfo.API,
-        autoUpdate = false
-    )
 
     override suspend fun dbGetAll() = dao.all()
     override suspend fun dbGetProps(uid: Int) = dao.getProps(uid)
@@ -62,11 +60,13 @@ class DownloaderRepository(
 
     override fun loadEntity(entity: DownloaderEntity): Source<DownloaderPackage> = with(entity) {
         val file = directoryOf(uid).resolve("downloader.jar")
+        val actualName =
+            entity.name.ifEmpty { app.getString(if (uid == 0) R.string.auto_updates_dialog_downloaders else R.string.source_name_fallback) }
 
         return when (source) {
-            is SourceInfo.Local -> LocalSource(name, uid, null, file, loader)
+            is SourceInfo.Local -> LocalSource(actualName, uid, null, file, loader)
             is SourceInfo.API -> APISource(
-                name,
+                actualName,
                 uid,
                 versionHash,
                 null,
@@ -77,7 +77,7 @@ class DownloaderRepository(
             ) { getDownloaderUpdate() }
 
             is SourceInfo.Remote -> JsonSource(
-                name,
+                actualName,
                 uid,
                 versionHash,
                 null,
@@ -100,7 +100,6 @@ class DownloaderRepository(
         autoUpdate = props.autoUpdate
     )
 
-    override fun uidOf(entity: DownloaderEntity) = entity.uid
     override fun realNameOf(loaded: DownloaderPackage) = loaded.name
 
     override val updateFailed = R.string.downloader_update_failed
@@ -116,48 +115,43 @@ class DownloaderRepository(
 
     fun findPackageByName(packageName: String) =
         store.state.value.sources.values.asSequence().mapNotNull { it.loaded }
-            .find { it.context.packageName == packageName }
+            .find { it.packageName == packageName }
 
     fun unwrapParceledData(data: ParceledDownloaderData): Pair<LoadedDownloader, Parcelable> {
-        val pkg = findPackageByName(data.downloaderPackageName) ?: throw Exception("Downloader package ${data.downloaderPackageName} is not available")
+        val pkg = findPackageByName(data.downloaderPackageName)
+            ?: throw Exception("Downloader package ${data.downloaderPackageName} is not available")
         val downloader = pkg.downloaders.firstOrNull { it.className == data.downloaderClassName }
             ?: throw Exception("No downloader with name ${data.downloaderClassName} found in ${data.downloaderPackageName}")
 
         return downloader to data.unwrapWith(pkg.classLoader)
     }
 
-    private val createApplicationContext by lazy {
-        val clazz = Context::class.java
-        clazz.getMethod("createApplicationContext", ApplicationInfo::class.java, Int::class.java)
-    }
-
     private fun loadPackage(packageInfo: PackageInfo, dataDir: File): DownloaderPackage {
         val packageName = packageInfo.packageName
-
-        // The context is technically only necessary for resources. On API levels 30 and above, it would be better to use the proper APIs for dynamic resource loading.
-        val downloaderContext = createApplicationContext(
-            app,
-            packageInfo.applicationInfo,
-            0
-        ) as Context
+        val resources = pm.getResources(packageInfo)
 
         val classNamesResId =
-            @SuppressLint("DiscouragedApi") downloaderContext.resources.getIdentifier(
+            @SuppressLint("DiscouragedApi") resources.getIdentifier(
                 CLASSES_RESOURCE_NAME,
                 "array",
-                downloaderContext.packageName
+                packageName
             )
         if (classNamesResId == 0) throw Exception("Class names resource not found (array/$CLASSES_RESOURCE_NAME)")
-        val classNames = downloaderContext.resources.getStringArray(classNamesResId)
+        val classNames = resources.getStringArray(classNamesResId)
 
+        val apkPath = packageInfo.applicationInfo!!.sourceDir
         val classLoader =
-            PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
+            PathClassLoader(apkPath, app.classLoader)
 
         val scopeImpl = object : Scope {
             override val hostPackageName = app.packageName
-            override val downloaderPackageName = downloaderContext.packageName
+            override val downloaderPackageName = packageName
             override val dataDir = dataDir
         }
+
+        val resourceImpl =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Api30ResourceImpl(File(apkPath))
+            else OldResourceImpl(resources)
 
         return DownloaderPackage(
             classNames.map { className ->
@@ -166,22 +160,61 @@ class DownloaderRepository(
                     .getDownloaderBuilder()
                     .build(
                         scopeImpl = scopeImpl,
-                        context = downloaderContext
+                        context = app,
+                        resources = resources
                     )
 
                 LoadedDownloader(
                     packageName,
                     className,
-                    downloaderContext.getString(downloader.name),
+                    resources.getString(downloader.name),
                     scopeImpl,
                     downloader
                 )
             },
             classLoader,
-            downloaderContext,
+            resourceImpl,
+            packageInfo.packageName,
             with(pm) { packageInfo.label() },
             packageInfo.versionName.orEmpty()
         )
+    }
+
+    /**
+     * Provides resources for [app.revanced.manager.DownloaderActivity]. Has a better implementation on Android 11 and above.
+     */
+    fun interface ResourceImpl {
+        fun apply(res: Resources): Resources?
+    }
+
+    private class OldResourceImpl(val resources: Resources) : ResourceImpl {
+        @Suppress("DEPRECATION")
+        override fun apply(res: Resources) =
+            resources.also { it.updateConfiguration(res.configuration, res.displayMetrics) }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private class Api30ResourceImpl(private val file: File) : ResourceImpl {
+        private var weakRef: WeakReference<ResourcesLoader>? = null
+
+        private fun getLoader(): ResourcesLoader {
+            weakRef?.get()?.let { return it }
+
+            val provider =
+                ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).use { pfd ->
+                    ResourcesProvider.loadFromApk(pfd)
+                }
+            val loader = ResourcesLoader().apply { addProvider(provider) }
+            weakRef = WeakReference(loader)
+
+            return loader
+        }
+
+        override fun apply(res: Resources): Resources? {
+            val loader = getLoader()
+            res.addLoaders(loader)
+            return null
+        }
     }
 
     private companion object {

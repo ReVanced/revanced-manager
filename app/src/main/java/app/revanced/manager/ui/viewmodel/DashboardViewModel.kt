@@ -5,30 +5,24 @@ import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
 import android.os.Build
-import android.os.PowerManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.dto.ReVancedAnnouncement
-import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -38,7 +32,6 @@ class DashboardViewModel(
     private val downloaderRepository: DownloaderRepository,
     private val announcementRepository: AnnouncementRepository,
     private val managerUpdateRepository: ManagerUpdateRepository,
-    private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager,
     private val pm: PM,
 ) : ViewModel() {
@@ -46,15 +39,19 @@ class DashboardViewModel(
         patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
     val bundleDownloadError = patchBundleRepository.apiOutageError
     private val contentResolver: ContentResolver = app.contentResolver
-    private val powerManager = app.getSystemService<PowerManager>()!!
 
     val availableManagerUpdate = managerUpdateRepository.availableVersion
 
     val sourcesNotDownloaded = patchBundleRepository.bundleInfoFlow.map { it.isEmpty() }
+    val sourceUpdatesAvailable = combine(
+        patchBundleRepository.hasOutdated,
+        downloaderRepository.hasOutdated
+    ) { patches, downloaders -> patches || downloaders }
 
     fun downloadSources() = viewModelScope.launch(Dispatchers.Default) {
-        patchBundleRepository.updateCheck()
-        downloaderRepository.updateCheck()
+        arrayOf(patchBundleRepository, downloaderRepository).forEach {
+            it.updateCheck(showToast = true)
+        }
     }
 
     /**
@@ -68,9 +65,6 @@ class DashboardViewModel(
     var unreadAnnouncement by mutableStateOf<ReVancedAnnouncement?>(null)
         private set
 
-    private val bundleListEventsChannel = Channel<BundleListViewModel.Event>()
-    val bundleListEventsFlow = bundleListEventsChannel.receiveAsFlow()
-
     init {
         viewModelScope.launch {
             checkForManagerUpdates()
@@ -79,7 +73,7 @@ class DashboardViewModel(
     }
 
     private suspend fun checkForManagerUpdates() {
-        if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
+        if (!prefs.managerAutoUpdates.get()) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
             managerUpdateRepository.refreshAvailableVersion()
@@ -123,16 +117,9 @@ class DashboardViewModel(
         }
     }
 
-    private fun sendEvent(event: BundleListViewModel.Event) {
-        viewModelScope.launch { bundleListEventsChannel.send(event) }
-    }
-
-    fun cancelSourceSelection() = sendEvent(BundleListViewModel.Event.CANCEL)
-    fun updateSources() = sendEvent(BundleListViewModel.Event.UPDATE_SELECTED)
-    fun deleteSources() = sendEvent(BundleListViewModel.Event.DELETE_SELECTED)
-
     fun deleteSource(uid: Int) = viewModelScope.launch {
-        val source = patchBundleRepository.sources.first().firstOrNull { it.uid == uid } ?: return@launch
+        val source =
+            patchBundleRepository.sources.first().firstOrNull { it.uid == uid } ?: return@launch
         patchBundleRepository.remove(source)
     }
 

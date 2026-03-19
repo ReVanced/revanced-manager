@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.app.Activity
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.StringRes
@@ -94,7 +95,8 @@ typealias GetResult<T> = Pair<T, Version?>
 
 class DownloaderScope<T : Parcelable> internal constructor(
     private val scopeImpl: Scope,
-    internal val context: Context
+    internal val context: Context,
+    internal val resources: Resources
 ) : Scope by scopeImpl {
     // Returning an InputStream is the primary way for a downloader to implement the download function, but we also want to offer an OutputStream API since using InputStream might not be convenient in all cases.
     // It is much easier to implement the main InputStream API on top of OutputStreams compared to doing it the other way around, which is why we are using OutputStream here.
@@ -156,8 +158,8 @@ class DownloaderBuilder<T : Parcelable> internal constructor(
     private val block: DownloaderScope<T>.() -> Unit
 ) {
     @DownloaderHostApi
-    fun build(scopeImpl: Scope, context: Context) =
-        with(DownloaderScope<T>(scopeImpl, context)) {
+    fun build(scopeImpl: Scope, context: Context, resources: Resources) =
+        with(DownloaderScope<T>(scopeImpl, context, resources)) {
             block()
 
             Downloader(

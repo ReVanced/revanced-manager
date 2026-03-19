@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">无法加载补丁。点击查看错误。</string>
   <string name="patches_not_downloaded">补丁尚未下载。</string>
   <string name="patches_name_default">补丁</string>
-  <string name="patches_name_fallback">未命名</string>
+  <string name="source_name_fallback">未命名</string>
   <string name="android_11_bug_dialog_title">Android 11 错误</string>
   <string name="android_11_bug_dialog_description">必须提前授予应用安装权限，以避免 Android 11 系统中的一个错误，该错误将对用户体验产生负面影响。</string>
   <string name="no_network_toast">无可用互联网连接</string>

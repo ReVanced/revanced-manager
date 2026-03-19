@@ -2,14 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <permission
-        android:name="app.revanced.manager.permission.DOWNLOADER_HOST"
-        android:protectionLevel="signature"
-        android:label="@string/downloader_host_permission_label"
-        android:description="@string/downloader_host_permission_description"
-        />
-
-    <uses-permission android:name="app.revanced.manager.permission.DOWNLOADER_HOST" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

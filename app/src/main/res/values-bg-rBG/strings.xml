@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Пачовете не можаха да бъдат заредени. Кликнете, за да видите грешката</string>
   <string name="patches_not_downloaded">Пачовете не са изтеглени.</string>
   <string name="patches_name_default">Пачове</string>
-  <string name="patches_name_fallback">Без име</string>
+  <string name="source_name_fallback">Без име</string>
   <string name="android_11_bug_dialog_title">Бъг в Android 11</string>
   <string name="android_11_bug_dialog_description">Разрешението за инсталиране на приложението трябва да бъде предоставено предварително, за да се избегне бъг в системата на Android 11, който ще повлияе негативно на потребителското изживяване.</string>
   <string name="no_network_toast">Няма налична интернет връзка</string>

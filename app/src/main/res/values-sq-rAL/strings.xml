@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Patch-et nuk mund të ngarkoheshin. Kliko për të parë gabimin.</string>
   <string name="patches_not_downloaded">Arnat nuk janë shkarkuar.</string>
   <string name="patches_name_default">Patch-et</string>
-  <string name="patches_name_fallback">Pa emër</string>
+  <string name="source_name_fallback">Pa emër</string>
   <string name="android_11_bug_dialog_title">Gabim në Android 11</string>
   <string name="android_11_bug_dialog_description">Leja për instalimin e aplikacionit duhet të jepet paraprakisht për të shmangur një gabim në sistemin Android 11 që do të ndikojë negativisht në përvojën e përdoruesit.</string>
   <string name="no_network_toast">Nuk ka lidhje interneti në dispozicion</string>

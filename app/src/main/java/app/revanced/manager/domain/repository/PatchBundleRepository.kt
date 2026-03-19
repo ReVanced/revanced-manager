@@ -42,14 +42,6 @@ class PatchBundleRepository(
 ) {
     private val dao = db.patchBundleDao()
 
-    override val defaultSource = PatchBundleEntity(
-        uid = 0,
-        name = "",
-        versionHash = null,
-        source = SourceInfo.API,
-        autoUpdate = false
-    )
-
     override val updateFailed = R.string.patches_download_fail
     override val updateSuccess = R.string.patches_update_success
     override val updateUnavailable = R.string.patches_update_unavailable
@@ -64,7 +56,7 @@ class PatchBundleRepository(
     override fun loadEntity(entity: PatchBundleEntity): PatchBundleSource = with(entity) {
         val file = directoryOf(uid).resolve("patches.jar")
         val actualName =
-            entity.name.ifEmpty { app.getString(if (uid == 0) R.string.patches_name_default else R.string.patches_name_fallback) }
+            entity.name.ifEmpty { app.getString(if (uid == 0) R.string.patches_name_default else R.string.source_name_fallback) }
 
         return when (source) {
             is SourceInfo.Local -> LocalPatchBundle(actualName, uid, null, file, PatchBundleLoader)
@@ -103,7 +95,6 @@ class PatchBundleRepository(
         autoUpdate = props.autoUpdate
     )
 
-    override fun uidOf(entity: PatchBundleEntity) = entity.uid
     override fun realNameOf(loaded: PatchBundle) = loaded.manifestAttributes?.name
     override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<PatchBundle>>) = loadMetadata(sources).toPersistentMap()
 

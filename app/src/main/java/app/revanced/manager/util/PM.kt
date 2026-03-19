@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
 import androidx.core.content.pm.PackageInfoCompat
-import android.content.pm.Signature
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
@@ -99,12 +97,6 @@ class PM(
         else
             app.packageManager.getInstalledPackages(flags)
 
-    fun getPackagesWithFeature(feature: String) =
-        getInstalledPackages(PackageManager.GET_CONFIGURATIONS)
-            .filter { pkg ->
-                pkg.reqFeatures?.any { it.name == feature } ?: false
-            }
-
     fun getPackageInfo(packageName: String, flags: Int = 0): PackageInfo? =
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
@@ -128,48 +120,10 @@ class PM(
         return pkgInfo
     }
 
-    @SuppressLint("InlinedApi")
-    fun getApkSignature(file: File): Signature? {
-        val path = file.absolutePath
-        val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            app.packageManager.getPackageArchiveInfo(
-                path,
-                PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES.toLong())
-            )
-        else
-            app.packageManager.getPackageArchiveInfo(
-                path,
-                PackageManager.GET_SIGNING_CERTIFICATES
-            )
-
-        return pkgInfo?.signingInfo?.let { signingInfo ->
-            if (signingInfo.hasMultipleSigners()) {
-                val managerSignature = getManagerSignature()
-                signingInfo.apkContentsSigners.firstOrNull { it == managerSignature }
-                    ?: signingInfo.apkContentsSigners.lastOrNull()
-            } else {
-                signingInfo.signingCertificateHistory.lastOrNull()
-            }
-        }
-    }
-
-    fun getManagerSignature(): Signature = getSignature(app.packageName)
-
     fun PackageInfo.label() = this.applicationInfo!!.loadLabel(app.packageManager).toString()
+    fun getResources(packageInfo: PackageInfo) = app.packageManager.getResourcesForApplication(packageInfo.applicationInfo!!)
 
     fun getVersionCode(packageInfo: PackageInfo) = PackageInfoCompat.getLongVersionCode(packageInfo)
-
-    fun getSignature(packageName: String): Signature =
-        // Get the last signature from the list because we want the newest one if SigningInfo.getSigningCertificateHistory() was used.
-        PackageInfoCompat.getSignatures(app.packageManager, packageName).last()
-
-    @SuppressLint("InlinedApi")
-    fun hasSignature(packageName: String, signature: ByteArray) = PackageInfoCompat.hasSignatures(
-        app.packageManager,
-        packageName,
-        mapOf(signature to PackageManager.CERT_INPUT_RAW_X509),
-        false
-    )
 
     suspend fun uninstallPackage(pkg: String, config: UninstallParametersDsl.() -> Unit = {}) = withContext(Dispatchers.IO) {
         uninstaller.createSession(pkg) {

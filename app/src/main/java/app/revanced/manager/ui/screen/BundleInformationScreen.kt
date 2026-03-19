@@ -140,28 +140,23 @@ fun BundleInformationScreen(
                     }
                 },
                 actions = {
-                    if (!src.isDefault) {
-                        TooltipIconButton(
-                            onClick = { showDeleteConfirmationDialog = true },
-                            tooltip = stringResource(R.string.delete),
-                        ) { contentDescription ->
-                            Icon(
-                                Icons.Filled.Delete,
-                                contentDescription
-                            )
-                        }
+                    if (!src.isDefault) TooltipIconButton(
+                        onClick = { showDeleteConfirmationDialog = true },
+                        tooltip = stringResource(R.string.delete),
+                    ) { contentDescription ->
+                        Icon(
+                            Icons.Filled.Delete,
+                            contentDescription
+                        )
                     }
-                    val hasNetwork = remember { viewModel.networkInfo.isConnected() }
-                    if (!isLocal && hasNetwork) {
-                        TooltipIconButton(
-                            onClick = viewModel::refresh,
-                            tooltip = stringResource(R.string.refresh),
-                        ) { contentDescription ->
-                            Icon(
-                                Icons.Filled.Refresh,
-                                contentDescription
-                            )
-                        }
+                    if (!isLocal) TooltipIconButton(
+                        onClick = viewModel::refresh,
+                        tooltip = stringResource(R.string.refresh),
+                    ) { contentDescription ->
+                        Icon(
+                            Icons.Filled.Refresh,
+                            contentDescription
+                        )
                     }
                 },
                 scrollBehavior = scrollBehavior

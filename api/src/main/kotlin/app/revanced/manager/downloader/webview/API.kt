@@ -144,7 +144,7 @@ suspend fun <T> GetScope.runWebView(
  */
 fun WebViewDownloader(@StringRes name: Int, block: suspend WebViewScope<DownloadUrl>.(packageName: String, version: String?) -> InitialUrl?) =
     Downloader(name) {
-        val label = context.getString(name)
+        val label = resources.getString(name)
 
         get { packageName, version ->
             class ReturnNull : Exception()

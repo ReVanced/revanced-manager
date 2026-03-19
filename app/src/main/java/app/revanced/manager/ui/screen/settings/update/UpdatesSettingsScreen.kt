@@ -117,10 +117,6 @@ fun UpdatesSettingsScreen(
                                 return@launch
                             }
 
-                            if (!vm.isConnected) {
-                                context.toast(resources.getString(R.string.no_network_toast))
-                                return@launch
-                            }
                             checkingForUpdate = true
                             try {
                                 val version = vm.checkForUpdates()
@@ -202,13 +198,7 @@ fun UpdatesSettingsScreen(
                         }
                         Spacer(modifier = Modifier.height(4.dp))
                         Button(
-                            onClick = {
-                                if (!vm.isConnected) {
-                                    context.toast(resources.getString(R.string.no_network_toast))
-                                } else {
-                                    onChangelogClick()
-                                }
-                            },
+                            onClick = onChangelogClick,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                                 contentColor = MaterialTheme.colorScheme.onSurface
