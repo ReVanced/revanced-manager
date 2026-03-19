@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">ไม่สามารถโหลดแพตช์ได้ คลิกเพื่อดูข้อผิดพลาด</string>
   <string name="patches_not_downloaded">ยังไม่ได้ดาวน์โหลดแพตช์</string>
   <string name="patches_name_default">แพตช์</string>
-  <string name="patches_name_fallback">ไม่มีชื่อ</string>
+  <string name="source_name_fallback">ไม่มีชื่อ</string>
   <string name="android_11_bug_dialog_title">ข้อผิดพลาด Android 11</string>
   <string name="android_11_bug_dialog_description">ต้องได้รับอนุญาตการติดตั้งแอปก่อนเวลาเพื่อหลีกเลี่ยงข้อผิดพลาดในระบบ Android 11 ซึ่งจะส่งผลเสียต่อประสบการณ์ผู้ใช้</string>
   <string name="no_network_toast">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>

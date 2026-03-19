@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Patches konden niet worden geladen. Klik om de fout te bekijken</string>
   <string name="patches_not_downloaded">Patches zijn niet gedownload.</string>
   <string name="patches_name_default">Patches</string>
-  <string name="patches_name_fallback">Naamloos</string>
+  <string name="source_name_fallback">Naamloos</string>
   <string name="android_11_bug_dialog_title">Android 11-bug</string>
   <string name="android_11_bug_dialog_description">De app-installatietoestemming moet vooraf worden verleend om een bug in het Android 11-systeem te voorkomen die de gebruikerservaring negatief zal beïnvloeden.</string>
   <string name="no_network_toast">Geen internetverbinding beschikbaar</string>

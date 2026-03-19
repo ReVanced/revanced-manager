@@ -125,6 +125,7 @@ fun DashboardScreen(
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val sourcesNotDownloaded by vm.sourcesNotDownloaded.collectAsStateWithLifecycle(false)
+    val sourceUpdatesAvailable by vm.sourceUpdatesAvailable.collectAsStateWithLifecycle(false)
     val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
     val disablePatchVersionCompatCheck by vm.prefs.disablePatchVersionCompatCheck.getAsState()
@@ -405,7 +406,6 @@ fun DashboardScreen(
                         patchesSourceEditMode = patchesSourceEditMode,
                         onEnablePatchesSourceEditMode = { patchesSourceEditMode = true },
                         onAddBundleClick = {
-                            vm.cancelSourceSelection()
                             showAddBundleDialog = true
                         }
                     )
@@ -440,15 +440,22 @@ fun DashboardScreen(
                                 )
                             }
                         } else null,
-                        if (sourcesNotDownloaded && bundleDownloadError == null) {
+                        if (sourceUpdatesAvailable) {
+                            {
+                                NotificationCard(
+                                    type = NotificationCardType.WARNING,
+                                    icon = Icons.Outlined.Refresh,
+                                    text = stringResource(R.string.banner_sources_not_updated_description),
+                                    onClick = vm::downloadSources
+                                )
+                            }
+                        } else if (sourcesNotDownloaded && bundleDownloadError == null) {
                             {
                                 NotificationCard(
                                     type = NotificationCardType.WARNING,
                                     icon = Icons.Outlined.Refresh,
                                     text = stringResource(R.string.banner_sources_not_downloaded_description),
-                                    onClick = {
-                                        vm.downloadSources()
-                                    }
+                                    onClick = vm::downloadSources
                                 )
                             }
                         } else null,

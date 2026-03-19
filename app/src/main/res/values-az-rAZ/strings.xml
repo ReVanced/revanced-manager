@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Yamaqlar yüklənə bilmədi. Xətanı görmək üçün klikləyin</string>
   <string name="patches_not_downloaded">Yamaqlar yüklənməyib.</string>
   <string name="patches_name_default">Yamaqlar</string>
-  <string name="patches_name_fallback">Adsız</string>
+  <string name="source_name_fallback">Adsız</string>
   <string name="android_11_bug_dialog_title">Android 11 səhvi</string>
   <string name="android_11_bug_dialog_description">Tətbiqin quraşdırılması icazəsi, Android 11 sistemində istifadəçi təcrübəsinə mənfi təsir göstərəcək bir səhvin qarşısını almaq üçün əvvəlcədən verilməlidir.</string>
   <string name="no_network_toast">İnternet bağlantısı yoxdur</string>

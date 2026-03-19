@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Không thể tải các bản vá. Nhấn để xem lỗi</string>
   <string name="patches_not_downloaded">Các bản vá chưa được tải xuống.</string>
   <string name="patches_name_default">Các bản vá</string>
-  <string name="patches_name_fallback">Chưa đặt tên</string>
+  <string name="source_name_fallback">Chưa đặt tên</string>
   <string name="android_11_bug_dialog_title">Lỗi Android 11</string>
   <string name="android_11_bug_dialog_description">Phải cấp quyền cài đặt ứng dụng trước để tránh lỗi trong hệ thống Android 11, vốn sẽ ảnh hưởng tiêu cực đến trải nghiệm người dùng.</string>
   <string name="no_network_toast">Không có kết nối internet khả dụng</string>

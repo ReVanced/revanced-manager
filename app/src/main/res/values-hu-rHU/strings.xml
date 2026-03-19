@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">A javítások betöltése sikertelen. Kattintson a hibák megtekintéséhez.</string>
   <string name="patches_not_downloaded">A javítások nincsenek letöltve.</string>
   <string name="patches_name_default">Javítások</string>
-  <string name="patches_name_fallback">Névtelen</string>
+  <string name="source_name_fallback">Névtelen</string>
   <string name="android_11_bug_dialog_title">Android 11 hiba</string>
   <string name="android_11_bug_dialog_description">Az alkalmazástelepítési engedélyt előre meg kell adni, hogy elkerülhető legyen egy Android 11 rendszerhiba, amely negatívan befolyásolná a felhasználói élményt.</string>
   <string name="no_network_toast">Nincs elérhető internetkapcsolat</string>

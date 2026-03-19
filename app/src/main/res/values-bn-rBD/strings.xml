@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">প্যাচ লোড করা যায়নি। ত্রুটি দেখতে ক্লিক করুন</string>
   <string name="patches_not_downloaded">প্যাচগুলি ডাউনলোড করা হয়নি।</string>
   <string name="patches_name_default">প্যাচগুলি</string>
-  <string name="patches_name_fallback">নামহীন</string>
+  <string name="source_name_fallback">নামহীন</string>
   <string name="android_11_bug_dialog_title">Android 11 বাগ</string>
   <string name="android_11_bug_dialog_description">Android 11 সিস্টেমে একটি বাগ এড়াতে অ্যাপ ইনস্টলেশনের অনুমতি আগে থেকেই দিতে হবে, যা ব্যবহারকারীর অভিজ্ঞতার উপর নেতিবাচক প্রভাব ফেলবে।</string>
   <string name="no_network_toast">কোনো ইন্টারনেট সংযোগ উপলব্ধ নেই</string>

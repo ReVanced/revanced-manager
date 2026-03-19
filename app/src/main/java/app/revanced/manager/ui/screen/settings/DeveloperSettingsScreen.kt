@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Api
+import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.WorkOutline
@@ -138,7 +139,17 @@ fun DeveloperSettingsScreen(
                 )
                 SettingsListItem(
                     headlineContent = stringResource(R.string.patches_reset),
-                    onClick = vm::redownloadBundles
+                    onClick = vm::resetBundles
+                )
+            }
+
+            ListSection(
+                title = stringResource(R.string.downloaders),
+                leadingContent = { Icon(Icons.Outlined.Download, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            ) {
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.downloaders_reset),
+                    onClick = vm::resetDownloaders
                 )
             }
         }

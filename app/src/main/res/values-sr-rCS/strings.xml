@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Zakrpe se nisu mogle učitati. Kliknite da vidite grešku</string>
   <string name="patches_not_downloaded">Zakrpe nisu preuzete.</string>
   <string name="patches_name_default">Zakrpe</string>
-  <string name="patches_name_fallback">Neimenovano</string>
+  <string name="source_name_fallback">Neimenovano</string>
   <string name="android_11_bug_dialog_title">Greška Androida 11</string>
   <string name="android_11_bug_dialog_description">Dozvola za instalaciju aplikacije mora biti data unapred kako bi se izbegla greška u sistemu Android 11 koja će negativno uticati na korisničko iskustvo.</string>
   <string name="no_network_toast">Nema dostupne internet veze</string>

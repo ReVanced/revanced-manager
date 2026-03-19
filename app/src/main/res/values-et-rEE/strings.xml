@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Paikasid ei saanud laadida. Vea vaatamiseks klõpsake.</string>
   <string name="patches_not_downloaded">Paigad pole alla laaditud.</string>
   <string name="patches_name_default">Paigad</string>
-  <string name="patches_name_fallback">Nimetu</string>
+  <string name="source_name_fallback">Nimetu</string>
   <string name="android_11_bug_dialog_title">Android 11 viga</string>
   <string name="android_11_bug_dialog_description">Rakenduse installimise luba tuleb eelnevalt anda, et vältida Android 11 süsteemi viga, mis mõjutab negatiivselt kasutajakogemust.</string>
   <string name="no_network_toast">Internetiühendus puudub</string>

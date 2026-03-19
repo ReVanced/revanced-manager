@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Yamalar yüklenemedi. Hatayı görmek için tıklayın</string>
   <string name="patches_not_downloaded">Yamalar indirilmedi.</string>
   <string name="patches_name_default">Yamalar</string>
-  <string name="patches_name_fallback">Adsız</string>
+  <string name="source_name_fallback">Adsız</string>
   <string name="android_11_bug_dialog_title">Android 11 hatası</string>
   <string name="android_11_bug_dialog_description">Uygulama yükleme izni, Android 11 sistemindeki kullanıcı deneyimini olumsuz etkileyecek bir hatayı önlemek için önceden verilmelidir.</string>
   <string name="no_network_toast">İnternet bağlantısı yok</string>

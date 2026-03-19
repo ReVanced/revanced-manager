@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Կարկատանները չհաջողվեց բեռնել։ Կտտացրեք՝ սխալը դիտելու համար</string>
   <string name="patches_not_downloaded">Կարկատանները չեն ներբեռնվել։</string>
   <string name="patches_name_default">Կարկատաններ</string>
-  <string name="patches_name_fallback">Անանուն</string>
+  <string name="source_name_fallback">Անանուն</string>
   <string name="android_11_bug_dialog_title">Android 11-ի սխալ</string>
   <string name="android_11_bug_dialog_description">Հավելվածի տեղադրման թույլտվությունը պետք է տրվի նախապես՝ խուսափելու համար Android 11 համակարգի սխալից, որը բացասաբար կազդի օգտագործողի փորձի վրա։</string>
   <string name="no_network_toast">Ինտերնետ կապ չկա</string>

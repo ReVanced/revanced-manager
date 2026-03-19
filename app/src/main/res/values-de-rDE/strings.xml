@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Patches konnten nicht geladen werden. Klicken Sie hier, um den Fehler anzuzeigen.</string>
   <string name="patches_not_downloaded">Patches wurden nicht heruntergeladen.</string>
   <string name="patches_name_default">Patches</string>
-  <string name="patches_name_fallback">Unbenannt</string>
+  <string name="source_name_fallback">Unbenannt</string>
   <string name="android_11_bug_dialog_title">Android 11 Fehler</string>
   <string name="android_11_bug_dialog_description">Die Berechtigung zur App-Installation muss im Voraus erteilt werden, um einen Fehler im Android 11-System zu vermeiden, der die Benutzererfahrung negativ beeinflusst.</string>
   <string name="no_network_toast">Keine Internetverbindung verfügbar</string>
