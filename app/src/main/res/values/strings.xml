@@ -159,7 +159,7 @@ Second \"item\" text"</string>
     <string name="patch_compat_check">Turn off version compatibility check</string>
     <string name="patch_compat_check_description">Disables checking patch/app version compatibility</string>
     <string name="patch_compat_check_title">Turn off version compatibility check?</string>
-    <string name="patch_compat_check_confirmation">Selecting incompatible patches can result in a broken app.
+    <string name="patch_compat_check_confirmation">Selecting incompatible patches may cause unexpected issues.
 
 Proceed anyway?</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
@@ -175,7 +175,7 @@ Proceed anyway?</string>
 
 Proceed anyway?</string>
     <string name="universal_patches_safeguard">Allow using universal patches</string>
-    <string name="universal_patches_safeguard_description">Allows the use of patches not made for specific apps</string>
+    <string name="universal_patches_safeguard_description">Allows the use of general-purpose patches not made for specific apps</string>
     <string name="universal_patches_safeguard_title">Use universal patches?</string>
     <string name="universal_patches_safeguard_confirmation">Universal patches aren’t tested as much as those that target specific apps.
 
@@ -197,10 +197,10 @@ Proceed anyway?</string>
     <string name="export_keystore_success">Exported keystore</string>
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
-    <string name="regenerate_keystore_dialog_description">You are about to regenerate your keystore, used during the patching process.
+    <string name="regenerate_keystore_dialog_description">You’re about to regenerate your keystore, used during the patching process.
 
 You won’t be able to update apps that were signed with the previous keystore.</string>
-    <string name="regenerate_keystore_success">Successfully replaced keystore</string>
+    <string name="regenerate_keystore_success">Keystore regenerated</string>
     <string name="import_patch_selection">Import patch selection</string>
     <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
     <string name="import_patch_selection_fail">Couldn’t import patch selection: %s</string>
@@ -251,12 +251,12 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="downloader_url">Downloader URL</string>
     <string name="downloader_add">Add downloader</string>
     <string name="select_downloader_type_dialog_description">Add new downloaders from a URL or local files</string>
-    <string name="local_downloaders_description">Add downloaders from local storage</string>
-    <string name="remote_downloaders_description">Add downloaders from a URL. Can be automatically updated.</string>
+    <string name="local_downloaders_description">Add downloader from local storage</string>
+    <string name="remote_downloaders_description">Add a downloader from a URL. It may be updated automatically.</string>
     <string name="install_revanced_downloaders">Install downloaders to get apps directly from ReVanced Manager.</string>
     <string name="install_revanced_downloader">Install ReVanced downloaders</string>
     <string name="cancel_downloader_install_title">Cancel downloaders install?</string>
-    <string name="cancel_downloader_install_description">Downloaders are being installed. Proceed?</string>
+    <string name="cancel_downloader_install_description">Downloaders are being installed.</string>
     <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
     <string name="downloader_sources_unavailable_description">Tap the Update button to fix this issue</string>
 
@@ -278,7 +278,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
-    <string name="no_file_picker_found">Couldn’t find a file picker app, please use an alternative method</string>
+    <string name="no_file_picker_found">Couldn’t open file picker, please use an alternative method</string>
     <string name="suggested_version_info">Suggested version: %s</string>
     <string name="type_anything">Type anything to continue</string>
     <string name="search">Search patches</string>
@@ -298,7 +298,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="networking">Networking</string>
     <string name="allow_metered_networks">Allow metered networks</string>
     <string name="allow_metered_networks_description">Allow automatic updates on metered networks.
-    You might still be warned about metered networks for manual operations.</string>
+    You may still be warned before performing manual operations.</string>
     <string name="downloaded_apps">Downloaded apps</string>
     <string name="process_runtime">Run Patcher in another process (experimental)</string>
     <string name="process_runtime_description">Faster, and allows Patcher to use more memory</string>
@@ -330,7 +330,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="patching">Patching</string>
     <string name="signing">Signing</string>
     <string name="storage">Storage</string>
-    <string name="no_patch_found">Couldn’t find any patch, check your patches</string>
+    <string name="no_patch_found">Couldn’t find any patches</string>
     <string name="tab_apps">Apps</string>
     <string name="tab_patches">Patches</string>
     <string name="delete">Delete</string>
@@ -344,7 +344,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="api_not_working_description">Some features might be impacted. Check your connection or API URL in settings.</string>
     <string name="patches_replace_fail">Couldn’t import patches: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
-    <string name="no_patched_apps_description">It seems you haven’t patched any app yet. Change that by patching your first app!</string>
+    <string name="no_patched_apps_description">You don’t have any patched apps yet. Start by patching your first app!</string>
     <string name="patched_apps_section_title">Patched apps</string>
     <string name="patchable_apps_section_title">Apps that can be patched</string>
     <string name="no_patches_found">No patches found</string>
@@ -364,7 +364,7 @@ To continue anyway, turn off “Require suggested app version” in the advanced
     <string name="selection_warning_description">It’s recommended to use the default patch selection and options. Changing them may cause unexpected issues.
 
 You need to turn on “Allow changing patch selection and options” in the advanced settings before toggling patches.</string>
-    <string name="universal_patch_warning_description">Universal patches are more general-purpose, but not as reliable as app-specific patches. You may face issues while using them.
+    <string name="universal_patch_warning_description">Universal patches are more general-purpose, and may not be as reliable as app-specific patches. You may face issues using them.
 
 You need to turn on “Allow using universal patches” in the advanced settings before using universal patches.</string>
     <string name="this_version">This version</string>
