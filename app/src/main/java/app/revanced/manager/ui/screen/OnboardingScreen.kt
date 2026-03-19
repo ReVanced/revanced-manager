@@ -45,6 +45,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,6 +72,7 @@ import app.revanced.manager.util.RequestInstallAppsContract
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import rikka.shizuku.Shizuku
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @SuppressLint("BatteryLife")
@@ -106,6 +108,16 @@ fun OnboardingScreen(
         ActivityResultContracts.StartActivityForResult()
     ) {
         vm.refreshPermissionStates()
+    }
+
+    DisposableEffect(Unit) {
+        val listener = Shizuku.OnRequestPermissionResultListener { _, _ ->
+            vm.refreshPermissionStates()
+        }
+        Shizuku.addRequestPermissionResultListener(listener)
+        onDispose {
+            Shizuku.removeRequestPermissionResultListener(listener)
+        }
     }
 
     BackHandler(enabled = currentStep != OnboardingStep.Permissions) {
@@ -184,6 +196,8 @@ fun OnboardingScreen(
                         canInstallUnknownApps = vm.canInstallUnknownApps,
                         isNotificationsEnabled = vm.isNotificationsEnabled,
                         isBatteryOptimizationExempt = vm.isBatteryOptimizationExempt,
+                        isShizukuAvailable = vm.isShizukuAvailable,
+                        isShizukuAuthorized = vm.isShizukuAuthorized,
                         onRequestInstallApps = { installAppsLauncher.launch(context.packageName) },
                         onRequestNotifications = {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -197,6 +211,11 @@ fun OnboardingScreen(
                                     Uri.fromParts("package", context.packageName, null)
                                 )
                             )
+                        },
+                        onRequestShizuku = {
+                            try {
+                                Shizuku.requestPermission(0)
+                            } catch (_: Exception) {}
                         }
                     )
 

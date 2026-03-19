@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
@@ -35,9 +36,12 @@ fun PermissionsStepContent(
     canInstallUnknownApps: Boolean,
     isNotificationsEnabled: Boolean,
     isBatteryOptimizationExempt: Boolean,
+    isShizukuAvailable: Boolean,
+    isShizukuAuthorized: Boolean,
     onRequestInstallApps: () -> Unit,
     onRequestNotifications: () -> Unit,
-    onRequestBatteryOptimization: () -> Unit
+    onRequestBatteryOptimization: () -> Unit,
+    onRequestShizuku: () -> Unit
 ) {
     ListSection(contentPadding = PaddingValues(0.dp)) {
         PermissionItem(
@@ -47,6 +51,16 @@ fun PermissionsStepContent(
             isGranted = canInstallUnknownApps,
             onRequest = onRequestInstallApps
         )
+
+        if (isShizukuAvailable) {
+            PermissionItem(
+                icon = ImageVector.vectorResource(id = R.drawable.ic_shizuku),
+                title = stringResource(R.string.permission_shizuku),
+                description = stringResource(R.string.permission_shizuku_description),
+                isGranted = isShizukuAuthorized,
+                onRequest = onRequestShizuku
+            )
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             PermissionItem(
