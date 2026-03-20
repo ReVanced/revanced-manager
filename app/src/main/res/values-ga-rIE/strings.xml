@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Níorbh fhéidir paistí a luchtú. Cliceáil chun an earráid a fheiceáil</string>
   <string name="patches_not_downloaded">Níor íoslódáladh na paistí.</string>
   <string name="patches_name_default">Paistí</string>
-  <string name="patches_name_fallback">Gan ainm</string>
+  <string name="source_name_fallback">Gan ainm</string>
   <string name="android_11_bug_dialog_title">Fabht Android 11</string>
   <string name="android_11_bug_dialog_description">Ní mór an cead suiteála aip a dheonú roimh ré chun fabht sa chóras Android 11 a sheachaint a dhéanfaidh difear diúltach d\'eispéireas an úsáideora.</string>
   <string name="no_network_toast">Níl aon nasc idirlín ar fáil</string>

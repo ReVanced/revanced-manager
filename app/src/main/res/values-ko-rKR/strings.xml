@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">패치를 불러올 수 없습니다. 오류를 보려면 여기를 탭하세요</string>
   <string name="patches_not_downloaded">패치가 다운로드되지 않았습니다.</string>
   <string name="patches_name_default">패치</string>
-  <string name="patches_name_fallback">이름 없음</string>
+  <string name="source_name_fallback">이름 없음</string>
   <string name="android_11_bug_dialog_title">Android 11 버그</string>
   <string name="android_11_bug_dialog_description">사용자 환경에 부정적인 영향을 미치는 Android 11 시스템 버그를 방지하려면 앱 설치 권한을 미리 부여해야 합니다.</string>
   <string name="no_network_toast">인터넷에 연결할 수 없습니다</string>

@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Nie można było załadować łatek. Kliknij, aby wyświetlić błąd</string>
   <string name="patches_not_downloaded">Poprawki nie zostały pobrane.</string>
   <string name="patches_name_default">Łatki</string>
-  <string name="patches_name_fallback">Bez nazwy</string>
+  <string name="source_name_fallback">Bez nazwy</string>
   <string name="android_11_bug_dialog_title">Błąd Androida 11</string>
   <string name="android_11_bug_dialog_description">Zezwolenie na instalację aplikacji musi zostać udzielone z wyprzedzeniem, aby uniknąć błędu w systemie Android 11, który negatywnie wpłynie na doświadczenia użytkownika.</string>
   <string name="no_network_toast">Brak połączenia z internetem</string>

@@ -137,7 +137,7 @@ fun AnnouncementScreen(
                       </body>
                     </html>
                 """.trimIndent()
-                    webView.loadData(style, "text/html", "UTF-8")
+                    webView.loadDataWithBaseURL(null, style, "text/html", "UTF-8", null)
                 },
                 onRelease = {
                     val webView = it.children.first() as WebView

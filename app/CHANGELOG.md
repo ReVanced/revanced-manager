@@ -1,3 +1,43 @@
+# app [2.3.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.3...v2.3.0-dev.4) (2026-03-20)
+
+
+### Features
+
+* Improve changelogs ([#2968](https://github.com/ReVanced/revanced-manager/issues/2968)) ([fba748d](https://github.com/ReVanced/revanced-manager/commit/fba748d84fb37c1ee723b54d10243d2fa00a3023))
+
+# app [2.3.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.2...v2.3.0-dev.3) (2026-03-20)
+
+
+### Bug Fixes
+
+* Make select from storage work in dashboard ([908db47](https://github.com/ReVanced/revanced-manager/commit/908db47ee23da7317e696c03db383cbe577f243e))
+
+# app [2.3.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.1...v2.3.0-dev.2) (2026-03-20)
+
+
+### Bug Fixes
+
+* Announcement rendering ([3849226](https://github.com/ReVanced/revanced-manager/commit/3849226315797d27ff63519db6ae0119efc877d7))
+
+# app [2.3.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.4-dev.1...v2.3.0-dev.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* Revert "Remove currently not applicable workaround code for building release" ([3613e4d](https://github.com/ReVanced/revanced-manager/commit/3613e4d752a1efc86137817d6bf859ffd1b71eac))
+
+
+### Features
+
+* Improve source system and fix connectivity issues ([#3137](https://github.com/ReVanced/revanced-manager/issues/3137)) ([a4e3266](https://github.com/ReVanced/revanced-manager/commit/a4e3266e9097ef6af8e97d1ac856371535e8ccc5))
+
+## app [2.2.4-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.3...v2.2.4-dev.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* Mount install ([#3111](https://github.com/ReVanced/revanced-manager/issues/3111)) ([3ef22a3](https://github.com/ReVanced/revanced-manager/commit/3ef22a351a20bc497a03092f58f8a3a60e68024e))
+
 ## app [2.2.3](https://github.com/ReVanced/revanced-manager/compare/v2.2.2...v2.2.3) (2026-03-19)
 
 

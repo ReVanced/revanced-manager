@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Патчи не могут быть загружены. Нажмите, чтобы просмотреть ошибку</string>
   <string name="patches_not_downloaded">Патчи не были загружены.</string>
   <string name="patches_name_default">Патчи</string>
-  <string name="patches_name_fallback">Без названия</string>
+  <string name="source_name_fallback">Без названия</string>
   <string name="android_11_bug_dialog_title">Ошибка Android 11</string>
   <string name="android_11_bug_dialog_description">Разрешение на установку приложения должно быть предоставлено заранее, чтобы избежать ошибки в системе Android 11, которая негативно скажется на пользовательском опыте.</string>
   <string name="no_network_toast">Нет доступного интернет-соединения</string>

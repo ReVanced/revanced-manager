@@ -2,9 +2,13 @@ package app.revanced.manager.ui.screen.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
@@ -16,8 +20,10 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -45,16 +51,16 @@ import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.network.downloader.DownloaderPackage
+import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.EmptyState
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.TooltipIconButton
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.sources.ImportSourceDialog
 import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
-import app.revanced.manager.ui.component.haptics.HapticCheckbox
-import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -155,14 +161,25 @@ fun DownloadsSettingsScreen(
                 }
             )
         },
-        floatingActionButton = {
+        bottomBar = {
             if (pagerState.currentPage != DownloadsTab.Downloaders.ordinal) return@Scaffold
-            HapticExtendedFloatingActionButton(
-                onClick = { showImportDialog = true },
-                tooltip = stringResource(R.string.add),
-                icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                text = { Text(stringResource(R.string.add)) }
-            )
+
+            BottomContentBar(modifier = Modifier.navigationBarsPadding()) {
+                FilledTonalButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    onClick = { showImportDialog = true },
+                    shapes = ButtonDefaults.shapes()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.add)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = stringResource(R.string.downloader_add))
+                }
+            }
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->

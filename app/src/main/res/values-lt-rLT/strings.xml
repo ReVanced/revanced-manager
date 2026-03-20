@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Taisymų nepavyko įkelti. Spustelėkite, kad peržiūrėtumėte klaidą.</string>
   <string name="patches_not_downloaded">Lopai nebuvo atsisiųsti.</string>
   <string name="patches_name_default">Taisymai</string>
-  <string name="patches_name_fallback">Be pavadinimo</string>
+  <string name="source_name_fallback">Be pavadinimo</string>
   <string name="android_11_bug_dialog_title">„Android 11“ klaida</string>
   <string name="android_11_bug_dialog_description">Programos diegimo leidimas turi būti suteiktas iš anksto, kad būtų išvengta „Android 11“ sistemos klaidos, kuri neigiamai paveiks naudotojo patirtį.</string>
   <string name="no_network_toast">Nėra interneto ryšio</string>

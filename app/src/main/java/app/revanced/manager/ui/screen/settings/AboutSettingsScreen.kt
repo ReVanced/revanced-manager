@@ -137,11 +137,6 @@ fun AboutSettingsScreen(
             stringResource(R.string.contributors),
             stringResource(R.string.contributors_description),
             third = nav@{
-                if (!viewModel.isConnected) {
-                    context.toast(resources.getString(R.string.no_network_toast))
-                    return@nav
-                }
-
                 navigate(Settings.Contributors)
             }
         ),

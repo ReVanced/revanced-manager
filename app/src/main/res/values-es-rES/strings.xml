@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">No se pudieron cargar los parches. Haz clic para ver el error</string>
   <string name="patches_not_downloaded">Los parches no se han descargado.</string>
   <string name="patches_name_default">Parches</string>
-  <string name="patches_name_fallback">Sin nombre</string>
+  <string name="source_name_fallback">Sin nombre</string>
   <string name="android_11_bug_dialog_title">Error de Android 11</string>
   <string name="android_11_bug_dialog_description">El permiso de instalación de la aplicación debe concederse con antelación para evitar un error en el sistema Android 11 que afectará negativamente a la experiencia del usuario.</string>
   <string name="no_network_toast">No hay conexión a internet disponible</string>

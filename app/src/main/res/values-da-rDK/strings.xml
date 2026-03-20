@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Patches kunne ikke indlæses. Klik for at se fejlen</string>
   <string name="patches_not_downloaded">Patches er ikke blevet downloadet.</string>
   <string name="patches_name_default">Patches</string>
-  <string name="patches_name_fallback">Unavngivet</string>
+  <string name="source_name_fallback">Unavngivet</string>
   <string name="android_11_bug_dialog_title">Android 11-fejl</string>
   <string name="android_11_bug_dialog_description">App-installationstilladelsen skal gives på forhånd for at undgå en fejl i Android 11-systemet, som vil påvirke brugeroplevelsen negativt.</string>
   <string name="no_network_toast">Ingen internetforbindelse tilgængelig</string>

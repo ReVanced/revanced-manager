@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Korrigeringar kunde inte läsas in. Klicka för att visa felet</string>
   <string name="patches_not_downloaded">Patchar har inte laddats ned.</string>
   <string name="patches_name_default">Korrigeringar</string>
-  <string name="patches_name_fallback">Namnlös</string>
+  <string name="source_name_fallback">Namnlös</string>
   <string name="android_11_bug_dialog_title">Android 11-fel</string>
   <string name="android_11_bug_dialog_description">Behörigheten för appinstallation måste beviljas i förväg för att undvika en fel i Android 11-systemet som negativt påverkar användarupplevelsen.</string>
   <string name="no_network_toast">Ingen internetanslutning är tillgänglig</string>

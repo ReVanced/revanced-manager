@@ -105,7 +105,7 @@ class DownloadsViewModel(
     fun updateDownloader(src: RemoteSource<DownloaderPackage>) = viewModelScope.launch {
         try {
             isUpdatingDownloader = true
-            downloaderRepository.update(src, showToast = true, force = true)
+            downloaderRepository.update(src, showToast = true)
         } finally {
             isUpdatingDownloader = false
         }

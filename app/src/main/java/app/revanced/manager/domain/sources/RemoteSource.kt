@@ -48,13 +48,9 @@ sealed class RemoteSource<T>(
      * Downloads the latest version regardless if there is a new update available.
      */
     suspend fun ActionContext.downloadLatest() = download(getLatestInfo())
-
+    suspend fun ActionContext.getUpdateInfo() = getLatestInfo().takeUnless { hasInstalled() && it.version == versionHash }
     suspend fun ActionContext.update(): String? = withContext(Dispatchers.IO) {
-        val info = getLatestInfo()
-        if (hasInstalled() && info.version == versionHash)
-            return@withContext null
-
-        download(info)
+        getUpdateInfo()?.let { download(it) }
     }
 
     companion object {

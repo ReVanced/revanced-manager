@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Záplaty nebylo možné načíst. Kliknutím zobrazíte chybu.</string>
   <string name="patches_not_downloaded">Záplaty nebyly staženy.</string>
   <string name="patches_name_default">Záplaty</string>
-  <string name="patches_name_fallback">Nepojmenováno</string>
+  <string name="source_name_fallback">Nepojmenováno</string>
   <string name="android_11_bug_dialog_title">Chyba Androidu 11</string>
   <string name="android_11_bug_dialog_description">Povolení k instalaci aplikací musí být uděleno předem, aby se předešlo chybě v systému Android 11, která by negativně ovlivnila uživatelský zážitek.</string>
   <string name="no_network_toast">Připojení k internetu není dostupné</string>

@@ -237,6 +237,12 @@ android {
         generateLocaleConfig = true
     }
 
+    android {
+        lint {
+            disable.add("ExtraTranslation")
+        }
+    }
+
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")

@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">לא ניתן לטעון טלאים. לחץ כדי להציג את השגיאה</string>
   <string name="patches_not_downloaded">הטלאים לא הורדו.</string>
   <string name="patches_name_default">טלאים</string>
-  <string name="patches_name_fallback">ללא שם</string>
+  <string name="source_name_fallback">ללא שם</string>
   <string name="android_11_bug_dialog_title">באג אנדרואיד 11</string>
   <string name="android_11_bug_dialog_description">יש להעניק את הרשאת התקנת היישומים מראש כדי למנוע באג במערכת אנדרואיד 11 שישפיע לרעה על חווית המשתמש.</string>
   <string name="no_network_toast">אין חיבור אינטרנט זמין</string>

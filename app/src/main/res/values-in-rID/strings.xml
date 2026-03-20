@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Tambalan tidak dapat dimuat. Klik untuk melihat kesalahan</string>
   <string name="patches_not_downloaded">Tambalan belum diunduh.</string>
   <string name="patches_name_default">Tambalan</string>
-  <string name="patches_name_fallback">Tanpa nama</string>
+  <string name="source_name_fallback">Tanpa nama</string>
   <string name="android_11_bug_dialog_title">Bug Android 11</string>
   <string name="android_11_bug_dialog_description">Izin pemasangan aplikasi harus diberikan sebelumnya untuk menghindari bug di sistem Android 11 yang akan berdampak negatif pada pengalaman pengguna.</string>
   <string name="no_network_toast">Tidak ada koneksi internet yang tersedia</string>

@@ -7,24 +7,54 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.network.api.ReVancedAPI
-import app.revanced.manager.network.dto.ReVancedAsset
-import app.revanced.manager.network.utils.getOrThrow
+import app.revanced.manager.domain.repository.ChangelogSource
+import app.revanced.manager.domain.repository.ChangelogsRepository
+import app.revanced.manager.ui.component.ChangelogUiState
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 
 class ChangelogsViewModel(
-    private val api: ReVancedAPI,
+    private val repository: ChangelogsRepository,
     private val app: Application,
+    private val source: ChangelogSource,
 ) : ViewModel() {
-    var releaseInfo: ReVancedAsset? by mutableStateOf(null)
+
+    var state: ChangelogUiState by mutableStateOf(ChangelogUiState.Loading)
         private set
+
+    private val pageSize = 2
 
     init {
         viewModelScope.launch {
             uiSafe(app, R.string.changelog_download_fail, "Failed to download changelog") {
-                releaseInfo = api.getLatestAppInfo().getOrThrow()
+                val result = repository.loadInitial(source, pageSize)
+
+                state = ChangelogUiState.Success(
+                    changelogs = result.items,
+                    hasMore = result.hasMore
+                )
+            }
+
+            if (state is ChangelogUiState.Loading) {
+                state = ChangelogUiState.Error(
+                    app.getString(R.string.changelog_download_fail)
+                )
             }
         }
+    }
+
+    fun loadNextPage() {
+        val current = state as? ChangelogUiState.Success ?: return
+        if (current.isLoadingMore || !current.hasMore) return
+
+        state = current.copy(isLoadingMore = true)
+
+        val result = repository.loadNext(pageSize)
+
+        state = current.copy(
+            changelogs = current.changelogs + result.items,
+            isLoadingMore = false,
+            hasMore = result.hasMore
+        )
     }
 }

@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Patch-urile nu au putut fi încărcate. Apasă pentru a vedea eroarea.</string>
   <string name="patches_not_downloaded">Pachetele nu au fost descărcate.</string>
   <string name="patches_name_default">Patch-uri</string>
-  <string name="patches_name_fallback">Fără nume</string>
+  <string name="source_name_fallback">Fără nume</string>
   <string name="android_11_bug_dialog_title">Eroare Android 11</string>
   <string name="android_11_bug_dialog_description">Permisiunea de instalare a aplicației trebuie acordată în avans pentru a evita o eroare în sistemul Android 11 care va afecta negativ experiența utilizatorului.</string>
   <string name="no_network_toast">Nicio conexiune la internet disponibilă</string>
