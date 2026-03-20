@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import android.util.Log
 import android.webkit.URLUtil.isValidUrl
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,11 +69,13 @@ import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
+import app.revanced.manager.ui.viewmodel.ChangelogSource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BundleInformationScreen(
     onBackClick: () -> Unit,
+    onChangelogClick: (ChangelogSource.Patches) -> Unit,
     viewModel: BundleInformationViewModel
 ) {
     val srcState = viewModel.bundle.collectAsStateWithLifecycle(null)
@@ -313,6 +316,15 @@ fun BundleInformationScreen(
                     onClick = null,
                     trailingContent = null
                 )
+
+                endpoint?.let {
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.changelog),
+                        onClick = {
+                            onChangelogClick(ChangelogSource.Patches(if (src.isDefault) viewModel.prefs.api.getBlocking() else endpoint))
+                        },
+                    )
+                }
 
                 src.error?.let {
                     var showDialog by rememberSaveable { mutableStateOf(false) }

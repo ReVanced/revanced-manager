@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.EaseInOutQuad
-import androidx.compose.animation.core.EaseInOutQuart
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -66,6 +65,7 @@ import app.revanced.manager.ui.screen.settings.update.ChangelogsSettingsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
+import app.revanced.manager.ui.viewmodel.ChangelogSource
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
@@ -129,10 +129,28 @@ private fun ReVancedManager(vm: MainViewModel) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        enterTransition = { slideInHorizontally(animationSpec = tween(300, easing = EaseInOutQuad), initialOffsetX = { it }) },
-        exitTransition = { slideOutHorizontally(animationSpec = tween(300, easing = EaseOut), targetOffsetX = { -it / 3 }) },
-        popEnterTransition = { slideInHorizontally(animationSpec = tween(300, easing = EaseInOutQuad), initialOffsetX = { -it / 3 }) },
-        popExitTransition = { slideOutHorizontally(animationSpec = tween(300, easing = EaseOut), targetOffsetX = { it }) }
+        enterTransition = {
+            slideInHorizontally(
+                animationSpec = tween(300, easing = EaseInOutQuad),
+                initialOffsetX = { it })
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                animationSpec = tween(300, easing = EaseOut),
+                targetOffsetX = { -it / 3 })
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                animationSpec = tween(
+                    300,
+                    easing = EaseInOutQuad
+                ), initialOffsetX = { -it / 3 })
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                animationSpec = tween(300, easing = EaseOut),
+                targetOffsetX = { it })
+        }
     ) {
         composable<Onboarding> {
             OnboardingScreen(
@@ -178,6 +196,11 @@ private fun ReVancedManager(vm: MainViewModel) {
 
             BundleInformationScreen(
                 onBackClick = navController::popBackStackSafe,
+                onChangelogClick = { source ->
+                    navController.navigateComplex(
+                        Settings.Changelogs, source
+                    )
+                },
                 viewModel = koinViewModel { parametersOf(data.uid) }
             )
         }
@@ -349,7 +372,7 @@ private fun ReVancedManager(vm: MainViewModel) {
             deepLinkedComposable<Settings.Updates>("settings/updates") {
                 UpdatesSettingsScreen(
                     onBackClick = navController::popBackStackSafe,
-                    onChangelogClick = { navController.navigateSafe(Settings.Changelogs) },
+                    onChangelogClick = { navController.navigateComplex(Settings.Changelogs, ChangelogSource.Manager) },
                     onUpdateClick = { navController.navigateSafe(Update()) }
                 )
             }
@@ -383,7 +406,8 @@ private fun ReVancedManager(vm: MainViewModel) {
             }
 
             composable<Settings.Changelogs> {
-                ChangelogsSettingsScreen(onBackClick = navController::popBackStackSafe)
+                val source = it.getComplexArg<ChangelogSource>()
+                ChangelogsSettingsScreen(source = source, onBackClick = navController::popBackStackSafe)
             }
 
             composable<Settings.Contributors> {

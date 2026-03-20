@@ -53,7 +53,8 @@ class ReVancedAPI(
 
     suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
 
-    suspend fun getPatchesHistory() = request<List<ReVancedAssetHistory>>("patches/history")
+    suspend fun getPatchesHistory(apiUrl: String) =
+        request<List<ReVancedAssetHistory>>(apiUrl, defaultApiVersion, "patches/history")
 
     suspend fun getDownloaderUpdate() = request<ReVancedAsset>("manager/downloaders${prefs.useDownloaderPrerelease.prereleaseString()}")
 
