@@ -37,4 +37,3 @@ fun ChangelogsSettingsScreen(
         ChangelogList(modifier = Modifier.padding(paddingValues), state = vm.state, onLoadMore =vm::loadNextPage)
     }
 }
-
