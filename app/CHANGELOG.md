@@ -1,3 +1,10 @@
+# app [2.3.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.2...v2.3.0-dev.3) (2026-03-20)
+
+
+### Bug Fixes
+
+* Make select from storage work in dashboard ([908db47](https://github.com/ReVanced/revanced-manager/commit/908db47ee23da7317e696c03db383cbe577f243e))
+
 # app [2.3.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.1...v2.3.0-dev.2) (2026-03-20)
 
 
