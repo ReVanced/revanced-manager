@@ -1,9 +1,7 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,18 +30,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.BottomContentBar
-import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
-import app.revanced.manager.ui.component.settings.Changelog
+import app.revanced.manager.ui.component.ChangelogList
 import app.revanced.manager.ui.viewmodel.UpdateViewModel
 import app.revanced.manager.ui.viewmodel.UpdateViewModel.State
-import app.revanced.manager.util.relativeTime
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -61,12 +55,14 @@ fun UpdateScreen(
             R.string.download,
             Icons.Outlined.InstallMobile
         )
+
         State.DOWNLOADING -> Triple(onBackClick, R.string.cancel, Icons.Outlined.Cancel)
         State.CAN_INSTALL -> Triple(
             { vm.installUpdate() },
             R.string.install_app,
             Icons.Outlined.InstallMobile
         )
+
         else -> null
     }
 
@@ -112,7 +108,7 @@ fun UpdateScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier.padding(paddingValues).fillMaxSize(),
         ) {
             if (vm.state == State.DOWNLOADING)
                 LinearWavyProgressIndicator(
@@ -127,9 +123,10 @@ fun UpdateScreen(
                 )
             }
 
-            vm.releaseInfo?.let { changelog ->
-                Changelog(changelog)
-            }
+            ChangelogList(
+                state = vm.changelogsState,
+                onLoadMore = vm::loadNextPage,
+            )
         }
     }
 }
@@ -162,20 +159,4 @@ private fun MeteredDownloadConfirmationDialog(
         icon = { Icon(Icons.Outlined.Update, null) },
         text = { Text(stringResource(R.string.download_confirmation_metered)) }
     )
-}
-
-@Composable
-private fun ColumnScope.Changelog(releaseInfo: ReVancedAsset) {
-    ColumnWithScrollbarEdgeShadow(
-        modifier = Modifier
-            .weight(1f)
-            .fillMaxSize()
-            .padding(16.dp),
-    ) {
-        Changelog(
-            description = releaseInfo.description.replace("`", ""),
-            version = releaseInfo.version,
-            publishDate = releaseInfo.createdAt.relativeTime(LocalContext.current)
-        )
-    }
 }

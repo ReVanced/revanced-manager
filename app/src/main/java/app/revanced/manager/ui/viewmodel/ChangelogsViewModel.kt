@@ -12,20 +12,11 @@ import app.revanced.manager.R
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.utils.getOrThrow
+import app.revanced.manager.ui.component.ChangelogUiState
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
-
-sealed interface ChangelogUiState {
-    data object Loading : ChangelogUiState
-    data class Error(val error: String) : ChangelogUiState
-    data class Success(
-        val changelogs: List<ReVancedAssetHistory>,
-        val hasMore: Boolean = false,
-        val isLoadingMore: Boolean = false,
-    ) : ChangelogUiState
-}
 
 @Parcelize
 @Serializable

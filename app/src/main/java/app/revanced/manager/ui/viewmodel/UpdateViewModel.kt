@@ -15,7 +15,10 @@ import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
+import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.network.utils.getOrThrow
+import app.revanced.manager.ui.component.ChangelogUiState
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import io.ktor.client.plugins.onDownload
@@ -62,12 +65,27 @@ class UpdateViewModel(
     var releaseInfo: ReVancedAsset? by mutableStateOf(null)
         private set
 
+    var changelogsState: ChangelogUiState by mutableStateOf(ChangelogUiState.Loading)
+        private set
+
+    private var changelogs: List<ReVancedAssetHistory> = emptyList()
+
+    private var changelogsCurrentPage = 0
+    private val changelogsPageSize = 2
+
     private val location = fs.tempDir.resolve("updater.apk")
 
     init {
         viewModelScope.launch {
             uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
                 releaseInfo = reVancedAPI.getAppUpdate() ?: throw Exception("No update available")
+                changelogs = reVancedAPI.getAppHistory().getOrThrow()
+
+                changelogsState = ChangelogUiState.Success(
+                    changelogs = changelogs.take(changelogsPageSize),
+                    hasMore = changelogs.size > changelogsPageSize
+                )
+                changelogsCurrentPage = 1
 
                 if (downloadOnScreenEntry) {
                     downloadUpdate()
@@ -75,7 +93,26 @@ class UpdateViewModel(
                     state = State.CAN_DOWNLOAD
                 }
             }
+            if (changelogsState is ChangelogUiState.Loading) {
+                changelogsState = ChangelogUiState.Error(app.getString(R.string.changelog_download_fail))
+            }
         }
+    }
+
+    fun loadNextPage() {
+        val current = changelogsState as? ChangelogUiState.Success ?: return
+        if (current.isLoadingMore || !current.hasMore) return
+
+        changelogsState = current.copy(isLoadingMore = true)
+
+        val nextItems = changelogs.drop(changelogsCurrentPage * changelogsPageSize).take(changelogsPageSize)
+        changelogsCurrentPage++
+
+        changelogsState = current.copy(
+            changelogs = current.changelogs + nextItems,
+            isLoadingMore = false,
+            hasMore = changelogsCurrentPage * changelogsPageSize < changelogs.size
+        )
     }
 
     fun downloadUpdate(ignoreInternetCheck: Boolean = false) = viewModelScope.launch {

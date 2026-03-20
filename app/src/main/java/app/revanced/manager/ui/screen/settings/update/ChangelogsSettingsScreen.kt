@@ -1,41 +1,17 @@
 package app.revanced.manager.ui.screen.settings.update
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import app.revanced.manager.R
-import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.LazyColumnWithScrollbar
-import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.component.settings.Changelog
+import app.revanced.manager.ui.component.ChangelogList
 import app.revanced.manager.ui.viewmodel.ChangelogSource
-import app.revanced.manager.ui.viewmodel.ChangelogUiState
 import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
-import app.revanced.manager.util.relativeTime
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -47,21 +23,6 @@ fun ChangelogsSettingsScreen(
     vm: ChangelogsViewModel = koinViewModel { parametersOf(source) }
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val listState = rememberLazyListState()
-
-    val shouldLoadMore by remember {
-        derivedStateOf {
-            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            val total = listState.layoutInfo.totalItemsCount
-            val canScroll = listState.canScrollForward || listState.canScrollBackward
-
-            (lastVisible >= total - 2 || !canScroll) && total > 0
-        }
-    }
-
-    LaunchedEffect(shouldLoadMore, vm.state) {
-        if (shouldLoadMore) vm.loadNextPage()
-    }
 
     Scaffold(
         topBar = {
@@ -73,77 +34,7 @@ fun ChangelogsSettingsScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            when (val state = vm.state) {
-                is ChangelogUiState.Loading -> LoadingIndicator()
-
-                is ChangelogUiState.Error -> Text(
-                    text = state.error,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                is ChangelogUiState.Success -> {
-                    if (state.changelogs.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.no_changelogs_found),
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    } else {
-                        LazyColumnWithScrollbar(
-                            modifier = Modifier.fillMaxSize(),
-                            state = listState
-                        ) {
-                            items(
-                                items = state.changelogs,
-                                key = { it.version }
-                            ) { changelog ->
-                                ChangelogItem(
-                                    changelog = changelog,
-                                    showDivider = changelog != state.changelogs.last()
-                                )
-                            }
-
-                            if (state.isLoadingMore) {
-                                item(key = "loading_more") {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        CircularProgressIndicator()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        ChangelogList(modifier = Modifier.padding(paddingValues), state = vm.state, onLoadMore =vm::loadNextPage)
     }
 }
 
-@Composable
-private fun ChangelogItem(
-    changelog: ReVancedAssetHistory,
-    showDivider: Boolean
-) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Changelog(
-            description = changelog.description,
-            version = changelog.version,
-            publishDate = changelog.createdAt.relativeTime(LocalContext.current)
-        )
-        if (showDivider) {
-            HorizontalDivider(
-                modifier = Modifier.padding(top = 32.dp),
-                color = MaterialTheme.colorScheme.outlineVariant
-            )
-        }
-    }
-}
