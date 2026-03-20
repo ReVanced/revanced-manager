@@ -1,3 +1,10 @@
+# app [2.3.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.3...v2.3.0-dev.4) (2026-03-20)
+
+
+### Features
+
+* Improve changelogs ([#2968](https://github.com/ReVanced/revanced-manager/issues/2968)) ([fba748d](https://github.com/ReVanced/revanced-manager/commit/fba748d84fb37c1ee723b54d10243d2fa00a3023))
+
 # app [2.3.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.2...v2.3.0-dev.3) (2026-03-20)
 
 
