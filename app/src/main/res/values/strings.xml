@@ -247,7 +247,7 @@ You will not be able to update the previously installed apps from this source.</
     <string name="downloader_settings_no_apps">No downloaded apps found.</string>
     <string name="downloader_settings_no_apps_description">Apps downloaded through ReVanced Manager will appear here.</string>
     <string name="downloader_url">Downloader URL</string>
-    <string name="downloader_add">Add Downloader</string>
+    <string name="downloader_add">Add downloader</string>
     <string name="select_downloader_type_dialog_description">Add new downloaders from URL or local files</string>
     <string name="local_downloaders_description">Add downloaders from local storage.</string>
     <string name="remote_downloaders_description">Add downloaders from URL. Can be automatically updated.</string>
