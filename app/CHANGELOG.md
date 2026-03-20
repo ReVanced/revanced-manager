@@ -1,3 +1,10 @@
+# app [2.3.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.3.0-dev.1...v2.3.0-dev.2) (2026-03-20)
+
+
+### Bug Fixes
+
+* Announcement rendering ([3849226](https://github.com/ReVanced/revanced-manager/commit/3849226315797d27ff63519db6ae0119efc877d7))
+
 # app [2.3.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.2.4-dev.1...v2.3.0-dev.1) (2026-03-19)
 
 
