@@ -1,9 +1,9 @@
 package app.revanced.manager.ui.model.navigation
 
 import android.os.Parcelable
+import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.viewmodel.ChangelogSource
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import kotlinx.parcelize.Parcelize

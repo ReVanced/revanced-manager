@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import android.util.Log
 import android.webkit.URLUtil.isValidUrl
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -56,6 +55,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.Source
@@ -69,7 +69,6 @@ import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
-import app.revanced.manager.ui.viewmodel.ChangelogSource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable

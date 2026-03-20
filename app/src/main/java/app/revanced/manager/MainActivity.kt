@@ -27,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.ui.model.navigation.Announcement
 import app.revanced.manager.ui.model.navigation.Announcements
 import app.revanced.manager.ui.model.navigation.AppSelector
@@ -65,7 +66,6 @@ import app.revanced.manager.ui.screen.settings.update.ChangelogsSettingsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
-import app.revanced.manager.ui.viewmodel.ChangelogSource
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect

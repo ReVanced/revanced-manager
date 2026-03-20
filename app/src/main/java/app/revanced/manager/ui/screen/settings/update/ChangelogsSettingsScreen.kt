@@ -8,9 +8,9 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ChangelogList
-import app.revanced.manager.ui.viewmodel.ChangelogSource
 import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
