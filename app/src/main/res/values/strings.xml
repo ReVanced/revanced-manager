@@ -16,6 +16,7 @@ Second \"item\" text"</string>
     <string name="app_name">ReVanced Manager</string>
     <string name="patcher">Patcher</string>
     <string name="patches">Patches</string>
+    <string name="permissions">Permissions</string>
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
 
@@ -380,6 +381,34 @@ It’s only compatible with these versions: %2$s</string>
     <string name="default_install">Default</string>
     <string name="mount_install">Mount</string>
     <string name="shizuku_install">Shizuku</string>
+    <string name="category_installer">Installer</string>
+    <string name="shizuku_not_running">Shizuku is not running. Please start it and try again.</string>
+    <string name="adb_install">ADB</string>
+    <string name="adb_not_connected">ADB is not connected</string>
+    <string name="adb_pairing_title">ADB Installer Setup</string>
+    <string name="adb_pairing_description">Granting secure settings allows the app to install updates persistently via local ADB — no root or active Shizuku required.</string>
+    <string name="adb_setup_auto_title">Automated Setup</string>
+    <string name="adb_setup_auto_description">Use Shizuku to instantly grant permissions and configure ADB TCP.</string>
+    <string name="adb_setup_manual_title">Manual Setup</string>
+    <string name="adb_setup_manual_description">Enable Wireless Debugging in Developer Options, then pair or connect.</string>
+    <string name="adb_port">Port</string>
+    <string name="adb_pairing_code">Pairing Code</string>
+    <string name="adb_pairing_description_code">Pair using a pairing code (Android 11+)</string>
+    <string name="adb_pairing_in_progress">Pairing…</string>
+    <string name="adb_pair">Pair</string>
+    <string name="adb_bootstrap_shizuku">Bootstrap via Shizuku</string>
+    <string name="adb_bootstrap_success">ADB setup complete</string>
+    <string name="adb_bootstrap_fail">ADB setup failed</string>
+    <string name="adb_connected">ADB connected</string>
+    <string name="adb_connection_failed">ADB connection failed</string>
+    <string name="adb_connection_failed_hint">ADB TCP is not running. Use Shizuku auto-setup or run \'adb tcpip 5555\' from a computer first.</string>
+    <string name="adb_ip_address">IP Address</string>
+    <string name="adb_pairing_success">Pairing successful</string>
+    <string name="adb_pairing_failed">Pairing failed</string>
+    <string name="adb_connect_description">Connect via port (Default: 5555)</string>
+    <string name="connect">Connect</string>
+    <string name="permission_adb">ADB Installer</string>
+    <string name="permission_adb_description">Install apps via local ADB — no persistent Shizuku needed</string>
     <string name="mounted">Mounted</string>
     <string name="not_mounted">Not mounted</string>
     <string name="mount">Mount</string>
@@ -577,6 +606,12 @@ It’s only compatible with these versions: %2$s</string>
     <string name="show">Show</string>
     <string name="debugging">Debugging</string>
     <string name="about_device">About device</string>
+    <string name="adb_port_setting">ADB Port</string>
+    <string name="adb_port_description">Port to use for ADB installation (default: 5555)</string>
+    <string name="shizuku_auto_setup">Shizuku Auto-setup</string>
+    <string name="shizuku_auto_setup_description">Use Shizuku to automatically setup ADB connection</string>
+    <string name="adb_setup">ADB Setup</string>
+    <string name="adb_disconnected">ADB (Disconnected)</string>
     <string name="enter_url">Enter URL</string>
     <string name="next">Next</string>
     <string name="auto_update">Auto update</string>
@@ -603,6 +638,7 @@ Tap them for more details.</string>
 
     <string name="sideeffect_restart">Restart the app to see changes</string>
     <string name="sideeffect_no_network">You’re offline. Check your internet connection.</string>
+    <string name="shizuku_request_failed">Shizuku request failed</string>
 
     <plurals name="patch_count">
         <item quantity="one">%d patch</item>

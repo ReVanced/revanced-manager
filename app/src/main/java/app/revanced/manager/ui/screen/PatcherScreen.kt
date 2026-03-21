@@ -57,6 +57,7 @@ import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.ShareSheet
 import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.patcher.AdbSetupDialog
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.StepCategory
@@ -89,14 +90,16 @@ fun PatcherScreen(
     val patcherSucceeded by viewModel.patcherSucceeded.observeAsState(null)
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (viewModel.installedPackageName != null || !viewModel.isInstalling) } }
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
+    var showAdbSetupDialog by rememberSaveable { mutableStateOf(false) }
     var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-
+ 
     val installTypes by remember {
         derivedStateOf {
             buildList {
                 add(InstallType.DEFAULT)
                 if (viewModel.isDeviceRooted()) add(InstallType.MOUNT)
                 if (viewModel.isShizukuAvailable()) add(InstallType.SHIZUKU)
+                add(InstallType.ADB)
             }
         }
     }
@@ -128,9 +131,29 @@ fun PatcherScreen(
     if (showInstallPicker)
         InstallPickerDialog(
             installTypes = installTypes,
+            isAdbConnected = viewModel.isAdbConnected,
+            onRefreshAdb = { showAdbSetupDialog = true },
             onDismiss = { showInstallPicker = false },
             onConfirm = viewModel::install
         )
+
+    if (showAdbSetupDialog) {
+        AdbSetupDialog(
+            isShizukuAuthorized = viewModel.isShizukuAvailable() && viewModel.isShizukuAvailable(), // Actually should check permission
+            isAdbConnected = viewModel.isAdbConnected,
+            isPairing = viewModel.isPairing,
+            adbPort = viewModel.adbPort,
+            adbPairingPort = viewModel.adbPairingPort,
+            adbPairingCode = viewModel.adbPairingCode,
+            onPortChange = { viewModel.adbPort = it },
+            onPairingPortChange = { viewModel.adbPairingPort = it },
+            onPairingCodeChange = { viewModel.adbPairingCode = it },
+            onBootstrapAdb = viewModel::bootstrapAdb,
+            onConnectAdb = viewModel::connectAdb,
+            onPairAdb = viewModel::pairAdb,
+            onDismiss = { showAdbSetupDialog = false }
+        )
+    }
 
     if (showDismissConfirmationDialog) {
         ConfirmDialog(
