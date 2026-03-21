@@ -508,7 +508,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="announcements">Announcements</string>
     <string name="archive">Archive</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
-    <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher to patch Android apps. It allows you to download and apply custom patches to apps and manage the patching process.</string>
+    <string name="revanced_manager_description">ReVanced Manager is an Android application that uses ReVanced Patcher, allowing you to download and apply patches to your favorite apps.</string>
     <string name="developer_options_taps">%d taps remaining</string>
     <string name="developer_options_enabled">Enabled developer options</string>
     <string name="developer_options_already_enabled">Developer options are already enabled</string>
@@ -589,7 +589,7 @@ Continue anyway?</string>
     <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
     <string name="installation_incompatible_description">The app isn’t compatible with your device. Use an APK that is compatible and try again.</string>
     <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
-    <string name="installation_storage_issue_description">The app couldn’t be installed because there wasn’t enough storage space. Free up some space and try again.</string>
+    <string name="installation_storage_issue_description">There's not enough storage space to install this app. Free up some space and try again.</string>
     <string name="installation_timeout_description">The installation took too long. Try again?</string>
     <string name="reinstall">Reinstall</string>
     <string name="show">Show</string>
@@ -610,7 +610,7 @@ Tap them for more details.</string>
     <string name="any_version">Any</string>
     <string name="never_show_again">Don’t show this again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
-    <string name="show_manager_update_dialog_on_launch_description">Get a popup notification when you open the app and a new update is available</string>
+    <string name="show_manager_update_dialog_on_launch_description">Get notified when you open the app and a new update is available</string>
     <string name="failed_to_import_keystore">Couldn’t import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
