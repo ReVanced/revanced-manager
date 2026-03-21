@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
+import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.os.Binder
 import android.os.IBinder
 import android.os.Parcel
 import android.os.ParcelFileDescriptor
-import android.util.Log
 import app.revanced.manager.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -26,6 +26,37 @@ class ShizukuInstaller(
 ) {
     fun isAvailable(): Boolean = Shizuku.pingBinder()
 
+    fun mapStatus(output: String): Int = when {
+        output.contains("INSTALL_FAILED_UPDATE_INCOMPATIBLE") ||
+                output.contains("INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES") ||
+                output.contains("INSTALL_FAILED_VERSION_DOWNGRADE") ->
+            PackageInstaller.STATUS_FAILURE_CONFLICT
+
+        output.contains("INSTALL_FAILED_INSUFFICIENT_STORAGE") ->
+            PackageInstaller.STATUS_FAILURE_STORAGE
+
+        output.contains("INSTALL_FAILED_INVALID_APK") ||
+                output.contains("INSTALL_PARSE_FAILED_NOT_APK") ||
+                output.contains("INSTALL_FAILED_INVALID_URI") ->
+            PackageInstaller.STATUS_FAILURE_INVALID
+
+        output.contains("INSTALL_FAILED_INCOMPATIBLE_ABI") ||
+                output.contains("INSTALL_FAILED_OLDER_SDK") ->
+            PackageInstaller.STATUS_FAILURE_INCOMPATIBLE
+
+        output.contains("INSTALL_FAILED_ABORTED") ->
+            PackageInstaller.STATUS_FAILURE_ABORTED
+
+        output.contains("INSTALL_FAILED_VERIFICATION_TIMEOUT") ->
+            PackageInstaller.STATUS_FAILURE_TIMEOUT
+
+        output.contains("INSTALL_FAILED_VERIFICATION_FAILURE") ||
+                output.contains("INSTALL_FAILED_REJECTED_BY_BUILDER") ->
+            PackageInstaller.STATUS_FAILURE_BLOCKED
+
+        else -> PackageInstaller.STATUS_FAILURE
+    }
+
     fun hasPermission(): Boolean {
         if (!isAvailable()) return false
         return if (Shizuku.getVersion() >= 11) {
@@ -38,7 +69,8 @@ class ShizukuInstaller(
     private fun mapErrorMessage(output: String, exitCode: Int): String {
         return when {
             output.contains("INSTALL_FAILED_UPDATE_INCOMPATIBLE") ||
-                    output.contains("INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES") ->
+                    output.contains("INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES") ||
+                    output.contains("INSTALL_FAILED_VERSION_DOWNGRADE") ->
                 context.getString(R.string.installation_conflict_description)
 
             output.contains("INSTALL_FAILED_INSUFFICIENT_STORAGE") ->
@@ -166,10 +198,49 @@ class ShizukuInstaller(
         }
     }
 
+    suspend fun bootstrapAdb(publicKey: String) = withContext(Dispatchers.IO) {
+        val serviceArgs = Shizuku.UserServiceArgs(ComponentName(context.packageName, UserService::class.java.name))
+            .daemon(false)
+            .processNameSuffix("shizuku_adb_bootstrap")
+
+        suspendCancellableCoroutine { continuation ->
+            val connection = object : ServiceConnection {
+                private val resumed = AtomicBoolean(false)
+                override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                    if (service == null || resumed.get() || !continuation.isActive) return
+                    thread {
+                        val data = Parcel.obtain()
+                        val reply = Parcel.obtain()
+                        try {
+                            data.writeInt(UserService.TRANSACTION_BOOTSTRAP_ADB)
+                            data.writeString(context.packageName)
+                            data.writeString(publicKey)
+                            service.transact(IBinder.FIRST_CALL_TRANSACTION, data, reply, 0)
+                            val result = reply.readInt()
+                            if (resumed.compareAndSet(false, true)) {
+                                if (result == 0) continuation.resume(Unit)
+                                else continuation.resumeWithException(Exception("Bootstrap failed ($result)"))
+                            }
+                        } catch (e: Exception) {
+                            if (resumed.compareAndSet(false, true)) continuation.resumeWithException(e)
+                        } finally {
+                            data.recycle()
+                            reply.recycle()
+                            Shizuku.unbindUserService(serviceArgs, this, true)
+                        }
+                    }
+                }
+                override fun onServiceDisconnected(name: ComponentName?) {}
+            }
+            Shizuku.bindUserService(serviceArgs, connection)
+        }
+    }
+
     class UserService : Binder() {
         companion object {
             const val TRANSACTION_INSTALL = 1
             const val TRANSACTION_UNINSTALL = 2
+            const val TRANSACTION_BOOTSTRAP_ADB = 3
         }
 
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
@@ -178,6 +249,7 @@ class ShizukuInstaller(
                 return when (actionCode) {
                     TRANSACTION_INSTALL -> handleInstall(data, reply)
                     TRANSACTION_UNINSTALL -> handleUninstall(data, reply)
+                    TRANSACTION_BOOTSTRAP_ADB -> handleBootstrapAdb(data, reply)
                     else -> false
                 }
             }
@@ -217,6 +289,28 @@ class ShizukuInstaller(
             } catch (e: Exception) {
                 reply?.writeInt(-1)
                 reply?.writeString(e.message)
+            }
+            return true
+        }
+
+        private fun handleBootstrapAdb(data: Parcel, reply: Parcel?): Boolean {
+            val packageName = data.readString() ?: return false
+            val publicKey = data.readString() ?: return false
+            try {
+                // Grant WRITE_SECURE_SETTINGS to the app
+                ProcessBuilder("pm", "grant", packageName, "android.permission.WRITE_SECURE_SETTINGS")
+                    .redirectErrorStream(true).start().waitFor()
+                // Append the RSA public key to ADB trusted keys
+                ProcessBuilder("sh", "-c", "echo \"$publicKey\" >> /data/misc/adb/adb_keys")
+                    .redirectErrorStream(true).start().waitFor()
+                // Enable ADB TCP on port 5555
+                ProcessBuilder("setprop", "service.adb.tcp.port", "5555")
+                    .redirectErrorStream(true).start().waitFor()
+                ProcessBuilder("stop", "adbd").redirectErrorStream(true).start().waitFor()
+                ProcessBuilder("start", "adbd").redirectErrorStream(true).start().waitFor()
+                reply?.writeInt(0)
+            } catch (e: Exception) {
+                reply?.writeInt(-1)
             }
             return true
         }

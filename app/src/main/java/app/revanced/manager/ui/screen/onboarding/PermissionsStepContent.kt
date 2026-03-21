@@ -2,7 +2,9 @@ package app.revanced.manager.ui.screen.onboarding
 
 import android.os.Build
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -11,6 +13,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.BatteryAlert
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
@@ -38,21 +41,63 @@ fun PermissionsStepContent(
     isBatteryOptimizationExempt: Boolean,
     isShizukuAvailable: Boolean,
     isShizukuAuthorized: Boolean,
+    isAdbConnected: Boolean,
     onRequestInstallApps: () -> Unit,
     onRequestNotifications: () -> Unit,
     onRequestBatteryOptimization: () -> Unit,
-    onRequestShizuku: () -> Unit
+    onRequestShizuku: () -> Unit,
+    onRequestAdb: () -> Unit
 ) {
-    ListSection(contentPadding = PaddingValues(0.dp)) {
-        PermissionItem(
-            icon = Icons.Outlined.Security,
-            title = stringResource(R.string.permission_install_apps),
-            description = stringResource(R.string.permission_install_apps_description),
-            isGranted = canInstallUnknownApps,
-            onRequest = onRequestInstallApps
-        )
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        ListSection(
+            title = stringResource(R.string.permissions),
+            leadingContent = {
+                Icon(
+                    Icons.Outlined.Security,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+            },
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            PermissionItem(
+                icon = Icons.Outlined.Security,
+                title = stringResource(R.string.permission_install_apps),
+                description = stringResource(R.string.permission_install_apps_description),
+                isGranted = canInstallUnknownApps,
+                onRequest = onRequestInstallApps
+            )
 
-        if (isShizukuAvailable) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                PermissionItem(
+                    icon = Icons.Outlined.Notifications,
+                    title = stringResource(R.string.permission_notifications),
+                    description = stringResource(R.string.permission_notifications_description),
+                    isGranted = isNotificationsEnabled,
+                    onRequest = onRequestNotifications
+                )
+            }
+
+            PermissionItem(
+                icon = Icons.Outlined.BatteryAlert,
+                title = stringResource(R.string.permission_battery),
+                description = stringResource(R.string.permission_battery_description),
+                isGranted = isBatteryOptimizationExempt,
+                onRequest = onRequestBatteryOptimization
+            )
+        }
+
+        ListSection(
+            title = stringResource(R.string.category_installer),
+            leadingContent = {
+                Icon(
+                    Icons.Outlined.Terminal,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+            },
+            contentPadding = PaddingValues(0.dp)
+        ) {
             PermissionItem(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_shizuku),
                 title = stringResource(R.string.permission_shizuku),
@@ -60,25 +105,15 @@ fun PermissionsStepContent(
                 isGranted = isShizukuAuthorized,
                 onRequest = onRequestShizuku
             )
-        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             PermissionItem(
-                icon = Icons.Outlined.Notifications,
-                title = stringResource(R.string.permission_notifications),
-                description = stringResource(R.string.permission_notifications_description),
-                isGranted = isNotificationsEnabled,
-                onRequest = onRequestNotifications
+                icon = Icons.Outlined.Terminal,
+                title = stringResource(R.string.permission_adb),
+                description = stringResource(R.string.permission_adb_description),
+                isGranted = isAdbConnected,
+                onRequest = onRequestAdb
             )
         }
-
-        PermissionItem(
-            icon = Icons.Outlined.BatteryAlert,
-            title = stringResource(R.string.permission_battery),
-            description = stringResource(R.string.permission_battery_description),
-            isGranted = isBatteryOptimizationExempt,
-            onRequest = onRequestBatteryOptimization
-        )
     }
 }
 

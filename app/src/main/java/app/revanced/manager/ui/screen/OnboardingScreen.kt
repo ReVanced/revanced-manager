@@ -41,9 +41,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -61,8 +64,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbarEdgeShadow
+import app.revanced.manager.ui.component.patcher.AdbSetupDialog
 import app.revanced.manager.ui.screen.onboarding.AppsStepContent
 import app.revanced.manager.ui.screen.onboarding.PermissionsStepContent
 import app.revanced.manager.ui.screen.onboarding.UpdatesStepContent
@@ -84,7 +89,7 @@ fun OnboardingScreen(
 ) {
     val context = LocalContext.current
     val apps by vm.apps.collectAsStateWithLifecycle(initialValue = null)
-    val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap())
+    val suggestedVersions by vm.suggestedVersions.collectAsStateWithLifecycle(initialValue = emptyMap<String, String?>())
     val hasNetworkError by vm.hasNetworkError.collectAsStateWithLifecycle(initialValue = false)
     val currentStep = vm.currentStep
     val scope = rememberCoroutineScope()
@@ -93,6 +98,7 @@ fun OnboardingScreen(
     var patchesUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var downloaderUpdatesEnabled by rememberSaveable { mutableStateOf(true) }
     var showSkipPermissionsDialog by remember { mutableStateOf(false) }
+    var showAdbPairingDialog by remember { mutableStateOf(false) }
 
     val installAppsLauncher = rememberLauncherForActivityResult(RequestInstallAppsContract) {
         vm.refreshPermissionStates()
@@ -198,6 +204,7 @@ fun OnboardingScreen(
                         isBatteryOptimizationExempt = vm.isBatteryOptimizationExempt,
                         isShizukuAvailable = vm.isShizukuAvailable,
                         isShizukuAuthorized = vm.isShizukuAuthorized,
+                        isAdbConnected = vm.isAdbConnected,
                         onRequestInstallApps = { installAppsLauncher.launch(context.packageName) },
                         onRequestNotifications = {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -212,11 +219,8 @@ fun OnboardingScreen(
                                 )
                             )
                         },
-                        onRequestShizuku = {
-                            try {
-                                Shizuku.requestPermission(0)
-                            } catch (_: Exception) {}
-                        }
+                        onRequestShizuku = { vm.requestShizuku() },
+                        onRequestAdb = { showAdbPairingDialog = true }
                     )
 
                     OnboardingStep.Updates -> UpdatesStepContent(
@@ -243,6 +247,27 @@ fun OnboardingScreen(
                 }
                 if (showDetails) StepDescription(stepDescription)
             }
+        }
+
+        if (vm.showAdbHintDialog) {
+            AlertDialogExtended(
+                onDismissRequest = { vm.showAdbHintDialog = false },
+                title = { Text(stringResource(R.string.adb_connection_failed)) },
+                text = {
+                    Text(
+                        text = stringResource(R.string.adb_connection_failed_hint),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = { vm.showAdbHintDialog = false },
+                        shapes = ButtonDefaults.shapes()
+                    ) {
+                        Text(stringResource(R.string.ok))
+                    }
+                }
+            )
         }
     }
 
@@ -322,6 +347,24 @@ fun OnboardingScreen(
                         Text(stringResource(R.string.cancel))
                     }
                 }
+            )
+        }
+
+        if (showAdbPairingDialog) {
+            AdbSetupDialog(
+                isShizukuAuthorized = vm.isShizukuAuthorized,
+                isAdbConnected = vm.isAdbConnected,
+                isPairing = vm.isPairing,
+                adbPort = vm.adbPort,
+                adbPairingPort = vm.adbPairingPort,
+                adbPairingCode = vm.adbPairingCode,
+                onPortChange = { vm.adbPort = it },
+                onPairingPortChange = { vm.adbPairingPort = it },
+                onPairingCodeChange = { vm.adbPairingCode = it },
+                onBootstrapAdb = vm::bootstrapAdb,
+                onConnectAdb = vm::connectAdb,
+                onPairAdb = vm::pairAdb,
+                onDismiss = { showAdbPairingDialog = false }
             )
         }
 
