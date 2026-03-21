@@ -98,9 +98,7 @@ class DownloadedAppRepository(
 
                         override fun write(b: ByteArray?, off: Int, len: Int) =
                             out.write(b, off, len).also {
-                                emitProgress(
-                                    (len - off).toLong()
-                                )
+                                emitProgress(len.toLong())
                             }
                     }
                     downloader.impl.download(scope, data, stream)
