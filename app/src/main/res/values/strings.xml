@@ -588,7 +588,7 @@ Continue anyway?</string>
     <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
     <string name="installation_incompatible_description">The app isn’t compatible with your device. Use an APK that is compatible and try again.</string>
     <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
-    <string name="installation_storage_issue_description">There's not enough storage space to install this app. Free up some space and try again.</string>
+    <string name="installation_storage_issue_description">There’s not enough storage space to install this app. Free up some space and try again.</string>
     <string name="installation_timeout_description">The installation took too long. Try again?</string>
     <string name="reinstall">Reinstall</string>
     <string name="show">Show</string>
