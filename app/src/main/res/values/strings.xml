@@ -250,8 +250,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="downloader_add">Add downloader</string>
     <string name="select_downloader_type_dialog_description">Add new downloaders from a URL or local files</string>
     <string name="local_downloaders_description">Add downloader from local storage</string>
-    <string name="remote_downloaders_description">Add a downloader from a URL. It may be updated automatically.</string>
-    <string name="install_revanced_downloaders">Install downloaders to get apps directly from ReVanced Manager.</string>
+    <string name="remote_downloaders_description">Downloader can receive updates</string>
     <string name="install_revanced_downloader">Install ReVanced downloaders</string>
     <string name="cancel_downloader_install_title">Cancel downloaders install?</string>
     <string name="cancel_downloader_install_description">Downloaders are being installed.</string>
@@ -512,7 +511,7 @@ It is only compatible with the following version(s): %2$s</string>
     <string name="developer_options_taps">%d taps remaining</string>
     <string name="developer_options_enabled">Enabled developer options</string>
     <string name="developer_options_already_enabled">Developer options are already enabled</string>
-    <string name="update_available">An update is available</string>
+    <string name="update_available">Update available</string>
     <string name="current_version">Current version: %s</string>
     <string name="new_version">New version: %s</string>
     <string name="ready_to_install_update">Ready to install update</string>
@@ -572,7 +571,7 @@ Continue anyway?</string>
     <string name="select_deselect_all">Select or deselect all</string>
     <string name="select_patches_type_dialog_description">Add new patches from a URL or local files</string>
     <string name="local_patches_description">Add patches from local storage</string>
-    <string name="remote_patches_description">Add patches from a URL. Patches can automatically update.</string>
+    <string name="remote_patches_description">Patches can receive updates</string>
     <string name="recommended">Recommended</string>
 
     <string name="installation_failed_dialog_title">Installation failed</string>
