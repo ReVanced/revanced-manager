@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">تعذر تحميل التعديلات. انقر لعرض الخطأ</string>
   <string name="patches_not_downloaded">لم يتم تنزيل التصحيحات.</string>
   <string name="patches_name_default">التعديلات</string>
-  <string name="patches_name_fallback">غير مُسمى</string>
+  <string name="source_name_fallback">غير مُسمى</string>
   <string name="android_11_bug_dialog_title">خطأ Android 11</string>
   <string name="android_11_bug_dialog_description">يجب منح إذن تثبيت التطبيق مسبقًا لتجنب خطأ في نظام Android 11 سيؤثر سلبًا على تجربة المستخدم.</string>
   <string name="no_network_toast">لا يوجد اتصال بالإنترنت متاح</string>

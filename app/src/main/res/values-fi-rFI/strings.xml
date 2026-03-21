@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Paikkauksia ei voitu ladata. Napauta nähdäksesi virheen</string>
   <string name="patches_not_downloaded">Päivityksiä ei ole ladattu.</string>
   <string name="patches_name_default">Paikkaukset</string>
-  <string name="patches_name_fallback">Nimetön</string>
+  <string name="source_name_fallback">Nimetön</string>
   <string name="android_11_bug_dialog_title">Android 11 -virhe</string>
   <string name="android_11_bug_dialog_description">Sovelluksen asennusoikeus on myönnettävä etukäteen, jotta vältetään Android 11 -järjestelmän virhe, joka vaikuttaa negatiivisesti käyttökokemukseen.</string>
   <string name="no_network_toast">Internet-yhteyttä ei ole käytettävissä</string>

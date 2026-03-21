@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Les patchs n\'ont pas pu être chargés, appuyez pour voir l\'erreur</string>
   <string name="patches_not_downloaded">Les patchs n\'ont pas été téléchargés.</string>
   <string name="patches_name_default">Patchs</string>
-  <string name="patches_name_fallback">Sans nom</string>
+  <string name="source_name_fallback">Sans nom</string>
   <string name="android_11_bug_dialog_title">Bug Android 11</string>
   <string name="android_11_bug_dialog_description">L\'autorisation d\'installation d\'applications doit être accordée à l\'avance pour contourner un bug système dans Android 11 qui affecterait négativement l\'expérience utilisateur.</string>
   <string name="no_network_toast">Aucune connexion Internet disponible</string>

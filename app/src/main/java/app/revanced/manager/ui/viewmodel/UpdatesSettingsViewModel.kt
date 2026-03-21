@@ -20,9 +20,6 @@ class UpdatesSettingsViewModel(
     val useManagerPrereleases = prefs.useManagerPrereleases
     val availableManagerUpdate = managerUpdateRepository.availableVersion
 
-    val isConnected: Boolean
-        get() = network.isConnected()
-
     suspend fun checkForUpdates(): String? {
         var availableVersion: String? = null
 

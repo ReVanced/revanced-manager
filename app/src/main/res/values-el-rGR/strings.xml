@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Δεν ήταν δυνατή η φόρτωση των τροποποιήσεων. Πατήστε για να δείτε το σφάλμα</string>
   <string name="patches_not_downloaded">Οι ενημερώσεις δεν έχουν ληφθεί.</string>
   <string name="patches_name_default">Τροποποιήσεις</string>
-  <string name="patches_name_fallback">Χωρίς Όνομα</string>
+  <string name="source_name_fallback">Χωρίς Όνομα</string>
   <string name="android_11_bug_dialog_title">Σφάλμα Android 11</string>
   <string name="android_11_bug_dialog_description">Η άδεια εγκατάστασης εφαρμογών πρέπει να χορηγηθεί εκ των προτέρων για να αποφευχθεί ένα σφάλμα του συστήματος Android 11 που θα επηρεάσει αρνητικά την εμπειρία του χρήστη.</string>
   <string name="no_network_toast">Δεν υπάρχει διαθέσιμη σύνδεση στο διαδίκτυο</string>

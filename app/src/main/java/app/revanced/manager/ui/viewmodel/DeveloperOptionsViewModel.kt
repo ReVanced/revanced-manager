@@ -40,6 +40,10 @@ class DeveloperOptionsViewModel(
         patchBundleRepository.reset()
     }
 
+    fun resetDownloaders() = viewModelScope.launch {
+        downloaderRepository.reset()
+    }
+
     fun resetOnboarding() = viewModelScope.launch {
         prefs.completedOnboarding.update(false)
         app.toast(app.getString(R.string.sideeffect_restart))

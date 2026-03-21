@@ -62,7 +62,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Popravkov ni bilo mogoče naložiti. Kliknite za ogled napake.</string>
   <string name="patches_not_downloaded">Popravki niso bili preneseni.</string>
   <string name="patches_name_default">Popravki</string>
-  <string name="patches_name_fallback">Nepoimenovano</string>
+  <string name="source_name_fallback">Nepoimenovano</string>
   <string name="android_11_bug_dialog_title">Napaka v Androidu 11</string>
   <string name="android_11_bug_dialog_description">Dovoljenje za namestitev aplikacije mora biti podeljeno vnaprej, da se izognete napaki v sistemu Android 11, ki bi negativno vplivala na uporabniško izkušnjo.</string>
   <string name="no_network_toast">Ni na voljo internetne povezave</string>

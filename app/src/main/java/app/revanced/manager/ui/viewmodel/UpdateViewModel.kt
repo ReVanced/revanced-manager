@@ -13,9 +13,12 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
+import app.revanced.manager.domain.repository.ChangelogSource
+import app.revanced.manager.domain.repository.ChangelogsRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.ui.component.ChangelogUiState
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import io.ktor.client.plugins.onDownload
@@ -34,6 +37,7 @@ import ru.solrudev.ackpine.session.await
 import ru.solrudev.ackpine.session.parameters.Confirmation
 
 class UpdateViewModel(
+    private val changelogsRepository: ChangelogsRepository,
     private val downloadOnScreenEntry: Boolean
 ) : ViewModel(), KoinComponent {
     private val app: Application by inject()
@@ -62,12 +66,26 @@ class UpdateViewModel(
     var releaseInfo: ReVancedAsset? by mutableStateOf(null)
         private set
 
+    var changelogsState: ChangelogUiState by mutableStateOf(ChangelogUiState.Loading)
+    private val changelogsPageSize = 2
+
     private val location = fs.tempDir.resolve("updater.apk")
 
     init {
         viewModelScope.launch {
             uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
-                releaseInfo = reVancedAPI.getAppUpdate() ?: throw Exception("No update available")
+                releaseInfo = reVancedAPI.getAppUpdate()
+                    ?: throw Exception("No update available")
+
+                val result = changelogsRepository.loadInitial(
+                    ChangelogSource.Manager,
+                    changelogsPageSize
+                )
+
+                changelogsState = ChangelogUiState.Success(
+                    changelogs = result.items,
+                    hasMore = result.hasMore
+                )
 
                 if (downloadOnScreenEntry) {
                     downloadUpdate()
@@ -75,14 +93,34 @@ class UpdateViewModel(
                     state = State.CAN_DOWNLOAD
                 }
             }
+
+            if (changelogsState is ChangelogUiState.Loading) {
+                changelogsState = ChangelogUiState.Error(
+                    app.getString(R.string.changelog_download_fail)
+                )
+            }
         }
+    }
+    fun loadNextPage() {
+        val current = changelogsState as? ChangelogUiState.Success ?: return
+        if (current.isLoadingMore || !current.hasMore) return
+
+        changelogsState = current.copy(isLoadingMore = true)
+
+        val result = changelogsRepository.loadNext(changelogsPageSize)
+
+        changelogsState = current.copy(
+            changelogs = current.changelogs + result.items,
+            isLoadingMore = false,
+            hasMore = result.hasMore
+        )
     }
 
     fun downloadUpdate(ignoreInternetCheck: Boolean = false) = viewModelScope.launch {
         uiSafe(app, R.string.failed_to_download_update, "Failed to download update") {
             val release = releaseInfo!!
             withContext(Dispatchers.IO) {
-                if (!networkInfo.isSafe(false) && !ignoreInternetCheck) {
+                if (!ignoreInternetCheck && !networkInfo.isUnmetered()) {
                     showInternetCheckDialog = true
                 } else {
                     state = State.DOWNLOADING

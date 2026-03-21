@@ -2,7 +2,6 @@ package app.revanced.manager.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -12,8 +11,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import kotlin.time.Clock
 
 data class AnnouncementSections(
@@ -26,7 +23,6 @@ data class AnnouncementSections(
 
 class AnnouncementsViewModel(
     private val announcementRepository: AnnouncementRepository,
-    private val network: NetworkInfo,
     private val preferences: PreferencesManager
 ) : ViewModel() {
     private val allAnnouncements = MutableStateFlow<List<ReVancedAnnouncement>?>(null)
@@ -92,11 +88,6 @@ class AnnouncementsViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            if (!network.isConnected()) {
-                allAnnouncements.value = emptyList()
-                return@launch
-            }
-
             withContext(Dispatchers.IO) {
                 announcementRepository.getAnnouncements()?.let {
                     allAnnouncements.value = it

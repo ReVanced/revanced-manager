@@ -54,8 +54,8 @@ class OnboardingViewModel(
     }
     val apiUrl = prefs.api.default
 
-    val hasNetworkError = combine(apps, patchBundleRepository.updateError) { apps, updateError ->
-        apps == null && (!networkInfo.isConnected() || updateError != null)
+    val hasNetworkError = combine(apps, patchBundleRepository.updateErrors) { apps, updateErrors ->
+        apps == null && updateErrors.isNotEmpty()
     }
 
     val suggestedVersions = patchBundleRepository.suggestedVersions
@@ -210,7 +210,7 @@ class OnboardingViewModel(
                 ?.asRemoteOrNull ?: return@with
 
             src.setAutoUpdate(patchesEnabled)
-            if (networkInfo.isConnected()) update(src)
+            update(src)
         }
 
         with(downloaderRepository) {
@@ -219,7 +219,7 @@ class OnboardingViewModel(
                 ?.asRemoteOrNull ?: return@with
 
             src.setAutoUpdate(downloadersEnabled)
-            if (networkInfo.isConnected()) update(src)
+            update(src)
         }
     }
 
@@ -238,5 +238,4 @@ class OnboardingViewModel(
         OnboardingStep.Updates -> OnboardingStep.Permissions
         OnboardingStep.Apps -> OnboardingStep.Updates
     }
-
 }

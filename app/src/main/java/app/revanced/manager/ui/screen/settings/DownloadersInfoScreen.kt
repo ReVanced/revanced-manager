@@ -128,9 +128,6 @@ fun DownloaderInfoScreen(
                     }
 
                     remote?.let {
-                        val hasNetwork = remember { viewModel.networkInfo.isConnected() }
-                        if (!hasNetwork) return@let
-
                         TooltipIconButton(
                             onClick = { viewModel.updateDownloader(it) },
                             enabled = !isDeleting,

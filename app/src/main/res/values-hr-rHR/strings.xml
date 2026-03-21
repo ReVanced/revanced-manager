@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">Patchevi se nisu mogli učitati. Kliknite za prikaz pogreške</string>
   <string name="patches_not_downloaded">Patchevi nisu preuzeti.</string>
   <string name="patches_name_default">Patchevi</string>
-  <string name="patches_name_fallback">Neimenovano</string>
+  <string name="source_name_fallback">Neimenovano</string>
   <string name="android_11_bug_dialog_title">Greška Androida 11</string>
   <string name="app_source_dialog_option_auto">Automatski</string>
   <string name="app_source_dialog_option_auto_description">Koristite instaliranu aplikaciju, zatim preuzeti APK, a zatim dostupne programe za preuzimanje</string>

@@ -118,6 +118,8 @@ class RootInstaller(
             // programmably gets the current user
             execute("pm install -r -d --user ${android.os.Process.myUid() / 100000} \"${stockApp.absolutePath}\"")
                 .assertSuccess("Failed to install stock app")
+
+            stockApp.delete()
         }
 
         remoteFS.getFile(modulePath).apply {

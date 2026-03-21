@@ -11,23 +11,20 @@ import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.sources.Source as SourceInfo
 import app.revanced.manager.data.room.sources.SourceProperties
 import app.revanced.manager.domain.sources.APISource
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.RemoteSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentMapOf
-import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -40,15 +37,13 @@ import kotlin.collections.set
 /**
  * Abstraction for managing a source system. Used by [app.revanced.manager.domain.repository.PatchBundleRepository] and [app.revanced.manager.domain.repository.DownloaderRepository].
  */
-abstract class SourceManager<DB, LOADED, OUTPUT>(
+abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     initial: OUTPUT,
     protected val sourceDir: File
 ) : KoinComponent {
     protected val app: Application by inject()
     protected val prefs: PreferencesManager by inject()
     protected val networkInfo: NetworkInfo by inject()
-
-    protected abstract val defaultSource: DB
 
     protected abstract suspend fun dbGetAll(): List<DB>
     protected abstract suspend fun dbGetProps(uid: Int): SourceProperties?
@@ -59,28 +54,39 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
     protected abstract fun loadEntity(entity: DB): Source<LOADED>
     protected abstract fun entityFromProps(uid: Int, props: SourceProperties): DB
 
-    protected abstract fun uidOf(entity: DB): Int
     protected abstract fun realNameOf(loaded: LOADED): String?
 
     @get:StringRes
     protected abstract val updateUnavailable: Int
+
     @get:StringRes
     protected abstract val updateSuccess: Int
+
     @get:StringRes
     protected abstract val updateFailed: Int
+
     @get:StringRes
     protected abstract val replaceFail: Int
 
     protected abstract suspend fun loadDataFromSources(sources: MutableMap<Int, Source<LOADED>>): OUTPUT
 
-    private val _updateError = MutableStateFlow<Throwable?>(null)
-    val updateError = _updateError.asStateFlow()
+    protected val defaultSource = entityFromProps(
+        0, SourceProperties(
+            name = "",
+            versionHash = null,
+            source = SourceInfo.API,
+            autoUpdate = false
+        )
+    )
 
-    private val _apiOutageError = MutableStateFlow<Throwable?>(null)
-    val apiOutageError = _apiOutageError.asStateFlow()
+    protected val store = Store(
+        CoroutineScope(Dispatchers.Default),
+        State<LOADED, OUTPUT>(data = initial)
+    )
 
-    protected val store =
-        Store(CoroutineScope(Dispatchers.Default), State<LOADED, OUTPUT>(data = initial))
+    val updateErrors = store.state.map { it.updateErrors }
+    val apiOutageError = updateErrors.map { it[0] }
+    val hasOutdated = store.state.map { it.outdatedSources.isNotEmpty() }
 
     protected suspend inline fun dispatchAction(
         name: String,
@@ -97,13 +103,13 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
     /**
      * Performs a reload. Do not call this outside of a store action.
      */
-    protected suspend fun doReload(): State<LOADED, OUTPUT> {
+    protected suspend fun doReload(oldState: State<LOADED, OUTPUT>): State<LOADED, OUTPUT> {
         val entities = loadFromDb().onEach {
             Log.d(tag, "Source: $it")
         }
 
         val sources = entities
-            .associateTo(mutableMapOf()) { uidOf(it) to loadEntity(it) }
+            .associateTo(mutableMapOf()) { it.uid to loadEntity(it) }
         sources.forEach syncName@{ (uid, src) ->
             val newName = src.loaded?.let(::realNameOf).takeIf { it != src.name }
                 ?: return@syncName
@@ -113,18 +119,20 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
         }
 
         val data = loadDataFromSources(sources)
-        return State(sources.toPersistentMap(), data)
+        return oldState.copy(data = data, sources = sources)
     }
 
     suspend fun reload() = dispatchAction("Full reload") {
-        doReload()
+        doReload(it)
     }
 
     private suspend fun loadFromDb(): List<DB> {
-        val all = dbGetAll()
-        if (all.isEmpty()) {
-            dbUpsert(defaultSource)
-            return listOf(defaultSource)
+        val all = dbGetAll().toMutableList()
+        val default = defaultSource
+
+        if (all.none { it.uid == default.uid }) {
+            dbUpsert(default)
+            all += default
         }
 
         return all
@@ -174,7 +182,7 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
     suspend fun reset() = dispatchAction("Reset") { state ->
         dbReset()
         state.sources.keys.forEach { directoryOf(it).deleteRecursively() }
-        doReload()
+        doReload(state.copy(updateErrors = emptyMap(), outdatedSources = emptySet()))
     }
 
     suspend fun remove(vararg sources: Source<LOADED>) =
@@ -189,11 +197,17 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
             }
 
             val data = loadDataFromSources(currentSources)
-            State(currentSources.toPersistentMap(), data)
+            State(
+                data = data,
+                sources = currentSources,
+                updateErrors = state.updateErrors
+                    .filter { (it, _) -> it in currentSources.keys },
+                outdatedSources = state.outdatedSources.filterTo(mutableSetOf()) { it in currentSources.keys }
+            )
         }
 
     suspend fun createLocal(createStream: suspend () -> InputStream) =
-        dispatchAction("Add local") {
+        dispatchAction("Add local") { state ->
             val entity = createEntity("", SourceInfo.Local)
             with(loadEntity(entity) as LocalSource<LOADED>) {
                 try {
@@ -209,40 +223,40 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
                 }
             }
 
-            doReload()
+            doReload(state)
         }
 
     suspend fun createRemote(url: String, autoUpdate: Boolean) =
         dispatchAction("Add remote ($url)") { state ->
             val entity = createEntity("", SourceInfo.from(url), autoUpdate)
             val src = loadEntity(entity) as RemoteSource<LOADED>
-            update(src, force = true)
-            state.copy(sources = state.sources.put(src.uid, src))
+            update(src)
+            state.copy(sources = state.sources.toMutableMap().also { it[src.uid] = src })
         }
 
-    suspend fun reloadApiSources() = dispatchAction("Reload API sources") {
+    suspend fun reloadApiSources() = dispatchAction("Reload API sources") { state ->
         this@SourceManager.store.state.value.sources.values.filterIsInstance<APISource<LOADED>>()
             .forEach { src ->
                 with(src) { deleteLocalFile() }
                 updateDb(src.uid) { it.copy(versionHash = null) }
             }
 
-        doReload()
+        doReload(state)
     }
 
     suspend fun RemoteSource<LOADED>.setAutoUpdate(value: Boolean) =
         dispatchAction("Set auto update ($name, $value)") { state ->
             updateDb(uid) { it.copy(autoUpdate = value) }
-            val newSrc = (state.sources[uid] as? RemoteSource<LOADED>)?.copy(autoUpdate = value)
+            val newSrc = state.sources[uid]?.asRemoteOrNull?.copy(autoUpdate = value)
                 ?: return@dispatchAction state
 
-            state.copy(sources = state.sources.put(uid, newSrc))
+            state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })
         }
 
     suspend fun update(
         vararg sources: RemoteSource<LOADED>,
         showToast: Boolean = false,
-        force: Boolean = false
+        force: Boolean = true
     ) {
         val uids = sources.map { it.uid }.toSet()
         store.dispatch(Update(showToast = showToast, force = force) { it.uid in uids })
@@ -254,8 +268,12 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
     /**
      * Updates all sources that should be automatically updated.
      */
-    suspend fun updateCheck() =
-        store.dispatch(Update(force = prefs.allowMeteredNetworks.get()) { it.autoUpdate })
+    suspend fun updateCheck(showToast: Boolean = false, force: Boolean = true) = store.dispatch(
+        Update(
+            showToast = showToast,
+            force = force || prefs.allowMeteredNetworks.get()
+        ) { it.autoUpdate }
+    )
 
     private inner class Update(
         private val force: Boolean = false,
@@ -263,8 +281,6 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
         private val showToast: Boolean = false,
         private val predicate: (source: RemoteSource<LOADED>) -> Boolean = { true },
     ) : Action<State<LOADED, OUTPUT>> {
-        private var attemptedMainApiUpdate = false
-
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
 
@@ -272,25 +288,33 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
 
         override suspend fun ActionContext.execute(
             current: State<LOADED, OUTPUT>
-        ) = coroutineScope {
-            if (!networkInfo.isSafe(force)) {
-                Log.d(tag, "Skipping update check because the network is down or metered.")
-                return@coroutineScope current
-            }
+        ) = supervisorScope {
+            val checkOnly = !force && !networkInfo.isUnmetered()
 
-            val updated = current.sources.values
+            val errors = current.updateErrors.toMutableMap()
+            val outdated = current.outdatedSources.toMutableSet()
+
+            val results = current.sources.values
                 .filterIsInstance<RemoteSource<LOADED>>()
                 .filter { predicate(it) }
                 .also { targets ->
-                    attemptedMainApiUpdate = targets.any { it.uid == 0 && it is APISource<*> }
+                    // Clear errors for sources we are updating.
+                    targets.forEach { src ->
+                        errors.remove(src.uid)
+                        outdated.remove(src.uid)
+                    }
                 }
                 .map {
-                    async {
+                    async update@{
                         Log.d(tag, "Updating: ${it.name}")
 
-                        val newVersion = with(it) {
-                            if (redownload) downloadLatest() else update()
-                        } ?: return@async null
+                        val newVersion = it.runCatching {
+                            when {
+                                redownload -> downloadLatest()
+                                checkOnly -> getUpdateInfo()?.version
+                                else -> update()
+                            } ?: return@update null
+                        }
 
                         it to newVersion
                     }
@@ -298,35 +322,60 @@ abstract class SourceManager<DB, LOADED, OUTPUT>(
                 .awaitAll()
                 .filterNotNull()
                 .toMap()
-            if (updated.isEmpty()) {
+            if (results.isEmpty()) {
                 if (showToast) toast(updateUnavailable)
-                return@coroutineScope current
+                return@supervisorScope current.copy(
+                    updateErrors = errors,
+                    outdatedSources = outdated
+                )
             }
 
-            updated.forEach { (src, newVersionHash) ->
-                val name = src.loaded?.let(::realNameOf) ?: src.name
+            var hasErrors = false
+            results.forEach { (src, result) ->
+                result.getOrNull()?.let { newVersionHash ->
+                    if (checkOnly) {
+                        outdated.add(src.uid)
+                        return@let
+                    }
 
-                updateDb(src.uid) {
-                    it.copy(versionHash = newVersionHash, name = name)
+                    val name = src.loaded?.let(::realNameOf) ?: src.name
+                    updateDb(src.uid) {
+                        it.copy(versionHash = newVersionHash, name = name)
+                    }
+                }
+                result.exceptionOrNull()?.let {
+                    errors[src.uid] = it
+                    Log.e(tag, "Failed to update source (${src.uid})", it)
+                    hasErrors = true
                 }
             }
 
-            if (showToast) toast(updateSuccess)
-            _updateError.value = null
-            if (attemptedMainApiUpdate) _apiOutageError.value = null
-            doReload()
-        }
+            when {
+                !showToast -> {}
+                hasErrors -> {
+                    val error = errors.values.first()
+                    toast(updateFailed, error)
+                }
 
-        override suspend fun catch(exception: Exception) {
-            Log.e(tag, "Failed to update", exception)
-            _updateError.value = exception
-            if (attemptedMainApiUpdate) _apiOutageError.value = exception
-            toast(updateFailed, exception.simpleMessage())
+                else -> toast(updateSuccess)
+            }
+            doReload(
+                current.copy(
+                    updateErrors = errors,
+                    outdatedSources = outdated
+                )
+            )
         }
     }
 
     data class State<LOADED, OUTPUT>(
-        val sources: PersistentMap<Int, Source<LOADED>> = persistentMapOf(),
-        val data: OUTPUT
+        val data: OUTPUT,
+        val sources: Map<Int, Source<LOADED>> = emptyMap(),
+        val updateErrors: Map<Int, Throwable> = emptyMap(),
+        val outdatedSources: Set<Int> = emptySet(),
     )
+
+    interface DatabaseEntity {
+        val uid: Int
+    }
 }

@@ -30,12 +30,14 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
 
+
+// TODO: delete this viewmodel and the screen.
 @OptIn(SavedStateHandleSaveableApi::class)
 class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
     fs: Filesystem,
-    private val patchBundleRepository: PatchBundleRepository,
+    patchBundleRepository: PatchBundleRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val inputFile = savedStateHandle.saveable(key = "inputFile") {
@@ -105,11 +107,7 @@ class AppSelectorViewModel(
             return@launch
         }
 
-        if (patchBundleRepository.isVersionAllowed(selectedApp.packageName, selectedApp.version)) {
-            storageSelectionChannel.send(selectedApp)
-        } else {
-            nonSuggestedVersionDialogSubject = selectedApp
-        }
+        storageSelectionChannel.send(selectedApp)
     }
 
     private fun loadSelectedFile(uri: Uri) =

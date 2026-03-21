@@ -55,6 +55,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.Source
@@ -73,6 +74,7 @@ import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
 @Composable
 fun BundleInformationScreen(
     onBackClick: () -> Unit,
+    onChangelogClick: (ChangelogSource.Patches) -> Unit,
     viewModel: BundleInformationViewModel
 ) {
     val srcState = viewModel.bundle.collectAsStateWithLifecycle(null)
@@ -140,28 +142,23 @@ fun BundleInformationScreen(
                     }
                 },
                 actions = {
-                    if (!src.isDefault) {
-                        TooltipIconButton(
-                            onClick = { showDeleteConfirmationDialog = true },
-                            tooltip = stringResource(R.string.delete),
-                        ) { contentDescription ->
-                            Icon(
-                                Icons.Filled.Delete,
-                                contentDescription
-                            )
-                        }
+                    if (!src.isDefault) TooltipIconButton(
+                        onClick = { showDeleteConfirmationDialog = true },
+                        tooltip = stringResource(R.string.delete),
+                    ) { contentDescription ->
+                        Icon(
+                            Icons.Filled.Delete,
+                            contentDescription
+                        )
                     }
-                    val hasNetwork = remember { viewModel.networkInfo.isConnected() }
-                    if (!isLocal && hasNetwork) {
-                        TooltipIconButton(
-                            onClick = viewModel::refresh,
-                            tooltip = stringResource(R.string.refresh),
-                        ) { contentDescription ->
-                            Icon(
-                                Icons.Filled.Refresh,
-                                contentDescription
-                            )
-                        }
+                    if (!isLocal) TooltipIconButton(
+                        onClick = viewModel::refresh,
+                        tooltip = stringResource(R.string.refresh),
+                    ) { contentDescription ->
+                        Icon(
+                            Icons.Filled.Refresh,
+                            contentDescription
+                        )
                     }
                 },
                 scrollBehavior = scrollBehavior
@@ -313,6 +310,15 @@ fun BundleInformationScreen(
                     onClick = null,
                     trailingContent = null
                 )
+
+                endpoint?.let {
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.changelog),
+                        onClick = {
+                            onChangelogClick(ChangelogSource.Patches(if (src.isDefault) viewModel.prefs.api.getBlocking() else endpoint))
+                        },
+                    )
+                }
 
                 src.error?.let {
                     var showDialog by rememberSaveable { mutableStateOf(false) }

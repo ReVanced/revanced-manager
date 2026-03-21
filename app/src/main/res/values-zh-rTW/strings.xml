@@ -59,7 +59,7 @@ Second \"item\" text"</string>
   <string name="patches_error_description">無法載入修補程式。按一下以檢視錯誤</string>
   <string name="patches_not_downloaded">修補程式尚未下載。</string>
   <string name="patches_name_default">修補程式</string>
-  <string name="patches_name_fallback">未命名</string>
+  <string name="source_name_fallback">未命名</string>
   <string name="android_11_bug_dialog_title">Android 11 錯誤</string>
   <string name="android_11_bug_dialog_description">必須提前授予應用程式安裝權限，以避免 Android 11 系統中的錯誤對使用者體驗產生負面影響。</string>
   <string name="no_network_toast">無可用的網際網路連線</string>
