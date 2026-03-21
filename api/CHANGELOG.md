@@ -1,3 +1,10 @@
+# api [1.1.0](https://github.com/ReVanced/revanced-manager/compare/api@1.0.0...api@1.1.0) (2026-03-20)
+
+
+### Features
+
+* Improve source system and fix connectivity issues ([#3137](https://github.com/ReVanced/revanced-manager/issues/3137)) ([a4e3266](https://github.com/ReVanced/revanced-manager/commit/a4e3266e9097ef6af8e97d1ac856371535e8ccc5))
+
 # api [1.1.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/api@1.0.0...api@1.1.0-dev.1) (2026-03-19)
 
 

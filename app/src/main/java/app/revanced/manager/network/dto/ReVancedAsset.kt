@@ -16,3 +16,10 @@ data class ReVancedAsset (
     val version: String,
 )
 
+@Serializable
+data class ReVancedAssetHistory(
+    val version: String,
+    @SerialName("created_at")
+    val createdAt: LocalDateTime,
+    val description: String,
+)

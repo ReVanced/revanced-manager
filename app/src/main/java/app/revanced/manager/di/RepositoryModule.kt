@@ -27,4 +27,5 @@ val repositoryModule = module {
     singleOf(::WorkerRepository)
     singleOf(::DownloadedAppRepository)
     singleOf(::InstalledAppRepository)
+    singleOf(::ChangelogsRepository)
 }
