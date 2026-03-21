@@ -218,7 +218,11 @@ class PatcherWorker(
                 }
 
                 is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
-                is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo!!.sourceDir)
+                is SelectedApp.Installed -> {
+                    val pkgInfo = pm.getPackageInfo(selectedApp.packageName) ?: throw IllegalStateException("Package ${selectedApp.packageName} is not installed.")
+                    val appInfo = pkgInfo.applicationInfo ?: throw IllegalStateException("Failed to retrieve application info for ${selectedApp.packageName}.")
+                    File(appInfo.sourceDir)
+                }
             }
 
             val runtime = if (prefs.useProcessRuntime.get()) {
