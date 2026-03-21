@@ -22,7 +22,9 @@ import app.revanced.manager.data.room.downloader.DownloaderEntity
 import app.revanced.manager.data.room.options.Option
 import app.revanced.manager.data.room.options.OptionDao
 import app.revanced.manager.data.room.options.OptionGroup
+import java.util.UUID
 import kotlin.random.Random
+import kotlin.uuid.Uuid
 
 @Database(
     entities = [PatchBundleEntity::class, PatchSelection::class, SelectedPatch::class, DownloadedApp::class, InstalledApp::class, AppliedPatch::class, InstalledPatchBundle::class, OptionGroup::class, Option::class, DownloaderEntity::class],
@@ -49,6 +51,6 @@ abstract class AppDatabase : RoomDatabase() {
     class DeleteTrustedDownloaders : AutoMigrationSpec
 
     companion object {
-        fun generateUid() = Random.Default.nextInt()
+        fun generateUid() = UUID.randomUUID().mostSignificantBits.toInt()
     }
 }
