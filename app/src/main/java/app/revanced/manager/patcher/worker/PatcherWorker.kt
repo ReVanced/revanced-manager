@@ -1,5 +1,6 @@
 package app.revanced.manager.patcher.worker
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
@@ -122,12 +123,14 @@ class PatcherWorker(
         } catch (e: Exception) {
             Log.d(tag, "Failed to set foreground info:", e)
         }
-
+        @SuppressLint("WakelockTimeout")
         val wakeLock: PowerManager.WakeLock =
             (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
                 .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "$tag::Patcher")
                 .apply {
-                    acquire(10 * 60 * 1000L)
+                    // acquire without a timeout as we're managing the wakelock ourselves
+                    // in the finally-block, and therefore, it will be released regardless (of failure/success eventually).
+                    acquire()
                     Log.d(tag, "Acquired wakelock.")
                 }
 
