@@ -569,7 +569,7 @@ Tap them for more details.</string>
     <string name="failed_to_import_keystore">Couldn’t import keystore</string>
     <string name="export">Export</string>
     <string name="confirm">Confirm</string>
-    <string name="new_announcement">New announcement:\n%s</string>
+    <string name="new_announcement">New announcement</string>
 
     <string name="generic_required">Required</string>
     <string name="generic_optional">Optional</string>

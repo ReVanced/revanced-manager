@@ -450,36 +450,15 @@ fun DashboardScreen(
                         vm.unreadAnnouncement?.let { announcement ->
                             {
                                 NotificationCard(
-                                    text = stringResource(R.string.new_announcement, announcement.title),
+                                    title = stringResource(R.string.new_announcement),
+                                    text = announcement.title,
                                     icon = Icons.Filled.Notifications,
-                                    actions = {
-                                        val colors = ButtonDefaults.textButtonColors(
-                                            contentColor = LocalContentColor.current
-                                        )
-
-                                        TextButton(
-                                            onClick = vm::markUnreadAnnouncementRead,
-                                            shapes = ButtonDefaults.shapes(),
-                                            colors = colors
-                                        ) {
-                                            Text(stringResource(R.string.dismiss))
-                                        }
-                                        TextButton(
-                                            onClick = {
-                                                vm.markUnreadAnnouncementRead()
-                                                onAnnouncementClick(announcement)
-                                            },
-                                            shapes = ButtonDefaults.shapes(),
-                                            colors = colors
-                                        ) {
-                                            Text(stringResource(R.string.view_announcement))
-                                        }
-                                    },
                                     type = if (announcement.level > 0) NotificationCardType.ERROR else NotificationCardType.NORMAL,
                                     onClick = {
                                         vm.markUnreadAnnouncementRead()
                                         onAnnouncementClick(announcement)
-                                    }
+                                    },
+                                    onDismiss = vm::markUnreadAnnouncementRead
                                 )
                             }
                         }
