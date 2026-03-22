@@ -10,6 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
@@ -17,13 +21,14 @@ import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.repository.ChangelogsRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
+import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.service.HttpService
-import app.revanced.manager.ui.component.ChangelogUiState
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -37,7 +42,8 @@ import ru.solrudev.ackpine.session.await
 import ru.solrudev.ackpine.session.parameters.Confirmation
 
 class UpdateViewModel(
-    private val changelogsRepository: ChangelogsRepository,
+    private val api: ReVancedAPI,
+    private val source: ChangelogSource,
     private val downloadOnScreenEntry: Boolean
 ) : ViewModel(), KoinComponent {
     private val app: Application by inject()
@@ -66,8 +72,13 @@ class UpdateViewModel(
     var releaseInfo: ReVancedAsset? by mutableStateOf(null)
         private set
 
-    var changelogsState: ChangelogUiState by mutableStateOf(ChangelogUiState.Loading)
-    private val changelogsPageSize = 2
+    val changelogs: Flow<PagingData<ReVancedAssetHistory>> = Pager(
+        config = PagingConfig(
+            pageSize = 10,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = { ChangelogsRepository(api, source) }
+    ).flow.cachedIn(viewModelScope)
 
     private val location = fs.tempDir.resolve("updater.apk")
 
@@ -77,43 +88,13 @@ class UpdateViewModel(
                 releaseInfo = reVancedAPI.getAppUpdate()
                     ?: throw Exception("No update available")
 
-                val result = changelogsRepository.loadInitial(
-                    ChangelogSource.Manager,
-                    changelogsPageSize
-                )
-
-                changelogsState = ChangelogUiState.Success(
-                    changelogs = result.items,
-                    hasMore = result.hasMore
-                )
-
                 if (downloadOnScreenEntry) {
                     downloadUpdate()
                 } else {
                     state = State.CAN_DOWNLOAD
                 }
             }
-
-            if (changelogsState is ChangelogUiState.Loading) {
-                changelogsState = ChangelogUiState.Error(
-                    app.getString(R.string.changelog_download_fail)
-                )
-            }
         }
-    }
-    fun loadNextPage() {
-        val current = changelogsState as? ChangelogUiState.Success ?: return
-        if (current.isLoadingMore || !current.hasMore) return
-
-        changelogsState = current.copy(isLoadingMore = true)
-
-        val result = changelogsRepository.loadNext(changelogsPageSize)
-
-        changelogsState = current.copy(
-            changelogs = current.changelogs + result.items,
-            isLoadingMore = false,
-            hasMore = result.hasMore
-        )
     }
 
     fun downloadUpdate(ignoreInternetCheck: Boolean = false) = viewModelScope.launch {

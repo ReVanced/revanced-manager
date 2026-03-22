@@ -2,6 +2,8 @@ package app.revanced.manager.domain.repository
 
 import android.os.Parcelable
 import androidx.core.net.toUri
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.utils.getOrThrow
@@ -18,50 +20,29 @@ sealed interface ChangelogSource : Parcelable {
 }
 
 class ChangelogsRepository(
-    private val api: ReVancedAPI
-) {
-    private var all: List<ReVancedAssetHistory> = emptyList()
-    private var page = 0
+    private val api: ReVancedAPI,
+    private val source: ChangelogSource,
+) : PagingSource<Int, ReVancedAssetHistory>() {
 
-    suspend fun loadInitial(
-        source: ChangelogSource,
-        pageSize: Int
-    ): PageResult<ReVancedAssetHistory> {
-        all = when (source) {
-            is ChangelogSource.Manager ->
-                api.getAppHistory().getOrThrow()
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ReVancedAssetHistory> {
+        return try {
+            val items = when (source) {
+                is ChangelogSource.Manager ->
+                    api.getAppHistory().getOrThrow()
 
-            is ChangelogSource.Patches ->
-                api.getPatchesHistory(source.baseUrl, source.prerelease).getOrThrow()
+                is ChangelogSource.Patches ->
+                    api.getPatchesHistory(source.baseUrl, source.prerelease).getOrThrow()
+            }
+
+            LoadResult.Page(
+                data = items,
+                prevKey = null,
+                nextKey = null
+            )
+        } catch (e: Exception) {
+            LoadResult.Error(e)
         }
-
-        page = 1
-
-        val items = all.take(pageSize)
-        return PageResult(
-            items = items,
-            hasMore = hasMore(pageSize)
-        )
     }
 
-    fun loadNext(pageSize: Int): PageResult<ReVancedAssetHistory> {
-        val items = all
-            .drop(page * pageSize)
-            .take(pageSize)
-
-        page++
-
-        return PageResult(
-            items = items,
-            hasMore = hasMore(pageSize)
-        )
-    }
-
-    private fun hasMore(pageSize: Int) =
-        page * pageSize < all.size
+    override fun getRefreshKey(state: PagingState<Int, ReVancedAssetHistory>): Int? = null
 }
-
-data class PageResult<T>(
-    val items: List<T>,
-    val hasMore: Boolean
-)

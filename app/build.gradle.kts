@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.material3)
     implementation(libs.navigation.compose)
+    implementation(libs.paging3)
 
     // Accompanist
     implementation(libs.accompanist.drawablepainter)
