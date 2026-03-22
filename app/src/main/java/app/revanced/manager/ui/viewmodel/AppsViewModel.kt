@@ -3,10 +3,7 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.net.Uri
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +15,6 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.installer.RootServiceException
-import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
@@ -43,7 +39,6 @@ class AppsViewModel(
     private val installedAppsRepository: InstalledAppRepository,
     private val pm: PM,
     private val rootInstaller: RootInstaller,
-    val prefs: PreferencesManager,
     fs: Filesystem,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
