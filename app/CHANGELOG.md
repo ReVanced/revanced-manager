@@ -1,3 +1,10 @@
+## app [2.3.1-dev.6](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.5...v2.3.1-dev.6) (2026-03-22)
+
+
+### Bug Fixes
+
+* Hide apps with no explicit compatibility when safeguard is on ([#3174](https://github.com/ReVanced/revanced-manager/issues/3174)) ([be91aa1](https://github.com/ReVanced/revanced-manager/commit/be91aa1c67a7896bfb3c789961ae4411140f0b0e))
+
 ## app [2.3.1-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.4...v2.3.1-dev.5) (2026-03-22)
 
 
