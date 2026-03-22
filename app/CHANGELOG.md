@@ -1,3 +1,10 @@
+## app [2.3.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.1...v2.3.1-dev.2) (2026-03-22)
+
+
+### Bug Fixes
+
+* Handle prerelease status when fetching changelogs ([742e6e8](https://github.com/ReVanced/revanced-manager/commit/742e6e8e781a320ea711ef5dd4c66b8144b0e3c8))
+
 ## app [2.3.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.3.0...v2.3.1-dev.1) (2026-03-21)
 
 
