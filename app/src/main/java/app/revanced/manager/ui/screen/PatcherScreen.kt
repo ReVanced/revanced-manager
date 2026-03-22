@@ -1,7 +1,7 @@
 package app.revanced.manager.ui.screen
 
 import android.app.Activity
-import android.os.Build
+import android.content.pm.PackageInstaller
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -150,6 +150,8 @@ fun PatcherScreen(
     }
 
     viewModel.packageInstallerStatus?.let {
+        // Don't show when the user cancels the installation (they can click Install again anyway)
+        if (it == PackageInstaller.STATUS_FAILURE_ABORTED) return@let
         InstallerStatusDialog(it, viewModel, viewModel::dismissPackageInstallerDialog)
     }
 
