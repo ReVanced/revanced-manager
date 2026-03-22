@@ -65,13 +65,12 @@ import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -141,6 +140,7 @@ class PatcherViewModel(
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
+    private val progressEventChannel = Channel<ProgressEvent>(UNLIMITED)
 
     private val tempDir = savedStateHandle.saveable(key = "tempDir") {
         fs.uiTempDir.resolve("installer").also {
@@ -154,6 +154,7 @@ class PatcherViewModel(
      * It should not be cancelled on system-initiated process death since that would cancel the installation process.
      */
     private val installerCoroutineScope = CoroutineScope(Dispatchers.Main)
+    private val cleanupScope = CoroutineScope(Dispatchers.Main)
 
     /**
      * Holds the package name of the Apk we are trying to install.
@@ -271,17 +272,22 @@ class PatcherViewModel(
         viewModelScope.launch {
             installedApp = installedAppRepository.get(packageName)
         }
+
+        viewModelScope.launch {
+            for (event in progressEventChannel) {
+                applyProgressEvent(event)
+            }
+        }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCleared() {
         super.onCleared()
         workManager.cancelWorkById(patcherWorkerId.uuid)
 
         if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.MOUNT) {
-            GlobalScope.launch(Dispatchers.Main) {
+            cleanupScope.launch {
                 uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
-                    withTimeout(Duration.ofMinutes(1L)) {
+                    withTimeout(Duration.ofSeconds(10L)) {
                         rootInstaller.mount(packageName)
                     }
                 }
@@ -289,9 +295,13 @@ class PatcherViewModel(
         }
     }
 
-    private fun handleProgressEvent(event: ProgressEvent) = viewModelScope.launch {
+    private fun handleProgressEvent(event: ProgressEvent) {
+        progressEventChannel.trySend(event)
+    }
+
+    private fun applyProgressEvent(event: ProgressEvent) {
         if (event is ProgressEvent.Failed && event.stepId == null && steps.any { it.state == State.FAILED }) {
-            return@launch
+            return
         }
 
         val stepIndex = steps.indexOfFirst {
@@ -554,7 +564,7 @@ class PatcherViewModel(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version ?: withContext(Dispatchers.IO) {
-                        pm.getPackageInfo(outputFile)?.versionName!!
+                        pm.getPackageInfo(outputFile)?.versionName ?: "unknown"
                     },
                     InstallType.DEFAULT,
                     input.selectedPatches,

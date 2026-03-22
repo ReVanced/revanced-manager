@@ -296,9 +296,12 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<SelectedApplicationInfo.PatchesSelector> {
                 val data =
                     it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
+                val parentBackStackEntry = navController.navGraphEntry(it)
+                val parentData =
+                    parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
                 val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
-                    viewModelStoreOwner = navController.navGraphEntry(it)
-                )
+                    viewModelStoreOwner = parentBackStackEntry
+                ) { parametersOf(parentData) }
 
                 PatchesSelectorScreen(
                     onBackClick = navController::popBackStackSafe,
@@ -316,9 +319,12 @@ private fun ReVancedManager(vm: MainViewModel) {
             composable<SelectedApplicationInfo.RequiredOptions> {
                 val data =
                     it.getComplexArg<SelectedApplicationInfo.PatchesSelector.ViewModelParams>()
+                val parentBackStackEntry = navController.navGraphEntry(it)
+                val parentData =
+                    parentBackStackEntry.getComplexArg<SelectedApplicationInfo.ViewModelParams>()
                 val selectedAppInfoVm = koinViewModel<SelectedAppInfoViewModel>(
-                    viewModelStoreOwner = navController.navGraphEntry(it)
-                )
+                    viewModelStoreOwner = parentBackStackEntry
+                ) { parametersOf(parentData) }
 
                 RequiredOptionsScreen(
                     onBackClick = navController::popBackStackSafe,

@@ -49,10 +49,12 @@ import app.revanced.manager.util.tag
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
+import java.io.IOException
 
 @OptIn(DownloaderHostApi::class)
 class PatcherWorker(
@@ -121,7 +123,10 @@ class PatcherWorker(
             // This does not always show up for some reason.
             setForeground(getForegroundInfo())
         } catch (e: Exception) {
-            Log.d(tag, "Failed to set foreground info:", e)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                throw e
+            }
+            Log.w(tag, "Failed to set foreground info", e)
         }
         @SuppressLint("WakelockTimeout")
         val wakeLock: PowerManager.WakeLock =
@@ -145,6 +150,7 @@ class PatcherWorker(
 
     private suspend fun runPatcher(args: Args): Result {
         val patchedApk = fs.tempDir.resolve("patched.apk")
+        var success = false
 
         return try {
             if (args.input is SelectedApp.Installed) {
@@ -187,7 +193,9 @@ class PatcherWorker(
 
                 is SelectedApp.Search -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
-                        downloaderRepository.loadedDownloadersFlow.first()
+                        withTimeout(30_000L) {
+                            downloaderRepository.loadedDownloadersFlow.first()
+                        }
                             .firstNotNullOfOrNull { downloader ->
                                 try {
                                     val getScope = object : GetScope, Scope by downloader.scopeImpl {
@@ -213,7 +221,11 @@ class PatcherWorker(
                                     }?.takeIf { (_, version) -> selectedApp.version == null || version == selectedApp.version }
                                 } catch (e: UserInteractionException.Activity.NotCompleted) {
                                     throw e
-                                } catch (_: UserInteractionException) {
+                                } catch (e: UserInteractionException) {
+                                    Log.i(tag, "User interaction cancelled downloader flow", e)
+                                    throw e
+                                } catch (e: IOException) {
+                                    Log.w(tag, "Downloader ${downloader.name} failed with an IO error, trying next downloader", e)
                                     null
                                 }?.let { (data, _) -> download(downloader, data) }
                             } ?: throw Exception("App is not available.")
@@ -245,10 +257,14 @@ class PatcherWorker(
             )
 
             runStep(StepId.SignAPK, args.onEvent) {
+                require(patchedApk.exists() && patchedApk.length() > 0L) {
+                    "Patched APK was not generated"
+                }
                 keystoreManager.sign(patchedApk, File(args.output))
             }
 
             Log.i(tag, "Patching succeeded".logFmt())
+            success = true
             Result.success()
         } catch (e: ProcessRuntime.RemoteFailureException) {
             Log.e(
@@ -273,6 +289,9 @@ class PatcherWorker(
             Result.failure()
         } finally {
             patchedApk.delete()
+            if (!success) {
+                File(args.output).delete()
+            }
             // Only delete the input APK right after patching finishes when the user isn't rooted, since it would be needed for mounting
             // (it would be deleted right after installing with root)
             if (args.input is SelectedApp.Local && args.input.temporary && Shell.isAppGrantedRoot() == false) {
