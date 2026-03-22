@@ -19,9 +19,6 @@ object Onboarding
 object Dashboard
 
 @Serializable
-object AppSelector
-
-@Serializable
 data class InstalledApplicationInfo(val packageName: String)
 
 @Serializable
