@@ -49,12 +49,12 @@ class ReVancedAPI(
     suspend fun getLatestAppInfo() =
         request<ReVancedAsset>("manager${prefs.useManagerPrereleases.prereleaseString()}")
 
-    suspend fun getAppHistory() = request<List<ReVancedAssetHistory>>("manager/history")
+    suspend fun getAppHistory() = request<List<ReVancedAssetHistory>>("manager/history${prefs.useManagerPrereleases.prereleaseString()}")
 
     suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
 
-    suspend fun getPatchesHistory(apiUrl: String) =
-        request<List<ReVancedAssetHistory>>(apiUrl, defaultApiVersion, "patches/history")
+    suspend fun getPatchesHistory(apiUrl: String, prerelease: Boolean) =
+        request<List<ReVancedAssetHistory>>(apiUrl, defaultApiVersion, "patches/history${prerelease.prereleaseString()}")
 
     suspend fun getDownloaderUpdate() = request<ReVancedAsset>("manager/downloaders${prefs.useDownloaderPrerelease.prereleaseString()}")
 
@@ -64,5 +64,6 @@ class ReVancedAPI(
 
     private companion object {
         suspend fun Preference<Boolean>.prereleaseString() = if (get()) "/prerelease" else ""
+        fun Boolean.prereleaseString() = if (this) "/prerelease" else ""
     }
 }

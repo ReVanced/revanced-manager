@@ -11,10 +11,9 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 sealed interface ChangelogSource : Parcelable {
-    data object Manager : ChangelogSource {
-    }
-    data class Patches(val url: String) : ChangelogSource {
-        val baseUrl get() = url.toUri().let { "${it.scheme}://${it.host}" }
+    data object Manager : ChangelogSource
+    data class Patches(val url: String, val prerelease: Boolean) : ChangelogSource {
+        val baseUrl by lazy { url.toUri().let { "${it.scheme}://${it.host}" } }
     }
 }
 
@@ -33,7 +32,7 @@ class ChangelogsRepository(
                 api.getAppHistory().getOrThrow()
 
             is ChangelogSource.Patches ->
-                api.getPatchesHistory(source.baseUrl).getOrThrow()
+                api.getPatchesHistory(source.baseUrl, source.prerelease).getOrThrow()
         }
 
         page = 1
