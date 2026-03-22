@@ -1,3 +1,10 @@
+## app [2.3.1-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.4...v2.3.1-dev.5) (2026-03-22)
+
+
+### Bug Fixes
+
+* Show patchable section header only when it's not the only section ([#3173](https://github.com/ReVanced/revanced-manager/issues/3173)) ([65b9e95](https://github.com/ReVanced/revanced-manager/commit/65b9e95c60abe9e974a6e4c67b827dcf4f429ee8))
+
 ## app [2.3.1-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.3...v2.3.1-dev.4) (2026-03-22)
 
 
