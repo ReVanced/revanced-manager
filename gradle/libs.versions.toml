@@ -41,6 +41,7 @@ semver-parser = "3.0.0"
 ackpine = "0.20.6"
 foundation-layout = "1.10.5"
 shizuku = "13.1.5"
+paging3 = "3.4.2"
 
 [libraries]
 # AndroidX Core
@@ -63,6 +64,7 @@ compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedat
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+paging3 = { group = "androidx.paging", name = "paging-compose", version.ref = "paging3" }
 
 # Coil
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }

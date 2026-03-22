@@ -315,7 +315,18 @@ fun BundleInformationScreen(
                     SettingsListItem(
                         headlineContent = stringResource(R.string.changelog),
                         onClick = {
-                            onChangelogClick(ChangelogSource.Patches(if (src.isDefault) viewModel.prefs.api.getBlocking() else endpoint))
+                            val source = if (src.isDefault) {
+                                ChangelogSource.Patches(
+                                    url = viewModel.prefs.api.getBlocking(),
+                                    prerelease = viewModel.prefs.usePatchesPrereleases.getBlocking()
+                                )
+                            } else {
+                                ChangelogSource.Patches(
+                                    url = endpoint,
+                                    prerelease = false
+                                )
+                            }
+                            onChangelogClick(source)
                         },
                     )
                 }

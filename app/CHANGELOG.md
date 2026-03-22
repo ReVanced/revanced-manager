@@ -1,3 +1,17 @@
+## app [2.3.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.1...v2.3.1-dev.2) (2026-03-22)
+
+
+### Bug Fixes
+
+* Handle prerelease status when fetching changelogs ([742e6e8](https://github.com/ReVanced/revanced-manager/commit/742e6e8e781a320ea711ef5dd4c66b8144b0e3c8))
+
+## app [2.3.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.3.0...v2.3.1-dev.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* Apply M3 style guide to UI strings ([#3114](https://github.com/ReVanced/revanced-manager/issues/3114)) ([8f773bc](https://github.com/ReVanced/revanced-manager/commit/8f773bc7ab61e3e475de2fd2e3df9aab7d9984f3))
+
 # app [2.3.0](https://github.com/ReVanced/revanced-manager/compare/v2.2.3...v2.3.0) (2026-03-20)
 
 

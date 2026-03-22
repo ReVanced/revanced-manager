@@ -31,85 +31,65 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.util.relativeTime
 
-sealed interface ChangelogUiState {
-    data object Loading : ChangelogUiState
-    data class Error(val error: String) : ChangelogUiState
-    data class Success(
-        val changelogs: List<ReVancedAssetHistory>,
-        val hasMore: Boolean = false,
-        val isLoadingMore: Boolean = false,
-    ) : ChangelogUiState
-}
-
 @Composable
 fun ChangelogList(
-    state: ChangelogUiState,
-    onLoadMore: () -> Unit,
+    changelogs: LazyPagingItems<ReVancedAssetHistory>,
     modifier: Modifier = Modifier,
 ) {
-    val listState = rememberLazyListState()
-
-    val shouldLoadMore by remember {
-        derivedStateOf {
-            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            val total = listState.layoutInfo.totalItemsCount
-            val canScroll = listState.canScrollForward || listState.canScrollBackward
-
-            (lastVisible >= total - 2 || !canScroll) && total > 0
-        }
-    }
-
-    LaunchedEffect(shouldLoadMore, state) {
-        if (shouldLoadMore) onLoadMore()
-    }
-
     Box(
-        modifier = modifier.then(Modifier.fillMaxSize()),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        when (state) {
-            is ChangelogUiState.Loading -> LoadingIndicator()
+        when {
+            changelogs.loadState.refresh is LoadState.Loading -> LoadingIndicator()
 
-            is ChangelogUiState.Error -> Text(
-                text = state.error,
+            changelogs.loadState.refresh is LoadState.Error -> {
+                val error = changelogs.loadState.refresh as LoadState.Error
+                Text(
+                    text = error.error.message ?: stringResource(R.string.changelog_download_fail),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+
+            changelogs.itemCount == 0 -> Text(
+                text = stringResource(R.string.no_changelogs_found),
                 style = MaterialTheme.typography.titleLarge
             )
 
-            is ChangelogUiState.Success -> {
-                if (state.changelogs.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.no_changelogs_found),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                } else {
-                    LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize(),
-                        state = listState
-                    ) {
-                        items(
-                            items = state.changelogs,
-                            key = { it.version }
-                        ) { changelog ->
+            else -> {
+                val listState = rememberLazyListState()
+
+                LazyColumnWithScrollbar(
+                    modifier = Modifier.fillMaxSize(),
+                    state = listState
+                ) {
+                    items(
+                        count = changelogs.itemCount,
+                        key = { changelogs.peek(it)?.version ?: it }
+                    ) { index ->
+                        changelogs[index]?.let { changelog ->
                             ChangelogItem(
                                 changelog = changelog,
-                                showDivider = changelog != state.changelogs.last()
+                                showDivider = index < changelogs.itemCount - 1
                             )
                         }
+                    }
 
-                        if (state.isLoadingMore) {
-                            item(key = "loading_more") {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
-                                }
+                    if (changelogs.loadState.append is LoadState.Loading) {
+                        item(key = "loading_more") {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
                             }
                         }
                     }
