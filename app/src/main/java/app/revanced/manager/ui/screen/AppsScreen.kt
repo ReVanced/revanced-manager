@@ -355,15 +355,17 @@ fun AppsScreen(
                 }
             }
 
-            item(key = "HEADER_PATCHABLE") {
-                Text(
-                    text = stringResource(R.string.patchable_apps_section_title),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
-                )
+            if (patched.isNotEmpty()) {
+                item(key = "HEADER_PATCHABLE") {
+                    Text(
+                        text = stringResource(R.string.patchable_apps_section_title),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
+                    )
+                }
             }
 
             item(key = "PATCHABLE_STORAGE") {
