@@ -30,6 +30,7 @@ Second \"item\" text"</string>
     <string name="onboarding_updates_note">ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet</string>
 
     <string name="retry">Retry</string>
+    <string name="try_again">Try again</string>
     <string name="onboarding_skip">Skip for now</string>
     <string name="onboarding_recommended_version">Recommended version: %s</string>
 
@@ -534,14 +535,14 @@ It’s only compatible with these versions: %2$s</string>
     <string name="installation_cancelled_dialog_title">Install canceled</string>
     <string name="installation_blocked_dialog_title">Install blocked</string>
     <string name="installation_conflict_dialog_title">Install conflict</string>
-    <string name="installation_incompatible_dialog_title">Install incompatible</string>
+    <string name="installation_incompatible_dialog_title">Incompatible app</string>
     <string name="installation_invalid_dialog_title">Install invalid</string>
     <string name="installation_storage_issue_dialog_title">Not enough storage</string>
-    <string name="installation_timeout_dialog_title">Install timed out</string>
+    <string name="installation_timeout_dialog_title">Timed out</string>
     <string name="installation_failed_description">There was a problem installing the app</string>
     <string name="installation_aborted_description">Installation was canceled</string>
     <string name="installation_blocked_description">Installation was blocked. Try adjusting the security settings of your device, and try again.</string>
-    <string name="installation_conflict_description">An existing app is preventing the install. Uninstall the app, and try again.</string>
+    <string name="installation_conflict_description">An existing app is preventing your installation. Uninstall the app, and try again.</string>
     <string name="installation_incompatible_description">This app isn’t compatible with your device. Use an APK that is compatible, and try again.</string>
     <string name="installation_invalid_description">There was a problem installing the app. Uninstall the app, and try again.</string>
     <string name="installation_storage_issue_description">There’s not enough storage space to install this app. Free up some space, and try again.</string>

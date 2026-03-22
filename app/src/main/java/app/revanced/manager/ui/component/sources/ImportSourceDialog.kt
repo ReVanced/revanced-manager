@@ -37,7 +37,6 @@ private enum class SourceType {
 
 enum class ImportSourceDialogStrings(
     val title: Int,
-    val type_description: Int,
     val type_remote_description: Int,
     val type_local_description: Int,
     val import_local: Int,
@@ -45,7 +44,6 @@ enum class ImportSourceDialogStrings(
 ) {
     PATCHES(
         R.string.add_patches,
-        R.string.select_patches_type_dialog_description,
         R.string.remote_patches_description,
         R.string.local_patches_description,
         R.string.patches,
@@ -53,7 +51,6 @@ enum class ImportSourceDialogStrings(
     ),
     DOWNLOADERS(
         R.string.downloader_add,
-        R.string.select_downloader_type_dialog_description,
         R.string.remote_downloaders_description,
         R.string.local_downloaders_description,
         R.string.downloaders,
@@ -117,7 +114,7 @@ fun ImportSourceDialog(
     AlertDialogExtended(
         onDismissRequest = onDismiss,
         title = {
-            Text(stringResource(if (currentStep == 0) R.string.select else strings.title))
+            Text(stringResource(strings.title))
         },
         text = {
             steps[currentStep]()
@@ -167,10 +164,6 @@ private fun SelectSourceTypeStep(
         modifier = Modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        Text(
-            modifier = Modifier.padding(horizontal = 24.dp),
-            text = stringResource(strings.type_description)
-        )
         Column {
             ListItem(
                 modifier = Modifier.clickable(
