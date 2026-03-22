@@ -74,6 +74,7 @@ fun AppsScreen(
 
     val installedApps by viewModel.installedApps.collectAsStateWithLifecycle()
     val patchableApps by viewModel.patchableApps.collectAsStateWithLifecycle()
+    val disableUniversalPatchCheckEnabled by viewModel.prefs.disableUniversalPatchCheck.getAsState()
 
     fun patchedPackageNames(apps: List<InstalledApp>?): Set<String> =
         apps
@@ -312,7 +313,6 @@ fun AppsScreen(
                 return@LazyColumnWithScrollbar
             }
 
-            val disableUniversalPatchCheckEnabled = viewModel.disableUniversalPatchCheckEnabled
             val patchedPackageNames = patchedPackageNames(patched)
             val visiblePatchableApps = patchable.filter {
                 it.packageName !in patchedPackageNames && (disableUniversalPatchCheckEnabled || (it.patches ?: 0) > 0)

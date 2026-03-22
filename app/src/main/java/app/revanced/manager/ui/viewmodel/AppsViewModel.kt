@@ -43,7 +43,7 @@ class AppsViewModel(
     private val installedAppsRepository: InstalledAppRepository,
     private val pm: PM,
     private val rootInstaller: RootInstaller,
-    private val prefs: PreferencesManager,
+    val prefs: PreferencesManager,
     fs: Filesystem,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -72,16 +72,9 @@ class AppsViewModel(
     private val storageSelectionChannel = Channel<SelectedApp.Local>()
     val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
 
-    var disableUniversalPatchCheckEnabled by mutableStateOf(false)
-        private set
-
     init {
         viewModelScope.launch {
             installedApps.filterNotNull().collectLatest(::fetchPackageInfos)
-
-            if (prefs.disableUniversalPatchCheck.get()) {
-                disableUniversalPatchCheckEnabled = true
-            }
         }
     }
 
