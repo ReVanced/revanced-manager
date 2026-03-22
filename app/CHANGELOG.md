@@ -1,3 +1,10 @@
+# app [2.4.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.6...v2.4.0-dev.1) (2026-03-22)
+
+
+### Features
+
+* Speed up loading app list ([f0727b2](https://github.com/ReVanced/revanced-manager/commit/f0727b27debef4cebc3c8f9339330a39c4e92d9a))
+
 ## app [2.3.1-dev.6](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.5...v2.3.1-dev.6) (2026-03-22)
 
 
