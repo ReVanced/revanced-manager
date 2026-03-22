@@ -195,6 +195,30 @@ fun AdvancedSettingsScreen(
             }
 
             ListSection(
+                title = stringResource(R.string.category_installer),
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.Tune,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            ) {
+                IntegerItem(
+                    preference = viewModel.prefs.adbPort,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.adb_port_setting,
+                    description = R.string.adb_port_description,
+                )
+                BooleanItem(
+                    preference = viewModel.prefs.shizukuAutoSetup,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.shizuku_auto_setup,
+                    description = R.string.shizuku_auto_setup_description,
+                )
+            }
+
+            ListSection(
                 title = stringResource(R.string.debugging),
                 leadingContent = {
                     Icon(
