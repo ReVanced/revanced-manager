@@ -1,3 +1,17 @@
+## app [2.3.1-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.3...v2.3.1-dev.4) (2026-03-22)
+
+
+### Bug Fixes
+
+* Improve dialogs ([#3165](https://github.com/ReVanced/revanced-manager/issues/3165)) ([2fb13cd](https://github.com/ReVanced/revanced-manager/commit/2fb13cdcc73ec5741a3dca94d93a951f88012769))
+
+## app [2.3.1-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.2...v2.3.1-dev.3) (2026-03-22)
+
+
+### Bug Fixes
+
+* Improve notification cards ([653c14e](https://github.com/ReVanced/revanced-manager/commit/653c14ea5d1eeaf986a0ce2a4ab2e0c7dcf1d53b))
+
 ## app [2.3.1-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.1...v2.3.1-dev.2) (2026-03-22)
 
 

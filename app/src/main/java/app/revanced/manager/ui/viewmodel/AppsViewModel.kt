@@ -1,0 +1,131 @@
+package app.revanced.manager.ui.viewmodel
+
+import android.app.Application
+import android.content.pm.PackageInfo
+import android.net.Uri
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
+import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
+import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.domain.installer.RootInstaller
+import app.revanced.manager.domain.installer.RootServiceException
+import app.revanced.manager.domain.repository.InstalledAppRepository
+import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.util.PM
+import app.revanced.manager.util.toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.nio.file.Files
+
+@OptIn(SavedStateHandleSaveableApi::class)
+class AppsViewModel(
+    private val app: Application,
+    private val installedAppsRepository: InstalledAppRepository,
+    private val pm: PM,
+    private val rootInstaller: RootInstaller,
+    fs: Filesystem,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val inputFile = savedStateHandle.saveable(key = "inputFile") {
+        File(fs.uiTempDir, "input.apk").also(File::delete)
+    }
+
+    val filterTextFlow = MutableStateFlow("")
+    val filterText: StateFlow<String> = filterTextFlow
+
+    val patchableApps = pm.appList.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = null,
+    )
+
+    val installedApps = installedAppsRepository.getAll().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = null,
+    )
+
+    val packageInfoMap = mutableStateMapOf<String, PackageInfo?>()
+
+    private val storageSelectionChannel = Channel<SelectedApp.Local>()
+    val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            installedApps.filterNotNull().collectLatest(::fetchPackageInfos)
+        }
+    }
+
+    fun setFilterText(filter: String) {
+        filterTextFlow.value = filter
+    }
+
+    fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
+
+    fun handleStorageResult(uri: Uri) = viewModelScope.launch {
+        val selectedApp = withContext(Dispatchers.IO) { loadSelectedFile(uri) }
+
+        if (selectedApp == null) {
+            app.toast(app.getString(R.string.failed_to_load_apk))
+            return@launch
+        }
+
+        storageSelectionChannel.send(selectedApp)
+    }
+
+    private suspend fun fetchPackageInfos(apps: List<InstalledApp>) {
+        for (app in apps) {
+            packageInfoMap[app.currentPackageName] = withContext(Dispatchers.IO) {
+                if (app.installType == InstallType.MOUNT) {
+                    try {
+                        if (!rootInstaller.isAppInstalled(app.currentPackageName)) {
+                            installedAppsRepository.delete(app)
+                            return@withContext null
+                        }
+                    } catch (_: RootServiceException) { }
+                }
+
+                val packageInfo = pm.getPackageInfo(app.currentPackageName)
+
+                if (packageInfo == null && app.installType != InstallType.MOUNT) {
+                    installedAppsRepository.delete(app)
+                    return@withContext null
+                }
+
+                packageInfo
+            }
+        }
+    }
+
+    private fun loadSelectedFile(uri: Uri): SelectedApp.Local? =
+        app.contentResolver.openInputStream(uri)?.use { stream ->
+            inputFile.delete()
+            Files.copy(stream, inputFile.toPath())
+
+            pm.getPackageInfo(inputFile)?.let { packageInfo ->
+                SelectedApp.Local(
+                    packageName = packageInfo.packageName,
+                    version = packageInfo.versionName!!,
+                    file = inputFile,
+                    temporary = true,
+                )
+            }
+        }
+}

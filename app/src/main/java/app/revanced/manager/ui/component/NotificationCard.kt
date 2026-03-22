@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 
@@ -57,7 +58,7 @@ fun NotificationCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = if (actions != null) Alignment.Top else Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Box(
@@ -74,18 +75,21 @@ fun NotificationCard(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    title?.let {
+                    Column {
+                        title?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.bodyMediumEmphasized.merge(fontWeight = FontWeight.SemiBold),
+                                color = LocalContentColor.current,
+                            )
+                        }
                         Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodyLarge,
+                            text = text,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = LocalContentColor.current,
                         )
                     }
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = LocalContentColor.current,
-                    )
+
                     actions?.let {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -95,11 +99,14 @@ fun NotificationCard(
                     }
                 }
                 if (onDismiss != null) {
+                    // @TODO: Use xsmall icon buttons when that is available in Compose
                     TooltipIconButton(
+                        modifier = Modifier.size(32.dp),
                         onClick = onDismiss,
                         tooltip = stringResource(R.string.close),
                     ) {
                         Icon(
+                            modifier = Modifier.size(20.dp),
                             imageVector = Icons.Outlined.Close,
                             contentDescription = stringResource(R.string.close),
                         )
