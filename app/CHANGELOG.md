@@ -1,3 +1,10 @@
+## app [2.3.1-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.3...v2.3.1-dev.4) (2026-03-22)
+
+
+### Bug Fixes
+
+* Improve dialogs ([#3165](https://github.com/ReVanced/revanced-manager/issues/3165)) ([2fb13cd](https://github.com/ReVanced/revanced-manager/commit/2fb13cdcc73ec5741a3dca94d93a951f88012769))
+
 ## app [2.3.1-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.2...v2.3.1-dev.3) (2026-03-22)
 
 
