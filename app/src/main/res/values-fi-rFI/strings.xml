@@ -22,15 +22,16 @@ Second \"item\" text"</string>
   <string name="onboarding_welcome_to">Tervetuloa</string>
   <string name="onboarding_welcome_back">Hei! Se on uusi</string>
   <string name="onboarding_apps_subtitle">Voit valita paikattavan sovelluksen nyt tai tehdä sen myöhemmin</string>
-  <string name="onboarding_apps_network_error">Päivityksiä ei voitu ladata, koska verkko ei ole käytettävissä tai on epävakaa. Yhdistä vakaaseen verkkoon ja yritä uudelleen.</string>
+  <string name="onboarding_apps_network_error">Paikkatiedostoja ei voi ladata. Tarkista internet-yhteytesi ja yritä uudelleen.</string>
   <string name="onboarding_updates_subtitle">Määritä automaattiset päivitykset pitääksesi ReVanced Managerin ja paikat ajan tasalla</string>
-  <string name="banner_sources_not_downloaded_description">Päivityksiä ja latausohjelmia ei voitu ladata asennuksen aikana. Napauta päivitä ladataksesi ne.</string>
-  <string name="onboarding_updates_note">ReVanced Manager muodostaa yhteyden kohteeseen %s ladatakseen alkuperäiset versiot, jos laitteesi on yhdistetty internetiin.</string>
+  <string name="banner_sources_not_downloaded_description">Paikkatiedostoja ja lataajia ei voitu ladata asennuksen aikana. Napauta <b>Päivitä</b> ladataksesi ne.</string>
+  <string name="banner_sources_not_updated_description">Paikkatiedostoja ja lataajia ei voi päivittää mittaroidussa verkossa. Napauta <b>Päivitä</b> ladataksesi ne.</string>
+  <string name="onboarding_updates_note">ReVanced Manager muodostaa yhteyden kohteeseen %s ladatakseen alkuperäiset versiot, jos laitteesi on yhdistetty internetiin</string>
   <string name="retry">Yritä uudelleen</string>
   <string name="onboarding_skip">Ohita toistaiseksi</string>
   <string name="onboarding_recommended_version">Suositeltu versio: %s</string>
   <string name="onboarding_permissions_skip_title">Ohita käyttöoikeudet?</string>
-  <string name="onboarding_permissions_skip_description">Ilman vaadittuja käyttöoikeuksia jotkin ominaisuudet eivät ehkä toimi oikein. Voit myöntää ne myöhemmin sovelluksen asetuksista.</string>
+  <string name="onboarding_permissions_skip_description">Ilman tarvittavia oikeuksia jotkin ominaisuudet eivät ehkä toimi oikein. Voit myöntää ne myöhemmin asetuksista.</string>
   <string name="onboarding_permissions_skip_anyway">Ohita joka tapauksessa</string>
   <string name="onboarding_permissions_subtitle">ReVanced Manager tarvitsee joitakin käyttöoikeuksia toimiakseen oikein.</string>
   <string name="permission_install_apps">Asenna tuntemattomia sovelluksia</string>
@@ -41,8 +42,8 @@ Second \"item\" text"</string>
   <string name="permission_battery_description">Estää paikkauksen keskeytymisen taustalla</string>
   <string name="permission_grant">Myönnä</string>
   <string name="downloader_host_permission_label">ReVanced Manager -lataajaisäntä</string>
-  <string name="downloader_host_permission_description">Käytetään hallitsemaan pääsyä ReVanced Manager -lataajiin. Vain ReVanced Managerilla on tämä.</string>
-  <string name="toast_copied_to_clipboard">Kopioitu!</string>
+  <string name="downloader_host_permission_description">Käytetään hallitsemaan pääsyä ReVanced Manager -lataajiin. Vain ReVanced Managerilla on tämä oikeus.</string>
+  <string name="toast_copied_to_clipboard">Kopioitu</string>
   <string name="copy_to_clipboard">Kopioi leikepöydälle</string>
   <string name="dashboard">Hallintapaneeli</string>
   <string name="settings">Asetukset</string>
@@ -50,8 +51,9 @@ Second \"item\" text"</string>
   <string name="patches_count_selected">%1$d/%2$d valittu</string>
   <string name="fab_patch_app">Paikkaa sovellus</string>
   <string name="fab_add_patches">Lisää paikkauksia</string>
-  <string name="new_downloader_notification">Uusia lataajia saatavilla. Napauta tästä määrittääksesi ne.</string>
-  <string name="unsupported_architecture_warning">Paikkaus tällä laitearkkitehtuurilla ei ole tuettu ja todennäköisesti epäonnistuu.</string>
+  <string name="new_downloader_notification">Uusia lataajia saatavilla, napauta määrittääksesi ne</string>
+  <string name="onboarding_unsupported_device_title">Laitetta ei tueta</string>
+  <string name="onboarding_unsupported_device_description">ReVanced Manager ei tue tätä laitetta. Et voi paikata sovelluksia.</string>
   <string name="import_">Tuo</string>
   <string name="import_patches">Tuo paikkaukset</string>
   <string name="file_field_set">Valittu</string>
@@ -59,48 +61,45 @@ Second \"item\" text"</string>
   <string name="field_not_set">Ei asetettu</string>
   <string name="patches_missing">Puuttuu</string>
   <string name="patches_error">Virhe</string>
-  <string name="patches_error_description">Paikkauksia ei voitu ladata. Napauta nähdäksesi virheen</string>
-  <string name="patches_not_downloaded">Päivityksiä ei ole ladattu.</string>
+  <string name="patches_error_description">Paikkauksia ei voitu ladata, napauta saadaksesi lisätietoja</string>
+  <string name="patches_not_downloaded">Paikkausten lataus epäonnistui</string>
   <string name="patches_name_default">Paikkaukset</string>
   <string name="source_name_fallback">Nimetön</string>
   <string name="android_11_bug_dialog_title">Android 11 -virhe</string>
-  <string name="android_11_bug_dialog_description">Sovelluksen asennusoikeus on myönnettävä etukäteen, jotta vältetään Android 11 -järjestelmän virhe, joka vaikuttaa negatiivisesti käyttökokemukseen.</string>
-  <string name="no_network_toast">Internet-yhteyttä ei ole käytettävissä</string>
+  <string name="android_11_bug_dialog_description">Sovelluksen asennusoikeus on myönnettävä etukäteen, jotta vältetään Android 11 -järjestelmän virhe, joka vaikuttaisi negatiivisesti käyttökokemukseesi</string>
   <string name="selected_app_meta_any_version">Mikä tahansa saatavilla oleva versio</string>
   <string name="app_source_dialog_title">Valitse lähde</string>
   <string name="app_source_dialog_option_auto">Automaattinen</string>
   <string name="app_source_dialog_option_auto_description">Käytä asennettua sovellusta, sitten ladattua APK:ta, sitten käytettävissä olevia latausohjelmia</string>
-  <string name="app_source_dialog_option_auto_unavailable">Yhteensopivia sovelluksia tai latausohjelmia ei ole saatavilla</string>
+  <string name="app_source_dialog_option_auto_unavailable">Yhteensopivaa sovellusta tai lataajia ei saatavilla</string>
   <string name="app_source_dialog_option_installed_no_root">Liitettyjä sovelluksia ei voi paikata uudelleen ilman root-oikeuksia</string>
   <string name="app_source_dialog_option_installed_version_not_suggested">Versio %s ei vastaa ehdotettua versiota</string>
-  <string name="patch_item_description">Aloita sovelluksen paikkaaminen</string>
   <string name="patch_selector_item">Valitse paikkaukset</string>
   <string name="patch_selector_item_description">%d paikkausta valittu</string>
-  <string name="patch_selection_changed_warning">Päivitysten valintaa on muutettu</string>
+  <string name="patch_selection_changed_warning">Paikkausvalintaa on muutettu</string>
   <string name="no_patches_selected">Paikkauksia ei ole valittu</string>
-  <string name="network_unavailable_warning">Laitteesi ei ole yhteydessä Internetiin. Lataaminen epäonnistuu myöhemmin.</string>
   <string name="network_metered_warning">Käytät parhaillaan käytön mukaan laskutettavaa yhteyttä. Palveluntarjoajasi datamaksuja voidaan soveltaa.</string>
   <string name="apk_source_selector_item">Valitse APK-lähde</string>
   <string name="apk_source_auto">Automaattinen</string>
-  <string name="apk_source_auto_installed">Automaattinen · Käytetään asennettua APK:ta</string>
-  <string name="apk_source_auto_downloaded">Automaattinen · Käytetään ladattua APK:ta</string>
-  <string name="apk_source_auto_downloader">Automaattinen · Käyttämällä saatavilla olevia lataajia</string>
-  <string name="apk_source_auto_storage">Automaattinen · Valitse tallennustilasta</string>
+  <string name="apk_source_auto_installed">Auto • Käytetään asennettua APK:ta</string>
+  <string name="apk_source_auto_downloaded">Auto • Käytetään ladattua APK:ta</string>
+  <string name="apk_source_auto_downloader">Auto • Käytetään saatavilla olevia lataajia</string>
+  <string name="apk_source_auto_storage">Auto • Valitse tallennustilasta</string>
   <string name="apk_source_downloader">Käytetään %s</string>
   <string name="apk_source_installed">Käytetään asennettua APK:ta</string>
-  <string name="apk_source_local">Käytetään paikallista APK-tiedostoa</string>
+  <string name="apk_source_local">Käytetään APK-tiedostoa</string>
   <string name="apk_source_downloaded">Jo ladattu</string>
   <string name="legacy_import_failed">Vanhoja asetuksia ei voitu tuoda</string>
   <string name="auto_updates_dialog_title">Määritä päivitykset</string>
   <string name="auto_updates_dialog_description">Haluatko, että ReVanced Manager tarkistaa säännöllisesti päivitykset seuraaville komponenteille?</string>
   <string name="auto_updates_dialog_manager">ReVanced Manager</string>
   <string name="auto_updates_dialog_patches">ReVanced-paikkaukset</string>
-  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Lataajat</string>
+  <string name="auto_updates_dialog_downloaders">APK-lataajat</string>
   <string name="auto_updates_dialog_note">Nämä asetukset voidaan muuttaa myöhemmin.
 
-    ReVanced Manager muodostaa yhteyden kohteeseen %s ladatakseen alkuperäiset versiot, jos laitteesi on yhdistetty internetiin.</string>
+    ReVanced Manager muodostaa yhteyden kohteeseen %s ladatakseen alkuperäiset versiot, jos olet yhdistetty internetiin.</string>
   <string name="announcements_filter_tag">Suodata tunnisteen mukaan</string>
-  <string name="announcements_show_archived">Näytä arkistoidut</string>
+  <string name="announcements_show_archived">Arkistoitu</string>
   <string name="general">Yleiset</string>
   <string name="general_description">Kieli, teema, dynaaminen väri</string>
   <string name="updates">Päivitykset</string>
@@ -117,9 +116,9 @@ Second \"item\" text"</string>
   <string name="opensource_licenses">Avoimen lähdekoodin lisenssit</string>
   <string name="opensource_licenses_description">Näytä kaikki tämän sovelluksen luomiseen käytetyt kirjastot</string>
   <string name="contributors">Osallistujat</string>
-  <string name="contributors_description">Näytä ReVancedin osallistujat</string>
+  <string name="contributors_description">Näytä ReVancedin avustajat</string>
   <string name="dynamic_color">Dynaaminen väri</string>
-  <string name="dynamic_color_description">Sovita värit taustakuvaan</string>
+  <string name="dynamic_color_description">Käytä laitteesi tarjoamia värejä</string>
   <string name="pure_black_theme">Musta teema</string>
   <string name="pure_black_theme_description">Käytä mustia taustoja tummalle teemalle</string>
   <string name="theme">Teema</string>
@@ -127,56 +126,48 @@ Second \"item\" text"</string>
   <string name="language">Kieli</string>
   <string name="language_description">Valitse sovelluksen näyttökieli</string>
   <string name="language_system_default">Järjestelmän oletus</string>
-  <string name="search_languages">Hae kieliä…</string>
+  <string name="search_languages">Hae kieliä</string>
   <string name="safeguards">Suojatoimet</string>
   <string name="patch_compat_check">Poista version yhteensopivuustarkistus käytöstä</string>
-  <string name="patch_compat_check_description">Älä rajoita paikkauksia yhteensopiviin sovellusversioihin</string>
-  <string name="patch_compat_check_confirmation">Yhteensopimattomien paikkausten valitseminen voi johtaa rikkinäiseen sovellukseen.
-
-Haluatko silti jatkaa?</string>
+  <string name="patch_compat_check_description">Poistaa käytöstä paikkaus-/sovellusversion yhteensopivuuden tarkistuksen</string>
+  <string name="patch_compat_check_title">Poista version yhteensopivuustarkistus käytöstä?</string>
+  <string name="patch_compat_check_confirmation">Yhteensopimattomien paikkausten valitseminen voi aiheuttaa odottamattomia ongelmia</string>
   <string name="suggested_version_safeguard">Vaadi ehdotettua sovellusversiota</string>
-  <string name="suggested_version_safeguard_description">Pakota ehdotetun sovellusversion valinta</string>
-  <string name="suggested_version_safeguard_confirmation">Ei-ehdotetun sovellusversion valitseminen voi aiheuttaa odottamattomia ongelmia.
-
-Haluatko silti jatkaa?</string>
+  <string name="suggested_version_safeguard_description">Pakottaa ehdotetun sovellusversion valinnan</string>
+  <string name="suggested_version_safeguard_title">Lopeta ehdotetun sovellusversion vaatiminen?</string>
+  <string name="suggested_version_safeguard_confirmation">Ei-ehdotetun sovellusversion valitseminen voi aiheuttaa odottamattomia ongelmia</string>
   <string name="patch_selection_safeguard">Salli paikkausvalinnan ja -asetusten muuttaminen</string>
-  <string name="patch_selection_safeguard_description">Älä estä paikkausvalinnan muuttamista tai asetusten mukauttamista</string>
-  <string name="patch_selection_safeguard_confirmation">Paikkausvalinnan muuttaminen voi aiheuttaa odottamattomia ongelmia.
-
-Ota silti käyttöön?</string>
+  <string name="patch_selection_safeguard_description">Sallii paikkausten valinnan tai poiston sekä paikkausasetusten muuttamisen</string>
+  <string name="patch_selection_safeguard_title">Salli paikkausvalinnan ja -asetusten muuttaminen?</string>
+  <string name="patch_selection_safeguard_confirmation">Paikkausvalintojen ja -asetusten muuttaminen voi aiheuttaa odottamattomia ongelmia</string>
   <string name="universal_patches_safeguard">Salli yleispaikkausten käyttö</string>
-  <string name="universal_patches_safeguard_description">Älä estä yleispaikkausten käyttöä</string>
-  <string name="universal_patches_safeguard_confirmation">Yleispaikkauksia ei ole testattu yhtä hyvin kuin niitä, jotka on tarkoitettu tietyille sovelluksille.
-
-Ota silti käyttöön?</string>
+  <string name="universal_patches_safeguard_description">Sallii yleiskäyttöisten, ei tiettyihin sovelluksiin tarkoitettujen paikkausten käytön</string>
+  <string name="universal_patches_safeguard_title">Käytä yleispaikkauksia?</string>
+  <string name="universal_patches_safeguard_confirmation">Yleispaikkauksia ei ole testattu yhtä hyvin kuin sovelluskohtaisia paikkauksia. Niiden käytössä saattaa ilmetä ongelmia.</string>
   <string name="keystore">Avainsäilö</string>
   <string name="patches_selections">Paikkausvalinnat</string>
   <string name="import_keystore">Tuo avainsäilö</string>
   <string name="import_keystore_description">Tuo mukautettu avainsäilö</string>
   <string name="import_keystore_dialog_title">Anna avainsäilön tunnistetiedot</string>
-  <string name="import_keystore_dialog_description">Sinun on annettava avainsäilön tunnistetiedot tuodaksesi sen.</string>
+  <string name="import_keystore_dialog_description">Sinun on annettava tunnistetiedot ennen avainsäilön tuomista.</string>
   <string name="import_keystore_dialog_alias_field">Käyttäjätunnus (Alias)</string>
   <string name="import_keystore_dialog_password_field">Salasana</string>
   <string name="import_keystore_dialog_button">Tuo</string>
-  <string name="import_keystore_wrong_credentials">Väärät avainsäilön tunnistetiedot</string>
-  <string name="import_keystore_success">Avainsäilö tuotiin</string>
+  <string name="import_keystore_wrong_credentials">Virheelliset tunnistetiedot</string>
+  <string name="import_keystore_success">Avainsäilö tuotu</string>
   <string name="export_keystore">Vie avainsäilö</string>
   <string name="export_keystore_description">Vie nykyinen avainsäilö</string>
   <string name="export_keystore_unavailable">Ei avainsäilöä vietäväksi</string>
-  <string name="export_keystore_success">Avainsäilö vietiin</string>
+  <string name="export_keystore_success">Avainsäilö viety</string>
   <string name="regenerate_keystore">Luo avainsäilö uudelleen</string>
   <string name="regenerate_keystore_description">Luo uusi avainsäilö</string>
-  <string name="regenerate_keystore_dialog_description">Olet uudelleenluomassa avainsäilön, jota Manager käyttää paikkausprosessin aikana.
+  <string name="regenerate_keystore_dialog_description">Olet uudelleenluomassa avainsäilöäsi, jota käytetään paikkausprosessin aikana.
 
-Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string>
-  <string name="regenerate_keystore_success">Avainsäilön korvaus onnistui</string>
-  <string name="import_patch_selection">Tuo paikkausvalinnat</string>
-  <string name="import_patch_selection_description">Tuo paikkausvalinta JSON-tiedostosta</string>
+Et voi päivittää sovelluksia, jotka allekirjoitettiin edellisellä avainsäilöllä.</string>
+  <string name="regenerate_keystore_success">Avainsäilö luotu uudelleen</string>
   <string name="import_patch_selection_fail">Paikkausvalintoja ei voitu tuoda: %s</string>
   <string name="import_patch_selection_success">Paikkausvalinnat tuotiin</string>
   <string name="select_bundle_for_import">Valitse paketti tuotavaksi</string>
-  <string name="export_patch_selection">Vie paikkausvalinnat</string>
-  <string name="export_patch_selection_description">Vie paikkausvalinnat JSON-tiedostoon</string>
   <string name="export_patch_selection_fail">Paikkausvalintoja ei voitu viedä: %s</string>
   <string name="export_patch_selection_success">Paikkausvalinnat vietiin</string>
   <string name="select_bundle_for_export">Valitse paketti vietäväksi</string>
@@ -184,53 +175,29 @@ Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string
   <string name="patch_selection_entries">Yhteensä valittuja paikkauksia</string>
   <string name="reset_configuration">Nollaa asetukset</string>
   <string name="reset_patch_selection">Paikkausvalinnat</string>
-  <string name="reset_patch_selection_description">Nollaa tallennettu paikkausvalinta</string>
   <string name="reset_patch_options">Paikkausasetukset</string>
-  <string name="reset_patch_options_description">Nollaa tallennetut paikkausasetukset</string>
-  <string name="reset_patch_selection_success">Paikkausvalinnat on nollattu</string>
-  <string name="patch_selection_reset_all">Nollaa kaikki paikkausvalinnat</string>
-  <string name="patch_selection_reset_all_dialog_description">Olet nollaamassa kaikki paikkausvalinnat. Sinun on valittava jokainen paikkaus uudelleen manuaalisesti.</string>
-  <string name="patch_selection_reset_all_description">Nollaa kaikki paikkausvalinnat</string>
-  <string name="patch_selection_reset_package">Nollaa paikkausvalinta sovellukselle</string>
-  <string name="patch_selection_reset_package_dialog_description">Olet nollaamassa sovelluksen \"%s\" paikkausasetukset. Sinun on valittava jokainen paikkaus uudelleen manuaalisesti.</string>
-  <string name="patch_selection_reset_package_description">Nollaa paikkausvalinnan yksittäiselle sovellukselle</string>
-  <string name="patch_selection_reset_patches">Nollaa paikkausvalinta (yksittäinen)</string>
-  <string name="patch_selection_reset_patches_dialog_description">Olet nollaamassa sovelluksen \"%s\" paikkausasetukset. Sinun on valittava jokainen paikkaus uudelleen manuaalisesti.</string>
-  <string name="patch_selection_reset_patches_description">Nollaa tietyn paikkauskokoelman paikkausasetukset</string>
-  <string name="patch_options_reset_package">Nollaa sovelluksen paikkausasetukset</string>
-  <string name="patch_options_reset_package_dialog_description">Olet nollaamassa sovelluksen \"%s\" paikkausasetukset. Sinun on otettava jokainen asetus uudelleen käyttöön.</string>
-  <string name="patch_options_reset_package_description">Nollaa yhden sovelluksen paikkausasetukset</string>
-  <string name="patch_options_reset_patches">Nollaa paikkausasetukset (yksittäinen)</string>
-  <string name="patch_options_reset_patches_dialog_description">Olet nollaamassa sovelluksen \"%s\" paikkausasetukset. Sinun on otettava jokainen asetus uudelleen käyttöön.</string>
-  <string name="patch_options_reset_patches_description">Nollaa tietyn paikkauskokoelman paikkausasetukset</string>
-  <string name="patch_options_reset_all">Nollaa kaikki paikkausasetukset</string>
-  <string name="patch_options_reset_all_dialog_description">Olet nollaamassa kaikki paikkausasetukset. Sinun on otettava jokainen asetus uudelleen käyttöön.</string>
-  <string name="patch_options_reset_all_description">Nollaa kaikki paikkausasetukset</string>
+  <string name="reset_patch_selection_success">Paikkausvalinnat nollattu</string>
   <string name="downloaders">Lataajat</string>
   <string name="downloader_prereleases">Käytä ennakkoversioita</string>
   <string name="downloader_prereleases_description">Käytä pääasiallisen lataajan ennakkoversioita</string>
   <string name="downloader_state_loaded">Ladattu</string>
-  <string name="downloader_state_failed">Lataus epäonnistui. Napauta saadaksesi lisätietoja</string>
+  <string name="downloader_state_failed">Lataus epäonnistui, napauta saadaksesi lisätietoja</string>
   <string name="downloader_state_missing">Puuttuu</string>
   <string name="downloader_delete_apps_title">Poista valitut sovellukset</string>
-  <string name="downloader_delete_apps_description">Haluatko varmasti poistaa valitut sovellukset?</string>
-  <string name="downloader_delete_single_description">Haluatko varmasti poistaa kohteen \"%s\"?</string>
-  <string name="downloader_settings_no_apps">Ladattuja sovelluksia ei löytynyt.</string>
-  <string name="downloader_settings_no_apps_description">ReVanced Managerin kautta ladatut sovellukset näkyvät täällä.</string>
+  <string name="downloader_delete_apps_description">Valitsemasi sovellukset poistetaan</string>
+  <string name="downloader_delete_single_description">%s poistetaan</string>
+  <string name="downloader_settings_no_apps">Ladattuja sovelluksia ei löytynyt</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Managerin kautta ladatut sovellukset näkyvät täällä</string>
   <string name="downloader_url">Lataajan URL-osoite</string>
   <string name="downloader_add">Lisää lataaja</string>
   <string name="select_downloader_type_dialog_description">Lisää uusia lataajia URL-osoitteesta tai paikallisista tiedostoista</string>
-  <string name="local_downloaders_description">Lisää lataajia paikallisesta tallennustilasta.</string>
-  <string name="remote_downloaders_description">Lisää lataajia URL-osoitteesta. Voidaan päivittää automaattisesti.</string>
-  <string name="install_revanced_downloaders">Asenna lataajia saadaksesi sovelluksia suoraan ReVanced Managerin kautta.</string>
-  <string name="install_revanced_downloader">Asenna ReVanced -lataajat</string>
-  <string name="cancel_downloader_install_title">Peruutetaanko lataajien asennus?</string>
-  <string name="cancel_downloader_install_description">Lataajien asennus on käynnissä. Jos poistut nyt, lataus peruutetaan.</string>
+  <string name="local_downloaders_description">Lisää lataaja paikallisesta tallennustilasta</string>
+  <string name="remote_downloaders_description">Lataaja voi vastaanottaa päivityksiä</string>
   <string name="downloader_sources_unavailable_title">Nämä lataajat puuttuvat</string>
-  <string name="downloader_sources_unavailable_description">Napsauta päivityspainiketta korjataksesi sen.</string>
+  <string name="downloader_sources_unavailable_description">Napauta <b>Päivitä</b> korjataksesi tämän ongelman</string>
   <string name="downloader_update_failed">Lataajan päivitys epäonnistui: %s</string>
   <string name="downloader_replace_fail">Lataajan tuonti epäonnistui: %s</string>
-  <string name="search_apps">Hae sovelluksia…</string>
+  <string name="search_apps">Hae sovelluksia</string>
   <string name="loading_body">Ladataan…</string>
   <string name="downloading_patches">Ladataan paikkauksia…</string>
   <string name="options">Asetukset</string>
@@ -243,10 +210,11 @@ Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string
   <string name="share">Jaa</string>
   <string name="patch">Paikkaa</string>
   <string name="select_from_storage">Valitse tallennustilasta</string>
-  <string name="select_from_storage_description">Valitse APK-tiedosto tallennustilasta tiedostovalitsimen avulla</string>
+  <string name="select_from_storage_description">Valitse APK-tiedosto tiedostovalitsimen avulla</string>
+  <string name="no_file_picker_found">Tiedostovalitsinta ei voitu avata, käytä vaihtoehtoista menetelmää</string>
   <string name="suggested_version_info">Ehdotettu versio: %s</string>
   <string name="type_anything">Jatka kirjoittamalla mitä tahansa</string>
-  <string name="search">Etsi paikkauksia…</string>
+  <string name="search">Etsi paikkauksia</string>
   <string name="apply">Käytä</string>
   <string name="help">Ohje</string>
   <string name="back">Takaisin</string>
@@ -262,11 +230,11 @@ Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string
   <string name="appearance">Ulkoasu</string>
   <string name="networking">Verkko</string>
   <string name="allow_metered_networks">Salli käytön mukaan laskutettavat verkot</string>
-  <string name="allow_metered_networks_description">Sallii automaattiset päivitykset käytön mukaan laskutettavissa verkoissa.
-    Sovellus saattaa silti varoittaa käytön mukaan laskutettavista verkoista manuaalisille toiminnoille.</string>
+  <string name="allow_metered_networks_description">Salli automaattiset päivitykset käytön mukaan laskutettavissa verkoissa.
+    Sinua saatetaan silti varoittaa ennen manuaalisten toimintojen suorittamista.</string>
   <string name="downloaded_apps">Ladatut sovellukset</string>
   <string name="process_runtime">Suorita Patcher toisessa prosessissa (kokeellinen)</string>
-  <string name="process_runtime_description">Tämä on nopeampaa ja sallii Patcherin käyttää enemmän muistia</string>
+  <string name="process_runtime_description">Nopeampi ja sallii Patcherin käyttää enemmän muistia</string>
   <string name="process_runtime_memory_limit">Patcher-prosessin muistiraja</string>
   <string name="process_runtime_memory_limit_description">Muistin enimmäismäärä, jota paikkausprosessi voi käyttää</string>
   <string name="debug_logs_export">Vie virheenkorjauslokit</string>
@@ -276,7 +244,7 @@ Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string
   <string name="api_url">API-URL</string>
   <string name="api_url_description">API, jota käytetään tarvittavien tiedostojen lataamiseen</string>
   <string name="api_url_dialog_title">Vaihda API-URL</string>
-  <string name="api_url_dialog_description">Vaihda ReVanced Managerin API-URL. ReVanced Manager käyttää APIa paikkausten ja päivitysten lataamiseen.</string>
+  <string name="api_url_dialog_description">ReVanced Manager käyttää APIa lataamaan paikkauksia ja päivityksiä</string>
   <string name="api_url_dialog_warning">ReVanced Manager yhdistää APIin paikkausten ja päivitysten lataamiseksi. Varmista, että luotat siihen.</string>
   <string name="api_url_dialog_save">Aseta</string>
   <string name="api_url_dialog_reset">Nollaa API-URL</string>
@@ -285,15 +253,18 @@ Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string
   <string name="device_model">Malli</string>
   <string name="device_architectures">CPU-arkkitehtuurit</string>
   <string name="device_memory_limit">Muistirajoitukset</string>
-  <string name="device_memory_limit_format">%1$d Mt (normaali) - %2$d Mt (suuri)</string>
+  <string name="device_memory_limit_format">%1$d Mt (normaali) – %2$d Mt (suuri)</string>
   <string name="patches_force_download">Pakota kaikkien paikkausten lataaminen</string>
   <string name="patches_reset">Nollaa paikkaukset</string>
+  <string name="downloaders_reset">Nollaa latausohjelmat</string>
   <string name="reset_onboarding">Nollaa käyttöönotto</string>
   <string name="reset_onboarding_description">Näytä käyttöönottonäyttö seuraavan sovelluksen käynnistyksen yhteydessä</string>
+  <string name="reset_announcement">Nollaa luetut tiedotukset</string>
+  <string name="reset_announcement_description">Unohda, että tiedotukset on luettu</string>
   <string name="patching">Paikkaaminen</string>
   <string name="signing">Allekirjoittaminen</string>
   <string name="storage">Tallennustila</string>
-  <string name="no_patch_found">Paikkausta ei löydy. Tarkista paikkauksesi</string>
+  <string name="no_patch_found">Paikkauksia ei löytynyt</string>
   <string name="tab_apps">Sovellukset</string>
   <string name="tab_patches">Paikkaukset</string>
   <string name="delete">Poista</string>
@@ -304,10 +275,10 @@ Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string
   <string name="download_apk">Lataa APK-tiedosto</string>
   <string name="patches_download_fail">Paikkausten lataus epäonnistui: %s</string>
   <string name="api_not_working_title">API-palvelu on tällä hetkellä poissa käytöstä</string>
-  <string name="api_not_working_description">Jotkin ominaisuudet saattavat olla heikentyneitä. Tarkista yhteys tai API-URL asetuksista.</string>
+  <string name="api_not_working_description">Jotkin ominaisuudet saattavat olla pois käytöstä. Tarkista internetyhteytesi tai API-URL-osoite asetuksista.</string>
   <string name="patches_replace_fail">Paikkausten tuonti epäonnistui: %s</string>
   <string name="no_patched_apps_found">Paikattuja sovelluksia ei löytynyt</string>
-  <string name="no_patched_apps_description">Sinulla ei ole tällä hetkellä yhtään paikattua sovellusta, joista tietäisimme. Muuta se paikkaamalla ensimmäinen sovelluksesi!</string>
+  <string name="no_patched_apps_description">Sinulla ei ole vielä paikattuja sovelluksia. Aloita paikkaamalla ensimmäinen sovelluksesi!</string>
   <string name="patched_apps_section_title">Paikatut sovellukset</string>
   <string name="patchable_apps_section_title">Paikattavissa olevat sovellukset</string>
   <string name="no_patches_found">Paikkauksia ei löytynyt</string>
@@ -319,29 +290,29 @@ Et voi päivittää aiemmin asennettuja sovelluksia tästä lähteestä.</string
   <string name="patch_selection_reset_toast">Paikkausvalinnat ja -asetukset on nollattu suositeltuihin oletusarvoihin</string>
   <string name="patch_options_reset_toast">Paikkausasetukset on nollattu</string>
   <string name="non_suggested_version_warning_title">Ei-ehdotettu versio</string>
-  <string name="non_suggested_version_warning_description">Valitsemasi sovellusversio ei vastaa ehdotettua versiota.
-Käytä ehdotettua versiota: %s
+  <string name="non_suggested_version_warning_description">Valitsemasi sovelluksen versio ei vastaa ehdotettua versiota: %s
 
-Voit silti jatkaa poistamalla \"Vaadi ehdotettua sovellusversiota\" käytöstä lisäasetuksissa.</string>
+Voit silti jatkaa poistamalla käytöstä ”Vaadi ehdotettua sovellusversiota” lisäasetuksissa.</string>
   <string name="selection_warning_title">Lopeta oletusten käyttö?</string>
-  <string name="selection_warning_description">On suositeltavaa käyttää oletusarvoisia paikkausvalintoja ja -asetuksia. Niiden muuttaminen voi aiheuttaa odottamattomia ongelmia.
+  <string name="selection_warning_description">Suosittelemme käyttämään oletusarvoisia paikkausvalintoja ja -asetuksia, sillä niiden muuttaminen voi aiheuttaa odottamattomia ongelmia.
 
-Sinun tulee ottaa käyttöön \"Salli paikkausvalinnan ja -asetusten muuttaminen\" lisäasetuksissa ennen niiden vaihtamista.</string>
-  <string name="universal_patch_warning_description">Yleispaikkaukset ovat monikäyttöisempiä, mutta eivät toimi yhtä luotettavasti kuin tiettyjä sovelluksia varten tarkoitetut paikkaukset. Niiden käytössä voi ilmetä ongelmia.
+Voit silti jatkaa ottamalla käyttöön ”Salli paikkausvalinnan ja -asetusten muuttaminen” lisäasetuksissa.</string>
+  <string name="universal_patch_warning_description">Yleispaikkaukset ovat yleiskäyttöisempiä, eivätkä ne välttämättä ole yhtä luotettavia kuin sovelluskohtaiset paikkaukset. Niiden käytössä saattaa ilmetä ongelmia.
 
-Sinun tulee ottaa käyttöön \"Salli yleispaikkauset käyttö\" lisäasetuksissa ennen niiden käyttöä.</string>
+Voit silti jatkaa ottamalla käyttöön ”Salli yleispaikkausten käyttö” lisäasetuksissa.</string>
   <string name="this_version">Tämä versio</string>
   <string name="universal">Mikä tahansa sovellus</string>
   <string name="search_patches">Etsi paikkauksia</string>
-  <string name="app_version_not_compatible">Tämä paikkaus ei ole yhteensopiva valitun sovellusversion kanssa (%1$s)
+  <string name="app_version_not_compatible">Tämä paikkaus ei ole yhteensopiva valitsemasi sovelluksen version kanssa: %1$s
 
-Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
+Se on yhteensopiva vain näiden versioiden kanssa: %2$s</string>
   <string name="continue_with_version">Jatka tällä versiolla?</string>
-  <string name="version_not_compatible">Kaikki paikkaukset eivät ole yhteensopivia tämän version (%s) kanssa. Haluatko silti jatkaa?</string>
+  <string name="version_not_compatible">Kaikki paikkaukset eivät ole yhteensopivia tämän version kanssa: %s</string>
   <string name="download_application">Lataa sovellus?</string>
   <string name="app_not_installed">Valitsemaasi sovellusta ei ole asennettu. Haluatko ladata sen?</string>
-  <string name="failed_to_load_apk">APK:n lataus epäonnistui</string>
-  <string name="split_apk_not_supported">Jaettuja APK-tiedostoja ei voi korjata</string>
+  <string name="wrong_app_loading">Valitun sovelluksen paketin nimi on väärä</string>
+  <string name="failed_to_load_apk">APK-tiedostoa ei voitu ladata</string>
+  <string name="split_apk_not_supported">Jaettuja APK-tiedostoja ei tueta</string>
   <string name="loading">Ladataan…</string>
   <string name="not_installed">Ei asennettu</string>
   <string name="installed">Asennettu</string>
@@ -349,7 +320,7 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="uninstall">Poista asennus</string>
   <string name="unpatch">Poista paikkaukset</string>
   <string name="repatch">Paikkaa uudelleen</string>
-  <string name="install_type">Asennustyyppi</string>
+  <string name="install_type">Asennustila</string>
   <string name="package_name">Paketin nimi</string>
   <string name="original_package_name">Alkuperäinen paketin nimi</string>
   <string name="applied_patches">Käytetyt paikkaukset</string>
@@ -363,13 +334,12 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="failed_to_mount">Liittäminen epäonnistui: %s</string>
   <string name="failed_to_unmount">Irrottaminen epäonnistui: %s</string>
   <string name="unpatch_app">Poista sovelluksen paikkaukset?</string>
-  <string name="unpatch_description">Haluatko varmasti poistaa tämän sovelluksen paikkaukset?</string>
-  <string name="downloader_invalid_version">Lataaja ei hakenut oikeaa versiota</string>
+  <string name="unpatch_description">Kaikki paikkaukset poistetaan ja alkuperäinen sovellus palautetaan</string>
+  <string name="downloader_invalid_version">Lataaja ei saanut oikeaa versiota</string>
   <string name="downloader_app_not_found">Lataaja ei löytänyt sovellusta</string>
   <string name="downloader_error">Lataajavirhe: %s</string>
-  <string name="no_downloaders_installed">Sovellusten lataajia ei ole asennettu!</string>
-  <string name="no_downloaders_trusted">Yhtäkään sovellusten lataajaa ei ole luotettu! Tarkista asetuksesi.</string>
-  <string name="already_patched">Jo paikattu</string>
+  <string name="no_downloaders_installed">Lataajia ei ole asennettu</string>
+  <string name="no_downloaders_trusted">Yhteenkään lataajaan ei ole luotettu. Tarkista asetuksesi.</string>
   <string name="patch_selector_sheet_filter_title">Suodatin</string>
   <string name="patch_selector_sheet_filter_compat_title">Yhteensopivuus</string>
   <string name="patch_selector_sheet_filter_packages_title">Paketit</string>
@@ -403,8 +373,8 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="save_as_file">Tallenna tiedostoihin</string>
   <string name="export_patcher_logs">Vie paikkauslokit</string>
   <string name="save_logs_success">Lokit tallennettu</string>
-  <string name="downloader_activity_dialog_body">Käyttäjän toimia vaaditaan tämän lataajan kanssa jatkamiseksi.</string>
-  <string name="select_install_type">Valitse asennustyyppi</string>
+  <string name="downloader_activity_dialog_body">Sinun on vuorovaikutettava tämän lataajan kanssa jatkaaksesi</string>
+  <string name="select_install_type">Asennustila</string>
   <string name="patcher_step_group_preparing">Valmistellaan</string>
   <string name="patcher_step_load_patches">Lataa paikkaukset</string>
   <string name="patcher_step_unpack">Valmistele paikkaaja</string>
@@ -412,11 +382,11 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="patcher_step_group_saving">Tallennetaan</string>
   <string name="patcher_step_write_patched">Kirjoita paikattu APK-tiedosto</string>
   <string name="patcher_step_sign_apk">Allekirjoita paikattu APK-tiedosto</string>
-  <string name="patcher_notification_title">Paikkaus käynnissä…</string>
+  <string name="patcher_notification_title">Paikkaus käynnissä</string>
   <string name="patcher_notification_text">Napauta palataksesi paikkaajaan</string>
-  <string name="patcher_stop_confirm_title">Pysäytä paikkaaja</string>
-  <string name="patcher_stop_confirm_description">Haluatko varmasti pysäyttää paikkausprosessin?</string>
-  <string name="patcher_install_in_progress">Asennus on käynnissä. Odota hetki</string>
+  <string name="patcher_stop_confirm_title">Pysäytä paikkaaja?</string>
+  <string name="patcher_stop_confirm_description">Paikkausprosessi pysäytetään</string>
+  <string name="patcher_install_in_progress">Asennetaan, odota…</string>
   <string name="execute_patches">Suorita paikkaukset</string>
   <string name="executing_patch">Suorita %s</string>
   <string name="failed_to_execute_patch">Suoritus epäonnistui: %s</string>
@@ -431,7 +401,7 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="less">Vähemmän</string>
   <string name="continue_">Jatka</string>
   <string name="dismiss">Hylkää</string>
-  <string name="view_announcement">Näytä tiedotus</string>
+  <string name="view_announcement">Näytä</string>
   <string name="permanent_dismiss">Älä näytä tätä uudelleen</string>
   <string name="donate">Lahjoita</string>
   <string name="website">Verkkosivusto</string>
@@ -447,18 +417,18 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="submit_feedback_description">Auta meitä parantamaan tätä sovellusta</string>
   <string name="developer_options">Kehittäjäasetukset</string>
   <string name="developer_options_description">Valintoja ongelmien virheenkorjaukseen</string>
-  <string name="patches_update_success">Päivitys onnistui</string>
+  <string name="patches_update_success">Paikkaukset päivitetty</string>
   <string name="patches_update_unavailable">Päivityksiä ei ole saatavilla</string>
   <string name="view_patches">Näytä paikkaukset</string>
   <string name="patches_view_any_version">Mikä tahansa versio</string>
   <string name="patches_view_any_package">Mikä tahansa paketti</string>
-  <string name="patches_delete_single_dialog_description">Haluatko varmasti poistaa paikkauksen \"%s\"?</string>
-  <string name="patches_delete_multiple_dialog_description">Haluatko varmasti poistaa valitut paikkaukset?</string>
+  <string name="patches_delete_single_dialog_description">”%s” poistetaan</string>
+  <string name="patches_delete_multiple_dialog_description">Valitut paikkaukset poistetaan</string>
   <string name="announcements">Tiedotukset</string>
   <string name="archive">Arkisto</string>
   <string name="about_revanced_manager">Tietoja ReVanced Managerista</string>
-  <string name="revanced_manager_description">ReVanced Manager on Android-sovellus, joka käyttää ReVanced Patcheria Android-sovellusten paikkaamiseen. Sen avulla voit ladata ja paikata sovelluksia mukautetuilla paikkauksilla, ja hallita paikkausprosessia.</string>
-  <string name="developer_options_taps">%d napautusta jäljellä</string>
+  <string name="revanced_manager_description">ReVanced Manager on Android-sovellus, joka käyttää ReVanced Patcheria, jonka avulla voit ladata ja soveltaa paikkauksia suosikkisovelluksiisi</string>
+  <string name="developer_options_taps">%d lisää napautusta</string>
   <string name="developer_options_enabled">Kehittäjäasetukset käytössä</string>
   <string name="developer_options_already_enabled">Kehittäjäasetukset ovat jo käytössä</string>
   <string name="update_available">Päivitys saatavilla</string>
@@ -471,17 +441,17 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="view_update">Näytä päivitys</string>
   <string name="manual_update_check_description">Tarkista päivitykset manuaalisesti</string>
   <string name="update_checking_manager">Tarkista päivitykset käynnistettäessä</string>
-  <string name="update_checking_manager_description">Tarkista ReVanced Managerin uudet versiot sovelluksen käynnistyessä</string>
-  <string name="update_checking_downloader">Tarkista ReVanced -lataajien päivitykset käynnistyksen yhteydessä</string>
-  <string name="update_checking_downloader_description">Tarkista asennettujen ReVanced -lataajien päivitykset sovelluksen käynnistyessä</string>
+  <string name="update_checking_manager_description">Tarkista automaattisesti uudet ReVanced Manager -versiot, kun avaat sovelluksen</string>
+  <string name="update_checking_downloader">Tarkista ReVanced-lataajien päivitykset käynnistyksen yhteydessä</string>
+  <string name="update_checking_downloader_description">Tarkista automaattisesti ReVanced-lataajien päivitykset, kun avaat sovelluksen</string>
   <string name="manager_prereleases">Käytä ennakkoversioita</string>
   <string name="manager_prereleases_description">Käytä ReVanced Managerin ennakkoversioita</string>
-  <string name="prereleases_warning">Ennakkoversiot voivat olla epävakaita ja sisältää virheitä. Saatat kokea kaatumisia, tietojen katoamista tai muita odottamattomia ongelmia. Ota tämä käyttöön vain, jos olet tietoinen näistä riskeistä.</string>
+  <string name="prerelease_title">Käytä ennakkoversioita?</string>
+  <string name="prereleases_warning">Esijulkaisuversiot voivat olla epävakaita ja sisältää virheitä. Saatat kokea kaatumisia, tietojen katoamista tai muita odottamattomia ongelmia.</string>
   <string name="changelog">Näytä muutosloki</string>
-  <string name="changelog_loading">Ladataan muutoslokia</string>
+  <string name="changelog_loading">Ladataan muutoslokia…</string>
   <string name="changelog_download_fail">Muutoslokin lataaminen epäonnistui: %s</string>
-  <string name="changelog_description">Katso tämän päivityksen uusimmat muutokset</string>
-  <string name="battery_optimization_notification">Akun optimoinnit on poistettava käytöstä, jotta ReVanced Manager toimii oikein taustalla. Napauta tästä poistaaksesi optimoinnit käytöstä.</string>
+  <string name="battery_optimization_notification">Akun optimoinnit on poistettava käytöstä, jotta ReVanced Manager toimii oikein taustalla</string>
   <string name="installing_manager_update">Asennetaan päivitystä…</string>
   <string name="downloading_manager_update">Ladataan päivitystä…</string>
   <string name="download_manager_failed">Päivityksen lataaminen epäonnistui: %s</string>
@@ -490,15 +460,13 @@ Se on yhteensopiva vain seuraavien versioiden kanssa: %2$s</string>
   <string name="save_with_count">Tallenna (%1$s)</string>
   <string name="update">Päivitä</string>
   <string name="empty">Tyhjä</string>
-  <string name="installing_message">Napauta <b>Päivitä</b> pyydettäessä.
-ReVanced Manager sulkeutuu päivityksen aikana.</string>
+  <string name="installing_message">ReVanced Manager sulkeutuu päivityksen aikana</string>
   <string name="no_changelogs_found">Muutoslokeja ei löytynyt</string>
   <string name="just_now">Juuri nyt</string>
   <string name="minutes_ago">%s min sitten</string>
   <string name="hours_ago">%s t sitten</string>
   <string name="days_ago">%s pv sitten</string>
   <string name="invalid_date">Virheellinen päivämäärä</string>
-  <string name="disable_battery_optimization">Poista akun optimointi käytöstä</string>
   <string name="input_dialog_value_invalid">Virheellinen arvo</string>
   <string name="option_required">Tämä valinta on pakollinen</string>
   <string name="required_options_screen">Pakolliset valinnat</string>
@@ -507,19 +475,17 @@ ReVanced Manager sulkeutuu päivityksen aikana.</string>
   <string name="no_announcements_found">Tiedotuksia ei löytynyt</string>
   <string name="update_check">Tarkistetaan päivityksiä…</string>
   <string name="dismiss_temporary">Ei nyt</string>
-  <string name="update_available_dialog_description">Uusi versio ReVanced Managerista (%s) on saatavilla.</string>
+  <string name="update_available_dialog_description">Asenna ReVanced Manager %s saadaksesi uusimmat ominaisuudet ja virheenkorjaukset</string>
   <string name="failed_to_download_update">Päivityksen lataaminen epäonnistui: %s</string>
   <string name="download">Lataa</string>
-  <string name="download_confirmation_metered">Käytössäsi on tällä hetkellä käytön mukaan laskutettava yhteys, ja palveluntarjoajasi saattaa veloittaa tiedonsiirrosta.
-
-Haluatko silti jatkaa?</string>
+  <string name="download_confirmation_metered">Käytät parhaillaan käytön mukaan laskutettavaa yhteyttä. Palveluntarjoajasi datamaksuja voidaan soveltaa.</string>
   <string name="download_update_confirmation">Lataa päivitys?</string>
   <string name="no_contributors_found">Osallistujia ei löytynyt</string>
   <string name="select">Valitse</string>
   <string name="select_deselect_all">Valitse tai poista kaikkien valinta</string>
   <string name="select_patches_type_dialog_description">Lisää uusia paikkauksia URL-osoitteesta tai paikallisista tiedostoista</string>
-  <string name="local_patches_description">Lisää paikkauksia paikallisesta tallennustilasta.</string>
-  <string name="remote_patches_description">Lisää paikkauksia URL-osoitteesta. Paikkaukset voivat päivittyä automaattisesti.</string>
+  <string name="local_patches_description">Lisää paikkauksia paikallisesta tallennustilasta</string>
+  <string name="remote_patches_description">Paikkaukset voivat vastaanottaa päivityksiä</string>
   <string name="recommended">Suositeltu</string>
   <string name="installation_failed_dialog_title">Asennus epäonnistui</string>
   <string name="installation_cancelled_dialog_title">Asennus peruutettiin</string>
@@ -529,14 +495,14 @@ Haluatko silti jatkaa?</string>
   <string name="installation_invalid_dialog_title">Virheellinen asennus</string>
   <string name="installation_storage_issue_dialog_title">Ei tarpeeksi tallennustilaa</string>
   <string name="installation_timeout_dialog_title">Asennus aikakatkaistiin</string>
-  <string name="installation_failed_description">Asennus epäonnistui tuntemattomasta syystä. Yritä uudelleen?</string>
-  <string name="installation_aborted_description">Asennus peruutettiin manuaalisesti. Yritä uudelleen?</string>
-  <string name="installation_blocked_description">Asennus estettiin. Tarkista laitteesi suojausasetukset ja yritä uudelleen.</string>
-  <string name="installation_conflict_description">Asennus estettiin sovelluksen olemassa olevan asennuksen takia. Poista asennettu sovellus ja yritä uudelleen?</string>
-  <string name="installation_incompatible_description">Sovellus on yhteensopimaton tämän laitteen kanssa. Käytä tähän laitteeseen yhteensopivaa APK:ta ja yritä uudelleen.</string>
-  <string name="installation_invalid_description">Sovellus on virheellinen. Poista sovellus ja yritä uudelleen?</string>
-  <string name="installation_storage_issue_description">Sovellusta ei voitu asentaa riittämättömän tallennustilan vuoksi. Vapauta tilaa ja yritä uudelleen.</string>
-  <string name="installation_timeout_description">Asennus kesti liian kauan. Yritä uudelleen?</string>
+  <string name="installation_failed_description">Sovelluksen asennuksessa ilmeni ongelma</string>
+  <string name="installation_aborted_description">Asennus peruutettiin</string>
+  <string name="installation_blocked_description">Asennus estettiin. Yritä säätää laitteesi suojausasetuksia ja yritä uudelleen.</string>
+  <string name="installation_conflict_description">Olemassa oleva sovellus estää asennuksen. Poista sovellus ja yritä uudelleen.</string>
+  <string name="installation_incompatible_description">Tämä sovellus ei ole yhteensopiva laitteesi kanssa. Käytä yhteensopivaa APK:ta ja yritä uudelleen.</string>
+  <string name="installation_invalid_description">Sovelluksen asennuksessa ilmeni ongelma. Poista sovellus ja yritä uudelleen.</string>
+  <string name="installation_storage_issue_description">Tämän sovelluksen asentamiseen ei ole tarpeeksi tallennustilaa. Vapauta tilaa ja yritä uudelleen.</string>
+  <string name="installation_timeout_description">Asennus kesti liian kauan</string>
   <string name="reinstall">Asenna uudelleen</string>
   <string name="show">Näytä</string>
   <string name="debugging">Virheenkorjaus</string>
@@ -549,18 +515,22 @@ Haluatko silti jatkaa?</string>
   <string name="patches_prereleases">Käytä ennakkoversioita</string>
   <string name="patches_prereleases_description">Käytä %s:n ennakkoversioita</string>
   <string name="patches_url">Paikkausten URL-osoite</string>
-  <string name="incompatible_patches_dialog">Nämä paikkaukset eivät ole yhteensopivia valitun sovellusversion (%1$s) kanssa.
+  <string name="incompatible_patches_dialog">Nämä paikkaukset eivät ole yhteensopivia valitun sovelluksen version kanssa: %1$s
 
-Napauta paikkauksia nähdäksesi lisätietoja.</string>
+Napauta niitä saadaksesi lisätietoja.</string>
   <string name="incompatible_patch">Yhteensopimaton paikkaus</string>
   <string name="any_version">Mikä tahansa</string>
-  <string name="never_show_again">Älä näytä uudestaan</string>
+  <string name="never_show_again">Älä näytä tätä uudelleen</string>
   <string name="show_manager_update_dialog_on_launch">Näytä päivitysilmoitus käynnistettäessä</string>
-  <string name="show_manager_update_dialog_on_launch_description">Näytä ponnahdusilmoitus aina, kun uusi päivitys on saatavilla käynnistettäessä</string>
+  <string name="show_manager_update_dialog_on_launch_description">Saat ilmoituksen, kun avaat sovelluksen ja uusi päivitys on saatavilla</string>
   <string name="failed_to_import_keystore">Avainsäilön tuonti epäonnistui</string>
   <string name="export">Vie</string>
   <string name="confirm">Vahvista</string>
   <string name="new_announcement">Uusi tiedotus:\n%s</string>
+  <string name="generic_required">Pakollinen</string>
+  <string name="generic_optional">Valinnainen</string>
+  <string name="sideeffect_restart">Käynnistä sovellus uudelleen nähdäksesi muutokset</string>
+  <string name="sideeffect_no_network">Olet offline-tilassa. Tarkista internetyhteytesi.</string>
   <plurals name="patch_count">
     <item quantity="one">%d paikkaus</item>
     <item quantity="other">%d paikkausta</item>
