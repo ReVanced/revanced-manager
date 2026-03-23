@@ -1,3 +1,21 @@
+# app [2.4.0](https://github.com/ReVanced/revanced-manager/compare/v2.3.0...v2.4.0) (2026-03-23)
+
+
+### Bug Fixes
+
+* Apply M3 style guide to UI strings ([#3114](https://github.com/ReVanced/revanced-manager/issues/3114)) ([8f773bc](https://github.com/ReVanced/revanced-manager/commit/8f773bc7ab61e3e475de2fd2e3df9aab7d9984f3))
+* Handle prerelease status when fetching changelogs ([742e6e8](https://github.com/ReVanced/revanced-manager/commit/742e6e8e781a320ea711ef5dd4c66b8144b0e3c8))
+* Hide apps with no explicit compatibility when safeguard is on ([#3174](https://github.com/ReVanced/revanced-manager/issues/3174)) ([be91aa1](https://github.com/ReVanced/revanced-manager/commit/be91aa1c67a7896bfb3c789961ae4411140f0b0e))
+* Improve dialogs ([#3165](https://github.com/ReVanced/revanced-manager/issues/3165)) ([2fb13cd](https://github.com/ReVanced/revanced-manager/commit/2fb13cdcc73ec5741a3dca94d93a951f88012769))
+* Improve notification cards ([653c14e](https://github.com/ReVanced/revanced-manager/commit/653c14ea5d1eeaf986a0ce2a4ab2e0c7dcf1d53b))
+* Load app info from installed apps by default ([e7cff33](https://github.com/ReVanced/revanced-manager/commit/e7cff333182acb140883ee763b8be70730ab798f))
+* Show patchable section header only when it's not the only section ([#3173](https://github.com/ReVanced/revanced-manager/issues/3173)) ([65b9e95](https://github.com/ReVanced/revanced-manager/commit/65b9e95c60abe9e974a6e4c67b827dcf4f429ee8))
+
+
+### Features
+
+* Speed up loading app list ([f0727b2](https://github.com/ReVanced/revanced-manager/commit/f0727b27debef4cebc3c8f9339330a39c4e92d9a))
+
 # app [2.4.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.4.0-dev.1...v2.4.0-dev.2) (2026-03-23)
 
 
