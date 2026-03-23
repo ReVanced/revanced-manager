@@ -1,3 +1,16 @@
+# app [2.5.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.4.1-dev.1...v2.5.0-dev.1) (2026-03-23)
+
+
+### Bug Fixes
+
+* Update screen crashing ([cd9d2eb](https://github.com/ReVanced/revanced-manager/commit/cd9d2ebd06e0abc5b8b10a752d8c92ca65abc1e3))
+* Weird padding in Update screen ([2e96c58](https://github.com/ReVanced/revanced-manager/commit/2e96c58f7bc3afc9fd636b76a2204b1b995f8da6))
+
+
+### Features
+
+* Improve Updates settings screen ([4ce823c](https://github.com/ReVanced/revanced-manager/commit/4ce823c8c0f4de2bea6c07b362741a980b392e79))
+
 ## app [2.4.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.4.0...v2.4.1-dev.1) (2026-03-23)
 
 
