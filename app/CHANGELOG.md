@@ -1,3 +1,10 @@
+# app [2.5.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.5.0-dev.1...v2.5.0-dev.2) (2026-03-23)
+
+
+### Features
+
+* Show release dates and patch count ([#3185](https://github.com/ReVanced/revanced-manager/issues/3185)) ([d5a5ec6](https://github.com/ReVanced/revanced-manager/commit/d5a5ec62a4c57a8b6bc0fcc23c8b74c65be2c66e))
+
 # app [2.5.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.4.1-dev.1...v2.5.0-dev.1) (2026-03-23)
 
 
