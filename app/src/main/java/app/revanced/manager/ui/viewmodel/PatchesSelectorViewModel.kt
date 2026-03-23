@@ -18,6 +18,7 @@ import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.Extensions.version
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
@@ -375,6 +376,7 @@ private fun PatchSelection.toPersistentPatchSelection(): PersistentPatchSelectio
 private fun PatchBundleInfo.Global.asReadonlyScoped() = PatchBundleInfo.Scoped(
     name = name,
     version = version,
+    releasedAt = releasedAt,
     uid = uid,
     patches = patches,
     compatible = patches,
@@ -385,6 +387,7 @@ private fun PatchBundleInfo.Global.asReadonlyScoped() = PatchBundleInfo.Scoped(
 private fun PatchBundleSource.emptyScopedBundleInfo() = PatchBundleInfo.Scoped(
     name = name,
     version = version,
+    releasedAt = (this.asRemoteOrNull)?.releasedAt,
     uid = uid,
     patches = emptyList(),
     compatible = emptyList(),
