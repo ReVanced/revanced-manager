@@ -1,3 +1,10 @@
+# app [2.4.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.4.0-dev.1...v2.4.0-dev.2) (2026-03-23)
+
+
+### Bug Fixes
+
+* Load app info from installed apps by default ([e7cff33](https://github.com/ReVanced/revanced-manager/commit/e7cff333182acb140883ee763b8be70730ab798f))
+
 # app [2.4.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.3.1-dev.6...v2.4.0-dev.1) (2026-03-22)
 
 
