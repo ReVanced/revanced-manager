@@ -70,10 +70,11 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -140,7 +141,10 @@ class PatcherViewModel(
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
-    private val progressEventChannel = Channel<ProgressEvent>(UNLIMITED)
+    private val progressEventChannel = Channel<ProgressEvent>(
+        capacity = 10000,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     private val tempDir = savedStateHandle.saveable(key = "tempDir") {
         fs.uiTempDir.resolve("installer").also {
