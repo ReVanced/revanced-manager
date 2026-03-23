@@ -18,22 +18,25 @@ class UpdatesSettingsViewModel(
     val managerAutoUpdates = prefs.managerAutoUpdates
     val showManagerUpdateDialogOnLaunch = prefs.showManagerUpdateDialogOnLaunch
     val useManagerPrereleases = prefs.useManagerPrereleases
-    val availableManagerUpdate = managerUpdateRepository.availableVersion
+    val managerVersion = managerUpdateRepository.version
+    val updateReleasedAt = managerUpdateRepository.releasedAt
+    val hasUpdate = managerUpdateRepository.hasUpdate
 
-    suspend fun checkForUpdates(): String? {
-        var availableVersion: String? = null
+    suspend fun checkUpdates(showToast: Boolean = true): Boolean {
+        var hasUpdate = false
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
-            availableVersion = managerUpdateRepository.refreshAvailableVersion()
-
-            if (availableVersion == null)
+            if (managerUpdateRepository.getUpdateOrNull(true) != null) {
+                hasUpdate = true
+            } else if (showToast) {
                 app.toast(app.getString(R.string.no_update_available))
+            }
         }
 
-        return availableVersion
+        return hasUpdate
     }
 
     fun clearAvailableManagerUpdate() {
-        managerUpdateRepository.clearAvailableVersion()
+        managerUpdateRepository.clearState()
     }
 }

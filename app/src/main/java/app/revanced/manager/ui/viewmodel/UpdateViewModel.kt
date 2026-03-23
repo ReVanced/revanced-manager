@@ -19,6 +19,7 @@ import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.repository.ChangelogsRepository
+import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedAssetHistory
@@ -47,10 +48,10 @@ class UpdateViewModel(
     private val downloadOnScreenEntry: Boolean
 ) : ViewModel(), KoinComponent {
     private val app: Application by inject()
-    private val reVancedAPI: ReVancedAPI by inject()
     private val http: HttpService by inject()
     private val networkInfo: NetworkInfo by inject()
     private val fs: Filesystem by inject()
+    private val managerUpdateRepository: ManagerUpdateRepository = get()
     private val ackpineInstaller: PackageInstaller = get()
 
     // TODO: save state to handle process death.
@@ -85,7 +86,7 @@ class UpdateViewModel(
     init {
         viewModelScope.launch {
             uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
-                releaseInfo = reVancedAPI.getAppUpdate()
+                releaseInfo = managerUpdateRepository.getUpdateOrNull()
                     ?: throw Exception("No update available")
 
                 if (downloadOnScreenEntry) {
