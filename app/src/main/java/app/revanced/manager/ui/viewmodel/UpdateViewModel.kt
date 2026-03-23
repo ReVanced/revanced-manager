@@ -32,9 +32,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
-import org.koin.core.component.inject
 import ru.solrudev.ackpine.installer.InstallFailure
 import ru.solrudev.ackpine.installer.PackageInstaller
 import ru.solrudev.ackpine.installer.createSession
@@ -45,15 +42,14 @@ import ru.solrudev.ackpine.session.parameters.Confirmation
 class UpdateViewModel(
     private val api: ReVancedAPI,
     private val source: ChangelogSource,
-    private val downloadOnScreenEntry: Boolean
-) : ViewModel(), KoinComponent {
-    private val app: Application by inject()
-    private val http: HttpService by inject()
-    private val networkInfo: NetworkInfo by inject()
-    private val fs: Filesystem by inject()
-    private val managerUpdateRepository: ManagerUpdateRepository = get()
-    private val ackpineInstaller: PackageInstaller = get()
-
+    private val downloadOnScreenEntry: Boolean,
+    private val app: Application,
+    private val http: HttpService,
+    private val networkInfo: NetworkInfo,
+    private val fs: Filesystem,
+    private val ackpineInstaller: PackageInstaller,
+    private val managerUpdateRepository: ManagerUpdateRepository,
+) : ViewModel() {
     // TODO: save state to handle process death.
     var downloadedSize by mutableLongStateOf(0L)
         private set

@@ -227,7 +227,12 @@ private fun ReVancedManager(vm: MainViewModel) {
 
             UpdateScreen(
                 onBackClick = navController::popBackStackSafe,
-                vm = koinViewModel { parametersOf(data.downloadOnScreenEntry) }
+                vm = koinViewModel {
+                    parametersOf(
+                        ChangelogSource.Manager,
+                        data.downloadOnScreenEntry
+                    )
+                }
             )
         }
 
