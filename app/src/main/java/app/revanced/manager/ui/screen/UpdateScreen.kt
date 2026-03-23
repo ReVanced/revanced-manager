@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.collectAsLazyPagingItems
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.BottomContentBar
@@ -48,6 +49,7 @@ fun UpdateScreen(
     vm: UpdateViewModel = koinViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val changelogs = vm.changelogs.collectAsLazyPagingItems()
 
     val buttonConfig = when (vm.state) {
         State.CAN_DOWNLOAD -> Triple(
@@ -123,10 +125,7 @@ fun UpdateScreen(
                 )
             }
 
-            ChangelogList(
-                state = vm.changelogsState,
-                onLoadMore = vm::loadNextPage,
-            )
+            ChangelogList(changelogs = changelogs, modifier = Modifier.padding(paddingValues))
         }
     }
 }

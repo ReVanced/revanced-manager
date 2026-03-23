@@ -8,6 +8,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.paging.compose.collectAsLazyPagingItems
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ChangelogList
@@ -23,6 +24,7 @@ fun ChangelogsSettingsScreen(
     vm: ChangelogsViewModel = koinViewModel { parametersOf(source) }
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val changelogs = vm.changelogs.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
@@ -34,6 +36,6 @@ fun ChangelogsSettingsScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
-        ChangelogList(modifier = Modifier.padding(paddingValues), state = vm.state, onLoadMore =vm::loadNextPage)
+        ChangelogList(changelogs = changelogs, modifier = Modifier.padding(paddingValues))
     }
 }

@@ -4,18 +4,19 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
-import androidx.core.content.pm.PackageInfoCompat
+import android.content.pm.PackageManager.PackageInfoFlags
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
+import androidx.core.content.pm.PackageInfoCompat
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import ru.solrudev.ackpine.session.await
@@ -37,11 +38,15 @@ data class AppInfo(
 class PM(
     private val app: Application,
     patchBundleRepository: PatchBundleRepository,
+    prefs: PreferencesManager,
     private val uninstaller: PackageUninstaller
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    val appList = patchBundleRepository.bundleInfoFlow.map { bundles ->
+    val appList = combine(
+        patchBundleRepository.bundleInfoFlow,
+        prefs.disableUniversalPatchCheck.flow
+    ) { bundles, showInstalled ->
         val compatibleApps = scope.async {
             val compatiblePackages = bundles
                 .flatMap { (_, bundle) -> bundle.patches }
@@ -64,28 +69,32 @@ class PM(
             }
         }
 
-        val installedApps = scope.async {
-            getInstalledPackages().map { packageInfo ->
-                AppInfo(
-                    packageInfo.packageName,
-                    0,
-                    packageInfo
-                )
+        val installedApps = if (showInstalled) {
+            scope.async {
+                getInstalledPackages().map { packageInfo ->
+                    AppInfo(packageInfo.packageName, 0, packageInfo)
+                }
             }
-        }
+        } else null
 
-        if (compatibleApps.await().isNotEmpty()) {
-            (compatibleApps.await() + installedApps.await())
-                .distinctBy { it.packageName }
-                .sortedWith(
-                    compareByDescending<AppInfo> {
-                        it.packageInfo != null && (it.patches ?: 0) > 0
-                    }.thenByDescending {
-                        it.patches
-                    }.thenBy {
-                        it.packageInfo?.label()
-                    }.thenBy { it.packageName }
-                )
+        val compatible = compatibleApps.await()
+
+        if (compatible.isNotEmpty()) {
+            val base = if (installedApps != null) {
+                (compatible + installedApps.await()).distinctBy { it.packageName }
+            } else {
+                compatible
+            }
+
+            base.sortedWith(
+                compareByDescending<AppInfo> {
+                    it.packageInfo != null && (it.patches ?: 0) > 0
+                }.thenByDescending {
+                    it.patches
+                }.thenBy {
+                    it.packageInfo?.label()
+                }.thenBy { it.packageName }
+            )
         } else {
             emptyList()
         }

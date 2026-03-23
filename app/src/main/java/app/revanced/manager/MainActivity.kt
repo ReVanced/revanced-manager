@@ -30,7 +30,6 @@ import androidx.navigation.toRoute
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.ui.model.navigation.Announcement
 import app.revanced.manager.ui.model.navigation.Announcements
-import app.revanced.manager.ui.model.navigation.AppSelector
 import app.revanced.manager.ui.model.navigation.BundleInformation
 import app.revanced.manager.ui.model.navigation.ComplexParameter
 import app.revanced.manager.ui.model.navigation.Dashboard
@@ -42,7 +41,6 @@ import app.revanced.manager.ui.model.navigation.Settings
 import app.revanced.manager.ui.model.navigation.Update
 import app.revanced.manager.ui.screen.AnnouncementScreen
 import app.revanced.manager.ui.screen.AnnouncementsScreen
-import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.BundleInformationScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
@@ -166,9 +164,6 @@ private fun ReVancedManager(vm: MainViewModel) {
         composable<Dashboard> {
             DashboardScreen(
                 onSettingsClick = { navController.navigateSafe(Settings) },
-                onAppSelectorClick = {
-                    navController.navigateSafe(AppSelector)
-                },
                 onUpdateClick = {
                     navController.navigateSafe(Update())
                 },
@@ -212,14 +207,6 @@ private fun ReVancedManager(vm: MainViewModel) {
                 onPatchClick = vm::selectApp,
                 onBackClick = navController::popBackStackSafe,
                 viewModel = koinViewModel { parametersOf(data.packageName) }
-            )
-        }
-
-        composable<AppSelector> {
-            AppSelectorScreen(
-                onSelect = vm::selectApp,
-                onStorageSelect = vm::selectApp,
-                onBackClick = navController::popBackStackSafe
             )
         }
 

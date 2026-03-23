@@ -1,14 +1,16 @@
 package app.revanced.manager.ui.screen
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
-import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,15 +38,16 @@ import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -70,10 +73,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material3.LocalContentColor
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -85,9 +84,9 @@ import app.revanced.manager.ui.component.NotificationCardType
 import app.revanced.manager.ui.component.PillTab
 import app.revanced.manager.ui.component.PillTabBar
 import app.revanced.manager.ui.component.TooltipIconButton
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.sources.ImportSourceDialog
 import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
-import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
@@ -97,7 +96,6 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import kotlin.collections.emptyList
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -112,7 +110,6 @@ enum class DashboardPage(
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
-    onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
     onAnnouncementsClick: () -> Unit,
@@ -122,7 +119,6 @@ fun DashboardScreen(
     onStorageSelect: (SelectedApp.Local) -> Unit,
     onBundleClick: (Int) -> Unit
 ) {
-    val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val sourcesNotDownloaded by vm.sourcesNotDownloaded.collectAsStateWithLifecycle(false)
     val sourceUpdatesAvailable by vm.sourceUpdatesAvailable.collectAsStateWithLifecycle(false)
@@ -220,23 +216,15 @@ fun DashboardScreen(
         )
     }
 
-    var pendingAppSelectorLaunch by rememberSaveable { mutableStateOf(false) }
     var pendingPatchablePackage by rememberSaveable { mutableStateOf<String?>(null) }
     var pendingStorageSelection by rememberSaveable { mutableStateOf<SelectedApp.Local?>(null) }
 
     fun clearPendingSelection() {
-        pendingAppSelectorLaunch = false
         pendingPatchablePackage = null
         pendingStorageSelection = null
     }
 
     fun resumePendingSelection() {
-        if (pendingAppSelectorLaunch) {
-            clearPendingSelection()
-            onAppSelectorClick()
-            return
-        }
-
         pendingPatchablePackage?.let {
             clearPendingSelection()
             onPatchableAppClick(it)
@@ -462,36 +450,15 @@ fun DashboardScreen(
                         vm.unreadAnnouncement?.let { announcement ->
                             {
                                 NotificationCard(
-                                    text = stringResource(R.string.new_announcement, announcement.title),
+                                    title = stringResource(R.string.new_announcement),
+                                    text = announcement.title,
                                     icon = Icons.Filled.Notifications,
-                                    actions = {
-                                        val colors = ButtonDefaults.textButtonColors(
-                                            contentColor = LocalContentColor.current
-                                        )
-
-                                        TextButton(
-                                            onClick = vm::markUnreadAnnouncementRead,
-                                            shapes = ButtonDefaults.shapes(),
-                                            colors = colors
-                                        ) {
-                                            Text(stringResource(R.string.dismiss))
-                                        }
-                                        TextButton(
-                                            onClick = {
-                                                vm.markUnreadAnnouncementRead()
-                                                onAnnouncementClick(announcement)
-                                            },
-                                            shapes = ButtonDefaults.shapes(),
-                                            colors = colors
-                                        ) {
-                                            Text(stringResource(R.string.view_announcement))
-                                        }
-                                    },
                                     type = if (announcement.level > 0) NotificationCardType.ERROR else NotificationCardType.NORMAL,
                                     onClick = {
                                         vm.markUnreadAnnouncementRead()
                                         onAnnouncementClick(announcement)
-                                    }
+                                    },
+                                    onDismiss = vm::markUnreadAnnouncementRead
                                 )
                             }
                         }
@@ -504,7 +471,7 @@ fun DashboardScreen(
                     ) { index ->
                         when (DashboardPage.entries[index]) {
                             DashboardPage.DASHBOARD -> {
-                                InstalledAppsScreen(
+                                AppsScreen(
                                     onAppClick = { onAppClick(it.currentPackageName) },
                                     onPatchableAppClick = ::onPatchableSelection,
                                     onStorageSelect = { selectedApp -> onStorageSelection(selectedApp) }

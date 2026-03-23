@@ -47,8 +47,7 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.SearchBar
 import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
-import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
+import app.revanced.manager.ui.viewmodel.AppsViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.toast
@@ -57,25 +56,24 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun InstalledAppsScreen(
+fun AppsScreen(
     onAppClick: (InstalledApp) -> Unit,
     onPatchableAppClick: (String) -> Unit,
     onStorageSelect: (SelectedApp.Local) -> Unit,
-    viewModel: InstalledAppsViewModel = koinViewModel(),
-    selectorVm: AppSelectorViewModel = koinViewModel()
+    viewModel: AppsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
-    EventEffect(flow = selectorVm.storageSelectionFlow) {
+    EventEffect(flow = viewModel.storageSelectionFlow) {
         onStorageSelect(it)
     }
 
     val pickApkLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let(selectorVm::handleStorageResult)
+            uri?.let(viewModel::handleStorageResult)
         }
 
-    val installedApps by viewModel.apps.collectAsStateWithLifecycle()
-    val patchableApps by selectorVm.apps.collectAsStateWithLifecycle()
+    val installedApps by viewModel.installedApps.collectAsStateWithLifecycle()
+    val patchableApps by viewModel.patchableApps.collectAsStateWithLifecycle()
 
     fun patchedPackageNames(apps: List<InstalledApp>?): Set<String> =
         apps
@@ -89,7 +87,7 @@ fun InstalledAppsScreen(
         val packageInfo = viewModel.packageInfoMap[currentPackageName]
         return currentPackageName.contains(query, ignoreCase = true) ||
             originalPackageName.contains(query, ignoreCase = true) ||
-            selectorVm.loadLabel(packageInfo).contains(query, ignoreCase = true)
+            viewModel.loadLabel(packageInfo).contains(query, ignoreCase = true)
     }
 
     fun patchableMatchesQuery(packageName: String, label: String?, query: String): Boolean {
@@ -100,7 +98,7 @@ fun InstalledAppsScreen(
     }
 
     var searchExpanded by rememberSaveable { mutableStateOf(false) }
-    val filterText by selectorVm.filterText.collectAsStateWithLifecycle()
+    val filterText by viewModel.filterText.collectAsStateWithLifecycle()
 
     val TITLE_HORIZONTAL = 16.dp
     val TITLE_VERTICAL = 8.dp
@@ -110,7 +108,7 @@ fun InstalledAppsScreen(
             Box(modifier = Modifier.padding(horizontal = if (searchExpanded) 0.dp else 16.dp)) {
                 SearchBar(
                     query = filterText,
-                    onQueryChange = selectorVm::setFilterText,
+                    onQueryChange = viewModel::setFilterText,
                     expanded = searchExpanded,
                     onExpandedChange = { searchExpanded = it },
                     placeholder = { Text(stringResource(R.string.search_apps)) },
@@ -120,7 +118,7 @@ fun InstalledAppsScreen(
                             onClick = {
                                 if (searchExpanded) {
                                     searchExpanded = false
-                                    selectorVm.setFilterText("")
+                                    viewModel.setFilterText("")
                                 }
                             },
                             tooltip = if (searchExpanded) stringResource(R.string.back) else stringResource(R.string.search),
@@ -139,7 +137,7 @@ fun InstalledAppsScreen(
                     trailingIcon = {
                         if (searchExpanded && filterText.isNotEmpty()) {
                             TooltipIconButton(
-                                onClick = { selectorVm.setFilterText("") },
+                                onClick = { viewModel.setFilterText("") },
                                 tooltip = stringResource(R.string.clear),
                             ) { contentDescription ->
                                 Icon(
@@ -162,7 +160,7 @@ fun InstalledAppsScreen(
                             app.packageName !in patchedPkgNames &&
                                 patchableMatchesQuery(
                                     packageName = app.packageName,
-                                    label = selectorVm.loadLabel(app.packageInfo),
+                                    label = viewModel.loadLabel(app.packageInfo),
                                     query = query
                                 )
                         }
@@ -211,7 +209,7 @@ fun InstalledAppsScreen(
                                     ListItem(
                                         modifier = Modifier.clickable {
                                             searchExpanded = false
-                                            selectorVm.setFilterText("")
+                                            viewModel.setFilterText("")
                                             onAppClick(installedApp)
                                         },
                                         leadingContent = {
@@ -252,7 +250,7 @@ fun InstalledAppsScreen(
                                     ListItem(
                                         modifier = Modifier.clickable {
                                             searchExpanded = false
-                                            selectorVm.setFilterText("")
+                                            viewModel.setFilterText("")
                                             onPatchableAppClick(app.packageName)
                                         },
                                         leadingContent = {
@@ -357,15 +355,17 @@ fun InstalledAppsScreen(
                 }
             }
 
-            item(key = "HEADER_PATCHABLE") {
-                Text(
-                    text = stringResource(R.string.patchable_apps_section_title),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
-                )
+            if (patched.isNotEmpty()) {
+                item(key = "HEADER_PATCHABLE") {
+                    Text(
+                        text = stringResource(R.string.patchable_apps_section_title),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
+                    )
+                }
             }
 
             item(key = "PATCHABLE_STORAGE") {

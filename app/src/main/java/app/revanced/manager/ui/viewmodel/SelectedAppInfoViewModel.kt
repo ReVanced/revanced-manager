@@ -369,8 +369,7 @@ class SelectedAppInfoViewModel(
     private fun invalidateSelectedAppInfo() = viewModelScope.launch {
         val info = when (val app = selectedApp) {
             is SelectedApp.Local -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.file) }
-            is SelectedApp.Installed -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.packageName) }
-            else -> null
+            else -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.packageName) }
         }
 
         selectedAppInfo = info
