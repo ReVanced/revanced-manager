@@ -451,7 +451,6 @@ It’s only compatible with these versions: %2$s</string>
     <string name="license">License</string>
     <string name="source">Source</string>
     <string name="repository">Repository</string>
-    <string name="bundle_information">Bundle info</string>
     <string name="bundle_information_by_author">By %1$s</string>
     <string name="version">Version</string>
     <string name="version_compatibility_warning">Selected version may be incompatible with selected patches</string>
@@ -492,7 +491,6 @@ It’s only compatible with these versions: %2$s</string>
     <string name="prerelease_title">Use pre-releases?</string>
     <string name="prereleases_warning">Pre-release versions may be unstable and contain bugs. You may experience crashes, data loss, or other unexpected issues.</string>
     <string name="changelog">View changelog</string>
-    <string name="last_updated">Last updated</string>
     <string name="updated_ago">Updated %s</string>
     <string name="changelog_loading">Loading changelog…</string>
     <string name="changelog_download_fail">Couldn’t download changelog: %s</string>
