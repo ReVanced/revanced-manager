@@ -1,3 +1,11 @@
+## app [2.4.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.4.0...v2.4.1-dev.1) (2026-03-23)
+
+
+### Bug Fixes
+
+* Use ease out quart for screen transitions ([b69f7c2](https://github.com/ReVanced/revanced-manager/commit/b69f7c2ba8d320e10c3558681294f8bac93618ae))
+* Use em-space and bigger bullet symbols in announcement screen ([2538b6a](https://github.com/ReVanced/revanced-manager/commit/2538b6a7553a1d9366d9f2345a6a471381f18d88))
+
 # app [2.4.0](https://github.com/ReVanced/revanced-manager/compare/v2.3.0...v2.4.0) (2026-03-23)
 
 
