@@ -137,7 +137,7 @@ fun BundleInformationScreen(
                                     LocalContext.current
                                 ).lowercase(getDefault())
 
-                                append(" ($releaseDate)")
+                                append("\u2002($releaseDate)")
                             }
                         })
 
