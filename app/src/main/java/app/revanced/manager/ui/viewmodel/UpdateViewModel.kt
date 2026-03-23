@@ -43,7 +43,6 @@ import ru.solrudev.ackpine.session.parameters.Confirmation
 
 class UpdateViewModel(
     private val api: ReVancedAPI,
-    private val source: ChangelogSource,
     private val downloadOnScreenEntry: Boolean
 ) : ViewModel(), KoinComponent {
     private val app: Application by inject()
@@ -77,7 +76,7 @@ class UpdateViewModel(
             pageSize = 10,
             enablePlaceholders = false
         ),
-        pagingSourceFactory = { ChangelogsRepository(api, source) }
+        pagingSourceFactory = { ChangelogsRepository(api, ChangelogSource.Manager) }
     ).flow.cachedIn(viewModelScope)
 
     private val location = fs.tempDir.resolve("updater.apk")
