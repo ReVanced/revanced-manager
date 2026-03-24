@@ -337,7 +337,7 @@ fun DashboardScreen(
                             }
                         },
                         actions = {
-                            if (updateVersion != null) {
+                            if (hasUpdate) {
                                 TooltipIconButton(
                                     onClick = onUpdateClick,
                                     tooltip = stringResource(R.string.update),
