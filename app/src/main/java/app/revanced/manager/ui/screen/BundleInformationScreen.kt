@@ -47,9 +47,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -58,6 +60,7 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
+import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
@@ -69,6 +72,8 @@ import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
+import app.revanced.manager.util.relativeTime
+import java.util.Locale.getDefault
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -125,7 +130,17 @@ fun BundleInformationScreen(
                         val dot = "\u2022"          // •
                         val emSpace = "\u2002"      // en space, roughly half character width
                         val separator = "$emSpace$dot$emSpace"
-                        Text("$subtitleAuthor$separator$subtitleVersion")
+                        Text(text = buildAnnotatedString {
+                            append("$subtitleAuthor$separator$subtitleVersion")
+                            src.asRemoteOrNull?.releasedAt?.let {
+                                val releaseDate = it.relativeTime(
+                                    LocalContext.current
+                                ).lowercase(getDefault())
+
+                                append("\u2002($releaseDate)")
+                            }
+                        })
+
                     }
                 } else {
                     null

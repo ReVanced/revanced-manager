@@ -19,6 +19,7 @@ import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.repository.ChangelogsRepository
+import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedAssetHistory
@@ -31,9 +32,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
-import org.koin.core.component.inject
 import ru.solrudev.ackpine.installer.InstallFailure
 import ru.solrudev.ackpine.installer.PackageInstaller
 import ru.solrudev.ackpine.installer.createSession
@@ -44,15 +42,14 @@ import ru.solrudev.ackpine.session.parameters.Confirmation
 class UpdateViewModel(
     private val api: ReVancedAPI,
     private val source: ChangelogSource,
-    private val downloadOnScreenEntry: Boolean
-) : ViewModel(), KoinComponent {
-    private val app: Application by inject()
-    private val reVancedAPI: ReVancedAPI by inject()
-    private val http: HttpService by inject()
-    private val networkInfo: NetworkInfo by inject()
-    private val fs: Filesystem by inject()
-    private val ackpineInstaller: PackageInstaller = get()
-
+    private val downloadOnScreenEntry: Boolean,
+    private val app: Application,
+    private val http: HttpService,
+    private val networkInfo: NetworkInfo,
+    private val fs: Filesystem,
+    private val ackpineInstaller: PackageInstaller,
+    private val managerUpdateRepository: ManagerUpdateRepository,
+) : ViewModel() {
     // TODO: save state to handle process death.
     var downloadedSize by mutableLongStateOf(0L)
         private set
@@ -85,7 +82,7 @@ class UpdateViewModel(
     init {
         viewModelScope.launch {
             uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
-                releaseInfo = reVancedAPI.getAppUpdate()
+                releaseInfo = managerUpdateRepository.getUpdateOrNull()
                     ?: throw Exception("No update available")
 
                 if (downloadOnScreenEntry) {

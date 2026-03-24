@@ -47,7 +47,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -141,7 +140,8 @@ fun DashboardScreen(
                     !suggestedVersionSafeguard
         }
     }
-    val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
+    val hasUpdate by vm.hasUpdate.collectAsStateWithLifecycle()
+    val updateVersion by vm.updateVersion.collectAsStateWithLifecycle()
     val androidContext = LocalContext.current
     val resources = LocalResources.current
     val logoPainter = rememberDrawablePainter(drawable = remember(resources) {
@@ -207,12 +207,12 @@ fun DashboardScreen(
     }
 
     var showUpdateDialog by rememberSaveable { mutableStateOf(true) }
-    if (managerAutoUpdates && showUpdateDialog && showManagerUpdateDialogOnLaunch && availableUpdate != null) {
+    if (managerAutoUpdates && showUpdateDialog && showManagerUpdateDialogOnLaunch && hasUpdate) {
         AvailableUpdateDialog(
             onDismiss = { showUpdateDialog = false },
             setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
             onConfirm = onUpdateClick,
-            newVersion = availableUpdate!!
+            newVersion = updateVersion!!
         )
     }
 
@@ -337,7 +337,7 @@ fun DashboardScreen(
                             }
                         },
                         actions = {
-                            if (availableUpdate != null) {
+                            if (updateVersion != null) {
                                 TooltipIconButton(
                                     onClick = onUpdateClick,
                                     tooltip = stringResource(R.string.update),

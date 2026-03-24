@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.SignalWifiOff
@@ -35,7 +34,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
@@ -50,8 +51,10 @@ import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
+import app.revanced.manager.util.relativeTime
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale.getDefault
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -105,7 +108,20 @@ fun DownloaderInfoScreen(
             MediumFlexibleTopAppBar(
                 title = { Text(appName) },
                 subtitle = version.takeIf { it.isNotEmpty() }?.let {
-                    { Text("v$it") }
+                    {
+                        Text(
+                            text = buildAnnotatedString {
+                                append("v$it")
+                                if (remote?.releasedAt != null) {
+                                    val releaseDate = remote.releasedAt.relativeTime(
+                                        LocalContext.current
+                                    ).lowercase(getDefault())
+
+                                    append("\u2002($releaseDate)")
+                                }
+                            }
+                        )
+                    }
                 },
                 navigationIcon = {
                     TooltipIconButton(

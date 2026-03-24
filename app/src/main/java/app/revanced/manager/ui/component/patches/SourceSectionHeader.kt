@@ -21,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,7 @@ import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticTriStateCheckbox
+import app.revanced.manager.util.relativeTime
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -70,13 +73,24 @@ fun SourceSectionHeader(
                 Text(text = bundle.name)
             },
             supportingContent = {
+                val patchCount = bundle.patches.size
                 val version = bundle.version?.takeIf { it.isNotBlank() }
+                val releasedAt = bundle.releasedAt?.relativeTime(LocalContext.current)
                 if (version == null && loadIssue == null) return@ListItem
 
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     version?.let {
                         Text(
-                            text = it,
+                            text = listOf(
+                                // Show release date only when view-only
+                                if (readOnly && releasedAt != null) "v$it\u2002($releasedAt)"
+                                else it,
+                                pluralStringResource(
+                                    R.plurals.patch_count,
+                                    patchCount,
+                                    patchCount
+                                )
+                            ).joinToString("\u2002\u2022\u2002"),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }

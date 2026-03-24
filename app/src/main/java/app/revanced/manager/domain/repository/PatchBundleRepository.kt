@@ -15,6 +15,7 @@ import app.revanced.manager.domain.sources.LocalPatchBundle
 import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.manager.SourceManager
 import app.revanced.manager.domain.sources.Loader
+import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.patcher.patch.PatchBundle
@@ -27,9 +28,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import java.io.File
 import kotlin.collections.map
 import kotlin.text.ifEmpty
+import kotlin.time.Instant
 
 private typealias Info = PersistentMap<Int, PatchBundleInfo.Global>
 
@@ -58,12 +63,18 @@ class PatchBundleRepository(
         val actualName =
             entity.name.ifEmpty { app.getString(if (uid == 0) R.string.patches_name_default else R.string.source_name_fallback) }
 
+        val releasedAt = entity.releasedAt?.let {
+            Instant.fromEpochMilliseconds(it)
+                .toLocalDateTime(TimeZone.UTC)
+        }
+
         return when (source) {
             is SourceInfo.Local -> LocalPatchBundle(actualName, uid, null, file, PatchBundleLoader)
             is SourceInfo.API -> APIPatchBundle(
                 actualName,
                 uid,
                 versionHash,
+                releasedAt,
                 null,
                 file,
                 SourceInfo.API.SENTINEL,
@@ -75,6 +86,7 @@ class PatchBundleRepository(
                 actualName,
                 uid,
                 versionHash,
+                releasedAt,
                 null,
                 file,
                 source.url.toString(),
@@ -92,7 +104,8 @@ class PatchBundleRepository(
         name = props.name,
         versionHash = props.versionHash,
         source = props.source,
-        autoUpdate = props.autoUpdate
+        autoUpdate = props.autoUpdate,
+        releasedAt = props.releasedAt
     )
 
     override fun realNameOf(loaded: PatchBundle) = loaded.manifestAttributes?.name
@@ -173,6 +186,7 @@ class PatchBundleRepository(
                 this[src.uid] = PatchBundleInfo.Global(
                     src.name,
                     bundle.manifestAttributes?.version,
+                    (src as? RemotePatchBundle)?.releasedAt,
                     src.uid,
                     result.getOrThrow().toList()
                 )

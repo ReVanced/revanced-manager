@@ -26,6 +26,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -114,7 +117,12 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             val newName = src.loaded?.let(::realNameOf).takeIf { it != src.name }
                 ?: return@syncName
 
-            updateDb(uid) { it.copy(name = newName) }
+            updateDb(uid) {
+                it.copy(
+                    name = newName,
+                    releasedAt = (src as? RemoteSource)?.releasedAt?.toEpochMillis()
+                )
+            }
             sources[uid] = src.copy(name = newName)
         }
 
@@ -141,7 +149,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     private suspend fun createEntity(
         name: String,
         source: SourceInfo,
-        autoUpdate: Boolean = false
+        autoUpdate: Boolean = false,
     ) =
         entityFromProps(
             uid = generateUid(),
@@ -150,6 +158,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                 versionHash = null,
                 source = source,
                 autoUpdate = autoUpdate,
+                releasedAt = null,
             )
         ).also {
             dbUpsert(it)
@@ -172,6 +181,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                     versionHash = new.versionHash,
                     source = new.source,
                     autoUpdate = new.autoUpdate,
+                    releasedAt = new.releasedAt,
                 )
             )
         )
@@ -238,7 +248,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         this@SourceManager.store.state.value.sources.values.filterIsInstance<APISource<LOADED>>()
             .forEach { src ->
                 with(src) { deleteLocalFile() }
-                updateDb(src.uid) { it.copy(versionHash = null) }
+                updateDb(src.uid) { it.copy(versionHash = null, releasedAt = null) }
             }
 
         doReload(state)
@@ -308,15 +318,15 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                     async update@{
                         Log.d(tag, "Updating: ${it.name}")
 
-                        val newVersion = it.runCatching {
+                        val updateResult = it.runCatching {
                             when {
                                 redownload -> downloadLatest()
-                                checkOnly -> getUpdateInfo()?.version
+                                checkOnly -> getUpdateInfo()?.let { info -> RemoteSource.UpdateResult(info.version, info.createdAt) }
                                 else -> update()
                             } ?: return@update null
                         }
 
-                        it to newVersion
+                        it to updateResult
                     }
                 }
                 .awaitAll()
@@ -332,7 +342,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
             var hasErrors = false
             results.forEach { (src, result) ->
-                result.getOrNull()?.let { newVersionHash ->
+                result.getOrNull()?.let { updateResult ->
                     if (checkOnly) {
                         outdated.add(src.uid)
                         return@let
@@ -340,7 +350,11 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
                     val name = src.loaded?.let(::realNameOf) ?: src.name
                     updateDb(src.uid) {
-                        it.copy(versionHash = newVersionHash, name = name)
+                        it.copy(
+                            versionHash = updateResult.versionHash,
+                            name = name,
+                            releasedAt = updateResult.releasedAt.toEpochMillis()
+                        )
                     }
                 }
                 result.exceptionOrNull()?.let {
@@ -379,3 +393,5 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         val uid: Int
     }
 }
+
+private fun LocalDateTime.toEpochMillis() = toInstant(TimeZone.UTC).toEpochMilliseconds()
