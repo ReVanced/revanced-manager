@@ -63,7 +63,7 @@ fun AnnouncementScreen(
                 },
                 subtitle = {
                     val createDate = announcement.createdAt.toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current)
-                    Text("$createDate · ${announcement.author}")
+                    Text("$createDate\u2002\u2022\u2002${announcement.author}")
                 },
                 navigationIcon = {
                     TooltipIconButton(

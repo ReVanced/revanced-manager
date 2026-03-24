@@ -30,9 +30,11 @@ import app.revanced.manager.network.downloader.DownloaderPackage
 import app.revanced.manager.util.PM
 import dalvik.system.PathClassLoader
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.toLocalDateTime
 import java.io.File
 import java.lang.ref.WeakReference
 import java.lang.reflect.Modifier
+import kotlin.time.Instant
 import app.revanced.manager.data.room.sources.Source as SourceInfo
 
 @OptIn(DownloaderHostApi::class)
@@ -61,7 +63,12 @@ class DownloaderRepository(
     override fun loadEntity(entity: DownloaderEntity): Source<DownloaderPackage> = with(entity) {
         val file = directoryOf(uid).resolve("downloader.jar")
         val actualName =
-            entity.name.ifEmpty { app.getString(if (uid == 0) R.string.auto_updates_dialog_downloaders else R.string.source_name_fallback) }
+            name.ifEmpty { app.getString(if (uid == 0) R.string.auto_updates_dialog_downloaders else R.string.source_name_fallback) }
+
+        val releasedAt = entity.releasedAt?.let {
+            Instant.fromEpochMilliseconds(it)
+                .toLocalDateTime(kotlinx.datetime.TimeZone.UTC)
+        }
 
         return when (source) {
             is SourceInfo.Local -> LocalSource(actualName, uid, null, file, loader)
@@ -69,6 +76,7 @@ class DownloaderRepository(
                 actualName,
                 uid,
                 versionHash,
+                releasedAt,
                 null,
                 file,
                 SourceInfo.API.SENTINEL,
@@ -80,6 +88,7 @@ class DownloaderRepository(
                 actualName,
                 uid,
                 versionHash,
+                releasedAt,
                 null,
                 file,
                 source.url.toString(),
@@ -97,7 +106,8 @@ class DownloaderRepository(
         name = props.name,
         versionHash = props.versionHash,
         source = props.source,
-        autoUpdate = props.autoUpdate
+        autoUpdate = props.autoUpdate,
+        releasedAt = props.releasedAt
     )
 
     override fun realNameOf(loaded: DownloaderPackage) = loaded.name

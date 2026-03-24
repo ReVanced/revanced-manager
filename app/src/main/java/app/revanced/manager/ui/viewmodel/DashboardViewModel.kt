@@ -40,7 +40,8 @@ class DashboardViewModel(
     val bundleDownloadError = patchBundleRepository.apiOutageError
     private val contentResolver: ContentResolver = app.contentResolver
 
-    val availableManagerUpdate = managerUpdateRepository.availableVersion
+    val hasUpdate = managerUpdateRepository.hasUpdate
+    val updateVersion = managerUpdateRepository.version
 
     val sourcesNotDownloaded = patchBundleRepository.bundleInfoFlow.map { it.isEmpty() }
     val sourceUpdatesAvailable = combine(
@@ -76,7 +77,7 @@ class DashboardViewModel(
         if (!prefs.managerAutoUpdates.get()) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
-            managerUpdateRepository.refreshAvailableVersion()
+            managerUpdateRepository.refresh()
         }
     }
 

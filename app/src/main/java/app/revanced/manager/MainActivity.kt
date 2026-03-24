@@ -6,8 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.EaseInOutQuad
-import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.EaseOutQuart
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -76,7 +75,6 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
-
 class MainActivity : AppCompatActivity() {
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,24 +127,24 @@ private fun ReVancedManager(vm: MainViewModel) {
         startDestination = startDestination,
         enterTransition = {
             slideInHorizontally(
-                animationSpec = tween(300, easing = EaseInOutQuad),
+                animationSpec = tween(300, easing = EaseOutQuart),
                 initialOffsetX = { it })
         },
         exitTransition = {
             slideOutHorizontally(
-                animationSpec = tween(300, easing = EaseOut),
+                animationSpec = tween(300, easing = EaseOutQuart),
                 targetOffsetX = { -it / 3 })
         },
         popEnterTransition = {
             slideInHorizontally(
                 animationSpec = tween(
                     300,
-                    easing = EaseInOutQuad
+                    easing = EaseOutQuart
                 ), initialOffsetX = { -it / 3 })
         },
         popExitTransition = {
             slideOutHorizontally(
-                animationSpec = tween(300, easing = EaseOut),
+                animationSpec = tween(300, easing = EaseOutQuart),
                 targetOffsetX = { it })
         }
     ) {
@@ -229,7 +227,12 @@ private fun ReVancedManager(vm: MainViewModel) {
 
             UpdateScreen(
                 onBackClick = navController::popBackStackSafe,
-                vm = koinViewModel { parametersOf(data.downloadOnScreenEntry) }
+                vm = koinViewModel {
+                    parametersOf(
+                        ChangelogSource.Manager,
+                        data.downloadOnScreenEntry
+                    )
+                }
             )
         }
 

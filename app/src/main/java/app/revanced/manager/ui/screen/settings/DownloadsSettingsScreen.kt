@@ -43,11 +43,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.network.downloader.DownloaderPackage
@@ -62,8 +67,10 @@ import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.sources.ImportSourceDialog
 import app.revanced.manager.ui.component.sources.ImportSourceDialogStrings
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
+import app.revanced.manager.util.relativeTime
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale.getDefault
 
 private enum class DownloadsTab(
     val titleResId: Int,
@@ -317,16 +324,28 @@ private fun DownloaderItem(
             Text(source.name, style = MaterialTheme.typography.bodyLarge)
         },
         supportingContent = {
+            val stateText =
+                when (source.state) {
+                    is State.Available<*> -> null
+                    is State.Failed -> R.string.downloader_state_failed
+                    is State.Missing -> R.string.downloader_state_missing
+                }
+
+            val version = source.loaded?.version
+            val relativeTime =
+                (source.asRemoteOrNull)?.releasedAt?.relativeTime(LocalContext.current)
+
             Text(
-                stringResource(
-                    when (source.state) {
-                        is State.Available<*> -> R.string.downloader_state_loaded
-                        is State.Failed -> R.string.downloader_state_failed
-                        is State.Missing -> R.string.downloader_state_missing
+                text = buildAnnotatedString {
+                    append(if (relativeTime != null) "v$version\u2002($relativeTime)" else "v$version")
+                    // Error colored state text shown when state isn't available
+                    if (stateText != null) withStyle(SpanStyle(color = MaterialTheme.colorScheme.error)) {
+                        append("\u2002\u2022\u2002")
+                        append(stringResource(stateText))
                     }
-                )
+                },
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        },
-        trailingContent = source.loaded?.version?.let { @Composable { Text(it) } }
+        }
     )
 }

@@ -43,9 +43,6 @@ class ReVancedAPI(
 
     suspend fun getAnnouncements() = request<List<ReVancedAnnouncement>>("announcements")
 
-    suspend fun getAppUpdate() =
-        getLatestAppInfo().getOrThrow().takeIf { it.version.removePrefix("v") != BuildConfig.VERSION_NAME }
-
     suspend fun getLatestAppInfo() =
         request<ReVancedAsset>("manager${prefs.useManagerPrereleases.prereleaseString()}")
 

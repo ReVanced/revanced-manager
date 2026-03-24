@@ -491,6 +491,7 @@ It’s only compatible with these versions: %2$s</string>
     <string name="prerelease_title">Use pre-releases?</string>
     <string name="prereleases_warning">Pre-release versions may be unstable and contain bugs. You may experience crashes, data loss, or other unexpected issues.</string>
     <string name="changelog">View changelog</string>
+    <string name="updated_ago">Updated %s</string>
     <string name="changelog_loading">Loading changelog…</string>
     <string name="changelog_download_fail">Couldn’t download changelog: %s</string>
     <string name="battery_optimization_notification">Battery optimizations must be turned off in order for ReVanced Manager to work correctly in the background</string>

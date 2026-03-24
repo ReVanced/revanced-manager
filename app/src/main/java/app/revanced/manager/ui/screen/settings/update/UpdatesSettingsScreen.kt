@@ -3,6 +3,7 @@ package app.revanced.manager.ui.screen.settings.update
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Update
-import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.WorkOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -55,7 +55,7 @@ import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
-import app.revanced.manager.util.toast
+import app.revanced.manager.util.relativeTime
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -69,10 +69,11 @@ fun UpdatesSettingsScreen(
     vm: UpdatesSettingsViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
-    val resources = LocalResources.current
     val coroutineScope = rememberCoroutineScope()
     var checkingForUpdate by remember { mutableStateOf(false) }
-    val availableUpdate by vm.availableManagerUpdate.collectAsStateWithLifecycle()
+    val managerVersion by vm.managerVersion.collectAsStateWithLifecycle()
+    val hasUpdate by vm.hasUpdate.collectAsStateWithLifecycle()
+    val updateReleasedAt by vm.updateReleasedAt.collectAsStateWithLifecycle()
     val scrollState = androidx.compose.foundation.rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         canScroll = {
@@ -112,15 +113,14 @@ fun UpdatesSettingsScreen(
                     enabled = !checkingForUpdate,
                     onClick = {
                         coroutineScope.launch {
-                            if (availableUpdate != null) {
+                            if (hasUpdate) {
                                 onUpdateClick()
                                 return@launch
                             }
 
                             checkingForUpdate = true
                             try {
-                                val version = vm.checkForUpdates()
-                                if (!version.isNullOrEmpty()) onUpdateClick()
+                                if (vm.checkUpdates()) onUpdateClick()
                             } finally {
                                 checkingForUpdate = false
                             }
@@ -144,7 +144,7 @@ fun UpdatesSettingsScreen(
                         text = stringResource(
                             when {
                                 checkingForUpdate -> R.string.update_check
-                                availableUpdate != null -> R.string.view_update
+                                hasUpdate -> R.string.view_update
                                 else -> R.string.manual_update_check
                             }
                         )
@@ -164,7 +164,13 @@ fun UpdatesSettingsScreen(
         ) {
             ListSection(
                 title = stringResource(R.string.manager),
-                leadingContent = { Icon(Icons.Outlined.WorkOutline, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.WorkOutline,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 Surface(
                     shape = RoundedCornerShape(4.dp),
@@ -190,11 +196,27 @@ fun UpdatesSettingsScreen(
                                     .padding(start = 4.dp)
                             )
                             Spacer(modifier = Modifier.width(16.dp))
-                            Text(
-                                text = stringResource(R.string.app_name),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.app_name),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+
+                                managerVersion?.let { version ->
+                                    updateReleasedAt?.let {
+                                        val releasedAt = it.relativeTime(LocalContext.current)
+
+                                        Text(
+                                            text = "$version\u2002\u2022\u2002$releasedAt",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            }
                         }
                         Spacer(modifier = Modifier.height(4.dp))
                         Button(
@@ -242,6 +264,7 @@ fun UpdatesSettingsScreen(
                         coroutineScope.launch {
                             vm.useManagerPrereleases.update(value)
                             vm.clearAvailableManagerUpdate()
+                            vm.checkUpdates(false)
                         }
                     }
                 )

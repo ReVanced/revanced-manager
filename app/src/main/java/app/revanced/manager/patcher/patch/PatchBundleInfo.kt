@@ -1,6 +1,7 @@
 package app.revanced.manager.patcher.patch
 
 import app.revanced.manager.util.PatchSelection
+import kotlinx.datetime.LocalDateTime
 
 /**
  * A base class for storing [PatchBundle] metadata.
@@ -15,6 +16,11 @@ sealed class PatchBundleInfo {
      * The version of the bundle.
      */
     abstract val version: String?
+
+    /**
+     * When this bundle was released. Only applicable for remote bundles.
+     */
+    abstract val releasedAt: LocalDateTime?
 
     /**
      * The unique ID of the bundle.
@@ -34,6 +40,7 @@ sealed class PatchBundleInfo {
     data class Global(
         override val name: String,
         override val version: String?,
+        override val releasedAt: LocalDateTime?,
         override val uid: Int,
         override val patches: List<PatchInfo>
     ) : PatchBundleInfo() {
@@ -64,6 +71,7 @@ sealed class PatchBundleInfo {
             return Scoped(
                 name,
                 this.version,
+                releasedAt,
                 uid,
                 relevantPatches,
                 compatible,
@@ -85,6 +93,7 @@ sealed class PatchBundleInfo {
     data class Scoped(
         override val name: String,
         override val version: String?,
+        override val releasedAt: LocalDateTime?,
         override val uid: Int,
         override val patches: List<PatchInfo>,
         val compatible: List<PatchInfo>,

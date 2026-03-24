@@ -10,5 +10,6 @@ data class PatchBundleEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "version") val versionHash: String? = null,
     @ColumnInfo(name = "source") val source: Source,
-    @ColumnInfo(name = "auto_update") val autoUpdate: Boolean
+    @ColumnInfo(name = "auto_update") val autoUpdate: Boolean,
+    @ColumnInfo(name = "released_at") val releasedAt: Long? = null,
 ) : SourceManager.DatabaseEntity
