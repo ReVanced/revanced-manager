@@ -110,15 +110,16 @@ fun UpdateScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.padding(paddingValues),
         ) {
-            if (vm.state == State.DOWNLOADING)
+            if (vm.state == State.DOWNLOADING) {
                 LinearWavyProgressIndicator(
                     progress = { vm.downloadProgress },
                     modifier = Modifier
                         .padding(top = paddingValues.calculateTopPadding())
                         .fillMaxWidth(),
                 )
+            }
 
             AnimatedVisibility(visible = vm.showInternetCheckDialog) {
                 MeteredDownloadConfirmationDialog(
@@ -128,8 +129,7 @@ fun UpdateScreen(
             }
 
             ChangelogList(
-                changelogs = changelogs,
-                contentPadding = paddingValues
+                changelogs = changelogs
             )
         }
     }
