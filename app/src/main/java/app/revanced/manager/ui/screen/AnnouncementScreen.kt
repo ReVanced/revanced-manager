@@ -126,8 +126,6 @@ fun AnnouncementScreen(
                         <meta name="viewport" content="width=device-width, initial-scale=1" />
                         <style>
                           body {
-                            font-size: 0.9em;
-                            letter-spacing: 150%;
                             line-height: 150%;
                             color: ${textColor.toCss()};
                           }
@@ -144,13 +142,13 @@ fun AnnouncementScreen(
                             color: ${headerTextColor.toCss()};
                           }
                           h1 {
-                            font-size: 2em;
+                            font-size: 2.25em;
                           }
                           h2 {
-                            font-size: 1.5em;
+                            font-size: 1.75em;
                           }
                           h3 {
-                            font-size: 1.25em;
+                            font-size: 1.5em;
                           }
                           a {
                             color: ${linkColor.toCss()};
