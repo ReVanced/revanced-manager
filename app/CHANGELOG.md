@@ -1,3 +1,10 @@
+# app [2.6.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.1...v2.6.0-dev.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* Adjust font size and fix letter spacing in announcements ([e1660a7](https://github.com/ReVanced/revanced-manager/commit/e1660a7f2f94f3f50ee8bb2479888af8b760e51e))
+
 # app [2.6.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.5.1...v2.6.0-dev.1) (2026-03-25)
 
 
