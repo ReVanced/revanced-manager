@@ -1,3 +1,10 @@
+# app [2.6.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.5.1...v2.6.0-dev.1) (2026-03-25)
+
+
+### Features
+
+* Better styling for announcements ([4f88357](https://github.com/ReVanced/revanced-manager/commit/4f88357d9f2aa44bcab980e2719f3d28d169de85))
+
 ## app [2.5.1](https://github.com/ReVanced/revanced-manager/compare/v2.5.0...v2.5.1) (2026-03-24)
 
 
