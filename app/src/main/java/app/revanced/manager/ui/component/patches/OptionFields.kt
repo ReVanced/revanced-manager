@@ -57,6 +57,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
@@ -149,7 +152,12 @@ private class OptionEditorScope<T : Any>(
         var selectedPresetKey by rememberSaveable {
             mutableStateOf(option.presets?.entries?.find { it.value == value }?.key)
         }
-        var showCustomPage by rememberSaveable { mutableStateOf(mode == Mode.CUSTOM) }
+        val hasPresetsPage = remember(option) {
+            !option.required || option.default != null || !option.presets.isNullOrEmpty()
+        }
+        var showCustomPage by rememberSaveable {
+            mutableStateOf(mode == Mode.CUSTOM || !hasPresetsPage)
+        }
 
         AlertDialogExtended(
             onDismissRequest = dismissDialog,
@@ -178,14 +186,16 @@ private class OptionEditorScope<T : Any>(
                     Text(stringResource(R.string.cancel))
                 }
             },
-            tertiaryButton = {
-                TextButton(
-                    onClick = { showCustomPage = !showCustomPage },
-                    shapes = ButtonDefaults.shapes()
-                ) {
-                    Text(stringResource(if (showCustomPage) R.string.patch_options_presets else R.string.patch_options_custom))
+            tertiaryButton = if (hasPresetsPage) {
+                {
+                    TextButton(
+                        onClick = { showCustomPage = !showCustomPage },
+                        shapes = ButtonDefaults.shapes()
+                    ) {
+                        Text(stringResource(if (showCustomPage) R.string.patch_options_presets else R.string.patch_options_custom))
+                    }
                 }
-            },
+            } else null,
             textHorizontalPadding = PaddingValues(horizontal = 0.dp),
             text = {
                 if (showCustomPage) {
@@ -324,6 +334,7 @@ private inline fun <T : Any> WithOptionEditor(
     scope.block()
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun <T : Any> OptionItem(
     option: Option<T>,
@@ -340,7 +351,18 @@ fun <T : Any> OptionItem(
     WithOptionEditor(editor, option, value, setValue, selectionWarningEnabled, readOnly) {
         ListItem(
             onClick = ::clickAction,
-            content = { Text(option.name) },
+            content = {
+                Text(
+                    buildAnnotatedString {
+                        append(option.name)
+                        if (option.required) {
+                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.error)) {
+                                append("*")
+                            }
+                        }
+                    }
+                )
+            },
             supportingContent = {
                 Column {
                     Text(option.description)
@@ -361,12 +383,6 @@ fun <T : Any> OptionItem(
                             )
                         }
                     }
-
-                    if (option.required && value == null) Text(
-                        stringResource(R.string.option_required),
-                        modifier = Modifier.padding(top = 4.dp),
-                        color = MaterialTheme.colorScheme.error
-                    )
                 }
             },
             trailingContent = if (!readOnly) {
@@ -641,6 +657,7 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
         )
     }
 
+    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @Composable
     override fun Dialog(scope: OptionEditorScope<Boolean>) {
         if (scope.readOnly) return
