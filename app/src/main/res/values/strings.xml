@@ -317,6 +317,13 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options have been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="patch_options_set_null">Unset</string>
+    <string name="patch_options_set_null_description">Set this option to null</string>
+    <string name="patch_options_set_default">Use default</string>
+    <string name="patch_options_default_value">Default: %s</string>
+    <string name="patch_options_user_set_value">Set to: %s</string>
+    <string name="patch_options_custom">Custom</string>
+    <string name="patch_options_presets">Presets</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you selected doesn’t match the suggested version: %s
 

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package app.revanced.manager.ui.component.patches
 
 import android.app.Application
@@ -5,13 +7,11 @@ import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,10 +27,8 @@ import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -100,6 +98,20 @@ private class OptionEditorScope<T : Any>(
     val setValue: (T?) -> Unit,
     val readOnly: Boolean
 ) {
+    enum class Mode {
+        NULL,
+        DEFAULT,
+        PRESET,
+        CUSTOM
+    }
+
+    val mode: Mode = when {
+        !option.required && value == null -> Mode.NULL
+        value == option.default -> Mode.DEFAULT
+        option.presets?.values?.contains(value) == true -> Mode.PRESET
+        else -> Mode.CUSTOM
+    }
+
     fun submitDialog(value: T?) {
         setValue(value)
         dismissDialog()
@@ -115,7 +127,7 @@ private class OptionEditorScope<T : Any>(
     }
 
     fun clickAction() {
-        checkSafeguard {
+        if (!readOnly) checkSafeguard {
             editor.clickAction(this)
         }
     }
@@ -125,23 +137,133 @@ private class OptionEditorScope<T : Any>(
 
     @Composable
     fun Dialog() = editor.Dialog(this)
+
+    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+    @Composable
+    fun SelectionDialog(
+        customContent: @Composable () -> Unit,
+        onCustomSave: () -> Unit,
+        customSaveEnabled: Boolean = true
+    ) {
+        var selectedMode by rememberSaveable { mutableStateOf(mode) }
+        var selectedPresetKey by rememberSaveable {
+            mutableStateOf(option.presets?.entries?.find { it.value == value }?.key)
+        }
+        var showCustomPage by rememberSaveable { mutableStateOf(mode == Mode.CUSTOM) }
+
+        AlertDialogExtended(
+            onDismissRequest = dismissDialog,
+            title = { Text(option.name) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (showCustomPage) onCustomSave()
+                        else {
+                            when (selectedMode) {
+                                Mode.NULL -> submitDialog(null)
+                                Mode.DEFAULT -> submitDialog(option.default)
+                                Mode.PRESET -> submitDialog(option.presets?.get(selectedPresetKey))
+                                Mode.CUSTOM -> onCustomSave()
+                            }
+                        }
+                    },
+                    enabled = !showCustomPage || customSaveEnabled,
+                    shapes = ButtonDefaults.shapes()
+                ) {
+                    Text(stringResource(R.string.save))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = dismissDialog, shapes = ButtonDefaults.shapes()) {
+                    Text(stringResource(R.string.cancel))
+                }
+            },
+            tertiaryButton = {
+                TextButton(
+                    onClick = { showCustomPage = !showCustomPage },
+                    shapes = ButtonDefaults.shapes()
+                ) {
+                    Text(stringResource(if (showCustomPage) R.string.patch_options_presets else R.string.patch_options_custom))
+                }
+            },
+            textHorizontalPadding = PaddingValues(horizontal = 0.dp),
+            text = {
+                if (showCustomPage) {
+                    Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+                        customContent()
+                    }
+                } else {
+                    LazyColumn {
+                        if (!option.required) {
+                            item {
+                                ListItem(
+                                    onClick = { selectedMode = Mode.NULL },
+                                    content = { Text(stringResource(R.string.patch_options_set_null)) },
+                                    supportingContent = { Text(stringResource(R.string.patch_options_set_null_description)) },
+                                    leadingContent = {
+                                        HapticRadioButton(
+                                            selected = selectedMode == Mode.NULL,
+                                            onClick = { selectedMode = Mode.NULL }
+                                        )
+                                    },
+                                    colors = transparentListItemColors
+                                )
+                            }
+                        }
+
+                        option.default?.let { default ->
+                            item {
+                                ListItem(
+                                    onClick = { selectedMode = Mode.DEFAULT },
+                                    content = { Text(stringResource(R.string.patch_options_set_default)) },
+                                    supportingContent = { Text(default.toString()) },
+                                    leadingContent = {
+                                        HapticRadioButton(
+                                            selected = selectedMode == Mode.DEFAULT,
+                                            onClick = { selectedMode = Mode.DEFAULT }
+                                        )
+                                    },
+                                    colors = transparentListItemColors
+                                )
+                            }
+                        }
+
+                        option.presets?.forEach { (key, presetValue) ->
+                            item {
+                                ListItem(
+                                    onClick = {
+                                        selectedMode = Mode.PRESET
+                                        selectedPresetKey = key
+                                    },
+                                    content = { Text(key) },
+                                    supportingContent = presetValue?.let { { Text(it.toString()) } },
+                                    leadingContent = {
+                                        HapticRadioButton(
+                                            selected = selectedMode == Mode.PRESET && selectedPresetKey == key,
+                                            onClick = {
+                                                selectedMode = Mode.PRESET
+                                                selectedPresetKey = key
+                                            }
+                                        )
+                                    },
+                                    colors = transparentListItemColors
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        )
+    }
 }
 
 private interface OptionEditor<T : Any> {
     fun clickAction(scope: OptionEditorScope<T>) = scope.openDialog()
 
-    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+    fun shouldHintSetValue() = true
+
     @Composable
     fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        TooltipIconButton(
-            onClick = { scope.checkSafeguard { clickAction(scope) } },
-            tooltip = stringResource(if (scope.readOnly) R.string.show else R.string.edit)
-        ) {
-            Icon(
-                if (scope.readOnly) Icons.Outlined.Visibility else Icons.Outlined.Edit,
-                stringResource(if (scope.readOnly) R.string.show else R.string.edit)
-            )
-        }
     }
 
     @Composable
@@ -212,60 +334,71 @@ fun <T : Any> OptionItem(
 ) {
     val editor = remember(option.type, option.presets) {
         @Suppress("UNCHECKED_CAST")
-        val baseOptionEditor =
-            optionEditors.getOrDefault(option.type, UnknownTypeEditor) as OptionEditor<T>
-
-        if (option.type != typeOf<Boolean>() && option.presets != null) PresetOptionEditor(
-            baseOptionEditor
-        )
-        else baseOptionEditor
+        optionEditors.getOrDefault(option.type, UnknownTypeEditor) as OptionEditor<T>
     }
 
     WithOptionEditor(editor, option, value, setValue, selectionWarningEnabled, readOnly) {
         ListItem(
-            modifier = Modifier.clickable(onClick = ::clickAction),
-            headlineContent = { Text(option.name) },
+            onClick = ::clickAction,
+            content = { Text(option.name) },
             supportingContent = {
                 Column {
                     Text(option.description)
+                    Column(modifier = Modifier.padding(top = 8.dp)) {
+                        if (!readOnly && editor.shouldHintSetValue() && value != null) {
+                            Text(
+                                stringResource(R.string.patch_options_user_set_value, value.toString()),
+                                style = MaterialTheme.typography.bodySmall,
+                                fontStyle = FontStyle.Italic
+                            )
+                        }
+
+                        option.default?.let {
+                            Text(
+                                stringResource(R.string.patch_options_default_value, it.toString()),
+                                style = MaterialTheme.typography.bodySmall,
+                                fontStyle = FontStyle.Italic
+                            )
+                        }
+                    }
+
                     if (option.required && value == null) Text(
                         stringResource(R.string.option_required),
+                        modifier = Modifier.padding(top = 4.dp),
                         color = MaterialTheme.colorScheme.error
                     )
                 }
             },
-            trailingContent = { ListItemTrailingContent() }
+            trailingContent = if (!readOnly) {
+                { ListItemTrailingContent() }
+            } else null,
         )
     }
 }
 
 private fun <T> optionValueLabelPlain(
-     option: Option<T>,
-     value: T?,
-     fallBackToDefault: Boolean = true,
-     unsetLabel: String
- ): String {
-     val resolved = if (fallBackToDefault) value ?: option.default else value
-     val presetLabel = option.presets?.entries?.firstOrNull { it.value == resolved }?.key
+    option: Option<T>,
+    value: T?,
+    unsetLabel: String
+): String {
+    val presetLabel = option.presets?.entries?.firstOrNull { it.value == value }?.key
 
-     return when {
-         presetLabel != null && resolved != null -> "$presetLabel ($resolved)"
-         presetLabel != null -> presetLabel
-        resolved == null -> unsetLabel
-         else -> resolved.toString()
-     }
- }
+    return when {
+        presetLabel != null && value != null -> "$presetLabel ($value)"
+        presetLabel != null -> presetLabel
+        value == null -> unsetLabel
+        else -> value.toString()
+    }
+}
 
 @Composable
 private fun <T> optionValueLabel(
     option: Option<T>,
     value: T?,
-    fallBackToDefault: Boolean = true
 ) = optionValueLabelPlain(
     option = option,
     value = value,
-    fallBackToDefault = fallBackToDefault,
-    unsetLabel = stringResource(R.string.field_not_set)
+    unsetLabel = stringResource(if (value == null && !option.required) R.string.patch_options_set_null else R.string.field_not_set)
 )
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -298,7 +431,6 @@ private object StringOptionEditor : OptionEditor<String> {
                     value = optionValueLabel(scope.option, scope.value),
                     onValueChange = {},
                     enabled = false,
-                    modifier = Modifier.fillMaxWidth()
                 )
             }
             return
@@ -329,10 +461,8 @@ private object StringOptionEditor : OptionEditor<String> {
             }
         }
 
-        AlertDialog(
-            onDismissRequest = scope.dismissDialog,
-            title = { Text(scope.option.name) },
-            text = {
+        scope.SelectionDialog(
+            customContent = {
                 OutlinedTextField(
                     value = fieldValue,
                     onValueChange = { fieldValue = it },
@@ -344,7 +474,6 @@ private object StringOptionEditor : OptionEditor<String> {
                         if (validatorFailed) {
                             Text(
                                 stringResource(R.string.input_dialog_value_invalid),
-                                modifier = Modifier.fillMaxWidth(),
                                 color = MaterialTheme.colorScheme.error
                             )
                         }
@@ -385,20 +514,8 @@ private object StringOptionEditor : OptionEditor<String> {
                     }
                 )
             },
-            confirmButton = {
-                TextButton(
-                    enabled = !validatorFailed,
-                    onClick = { scope.submitDialog(fieldValue) },
-                    shapes = ButtonDefaults.shapes()
-                ) {
-                    Text(stringResource(R.string.save))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
-                    Text(stringResource(R.string.cancel))
-                }
-            },
+            onCustomSave = { scope.submitDialog(fieldValue) },
+            customSaveEnabled = !validatorFailed
         )
     }
 }
@@ -409,7 +526,8 @@ private abstract class NumberOptionEditor<T : Number> : OptionEditor<T> {
         title: String,
         current: T?,
         validator: (T?) -> Boolean,
-        onSubmit: (T?) -> Unit
+        onSubmit: (T?) -> Unit,
+        onCancel: () -> Unit
     )
 
     @Composable
@@ -423,17 +541,32 @@ private abstract class NumberOptionEditor<T : Number> : OptionEditor<T> {
                     value = optionValueLabel(scope.option, scope.value),
                     onValueChange = {},
                     enabled = false,
-                    modifier = Modifier.fillMaxWidth()
                 )
             }
             return
         }
 
-        NumberDialog(scope.option.name, scope.value, scope.option.validator) {
-            if (it == null) return@NumberDialog scope.dismissDialog()
-
-            scope.submitDialog(it)
+        var fieldValue by rememberSaveable(scope.value) {
+            mutableStateOf(scope.value)
         }
+        var isValid by remember { mutableStateOf(true) }
+
+        scope.SelectionDialog(
+            customContent = {
+                NumberDialog(
+                    title = scope.option.name,
+                    current = fieldValue,
+                    validator = scope.option.validator,
+                    onSubmit = {
+                        fieldValue = it
+                        isValid = it != null && scope.option.validator(it)
+                    },
+                    onCancel = { scope.dismissDialog() }
+                )
+            },
+            onCustomSave = { scope.submitDialog(fieldValue) },
+            customSaveEnabled = isValid && fieldValue != null
+        )
     }
 }
 
@@ -443,7 +576,8 @@ private object IntOptionEditor : NumberOptionEditor<Int>() {
         title: String,
         current: Int?,
         validator: (Int?) -> Boolean,
-        onSubmit: (Int?) -> Unit
+        onSubmit: (Int?) -> Unit,
+        onCancel: () -> Unit
     ) = IntInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
@@ -453,7 +587,8 @@ private object LongOptionEditor : NumberOptionEditor<Long>() {
         title: String,
         current: Long?,
         validator: (Long?) -> Boolean,
-        onSubmit: (Long?) -> Unit
+        onSubmit: (Long?) -> Unit,
+        onCancel: () -> Unit
     ) = LongInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
@@ -463,11 +598,14 @@ private object FloatOptionEditor : NumberOptionEditor<Float>() {
         title: String,
         current: Float?,
         validator: (Float?) -> Boolean,
-        onSubmit: (Float?) -> Unit
+        onSubmit: (Float?) -> Unit,
+        onCancel: () -> Unit
     ) = FloatInputDialog(current, title, unit = null, validator, onSubmit)
 }
 
 private object BooleanOptionEditor : OptionEditor<Boolean> {
+    override fun shouldHintSetValue() = false
+
     override fun clickAction(scope: OptionEditorScope<Boolean>) {
         if (scope.readOnly) return
         scope.setValue(!scope.current)
@@ -505,6 +643,18 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
 
     @Composable
     override fun Dialog(scope: OptionEditorScope<Boolean>) {
+        if (scope.readOnly) return
+        scope.SelectionDialog(
+            customContent = {
+                ListItem(
+                    onClick = { scope.setValue(!scope.current) },
+                    content = { Text(stringResource(if (scope.current) R.string.onboarding_skip else R.string.add)) },
+                    trailingContent = { ListItemTrailingContent(scope) },
+                    colors = transparentListItemColors
+                )
+            },
+            onCustomSave = { scope.dismissDialog() }
+        )
     }
 
     private val OptionEditorScope<Boolean>.current get() = value ?: false
@@ -519,150 +669,6 @@ private object UnknownTypeEditor : OptionEditor<Any>, KoinComponent {
     }
 }
 
-/**
- * A wrapper for [OptionEditor]s that shows selectable presets.
- *
- * @param innerEditor The [OptionEditor] for [T].
- */
-private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<T>) :
-    OptionEditor<T> {
-    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-    @Composable
-    override fun Dialog(scope: OptionEditorScope<T>) {
-        var selectedPreset by rememberSaveable(scope.value, scope.option.presets) {
-            val presets = scope.option.presets!!
-
-            mutableStateOf(presets.entries.find { it.value == scope.value }?.key)
-        }
-
-        if (scope.readOnly) {
-            AlertDialogExtended(
-                onDismissRequest = scope.dismissDialog,
-                confirmButton = {
-                    TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
-                        Text(stringResource(R.string.ok))
-                    }
-                },
-                title = { Text(scope.option.name) },
-                textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-                text = {
-                    val presets = remember(scope.option.presets) {
-                        scope.option.presets?.entries?.toList().orEmpty()
-                    }
-
-                    LazyColumn {
-                        @Composable
-                        fun Item(title: String, value: Any?, presetKey: String?) {
-                            ListItem(
-                                headlineContent = { Text(title) },
-                                supportingContent = value?.toString()?.let { { Text(it) } },
-                                leadingContent = {
-                                    HapticRadioButton(
-                                        selected = selectedPreset == presetKey,
-                                        onClick = null,
-                                        enabled = false
-                                    )
-                                },
-                                colors = transparentListItemColors
-                            )
-                        }
-
-                        items(presets, key = { it.key }) {
-                            Item(it.key, it.value, it.key)
-                        }
-
-                        item(key = null) {
-                            Item(
-                                stringResource(R.string.option_preset_custom_value),
-                                scope.value,
-                                null
-                            )
-                        }
-                    }
-                }
-            )
-            return
-        }
-
-        WithOptionEditor(
-            innerEditor,
-            scope.option,
-            scope.value,
-            scope.setValue,
-            scope.selectionWarningEnabled,
-            readOnly = false,
-            onDismissDialog = scope.dismissDialog
-         ) inner@{
-            var hidePresetsDialog by rememberSaveable {
-                mutableStateOf(false)
-            }
-            if (hidePresetsDialog) return@inner
-
-            // TODO: add a divider for scrollable content
-            AlertDialogExtended(
-                onDismissRequest = scope.dismissDialog,
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            if (selectedPreset != null) scope.submitDialog(
-                                scope.option.presets?.get(
-                                    selectedPreset
-                                )
-                            )
-                            else {
-                                this@inner.openDialog()
-                                // Hide the presets dialog so it doesn't show up in the background.
-                                hidePresetsDialog = true
-                            }
-                        },
-                        shapes = ButtonDefaults.shapes()
-                    ) {
-                        Text(stringResource(if (selectedPreset != null) R.string.save else R.string.continue_))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
-                        Text(stringResource(R.string.cancel))
-                    }
-                },
-                title = { Text(scope.option.name) },
-                textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-                text = {
-                    val presets = remember(scope.option.presets) {
-                        scope.option.presets?.entries?.toList().orEmpty()
-                    }
-
-                    LazyColumn {
-                        @Composable
-                        fun Item(title: String, value: Any?, presetKey: String?) {
-                            ListItem(
-                                modifier = Modifier.clickable { selectedPreset = presetKey },
-                                headlineContent = { Text(title) },
-                                supportingContent = value?.toString()?.let { { Text(it) } },
-                                leadingContent = {
-                                    HapticRadioButton(
-                                        selected = selectedPreset == presetKey,
-                                        onClick = { selectedPreset = presetKey }
-                                    )
-                                },
-                                colors = transparentListItemColors
-                            )
-                        }
-
-                        items(presets, key = { it.key }) {
-                            Item(it.key, it.value, it.key)
-                        }
-
-                        item(key = null) {
-                            Item(stringResource(R.string.option_preset_custom_value), null, null)
-                        }
-                    }
-                }
-            )
-        }
-    }
-}
-
 private class ListOptionEditor<T : Serializable>(private val elementEditor: OptionEditor<T>) :
     OptionEditor<List<T>> {
     private fun createElementOption(option: Option<List<T>>) = Option<T>(
@@ -674,7 +680,8 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
         null
     ) { true }
 
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    @OptIn(
+        ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
         ExperimentalMaterial3ExpressiveApi::class
     )
     @Composable
