@@ -25,7 +25,7 @@ if mount | grep -q "$stock_path" ; then
   exit 1
 fi
 
-if [ "$version" != "$stock_version" ]; then
+if ! echo "$stock_version" | grep -qwn "$version"; then
   echo "Not mounting as versions don't match"
   exit 1
 fi
