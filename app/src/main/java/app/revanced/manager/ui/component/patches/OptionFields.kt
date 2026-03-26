@@ -165,7 +165,7 @@ private fun OptionItemSupporting(option: Option<*>, value: Any?) {
         if (option.required && value == null) {
             Text(
                 style = MaterialTheme.typography.labelLargeEmphasized,
-                text = stringResource(R.string.option_required),
+                text = stringResource(R.string.patch_options_value_required),
                 modifier = Modifier.padding(top = 16.dp),
                 color = MaterialTheme.colorScheme.error,
             )

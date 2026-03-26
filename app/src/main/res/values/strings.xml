@@ -323,7 +323,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="patch_options_value_invalid">Invalid value</string>
     <string name="patch_options_value_boolean_true">Enabled</string>
     <string name="patch_options_value_boolean_false">Disabled</string>
-    <string name="patch_options_value_list_empty">No items</string>
+    <string name="patch_options_value_required">This option is required</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you selected doesn’t match the suggested version: %s
 
