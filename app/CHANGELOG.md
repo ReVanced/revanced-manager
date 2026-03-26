@@ -1,3 +1,10 @@
+# app [2.6.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.2...v2.6.0-dev.3) (2026-03-26)
+
+
+### Bug Fixes
+
+* Preserve applied patches on patched apps when source patches is deleted ([#3227](https://github.com/ReVanced/revanced-manager/issues/3227)) ([4884fdb](https://github.com/ReVanced/revanced-manager/commit/4884fdb5545134181a8a2176c7a21911aa22be9b))
+
 # app [2.6.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.1...v2.6.0-dev.2) (2026-03-25)
 
 
