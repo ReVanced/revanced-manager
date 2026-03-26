@@ -317,13 +317,13 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options have been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
-    <string name="patch_options_set_null">Unset</string>
-    <string name="patch_options_set_null_description">Set this option to null</string>
-    <string name="patch_options_set_default">Use default</string>
-    <string name="patch_options_default_value">Default: %s</string>
-    <string name="patch_options_user_set_value">Set to: %s</string>
-    <string name="patch_options_custom">Custom</string>
-    <string name="patch_options_presets">Presets</string>
+    <string name="patch_options_nothing_set">Nothing set for this option</string>
+    <string name="patch_options_set_default">Use default value</string>
+    <string name="patch_options_value_null">Not set</string>
+    <string name="patch_options_value_invalid">Invalid value</string>
+    <string name="patch_options_value_boolean_true">Enabled</string>
+    <string name="patch_options_value_boolean_false">Disabled</string>
+    <string name="patch_options_value_list_empty">No items</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you selected doesn’t match the suggested version: %s
 
@@ -518,7 +518,6 @@ It’s only compatible with these versions: %2$s</string>
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
-    <string name="option_required">This option is required</string>
     <string name="required_options_screen">Required options</string>
 
     <string name="failed_to_check_updates">Couldn’t check for updates: %s</string>

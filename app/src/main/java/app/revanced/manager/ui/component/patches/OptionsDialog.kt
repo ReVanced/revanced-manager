@@ -25,6 +25,7 @@ fun OptionsDialog(
     patch: PatchInfo,
     values: Map<String, Any?>?,
     reset: () -> Unit,
+    resetOption: (Option<*>) -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
     selectionWarningEnabled: Boolean,
@@ -62,9 +63,8 @@ fun OptionsDialog(
                 OptionItem(
                     option = option as Option<Any>,
                     value = value,
-                    setValue = {
-                        set(name, it)
-                    },
+                    setValue = { set(name, it) },
+                    reset = { resetOption(option) },
                     selectionWarningEnabled = selectionWarningEnabled,
                     readOnly = readOnly
                 )

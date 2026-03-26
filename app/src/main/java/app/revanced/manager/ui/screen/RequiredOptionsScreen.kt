@@ -153,9 +153,8 @@ fun RequiredOptionsScreen(
                                 OptionItem(
                                     option = option as Option<Any>,
                                     value = value,
-                                    setValue = { new ->
-                                        vm.setOption(bundle.uid, it, name, new)
-                                    },
+                                    setValue = { new -> vm.setOption(bundle.uid, it, name, new) },
+                                    reset = { vm.resetOption(bundle.uid, it, option) },
                                     selectionWarningEnabled = vm.selectionWarningEnabled
                                 )
                             }
