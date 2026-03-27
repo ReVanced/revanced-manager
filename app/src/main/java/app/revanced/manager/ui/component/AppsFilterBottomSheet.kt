@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.viewmodel.AppsViewModel
+import app.revanced.manager.ui.component.settings.BooleanItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,6 +86,17 @@ fun AppsFilterBottomSheet(
                     )
                 }
             }
+
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.outlineVariant
+            )
+
+            BooleanItem(
+                value = (filter and AppsViewModel.APPLY_FILTER_TO_PINNED) != 0,
+                onValueChange = { onToggleFlag(AppsViewModel.APPLY_FILTER_TO_PINNED) },
+                headline = R.string.apply_to_pinned
+            )
         }
     }
 }

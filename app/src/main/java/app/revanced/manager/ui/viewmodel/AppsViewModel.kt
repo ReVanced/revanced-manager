@@ -65,6 +65,19 @@ class AppsViewModel(
         initialValue = null,
     )
 
+    val pinnedApps = pm.pinnedApps.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptySet(),
+    )
+
+    val suggestedVersions = pm.suggestedVersions.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyMap(),
+    )
+
+
     val packageInfoMap = mutableStateMapOf<String, PackageInfo?>()
 
     private val storageSelectionChannel = Channel<SelectedApp.Local>()
@@ -124,6 +137,10 @@ class AppsViewModel(
         }
     }
 
+    fun togglePin(packageName: String) = viewModelScope.launch {
+        pm.togglePin(packageName)
+    }
+
     private fun loadSelectedFile(uri: Uri): SelectedApp.Local? =
         app.contentResolver.openInputStream(uri)?.use { stream ->
             inputFile.delete()
@@ -144,5 +161,6 @@ class AppsViewModel(
         const val SHOW_INSTALLED = 2 // 2^1
         const val SHOW_NOT_INSTALLED = 4 // 2^2
         const val SHOW_SYSTEM = 8 // 2^3
+        const val APPLY_FILTER_TO_PINNED = 16 // 2^4
     }
 }

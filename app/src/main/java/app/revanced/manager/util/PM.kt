@@ -38,9 +38,12 @@ data class AppInfo(
 class PM(
     private val app: Application,
     patchBundleRepository: PatchBundleRepository,
-    prefs: PreferencesManager,
+    private val prefs: PreferencesManager,
     private val uninstaller: PackageUninstaller
 ) {
+    val suggestedVersions = patchBundleRepository.suggestedVersions
+    val pinnedApps = prefs.pinnedApps.flow
+
     private val scope = CoroutineScope(Dispatchers.IO)
 
     val appList = combine(
@@ -147,6 +150,20 @@ class PM(
     }
 
     fun canInstallPackages() = app.packageManager.canRequestPackageInstalls()
+
+    suspend fun togglePin(packageName: String) {
+        val current = prefs.pinnedApps.get()
+        val pinned = java.util.HashSet<String>()
+        for (item in current) {
+            pinned.add(item)
+        }
+        if (pinned.contains(packageName)) {
+            pinned.remove(packageName)
+        } else {
+            pinned.add(packageName)
+        }
+        prefs.pinnedApps.update(pinned)
+    }
 }
 
 /**

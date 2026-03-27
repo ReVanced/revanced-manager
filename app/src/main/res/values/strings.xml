@@ -593,4 +593,7 @@ Tap them for more details.</string>
     <plurals name="selected_count">
         <item quantity="other">%d selected</item>
     </plurals>
+    <string name="pinned">Pinned</string>
+    <string name="available_apps">Available apps</string>
+    <string name="apply_to_pinned">Apply to pinned apps</string>
 </resources>
