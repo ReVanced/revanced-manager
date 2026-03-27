@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import app.revanced.manager.R
 import com.eygraber.compose.placeholder.material3.placeholder
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,8 @@ fun AppLabel(
     packageInfo: PackageInfo?,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip,
     defaultText: String? = stringResource(R.string.not_installed)
 ) {
     val context = LocalContext.current
@@ -47,6 +50,8 @@ fun AppLabel(
                 shape = RoundedCornerShape(100)
             )
             .then(modifier),
-        style = style
+        style = style,
+        maxLines = maxLines,
+        overflow = overflow
     )
 }
