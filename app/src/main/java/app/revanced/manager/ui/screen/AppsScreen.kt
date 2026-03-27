@@ -3,7 +3,12 @@ package app.revanced.manager.ui.screen
 import android.content.ActivityNotFoundException
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,20 +20,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,6 +63,7 @@ import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -63,6 +75,10 @@ fun AppsScreen(
     viewModel: AppsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val lazyListState = rememberLazyListState()
+    val searchLazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     EventEffect(flow = viewModel.storageSelectionFlow) {
         onStorageSelect(it)
     }
@@ -180,7 +196,10 @@ fun AppsScreen(
                                 LoadingIndicator()
                             }
                         } else {
-                            LazyColumnWithScrollbar(modifier = Modifier.fillMaxSize()) {
+                            LazyColumnWithScrollbar(
+                                modifier = Modifier.fillMaxSize(),
+                                state = searchLazyListState
+                            ) {
                                 if (filteredPatchedApps.isNotEmpty()) {
                                     item(key = "SEARCH_HEADER_PATCHED") {
                                         Row(
@@ -285,6 +304,28 @@ fun AppsScreen(
                     }
                 }
             }
+        },
+        floatingActionButton = {
+            val currentState = if (searchExpanded) searchLazyListState else lazyListState
+            val showFab by remember(currentState) {
+                derivedStateOf { currentState.firstVisibleItemIndex > 0 }
+            }
+
+            AnimatedVisibility(
+                visible = showFab,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            currentState.animateScrollToItem(0)
+                        }
+                    }
+                ) {
+                    Icon(Icons.Filled.KeyboardArrowUp, null)
+                }
+            }
         }
     ) { paddingValues ->
         if (searchExpanded) return@Scaffold
@@ -294,6 +335,7 @@ fun AppsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(top = TITLE_VERTICAL),
+            state = lazyListState,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
