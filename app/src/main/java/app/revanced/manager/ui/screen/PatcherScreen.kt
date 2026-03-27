@@ -8,6 +8,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -269,8 +272,17 @@ fun PatcherScreen(
                 expandedCategory = category
             }
 
+            val patcherProgress by animateFloatAsState(
+                targetValue = viewModel.progress,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                ),
+                label = "patcherProgress"
+            )
+
             LinearWavyProgressIndicator(
-                progress = { viewModel.progress },
+                progress = { patcherProgress },
                 modifier = Modifier.fillMaxWidth()
             )
 

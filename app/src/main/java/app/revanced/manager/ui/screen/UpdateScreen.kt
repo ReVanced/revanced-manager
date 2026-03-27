@@ -1,6 +1,9 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +31,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -112,9 +116,18 @@ fun UpdateScreen(
         Column(
             modifier = Modifier.padding(paddingValues),
         ) {
+            val downloadingProgress by animateFloatAsState(
+                targetValue = vm.downloadProgress,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                ),
+                label = "downloadingProgress"
+            )
+
             if (vm.state == State.DOWNLOADING) {
                 LinearWavyProgressIndicator(
-                    progress = { vm.downloadProgress },
+                    progress = { downloadingProgress },
                     modifier = Modifier
                         .padding(top = paddingValues.calculateTopPadding())
                         .fillMaxWidth(),
