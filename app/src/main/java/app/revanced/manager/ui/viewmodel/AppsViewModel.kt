@@ -3,7 +3,10 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.net.Uri
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -73,6 +76,13 @@ class AppsViewModel(
         }
     }
 
+    var filter by mutableIntStateOf(SHOW_PATCHED or SHOW_INSTALLED or SHOW_NOT_INSTALLED or SHOW_SYSTEM)
+        private set
+
+    fun toggleFlag(flag: Int) {
+        filter = filter xor flag
+    }
+
     fun setFilterText(filter: String) {
         filterTextFlow.value = filter
     }
@@ -128,4 +138,11 @@ class AppsViewModel(
                 )
             }
         }
+
+    companion object {
+        const val SHOW_PATCHED = 1 // 2^0
+        const val SHOW_INSTALLED = 2 // 2^1
+        const val SHOW_NOT_INSTALLED = 4 // 2^2
+        const val SHOW_SYSTEM = 8 // 2^3
+    }
 }

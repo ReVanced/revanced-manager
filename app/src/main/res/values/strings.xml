@@ -14,6 +14,7 @@ Second \"item\" text"</string>
 -->
 <resources>
     <string name="app_name">ReVanced Manager</string>
+    <string name="apps">Apps</string>
     <string name="patcher">Patcher</string>
     <string name="patches">Patches</string>
     <string name="cli">CLI</string>

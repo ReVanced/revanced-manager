@@ -154,5 +154,12 @@ class PM(
  * Split APKs cannot be used directly as a patch source.
  */
 fun PackageInfo.isSplitApk(): Boolean =
-    !applicationInfo?.splitSourceDirs.isNullOrEmpty() || !splitNames.isNullOrEmpty()
+    !applicationInfo?.splitSourceDirs.isNullOrEmpty() || splitNames.isNotEmpty()
+
+/**
+ * Returns true if this package is a system app.
+ */
+fun PackageInfo.isSystemApp(): Boolean =
+    (applicationInfo?.flags ?: 0) and android.content.pm.ApplicationInfo.FLAG_SYSTEM != 0
+
 

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
@@ -53,6 +54,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
+import app.revanced.manager.ui.component.AppsFilterBottomSheet
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.SearchBar
@@ -61,6 +63,7 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppsViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.isSystemApp
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
@@ -114,6 +117,7 @@ fun AppsScreen(
     }
 
     var searchExpanded by rememberSaveable { mutableStateOf(false) }
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val filterText by viewModel.filterText.collectAsStateWithLifecycle()
 
     val TITLE_HORIZONTAL = 16.dp
@@ -151,13 +155,25 @@ fun AppsScreen(
                         }
                     },
                     trailingIcon = {
-                        if (searchExpanded && filterText.isNotEmpty()) {
+                        if (searchExpanded) {
+                            if (filterText.isNotEmpty()) {
+                                TooltipIconButton(
+                                    onClick = { viewModel.setFilterText("") },
+                                    tooltip = stringResource(R.string.clear),
+                                ) { contentDescription ->
+                                    Icon(
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = contentDescription
+                                    )
+                                }
+                            }
+                        } else {
                             TooltipIconButton(
-                                onClick = { viewModel.setFilterText("") },
-                                tooltip = stringResource(R.string.clear),
+                                onClick = { showBottomSheet = true },
+                                tooltip = stringResource(R.string.more),
                             ) { contentDescription ->
                                 Icon(
-                                    imageVector = Icons.Filled.Close,
+                                    imageVector = Icons.Outlined.FilterList,
                                     contentDescription = contentDescription
                                 )
                             }
@@ -167,18 +183,32 @@ fun AppsScreen(
                     val query = filterText.trim()
                     val patched = installedApps
                     val patchable = patchableApps
+                    val showPatched = (viewModel.filter and AppsViewModel.SHOW_PATCHED) != 0
+                    val showInstalled = (viewModel.filter and AppsViewModel.SHOW_INSTALLED) != 0
+                    val showNotInstalled = (viewModel.filter and AppsViewModel.SHOW_NOT_INSTALLED) != 0
+                    val showSystem = (viewModel.filter and AppsViewModel.SHOW_SYSTEM) != 0
+
                     val patchedPkgNames = patchedPackageNames(patched)
-                    val filteredPatchedApps = patched
-                        ?.filter { it.matchesQuery(query) }
-                        .orEmpty()
+                    val filteredPatchedApps = if (showPatched) {
+                        patched?.filter {
+                            val packageInfo = viewModel.packageInfoMap[it.currentPackageName]
+                            it.matchesQuery(query) && (showSystem || packageInfo?.isSystemApp() != true)
+                        }.orEmpty()
+                    } else emptyList()
                     val filteredPatchableApps = patchable
                         ?.filter { app ->
-                            app.packageName !in patchedPkgNames &&
-                                patchableMatchesQuery(
-                                    packageName = app.packageName,
-                                    label = viewModel.loadLabel(app.packageInfo),
-                                    query = query
-                                )
+                            val isNotPatched = app.packageName !in patchedPkgNames
+                            val isInstalled = app.packageInfo != null
+                            val isSystemMatch = showSystem || app.packageInfo?.isSystemApp() != true
+
+                            isNotPatched && (
+                                (isInstalled && showInstalled) ||
+                                (!isInstalled && showNotInstalled)
+                            ) && isSystemMatch && patchableMatchesQuery(
+                                packageName = app.packageName,
+                                label = viewModel.loadLabel(app.packageInfo),
+                                query = query
+                            )
                         }
                         .orEmpty()
 
@@ -354,10 +384,30 @@ fun AppsScreen(
                 return@LazyColumnWithScrollbar
             }
 
-            val patchedPackageNames = patchedPackageNames(patched)
-            val visiblePatchableApps = patchable.filter { it.packageName !in patchedPackageNames }
+            val showPatched = (viewModel.filter and AppsViewModel.SHOW_PATCHED) != 0
+            val showInstalled = (viewModel.filter and AppsViewModel.SHOW_INSTALLED) != 0
+            val showNotInstalled = (viewModel.filter and AppsViewModel.SHOW_NOT_INSTALLED) != 0
+            val showSystem = (viewModel.filter and AppsViewModel.SHOW_SYSTEM) != 0
 
-            if (patched.isNotEmpty()) {
+            val patchedPackageNames = patchedPackageNames(patched)
+            val visiblePatched = if (showPatched) {
+                patched.filter {
+                    val packageInfo = viewModel.packageInfoMap[it.currentPackageName]
+                    showSystem || packageInfo?.isSystemApp() != true
+                }
+            } else emptyList()
+            val visiblePatchableApps = patchable.filter { app ->
+                val isNotPatched = app.packageName !in patchedPackageNames
+                val isInstalled = app.packageInfo != null
+                val isSystemMatch = showSystem || app.packageInfo?.isSystemApp() != true
+
+                isNotPatched && (
+                    (isInstalled && showInstalled) ||
+                    (!isInstalled && showNotInstalled)
+                ) && isSystemMatch
+            }
+
+            if (visiblePatched.isNotEmpty()) {
                 item(key = "HEADER_PATCHED") {
                     Row(
                         modifier = Modifier
@@ -375,7 +425,7 @@ fun AppsScreen(
                 }
 
                 items(
-                    items = patched,
+                    items = visiblePatched,
                     key = { "PATCHED-${it.currentPackageName}" },
                     contentType = { "PATCHED" },
                 ) { installedApp ->
@@ -397,7 +447,7 @@ fun AppsScreen(
                 }
             }
 
-            if (patched.isNotEmpty()) {
+            if (visiblePatched.isNotEmpty()) {
                 item(key = "HEADER_PATCHABLE") {
                     Text(
                         text = stringResource(R.string.patchable_apps_section_title),
@@ -472,5 +522,13 @@ fun AppsScreen(
                 )
             }
         }
+    }
+
+    if (showBottomSheet) {
+        AppsFilterBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            filter = viewModel.filter,
+            onToggleFlag = viewModel::toggleFlag
+        )
     }
 }
