@@ -57,7 +57,7 @@ fun BooleanItem(
     value: Boolean,
     onValueChange: (Boolean) -> Unit,
     @StringRes headline: Int,
-    description: String
+    description: String? = null
 ) = SettingsListItem(
     modifier = modifier,
     headlineContent = stringResource(headline),
