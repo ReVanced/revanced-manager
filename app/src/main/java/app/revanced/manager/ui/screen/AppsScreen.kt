@@ -17,14 +17,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Storage
@@ -36,8 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -49,7 +45,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -110,20 +105,23 @@ fun AppsScreen(
 
         val packageInfo = viewModel.packageInfoMap[currentPackageName]
         return currentPackageName.contains(query, ignoreCase = true) ||
-            originalPackageName.contains(query, ignoreCase = true) ||
-            viewModel.loadLabel(packageInfo).contains(query, ignoreCase = true)
+                originalPackageName.contains(query, ignoreCase = true) ||
+                viewModel.loadLabel(packageInfo).contains(query, ignoreCase = true)
     }
 
     fun patchableMatchesQuery(packageName: String, label: String?, query: String): Boolean {
         if (query.isBlank()) return true
 
         return packageName.contains(query, ignoreCase = true) ||
-            label?.contains(query, ignoreCase = true) == true
+                label?.contains(query, ignoreCase = true) == true
     }
 
     var searchExpanded by rememberSaveable { mutableStateOf(false) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val filterText by viewModel.filterText.collectAsStateWithLifecycle()
+
+    val TITLE_HORIZONTAL = 16.dp
+    val TITLE_VERTICAL = 8.dp
 
     Scaffold(
         topBar = {
@@ -204,9 +202,9 @@ fun AppsScreen(
                             val isSystemMatch = showSystem || app.packageInfo?.isSystemApp() != true
 
                             isNotPatched && (
-                                (isInstalled && showInstalled) ||
-                                (!isInstalled && showNotInstalled)
-                            ) && isSystemMatch && patchableMatchesQuery(
+                                    (isInstalled && showInstalled) ||
+                                            (!isInstalled && showNotInstalled)
+                                    ) && isSystemMatch && patchableMatchesQuery(
                                 packageName = app.packageName,
                                 label = viewModel.loadLabel(app.packageInfo),
                                 query = query
@@ -232,6 +230,24 @@ fun AppsScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 state = searchLazyListState
                             ) {
+                                if (filteredPatchedApps.isNotEmpty()) {
+                                    item(key = "SEARCH_HEADER_PATCHED") {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.patched_apps_section_title),
+                                                color = MaterialTheme.colorScheme.primary,
+                                                style = MaterialTheme.typography.labelLarge,
+                                            )
+                                        }
+                                    }
+                                }
+
                                 items(
                                     items = filteredPatchedApps,
                                     key = { "SEARCH_PATCHED-${it.currentPackageName}" },
@@ -256,14 +272,23 @@ fun AppsScreen(
                                             AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
                                         },
                                         supportingContent = {
-                                            val metadata = patchable.find { it.packageName == installedApp.currentPackageName }
-                                            AppStatusInfo(
-                                                isPatched = true,
-                                                patchCount = metadata?.patches
-                                            )
+                                            Text(installedApp.currentPackageName)
                                         },
                                         colors = transparentListItemColors
                                     )
+                                }
+
+                                if (filteredPatchableApps.isNotEmpty()) {
+                                    item(key = "SEARCH_HEADER_PATCHABLE") {
+                                        Text(
+                                            text = stringResource(R.string.patchable_apps_section_title),
+                                            color = MaterialTheme.colorScheme.primary,
+                                            style = MaterialTheme.typography.labelLarge,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
+                                        )
+                                    }
                                 }
 
                                 items(
@@ -287,11 +312,16 @@ fun AppsScreen(
                                         headlineContent = {
                                             AppLabel(app.packageInfo, defaultText = app.packageName)
                                         },
-                                        supportingContent = {
-                                            AppStatusInfo(
-                                                isPatched = false,
-                                                patchCount = app.patches
-                                            )
+                                        supportingContent = app.patches?.let { patchCount ->
+                                            {
+                                                Text(
+                                                    pluralStringResource(
+                                                        R.plurals.patch_count,
+                                                        patchCount,
+                                                        patchCount
+                                                    )
+                                                )
+                                            }
                                         },
                                         trailingContent = if (app.packageInfo == null) {
                                             { Text(stringResource(R.string.not_installed)) }
@@ -334,7 +364,7 @@ fun AppsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(top =  8.dp),
+                .padding(top = TITLE_VERTICAL),
             state = lazyListState,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
@@ -372,15 +402,63 @@ fun AppsScreen(
                 val isSystemMatch = showSystem || app.packageInfo?.isSystemApp() != true
 
                 isNotPatched && (
-                    (isInstalled && showInstalled) ||
-                    (!isInstalled && showNotInstalled)
-                ) && isSystemMatch
+                        (isInstalled && showInstalled) ||
+                                (!isInstalled && showNotInstalled)
+                        ) && isSystemMatch
             }
 
-            val visibleInstalledWithPatches = visiblePatchableApps.filter { it.packageInfo != null && (it.patches ?: 0) >= 1 && it.packageName != "universal" }
-            val visibleNotInstalledWithPatches = visiblePatchableApps.filter { it.packageInfo == null && (it.patches ?: 0) >= 1 && it.packageName != "universal" }
-            val visibleUniversal = visiblePatchableApps.filter { it.packageName == "universal" }
-            val visibleRest = visiblePatchableApps.filter { it.packageName != "universal" && (it.patches ?: 0) == 0 }
+            if (visiblePatched.isNotEmpty()) {
+                item(key = "HEADER_PATCHED") {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(R.string.patched_apps_section_title),
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
+                }
+
+                items(
+                    items = visiblePatched,
+                    key = { "PATCHED-${it.currentPackageName}" },
+                    contentType = { "PATCHED" },
+                ) { installedApp ->
+                    val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
+
+                    ListItem(
+                        modifier = Modifier.clickable { onAppClick(installedApp) },
+                        leadingContent = {
+                            AppIcon(
+                                packageInfo,
+                                contentDescription = null,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        },
+                        headlineContent = { AppLabel(packageInfo, defaultText = null) },
+                        supportingContent = { Text(installedApp.currentPackageName) },
+                        colors = transparentListItemColors
+                    )
+                }
+            }
+
+            if (visiblePatched.isNotEmpty()) {
+                item(key = "HEADER_PATCHABLE") {
+                    Text(
+                        text = stringResource(R.string.patchable_apps_section_title),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
+                    )
+                }
+            }
 
             item(key = "PATCHABLE_STORAGE") {
                 ListItem(
@@ -407,38 +485,8 @@ fun AppsScreen(
             }
 
             items(
-                items = visiblePatched,
-                key = { "PATCHED-${it.currentPackageName}" },
-                contentType = { "PATCHED" },
-            ) { installedApp ->
-                val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
-
-                ListItem(
-                    modifier = Modifier.clickable { onAppClick(installedApp) },
-                    leadingContent = {
-                        AppIcon(
-                            packageInfo = packageInfo,
-                            contentDescription = null,
-                            modifier = Modifier.size(36.dp)
-                        )
-                    },
-                    headlineContent = {
-                        AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
-                    },
-                    supportingContent = {
-                        val metadata = patchable.find { it.packageName == installedApp.currentPackageName }
-                        AppStatusInfo(
-                            isPatched = true,
-                            patchCount = metadata?.patches
-                        )
-                    },
-                    colors = transparentListItemColors
-                )
-            }
-
-            items(
-                items = visibleInstalledWithPatches,
-                key = { "INSTALLED-${it.packageName}" },
+                items = visiblePatchableApps,
+                key = { "PATCHABLE-${it.packageName}" },
                 contentType = { "PATCHABLE" },
             ) { app ->
                 ListItem(
@@ -456,110 +504,16 @@ fun AppsScreen(
                             defaultText = app.packageName
                         )
                     },
-                    supportingContent = {
-                        AppStatusInfo(
-                            isPatched = false,
-                            patchCount = app.patches
-                        )
-                    },
-                    trailingContent = if (app.packageInfo == null) {
-                        { Text(stringResource(R.string.not_installed)) }
-                    } else null,
-                    colors = transparentListItemColors
-                )
-            }
-
-            items(
-                items = visibleNotInstalledWithPatches,
-                key = { "NOT_INSTALLED-${it.packageName}" },
-                contentType = { "PATCHABLE" },
-            ) { app ->
-                ListItem(
-                    modifier = Modifier.clickable { onPatchableAppClick(app.packageName) },
-                    leadingContent = {
-                        AppIcon(
-                            packageInfo = app.packageInfo,
-                            contentDescription = null,
-                            modifier = Modifier.size(36.dp)
-                        )
-                    },
-                    headlineContent = {
-                        AppLabel(
-                            app.packageInfo,
-                            defaultText = app.packageName
-                        )
-                    },
-                    supportingContent = {
-                        AppStatusInfo(
-                            isPatched = false,
-                            patchCount = app.patches
-                        )
-                    },
-                    trailingContent = if (app.packageInfo == null) {
-                        { Text(stringResource(R.string.not_installed)) }
-                    } else null,
-                    colors = transparentListItemColors
-                )
-            }
-
-            items(
-                items = visibleUniversal,
-                key = { "UNIVERSAL-${it.packageName}" },
-                contentType = { "PATCHABLE" },
-            ) { app ->
-                ListItem(
-                    modifier = Modifier.clickable { onPatchableAppClick(app.packageName) },
-                    leadingContent = {
-                        AppIcon(
-                            packageInfo = app.packageInfo,
-                            contentDescription = null,
-                            modifier = Modifier.size(36.dp)
-                        )
-                    },
-                    headlineContent = {
-                        AppLabel(
-                            app.packageInfo,
-                            defaultText = app.packageName
-                        )
-                    },
-                    supportingContent = {
-                        AppStatusInfo(
-                            isPatched = false,
-                            patchCount = app.patches
-                        )
-                    },
-                    trailingContent = if (app.packageInfo == null) {
-                        { Text(stringResource(R.string.not_installed)) }
-                    } else null,
-                    colors = transparentListItemColors
-                )
-            }
-
-            items(
-                items = visibleRest,
-                key = { "REST-${it.packageName}" },
-                contentType = { "PATCHABLE" },
-            ) { app ->
-                ListItem(
-                    modifier = Modifier.clickable { onPatchableAppClick(app.packageName) },
-                    leadingContent = {
-                        AppIcon(
-                            packageInfo = app.packageInfo,
-                            contentDescription = null,
-                            modifier = Modifier.size(36.dp)
-                        )
-                    },
-                    headlineContent = {
-                        AppLabel(
-                            app.packageInfo,
-                            defaultText = app.packageName
-                        )
-                    },
-                    supportingContent = {
-                        AppStatusInfo(
-                            isPatched = false,
-                            patchCount = app.patches
-                        )
+                    supportingContent = app.patches?.let { patchCount ->
+                        {
+                            Text(
+                                pluralStringResource(
+                                    R.plurals.patch_count,
+                                    patchCount,
+                                    patchCount
+                                )
+                            )
+                        }
                     },
                     trailingContent = if (app.packageInfo == null) {
                         { Text(stringResource(R.string.not_installed)) }
@@ -577,65 +531,4 @@ fun AppsScreen(
             onToggleFlag = viewModel::toggleFlag
         )
     }
-}
-
-@Composable
-private fun AppStatusInfo(
-    isPatched: Boolean,
-    patchCount: Int?,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        if (isPatched) {
-            StatusPill(
-                text = stringResource(R.string.patched),
-                icon = Icons.Default.AutoFixHigh
-            )
-        }
-        patchCount?.let { count ->
-            StatusPill(
-                text = if (count == 0) {
-                    stringResource(R.string.no_patches)
-                } else {
-                    pluralStringResource(R.plurals.patch_count, count, count)
-                }
-            )
-        }
-    }
-}
-
-@Composable
-private fun StatusPill(
-    modifier: Modifier = Modifier,
-    text: String,
-    icon: ImageVector? = null
-) {
-    SuggestionChip(
-        onClick = { /* nothing... */ },
-        label = {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.labelSmall
-            )
-        },
-        icon = icon?.let {
-            {
-                Icon(
-                    imageVector = it,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-        },
-        modifier = modifier.height(24.dp),
-        enabled = false,
-        colors = SuggestionChipDefaults.suggestionChipColors(
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
-        border = null,
-    )
 }
