@@ -47,6 +47,7 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,6 +82,7 @@ import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.isSystemApp
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import com.eygraber.compose.placeholder.placeholder
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -582,11 +584,12 @@ private data class AppInfoState(
 @Composable
 private fun AppItem(
     state: AppInfoState,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
     ListItem(
-        modifier = Modifier
+        modifier = modifier
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .then(
                 if (state.isPatched) {
@@ -597,7 +600,6 @@ private fun AppItem(
                                 Color.Transparent,
                             )
                         ),
-                        shape = MaterialTheme.shapes.medium
                     )
                 } else Modifier
             ),
@@ -615,8 +617,8 @@ private fun AppItem(
                         Icons.Default.AutoAwesome,
                         contentDescription = null,
                         modifier = Modifier
-                            .size(16.dp)
-                            .padding(end = 4.dp),
+                            .size(24.dp)
+                            .padding(end = 8.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -634,11 +636,11 @@ private fun AppItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (state.patchCount > 0) {
-                    Pill(text = pluralStringResource(R.plurals.patch_count, state.patchCount, state.patchCount))
+                    PatchesPill(patchCount = state.patchCount, isPatched = state.isPatched)
                 }
                 if (state.suggestedVersion != null) {
                     if (state.patchCount > 0) Spacer(Modifier.width(4.dp))
-                    Pill(text = state.suggestedVersion)
+                    VersionPill(version = state.suggestedVersion, isPatched = state.isPatched)
                 }
             }
         },
@@ -656,20 +658,52 @@ private fun AppItem(
 }
 
 @Composable
-private fun Pill(text: String) {
+private fun PatchesPill(patchCount: Int, isPatched: Boolean) {
+    val patchesText = pluralStringResource(R.plurals.patch_count, patchCount, patchCount)
+    var text by remember(patchCount) { mutableStateOf<String?>(null) }
+    LaunchedEffect(patchesText) {
+        text = patchesText
+    }
+    Pill(text = text, isPatched = isPatched)
+}
+
+@Composable
+private fun VersionPill(version: String, isPatched: Boolean) {
+    var text by remember(version) { mutableStateOf<String?>(null) }
+    LaunchedEffect(version) {
+        text = version
+    }
+    Pill(text = text, isPatched = isPatched)
+}
+
+@Composable
+private fun Pill(text: String?, isPatched: Boolean) {
     SuggestionChip(
         onClick = { /* nothing... */ },
         label = {
             Text(
-                text = text,
+                text = text ?: stringResource(R.string.loading),
+                modifier = Modifier.placeholder(
+                    visible = text == null,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    shape = MaterialTheme.shapes.extraSmall
+                ),
                 style = MaterialTheme.typography.labelSmall
             )
         },
         modifier = Modifier.height(24.dp),
         enabled = false,
         colors = SuggestionChipDefaults.suggestionChipColors(
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
+            disabledContainerColor = if (isPatched) {
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.65f)
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            },
+            disabledLabelColor = if (isPatched) {
+                MaterialTheme.colorScheme.onPrimaryContainer
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            }
         ),
         border = null,
     )
