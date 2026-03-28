@@ -9,11 +9,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -25,10 +28,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,6 +59,7 @@ import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
+import com.eygraber.compose.placeholder.placeholder
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -74,12 +82,16 @@ fun AppsScreen(
 
     val installedApps by viewModel.installedApps.collectAsStateWithLifecycle()
     val patchableApps by viewModel.patchableApps.collectAsStateWithLifecycle()
+    val suggestedVersions by viewModel.suggestedVersions.collectAsStateWithLifecycle()
 
-    fun patchedPackageNames(apps: List<InstalledApp>?): Set<String> =
-        apps
-            ?.flatMap { listOf(it.currentPackageName, it.originalPackageName) }
-            ?.toSet()
-            .orEmpty()
+    val patchedPackageNames by remember {
+        derivedStateOf {
+            installedApps
+                ?.flatMap { listOf(it.currentPackageName, it.originalPackageName) }
+                ?.toSet()
+                .orEmpty()
+        }
+    }
 
     fun InstalledApp.matchesQuery(query: String): Boolean {
         if (query.isBlank()) return true
@@ -151,13 +163,12 @@ fun AppsScreen(
                     val query = filterText.trim()
                     val patched = installedApps
                     val patchable = patchableApps
-                    val patchedPkgNames = patchedPackageNames(patched)
                     val filteredPatchedApps = patched
                         ?.filter { it.matchesQuery(query) }
                         .orEmpty()
                     val filteredPatchableApps = patchable
                         ?.filter { app ->
-                            app.packageName !in patchedPkgNames &&
+                            app.packageName !in patchedPackageNames &&
                                 patchableMatchesQuery(
                                     packageName = app.packageName,
                                     label = viewModel.loadLabel(app.packageInfo),
@@ -265,12 +276,12 @@ fun AppsScreen(
                                         },
                                         supportingContent = app.patches?.let { patchCount ->
                                             {
-                                                Text(
-                                                    pluralStringResource(
-                                                        R.plurals.patch_count,
-                                                        patchCount,
-                                                        patchCount
-                                                    )
+                                                val version = if (app.packageName in suggestedVersions)
+                                                    suggestedVersions[app.packageName] ?: stringResource(R.string.any_version)
+                                                else null
+                                                SupportingPills(
+                                                    patchCount = patchCount,
+                                                    suggestedVersion = version
                                                 )
                                             }
                                         },
@@ -312,7 +323,6 @@ fun AppsScreen(
                 return@LazyColumnWithScrollbar
             }
 
-            val patchedPackageNames = patchedPackageNames(patched)
             val visiblePatchableApps = patchable.filter { it.packageName !in patchedPackageNames }
 
             if (patched.isNotEmpty()) {
@@ -414,12 +424,12 @@ fun AppsScreen(
                     },
                     supportingContent = app.patches?.let { patchCount ->
                         {
-                            Text(
-                                pluralStringResource(
-                                    R.plurals.patch_count,
-                                    patchCount,
-                                    patchCount
-                                )
+                            val version = if (app.packageName in suggestedVersions)
+                                suggestedVersions[app.packageName] ?: stringResource(R.string.any_version)
+                            else null
+                            SupportingPills(
+                                patchCount = patchCount,
+                                suggestedVersion = version
                             )
                         }
                     },
@@ -431,4 +441,63 @@ fun AppsScreen(
             }
         }
     }
+}
+
+@Composable
+fun SupportingPills(patchCount: Int, suggestedVersion: String? = null) {
+    Row(
+        modifier = Modifier.padding(top = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (patchCount > 0) {
+            PatchesPill(patchCount = patchCount, isPatched = false)
+        }
+        if (suggestedVersion != null) {
+            if (patchCount > 0) Spacer(Modifier.width(4.dp))
+            VersionPill(version = suggestedVersion, isPatched = false)
+        }
+    }
+}
+
+@Composable
+private fun PatchesPill(patchCount: Int, isPatched: Boolean = false) {
+    Pill(pluralStringResource(R.plurals.patch_count, patchCount, patchCount), isPatched)
+}
+
+@Composable
+private fun VersionPill(version: String, isPatched: Boolean) {
+    Pill(version, isPatched)
+}
+
+@Composable
+private fun Pill(text: String?, isPatched: Boolean) {
+    SuggestionChip(
+        onClick = { /* nothing... */ },
+        label = {
+            Text(
+                text = text ?: stringResource(R.string.loading),
+                modifier = Modifier.placeholder(
+                    visible = text == null,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    shape = MaterialTheme.shapes.extraSmall
+                ),
+                style = MaterialTheme.typography.labelSmall
+            )
+        },
+        modifier = Modifier.height(24.dp),
+        enabled = false,
+        colors = SuggestionChipDefaults.suggestionChipColors(
+            disabledContainerColor = if (isPatched) {
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.65f)
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            },
+            disabledLabelColor = if (isPatched) {
+                MaterialTheme.colorScheme.onPrimaryContainer
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            }
+        ),
+        border = null,
+    )
 }

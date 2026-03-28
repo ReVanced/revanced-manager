@@ -16,6 +16,7 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.installer.RootServiceException
 import app.revanced.manager.domain.repository.InstalledAppRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
@@ -39,6 +40,7 @@ class AppsViewModel(
     private val installedAppsRepository: InstalledAppRepository,
     private val pm: PM,
     private val rootInstaller: RootInstaller,
+    private val patchBundleRepository: PatchBundleRepository,
     fs: Filesystem,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -54,6 +56,12 @@ class AppsViewModel(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = null,
+    )
+
+    val suggestedVersions = patchBundleRepository.suggestedVersions.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyMap(),
     )
 
     val installedApps = installedAppsRepository.getAll().stateIn(
