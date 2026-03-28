@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Apps
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Storage
@@ -257,7 +258,18 @@ fun AppsScreen(
                                                 )
                                             },
                                             headlineContent = {
-                                                AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
+                                                Row(
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.AutoAwesome,
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(16.dp),
+                                                        tint = MaterialTheme.colorScheme.primary
+                                                    )
+                                                    AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
+                                                }
                                             },
                                             supportingContent = {
                                                 Text(installedApp.currentPackageName)
@@ -366,7 +378,18 @@ fun AppsScreen(
                                             )
                                         },
                                         headlineContent = {
-                                            AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.AutoAwesome,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(16.dp),
+                                                    tint = MaterialTheme.colorScheme.primary
+                                                )
+                                                AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
+                                            }
                                         },
                                         supportingContent = {
                                             Text(installedApp.currentPackageName)
@@ -530,7 +553,20 @@ fun AppsScreen(
                                 modifier = Modifier.size(36.dp)
                             )
                         },
-                        headlineContent = { AppLabel(packageInfo, defaultText = null) },
+                        headlineContent = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.AutoAwesome,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                                AppLabel(packageInfo, defaultText = null)
+                            }
+                        },
                         supportingContent = { Text(installedApp.currentPackageName) },
                         colors = transparentListItemColors
                     )
@@ -624,7 +660,20 @@ fun AppsScreen(
                             modifier = Modifier.size(36.dp)
                         )
                     },
-                    headlineContent = { AppLabel(packageInfo, defaultText = null) },
+                    headlineContent = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AutoAwesome,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            AppLabel(packageInfo, defaultText = null)
+                        }
+                    },
                     supportingContent = { Text(installedApp.currentPackageName) },
                     colors = transparentListItemColors
                 )
