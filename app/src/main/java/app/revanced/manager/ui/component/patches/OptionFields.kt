@@ -407,11 +407,14 @@ private fun <T : Any> OptionDropdownSection(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable),
+                    .menuAnchor(
+                        if (!readOnly) ExposedDropdownMenuAnchorType.PrimaryEditable
+                        else ExposedDropdownMenuAnchorType.PrimaryNotEditable
+                    ),
                 maxLines = 5,
                 value = displayText,
                 onValueChange = { if (!safeguard) onValueChange(it) },
-                enabled = !readOnly && isChecked,
+                enabled = isChecked,
                 isError = canShowError,
                 readOnly = isBoolean,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
@@ -427,7 +430,7 @@ private fun <T : Any> OptionDropdownSection(
                     else -> null
                 },
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
+                    if (!readOnly) ExposedDropdownMenuDefaults.TrailingIcon(
                         expanded = expanded,
                         modifier = Modifier.menuAnchor(
                             ExposedDropdownMenuAnchorType.SecondaryEditable
@@ -525,6 +528,7 @@ private fun ListOptionItem(
     if (showDialog) {
         ListOptionDialog(
             option = option,
+            readOnly = readOnly,
             value = value ?: emptyList(),
             setValue = setValue,
             onDismiss = { showDialog = false },
@@ -569,6 +573,7 @@ private fun ListOptionDialog(
     value: List<Serializable>,
     setValue: (List<Serializable>?) -> Unit,
     onDismiss: () -> Unit,
+    readOnly: Boolean,
 ) {
     val elementType = remember(option.type) { option.type.arguments.first().type!! }
 
@@ -592,6 +597,8 @@ private fun ListOptionDialog(
     val deletionTargets = rememberSaveable(saver = snapshotStateSetSaver()) {
         mutableStateSetOf<Int>()
     }
+
+    val canEditItems = !readOnly && !deleteMode
 
     val back = remember(listIsDirty) {
         {
@@ -630,7 +637,7 @@ private fun ListOptionDialog(
                         }
                     },
                     actions = {
-                        ListOptionTopBarActions(
+                        if (!readOnly) ListOptionTopBarActions(
                             deleteMode = deleteMode,
                             onToggleSelectAll = {
                                 if (items.size == deletionTargets.size) deletionTargets.clear()
@@ -650,7 +657,7 @@ private fun ListOptionDialog(
                 )
             },
             floatingActionButton = {
-                if (!deleteMode) {
+                if (canEditItems) {
                     HapticExtendedFloatingActionButton(
                         text = { Text(stringResource(R.string.add)) },
                         icon = { Icon(Icons.Outlined.Add, stringResource(R.string.add)) },
@@ -686,7 +693,8 @@ private fun ListOptionDialog(
                         }
 
                         ListItem(
-                            modifier = Modifier.combinedClickable(
+                            modifier = if (readOnly) Modifier
+                            else Modifier.combinedClickable(
                                 indication = LocalIndication.current,
                                 interactionSource = interactionSource,
                                 onLongClickLabel = stringResource(R.string.select),
@@ -738,7 +746,7 @@ private fun ListOptionDialog(
                                     Text(item.value.toString())
                                 }
                             },
-                            trailingContent = if (!deleteMode) {
+                            trailingContent = if (canEditItems) {
                                 {
                                     OptionItemEditTrailing(readOnly = false) {
                                         showEditDialog = true
