@@ -17,6 +17,7 @@ import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.installer.RootServiceException
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
@@ -41,6 +42,7 @@ class AppsViewModel(
     private val pm: PM,
     private val rootInstaller: RootInstaller,
     private val patchBundleRepository: PatchBundleRepository,
+    private val prefs: PreferencesManager,
     fs: Filesystem,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -63,6 +65,24 @@ class AppsViewModel(
         started = SharingStarted.WhileSubscribed(),
         initialValue = emptyMap(),
     )
+
+    val pinnedApps = prefs.pinnedApps.flow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = prefs.pinnedApps.getBlocking(),
+    )
+
+    fun togglePinned(packageName: String) {
+        viewModelScope.launch {
+            prefs.edit {
+                if (packageName in prefs.pinnedApps.value) {
+                    prefs.pinnedApps -= packageName
+                } else {
+                    prefs.pinnedApps += packageName
+                }
+            }
+        }
+    }
 
     val installedApps = installedAppsRepository.getAll().stateIn(
         scope = viewModelScope,

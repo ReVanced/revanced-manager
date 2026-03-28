@@ -4,8 +4,10 @@ import android.content.ActivityNotFoundException
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -62,7 +64,7 @@ import app.revanced.manager.util.transparentListItemColors
 import com.eygraber.compose.placeholder.placeholder
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun AppsScreen(
     onAppClick: (InstalledApp) -> Unit,
@@ -83,6 +85,7 @@ fun AppsScreen(
     val installedApps by viewModel.installedApps.collectAsStateWithLifecycle()
     val patchableApps by viewModel.patchableApps.collectAsStateWithLifecycle()
     val suggestedVersions by viewModel.suggestedVersions.collectAsStateWithLifecycle()
+    val pinnedApps by viewModel.pinnedApps.collectAsStateWithLifecycle()
 
     val patchedPackageNames by remember {
         derivedStateOf {
@@ -192,37 +195,149 @@ fun AppsScreen(
                             }
                         } else {
                             LazyColumnWithScrollbar(modifier = Modifier.fillMaxSize()) {
-                                if (filteredPatchedApps.isNotEmpty()) {
-                                    item(key = "SEARCH_HEADER_PATCHED") {
+                                val pinnedFilteredPatched = filteredPatchedApps.filter { it.currentPackageName in pinnedApps }
+                                val pinnedFilteredPatchable = filteredPatchableApps.filter { it.packageName in pinnedApps }
+                                val hasPinnedResults = pinnedFilteredPatched.isNotEmpty() || pinnedFilteredPatchable.isNotEmpty()
+
+                                val unpinnedFilteredPatched = filteredPatchedApps.filter { it.currentPackageName !in pinnedApps }
+                                val unpinnedFilteredPatchable = filteredPatchableApps.filter { it.packageName !in pinnedApps }
+
+                                if (hasPinnedResults) {
+                                    item(key = "SEARCH_HEADER_PINNED") {
                                         Row(
                                             modifier = Modifier
+                                                .animateItem()
                                                 .fillMaxWidth()
                                                 .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.SpaceBetween
                                         ) {
                                             Text(
-                                                text = stringResource(R.string.patched_apps_section_title),
+                                                text = stringResource(R.string.pinned_apps_section_title),
                                                 color = MaterialTheme.colorScheme.primary,
                                                 style = MaterialTheme.typography.labelLarge,
+                                            )
+                                        }
+                                    }
+
+                                    items(
+                                        items = pinnedFilteredPatched,
+                                        key = { "SEARCH_PATCHED-${it.currentPackageName}" },
+                                        contentType = { "SEARCH_PATCHED" }
+                                    ) { installedApp ->
+                                        val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
+
+                                        ListItem(
+                                            modifier = Modifier
+                                                .animateItem()
+                                                .combinedClickable(
+                                                    onClick = {
+                                                        searchExpanded = false
+                                                        viewModel.setFilterText("")
+                                                        onAppClick(installedApp)
+                                                    },
+                                                    onLongClick = {
+                                                        viewModel.togglePinned(installedApp.currentPackageName)
+                                                    }
+                                                ),
+                                            leadingContent = {
+                                                AppIcon(
+                                                    packageInfo = packageInfo,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(36.dp)
+                                                )
+                                            },
+                                            headlineContent = {
+                                                AppLabel(packageInfo, defaultText = installedApp.currentPackageName)
+                                            },
+                                            supportingContent = {
+                                                Text(installedApp.currentPackageName)
+                                            },
+                                            colors = transparentListItemColors
+                                        )
+                                    }
+
+                                    items(
+                                        items = pinnedFilteredPatchable,
+                                        key = { "SEARCH_PATCHABLE-${it.packageName}" },
+                                        contentType = { "SEARCH_PATCHABLE" }
+                                    ) { app ->
+                                        ListItem(
+                                            modifier = Modifier
+                                                .animateItem()
+                                                .combinedClickable(
+                                                    onClick = {
+                                                        searchExpanded = false
+                                                        viewModel.setFilterText("")
+                                                        onPatchableAppClick(app.packageName)
+                                                    },
+                                                    onLongClick = {
+                                                        viewModel.togglePinned(app.packageName)
+                                                    }
+                                                ),
+                                            leadingContent = {
+                                                AppIcon(
+                                                    packageInfo = app.packageInfo,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(36.dp)
+                                                )
+                                            },
+                                            headlineContent = {
+                                                AppLabel(app.packageInfo, defaultText = app.packageName)
+                                            },
+                                            supportingContent = app.patches?.let { patchCount ->
+                                                {
+                                                    val version = if (app.packageName in suggestedVersions)
+                                                        suggestedVersions[app.packageName] ?: stringResource(R.string.any_version)
+                                                    else null
+                                                    SupportingPills(
+                                                        patchCount = patchCount,
+                                                        suggestedVersion = version
+                                                    )
+                                                }
+                                            },
+                                            trailingContent = if (app.packageInfo == null) {
+                                                { Text(stringResource(R.string.not_installed)) }
+                                            } else null,
+                                            colors = transparentListItemColors
+                                        )
+                                    }
+
+                                    if (unpinnedFilteredPatched.isNotEmpty() || unpinnedFilteredPatchable.isNotEmpty()) {
+                                        item(key = "SEARCH_HEADER_AVAILABLE") {
+                                            Text(
+                                                text = stringResource(R.string.available_apps_section_title),
+                                                color = MaterialTheme.colorScheme.primary,
+                                                style = MaterialTheme.typography.labelLarge,
+                                                modifier = Modifier
+                                                    .animateItem()
+                                                    .fillMaxWidth()
+                                                    .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
                                             )
                                         }
                                     }
                                 }
 
                                 items(
-                                    items = filteredPatchedApps,
+                                    items = unpinnedFilteredPatched,
                                     key = { "SEARCH_PATCHED-${it.currentPackageName}" },
                                     contentType = { "SEARCH_PATCHED" }
                                 ) { installedApp ->
                                     val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
 
                                     ListItem(
-                                        modifier = Modifier.clickable {
-                                            searchExpanded = false
-                                            viewModel.setFilterText("")
-                                            onAppClick(installedApp)
-                                        },
+                                        modifier = Modifier
+                                            .animateItem()
+                                            .combinedClickable(
+                                                onClick = {
+                                                    searchExpanded = false
+                                                    viewModel.setFilterText("")
+                                                    onAppClick(installedApp)
+                                                },
+                                                onLongClick = {
+                                                    viewModel.togglePinned(installedApp.currentPackageName)
+                                                }
+                                            ),
                                         leadingContent = {
                                             AppIcon(
                                                 packageInfo = packageInfo,
@@ -240,30 +355,24 @@ fun AppsScreen(
                                     )
                                 }
 
-                                if (filteredPatchableApps.isNotEmpty()) {
-                                    item(key = "SEARCH_HEADER_PATCHABLE") {
-                                        Text(
-                                            text = stringResource(R.string.patchable_apps_section_title),
-                                            color = MaterialTheme.colorScheme.primary,
-                                            style = MaterialTheme.typography.labelLarge,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
-                                        )
-                                    }
-                                }
-
                                 items(
-                                    items = filteredPatchableApps,
+                                    items = unpinnedFilteredPatchable,
                                     key = { "SEARCH_PATCHABLE-${it.packageName}" },
                                     contentType = { "SEARCH_PATCHABLE" }
                                 ) { app ->
                                     ListItem(
-                                        modifier = Modifier.clickable {
-                                            searchExpanded = false
-                                            viewModel.setFilterText("")
-                                            onPatchableAppClick(app.packageName)
-                                        },
+                                        modifier = Modifier
+                                            .animateItem()
+                                            .combinedClickable(
+                                                onClick = {
+                                                    searchExpanded = false
+                                                    viewModel.setFilterText("")
+                                                    onPatchableAppClick(app.packageName)
+                                                },
+                                                onLongClick = {
+                                                    viewModel.togglePinned(app.packageName)
+                                                }
+                                            ),
                                         leadingContent = {
                                             AppIcon(
                                                 packageInfo = app.packageInfo,
@@ -323,60 +432,14 @@ fun AppsScreen(
                 return@LazyColumnWithScrollbar
             }
 
-            val visiblePatchableApps = patchable.filter { it.packageName !in patchedPackageNames }
+            val allPatchableApps = patchable.filter { it.packageName !in patchedPackageNames }
 
-            if (patched.isNotEmpty()) {
-                item(key = "HEADER_PATCHED") {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = stringResource(R.string.patched_apps_section_title),
-                            color = MaterialTheme.colorScheme.primary,
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    }
-                }
+            val pinnedPatchedApps = patched.filter { it.currentPackageName in pinnedApps }
+            val pinnedPatchableApps = allPatchableApps.filter { it.packageName in pinnedApps }
+            val hasPinnedApps = pinnedPatchedApps.isNotEmpty() || pinnedPatchableApps.isNotEmpty()
 
-                items(
-                    items = patched,
-                    key = { "PATCHED-${it.currentPackageName}" },
-                    contentType = { "PATCHED" },
-                ) { installedApp ->
-                    val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
-
-                    ListItem(
-                        modifier = Modifier.clickable { onAppClick(installedApp) },
-                        leadingContent = {
-                            AppIcon(
-                                packageInfo,
-                                contentDescription = null,
-                                modifier = Modifier.size(36.dp)
-                            )
-                        },
-                        headlineContent = { AppLabel(packageInfo, defaultText = null) },
-                        supportingContent = { Text(installedApp.currentPackageName) },
-                        colors = transparentListItemColors
-                    )
-                }
-            }
-
-            if (patched.isNotEmpty()) {
-                item(key = "HEADER_PATCHABLE") {
-                    Text(
-                        text = stringResource(R.string.patchable_apps_section_title),
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
-                    )
-                }
-            }
+            val unpinnedPatchedApps = patched.filter { it.currentPackageName !in pinnedApps }
+            val unpinnedPatchableApps = allPatchableApps.filter { it.packageName !in pinnedApps }
 
             item(key = "PATCHABLE_STORAGE") {
                 ListItem(
@@ -402,13 +465,146 @@ fun AppsScreen(
                 )
             }
 
+            if (hasPinnedApps) {
+                item(key = "HEADER_PINNED") {
+                    Row(
+                        modifier = Modifier
+                            .animateItem()
+                            .fillMaxWidth()
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(R.string.pinned_apps_section_title),
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
+                }
+
+                items(
+                    items = pinnedPatchedApps,
+                    key = { "PATCHED-${it.currentPackageName}" },
+                    contentType = { "PATCHED" },
+                ) { installedApp ->
+                    val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
+
+                    ListItem(
+                        modifier = Modifier
+                            .animateItem()
+                            .combinedClickable(
+                                onClick = { onAppClick(installedApp) },
+                                onLongClick = { viewModel.togglePinned(installedApp.currentPackageName) }
+                            ),
+                        leadingContent = {
+                            AppIcon(
+                                packageInfo,
+                                contentDescription = null,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        },
+                        headlineContent = { AppLabel(packageInfo, defaultText = null) },
+                        supportingContent = { Text(installedApp.currentPackageName) },
+                        colors = transparentListItemColors
+                    )
+                }
+
+                items(
+                    items = pinnedPatchableApps,
+                    key = { "PATCHABLE-${it.packageName}" },
+                    contentType = { "PATCHABLE" },
+                ) { app ->
+                    ListItem(
+                        modifier = Modifier
+                            .animateItem()
+                            .combinedClickable(
+                                onClick = { onPatchableAppClick(app.packageName) },
+                                onLongClick = { viewModel.togglePinned(app.packageName) }
+                            ),
+                        leadingContent = {
+                            AppIcon(
+                                packageInfo = app.packageInfo,
+                                contentDescription = null,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        },
+                        headlineContent = {
+                            AppLabel(
+                                app.packageInfo,
+                                defaultText = app.packageName
+                            )
+                        },
+                        supportingContent = app.patches?.let { patchCount ->
+                            {
+                                val version = if (app.packageName in suggestedVersions)
+                                    suggestedVersions[app.packageName] ?: stringResource(R.string.any_version)
+                                else null
+                                SupportingPills(
+                                    patchCount = patchCount,
+                                    suggestedVersion = version
+                                )
+                            }
+                        },
+                        trailingContent = if (app.packageInfo == null) {
+                            { Text(stringResource(R.string.not_installed)) }
+                        } else null,
+                        colors = transparentListItemColors
+                    )
+                }
+
+                item(key = "HEADER_AVAILABLE") {
+                    Text(
+                        text = stringResource(R.string.available_apps_section_title),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier
+                            .animateItem()
+                            .fillMaxWidth()
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
+                    )
+                }
+            }
+
             items(
-                items = visiblePatchableApps,
+                items = unpinnedPatchedApps,
+                key = { "PATCHED-${it.currentPackageName}" },
+                contentType = { "PATCHED" },
+            ) { installedApp ->
+                val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
+
+                ListItem(
+                    modifier = Modifier
+                        .animateItem()
+                        .combinedClickable(
+                            onClick = { onAppClick(installedApp) },
+                            onLongClick = { viewModel.togglePinned(installedApp.currentPackageName) }
+                        ),
+                    leadingContent = {
+                        AppIcon(
+                            packageInfo,
+                            contentDescription = null,
+                            modifier = Modifier.size(36.dp)
+                        )
+                    },
+                    headlineContent = { AppLabel(packageInfo, defaultText = null) },
+                    supportingContent = { Text(installedApp.currentPackageName) },
+                    colors = transparentListItemColors
+                )
+            }
+
+            items(
+                items = unpinnedPatchableApps,
                 key = { "PATCHABLE-${it.packageName}" },
                 contentType = { "PATCHABLE" },
             ) { app ->
                 ListItem(
-                    modifier = Modifier.clickable { onPatchableAppClick(app.packageName) },
+                    modifier = Modifier
+                        .animateItem()
+                        .combinedClickable(
+                            onClick = { onPatchableAppClick(app.packageName) },
+                            onLongClick = { viewModel.togglePinned(app.packageName) }
+                        ),
                     leadingContent = {
                         AppIcon(
                             packageInfo = app.packageInfo,
