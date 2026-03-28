@@ -47,7 +47,6 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,9 +60,9 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
@@ -136,7 +135,7 @@ fun AppsScreen(
     var searchExpanded by rememberSaveable { mutableStateOf(false) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val filterText by viewModel.filterText.collectAsStateWithLifecycle()
- 
+
     val pinnedApps by viewModel.pinnedApps.collectAsStateWithLifecycle()
     val suggestedVersions by viewModel.suggestedVersions.collectAsStateWithLifecycle()
 
@@ -161,7 +160,9 @@ fun AppsScreen(
                                     viewModel.setFilterText("")
                                 }
                             },
-                            tooltip = if (searchExpanded) stringResource(R.string.back) else stringResource(R.string.search),
+                            tooltip = if (searchExpanded) stringResource(R.string.back) else stringResource(
+                                R.string.search
+                            ),
                         ) { _ ->
                             Crossfade(
                                 targetState = searchExpanded,
@@ -169,7 +170,9 @@ fun AppsScreen(
                             ) { expanded ->
                                 Icon(
                                     imageVector = if (expanded) Icons.AutoMirrored.Filled.ArrowBack else Icons.Outlined.Search,
-                                    contentDescription = if (expanded) stringResource(R.string.back) else stringResource(R.string.search)
+                                    contentDescription = if (expanded) stringResource(R.string.back) else stringResource(
+                                        R.string.search
+                                    )
                                 )
                             }
                         }
@@ -205,7 +208,8 @@ fun AppsScreen(
                     val patchable = patchableApps
                     val showPatched = (viewModel.filter and AppsViewModel.SHOW_PATCHED) != 0
                     val showInstalled = (viewModel.filter and AppsViewModel.SHOW_INSTALLED) != 0
-                    val showNotInstalled = (viewModel.filter and AppsViewModel.SHOW_NOT_INSTALLED) != 0
+                    val showNotInstalled =
+                        (viewModel.filter and AppsViewModel.SHOW_NOT_INSTALLED) != 0
                     val showSystem = (viewModel.filter and AppsViewModel.SHOW_SYSTEM) != 0
 
                     val patchedPkgNames = patchedPackageNames(patched)
@@ -255,7 +259,10 @@ fun AppsScreen(
                                         Row(
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                                                .padding(
+                                                    horizontal = TITLE_HORIZONTAL,
+                                                    vertical = TITLE_VERTICAL
+                                                ),
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.SpaceBetween
                                         ) {
@@ -273,8 +280,9 @@ fun AppsScreen(
                                     key = { "SEARCH_PATCHED-${it.currentPackageName}" },
                                     contentType = { "SEARCH_PATCHED" }
                                 ) { installedApp ->
-                                    val packageInfo = viewModel.packageInfoMap[installedApp.currentPackageName]
-                                    
+                                    val packageInfo =
+                                        viewModel.packageInfoMap[installedApp.currentPackageName]
+
                                     AppItem(
                                         state = AppInfoState(
                                             packageName = installedApp.currentPackageName,
@@ -303,7 +311,10 @@ fun AppsScreen(
                                             style = MaterialTheme.typography.labelLarge,
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
+                                                .padding(
+                                                    horizontal = TITLE_HORIZONTAL,
+                                                    vertical = TITLE_VERTICAL
+                                                )
                                         )
                                     }
                                 }
@@ -363,7 +374,13 @@ fun AppsScreen(
         if (searchExpanded) return@Scaffold
 
 
-        val allVisibleApps by remember(installedApps, patchableApps, viewModel.filter, suggestedVersions, pinnedApps) {
+        val allVisibleApps by remember(
+            installedApps,
+            patchableApps,
+            viewModel.filter,
+            suggestedVersions,
+            pinnedApps
+        ) {
             derivedStateOf {
                 val patched = installedApps ?: return@derivedStateOf emptyList<AppInfoState>()
                 val patchable = patchableApps ?: return@derivedStateOf emptyList<AppInfoState>()
@@ -381,13 +398,15 @@ fun AppsScreen(
                 // Add Patched Apps
                 patched.forEach { app ->
                     val packageInfo = viewModel.packageInfoMap[app.currentPackageName]
-                    val isPinned = app.currentPackageName in pinnedApps || app.originalPackageName in pinnedApps
+                    val isPinned =
+                        app.currentPackageName in pinnedApps || app.originalPackageName in pinnedApps
                     val isSystem = packageInfo?.isSystemApp() == true
-                    
+
                     val passesFilters = showPatched && (showSystem || !isSystem)
-                    
+
                     if (passesFilters || (isPinned && !applyToPinned)) {
-                        val pData = patchesData[app.currentPackageName] ?: patchesData[app.originalPackageName]
+                        val pData = patchesData[app.currentPackageName]
+                            ?: patchesData[app.originalPackageName]
                         allApps.add(
                             AppInfoState(
                                 packageName = app.currentPackageName,
@@ -395,7 +414,8 @@ fun AppsScreen(
                                 isPatched = true,
                                 isInstalled = true,
                                 patchCount = pData?.patches ?: 0,
-                                suggestedVersion = suggestedVersions[app.currentPackageName] ?: suggestedVersions[app.originalPackageName],
+                                suggestedVersion = suggestedVersions[app.currentPackageName]
+                                    ?: suggestedVersions[app.originalPackageName],
                                 packageInfo = packageInfo,
                                 installedApp = app
                             )
@@ -409,8 +429,9 @@ fun AppsScreen(
                         val isPinned = app.packageName in pinnedApps
                         val isInstalled = app.packageInfo != null
                         val isSystem = app.packageInfo?.isSystemApp() == true
-                        
-                        val passesFilters = ((isInstalled && showInstalled) || (!isInstalled && showNotInstalled)) && (showSystem || !isSystem)
+
+                        val passesFilters =
+                            ((isInstalled && showInstalled) || (!isInstalled && showNotInstalled)) && (showSystem || !isSystem)
 
                         if (passesFilters || (isPinned && !applyToPinned)) {
                             allApps.add(
@@ -465,11 +486,13 @@ fun AppsScreen(
 
             item(key = "PATCHABLE_STORAGE") {
                 ListItem(
-                    modifier = Modifier.clickable { try {
-                        pickApkLauncher.launch(APK_MIMETYPE)
-                    } catch (_: ActivityNotFoundException) {
-                        context.toast(R.string.no_file_picker_found)
-                    } },
+                    modifier = Modifier.clickable {
+                        try {
+                            pickApkLauncher.launch(APK_MIMETYPE)
+                        } catch (_: ActivityNotFoundException) {
+                            context.toast(R.string.no_file_picker_found)
+                        }
+                    },
                     leadingContent = {
                         Box(Modifier.size(36.dp), Alignment.Center) {
                             Icon(
@@ -498,7 +521,9 @@ fun AppsScreen(
                         Icon(
                             imageVector = Icons.Default.PushPin,
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp).rotate(45f),
+                            modifier = Modifier
+                                .size(16.dp)
+                                .rotate(45f),
                             tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -668,21 +693,12 @@ private fun AppItem(
 
 @Composable
 private fun PatchesPill(patchCount: Int, isPatched: Boolean) {
-    val patchesText = pluralStringResource(R.plurals.patch_count, patchCount, patchCount)
-    var text by remember(patchCount) { mutableStateOf<String?>(null) }
-    LaunchedEffect(patchesText) {
-        text = patchesText
-    }
-    Pill(text = text, isPatched = isPatched)
+    Pill(pluralStringResource(R.plurals.patch_count, patchCount, patchCount), isPatched)
 }
 
 @Composable
 private fun VersionPill(version: String, isPatched: Boolean) {
-    var text by remember(version) { mutableStateOf<String?>(null) }
-    LaunchedEffect(version) {
-        text = version
-    }
-    Pill(text = text, isPatched = isPatched)
+    Pill(version, isPatched)
 }
 
 @Composable
