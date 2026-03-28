@@ -18,15 +18,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.ui.viewmodel.AppsViewModel
 import app.revanced.manager.ui.component.settings.BooleanItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppsFilterBottomSheet(
     onDismissRequest: () -> Unit,
-    filter: Int,
-    onToggleFlag: (Int) -> Unit,
+    showPatched: Boolean,
+    onToggleShowPatched: (Boolean) -> Unit,
+    showInstalled: Boolean,
+    onToggleShowInstalled: (Boolean) -> Unit,
+    showNotInstalled: Boolean,
+    onToggleShowNotInstalled: (Boolean) -> Unit,
+    showSystem: Boolean,
+    onToggleShowSystem: (Boolean) -> Unit,
+    applyFilterToPinned: Boolean,
+    onToggleApplyFilterToPinned: (Boolean) -> Unit,
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 
@@ -62,26 +69,26 @@ fun AppsFilterBottomSheet(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     CheckedFilterChip(
-                        selected = (filter and AppsViewModel.SHOW_PATCHED) != 0,
-                        onClick = { onToggleFlag(AppsViewModel.SHOW_PATCHED) },
+                        selected = showPatched,
+                        onClick = { onToggleShowPatched(!showPatched) },
                         label = { Text(stringResource(R.string.patched_apps_section_title)) }
                     )
 
                     CheckedFilterChip(
-                        selected = (filter and AppsViewModel.SHOW_INSTALLED) != 0,
-                        onClick = { onToggleFlag(AppsViewModel.SHOW_INSTALLED) },
+                        selected = showInstalled,
+                        onClick = { onToggleShowInstalled(!showInstalled) },
                         label = { Text(stringResource(R.string.installed)) }
                     )
 
                     CheckedFilterChip(
-                        selected = (filter and AppsViewModel.SHOW_NOT_INSTALLED) != 0,
-                        onClick = { onToggleFlag(AppsViewModel.SHOW_NOT_INSTALLED) },
+                        selected = showNotInstalled,
+                        onClick = { onToggleShowNotInstalled(!showNotInstalled) },
                         label = { Text(stringResource(R.string.not_installed)) }
                     )
 
                     CheckedFilterChip(
-                        selected = (filter and AppsViewModel.SHOW_SYSTEM) != 0,
-                        onClick = { onToggleFlag(AppsViewModel.SHOW_SYSTEM) },
+                        selected = showSystem,
+                        onClick = { onToggleShowSystem(!showSystem) },
                         label = { Text(stringResource(R.string.system)) }
                     )
                 }
@@ -93,8 +100,8 @@ fun AppsFilterBottomSheet(
             )
 
             BooleanItem(
-                value = (filter and AppsViewModel.APPLY_FILTER_TO_PINNED) != 0,
-                onValueChange = { onToggleFlag(AppsViewModel.APPLY_FILTER_TO_PINNED) },
+                value = applyFilterToPinned,
+                onValueChange = onToggleApplyFilterToPinned,
                 headline = R.string.apply_to_pinned
             )
         }
