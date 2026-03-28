@@ -510,6 +510,7 @@ fun AppsScreen(
                 ) { appState ->
                     AppItem(
                         state = appState,
+                        modifier = Modifier.animateItem(),
                         onClick = {
                             if (appState.isPatched) onAppClick(appState.installedApp!!)
                             else onPatchableAppClick(appState.packageName)
@@ -550,6 +551,7 @@ fun AppsScreen(
             ) { appState ->
                 AppItem(
                     state = appState,
+                    modifier = Modifier.animateItem(),
                     onClick = {
                         if (appState.isPatched) onAppClick(appState.installedApp!!)
                         else onPatchableAppClick(appState.packageName)
