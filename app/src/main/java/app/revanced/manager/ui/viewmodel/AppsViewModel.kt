@@ -158,7 +158,7 @@ class AppsViewModel(
                     allApps.add(
                         AppInfoState(
                             packageName = app.packageName,
-                            label = app.label,
+                            label = loadLabel(app.packageInfo),
                             isPatched = false,
                             isInstalled = isInstalled,
                             patchCount = app.patches ?: 0,
