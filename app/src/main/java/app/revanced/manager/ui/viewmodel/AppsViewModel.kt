@@ -3,10 +3,7 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,9 +15,12 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.installer.RootServiceException
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.util.AppInfo
 import app.revanced.manager.util.PM
+import app.revanced.manager.util.isSystemApp
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -36,12 +37,24 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
 
+data class AppInfoState(
+    val packageName: String,
+    val label: String,
+    val isPatched: Boolean,
+    val isInstalled: Boolean,
+    val patchCount: Int,
+    val suggestedVersion: String?,
+    val packageInfo: PackageInfo?,
+    val installedApp: InstalledApp? = null
+)
+
 @OptIn(SavedStateHandleSaveableApi::class)
 class AppsViewModel(
     private val app: Application,
     private val installedAppsRepository: InstalledAppRepository,
     private val pm: PM,
     private val rootInstaller: RootInstaller,
+    private val prefs: PreferencesManager,
     fs: Filesystem,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -51,7 +64,6 @@ class AppsViewModel(
     }
 
     val filterTextFlow = MutableStateFlow("")
-    val filterText: StateFlow<String> = filterTextFlow
 
     val patchableApps = pm.appList.stateIn(
         scope = viewModelScope,
@@ -77,8 +89,106 @@ class AppsViewModel(
         initialValue = emptyMap(),
     )
 
-
     val packageInfoMap = mutableStateMapOf<String, PackageInfo?>()
+    private val patchedLabelCache = mutableMapOf<String, String>()
+
+    val showPatched = prefs.showPatched.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), true)
+    val showInstalled = prefs.showInstalled.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), true)
+    val showNotInstalled = prefs.showNotInstalled.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), true)
+    val showSystem = prefs.showSystem.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), true)
+    val applyFilterToPinned = prefs.applyFilterToPinned.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
+    val completeAppList: StateFlow<List<AppInfoState>?> = combine(
+        installedApps,
+        patchableApps,
+        pinnedApps,
+        suggestedVersions,
+        showPatched,
+        showInstalled,
+        showNotInstalled,
+        showSystem,
+        applyFilterToPinned
+    ) { params ->
+        val patched = params[0] as? List<InstalledApp>? ?: return@combine null
+        val patchable = params[1] as? List<AppInfo>? ?: return@combine null
+        val pinned = params[2] as Set<String>
+        val suggested = params[3] as Map<String, String>
+        val sPatched = params[4] as Boolean
+        val sInstalled = params[5] as Boolean
+        val sNotInstalled = params[6] as Boolean
+        val sSystem = params[7] as Boolean
+        val aPinned = params[8] as Boolean
+
+        val patchedPkgNames = patched.flatMap { listOf(it.currentPackageName, it.originalPackageName) }.toSet()
+        val patchesData = patchable.associateBy { it.packageName }
+        val allApps = mutableListOf<AppInfoState>()
+
+        patched.forEach { app ->
+            val packageInfo = packageInfoMap[app.currentPackageName]
+            val isPinned = app.currentPackageName in pinned || app.originalPackageName in pinned
+            val isSystem = packageInfo?.isSystemApp() == true
+            val passesFilters = sPatched && (sSystem || !isSystem)
+
+            if (passesFilters || (isPinned && !aPinned)) {
+                val pData = patchesData[app.currentPackageName] ?: patchesData[app.originalPackageName]
+                val label = patchedLabelCache.getOrPut(app.currentPackageName) { loadLabel(packageInfo) }
+                allApps.add(
+                    AppInfoState(
+                        packageName = app.currentPackageName,
+                        label = label,
+                        isPatched = true,
+                        isInstalled = true,
+                        patchCount = pData?.patches ?: 0,
+                        suggestedVersion = suggested[app.currentPackageName] ?: suggested[app.originalPackageName],
+                        packageInfo = packageInfo,
+                        installedApp = app
+                    )
+                )
+            }
+        }
+
+        patchable.forEach { app ->
+            if (app.packageName !in patchedPkgNames) {
+                val isPinned = app.packageName in pinned
+                val isInstalled = app.packageInfo != null
+                val isSystem = app.packageInfo?.isSystemApp() == true
+                val passesFilters = ((isInstalled && sInstalled) || (!isInstalled && sNotInstalled)) && (sSystem || !isSystem)
+
+                if (passesFilters || (isPinned && !aPinned)) {
+                    allApps.add(
+                        AppInfoState(
+                            packageName = app.packageName,
+                            label = app.label,
+                            isPatched = false,
+                            isInstalled = isInstalled,
+                            patchCount = app.patches ?: 0,
+                            suggestedVersion = suggested[app.packageName],
+                            packageInfo = app.packageInfo
+                        )
+                    )
+                }
+            }
+        }
+
+        allApps.sortedWith(
+            compareByDescending<AppInfoState> { it.isPatched }
+                .thenByDescending { it.isInstalled }
+                .thenByDescending { it.patchCount }
+                .thenBy { it.label.lowercase() }
+                .thenBy { it.packageName }
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val filteredAppList: StateFlow<List<AppInfoState>?> = combine(
+        completeAppList,
+        filterTextFlow
+    ) { apps, query ->
+        if (query.isBlank()) apps
+        else apps?.filter { 
+            it.packageName.contains(query, ignoreCase = true) || 
+            it.label.contains(query, ignoreCase = true)
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     private val storageSelectionChannel = Channel<SelectedApp.Local>()
     val storageSelectionFlow = storageSelectionChannel.receiveAsFlow()
@@ -89,16 +199,15 @@ class AppsViewModel(
         }
     }
 
-    var filter by mutableIntStateOf(SHOW_PATCHED or SHOW_INSTALLED or SHOW_NOT_INSTALLED or SHOW_SYSTEM)
-        private set
-
-    fun toggleFlag(flag: Int) {
-        filter = filter xor flag
-    }
-
     fun setFilterText(filter: String) {
         filterTextFlow.value = filter
     }
+
+    fun setShowPatched(value: Boolean) = viewModelScope.launch { prefs.showPatched.update(value) }
+    fun setShowInstalled(value: Boolean) = viewModelScope.launch { prefs.showInstalled.update(value) }
+    fun setShowNotInstalled(value: Boolean) = viewModelScope.launch { prefs.showNotInstalled.update(value) }
+    fun setShowSystem(value: Boolean) = viewModelScope.launch { prefs.showSystem.update(value) }
+    fun setApplyFilterToPinned(value: Boolean) = viewModelScope.launch { prefs.applyFilterToPinned.update(value) }
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 
@@ -155,12 +264,4 @@ class AppsViewModel(
                 )
             }
         }
-
-    companion object {
-        const val SHOW_PATCHED = 1 // 2^0
-        const val SHOW_INSTALLED = 2 // 2^1
-        const val SHOW_NOT_INSTALLED = 4 // 2^2
-        const val SHOW_SYSTEM = 8 // 2^3
-        const val APPLY_FILTER_TO_PINNED = 16 // 2^4
-    }
 }

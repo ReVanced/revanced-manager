@@ -38,4 +38,10 @@ class PreferencesManager(
 
     val allowMeteredNetworks = booleanPreference("allow_metered_networks", false)
     val pinnedApps = stringSetPreference("pinned_apps", emptySet())
+
+    val showPatched = booleanPreference("show_patched", true)
+    val showInstalled = booleanPreference("show_installed", true)
+    val showNotInstalled = booleanPreference("show_not_installed", true)
+    val showSystem = booleanPreference("show_system", true)
+    val applyFilterToPinned = booleanPreference("apply_filter_to_pinned", false)
 }
