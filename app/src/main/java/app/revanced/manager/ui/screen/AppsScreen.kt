@@ -772,27 +772,27 @@ fun SupportingPills(patchCount: Int, suggestedVersion: String? = null) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (patchCount > 0) {
-            PatchesPill(patchCount = patchCount, isPatched = false)
+            PatchesPill(patchCount = patchCount)
         }
         if (suggestedVersion != null) {
             if (patchCount > 0) Spacer(Modifier.width(4.dp))
-            VersionPill(version = suggestedVersion, isPatched = false)
+            VersionPill(version = suggestedVersion)
         }
     }
 }
 
 @Composable
-private fun PatchesPill(patchCount: Int, isPatched: Boolean = false) {
-    Pill(pluralStringResource(R.plurals.patch_count, patchCount, patchCount), isPatched)
+private fun PatchesPill(patchCount: Int) {
+    Pill(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
 }
 
 @Composable
-private fun VersionPill(version: String, isPatched: Boolean) {
-    Pill(version, isPatched)
+private fun VersionPill(version: String) {
+    Pill(version)
 }
 
 @Composable
-private fun Pill(text: String?, isPatched: Boolean) {
+private fun Pill(text: String?) {
     SuggestionChip(
         onClick = { /* nothing... */ },
         label = {
@@ -809,16 +809,8 @@ private fun Pill(text: String?, isPatched: Boolean) {
         modifier = Modifier.height(24.dp),
         enabled = false,
         colors = SuggestionChipDefaults.suggestionChipColors(
-            disabledContainerColor = if (isPatched) {
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.65f)
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            },
-            disabledLabelColor = if (isPatched) {
-                MaterialTheme.colorScheme.onPrimaryContainer
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            }
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         border = null,
     )
