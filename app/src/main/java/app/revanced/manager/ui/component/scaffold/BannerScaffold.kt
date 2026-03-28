@@ -193,7 +193,7 @@ object BannerScaffoldDefaults {
 
     @Composable
     fun colors(
-        sheetBackgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+        sheetBackgroundColor: Color = MaterialTheme.colorScheme.surface,
         bannerContentColor: Color = MaterialTheme.colorScheme.onSurface,
     ) = BannerScaffoldColors(
         sheetBackgroundColor = sheetBackgroundColor,
@@ -219,6 +219,7 @@ fun BannerScaffold(
     actions: @Composable RowScope.() -> Unit = {},
     colors: BannerScaffoldColors = BannerScaffoldDefaults.colors(),
     scrollBehavior: BannerScrollBehavior? = null,
+    minCollapsedBannerSize: Dp = 96.dp,
     bannerBackground: @Composable BannerScope.() -> Unit = {},
     bannerContent: @Composable BannerScope.() -> Unit,
     sheetContent: @Composable (PaddingValues) -> Unit,
@@ -226,8 +227,7 @@ fun BannerScaffold(
     BoxWithConstraints(modifier.fillMaxSize()) {
         val density = LocalDensity.current
         val isLandscape = maxWidth > maxHeight
-        val axisFraction = if (isLandscape) 0.5f else 0.35f
-        val collapsedAxisFraction = if (isLandscape) axisFraction else 0.15f
+        val axisFraction = if (isLandscape) 0.5f else 0.25f
 
         val topBarHeight = if (isLandscape) 0.dp else 64.dp
         val topBarPx = with(density) { topBarHeight.roundToPx() }
@@ -237,9 +237,12 @@ fun BannerScaffold(
         }
         val availableMainAxisPx = (totalMainAxisPx - if (isLandscape) 0 else topBarPx).coerceAtLeast(0)
         val expandedBannerPx = (availableMainAxisPx * axisFraction).roundToInt()
-        val collapsedBannerPx = (availableMainAxisPx * collapsedAxisFraction)
-            .roundToInt()
-            .coerceAtMost(expandedBannerPx)
+        val collapsedBannerPx = if (isLandscape) {
+            expandedBannerPx
+        } else {
+            with(density) { minCollapsedBannerSize.roundToPx() }
+                .coerceAtMost(expandedBannerPx)
+        }
 
         val collapseFraction = if (isLandscape) 0f else scrollBehavior?.state?.collapsedFraction ?: 0f
 
@@ -289,7 +292,11 @@ fun BannerScaffold(
             )
 
             CompositionLocalProvider(LocalContentColor provides colors.bannerContentColor) {
-                Box(modifier = bannerBackgroundModifier) {
+                Box(
+                    modifier = bannerBackgroundModifier
+                        .clipToBounds()
+                        .background(colors.sheetBackgroundColor)
+                ) {
                     bannerScope.bannerBackground()
                 }
             }
@@ -361,7 +368,7 @@ fun BannerScaffold(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .then(if (isLandscape) Modifier.width(bannerSize) else Modifier.fillMaxWidth()),
-                title = { Text(title) },
+                title = { },
                 navigationIcon = {
                     if (onBackClick != null) {
                         IconButton(onClick = onBackClick) {
