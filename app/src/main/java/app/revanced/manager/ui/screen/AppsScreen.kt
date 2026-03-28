@@ -22,7 +22,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -42,6 +44,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -210,8 +213,14 @@ fun AppsScreen(
                                                 .fillMaxWidth()
                                                 .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
                                             verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.SpaceBetween
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                                         ) {
+                                            Icon(
+                                                imageVector = Icons.Default.PushPin,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(18.dp).rotate(45f),
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
                                             Text(
                                                 text = stringResource(R.string.pinned_apps_section_title),
                                                 color = MaterialTheme.colorScheme.primary,
@@ -305,15 +314,26 @@ fun AppsScreen(
 
                                     if (unpinnedFilteredPatched.isNotEmpty() || unpinnedFilteredPatchable.isNotEmpty()) {
                                         item(key = "SEARCH_HEADER_AVAILABLE") {
-                                            Text(
-                                                text = stringResource(R.string.available_apps_section_title),
-                                                color = MaterialTheme.colorScheme.primary,
-                                                style = MaterialTheme.typography.labelLarge,
+                                            Row(
                                                 modifier = Modifier
                                                     .animateItem()
                                                     .fillMaxWidth()
-                                                    .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
-                                            )
+                                                    .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Apps,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(18.dp),
+                                                    tint = MaterialTheme.colorScheme.primary
+                                                )
+                                                Text(
+                                                    text = stringResource(R.string.available_apps_section_title),
+                                                    color = MaterialTheme.colorScheme.primary,
+                                                    style = MaterialTheme.typography.labelLarge,
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -473,8 +493,14 @@ fun AppsScreen(
                             .fillMaxWidth()
                             .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
+                        Icon(
+                            imageVector = Icons.Default.PushPin,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp).rotate(45f),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                         Text(
                             text = stringResource(R.string.pinned_apps_section_title),
                             color = MaterialTheme.colorScheme.primary,
@@ -554,15 +580,26 @@ fun AppsScreen(
                 }
 
                 item(key = "HEADER_AVAILABLE") {
-                    Text(
-                        text = stringResource(R.string.available_apps_section_title),
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.labelLarge,
+                    Row(
                         modifier = Modifier
                             .animateItem()
                             .fillMaxWidth()
-                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL)
-                    )
+                            .padding(horizontal = TITLE_HORIZONTAL, vertical = TITLE_VERTICAL),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Apps,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = stringResource(R.string.available_apps_section_title),
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
                 }
             }
 
