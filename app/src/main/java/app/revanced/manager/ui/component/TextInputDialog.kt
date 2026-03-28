@@ -18,9 +18,11 @@ import app.revanced.manager.R
 fun TextInputDialog(
     initial: String,
     title: String,
+    placeholder: String? = null,
     onDismissRequest: () -> Unit,
     onConfirm: (String) -> Unit,
     validator: (String) -> Boolean = String::isNotEmpty,
+    trailingIcon: @Composable ((value: String, onValueChange: (String) -> Unit) -> Unit)? = null,
 ) {
     val (value, setValue) = rememberSaveable(initial) {
         mutableStateOf(initial)
@@ -49,7 +51,12 @@ fun TextInputDialog(
             Text(title)
         },
         text = {
-            TextField(value = value, onValueChange = setValue)
+            TextField(
+                value = value,
+                onValueChange = setValue,
+                placeholder = placeholder?.let { { Text(placeholder) } },
+                trailingIcon = trailingIcon?.let { { it(value, setValue) } }
+            )
         }
     )
 }

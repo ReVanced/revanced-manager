@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DragHandle
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.Add
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -525,7 +527,6 @@ private fun ListOptionItem(
             option = option,
             value = value ?: emptyList(),
             setValue = setValue,
-            selectionWarningEnabled = selectionWarningEnabled,
             onDismiss = { showDialog = false },
         )
     }
@@ -567,7 +568,6 @@ private fun ListOptionDialog(
     option: Option<List<Serializable>>,
     value: List<Serializable>,
     setValue: (List<Serializable>?) -> Unit,
-    selectionWarningEnabled: Boolean,
     onDismiss: () -> Unit,
 ) {
     val elementType = remember(option.type) { option.type.arguments.first().type!! }
@@ -632,7 +632,6 @@ private fun ListOptionDialog(
                     actions = {
                         ListOptionTopBarActions(
                             deleteMode = deleteMode,
-                            allSelected = items.size == deletionTargets.size,
                             onToggleSelectAll = {
                                 if (items.size == deletionTargets.size) deletionTargets.clear()
                                 else deletionTargets.addAll(items.map { it.key })
@@ -642,7 +641,10 @@ private fun ListOptionDialog(
                                 deletionTargets.clear()
                                 deleteMode = false
                             },
-                            onClearAll = items::clear,
+                            onReset = {
+                                items.clear()
+                                option.default?.let { items.addAll(it.map(::Item)) }
+                            },
                         )
                     },
                 )
@@ -754,10 +756,9 @@ private fun ListOptionDialog(
 @Composable
 private fun ListOptionTopBarActions(
     deleteMode: Boolean,
-    allSelected: Boolean,
     onToggleSelectAll: () -> Unit,
     onDeleteSelected: () -> Unit,
-    onClearAll: () -> Unit,
+    onReset: () -> Unit,
 ) {
     if (deleteMode) {
         TooltipIconButton(
@@ -774,7 +775,7 @@ private fun ListOptionTopBarActions(
         }
     } else {
         TooltipIconButton(
-            onClick = onClearAll,
+            onClick = onReset,
             tooltip = stringResource(R.string.reset),
         ) {
             Icon(Icons.Filled.Restore, stringResource(R.string.reset))
@@ -790,6 +791,26 @@ private fun ListItemEditDialog(
     onDismiss: () -> Unit,
     onSubmit: (Serializable?) -> Unit,
 ) {
+    val fs: Filesystem? = if (elementType == typeOf<String>()) koinInject() else null
+    var showFileDialog by rememberSaveable { mutableStateOf(false) }
+    var externalValueUpdate: ((String) -> Unit)? by remember { mutableStateOf(null) }
+
+    if (fs != null && showFileDialog) {
+        PathSelectorDialog(root = fs.externalFilesDir()) { path ->
+            showFileDialog = false
+            path?.let {
+                externalValueUpdate?.invoke(it.toString())
+            }
+        }
+    }
+
+    val permissionLauncher = if (fs != null) {
+        val (contract, permissionName) = fs.permissionContract()
+        rememberLauncherForActivityResult(contract) { granted ->
+            if (granted) showFileDialog = true
+        } to permissionName
+    } else null
+
     when (elementType) {
         typeOf<Int>() -> IntInputDialog(
             name = title,
@@ -812,8 +833,40 @@ private fun ListItemEditDialog(
         typeOf<String>() -> TextInputDialog(
             title = title,
             initial = currentValue as String? ?: "",
+            placeholder = stringResource(R.string.patch_options_value_list_element),
+            validator = { true },
             onConfirm = onSubmit,
             onDismissRequest = onDismiss,
+            trailingIcon = { _, onValueChange ->
+                var expanded by remember { mutableStateOf(false) }
+                Box {
+                    TooltipIconButton(
+                        onClick = { expanded = true },
+                        tooltip = stringResource(R.string.more),
+                    ) {
+                        Icon(Icons.Default.MoreVert, null)
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        DropdownMenuItem(
+                            leadingIcon = { Icon(Icons.Outlined.Folder, null) },
+                            text = { Text(stringResource(R.string.path_selector)) },
+                            onClick = {
+                                expanded = false
+                                externalValueUpdate = onValueChange
+                                if (fs!!.hasStoragePermission()) {
+                                    showFileDialog = true
+                                } else {
+                                    permissionLauncher!!.first.launch(permissionLauncher.second)
+                                }
+                            },
+                            shape = MaterialTheme.shapes.medium,
+                        )
+                    }
+                }
+            }
         )
 
         else -> onDismiss()
