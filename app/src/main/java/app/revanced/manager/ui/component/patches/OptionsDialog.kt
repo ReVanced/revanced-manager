@@ -52,18 +52,19 @@ fun OptionsDialog(
         LazyColumnWithScrollbar(
             modifier = Modifier.padding(paddingValues)
         ) {
-            if (patch.options == null) return@LazyColumnWithScrollbar
+            patch.options ?: return@LazyColumnWithScrollbar
 
             items(patch.options, key = { it.name }) { option ->
                 val name = option.name
-                val value =
-                    if (values == null || !values.contains(name)) option.default else values[name]
+                val usingDefault = values == null || name !in values
+                val value = if (usingDefault) option.default else values[name]
 
                 @Suppress("UNCHECKED_CAST")
                 OptionItem(
                     option = option as Option<Any>,
                     value = value,
                     setValue = { set(name, it) },
+                    isDefault = usingDefault,
                     reset = { resetOption(option) },
                     selectionWarningEnabled = selectionWarningEnabled,
                     readOnly = readOnly

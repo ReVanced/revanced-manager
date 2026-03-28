@@ -146,14 +146,15 @@ fun RequiredOptionsScreen(
                             val values = vm.getOptions(bundle.uid, it)
                             it.options?.forEach { option ->
                                 val name = option.name
-                                val value =
-                                    if (values == null || name !in values) option.default else values[name]
+                                val usingDefault = values == null || name !in values
+                                val value = if (usingDefault) option.default else values[name]
 
                                 @Suppress("UNCHECKED_CAST")
                                 OptionItem(
                                     option = option as Option<Any>,
                                     value = value,
                                     setValue = { new -> vm.setOption(bundle.uid, it, name, new) },
+                                    isDefault = usingDefault,
                                     reset = { vm.resetOption(bundle.uid, it, option) },
                                     selectionWarningEnabled = vm.selectionWarningEnabled
                                 )

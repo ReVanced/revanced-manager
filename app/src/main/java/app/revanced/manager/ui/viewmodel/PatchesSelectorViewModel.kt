@@ -238,7 +238,9 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     }
 
     fun resetOption(bundle: Int, patch: PatchInfo, option: Option<*>) {
-        patchOptions[bundle]?.get(patch.name)?.remove(option.name)
+        val bundlesToPatches = patchOptions[bundle] ?: return
+        val patchesToOpts = bundlesToPatches[patch.name] ?: return
+        patchOptions[bundle] = bundlesToPatches.put(patch.name, patchesToOpts.remove(option.name))
     }
 
     fun dismissDialogs() {

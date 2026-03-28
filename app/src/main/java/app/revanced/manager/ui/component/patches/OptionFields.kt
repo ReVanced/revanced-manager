@@ -4,6 +4,7 @@ package app.revanced.manager.ui.component.patches
 
 import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
@@ -136,7 +137,7 @@ private fun OptionItemHeadline(option: Option<*>) {
 
 @Composable
 private fun OptionItemCheckbox(
-    localChecked: Boolean,
+    checked: Boolean,
     isRequired: Boolean,
     safeguardActive: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -144,7 +145,7 @@ private fun OptionItemCheckbox(
 ) {
     Box {
         Checkbox(
-            checked = localChecked,
+            checked = checked,
             onCheckedChange = { if (!safeguardActive) onCheckedChange(it) },
             enabled = !isRequired,
         )
@@ -190,6 +191,7 @@ private fun OptionItemEditTrailing(readOnly: Boolean, onClick: () -> Unit) {
 fun <T : Any> OptionItem(
     option: Option<T>,
     value: T?,
+    isDefault: Boolean,
     setValue: (T?) -> Unit,
     reset: () -> Unit,
     selectionWarningEnabled: Boolean,
@@ -284,7 +286,7 @@ fun <T : Any> OptionItem(
         leadingContent = if (!readOnly) {
             {
                 OptionItemCheckbox(
-                    localChecked = isChecked,
+                    checked = isChecked,
                     isRequired = isRequired,
                     safeguardActive = safeguard,
                     onCheckedChange = { checked ->
@@ -317,6 +319,7 @@ fun <T : Any> OptionItem(
                     option = option,
                     displayText = displayText,
                     isChecked = isChecked,
+                    isDefault = isDefault,
                     readOnly = readOnly,
                     safeguard = safeguard,
                     canShowError = isChecked && !isBoolean && !isValid,
@@ -362,6 +365,7 @@ private fun <T : Any> OptionDropdownSection(
     option: Option<T>,
     displayText: String,
     isChecked: Boolean,
+    isDefault: Boolean,
     readOnly: Boolean,
     safeguard: Boolean,
     canShowError: Boolean,
@@ -369,7 +373,7 @@ private fun <T : Any> OptionDropdownSection(
     isString: Boolean,
     keyboardType: KeyboardType,
     fs: Filesystem?,
-    permissionLauncher: Pair<androidx.activity.result.ActivityResultLauncher<String>, String>?,
+    permissionLauncher: Pair<ActivityResultLauncher<String>, String>?,
     enabledBooleanLabel: String,
     disabledBooleanLabel: String,
     onValueChange: (String) -> Unit,
@@ -409,9 +413,17 @@ private fun <T : Any> OptionDropdownSection(
                 isError = canShowError,
                 readOnly = isBoolean,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                supportingText = if (canShowError) {
-                    { Text(stringResource(R.string.patch_options_value_invalid)) }
-                } else null,
+                supportingText = when {
+                    canShowError -> {
+                        { Text(stringResource(R.string.patch_options_value_invalid)) }
+                    }
+
+                    isDefault && isChecked && !readOnly -> {
+                        { Text(stringResource(R.string.patch_options_using_default_value)) }
+                    }
+
+                    else -> null
+                },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(
                         expanded = expanded,
@@ -533,7 +545,7 @@ private fun ListOptionItem(
         leadingContent = if (!readOnly) {
             {
                 OptionItemCheckbox(
-                    localChecked = isChecked,
+                    checked = isChecked,
                     isRequired = isRequired,
                     safeguardActive = safeguard,
                     onCheckedChange = { checked ->
@@ -566,8 +578,7 @@ private fun ListOptionDialog(
 
     val listIsDirty by remember {
         derivedStateOf {
-            value.size != items.size ||
-                    value.zip(items).any { (v, item) -> v != item.value }
+            value.size != items.size || value.zip(items).any { (v, item) -> v != item.value }
         }
     }
 
