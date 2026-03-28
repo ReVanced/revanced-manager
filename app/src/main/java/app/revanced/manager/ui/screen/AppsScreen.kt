@@ -25,6 +25,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
@@ -41,6 +42,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,6 +69,14 @@ import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import com.eygraber.compose.placeholder.placeholder
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.FloatingActionButton
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -80,6 +90,10 @@ fun AppsScreen(
     EventEffect(flow = viewModel.storageSelectionFlow) {
         onStorageSelect(it)
     }
+
+    val lazyListState = rememberLazyListState()
+    val searchLazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     val pickApkLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -198,7 +212,10 @@ fun AppsScreen(
                                 LoadingIndicator()
                             }
                         } else {
-                            LazyColumnWithScrollbar(modifier = Modifier.fillMaxSize()) {
+                            LazyColumnWithScrollbar(
+                                modifier = Modifier.fillMaxSize(),
+                                state = searchLazyListState
+                            ) {
                                 val pinnedFilteredPatched = filteredPatchedApps.filter { it.currentPackageName in pinnedApps }
                                 val pinnedFilteredPatchable = filteredPatchableApps.filter { it.packageName in pinnedApps }
                                 val hasPinnedResults = pinnedFilteredPatched.isNotEmpty() || pinnedFilteredPatchable.isNotEmpty()
@@ -448,6 +465,28 @@ fun AppsScreen(
                     }
                 }
             }
+        },
+        floatingActionButton = {
+            val currentState = if (searchExpanded) searchLazyListState else lazyListState
+            val showFab by remember(currentState) {
+                derivedStateOf { currentState.firstVisibleItemIndex > 0 }
+            }
+
+            AnimatedVisibility(
+                visible = showFab,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            currentState.animateScrollToItem(0)
+                        }
+                    }
+                ) {
+                    Icon(Icons.Filled.KeyboardArrowUp, null)
+                }
+            }
         }
     ) { paddingValues ->
         if (searchExpanded) return@Scaffold
@@ -457,6 +496,7 @@ fun AppsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(top = TITLE_VERTICAL),
+            state = lazyListState,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
