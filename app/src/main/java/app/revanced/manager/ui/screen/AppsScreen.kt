@@ -776,7 +776,7 @@ fun SupportingPills(patchCount: Int, suggestedVersion: String? = null) {
         }
         if (suggestedVersion != null) {
             if (patchCount > 0) Spacer(Modifier.width(4.dp))
-            VersionPill(version = suggestedVersion)
+            Pill(text = suggestedVersion)
         }
     }
 }
@@ -784,11 +784,6 @@ fun SupportingPills(patchCount: Int, suggestedVersion: String? = null) {
 @Composable
 private fun PatchesPill(patchCount: Int) {
     Pill(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
-}
-
-@Composable
-private fun VersionPill(version: String) {
-    Pill(version)
 }
 
 @Composable
