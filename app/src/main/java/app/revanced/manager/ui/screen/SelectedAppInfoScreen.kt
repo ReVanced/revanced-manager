@@ -296,17 +296,18 @@ fun SelectedAppInfoScreen(
                     )
                 }
             )
-            PageItem(
-                R.string.version,
-                selectedVersionLabel,
-                warningDescription = if (showVersionCompatibilityWarning) {
-                    stringResource(R.string.version_compatibility_warning)
-                } else {
-                    null
-                },
-                enabled = versionOptions.unrestricted || versionOptions.versions.isNotEmpty(),
-                onClick = { showVersionSelector = true }
-            )
+            if (versionOptions.versions.isNotEmpty()) {
+                PageItem(
+                    R.string.version,
+                    selectedVersionLabel,
+                    warningDescription = if (showVersionCompatibilityWarning) {
+                        stringResource(R.string.version_compatibility_warning)
+                    } else {
+                        null
+                    },
+                    onClick = { showVersionSelector = true }
+                )
+            }
             val autoSourceSubtitle = run {
                 val resolved = vm.resolveAutoSource(vm.selectedApp.version)
                 when {
@@ -373,15 +374,13 @@ fun SelectedAppInfoScreen(
 private fun PageItem(
     @StringRes title: Int,
     description: String,
-    enabled: Boolean = true,
     warningDescription: String? = null,
     warningColor: Color = Color.Unspecified,
     onClick: () -> Unit
 ) {
     ListItem(
         modifier = Modifier
-            .clickable(enabled = enabled, onClick = onClick)
-            .enabled(enabled)
+            .clickable(onClick = onClick)
             .padding(start = 8.dp),
         headlineContent = {
             Text(
