@@ -1,3 +1,10 @@
+# app [2.6.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.3...v2.6.0-dev.4) (2026-03-28)
+
+
+### Bug Fixes
+
+* Ignore RichTap vibrator hardware crash ([7856652](https://github.com/ReVanced/revanced-manager/commit/7856652506896a804a57fc085e80c6cf5c1fcba0))
+
 # app [2.6.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.2...v2.6.0-dev.3) (2026-03-26)
 
 
