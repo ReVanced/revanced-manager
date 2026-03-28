@@ -372,40 +372,47 @@ fun AppsScreen(
                 val showInstalled = (viewModel.filter and AppsViewModel.SHOW_INSTALLED) != 0
                 val showNotInstalled = (viewModel.filter and AppsViewModel.SHOW_NOT_INSTALLED) != 0
                 val showSystem = (viewModel.filter and AppsViewModel.SHOW_SYSTEM) != 0
+                val applyToPinned = (viewModel.filter and AppsViewModel.APPLY_FILTER_TO_PINNED) != 0
 
                 val patchedPkgNames = patchedPackageNames(patched)
                 val patchesData = patchable.associateBy { it.packageName }
                 val allApps = mutableListOf<AppInfoState>()
 
                 // Add Patched Apps
-                if (showPatched) {
-                    patched.forEach { app ->
-                        val packageInfo = viewModel.packageInfoMap[app.currentPackageName]
-                        if (showSystem || packageInfo?.isSystemApp() != true) {
-                            val pData = patchesData[app.currentPackageName] ?: patchesData[app.originalPackageName]
-                            allApps.add(
-                                AppInfoState(
-                                    packageName = app.currentPackageName,
-                                    label = viewModel.loadLabel(packageInfo),
-                                    isPatched = true,
-                                    isInstalled = true,
-                                    patchCount = pData?.patches ?: 0,
-                                    suggestedVersion = suggestedVersions[app.currentPackageName] ?: suggestedVersions[app.originalPackageName],
-                                    packageInfo = packageInfo,
-                                    installedApp = app
-                                )
+                patched.forEach { app ->
+                    val packageInfo = viewModel.packageInfoMap[app.currentPackageName]
+                    val isPinned = app.currentPackageName in pinnedApps || app.originalPackageName in pinnedApps
+                    val isSystem = packageInfo?.isSystemApp() == true
+                    
+                    val passesFilters = showPatched && (showSystem || !isSystem)
+                    
+                    if (passesFilters || (isPinned && !applyToPinned)) {
+                        val pData = patchesData[app.currentPackageName] ?: patchesData[app.originalPackageName]
+                        allApps.add(
+                            AppInfoState(
+                                packageName = app.currentPackageName,
+                                label = viewModel.loadLabel(packageInfo),
+                                isPatched = true,
+                                isInstalled = true,
+                                patchCount = pData?.patches ?: 0,
+                                suggestedVersion = suggestedVersions[app.currentPackageName] ?: suggestedVersions[app.originalPackageName],
+                                packageInfo = packageInfo,
+                                installedApp = app
                             )
-                        }
+                        )
                     }
                 }
 
                 // Add Patchable Apps
                 patchable.forEach { app ->
                     if (app.packageName !in patchedPkgNames) {
+                        val isPinned = app.packageName in pinnedApps
                         val isInstalled = app.packageInfo != null
-                        val isSystemMatch = showSystem || app.packageInfo?.isSystemApp() != true
+                        val isSystem = app.packageInfo?.isSystemApp() == true
+                        
+                        val passesFilters = ((isInstalled && showInstalled) || (!isInstalled && showNotInstalled)) && (showSystem || !isSystem)
 
-                        if (((isInstalled && showInstalled) || (!isInstalled && showNotInstalled)) && isSystemMatch) {
+                        if (passesFilters || (isPinned && !applyToPinned)) {
                             allApps.add(
                                 AppInfoState(
                                     packageName = app.packageName,
