@@ -578,6 +578,7 @@ Tap them for more details.</string>
 
     <string name="sideeffect_restart">Restart the app to see changes</string>
     <string name="sideeffect_no_network">You’re offline. Check your internet connection.</string>
+    <string name="source_selector_category_downloaded">Previously downloaded</string>
 
     <plurals name="patch_count">
         <item quantity="one">%d patch</item>
