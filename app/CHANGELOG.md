@@ -1,3 +1,10 @@
+# app [2.6.0-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.4...v2.6.0-dev.5) (2026-03-29)
+
+
+### Bug Fixes
+
+* Dashboard padding ([5f757b6](https://github.com/ReVanced/revanced-manager/commit/5f757b6ee1fd923afaeffeae6bde12934822c30f))
+
 # app [2.6.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.3...v2.6.0-dev.4) (2026-03-28)
 
 
