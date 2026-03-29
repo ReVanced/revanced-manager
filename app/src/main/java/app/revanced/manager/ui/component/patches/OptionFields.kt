@@ -102,7 +102,6 @@ private fun formatValue(
 
 @Suppress("UNCHECKED_CAST")
 private fun <T : Any> parseValue(str: String, type: KType): T? {
-    if (str.isEmpty() && type != typeOf<String>()) return null
     return try {
         when (type) {
             typeOf<String>() -> str as T
