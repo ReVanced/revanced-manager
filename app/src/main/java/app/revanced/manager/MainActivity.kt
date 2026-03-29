@@ -264,6 +264,7 @@ private fun ReVancedManager(vm: MainViewModel) {
 
                 SelectedAppInfoScreen(
                     onBackClick = navController::popBackStackSafe,
+                    onSettingsClick = navController::navigateSafe,
                     onPatchClick = {
                         it.lifecycleScope.launch {
                             navController.navigateComplex(

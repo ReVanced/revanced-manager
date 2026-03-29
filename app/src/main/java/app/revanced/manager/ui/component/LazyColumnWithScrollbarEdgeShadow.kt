@@ -36,6 +36,7 @@ fun LazyColumnWithScrollbarEdgeShadow(
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     userScrollEnabled: Boolean = true,
+    showScrollbar: Boolean = true,
     edgeShadowHeight: Dp = 40.dp,
     edgeShadowProximity: Dp = 80.dp,
     content: LazyListScope.() -> Unit
@@ -126,7 +127,7 @@ fun LazyColumnWithScrollbarEdgeShadow(
             )
         }
 
-        if (state.canScrollForward || state.canScrollBackward) {
+        if (showScrollbar && (state.canScrollForward || state.canScrollBackward)) {
             Scrollbar(state)
         }
     }

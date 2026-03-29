@@ -94,7 +94,7 @@ Second \"item\" text"</string>
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="patch_selection_changed_warning">Patch selection has been changed</string>
     <string name="no_patches_selected">No patches selected</string>
-
+    <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
     <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
     <string name="apk_source_selector_item">Select APK source</string>
@@ -566,6 +566,7 @@ Tap them for more details.</string>
     <string name="incompatible_patch">Incompatible patch</string>
     <string name="any_version">Any</string>
     <string name="never_show_again">Don’t show this again</string>
+    <string name="open_downloaders">Open downloaders</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
     <string name="show_manager_update_dialog_on_launch_description">Get notified when you open the app and a new update is available</string>
     <string name="failed_to_import_keystore">Couldn’t import keystore</string>
