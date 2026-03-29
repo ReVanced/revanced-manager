@@ -482,7 +482,7 @@ fun PatchesSelectorScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(top = paddingValues.calculateTopPadding())
         ) {
             Spacer(
                 modifier = Modifier
