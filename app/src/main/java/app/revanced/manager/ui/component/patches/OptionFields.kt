@@ -298,9 +298,13 @@ fun <T : Any> OptionItem(
                                 val boolVal = (localValue ?: option.default ?: false) as T
                                 localValue = boolVal
                                 setValue(boolVal)
-                            } else if (isValid) {
-                                localValue = parsedValue
-                                setValue(parsedValue)
+                            } else {
+                                if (option.default != null) reset()
+                                // Some options don't have defaults, so set to non-default empty text field instead
+                                else {
+                                    localValue = parsedValue
+                                    setValue(parsedValue)
+                                }
                             }
                         } else {
                             localValue = null
