@@ -233,6 +233,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="edit">Edit</string>
+    <string name="discard_changes">Discard changes</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
     <string name="share">Share</string>
@@ -319,13 +320,19 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="patch_options_reset_toast">Patch options have been reset</string>
     <string name="patch_options_nothing_set">Nothing set for this option</string>
     <string name="patch_options_set_default">Use default value</string>
-    <string name="patch_options_value_null">Not set</string>
+    <string name="patch_options_value_null">Not specified</string>
     <string name="patch_options_value_invalid">Invalid value</string>
     <string name="patch_options_value_boolean_true">Enabled</string>
     <string name="patch_options_value_boolean_false">Disabled</string>
     <string name="patch_options_value_required">This option is required</string>
+    <string name="patch_options_value_required_list_empty">This list is required, but you haven’t added any items.</string>
     <string name="patch_options_using_default_value">Using default value</string>
     <string name="patch_options_value_list_element">Value</string>
+    <string name="patch_options_value_list_invalid_dialog_title">Can’t save option</string>
+    <string name="patch_options_value_list_invalid_dialog_description">This list doesn’t follow the required format.</string>
+    <string name="patch_options_value_list_element_count">%d values</string>
+    <string name="patch_options_value_required_list_empty_save_warning_title">Save without items?</string>
+    <string name="patch_options_value_required_list_empty_save_warning_description">This option is required, and usually needs at least one item for the patch to have an effect.</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you selected doesn’t match the suggested version: %s
 

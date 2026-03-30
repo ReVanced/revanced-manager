@@ -10,6 +10,7 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -47,6 +49,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -67,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
+import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.FloatInputDialog
 import app.revanced.manager.ui.component.FullscreenDialog
@@ -93,10 +97,10 @@ private fun formatValue(
     v: Any?,
     boolTrueStr: String = "true",
     boolFalseStr: String = "false",
-): String = when {
-    v == null -> ""
-    v == true -> boolTrueStr
-    v == false -> boolFalseStr
+): String = when (v) {
+    null -> ""
+    true -> boolTrueStr
+    false -> boolFalseStr
     else -> v.toString()
 }
 
@@ -157,34 +161,6 @@ private fun OptionItemCheckbox(
                     .clickable(onClick = onSafeguardClick)
             )
         }
-    }
-}
-
-@Composable
-private fun OptionItemSupporting(option: Option<*>, value: Any?) {
-    Column {
-        Text(option.description)
-        if (option.required && value == null) {
-            Text(
-                style = MaterialTheme.typography.labelLargeEmphasized,
-                text = stringResource(R.string.patch_options_value_required),
-                modifier = Modifier.padding(top = 16.dp),
-                color = MaterialTheme.colorScheme.error,
-            )
-        }
-    }
-}
-
-@Composable
-private fun OptionItemEditTrailing(readOnly: Boolean, onClick: () -> Unit) {
-    TooltipIconButton(
-        onClick = onClick,
-        tooltip = stringResource(if (readOnly) R.string.show else R.string.edit),
-    ) {
-        Icon(
-            if (readOnly) Icons.Outlined.Visibility else Icons.Outlined.Edit,
-            stringResource(if (readOnly) R.string.show else R.string.edit),
-        )
     }
 }
 
@@ -515,6 +491,19 @@ private fun <T : Any> OptionDropdownSection(
 }
 
 @Composable
+private fun ListOptionItemEditTrailing(readOnly: Boolean, onClick: () -> Unit) {
+    TooltipIconButton(
+        onClick = onClick,
+        tooltip = stringResource(if (readOnly) R.string.show else R.string.edit),
+    ) {
+        Icon(
+            if (readOnly) Icons.Outlined.Visibility else Icons.Outlined.Edit,
+            stringResource(if (readOnly) R.string.show else R.string.edit),
+        )
+    }
+}
+
+@Composable
 private fun ListOptionItem(
     option: Option<List<Serializable>>,
     value: List<Serializable>?,
@@ -528,6 +517,7 @@ private fun ListOptionItem(
     if (showSelectionWarningDialog) {
         SelectionWarningDialog(onDismiss = { showSelectionWarningDialog = false })
     }
+
     if (showDialog) {
         ListOptionDialog(
             option = option,
@@ -564,8 +554,19 @@ private fun ListOptionItem(
                 )
             }
         } else null,
-        supportingContent = { OptionItemSupporting(option, value) },
-        trailingContent = { OptionItemEditTrailing(readOnly, onClick = clickAction) },
+        supportingContent = {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text(option.description)
+                if (option.required && value == null) {
+                    Text(
+                        style = MaterialTheme.typography.labelLargeEmphasized,
+                        text = stringResource(R.string.patch_options_value_required),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
+        },
+        trailingContent = { ListOptionItemEditTrailing(readOnly, onClick = clickAction) },
     )
 }
 
@@ -603,14 +604,91 @@ private fun ListOptionDialog(
 
     val canEditItems = !readOnly && !deleteMode
 
-    val back = remember(listIsDirty) {
+    var showEmptyListWarning by remember { mutableStateOf(false) }
+    var showInvalidListWarning by remember { mutableStateOf(false) }
+    var showAddItemDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showAddItemDialog) {
+        ListItemEditDialog(
+            type = elementType,
+            title = option.name,
+            currentValue = null,
+            onDismiss = { showAddItemDialog = false },
+            onSubmit = { newValue ->
+                items.add(Item(newValue))
+                showAddItemDialog = false
+            },
+        )
+    }
+
+    if (showEmptyListWarning) {
+        AlertDialog(
+            onDismissRequest = { showEmptyListWarning = false },
+            title = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_title)) },
+            text = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_description)) },
+            confirmButton = {
+                val currentItems = items.map { it.value }
+                TextButton(
+                    onClick = {
+                        showEmptyListWarning = false
+                        if (option.validator(currentItems)) {
+                            setValue(currentItems)
+                            onDismiss()
+                        } else {
+                            showInvalidListWarning = true
+                        }
+                    }
+                ) {
+                    Text(stringResource(R.string.save))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showEmptyListWarning = false }) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        )
+    }
+
+    if (showInvalidListWarning) {
+        AlertDialogExtended(
+            onDismissRequest = { showInvalidListWarning = false },
+            title = { Text(stringResource(R.string.patch_options_value_list_invalid_dialog_title)) },
+            text = { Text(stringResource(R.string.patch_options_value_list_invalid_dialog_description)) },
+            confirmButton = {
+                TextButton(onClick = { showInvalidListWarning = false }) {
+                    Text(stringResource(R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(R.string.discard_changes))
+                }
+            }
+        )
+    }
+
+    val back = remember(listIsDirty, deleteMode) {
         {
             if (deleteMode) {
                 deletionTargets.clear()
                 deleteMode = false
             } else {
-                if (listIsDirty) setValue(items.mapNotNull { it.value })
-                onDismiss()
+                val currentItems = items.map { it.value }
+                if (listIsDirty) {
+                    if (option.required && currentItems.isEmpty()) {
+                        showEmptyListWarning = true
+                    } else if (!option.validator(currentItems)) {
+                        showInvalidListWarning = true
+                    } else {
+                        setValue(currentItems)
+                        onDismiss()
+                    }
+                } else if (option.required && currentItems.isEmpty()) {
+                    showEmptyListWarning = true
+                } else {
+                    onDismiss()
+                }
             }
         }
     }
@@ -665,7 +743,7 @@ private fun ListOptionDialog(
                         text = { Text(stringResource(R.string.add)) },
                         icon = { Icon(Icons.Outlined.Add, stringResource(R.string.add)) },
                         expanded = lazyListState.isScrollingUp,
-                        onClick = { items.add(Item(null)) },
+                        onClick = { showAddItemDialog = true },
                     )
                 }
             },
@@ -684,7 +762,7 @@ private fun ListOptionDialog(
 
                         if (showEditDialog) {
                             ListItemEditDialog(
-                                elementType = elementType,
+                                type = elementType,
                                 title = option.name,
                                 currentValue = item.value,
                                 onDismiss = { showEditDialog = false },
@@ -740,7 +818,8 @@ private fun ListOptionDialog(
                                 }
                             },
                             headlineContent = {
-                                if (item.value == null) {
+                                val isValueEmpty = item.value is String && item.value.isEmpty()
+                                if (isValueEmpty) {
                                     Text(
                                         stringResource(R.string.empty),
                                         fontStyle = FontStyle.Italic,
@@ -751,7 +830,7 @@ private fun ListOptionDialog(
                             },
                             trailingContent = if (canEditItems) {
                                 {
-                                    OptionItemEditTrailing(readOnly = false) {
+                                    ListOptionItemEditTrailing(readOnly = false) {
                                         showEditDialog = true
                                     }
                                 }
@@ -796,13 +875,13 @@ private fun ListOptionTopBarActions(
 
 @Composable
 private fun ListItemEditDialog(
-    elementType: KType,
+    type: KType,
     title: String,
     currentValue: Serializable?,
     onDismiss: () -> Unit,
-    onSubmit: (Serializable?) -> Unit,
+    onSubmit: (Serializable) -> Unit,
 ) {
-    val fs: Filesystem? = if (elementType == typeOf<String>()) koinInject() else null
+    val fs: Filesystem? = if (type == typeOf<String>()) koinInject() else null
     var showFileDialog by rememberSaveable { mutableStateOf(false) }
     var externalValueUpdate: ((String) -> Unit)? by remember { mutableStateOf(null) }
 
@@ -822,7 +901,7 @@ private fun ListItemEditDialog(
         } to permissionName
     } else null
 
-    when (elementType) {
+    when (type) {
         typeOf<Int>() -> IntInputDialog(
             name = title,
             current = currentValue as Int?,
@@ -886,6 +965,6 @@ private fun ListItemEditDialog(
 
 @Parcelize
 private data class Item(
-    val value: Serializable?,
+    val value: Serializable,
     val key: Int = Random.nextInt(),
 ) : Parcelable
