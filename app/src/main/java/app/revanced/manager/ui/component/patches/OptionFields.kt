@@ -45,6 +45,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -393,9 +394,16 @@ private fun <T : Any> OptionDropdownSection(
                 maxLines = 5,
                 value = displayText,
                 onValueChange = { if (!safeguard) onValueChange(it) },
-                enabled = isChecked,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    color = if (readOnly && option.default == null) MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        0.75f
+                    )
+                    else LocalTextStyle.current.color
+                ),
+                // Read-only will always appear enabled but read-only
+                enabled = readOnly || isChecked,
+                readOnly = readOnly || isBoolean,
                 isError = canShowError,
-                readOnly = isBoolean,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                 supportingText = when {
                     canShowError -> {
