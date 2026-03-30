@@ -654,7 +654,16 @@ private fun ListOptionDialog(
         AlertDialogExtended(
             onDismissRequest = { showInvalidListWarning = false },
             title = { Text(stringResource(R.string.patch_options_value_list_invalid_dialog_title)) },
-            text = { Text(stringResource(R.string.patch_options_value_list_invalid_dialog_description)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Text(stringResource(R.string.patch_options_value_list_invalid_dialog_description))
+                    ListItem(
+                        headlineContent = { OptionItemHeadline(option) },
+                        supportingContent = { Text(option.description) },
+                        colors = transparentListItemColors,
+                    )
+                }
+            },
             confirmButton = {
                 TextButton(onClick = { showInvalidListWarning = false }) {
                     Text(stringResource(R.string.ok))
