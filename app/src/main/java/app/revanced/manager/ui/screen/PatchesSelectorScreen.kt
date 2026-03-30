@@ -221,6 +221,7 @@ fun PatchesSelectorScreen(
                 patch = dialog.patch,
                 values = viewModel.getOptions(dialog.bundle, dialog.patch),
                 reset = { viewModel.resetOptions(dialog.bundle, dialog.patch) },
+                resetOption = { viewModel.resetOption(dialog.bundle, dialog.patch, it) },
                 set = { key, value ->
                     viewModel.setOption(
                         dialog.bundle,
@@ -230,7 +231,7 @@ fun PatchesSelectorScreen(
                     )
                 },
                 selectionWarningEnabled = viewModel.selectionWarningEnabled,
-                readOnly = readOnly
+                readOnly = readOnly,
             )
         }
 
