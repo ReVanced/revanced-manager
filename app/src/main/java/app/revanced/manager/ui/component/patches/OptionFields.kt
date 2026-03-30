@@ -763,6 +763,16 @@ private fun ListOptionDialog(
                     .fillMaxHeight()
                     .padding(paddingValues),
             ) {
+                if (readOnly && items.isEmpty()) {
+                    item {
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = stringResource(R.string.patch_options_no_default_items),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
                 itemsIndexed(items, key = { _, item -> item.key }) { index, item ->
                     val interactionSource = remember { MutableInteractionSource() }
 
@@ -812,20 +822,22 @@ private fun ListOptionDialog(
                             } else {
                                 0.dp
                             },
-                            leadingContent = {
-                                TooltipIconButton(
-                                    modifier = Modifier.draggableHandle(
-                                        interactionSource = interactionSource
-                                    ),
-                                    onClick = {},
-                                    tooltip = stringResource(R.string.drag_handle),
-                                ) {
-                                    Icon(
-                                        Icons.Filled.DragHandle,
-                                        stringResource(R.string.drag_handle),
-                                    )
+                            leadingContent = if (!readOnly) {
+                                {
+                                    TooltipIconButton(
+                                        modifier = Modifier.draggableHandle(
+                                            interactionSource = interactionSource
+                                        ),
+                                        onClick = {},
+                                        tooltip = stringResource(R.string.drag_handle),
+                                    ) {
+                                        Icon(
+                                            Icons.Filled.DragHandle,
+                                            stringResource(R.string.drag_handle),
+                                        )
+                                    }
                                 }
-                            },
+                            } else null,
                             headlineContent = {
                                 val isValueEmpty = item.value is String && item.value.isEmpty()
                                 if (isValueEmpty) {
