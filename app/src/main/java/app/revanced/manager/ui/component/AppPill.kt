@@ -26,7 +26,7 @@ fun AppPill(
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier.padding(horizontal = 6.dp)
         ) {
             Text(
                 text = text ?: stringResource(R.string.loading),
