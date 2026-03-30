@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -34,8 +33,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -57,6 +54,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
+import app.revanced.manager.ui.component.AppPill
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.SearchBar
@@ -67,7 +65,6 @@ import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
-import com.eygraber.compose.placeholder.placeholder
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -772,41 +769,11 @@ fun SupportingPills(patchCount: Int, suggestedVersion: String? = null) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (patchCount > 0) {
-            PatchesPill(patchCount = patchCount)
+            AppPill(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
         }
         if (suggestedVersion != null) {
             if (patchCount > 0) Spacer(Modifier.width(4.dp))
-            Pill(text = suggestedVersion)
+            AppPill(suggestedVersion)
         }
     }
-}
-
-@Composable
-private fun PatchesPill(patchCount: Int) {
-    Pill(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
-}
-
-@Composable
-private fun Pill(text: String?) {
-    SuggestionChip(
-        onClick = { /* nothing... */ },
-        label = {
-            Text(
-                text = text ?: stringResource(R.string.loading),
-                modifier = Modifier.placeholder(
-                    visible = text == null,
-                    color = MaterialTheme.colorScheme.inverseOnSurface,
-                    shape = MaterialTheme.shapes.extraSmall
-                ),
-                style = MaterialTheme.typography.labelSmall
-            )
-        },
-        modifier = Modifier.height(24.dp),
-        enabled = false,
-        colors = SuggestionChipDefaults.suggestionChipColors(
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
-        border = null,
-    )
 }
