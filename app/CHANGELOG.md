@@ -1,3 +1,31 @@
+# app [2.6.0-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.4...v2.6.0-dev.5) (2026-03-29)
+
+
+### Bug Fixes
+
+* Dashboard padding ([5f757b6](https://github.com/ReVanced/revanced-manager/commit/5f757b6ee1fd923afaeffeae6bde12934822c30f))
+
+# app [2.6.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.3...v2.6.0-dev.4) (2026-03-28)
+
+
+### Bug Fixes
+
+* Ignore RichTap vibrator hardware crash ([7856652](https://github.com/ReVanced/revanced-manager/commit/7856652506896a804a57fc085e80c6cf5c1fcba0))
+
+# app [2.6.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.2...v2.6.0-dev.3) (2026-03-26)
+
+
+### Bug Fixes
+
+* Preserve applied patches on patched apps when source patches is deleted ([#3227](https://github.com/ReVanced/revanced-manager/issues/3227)) ([4884fdb](https://github.com/ReVanced/revanced-manager/commit/4884fdb5545134181a8a2176c7a21911aa22be9b))
+
+# app [2.6.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.1...v2.6.0-dev.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* Adjust font size and fix letter spacing in announcements ([e1660a7](https://github.com/ReVanced/revanced-manager/commit/e1660a7f2f94f3f50ee8bb2479888af8b760e51e))
+
 # app [2.6.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.5.1...v2.6.0-dev.1) (2026-03-25)
 
 
