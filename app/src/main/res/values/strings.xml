@@ -234,6 +234,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="no">No</string>
     <string name="edit">Edit</string>
     <string name="discard_changes">Discard changes</string>
+    <string name="discard_changes_dialog_title">Discard changes?</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
     <string name="share">Share</string>
@@ -318,7 +319,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options have been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
-    <string name="patch_options_nothing_set">Nothing set for this option</string>
+    <string name="patch_options_discard_invalid_description">Invalid options will reset to the last saved value.</string>
     <string name="patch_options_set_default">Use default value</string>
     <string name="patch_options_value_null">Not specified</string>
     <string name="patch_options_value_invalid">Invalid value</string>

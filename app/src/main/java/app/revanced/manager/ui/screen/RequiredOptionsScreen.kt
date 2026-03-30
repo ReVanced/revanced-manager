@@ -156,7 +156,9 @@ fun RequiredOptionsScreen(
                                     setValue = { new -> vm.setOption(bundle.uid, it, name, new) },
                                     isDefault = usingDefault,
                                     reset = { vm.resetOption(bundle.uid, it, option) },
-                                    selectionWarningEnabled = vm.selectionWarningEnabled
+                                    selectionWarningEnabled = vm.selectionWarningEnabled,
+                                    // Invalid options won't be saved, so we don't need to handle any states here
+                                    setInvalid = {}
                                 )
                             }
                         }

@@ -4,7 +4,6 @@ package app.revanced.manager.ui.component.patches
 
 import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
@@ -13,10 +12,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -52,6 +49,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -94,14 +92,11 @@ import kotlin.random.Random
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
-private fun formatValue(
-    v: Any?,
-    boolTrueStr: String = "true",
-    boolFalseStr: String = "false",
-): String = when (v) {
-    null -> ""
-    true -> boolTrueStr
-    false -> boolFalseStr
+@Composable
+private fun formatValue(v: Any?): String = when (v) {
+    null -> stringResource(R.string.patch_options_value_null)
+    true -> stringResource(R.string.patch_options_value_boolean_true)
+    false -> stringResource(R.string.patch_options_value_boolean_false)
     else -> v.toString()
 }
 
@@ -121,7 +116,7 @@ private fun <T : Any> parseValue(str: String, type: KType): T? {
     }
 }
 
-private fun safeguardActive(
+private fun isSafeguardActive(
     readOnly: Boolean,
     isRequired: Boolean,
     selectionWarningEnabled: Boolean,
@@ -145,22 +140,30 @@ private fun OptionItemHeadline(option: Option<*>) {
 private fun OptionItemCheckbox(
     checked: Boolean,
     isRequired: Boolean,
-    safeguardActive: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    onSafeguardClick: () -> Unit,
 ) {
     Box {
         Checkbox(
             checked = checked,
-            onCheckedChange = { if (!safeguardActive) onCheckedChange(it) },
+            onCheckedChange = { onCheckedChange(it) },
             enabled = !isRequired,
         )
-        if (safeguardActive) {
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .clickable(onClick = onSafeguardClick)
-            )
+    }
+}
+
+@Composable
+private fun rememberFilePicker(
+    fs: Filesystem,
+    onFileDialogRequest: () -> Unit,
+): () -> Unit {
+    val (contract, permissionName) = remember(fs) { fs.permissionContract() }
+    val launcher = rememberLauncherForActivityResult(contract) { granted ->
+        if (granted) onFileDialogRequest()
+    }
+    return remember(launcher, permissionName, fs) {
+        {
+            if (fs.hasStoragePermission()) onFileDialogRequest()
+            else launcher.launch(permissionName)
         }
     }
 }
@@ -171,175 +174,144 @@ fun <T : Any> OptionItem(
     value: T?,
     isDefault: Boolean,
     setValue: (T?) -> Unit,
+    setInvalid: (Boolean) -> Unit,
     reset: () -> Unit,
     selectionWarningEnabled: Boolean,
     readOnly: Boolean = false,
 ) {
+    val isBoolean = option.type == typeOf<Boolean>()
     val isRequired = option.required
-    val type = option.type
+    val safeguardActive = isSafeguardActive(readOnly, isRequired, selectionWarningEnabled)
 
-    if (type.classifier == List::class) {
-        @Suppress("UNCHECKED_CAST")
-        ListOptionItem(
-            option = option as Option<List<Serializable>>,
-            value = value as List<Serializable>?,
-            setValue = setValue as (List<Serializable>?) -> Unit,
-            selectionWarningEnabled = selectionWarningEnabled,
-            readOnly = readOnly,
-        )
-        return
+    var showWarningDialog by rememberSaveable { mutableStateOf(false) }
+    if (showWarningDialog) {
+        SelectionWarningDialog(onDismiss = { showWarningDialog = false })
     }
 
-    val nullValueString = stringResource(R.string.patch_options_value_null)
-    val enabledBooleanValueString = stringResource(R.string.patch_options_value_boolean_true)
-    val disabledBooleanValueString = stringResource(R.string.patch_options_value_boolean_false)
-
-    val isBoolean = type == typeOf<Boolean>()
-    val isString = type == typeOf<String>()
-
-    val safeguard = safeguardActive(readOnly, isRequired, selectionWarningEnabled)
-
-    // Actual value here
-    var localValue: T? by rememberSaveable(value) { mutableStateOf(value) }
-
-    var isChecked by rememberSaveable(value) {
-        mutableStateOf(value != null || isRequired)
-    }
-
-    // For number-based/string fields, value will be parsed, validated, and set in localValue
-    var localText by rememberSaveable(value) {
-        mutableStateOf(value?.toString() ?: "")
-    }
-
-    val parsedValue: T? = if (!isBoolean) parseValue(localText, type) else localValue
-    val isValid = parsedValue != null && option.validator(parsedValue)
-
-    val displayText = when {
-        !isChecked -> nullValueString
-        isBoolean ->
-            formatValue(localValue, enabledBooleanValueString, disabledBooleanValueString)
-
-        else -> localText
-    }
-
-    var showSelectionWarningDialog by rememberSaveable { mutableStateOf(false) }
-    if (showSelectionWarningDialog) {
-        SelectionWarningDialog(onDismiss = { showSelectionWarningDialog = false })
-    }
-
-    val fs: Filesystem? = if (isString) koinInject() else null
-    var showFileDialog by rememberSaveable { mutableStateOf(false) }
-
-    if (isString && showFileDialog) {
-        PathSelectorDialog(root = fs!!.externalFilesDir()) { path ->
-            showFileDialog = false
-            path?.let {
-                val str = it.toString()
-                localText = str
-                @Suppress("UNCHECKED_CAST")
-                val typed = str as T
-                localValue = typed
-                if (isChecked) setValue(typed)
+    @Composable
+    fun SafeGuardBlocker(content: @Composable () -> Unit) {
+        Box {
+            content()
+            if (safeguardActive) {
+                Box(modifier = Modifier.matchParentSize().clickable { showWarningDialog = true })
             }
         }
     }
 
-    val permissionLauncher = if (isString) {
-        val (contract, permissionName) = fs!!.permissionContract()
-        rememberLauncherForActivityResult(contract) { granted ->
-            if (granted) showFileDialog = true
-        } to permissionName
-    } else null
-
-    val keyboardType = when (type) {
-        typeOf<Float>() -> KeyboardType.Decimal
-        typeOf<Int>(), typeOf<Long>() -> KeyboardType.Number
-        else -> KeyboardType.Text
+    if (option.type.classifier == List::class) {
+        SafeGuardBlocker {
+            @Suppress("UNCHECKED_CAST")
+            ListOptionItem(
+                readOnly = readOnly,
+                option = option as Option<List<Serializable>>,
+                value = value as List<Serializable>?,
+                setValue = setValue as (List<Serializable>?) -> Unit,
+            )
+        }
+        return
     }
 
-    ListItem(
-        modifier = Modifier.fillMaxWidth(),
-        colors = transparentListItemColors,
-        headlineContent = { OptionItemHeadline(option) },
-        leadingContent = if (!readOnly) {
-            {
-                OptionItemCheckbox(
-                    checked = isChecked,
-                    isRequired = isRequired,
-                    safeguardActive = safeguard,
-                    onCheckedChange = { checked ->
-                        isChecked = checked
-                        if (checked) {
-                            if (isBoolean) {
-                                @Suppress("UNCHECKED_CAST")
-                                val boolVal = (localValue ?: option.default ?: false) as T
-                                localValue = boolVal
-                                setValue(boolVal)
-                            } else {
-                                if (option.default != null) reset()
-                                // Some options don't have defaults, so set to non-default empty text field instead
-                                else {
-                                    localValue = parsedValue
-                                    setValue(parsedValue)
-                                }
-                            }
-                        } else {
-                            localValue = null
-                            setValue(null)
-                        }
-                    },
-                    onSafeguardClick = { showSelectionWarningDialog = true },
-                )
-            }
-        } else null,
-        supportingContent = {
-            Column {
-                Text(option.description)
-                Spacer(Modifier.height(8.dp))
+    var checked by rememberSaveable(value) { mutableStateOf(value != null || isRequired) }
+    // Valid value saved after localText is validated
+    var localValue: T? by rememberSaveable(value) { mutableStateOf(value) }
+    // The text that the user is actually typing (can we invalid, we won't snap it back to a valid value right away)
+    var localText by rememberSaveable(value) { mutableStateOf(value?.toString() ?: "") }
+    val isInvalid = checked && !isBoolean && !option.validator(parseValue(localText, option.type))
+    val displayText = when {
+        !checked -> formatValue(null)
+        isBoolean -> formatValue(localValue)
+        else -> localText
+    }
 
-                OptionDropdownSection(
-                    option = option,
-                    displayText = displayText,
-                    isChecked = isChecked,
-                    isDefault = isDefault,
-                    readOnly = readOnly,
-                    safeguard = safeguard,
-                    canShowError = isChecked && !isBoolean && !isValid,
-                    isBoolean = isBoolean,
-                    isString = isString,
-                    keyboardType = keyboardType,
-                    fs = fs,
-                    permissionLauncher = permissionLauncher,
-                    enabledBooleanLabel = enabledBooleanValueString,
-                    disabledBooleanLabel = disabledBooleanValueString,
-                    onValueChange = { newText ->
-                        localText = newText
-                        val newParsed: T? = parseValue(newText, type)
-                        if (newParsed != null && option.validator(newParsed)) {
-                            localValue = newParsed
-                            setValue(newParsed)
-                        }
-                    },
-                    onReset = {
-                        localValue = option.default
-                        localText = formatValue(option.default)
-                        reset()
-                    },
-                    onPresetSelect = { preset ->
-                        if (isBoolean) {
-                            localValue = preset
-                        } else {
-                            localText = preset.toString()
-                            localValue = preset
-                        }
-                        setValue(preset)
-                    },
-                    onFileDialogRequest = { showFileDialog = true },
-                    onSafeguardClick = { showSelectionWarningDialog = true },
-                )
+    LaunchedEffect(isInvalid) {
+        setInvalid(isInvalid)
+    }
+
+    val fs: Filesystem = koinInject()
+    var showFileDialog by rememberSaveable { mutableStateOf(false) }
+    val openFilePicker = rememberFilePicker(fs) { showFileDialog = true }
+
+    if (showFileDialog) {
+        PathSelectorDialog(root = fs.externalFilesDir()) { path ->
+            showFileDialog = false
+            path?.let {
+                val str = it.toString()
+                localText = str
+
+                @Suppress("UNCHECKED_CAST")
+                val typed = str as T
+                localValue = typed
+                if (checked) setValue(typed)
             }
-        },
-    )
+        }
+    }
+
+    SafeGuardBlocker {
+        ListItem(
+            modifier = Modifier.fillMaxWidth(),
+            colors = transparentListItemColors,
+            headlineContent = { OptionItemHeadline(option) },
+            leadingContent = if (!readOnly) {
+                {
+                    OptionItemCheckbox(
+                        checked = checked,
+                        isRequired = isRequired,
+                        onCheckedChange = { newChecked ->
+                            checked = newChecked
+
+                            if (newChecked) {
+                                if (isBoolean) {
+                                    @Suppress("UNCHECKED_CAST")
+                                    val boolVal = (localValue ?: option.default ?: false) as T
+                                    localValue = boolVal
+                                    setValue(boolVal)
+                                } else {
+                                    if (option.default != null) reset()
+                                    else setValue(localValue)
+                                }
+                            } else {
+                                localValue = null
+                                setValue(null)
+                            }
+                        },
+                    )
+                }
+            } else null,
+            supportingContent = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(option.description)
+
+                    OptionDropdownSection(
+                        option = option,
+                        displayText = displayText,
+                        isChecked = checked,
+                        isDefault = isDefault,
+                        readOnly = readOnly,
+                        isError = isInvalid,
+                        openFilePicker = openFilePicker,
+                        onValueChange = { newText ->
+                            localText = newText
+                            val newParsed: T? = parseValue(newText, option.type)
+                            if (newParsed != null && option.validator(newParsed)) {
+                                localValue = newParsed
+                                setValue(newParsed)
+                            }
+                        },
+                        onReset = {
+                            localValue = option.default
+                            localText = option.default?.toString() ?: ""
+                            reset()
+                        },
+                        onPresetSelect = { preset ->
+                            localValue = preset
+                            localText = preset.toString()
+                            setValue(preset)
+                        },
+                    )
+                }
+            },
+        )
+    }
 }
 
 @Composable
@@ -349,151 +321,133 @@ private fun <T : Any> OptionDropdownSection(
     isChecked: Boolean,
     isDefault: Boolean,
     readOnly: Boolean,
-    safeguard: Boolean,
-    canShowError: Boolean,
-    isBoolean: Boolean,
-    isString: Boolean,
-    keyboardType: KeyboardType,
-    fs: Filesystem?,
-    permissionLauncher: Pair<ActivityResultLauncher<String>, String>?,
-    enabledBooleanLabel: String,
-    disabledBooleanLabel: String,
+    isError: Boolean,
+    openFilePicker: () -> Unit,
     onValueChange: (String) -> Unit,
     onReset: () -> Unit,
     onPresetSelect: (T) -> Unit,
-    onFileDialogRequest: () -> Unit,
-    onSafeguardClick: () -> Unit,
 ) {
-    val optionsList = remember(option, enabledBooleanLabel, disabledBooleanLabel) {
+    val isString = option.type == typeOf<String>()
+    val isBoolean = option.type == typeOf<Boolean>()
+    val hasDefault = option.default != null
+
+    val keyboardType = when (option.type) {
+        typeOf<Float>() -> KeyboardType.Decimal
+        typeOf<Int>(), typeOf<Long>() -> KeyboardType.Number
+        else -> KeyboardType.Text
+    }
+
+    val boolTrueLabel = formatValue(true)
+    val boolFalseLabel = formatValue(false)
+
+    @Suppress("UNCHECKED_CAST")
+    val booleanPresets = listOf(
+        boolFalseLabel to false as T,
+        boolTrueLabel to true as T,
+    )
+
+    val optionsList = remember(option, boolFalseLabel, boolTrueLabel) {
         buildList {
-            @Suppress("UNCHECKED_CAST")
-            if (isBoolean) {
-                add(enabledBooleanLabel to true as T)
-                add(disabledBooleanLabel to false as T)
-            }
             option.presets?.forEach { (k, v) -> if (v != null) add(k to v) }
+            if (isBoolean) addAll(booleanPresets)
         }
     }
 
     var expanded by remember { mutableStateOf(false) }
 
-    Box {
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                if (!safeguard && !readOnly && isChecked) expanded = it
-            },
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(
-                        if (!readOnly) ExposedDropdownMenuAnchorType.PrimaryEditable
-                        else ExposedDropdownMenuAnchorType.PrimaryNotEditable
-                    ),
-                maxLines = 5,
-                value = displayText,
-                onValueChange = { if (!safeguard) onValueChange(it) },
-                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                    color = if (readOnly && option.default == null) MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        0.75f
-                    )
-                    else LocalTextStyle.current.color
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            if (!readOnly && isChecked) expanded = it
+        },
+    ) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth()
+                .menuAnchor(
+                    if (!readOnly) ExposedDropdownMenuAnchorType.PrimaryEditable
+                    else ExposedDropdownMenuAnchorType.PrimaryNotEditable
                 ),
-                // Read-only will always appear enabled but read-only
-                enabled = readOnly || isChecked,
-                readOnly = readOnly || isBoolean,
-                isError = canShowError,
-                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                supportingText = when {
-                    canShowError -> {
-                        { Text(stringResource(R.string.patch_options_value_invalid)) }
-                    }
+            maxLines = 5,
+            value = displayText,
+            onValueChange = { onValueChange(it) },
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                color = if (readOnly && option.default == null)
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(0.75f)
+                else LocalTextStyle.current.color
+            ),
+            enabled = readOnly || isChecked,
+            readOnly = readOnly || isBoolean,
+            isError = isError,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            supportingText = when {
+                isError -> {
+                    { Text(stringResource(R.string.patch_options_value_invalid)) }
+                }
 
-                    isDefault && isChecked && !readOnly -> {
-                        { Text(stringResource(R.string.patch_options_using_default_value)) }
-                    }
+                !readOnly && isChecked && isDefault -> {
+                    { Text(stringResource(R.string.patch_options_using_default_value)) }
+                }
 
-                    else -> null
-                },
-                trailingIcon = {
-                    if (!readOnly) ExposedDropdownMenuDefaults.TrailingIcon(
+                else -> null
+            },
+            trailingIcon = {
+                if (!readOnly) {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
                         expanded = expanded,
                         modifier = Modifier.menuAnchor(
                             ExposedDropdownMenuAnchorType.SecondaryEditable
                         ),
                     )
-                },
-            )
+                }
+            },
+        )
 
-            if (optionsList.isNotEmpty() || isString) {
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                ) {
-                    if (option.default != null) {
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(Icons.Filled.Restore, stringResource(R.string.reset))
-                            },
-                            text = { Text(stringResource(R.string.patch_options_set_default)) },
-                            supportingText = {
-                                Text(
-                                    formatValue(
-                                        option.default,
-                                        enabledBooleanLabel,
-                                        disabledBooleanLabel,
-                                    )
-                                )
-                            },
-                            onClick = {
-                                expanded = false
-                                onReset()
-                            },
-                            shape = MaterialTheme.shapes.medium,
-                        )
-                    }
+        if (optionsList.isNotEmpty() || hasDefault || isString) {
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                if (hasDefault) {
+                    DropdownMenuItem(
+                        leadingIcon = {
+                            Icon(Icons.Filled.Restore, stringResource(R.string.reset))
+                        },
+                        text = { Text(stringResource(R.string.patch_options_set_default)) },
+                        supportingText = { Text(formatValue(option.default)) },
+                        onClick = {
+                            expanded = false
+                            onReset()
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                }
 
-                    if (isString) {
-                        DropdownMenuItem(
-                            leadingIcon = { Icon(Icons.Outlined.Folder, null) },
-                            text = { Text(stringResource(R.string.path_selector)) },
-                            onClick = {
-                                expanded = false
-                                if (fs!!.hasStoragePermission()) {
-                                    onFileDialogRequest()
-                                } else {
-                                    permissionLauncher!!.first.launch(permissionLauncher.second)
-                                }
-                            },
-                            shape = MaterialTheme.shapes.medium,
-                        )
-                    }
+                if (isString) {
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Outlined.Folder, null) },
+                        text = { Text(stringResource(R.string.path_selector)) },
+                        onClick = {
+                            expanded = false
+                            openFilePicker()
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                }
 
-                    optionsList.forEach { (label, presetVal) ->
-                        DropdownMenuItem(
-                            text = { Text(label) },
-                            // Boolean fields will not have supportingText
-                            supportingText = if (!isBoolean) {
-                                { Text(formatValue(presetVal)) }
-                            } else null,
-                            onClick = {
-                                expanded = false
-                                onPresetSelect(presetVal)
-                            },
-                            shape = MaterialTheme.shapes.medium,
-                        )
-                    }
+                optionsList.forEach { (label, presetVal) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        supportingText = if (!isBoolean) {
+                            { Text(formatValue(presetVal)) }
+                        } else null,
+                        onClick = {
+                            expanded = false
+                            onPresetSelect(presetVal)
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                    )
                 }
             }
-        }
-
-        if (safeguard) {
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .clickable(onClick = onSafeguardClick)
-            )
         }
     }
 }
@@ -513,18 +467,12 @@ private fun ListOptionItemEditTrailing(readOnly: Boolean, onClick: () -> Unit) {
 
 @Composable
 private fun ListOptionItem(
+    readOnly: Boolean,
     option: Option<List<Serializable>>,
     value: List<Serializable>?,
     setValue: (List<Serializable>?) -> Unit,
-    selectionWarningEnabled: Boolean,
-    readOnly: Boolean,
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
-    var showSelectionWarningDialog by rememberSaveable { mutableStateOf(false) }
-
-    if (showSelectionWarningDialog) {
-        SelectionWarningDialog(onDismiss = { showSelectionWarningDialog = false })
-    }
 
     if (showDialog) {
         ListOptionDialog(
@@ -537,15 +485,12 @@ private fun ListOptionItem(
     }
 
     val isRequired = option.required
-    val safeguard = safeguardActive(readOnly, isRequired, selectionWarningEnabled)
     var isChecked by rememberSaveable(value) { mutableStateOf(value != null || isRequired) }
 
-    val clickAction = {
-        if (safeguard) showSelectionWarningDialog = true else showDialog = true
-    }
+    val onClick = { showDialog = true }
 
     ListItem(
-        modifier = Modifier.clickable(onClick = clickAction),
+        modifier = Modifier.clickable(onClick = onClick),
         colors = transparentListItemColors,
         headlineContent = { OptionItemHeadline(option) },
         leadingContent = if (!readOnly) {
@@ -553,12 +498,10 @@ private fun ListOptionItem(
                 OptionItemCheckbox(
                     checked = isChecked,
                     isRequired = isRequired,
-                    safeguardActive = safeguard,
                     onCheckedChange = { checked ->
                         isChecked = checked
                         setValue(if (checked) value ?: emptyList() else null)
                     },
-                    onSafeguardClick = { showSelectionWarningDialog = true },
                 )
             }
         } else null,
@@ -574,7 +517,66 @@ private fun ListOptionItem(
                 }
             }
         },
-        trailingContent = { ListOptionItemEditTrailing(readOnly, onClick = clickAction) },
+        trailingContent = { ListOptionItemEditTrailing(readOnly, onClick = onClick) },
+    )
+}
+
+@Composable
+private fun EmptyListWarningDialog(
+    option: Option<List<Serializable>>,
+    items: List<Serializable>,
+    onDismiss: () -> Unit,
+    onInvalidList: () -> Unit,
+    onSaved: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_title)) },
+        text = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_description)) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onDismiss()
+                    if (option.validator(items)) onSaved()
+                    else onInvalidList()
+                }
+            ) { Text(stringResource(R.string.save)) }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } }
+    )
+}
+
+@Composable
+private fun InvalidListWarningDialog(
+    option: Option<List<Serializable>>,
+    onDismiss: () -> Unit,
+    onDiscard: () -> Unit,
+) {
+    AlertDialogExtended(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(stringResource(R.string.patch_options_value_list_invalid_dialog_title))
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text(stringResource(R.string.patch_options_value_list_invalid_dialog_description))
+                ListItem(
+                    headlineContent = { OptionItemHeadline(option) },
+                    supportingContent = { Text(option.description) },
+                    colors = transparentListItemColors,
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDiscard) {
+                Text(stringResource(R.string.discard_changes))
+            }
+        }
     )
 }
 
@@ -630,58 +632,26 @@ private fun ListOptionDialog(
     }
 
     if (showEmptyListWarning) {
-        AlertDialog(
-            onDismissRequest = { showEmptyListWarning = false },
-            title = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_title)) },
-            text = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_description)) },
-            confirmButton = {
-                val currentItems = items.map { it.value }
-                TextButton(
-                    onClick = {
-                        showEmptyListWarning = false
-                        if (option.validator(currentItems)) {
-                            setValue(currentItems)
-                            onDismiss()
-                        } else {
-                            showInvalidListWarning = true
-                        }
-                    }
-                ) {
-                    Text(stringResource(R.string.save))
-                }
+        EmptyListWarningDialog(
+            option = option,
+            items = items.map { it.value },
+            onDismiss = { showEmptyListWarning = false },
+            onInvalidList = {
+                showEmptyListWarning = false
+                showInvalidListWarning = true
             },
-            dismissButton = {
-                TextButton(onClick = { showEmptyListWarning = false }) {
-                    Text(stringResource(R.string.cancel))
-                }
-            }
+            onSaved = {
+                setValue(items.map { it.value })
+                onDismiss()
+            },
         )
     }
 
     if (showInvalidListWarning) {
-        AlertDialogExtended(
-            onDismissRequest = { showInvalidListWarning = false },
-            title = { Text(stringResource(R.string.patch_options_value_list_invalid_dialog_title)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text(stringResource(R.string.patch_options_value_list_invalid_dialog_description))
-                    ListItem(
-                        headlineContent = { OptionItemHeadline(option) },
-                        supportingContent = { Text(option.description) },
-                        colors = transparentListItemColors,
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { showInvalidListWarning = false }) {
-                    Text(stringResource(R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = onDismiss) {
-                    Text(stringResource(R.string.discard_changes))
-                }
-            }
+        InvalidListWarningDialog(
+            option = option,
+            onDismiss = { showInvalidListWarning = false },
+            onDiscard = onDismiss,
         )
     }
 
@@ -692,19 +662,15 @@ private fun ListOptionDialog(
                 deleteMode = false
             } else {
                 val currentItems = items.map { it.value }
-                if (listIsDirty) {
-                    if (option.required && currentItems.isEmpty()) {
-                        showEmptyListWarning = true
-                    } else if (!option.validator(currentItems)) {
-                        showInvalidListWarning = true
-                    } else {
+                when {
+                    option.required && currentItems.isEmpty() -> showEmptyListWarning = true
+                    listIsDirty && !option.validator(currentItems) -> showInvalidListWarning = true
+                    listIsDirty -> {
                         setValue(currentItems)
                         onDismiss()
                     }
-                } else if (option.required && currentItems.isEmpty()) {
-                    showEmptyListWarning = true
-                } else {
-                    onDismiss()
+
+                    else -> onDismiss()
                 }
             }
         }
@@ -781,6 +747,7 @@ private fun ListOptionDialog(
                         )
                     }
                 }
+
                 itemsIndexed(items, key = { _, item -> item.key }) { index, item ->
                     val interactionSource = remember { MutableInteractionSource() }
 
@@ -825,17 +792,11 @@ private fun ListOptionDialog(
                                     }
                                 },
                             ),
-                            tonalElevation = if (deleteMode && item.key in deletionTargets) {
-                                8.dp
-                            } else {
-                                0.dp
-                            },
-                            leadingContent = if (!readOnly) {
-                                {
+                            tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
+                            leadingContent = {
+                                if (!readOnly) {
                                     TooltipIconButton(
-                                        modifier = Modifier.draggableHandle(
-                                            interactionSource = interactionSource
-                                        ),
+                                        modifier = Modifier.draggableHandle(interactionSource = interactionSource),
                                         onClick = {},
                                         tooltip = stringResource(R.string.drag_handle),
                                     ) {
@@ -845,10 +806,9 @@ private fun ListOptionDialog(
                                         )
                                     }
                                 }
-                            } else null,
+                            },
                             headlineContent = {
-                                val isValueEmpty = item.value is String && item.value.isEmpty()
-                                if (isValueEmpty) {
+                                if (item.value is String && item.value.isEmpty()) {
                                     Text(
                                         stringResource(R.string.empty),
                                         fontStyle = FontStyle.Italic,
@@ -857,13 +817,13 @@ private fun ListOptionDialog(
                                     Text(item.value.toString())
                                 }
                             },
-                            trailingContent = if (canEditItems) {
-                                {
+                            trailingContent = {
+                                if (canEditItems) {
                                     ListOptionItemEditTrailing(readOnly = false) {
                                         showEditDialog = true
                                     }
                                 }
-                            } else null,
+                            },
                         )
                     }
                 }
@@ -910,25 +870,19 @@ private fun ListItemEditDialog(
     onDismiss: () -> Unit,
     onSubmit: (Serializable) -> Unit,
 ) {
-    val fs: Filesystem? = if (type == typeOf<String>()) koinInject() else null
+    val fs: Filesystem = koinInject()
     var showFileDialog by rememberSaveable { mutableStateOf(false) }
-    var externalValueUpdate: ((String) -> Unit)? by remember { mutableStateOf(null) }
+    val openFilePicker = rememberFilePicker(fs) { showFileDialog = true }
 
-    if (fs != null && showFileDialog) {
+    var updateValue: ((String) -> Unit)? by remember { mutableStateOf(null) }
+
+    if (showFileDialog) {
         PathSelectorDialog(root = fs.externalFilesDir()) { path ->
             showFileDialog = false
-            path?.let {
-                externalValueUpdate?.invoke(it.toString())
-            }
+            path?.let { updateValue?.invoke(it.toString()) }
         }
     }
 
-    val permissionLauncher = if (fs != null) {
-        val (contract, permissionName) = fs.permissionContract()
-        rememberLauncherForActivityResult(contract) { granted ->
-            if (granted) showFileDialog = true
-        } to permissionName
-    } else null
 
     when (type) {
         typeOf<Int>() -> IntInputDialog(
@@ -974,12 +928,8 @@ private fun ListItemEditDialog(
                             text = { Text(stringResource(R.string.path_selector)) },
                             onClick = {
                                 expanded = false
-                                externalValueUpdate = onValueChange
-                                if (fs!!.hasStoragePermission()) {
-                                    showFileDialog = true
-                                } else {
-                                    permissionLauncher!!.first.launch(permissionLauncher.second)
-                                }
+                                updateValue = onValueChange
+                                openFilePicker()
                             },
                             shape = MaterialTheme.shapes.medium,
                         )
@@ -993,7 +943,4 @@ private fun ListItemEditDialog(
 }
 
 @Parcelize
-private data class Item(
-    val value: Serializable,
-    val key: Int = Random.nextInt(),
-) : Parcelable
+private data class Item(val value: Serializable, val key: Int = Random.nextInt()) : Parcelable
