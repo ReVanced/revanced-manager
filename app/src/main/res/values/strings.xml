@@ -233,6 +233,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="edit">Edit</string>
+    <string name="discard_changes">Discard changes</string>
+    <string name="discard_changes_dialog_title">Discard changes?</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
     <string name="share">Share</string>
@@ -319,6 +321,22 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options have been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="patch_options_discard_invalid_description">Invalid options will reset to the last saved value.</string>
+    <string name="patch_options_set_default">Use default value</string>
+    <string name="patch_options_value_null">Not specified</string>
+    <string name="patch_options_value_invalid">Invalid value</string>
+    <string name="patch_options_value_boolean_true">Enabled</string>
+    <string name="patch_options_value_boolean_false">Disabled</string>
+    <string name="patch_options_value_required">This option is required</string>
+    <string name="patch_options_value_required_list_empty">This list is required, but you haven’t added any items.</string>
+    <string name="patch_options_using_default_value">Using default value</string>
+    <string name="patch_options_value_list_element">Value</string>
+    <string name="patch_options_value_list_invalid_dialog_title">Can’t save option</string>
+    <string name="patch_options_value_list_invalid_dialog_description">This list doesn’t follow the required format.</string>
+    <string name="patch_options_value_list_element_count">%d values</string>
+    <string name="patch_options_no_default_items">No default items for this option</string>
+    <string name="patch_options_value_required_list_empty_save_warning_title">Save without items?</string>
+    <string name="patch_options_value_required_list_empty_save_warning_description">This option is required, and usually needs at least one item for the patch to have an effect.</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you selected doesn’t match the suggested version: %s
 
@@ -513,7 +531,6 @@ It’s only compatible with these versions: %2$s</string>
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
-    <string name="option_required">This option is required</string>
     <string name="required_options_screen">Required options</string>
 
     <string name="failed_to_check_updates">Couldn’t check for updates: %s</string>
