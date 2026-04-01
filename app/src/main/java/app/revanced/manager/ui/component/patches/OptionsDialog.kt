@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.component.patches
 
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -81,7 +82,9 @@ fun OptionsDialog(
             }
         ) { paddingValues ->
             LazyColumnWithScrollbar(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .imePadding()
             ) {
                 patch.options ?: return@LazyColumnWithScrollbar
 
