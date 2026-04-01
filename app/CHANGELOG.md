@@ -1,3 +1,15 @@
+# app [2.6.0-dev.6](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.5...v2.6.0-dev.6) (2026-04-01)
+
+
+### Bug Fixes
+
+* Missing database migration file [no ci] ([df9b44c](https://github.com/ReVanced/revanced-manager/commit/df9b44c9f4959c81e16a1665e8066bd01e97b1fe))
+
+
+### Features
+
+* Improve AppsScreen design, add app pinning and jump to top ([#3240](https://github.com/ReVanced/revanced-manager/issues/3240)) ([46720a4](https://github.com/ReVanced/revanced-manager/commit/46720a4a885ad5aa321ab855439bb30c292cb17f))
+
 # app [2.6.0-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.4...v2.6.0-dev.5) (2026-03-29)
 
 
