@@ -388,6 +388,7 @@ fun DashboardScreen(
                     )
                 },
                 containerColor = Color.Transparent,
+                contentWindowInsets = WindowInsets(0),
                 floatingActionButton = {
                     DashboardFab(
                         pagerState = pagerState,

@@ -37,4 +37,6 @@ class PreferencesManager(
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
 
     val allowMeteredNetworks = booleanPreference("allow_metered_networks", false)
+
+    val pinnedApps = stringSetPreference("pinned_apps", emptySet())
 }
