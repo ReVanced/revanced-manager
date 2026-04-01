@@ -248,7 +248,7 @@ fun AppsScreen(
         LazyColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(top = paddingValues.calculateTopPadding())
                 .padding(top = 8.dp),
             state = lazyListState,
             horizontalAlignment = Alignment.CenterHorizontally,
