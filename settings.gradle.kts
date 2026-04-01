@@ -13,6 +13,7 @@ dependencyResolutionManagement {
         mavenCentral()
         google()
         maven("https://jitpack.io")
+        maven("https://artifact.bytedance.com/repository/pangle")
         maven {
             name = "githubPackages"
             // A repository must be specified for some reason. "registry" is a dummy.
