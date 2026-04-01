@@ -1,3 +1,12 @@
+# app [2.6.0-dev.8](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.7...v2.6.0-dev.8) (2026-04-01)
+
+
+### Bug Fixes
+
+* Don't hide PatchOptions behind keyboard ([dd3d474](https://github.com/ReVanced/revanced-manager/commit/dd3d474798e39a800fd5ecff129e1561f204e36b))
+* Paddings for AppScreen and PatchesScreen ([af3d0d7](https://github.com/ReVanced/revanced-manager/commit/af3d0d79c582f29b7f7acec2b5e59de3b06ea3e2))
+* UpdateScreen padding ([e3c6d57](https://github.com/ReVanced/revanced-manager/commit/e3c6d5740b7013446aaf450739b37e848389c2cb))
+
 # app [2.6.0-dev.7](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.6...v2.6.0-dev.7) (2026-04-01)
 
 
