@@ -15,7 +15,7 @@ import app.revanced.manager.R
 import com.eygraber.compose.placeholder.placeholder
 
 @Composable
-fun AppPill(
+fun SurfaceChip(
     text: String? = null
 ) {
     Surface(
