@@ -26,6 +26,7 @@ import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.util.saveableVar
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import io.ktor.client.plugins.onDownload
@@ -82,13 +83,8 @@ class UpdateViewModel(
         pagingSourceFactory = { ChangelogsRepository(api, source) }
     ).flow.cachedIn(viewModelScope)
 
-    private val location = fs.tempDir.resolve("updater.apk")
-
-    private var installerSessionId: ParcelUuid? = savedStateHandle["installerSessionId"]
-        set(value) {
-            field = value
-            savedStateHandle["installerSessionId"] = value
-        }
+    private val location = fs.uiTempDir.resolve("updater.apk")
+    private var installerSessionId: ParcelUuid? by savedStateHandle.saveableVar()
 
     init {
         installerSessionId?.uuid?.let { id ->
