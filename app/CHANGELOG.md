@@ -1,3 +1,10 @@
+# app [2.6.0-dev.7](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.6...v2.6.0-dev.7) (2026-04-01)
+
+
+### Features
+
+* Improve patch options ([#3213](https://github.com/ReVanced/revanced-manager/issues/3213)) ([90667c8](https://github.com/ReVanced/revanced-manager/commit/90667c8c141c743b11a189e7ab3061ee58c7bc87))
+
 # app [2.6.0-dev.6](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.5...v2.6.0-dev.6) (2026-04-01)
 
 
