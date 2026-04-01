@@ -94,7 +94,7 @@ Second \"item\" text"</string>
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="patch_selection_changed_warning">Patch selection has been changed</string>
     <string name="no_patches_selected">No patches selected</string>
-    <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
+
     <string name="network_metered_warning">You are currently on a metered connection. Data charges from your service provider may apply.</string>
 
     <string name="apk_source_selector_item">Select APK source</string>
@@ -233,6 +233,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="edit">Edit</string>
+    <string name="discard_changes">Discard changes</string>
+    <string name="discard_changes_dialog_title">Discard changes?</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
     <string name="share">Share</string>
@@ -309,6 +311,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="no_patched_apps_description">You don’t have any patched apps yet. Start by patching your first app!</string>
     <string name="patched_apps_section_title">Patched apps</string>
     <string name="patchable_apps_section_title">Apps that can be patched</string>
+    <string name="pinned_apps_section_title">Pinned apps</string>
+    <string name="available_apps_section_title">Available apps</string>
     <string name="no_patches_found">No patches found</string>
     <string name="no_patches_description">You don’t have any patches yet. Add patches by tapping the button below!</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
@@ -317,6 +321,22 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options have been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="patch_options_discard_invalid_description">Invalid options will reset to the last saved value.</string>
+    <string name="patch_options_set_default">Use default value</string>
+    <string name="patch_options_value_null">Not specified</string>
+    <string name="patch_options_value_invalid">Invalid value</string>
+    <string name="patch_options_value_boolean_true">Enabled</string>
+    <string name="patch_options_value_boolean_false">Disabled</string>
+    <string name="patch_options_value_required">This option is required</string>
+    <string name="patch_options_value_required_list_empty">This list is required, but you haven’t added any items.</string>
+    <string name="patch_options_using_default_value">Using default value</string>
+    <string name="patch_options_value_list_element">Value</string>
+    <string name="patch_options_value_list_invalid_dialog_title">Can’t save option</string>
+    <string name="patch_options_value_list_invalid_dialog_description">This list doesn’t follow the required format.</string>
+    <string name="patch_options_value_list_element_count">%d values</string>
+    <string name="patch_options_no_default_items">No default items for this option</string>
+    <string name="patch_options_value_required_list_empty_save_warning_title">Save without items?</string>
+    <string name="patch_options_value_required_list_empty_save_warning_description">This option is required, and usually needs at least one item for the patch to have an effect.</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you selected doesn’t match the suggested version: %s
 
@@ -511,7 +531,6 @@ It’s only compatible with these versions: %2$s</string>
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
-    <string name="option_required">This option is required</string>
     <string name="required_options_screen">Required options</string>
 
     <string name="failed_to_check_updates">Couldn’t check for updates: %s</string>
@@ -566,7 +585,6 @@ Tap them for more details.</string>
     <string name="incompatible_patch">Incompatible patch</string>
     <string name="any_version">Any</string>
     <string name="never_show_again">Don’t show this again</string>
-    <string name="open_downloaders">Open downloaders</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
     <string name="show_manager_update_dialog_on_launch_description">Get notified when you open the app and a new update is available</string>
     <string name="failed_to_import_keystore">Couldn’t import keystore</string>
@@ -579,7 +597,10 @@ Tap them for more details.</string>
 
     <string name="sideeffect_restart">Restart the app to see changes</string>
     <string name="sideeffect_no_network">You’re offline. Check your internet connection.</string>
+    <string name="open_downloaders">Open downloaders</string>
+    <string name="network_unavailable_warning">Your device is not connected to the internet. Downloading will fail later.</string>
     <string name="source_selector_category_downloaded">Previously downloaded</string>
+
 
     <plurals name="patch_count">
         <item quantity="one">%d patch</item>

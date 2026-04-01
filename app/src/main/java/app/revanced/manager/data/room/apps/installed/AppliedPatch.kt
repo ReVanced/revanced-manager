@@ -4,8 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.Index
-import app.revanced.manager.data.room.bundles.PatchBundleEntity
+
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,15 +17,8 @@ import kotlinx.parcelize.Parcelize
             parentColumns = ["current_package_name"],
             childColumns = ["package_name"],
             onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            PatchBundleEntity::class,
-            parentColumns = ["uid"],
-            childColumns = ["bundle"],
-            onDelete = ForeignKey.CASCADE
         )
-    ],
-    indices = [Index(value = ["bundle"], unique = false)]
+    ]
 )
 data class AppliedPatch(
     @ColumnInfo(name = "package_name") val packageName: String,

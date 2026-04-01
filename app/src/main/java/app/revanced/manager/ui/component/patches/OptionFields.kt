@@ -1,6 +1,7 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
+
 package app.revanced.manager.ui.component.patches
 
-import android.app.Application
 import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,48 +9,49 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DragHandle
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisallowComposableCalls
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -58,7 +60,11 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
@@ -69,864 +75,872 @@ import app.revanced.manager.ui.component.FloatInputDialog
 import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.IntInputDialog
 import app.revanced.manager.ui.component.LongInputDialog
+import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
-import app.revanced.manager.ui.component.haptics.HapticRadioButton
-import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.mutableStateSetOf
 import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
-import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.io.Serializable
 import kotlin.random.Random
+import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
-private class OptionEditorScope<T : Any>(
-    private val editor: OptionEditor<T>,
-    val option: Option<T>,
-    val openDialog: () -> Unit,
-    val dismissDialog: () -> Unit,
-    val selectionWarningEnabled: Boolean,
-    val showSelectionWarning: () -> Unit,
-    val value: T?,
-    val setValue: (T?) -> Unit,
-    val readOnly: Boolean
-) {
-    fun submitDialog(value: T?) {
-        setValue(value)
-        dismissDialog()
-    }
-
-    fun checkSafeguard(block: () -> Unit) {
-        if (readOnly)
-            block()
-        else if (!option.required && selectionWarningEnabled)
-            showSelectionWarning()
-        else
-            block()
-    }
-
-    fun clickAction() {
-        checkSafeguard {
-            editor.clickAction(this)
-        }
-    }
-
-    @Composable
-    fun ListItemTrailingContent() = editor.ListItemTrailingContent(this)
-
-    @Composable
-    fun Dialog() = editor.Dialog(this)
+@Composable
+private fun formatValue(v: Any?): String = when (v) {
+    null -> stringResource(R.string.patch_options_value_null)
+    true -> stringResource(R.string.patch_options_value_boolean_true)
+    false -> stringResource(R.string.patch_options_value_boolean_false)
+    else -> v.toString()
 }
 
-private interface OptionEditor<T : Any> {
-    fun clickAction(scope: OptionEditorScope<T>) = scope.openDialog()
-
-    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-    @Composable
-    fun ListItemTrailingContent(scope: OptionEditorScope<T>) {
-        TooltipIconButton(
-            onClick = { scope.checkSafeguard { clickAction(scope) } },
-            tooltip = stringResource(if (scope.readOnly) R.string.show else R.string.edit)
-        ) {
-            Icon(
-                if (scope.readOnly) Icons.Outlined.Visibility else Icons.Outlined.Edit,
-                stringResource(if (scope.readOnly) R.string.show else R.string.edit)
-            )
+@Suppress("UNCHECKED_CAST")
+private fun <T : Any> parseValue(str: String, type: KType): T? {
+    return try {
+        when (type) {
+            typeOf<String>() -> str as T
+            typeOf<Int>() -> str.toIntOrNull() as T?
+            typeOf<Long>() -> str.toLongOrNull() as T?
+            typeOf<Float>() -> str.toFloatOrNull() as T?
+            typeOf<Boolean>() -> str.toBooleanStrictOrNull() as T?
+            else -> null
         }
+    } catch (_: Exception) {
+        null
     }
-
-    @Composable
-    fun Dialog(scope: OptionEditorScope<T>)
 }
 
-private inline fun <reified T : Serializable> OptionEditor<T>.toMapEditorElements() = arrayOf(
-    typeOf<T>() to this,
-    typeOf<List<T>>() to ListOptionEditor(this)
-)
-
-private val optionEditors = mapOf(
-    *BooleanOptionEditor.toMapEditorElements(),
-    *StringOptionEditor.toMapEditorElements(),
-    *IntOptionEditor.toMapEditorElements(),
-    *LongOptionEditor.toMapEditorElements(),
-    *FloatOptionEditor.toMapEditorElements()
-)
+private fun isSafeguardActive(
+    readOnly: Boolean,
+    isRequired: Boolean,
+    selectionWarningEnabled: Boolean,
+) = !readOnly && !isRequired && selectionWarningEnabled
 
 @Composable
-private inline fun <T : Any> WithOptionEditor(
-    editor: OptionEditor<T>,
-    option: Option<T>,
-    value: T?,
-    noinline setValue: (T?) -> Unit,
-    selectionWarningEnabled: Boolean,
-    readOnly: Boolean,
-    crossinline onDismissDialog: @DisallowComposableCalls () -> Unit = {},
-    block: OptionEditorScope<T>.() -> Unit
-) {
-    var showDialog by rememberSaveable { mutableStateOf(false) }
-    var showSelectionWarningDialog by rememberSaveable { mutableStateOf(false) }
+private fun OptionItemHeadline(option: Option<*>) {
+    Text(
+        buildAnnotatedString {
+            append(option.name)
+            if (option.required) {
+                withStyle(SpanStyle(color = MaterialTheme.colorScheme.error)) {
+                    append(" *")
+                }
+            }
+        }
+    )
+}
 
-    val scope = remember(editor, option, value, setValue, selectionWarningEnabled, readOnly) {
-        OptionEditorScope(
-            editor,
-            option,
-            openDialog = { showDialog = true },
-            dismissDialog = {
-                showDialog = false
-                onDismissDialog()
-            },
-            selectionWarningEnabled,
-            showSelectionWarning = { showSelectionWarningDialog = true },
-            value,
-            setValue,
-            readOnly
+@Composable
+private fun OptionItemCheckbox(
+    checked: Boolean,
+    isRequired: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Box {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = { onCheckedChange(it) },
+            enabled = !isRequired,
         )
     }
+}
 
-    if (showSelectionWarningDialog)
-        SelectionWarningDialog(
-            onDismiss = { showSelectionWarningDialog = false }
-        )
-
-    if (showDialog) scope.Dialog()
-
-    scope.block()
+@Composable
+private fun rememberFilePicker(
+    fs: Filesystem,
+    onFileDialogRequest: () -> Unit,
+): () -> Unit {
+    val (contract, permissionName) = remember(fs) { fs.permissionContract() }
+    val launcher = rememberLauncherForActivityResult(contract) { granted ->
+        if (granted) onFileDialogRequest()
+    }
+    return remember(launcher, permissionName, fs) {
+        {
+            if (fs.hasStoragePermission()) onFileDialogRequest()
+            else launcher.launch(permissionName)
+        }
+    }
 }
 
 @Composable
 fun <T : Any> OptionItem(
     option: Option<T>,
     value: T?,
+    isDefault: Boolean,
     setValue: (T?) -> Unit,
+    setInvalid: (Boolean) -> Unit,
+    reset: () -> Unit,
     selectionWarningEnabled: Boolean,
-    readOnly: Boolean = false
+    readOnly: Boolean = false,
 ) {
-    val editor = remember(option.type, option.presets) {
-        @Suppress("UNCHECKED_CAST")
-        val baseOptionEditor =
-            optionEditors.getOrDefault(option.type, UnknownTypeEditor) as OptionEditor<T>
+    val isBoolean = option.type == typeOf<Boolean>()
+    val isRequired = option.required
+    val safeguardActive = isSafeguardActive(readOnly, isRequired, selectionWarningEnabled)
 
-        if (option.type != typeOf<Boolean>() && option.presets != null) PresetOptionEditor(
-            baseOptionEditor
-        )
-        else baseOptionEditor
+    var showWarningDialog by rememberSaveable { mutableStateOf(false) }
+    if (showWarningDialog) {
+        SelectionWarningDialog(onDismiss = { showWarningDialog = false })
     }
 
-    WithOptionEditor(editor, option, value, setValue, selectionWarningEnabled, readOnly) {
-        ListItem(
-            modifier = Modifier.clickable(onClick = ::clickAction),
-            headlineContent = { Text(option.name) },
-            supportingContent = {
-                Column {
-                    Text(option.description)
-                    if (option.required && value == null) Text(
-                        stringResource(R.string.option_required),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            },
-            trailingContent = { ListItemTrailingContent() }
-        )
-    }
-}
-
-private fun <T> optionValueLabelPlain(
-     option: Option<T>,
-     value: T?,
-     fallBackToDefault: Boolean = true,
-     unsetLabel: String
- ): String {
-     val resolved = if (fallBackToDefault) value ?: option.default else value
-     val presetLabel = option.presets?.entries?.firstOrNull { it.value == resolved }?.key
-
-     return when {
-         presetLabel != null && resolved != null -> "$presetLabel ($resolved)"
-         presetLabel != null -> presetLabel
-        resolved == null -> unsetLabel
-         else -> resolved.toString()
-     }
- }
-
-@Composable
-private fun <T> optionValueLabel(
-    option: Option<T>,
-    value: T?,
-    fallBackToDefault: Boolean = true
-) = optionValueLabelPlain(
-    option = option,
-    value = value,
-    fallBackToDefault = fallBackToDefault,
-    unsetLabel = stringResource(R.string.field_not_set)
-)
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-private fun ReadonlyOptionDialog(
-    title: String,
-    onDismissRequest: () -> Unit,
-    content: @Composable () -> Unit
-) = AlertDialog(
-    onDismissRequest = onDismissRequest,
-    title = { Text(title) },
-    text = content,
-    confirmButton = {
-        TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
-            Text(stringResource(R.string.ok))
-        }
-    }
-)
-
-private object StringOptionEditor : OptionEditor<String> {
-    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @Composable
-    override fun Dialog(scope: OptionEditorScope<String>) {
-        if (scope.readOnly) {
-            ReadonlyOptionDialog(
-                title = scope.option.name,
-                onDismissRequest = scope.dismissDialog,
-            ) {
-                OutlinedTextField(
-                    value = optionValueLabel(scope.option, scope.value),
-                    onValueChange = {},
-                    enabled = false,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            return
-        }
-
-        var showFileDialog by rememberSaveable { mutableStateOf(false) }
-        var fieldValue by rememberSaveable(scope.value) {
-            mutableStateOf(scope.value.orEmpty())
-        }
-        val validatorFailed by remember {
-            derivedStateOf { !scope.option.validator(fieldValue) }
-        }
-
-        val fs: Filesystem = koinInject()
-        val (contract, permissionName) = fs.permissionContract()
-        val permissionLauncher = rememberLauncherForActivityResult(contract = contract) {
-            showFileDialog = it
-        }
-
-        if (showFileDialog) {
-            PathSelectorDialog(
-                root = fs.externalFilesDir()
-            ) {
-                showFileDialog = false
-                it?.let { path ->
-                    fieldValue = path.toString()
-                }
+    fun SafeGuardBlocker(content: @Composable () -> Unit) {
+        Box {
+            content()
+            if (safeguardActive) {
+                Box(modifier = Modifier.matchParentSize().clickable { showWarningDialog = true })
             }
         }
-
-        AlertDialog(
-            onDismissRequest = scope.dismissDialog,
-            title = { Text(scope.option.name) },
-            text = {
-                OutlinedTextField(
-                    value = fieldValue,
-                    onValueChange = { fieldValue = it },
-                    placeholder = {
-                        Text(stringResource(R.string.dialog_input_placeholder))
-                    },
-                    isError = validatorFailed,
-                    supportingText = {
-                        if (validatorFailed) {
-                            Text(
-                                stringResource(R.string.input_dialog_value_invalid),
-                                modifier = Modifier.fillMaxWidth(),
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    },
-                    trailingIcon = {
-                        var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
-                        TooltipIconButton(
-                            onClick = { showDropdownMenu = true },
-                            tooltip = stringResource(R.string.string_option_menu_description)
-                        ) {
-                            Icon(
-                                Icons.Outlined.MoreVert,
-                                stringResource(R.string.string_option_menu_description)
-                            )
-                        }
-
-                        DropdownMenu(
-                            expanded = showDropdownMenu,
-                            onDismissRequest = { showDropdownMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(Icons.Outlined.Folder, null)
-                                },
-                                text = {
-                                    Text(stringResource(R.string.path_selector))
-                                },
-                                onClick = {
-                                    showDropdownMenu = false
-                                    if (fs.hasStoragePermission()) {
-                                        showFileDialog = true
-                                    } else {
-                                        permissionLauncher.launch(permissionName)
-                                    }
-                                }
-                            )
-                        }
-                    }
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    enabled = !validatorFailed,
-                    onClick = { scope.submitDialog(fieldValue) },
-                    shapes = ButtonDefaults.shapes()
-                ) {
-                    Text(stringResource(R.string.save))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
-                    Text(stringResource(R.string.cancel))
-                }
-            },
-        )
-    }
-}
-
-private abstract class NumberOptionEditor<T : Number> : OptionEditor<T> {
-    @Composable
-    abstract fun NumberDialog(
-        title: String,
-        current: T?,
-        validator: (T?) -> Boolean,
-        onSubmit: (T?) -> Unit
-    )
-
-    @Composable
-    override fun Dialog(scope: OptionEditorScope<T>) {
-        if (scope.readOnly) {
-            ReadonlyOptionDialog(
-                title = scope.option.name,
-                onDismissRequest = scope.dismissDialog,
-            ) {
-                OutlinedTextField(
-                    value = optionValueLabel(scope.option, scope.value),
-                    onValueChange = {},
-                    enabled = false,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            return
-        }
-
-        NumberDialog(scope.option.name, scope.value, scope.option.validator) {
-            if (it == null) return@NumberDialog scope.dismissDialog()
-
-            scope.submitDialog(it)
-        }
-    }
-}
-
-private object IntOptionEditor : NumberOptionEditor<Int>() {
-    @Composable
-    override fun NumberDialog(
-        title: String,
-        current: Int?,
-        validator: (Int?) -> Boolean,
-        onSubmit: (Int?) -> Unit
-    ) = IntInputDialog(current, title, unit = null, validator, onSubmit)
-}
-
-private object LongOptionEditor : NumberOptionEditor<Long>() {
-    @Composable
-    override fun NumberDialog(
-        title: String,
-        current: Long?,
-        validator: (Long?) -> Boolean,
-        onSubmit: (Long?) -> Unit
-    ) = LongInputDialog(current, title, unit = null, validator, onSubmit)
-}
-
-private object FloatOptionEditor : NumberOptionEditor<Float>() {
-    @Composable
-    override fun NumberDialog(
-        title: String,
-        current: Float?,
-        validator: (Float?) -> Boolean,
-        onSubmit: (Float?) -> Unit
-    ) = FloatInputDialog(current, title, unit = null, validator, onSubmit)
-}
-
-private object BooleanOptionEditor : OptionEditor<Boolean> {
-    override fun clickAction(scope: OptionEditorScope<Boolean>) {
-        if (scope.readOnly) return
-        scope.setValue(!scope.current)
     }
 
-    @Composable
-    override fun ListItemTrailingContent(scope: OptionEditorScope<Boolean>) {
-        HapticSwitch(
-            checked = scope.current,
-            onCheckedChange = { value ->
-                scope.checkSafeguard {
-                    scope.setValue(value)
-                }
-            },
-            enabled = !scope.readOnly,
-            thumbContent = if (scope.current) {
-                {
-                    Icon(
-                        imageVector = Icons.Filled.Check,
-                        contentDescription = null,
-                        modifier = Modifier.size(SwitchDefaults.IconSize)
-                    )
-                }
-            } else {
-                {
-                    Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = null,
-                        modifier = Modifier.size(SwitchDefaults.IconSize)
-                    )
-                }
-            }
-        )
-    }
-
-    @Composable
-    override fun Dialog(scope: OptionEditorScope<Boolean>) {
-    }
-
-    private val OptionEditorScope<Boolean>.current get() = value ?: false
-}
-
-private object UnknownTypeEditor : OptionEditor<Any>, KoinComponent {
-    override fun clickAction(scope: OptionEditorScope<Any>) =
-        get<Application>().toast("Unknown type: ${scope.option.type}")
-
-    @Composable
-    override fun Dialog(scope: OptionEditorScope<Any>) {
-    }
-}
-
-/**
- * A wrapper for [OptionEditor]s that shows selectable presets.
- *
- * @param innerEditor The [OptionEditor] for [T].
- */
-private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<T>) :
-    OptionEditor<T> {
-    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-    @Composable
-    override fun Dialog(scope: OptionEditorScope<T>) {
-        var selectedPreset by rememberSaveable(scope.value, scope.option.presets) {
-            val presets = scope.option.presets!!
-
-            mutableStateOf(presets.entries.find { it.value == scope.value }?.key)
-        }
-
-        if (scope.readOnly) {
-            AlertDialogExtended(
-                onDismissRequest = scope.dismissDialog,
-                confirmButton = {
-                    TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
-                        Text(stringResource(R.string.ok))
-                    }
-                },
-                title = { Text(scope.option.name) },
-                textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-                text = {
-                    val presets = remember(scope.option.presets) {
-                        scope.option.presets?.entries?.toList().orEmpty()
-                    }
-
-                    LazyColumn {
-                        @Composable
-                        fun Item(title: String, value: Any?, presetKey: String?) {
-                            ListItem(
-                                headlineContent = { Text(title) },
-                                supportingContent = value?.toString()?.let { { Text(it) } },
-                                leadingContent = {
-                                    HapticRadioButton(
-                                        selected = selectedPreset == presetKey,
-                                        onClick = null,
-                                        enabled = false
-                                    )
-                                },
-                                colors = transparentListItemColors
-                            )
-                        }
-
-                        items(presets, key = { it.key }) {
-                            Item(it.key, it.value, it.key)
-                        }
-
-                        item(key = null) {
-                            Item(
-                                stringResource(R.string.option_preset_custom_value),
-                                scope.value,
-                                null
-                            )
-                        }
-                    }
-                }
+    if (option.type.classifier == List::class) {
+        SafeGuardBlocker {
+            @Suppress("UNCHECKED_CAST")
+            ListOptionItem(
+                readOnly = readOnly,
+                option = option as Option<List<Serializable>>,
+                value = value as List<Serializable>?,
+                setValue = setValue as (List<Serializable>?) -> Unit,
             )
-            return
         }
+        return
+    }
 
-        WithOptionEditor(
-            innerEditor,
-            scope.option,
-            scope.value,
-            scope.setValue,
-            scope.selectionWarningEnabled,
-            readOnly = false,
-            onDismissDialog = scope.dismissDialog
-         ) inner@{
-            var hidePresetsDialog by rememberSaveable {
-                mutableStateOf(false)
+    var checked by rememberSaveable(value) { mutableStateOf(value != null || isRequired) }
+    // Valid value saved after localText is validated
+    var localValue: T? by rememberSaveable(value) { mutableStateOf(value) }
+    // The text that the user is actually typing (can we invalid, we won't snap it back to a valid value right away)
+    var localText by rememberSaveable(value) { mutableStateOf(value?.toString() ?: "") }
+    val isInvalid = checked && !isBoolean && !option.validator(parseValue(localText, option.type))
+    val displayText = when {
+        !checked -> formatValue(null)
+        isBoolean -> formatValue(localValue)
+        else -> localText
+    }
+
+    LaunchedEffect(isInvalid) {
+        setInvalid(isInvalid)
+    }
+
+    val fs: Filesystem = koinInject()
+    var showFileDialog by rememberSaveable { mutableStateOf(false) }
+    val openFilePicker = rememberFilePicker(fs) { showFileDialog = true }
+
+    if (showFileDialog) {
+        PathSelectorDialog(root = fs.externalFilesDir()) { path ->
+            showFileDialog = false
+            path?.let {
+                val str = it.toString()
+                localText = str
+
+                @Suppress("UNCHECKED_CAST")
+                val typed = str as T
+                localValue = typed
+                if (checked) setValue(typed)
             }
-            if (hidePresetsDialog) return@inner
+        }
+    }
 
-            // TODO: add a divider for scrollable content
-            AlertDialogExtended(
-                onDismissRequest = scope.dismissDialog,
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            if (selectedPreset != null) scope.submitDialog(
-                                scope.option.presets?.get(
-                                    selectedPreset
-                                )
-                            )
-                            else {
-                                this@inner.openDialog()
-                                // Hide the presets dialog so it doesn't show up in the background.
-                                hidePresetsDialog = true
+    SafeGuardBlocker {
+        ListItem(
+            modifier = Modifier.fillMaxWidth(),
+            colors = transparentListItemColors,
+            headlineContent = { OptionItemHeadline(option) },
+            leadingContent = if (!readOnly) {
+                {
+                    OptionItemCheckbox(
+                        checked = checked,
+                        isRequired = isRequired,
+                        onCheckedChange = { newChecked ->
+                            checked = newChecked
+
+                            if (newChecked) {
+                                if (isBoolean) {
+                                    @Suppress("UNCHECKED_CAST")
+                                    val boolVal = (localValue ?: option.default ?: false) as T
+                                    localValue = boolVal
+                                    setValue(boolVal)
+                                } else {
+                                    if (option.default != null) reset()
+                                    else setValue(localValue)
+                                }
+                            } else {
+                                localValue = null
+                                setValue(null)
                             }
                         },
-                        shapes = ButtonDefaults.shapes()
-                    ) {
-                        Text(stringResource(if (selectedPreset != null) R.string.save else R.string.continue_))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = scope.dismissDialog, shapes = ButtonDefaults.shapes()) {
-                        Text(stringResource(R.string.cancel))
-                    }
-                },
-                title = { Text(scope.option.name) },
-                textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-                text = {
-                    val presets = remember(scope.option.presets) {
-                        scope.option.presets?.entries?.toList().orEmpty()
-                    }
-
-                    LazyColumn {
-                        @Composable
-                        fun Item(title: String, value: Any?, presetKey: String?) {
-                            ListItem(
-                                modifier = Modifier.clickable { selectedPreset = presetKey },
-                                headlineContent = { Text(title) },
-                                supportingContent = value?.toString()?.let { { Text(it) } },
-                                leadingContent = {
-                                    HapticRadioButton(
-                                        selected = selectedPreset == presetKey,
-                                        onClick = { selectedPreset = presetKey }
-                                    )
-                                },
-                                colors = transparentListItemColors
-                            )
-                        }
-
-                        items(presets, key = { it.key }) {
-                            Item(it.key, it.value, it.key)
-                        }
-
-                        item(key = null) {
-                            Item(stringResource(R.string.option_preset_custom_value), null, null)
-                        }
-                    }
+                    )
                 }
-            )
+            } else null,
+            supportingContent = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(option.description)
+
+                    OptionDropdownSection(
+                        option = option,
+                        displayText = displayText,
+                        isChecked = checked,
+                        isDefault = isDefault,
+                        readOnly = readOnly,
+                        isError = isInvalid,
+                        openFilePicker = openFilePicker,
+                        onValueChange = { newText ->
+                            localText = newText
+                            val newParsed: T? = parseValue(newText, option.type)
+                            if (newParsed != null && option.validator(newParsed)) {
+                                localValue = newParsed
+                                setValue(newParsed)
+                            }
+                        },
+                        onReset = {
+                            localValue = option.default
+                            localText = option.default?.toString() ?: ""
+                            reset()
+                        },
+                        onPresetSelect = { preset ->
+                            localValue = preset
+                            localText = preset.toString()
+                            setValue(preset)
+                        },
+                    )
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun <T : Any> OptionDropdownSection(
+    option: Option<T>,
+    displayText: String,
+    isChecked: Boolean,
+    isDefault: Boolean,
+    readOnly: Boolean,
+    isError: Boolean,
+    openFilePicker: () -> Unit,
+    onValueChange: (String) -> Unit,
+    onReset: () -> Unit,
+    onPresetSelect: (T) -> Unit,
+) {
+    val isString = option.type == typeOf<String>()
+    val isBoolean = option.type == typeOf<Boolean>()
+    val hasDefault = option.default != null
+
+    val keyboardType = when (option.type) {
+        typeOf<Float>() -> KeyboardType.Decimal
+        typeOf<Int>(), typeOf<Long>() -> KeyboardType.Number
+        else -> KeyboardType.Text
+    }
+
+    val boolTrueLabel = formatValue(true)
+    val boolFalseLabel = formatValue(false)
+
+    @Suppress("UNCHECKED_CAST")
+    val booleanPresets = listOf(
+        boolFalseLabel to false as T,
+        boolTrueLabel to true as T,
+    )
+
+    val optionsList = remember(option, boolFalseLabel, boolTrueLabel) {
+        buildList {
+            option.presets?.forEach { (k, v) -> if (v != null) add(k to v) }
+            if (isBoolean) addAll(booleanPresets)
+        }
+    }
+
+    var expanded by remember { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            if (!readOnly && isChecked) expanded = it
+        },
+    ) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth()
+                .menuAnchor(
+                    if (!readOnly) ExposedDropdownMenuAnchorType.PrimaryEditable
+                    else ExposedDropdownMenuAnchorType.PrimaryNotEditable
+                ),
+            maxLines = 5,
+            value = displayText,
+            onValueChange = { onValueChange(it) },
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                color = if (readOnly && option.default == null)
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(0.75f)
+                else LocalTextStyle.current.color
+            ),
+            enabled = readOnly || isChecked,
+            readOnly = readOnly || isBoolean,
+            isError = isError,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            supportingText = when {
+                isError -> {
+                    { Text(stringResource(R.string.patch_options_value_invalid)) }
+                }
+
+                !readOnly && isChecked && isDefault -> {
+                    { Text(stringResource(R.string.patch_options_using_default_value)) }
+                }
+
+                else -> null
+            },
+            trailingIcon = {
+                if (!readOnly) {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = expanded,
+                        modifier = Modifier.menuAnchor(
+                            ExposedDropdownMenuAnchorType.SecondaryEditable
+                        ),
+                    )
+                }
+            },
+        )
+
+        if (optionsList.isNotEmpty() || hasDefault || isString) {
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                if (hasDefault) {
+                    DropdownMenuItem(
+                        leadingIcon = {
+                            Icon(Icons.Filled.Restore, stringResource(R.string.reset))
+                        },
+                        text = { Text(stringResource(R.string.patch_options_set_default)) },
+                        supportingText = { Text(formatValue(option.default)) },
+                        onClick = {
+                            expanded = false
+                            onReset()
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                }
+
+                if (isString) {
+                    DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Outlined.Folder, null) },
+                        text = { Text(stringResource(R.string.path_selector)) },
+                        onClick = {
+                            expanded = false
+                            openFilePicker()
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                }
+
+                optionsList.forEach { (label, presetVal) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        supportingText = if (!isBoolean) {
+                            { Text(formatValue(presetVal)) }
+                        } else null,
+                        onClick = {
+                            expanded = false
+                            onPresetSelect(presetVal)
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                }
+            }
         }
     }
 }
 
-private class ListOptionEditor<T : Serializable>(private val elementEditor: OptionEditor<T>) :
-    OptionEditor<List<T>> {
-    private fun createElementOption(option: Option<List<T>>) = Option<T>(
-        option.name,
-        option.description,
-        option.required,
-        option.type.arguments.first().type!!,
-        null,
-        null
-    ) { true }
+@Composable
+private fun ListOptionItemEditTrailing(readOnly: Boolean, onClick: () -> Unit) {
+    TooltipIconButton(
+        onClick = onClick,
+        tooltip = stringResource(if (readOnly) R.string.show else R.string.edit),
+    ) {
+        Icon(
+            if (readOnly) Icons.Outlined.Visibility else Icons.Outlined.Edit,
+            stringResource(if (readOnly) R.string.show else R.string.edit),
+        )
+    }
+}
 
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
-        ExperimentalMaterial3ExpressiveApi::class
+@Composable
+private fun ListOptionItem(
+    readOnly: Boolean,
+    option: Option<List<Serializable>>,
+    value: List<Serializable>?,
+    setValue: (List<Serializable>?) -> Unit,
+) {
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showDialog) {
+        ListOptionDialog(
+            option = option,
+            readOnly = readOnly,
+            value = value ?: emptyList(),
+            setValue = setValue,
+            onDismiss = { showDialog = false },
+        )
+    }
+
+    val isRequired = option.required
+    var isChecked by rememberSaveable(value) { mutableStateOf(value != null || isRequired) }
+
+    val onClick = { showDialog = true }
+
+    ListItem(
+        modifier = Modifier.clickable(onClick = onClick),
+        colors = transparentListItemColors,
+        headlineContent = { OptionItemHeadline(option) },
+        leadingContent = if (!readOnly) {
+            {
+                OptionItemCheckbox(
+                    checked = isChecked,
+                    isRequired = isRequired,
+                    onCheckedChange = { checked ->
+                        isChecked = checked
+                        setValue(if (checked) value ?: emptyList() else null)
+                    },
+                )
+            }
+        } else null,
+        supportingContent = {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text(option.description)
+                if (option.required && value == null) {
+                    Text(
+                        style = MaterialTheme.typography.labelLargeEmphasized,
+                        text = stringResource(R.string.patch_options_value_required),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
+        },
+        trailingContent = { ListOptionItemEditTrailing(readOnly, onClick = onClick) },
     )
-    @Composable
-    override fun Dialog(scope: OptionEditorScope<List<T>>) {
-        if (scope.readOnly) {
-            FullscreenDialog(
-                onDismissRequest = scope.dismissDialog,
-            ) {
-                Scaffold(
-                    topBar = {
-                        AppTopBar(
-                            title = scope.option.name,
-                            onBackClick = scope.dismissDialog,
-                        )
-                    }
-                ) { paddingValues ->
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .padding(paddingValues),
-                    ) {
-                        val items = scope.value.orEmpty()
-                        if (items.isEmpty()) {
-                            item {
-                                ListItem(
-                                    headlineContent = {
-                                        Text(
-                                            stringResource(R.string.empty),
-                                            fontStyle = FontStyle.Italic
-                                        )
-                                    },
-                                    colors = transparentListItemColors
-                                )
-                            }
-                        } else {
-                            items(items) { item ->
-                                ListItem(
-                                    headlineContent = { Text(item.toString()) },
-                                    colors = transparentListItemColors
-                                )
-                            }
-                        }
-                    }
+}
+
+@Composable
+private fun EmptyListWarningDialog(
+    option: Option<List<Serializable>>,
+    items: List<Serializable>,
+    onDismiss: () -> Unit,
+    onInvalidList: () -> Unit,
+    onSaved: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_title)) },
+        text = { Text(stringResource(R.string.patch_options_value_required_list_empty_save_warning_description)) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onDismiss()
+                    if (option.validator(items)) onSaved()
+                    else onInvalidList()
                 }
+            ) { Text(stringResource(R.string.save)) }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } }
+    )
+}
+
+@Composable
+private fun InvalidListWarningDialog(
+    option: Option<List<Serializable>>,
+    onDismiss: () -> Unit,
+    onDiscard: () -> Unit,
+) {
+    AlertDialogExtended(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(stringResource(R.string.patch_options_value_list_invalid_dialog_title))
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text(stringResource(R.string.patch_options_value_list_invalid_dialog_description))
+                ListItem(
+                    headlineContent = { OptionItemHeadline(option) },
+                    supportingContent = { Text(option.description) },
+                    colors = transparentListItemColors,
+                )
             }
-            return
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDiscard) {
+                Text(stringResource(R.string.discard_changes))
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ListOptionDialog(
+    option: Option<List<Serializable>>,
+    value: List<Serializable>,
+    setValue: (List<Serializable>?) -> Unit,
+    onDismiss: () -> Unit,
+    readOnly: Boolean,
+) {
+    val elementType = remember(option.type) { option.type.arguments.first().type!! }
+
+    val items = rememberSaveable(value, saver = snapshotStateListSaver()) {
+        value.map(::Item).toMutableStateList()
+    }
+
+    val listIsDirty by remember {
+        derivedStateOf {
+            value.size != items.size || value.zip(items).any { (v, item) -> v != item.value }
+        }
+    }
+
+    val lazyListState = rememberLazyListState()
+    val reorderableLazyColumnState =
+        rememberReorderableLazyListState(lazyListState) { from, to ->
+            items.add(to.index, items.removeAt(from.index))
         }
 
-        val items =
-            rememberSaveable(scope.value, saver = snapshotStateListSaver()) {
-                // We need a key for each element in order to support dragging.
-                scope.value?.map(::Item)?.toMutableStateList() ?: mutableStateListOf()
-            }
-        val listIsDirty by remember {
-            derivedStateOf {
-                val current = scope.value.orEmpty()
-                if (current.size != items.size) return@derivedStateOf true
+    var deleteMode by rememberSaveable { mutableStateOf(false) }
+    val deletionTargets = rememberSaveable(saver = snapshotStateSetSaver()) {
+        mutableStateSetOf<Int>()
+    }
 
-                current.forEachIndexed { index, value ->
-                    if (value != items[index].value) return@derivedStateOf true
-                }
+    val canEditItems = !readOnly && !deleteMode
 
-                false
-            }
-        }
+    var showEmptyListWarning by remember { mutableStateOf(false) }
+    var showInvalidListWarning by remember { mutableStateOf(false) }
+    var showAddItemDialog by rememberSaveable { mutableStateOf(false) }
 
-        val lazyListState = rememberLazyListState()
-        val reorderableLazyColumnState =
-            rememberReorderableLazyListState(lazyListState) { from, to ->
-                items.add(to.index, items.removeAt(from.index))
-            }
+    if (showAddItemDialog) {
+        ListItemEditDialog(
+            type = elementType,
+            title = option.name,
+            currentValue = null,
+            onDismiss = { showAddItemDialog = false },
+            onSubmit = { newValue ->
+                items.add(Item(newValue))
+                showAddItemDialog = false
+            },
+        )
+    }
 
-        var deleteMode by rememberSaveable {
-            mutableStateOf(false)
-        }
-        val deletionTargets = rememberSaveable(saver = snapshotStateSetSaver()) {
-            mutableStateSetOf<Int>()
-        }
+    if (showEmptyListWarning) {
+        EmptyListWarningDialog(
+            option = option,
+            items = items.map { it.value },
+            onDismiss = { showEmptyListWarning = false },
+            onInvalidList = {
+                showEmptyListWarning = false
+                showInvalidListWarning = true
+            },
+            onSaved = {
+                setValue(items.map { it.value })
+                onDismiss()
+            },
+        )
+    }
 
-        val back = back@{
+    if (showInvalidListWarning) {
+        InvalidListWarningDialog(
+            option = option,
+            onDismiss = { showInvalidListWarning = false },
+            onDiscard = onDismiss,
+        )
+    }
+
+    val back = remember(listIsDirty, deleteMode) {
+        {
             if (deleteMode) {
                 deletionTargets.clear()
                 deleteMode = false
-                return@back
-            }
-
-            if (!listIsDirty) {
-                scope.dismissDialog()
-                return@back
-            }
-
-            scope.submitDialog(items.mapNotNull { it.value })
-        }
-
-        FullscreenDialog(
-            onDismissRequest = back,
-        ) {
-            Scaffold(
-                topBar = {
-                    AppTopBar(
-                        title = if (deleteMode) pluralStringResource(
-                            R.plurals.selected_count,
-                            deletionTargets.size,
-                            deletionTargets.size
-                        ) else scope.option.name,
-                        onBackClick = back,
-                        backIcon = {
-                            if (deleteMode) {
-                                return@AppTopBar Icon(
-                                    Icons.Filled.Close,
-                                    stringResource(R.string.cancel)
-                                )
-                            }
-
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
-                        },
-                        actions = {
-                            if (deleteMode) {
-                                TooltipIconButton(
-                                    onClick = {
-                                        if (items.size == deletionTargets.size) deletionTargets.clear()
-                                        else deletionTargets.addAll(items.map { it.key })
-                                    },
-                                    tooltip = stringResource(R.string.select_deselect_all)
-                                ) {
-                                    Icon(
-                                        Icons.Filled.SelectAll,
-                                        stringResource(R.string.select_deselect_all)
-                                    )
-                                }
-                                TooltipIconButton(
-                                    onClick = {
-                                        items.removeIf { it.key in deletionTargets }
-                                        deletionTargets.clear()
-                                        deleteMode = false
-                                    },
-                                    tooltip = stringResource(R.string.delete)
-                                ) {
-                                    Icon(
-                                        Icons.Filled.Delete,
-                                        stringResource(R.string.delete)
-                                    )
-                                }
-                            } else {
-                                TooltipIconButton(
-                                    onClick = items::clear,
-                                    tooltip = stringResource(R.string.reset)
-                                ) {
-                                    Icon(
-                                        Icons.Filled.Restore,
-                                        stringResource(R.string.reset)
-                                    )
-                                }
-                            }
-                        }
-                    )
-                },
-                floatingActionButton = {
-                    if (deleteMode) return@Scaffold
-
-                    HapticExtendedFloatingActionButton(
-                        text = { Text(stringResource(R.string.add)) },
-                        icon = {
-                            Icon(
-                                Icons.Outlined.Add,
-                                stringResource(R.string.add)
-                            )
-                        },
-                        expanded = lazyListState.isScrollingUp,
-                        onClick = { items.add(Item(null)) }
-                    )
-                }
-            ) { paddingValues ->
-                val elementOption = remember(scope.option) { createElementOption(scope.option) }
-
-                LazyColumn(
-                    state = lazyListState,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(paddingValues),
-                ) {
-                    itemsIndexed(items, key = { _, item -> item.key }) { index, item ->
-                        val interactionSource = remember { MutableInteractionSource() }
-
-                        ReorderableItem(reorderableLazyColumnState, key = item.key) {
-                            WithOptionEditor(
-                                elementEditor,
-                                elementOption,
-                                value = item.value,
-                                setValue = { items[index] = item.copy(value = it) },
-                                selectionWarningEnabled = scope.selectionWarningEnabled,
-                                readOnly = false
-                            ) {
-                                ListItem(
-                                    modifier = Modifier.combinedClickable(
-                                        indication = LocalIndication.current,
-                                        interactionSource = interactionSource,
-                                        onLongClickLabel = stringResource(R.string.select),
-                                        onLongClick = {
-                                            if (!deleteMode) {
-                                                deletionTargets.add(item.key)
-                                                deleteMode = true
-                                            }
-                                        },
-                                        onClick = {
-                                            if (!deleteMode) {
-                                                clickAction()
-                                                return@combinedClickable
-                                            }
-
-                                            if (item.key in deletionTargets) {
-                                                deletionTargets.remove(
-                                                    item.key
-                                                )
-                                                deleteMode = deletionTargets.isNotEmpty()
-                                            } else deletionTargets.add(item.key)
-                                        },
-                                    ),
-                                    tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
-                                    leadingContent = {
-                                        TooltipIconButton(
-                                            modifier = Modifier.draggableHandle(interactionSource = interactionSource),
-                                            onClick = {},
-                                            tooltip = stringResource(R.string.drag_handle),
-                                        ) {
-                                            Icon(
-                                                Icons.Filled.DragHandle,
-                                                stringResource(R.string.drag_handle)
-                                            )
-                                        }
-                                    },
-                                    headlineContent = {
-                                        if (item.value == null) return@ListItem Text(
-                                            stringResource(R.string.empty),
-                                            fontStyle = FontStyle.Italic
-                                        )
-
-                                        Text(item.value.toString())
-                                    },
-                                    trailingContent = {
-                                        ListItemTrailingContent()
-                                    }
-                                )
-                            }
-                        }
+            } else {
+                val currentItems = items.map { it.value }
+                when {
+                    option.required && currentItems.isEmpty() -> showEmptyListWarning = true
+                    listIsDirty && !option.validator(currentItems) -> showInvalidListWarning = true
+                    listIsDirty -> {
+                        setValue(currentItems)
+                        onDismiss()
                     }
+
+                    else -> onDismiss()
                 }
             }
         }
     }
 
-    @Parcelize
-    private data class Item<T : Serializable>(val value: T?, val key: Int = Random.nextInt()) :
-        Parcelable
+    FullscreenDialog(onDismissRequest = back) {
+        Scaffold(
+            topBar = {
+                AppTopBar(
+                    title = if (deleteMode) {
+                        pluralStringResource(
+                            R.plurals.selected_count,
+                            deletionTargets.size,
+                            deletionTargets.size,
+                        )
+                    } else {
+                        option.name
+                    },
+                    onBackClick = back,
+                    backIcon = {
+                        if (deleteMode) {
+                            Icon(Icons.Filled.Close, stringResource(R.string.cancel))
+                        } else {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                stringResource(R.string.back),
+                            )
+                        }
+                    },
+                    actions = {
+                        if (!readOnly) ListOptionTopBarActions(
+                            deleteMode = deleteMode,
+                            onToggleSelectAll = {
+                                if (items.size == deletionTargets.size) deletionTargets.clear()
+                                else deletionTargets.addAll(items.map { it.key })
+                            },
+                            onDeleteSelected = {
+                                items.removeIf { it.key in deletionTargets }
+                                deletionTargets.clear()
+                                deleteMode = false
+                            },
+                            onReset = {
+                                items.clear()
+                                option.default?.let { items.addAll(it.map(::Item)) }
+                            },
+                        )
+                    },
+                )
+            },
+            floatingActionButton = {
+                if (canEditItems) {
+                    HapticExtendedFloatingActionButton(
+                        text = { Text(stringResource(R.string.add)) },
+                        icon = { Icon(Icons.Outlined.Add, stringResource(R.string.add)) },
+                        expanded = lazyListState.isScrollingUp,
+                        onClick = { showAddItemDialog = true },
+                    )
+                }
+            },
+        ) { paddingValues ->
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(paddingValues),
+            ) {
+                if (readOnly && items.isEmpty()) {
+                    item {
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = stringResource(R.string.patch_options_no_default_items),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+
+                itemsIndexed(items, key = { _, item -> item.key }) { index, item ->
+                    val interactionSource = remember { MutableInteractionSource() }
+
+                    ReorderableItem(reorderableLazyColumnState, key = item.key) {
+                        var showEditDialog by rememberSaveable { mutableStateOf(false) }
+
+                        if (showEditDialog) {
+                            ListItemEditDialog(
+                                type = elementType,
+                                title = option.name,
+                                currentValue = item.value,
+                                onDismiss = { showEditDialog = false },
+                                onSubmit = { newValue ->
+                                    items[index] = item.copy(value = newValue)
+                                    showEditDialog = false
+                                },
+                            )
+                        }
+
+                        ListItem(
+                            modifier = if (readOnly) Modifier
+                            else Modifier.combinedClickable(
+                                indication = LocalIndication.current,
+                                interactionSource = interactionSource,
+                                onLongClickLabel = stringResource(R.string.select),
+                                onLongClick = {
+                                    if (!deleteMode) {
+                                        deletionTargets.add(item.key)
+                                        deleteMode = true
+                                    }
+                                },
+                                onClick = {
+                                    if (deleteMode) {
+                                        if (item.key in deletionTargets) {
+                                            deletionTargets.remove(item.key)
+                                            deleteMode = deletionTargets.isNotEmpty()
+                                        } else {
+                                            deletionTargets.add(item.key)
+                                        }
+                                    } else {
+                                        showEditDialog = true
+                                    }
+                                },
+                            ),
+                            tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
+                            leadingContent = {
+                                if (!readOnly) {
+                                    TooltipIconButton(
+                                        modifier = Modifier.draggableHandle(interactionSource = interactionSource),
+                                        onClick = {},
+                                        tooltip = stringResource(R.string.drag_handle),
+                                    ) {
+                                        Icon(
+                                            Icons.Filled.DragHandle,
+                                            stringResource(R.string.drag_handle),
+                                        )
+                                    }
+                                }
+                            },
+                            headlineContent = {
+                                if (item.value is String && item.value.isEmpty()) {
+                                    Text(
+                                        stringResource(R.string.empty),
+                                        fontStyle = FontStyle.Italic,
+                                    )
+                                } else {
+                                    Text(item.value.toString())
+                                }
+                            },
+                            trailingContent = {
+                                if (canEditItems) {
+                                    ListOptionItemEditTrailing(readOnly = false) {
+                                        showEditDialog = true
+                                    }
+                                }
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
+
+@Composable
+private fun ListOptionTopBarActions(
+    deleteMode: Boolean,
+    onToggleSelectAll: () -> Unit,
+    onDeleteSelected: () -> Unit,
+    onReset: () -> Unit,
+) {
+    if (deleteMode) {
+        TooltipIconButton(
+            onClick = onToggleSelectAll,
+            tooltip = stringResource(R.string.select_deselect_all),
+        ) {
+            Icon(Icons.Filled.SelectAll, stringResource(R.string.select_deselect_all))
+        }
+        TooltipIconButton(
+            onClick = onDeleteSelected,
+            tooltip = stringResource(R.string.delete),
+        ) {
+            Icon(Icons.Filled.Delete, stringResource(R.string.delete))
+        }
+    } else {
+        TooltipIconButton(
+            onClick = onReset,
+            tooltip = stringResource(R.string.reset),
+        ) {
+            Icon(Icons.Filled.Restore, stringResource(R.string.reset))
+        }
+    }
+}
+
+@Composable
+private fun ListItemEditDialog(
+    type: KType,
+    title: String,
+    currentValue: Serializable?,
+    onDismiss: () -> Unit,
+    onSubmit: (Serializable) -> Unit,
+) {
+    val fs: Filesystem = koinInject()
+    var showFileDialog by rememberSaveable { mutableStateOf(false) }
+    val openFilePicker = rememberFilePicker(fs) { showFileDialog = true }
+
+    var updateValue: ((String) -> Unit)? by remember { mutableStateOf(null) }
+
+    if (showFileDialog) {
+        PathSelectorDialog(root = fs.externalFilesDir()) { path ->
+            showFileDialog = false
+            path?.let { updateValue?.invoke(it.toString()) }
+        }
+    }
+
+
+    when (type) {
+        typeOf<Int>() -> IntInputDialog(
+            name = title,
+            current = currentValue as Int?,
+            onSubmit = { if (it == null) onDismiss() else onSubmit(it) },
+        )
+
+        typeOf<Long>() -> LongInputDialog(
+            name = title,
+            current = currentValue as Long?,
+            onSubmit = { if (it == null) onDismiss() else onSubmit(it) },
+        )
+
+        typeOf<Float>() -> FloatInputDialog(
+            name = title,
+            current = currentValue as Float?,
+            onSubmit = { if (it == null) onDismiss() else onSubmit(it) },
+        )
+
+        typeOf<String>() -> TextInputDialog(
+            title = title,
+            initial = currentValue as String? ?: "",
+            placeholder = stringResource(R.string.patch_options_value_list_element),
+            validator = { true },
+            onConfirm = onSubmit,
+            onDismissRequest = onDismiss,
+            trailingIcon = { _, onValueChange ->
+                var expanded by remember { mutableStateOf(false) }
+                Box {
+                    TooltipIconButton(
+                        onClick = { expanded = true },
+                        tooltip = stringResource(R.string.more),
+                    ) {
+                        Icon(Icons.Default.MoreVert, null)
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        DropdownMenuItem(
+                            leadingIcon = { Icon(Icons.Outlined.Folder, null) },
+                            text = { Text(stringResource(R.string.path_selector)) },
+                            onClick = {
+                                expanded = false
+                                updateValue = onValueChange
+                                openFilePicker()
+                            },
+                            shape = MaterialTheme.shapes.medium,
+                        )
+                    }
+                }
+            }
+        )
+
+        else -> onDismiss()
+    }
+}
+
+@Parcelize
+private data class Item(val value: Serializable, val key: Int = Random.nextInt()) : Parcelable
