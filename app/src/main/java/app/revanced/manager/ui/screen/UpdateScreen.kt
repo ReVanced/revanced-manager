@@ -124,7 +124,6 @@ fun UpdateScreen(
                 LinearWavyProgressIndicator(
                     progress = { updaterProgress },
                     modifier = Modifier
-                        .padding(top = paddingValues.calculateTopPadding())
                         .fillMaxWidth(),
                 )
             }
