@@ -16,6 +16,8 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ENFORCE_UPDATE_OWNERSHIP" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".ManagerApplication"
@@ -84,5 +86,51 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
+
+
+        <meta-data
+          android:name="io.sentry.dsn"
+          android:value="https://examplePublicKey@o0.ingest.sentry.io/0" />
+        <meta-data
+          android:name="io.sentry.send-default-pii"
+          android:value="true" />
+        <meta-data
+          android:name="io.sentry.traces.user-interaction.enable"
+          android:value="true" />
+        <meta-data
+          android:name="io.sentry.attach-screenshot"
+          android:value="true" />
+        <meta-data
+          android:name="io.sentry.attach-view-hierarchy"
+          android:value="true" />
+        <meta-data
+          android:name="io.sentry.traces.sample-rate"
+          android:value="1.0" />
+        <meta-data
+          android:name="io.sentry.traces.profiling.session-sample-rate"
+          android:value="1.0" />
+        <meta-data
+          android:name="io.sentry.traces.profiling.lifecycle"
+          android:value="trace" />
+        <meta-data
+          android:name="io.sentry.traces.profiling.start-on-app-start"
+          android:value="true" />
+        <meta-data
+          android:name="io.sentry.session-replay.on-error-sample-rate"
+          android:value="1.0" />
+        <meta-data
+          android:name="io.sentry.session-replay.session-sample-rate"
+          android:value="0.1" />
+        <meta-data android:name="io.sentry.logs.enabled" android:value="true" /><meta-data
+          android:name="io.sentry.tombstone.enable"
+          android:value="true" />
+        <meta-data
+          android:name="com.google.android.gms.ads.APPLICATION_ID"
+          android:value="SAMPLE_APP_ID"/>
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_XXX" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_XXX" />
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="1234"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="423"/>
     </application>
 </manifest>

@@ -1,6 +1,8 @@
 [versions]
 ktx = "1.18.0"
 material3 = "1.5.0-alpha15"
+sdk = "1.17.0"
+sentry-android = "8.37.1"
 ui-tooling = "1.10.4"
 viewmodel-lifecycle = "2.10.0"
 splash-screen = "1.2.0"
@@ -47,6 +49,8 @@ paging3 = "3.4.2"
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "viewmodel-lifecycle" }
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
+sdk = { module = "com.github.crowdin.mobile-sdk-android:sdk", version.ref = "sdk" }
+sentry-android = { module = "io.sentry:sentry-android", version.ref = "sentry-android" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }

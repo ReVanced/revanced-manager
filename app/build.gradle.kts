@@ -119,6 +119,19 @@ dependencies {
     // Ackpine
     implementation(libs.ackpine.core)
     implementation(libs.ackpine.ktx)
+
+    implementation("io.sentry:sentry-android:8.37.1")
+    implementation("com.github.crowdin.mobile-sdk-android:sdk:1.17.0")
+    implementation("com.google.android.gms:play-services-ads:25.1.0")
+    implementation("com.applovin:applovin-sdk:13.6.2")
+    implementation("io.branch.sdk.android:library:5.20.3")
+    implementation("com.google.android.gms:play-services-ads-identifier:18.3.0")
+    implementation("com.facebook.android:facebook-android-sdk:latest.release")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:34.11.0"))
+    implementation("com.pangle.global:pag-sdk:7.8.5.9")
+    implementation("com.inmobi.monetization:inmobi-ads-kotlin:11.2.0")
+    implementation("com.appnexus.opensdk:appnexus-sdk:[9,10)")
 }
 
 buildscript {
