@@ -1,3 +1,10 @@
+# app [2.6.0-dev.9](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.8...v2.6.0-dev.9) (2026-04-02)
+
+
+### Bug Fixes
+
+* **Updater:** Handle session death ([#3249](https://github.com/ReVanced/revanced-manager/issues/3249)) ([f1c56aa](https://github.com/ReVanced/revanced-manager/commit/f1c56aa0a9655fd93d1386ccca28c7ce7099d4d3))
+
 # app [2.6.0-dev.8](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.7...v2.6.0-dev.8) (2026-04-01)
 
 
