@@ -218,7 +218,7 @@ class UpdateViewModel(
     override fun onCleared() {
         super.onCleared()
         if (installerSessionId == null) {
-            location.delete()
+            cancelUpdate()
         }
     }
 
