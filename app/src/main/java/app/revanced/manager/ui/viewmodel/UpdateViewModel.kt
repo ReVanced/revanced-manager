@@ -69,6 +69,9 @@ class UpdateViewModel(
     var state by mutableStateOf(State.CAN_DOWNLOAD)
         private set
 
+    var backPressedOnce by mutableStateOf(false)
+        private set
+
     var installError by mutableStateOf("")
         private set
 
@@ -200,9 +203,6 @@ class UpdateViewModel(
             }
         }
     }
-
-    var backPressedOnce by mutableStateOf(false)
-        private set
 
     fun cancelUpdate() {
         location.delete()
