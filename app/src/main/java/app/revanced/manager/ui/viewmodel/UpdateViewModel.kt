@@ -201,6 +201,20 @@ class UpdateViewModel(
         }
     }
 
+    var backPressedOnce by mutableStateOf(false)
+        private set
+
+    fun cancelUpdate() {
+        location.delete()
+    }
+
+    fun onBackPressed() {
+        if (!backPressedOnce) {
+            backPressedOnce = true
+            app.toast(R.string.press_back_again_to_cancel_update)
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         if (installerSessionId == null) {

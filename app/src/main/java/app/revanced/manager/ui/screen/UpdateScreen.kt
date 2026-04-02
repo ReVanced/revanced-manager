@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
@@ -50,6 +51,17 @@ fun UpdateScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val changelogs = vm.changelogs.collectAsLazyPagingItems()
+
+    BackHandler(
+        enabled = vm.state == State.DOWNLOADING || vm.state == State.CAN_INSTALL
+    ) {
+        if (vm.backPressedOnce) {
+            vm.cancelUpdate()
+            onBackClick()
+        } else {
+            vm.onBackPressed()
+        }
+    }
 
     val buttonConfig = when (vm.state) {
         State.CAN_DOWNLOAD -> Triple(
