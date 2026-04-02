@@ -543,6 +543,7 @@ It’s only compatible with these versions: %2$s</string>
     <string name="download">Download</string>
     <string name="download_confirmation_metered">You are currently on a metered connection. Data charges from your service provider may apply.</string>
     <string name="download_update_confirmation">Download update?</string>
+    <string name="press_back_again_to_cancel_update">Press back again to cancel update</string>
     <string name="no_contributors_found">No contributors found</string>
     <string name="select">Select</string>
     <string name="select_deselect_all">Select or deselect all</string>
