@@ -126,7 +126,7 @@ class SelectedAppInfoViewModel(
                     if (it.isSplitApk()) return@let null
                     SelectedApp.Installed(
                         packageName,
-                        it.versionName ?: "unknown"
+                        it.versionName ?: app.getString(R.string.apk_version_unknown)
                     ) to installedAppDeferred.await()
                 }
 
@@ -288,7 +288,7 @@ class SelectedAppInfoViewModel(
                         pm.getPackageInfo(this)?.let { info ->
                             SelectedApp.Local(
                                 packageName = info.packageName,
-                                version = info.versionName ?: "unknown",
+                                version = info.versionName ?: app.getString(R.string.apk_version_unknown),
                                 file = this,
                                 temporary = true
                             )

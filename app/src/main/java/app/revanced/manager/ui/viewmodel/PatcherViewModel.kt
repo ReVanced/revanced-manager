@@ -65,7 +65,9 @@ import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -142,7 +144,7 @@ class PatcherViewModel(
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
     private val progressEventChannel = Channel<ProgressEvent>(
-        capacity = 10000,
+        capacity = 100,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
@@ -158,7 +160,6 @@ class PatcherViewModel(
      * It should not be cancelled on system-initiated process death since that would cancel the installation process.
      */
     private val installerCoroutineScope = CoroutineScope(Dispatchers.Main)
-    private val cleanupScope = CoroutineScope(Dispatchers.Main)
 
     /**
      * Holds the package name of the Apk we are trying to install.
@@ -284,17 +285,18 @@ class PatcherViewModel(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCleared() {
         super.onCleared()
         workManager.cancelWorkById(patcherWorkerId.uuid)
 
         if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.MOUNT) {
-            cleanupScope.launch {
+            GlobalScope.launch(Dispatchers.Main) {
                 uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
-                    withTimeout(Duration.ofSeconds(10L)) {
+                    withTimeout(Duration.ofMinutes(1L)) {
                         rootInstaller.mount(packageName)
                     }
-                }
+                }   
             }
         }
     }
@@ -568,7 +570,7 @@ class PatcherViewModel(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version ?: withContext(Dispatchers.IO) {
-                        pm.getPackageInfo(outputFile)?.versionName ?: "unknown"
+                        pm.getPackageInfo(outputFile)?.versionName ?: app.getString(R.string.apk_version_unknown)
                     },
                     InstallType.DEFAULT,
                     input.selectedPatches,

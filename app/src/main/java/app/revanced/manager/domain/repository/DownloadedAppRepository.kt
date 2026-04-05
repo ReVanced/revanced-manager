@@ -28,10 +28,6 @@ class DownloadedAppRepository(
     db: AppDatabase,
     private val pm: PM
 ) {
-    companion object {
-        private const val CACHE_TTL_MS = 6 * 60 * 60 * 1_000L
-    }
-
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
     private val dao = db.downloadedAppDao()
 
@@ -163,5 +159,9 @@ class DownloadedAppRepository(
         }
 
         dao.delete(downloadedApps)
+    }
+
+    companion object {
+        private const val CACHE_TTL_MS = 6 * 60 * 60 * 1_000L
     }
 }

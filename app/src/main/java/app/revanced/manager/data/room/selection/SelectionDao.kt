@@ -34,7 +34,7 @@ abstract class SelectionDao {
     @Query("SELECT uid FROM patch_selections WHERE patch_bundle = :bundleUid AND package_name = :packageName")
     abstract suspend fun getSelectionId(bundleUid: Int, packageName: String): Int?
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     protected abstract suspend fun createSelectionIfMissing(selection: PatchSelection)
 
     @Query("SELECT package_name FROM patch_selections")
