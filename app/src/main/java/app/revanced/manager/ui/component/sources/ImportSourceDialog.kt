@@ -88,6 +88,7 @@ data class GithubRelease(
 @Serializable
 data class GithubAsset(
     val name: String,
+    @SerialName("content_type") val contentType: String? = null,
     @SerialName("browser_download_url") val browserDownloadUrl: String
 )
 
@@ -154,6 +155,7 @@ fun ImportSourceDialog(
             GithubReleaseStep(
                 owner = githubMatch!!.groupValues[1],
                 repo = githubMatch!!.groupValues[2],
+                strings = strings,
                 selectedAssetUrl = selectedGithubAssetUrl,
                 onAssetSelected = { selectedGithubAssetUrl = it }
             )
@@ -351,6 +353,7 @@ private fun ImportSourceStep(
 private fun GithubReleaseStep(
     owner: String,
     repo: String,
+    strings: ImportSourceDialogStrings,
     selectedAssetUrl: String?,
     onAssetSelected: (String) -> Unit
 ) {
@@ -436,7 +439,10 @@ private fun GithubReleaseStep(
                         }
 
                         items(release.assets, key = { it.browserDownloadUrl }) { asset ->
-                            val isSelectable = asset.name.endsWith(".rvp") || asset.name.endsWith(".apk")
+                            val isSelectable = when (strings) {
+                                ImportSourceDialogStrings.PATCHES -> true
+                                ImportSourceDialogStrings.DOWNLOADERS -> asset.contentType == APK_MIMETYPE
+                            }
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -447,7 +453,8 @@ private fun GithubReleaseStep(
                             ) {
                                 HapticRadioButton(
                                     selected = selectedAssetUrl == asset.browserDownloadUrl,
-                                    onClick = { }
+                                    onClick = { },
+                                    enabled = isSelectable
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
