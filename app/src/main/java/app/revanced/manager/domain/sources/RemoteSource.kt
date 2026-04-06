@@ -103,8 +103,7 @@ class JsonSource<T>(
                         url("https://api.github.com/repos/$owner/$repo/releases/tags/$tag")
                     }.getOrThrow()
                     
-                    val dateStr = release.publishedAt ?: release.createdAt
-                    val date = dateStr?.let { Instant.parse(it).toLocalDateTime(TimeZone.UTC) }
+                    val date = release.createdAt?.let { Instant.parse(it).toLocalDateTime(TimeZone.UTC) }
 
                     return@withContext ReVancedAsset(
                         downloadUrl = endpoint,

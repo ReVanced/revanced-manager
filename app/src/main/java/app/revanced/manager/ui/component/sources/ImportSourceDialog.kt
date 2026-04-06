@@ -82,9 +82,7 @@ data class GithubRelease(
     @SerialName("tag_name") val tagName: String,
     val prerelease: Boolean,
     val assets: List<GithubAsset> = emptyList(),
-    @SerialName("published_at") val publishedAt: String? = null,
-    @SerialName("created_at") val createdAt: String? = null,
-    @SerialName("target_commitish") val targetCommitish: String = ""
+    @SerialName("created_at") val createdAt: String? = null
 )
 
 @Serializable
@@ -396,7 +394,6 @@ private fun GithubReleaseStep(
             val latestPrerelease = releases!!.firstOrNull { it.prerelease }
             val explicitReleases = listOfNotNull(latestRelease, latestPrerelease)
                 .distinctBy { it.tagName }
-                .sortedByDescending { it.publishedAt ?: it.createdAt ?: "" }
 
             val filteredReleases = if (showOlderReleases) releases!! else explicitReleases
 
