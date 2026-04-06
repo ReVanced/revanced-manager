@@ -139,7 +139,10 @@ class LongSetPreference(
 ) : Preference<Set<Long>>(dataStore, default) {
     private val key = stringSetPreferencesKey(key)
 
-    override fun Preferences.read() = this[key]?.mapTo(mutableSetOf()) { it.toLong() } ?: default
+    override fun Preferences.read() = this[key]?.mapNotNullTo(mutableSetOf()) {
+        it.toLongOrNull()
+    } ?: default
+
     override fun MutablePreferences.write(value: Set<Long>) {
         this[key] = value.mapTo(mutableSetOf()) { it.toString() }
     }

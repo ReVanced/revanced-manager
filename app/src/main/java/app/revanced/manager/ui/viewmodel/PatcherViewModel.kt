@@ -72,9 +72,11 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -141,6 +143,10 @@ class PatcherViewModel(
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
+    private val progressEventChannel = Channel<ProgressEvent>(
+        capacity = 100,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     private val tempDir = savedStateHandle.saveable(key = "tempDir") {
         fs.uiTempDir.resolve("installer").also {
@@ -271,6 +277,12 @@ class PatcherViewModel(
         viewModelScope.launch {
             installedApp = installedAppRepository.get(packageName)
         }
+
+        viewModelScope.launch {
+            for (event in progressEventChannel) {
+                applyProgressEvent(event)
+            }
+        }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -284,14 +296,18 @@ class PatcherViewModel(
                     withTimeout(Duration.ofMinutes(1L)) {
                         rootInstaller.mount(packageName)
                     }
-                }
+                }   
             }
         }
     }
 
-    private fun handleProgressEvent(event: ProgressEvent) = viewModelScope.launch {
+    private fun handleProgressEvent(event: ProgressEvent) {
+        progressEventChannel.trySend(event)
+    }
+
+    private fun applyProgressEvent(event: ProgressEvent) {
         if (event is ProgressEvent.Failed && event.stepId == null && steps.any { it.state == State.FAILED }) {
-            return@launch
+            return
         }
 
         val stepIndex = steps.indexOfFirst {
@@ -554,7 +570,7 @@ class PatcherViewModel(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version ?: withContext(Dispatchers.IO) {
-                        pm.getPackageInfo(outputFile)?.versionName!!
+                        pm.getPackageInfo(outputFile)?.versionName ?: app.getString(R.string.apk_version_unknown)
                     },
                     InstallType.DEFAULT,
                     input.selectedPatches,

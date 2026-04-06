@@ -3,7 +3,6 @@ package app.revanced.manager.domain.repository
 import android.util.Log
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.options.Option
-import app.revanced.manager.data.room.options.OptionGroup
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.tag
@@ -12,13 +11,6 @@ import kotlinx.coroutines.flow.map
 
 class PatchOptionsRepository(db: AppDatabase) {
     private val dao = db.optionDao()
-
-    private suspend fun getOrCreateGroup(bundleUid: Int, packageName: String) =
-        dao.getGroupId(bundleUid, packageName) ?: OptionGroup(
-            uid = AppDatabase.generateUid(),
-            patchBundle = bundleUid,
-            packageName = packageName
-        ).also { dao.createOptionGroup(it) }.uid
 
     suspend fun getOptions(
         packageName: String,
@@ -57,7 +49,7 @@ class PatchOptionsRepository(db: AppDatabase) {
 
     suspend fun saveOptions(packageName: String, options: Options) =
         dao.updateOptions(options.entries.associate { (sourceUid, bundlePatchOptions) ->
-            val groupId = getOrCreateGroup(sourceUid, packageName)
+            val groupId = dao.getOrCreateGroupId(sourceUid, packageName)
 
             groupId to bundlePatchOptions.flatMap { (patchName, patchOptions) ->
                 patchOptions.mapNotNull { (key, value) ->
