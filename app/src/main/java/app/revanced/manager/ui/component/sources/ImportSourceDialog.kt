@@ -7,7 +7,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -15,13 +24,18 @@ import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.network.utils.APIResponse
 import app.revanced.manager.ui.component.AlertDialogExtended
+import app.revanced.manager.ui.component.SurfaceChip
 import app.revanced.manager.ui.component.TextHorizontalPadding
 import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
@@ -29,6 +43,10 @@ import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.BIN_MIMETYPE
 import app.revanced.manager.util.transparentListItemColors
+import io.ktor.client.request.url
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.koin.compose.koinInject
 
 private enum class SourceType {
     Local,
@@ -58,6 +76,23 @@ enum class ImportSourceDialogStrings(
     ),
 }
 
+@Serializable
+data class GithubRelease(
+    val name: String? = null,
+    @SerialName("tag_name") val tagName: String,
+    val prerelease: Boolean,
+    val assets: List<GithubAsset> = emptyList(),
+    @SerialName("published_at") val publishedAt: String? = null,
+    @SerialName("created_at") val createdAt: String? = null,
+    @SerialName("target_commitish") val targetCommitish: String = ""
+)
+
+@Serializable
+data class GithubAsset(
+    val name: String,
+    @SerialName("browser_download_url") val browserDownloadUrl: String
+)
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ImportSourceDialog(
@@ -72,6 +107,19 @@ fun ImportSourceDialog(
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(true) }
 
+    val githubMatch by
+    remember(remoteUrl) {
+        derivedStateOf {
+            Regex("^https://github\\.com/([^/]+)/([^/]+)/?$").find(remoteUrl.trim())
+        }
+    }
+    val isGithubRepoUrl by
+    remember(sourceType, githubMatch) {
+        derivedStateOf { sourceType == SourceType.Remote && githubMatch != null }
+    }
+
+    var selectedGithubAssetUrl by rememberSaveable { mutableStateOf<String?>(null) }
+
     val fileActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { local = it }
@@ -84,30 +132,49 @@ fun ImportSourceDialog(
         }
     }
 
-    val steps = listOf<@Composable () -> Unit>(
-        {
-            SelectSourceTypeStep(strings, sourceType) { selectedType ->
-                sourceType = selectedType
-            }
-        },
-        {
-            ImportSourceStep(
-                strings,
-                sourceType,
-                local,
-                remoteUrl,
-                autoUpdate,
-                ::launchFileActivity,
-                { remoteUrl = it },
-                { autoUpdate = it }
+    val steps = mutableListOf<@Composable () -> Unit>()
+
+    steps.add {
+        SelectSourceTypeStep(strings, sourceType) { selectedType -> sourceType = selectedType }
+    }
+
+    steps.add {
+        ImportSourceStep(
+            strings,
+            sourceType,
+            local,
+            remoteUrl,
+            autoUpdate,
+            ::launchFileActivity,
+            { remoteUrl = it },
+            { autoUpdate = it }
+        )
+    }
+
+    if (isGithubRepoUrl) {
+        steps.add {
+            GithubReleaseStep(
+                owner = githubMatch!!.groupValues[1],
+                repo = githubMatch!!.groupValues[2],
+                selectedAssetUrl = selectedGithubAssetUrl,
+                onAssetSelected = { selectedGithubAssetUrl = it }
             )
         }
-    )
+    }
 
-    val inputsAreValid by remember {
+    val inputsAreValid by remember(
+        currentStep,
+        sourceType,
+        local,
+        remoteUrl,
+        isGithubRepoUrl,
+        selectedGithubAssetUrl
+    ) {
         derivedStateOf {
-            (sourceType == SourceType.Local && local != null) ||
-                    (sourceType == SourceType.Remote && remoteUrl.isNotEmpty())
+            if (currentStep < steps.lastIndex) return@derivedStateOf true
+            if (sourceType == SourceType.Local) return@derivedStateOf local != null
+            if (isGithubRepoUrl) return@derivedStateOf selectedGithubAssetUrl != null
+            remoteUrl.isNotEmpty()
         }
     }
 
@@ -117,7 +184,7 @@ fun ImportSourceDialog(
             Text(stringResource(strings.title))
         },
         text = {
-            steps[currentStep]()
+            if (currentStep in steps.indices) steps[currentStep]()
         },
         confirmButton = {
             if (currentStep == steps.lastIndex) {
@@ -126,7 +193,11 @@ fun ImportSourceDialog(
                     onClick = {
                         when (sourceType) {
                             SourceType.Local -> local?.let(onLocalSubmit)
-                            SourceType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
+                            SourceType.Remote -> onRemoteSubmit(
+                                if (isGithubRepoUrl) selectedGithubAssetUrl!!
+                                else remoteUrl,
+                                autoUpdate
+                            )
                         }
                     },
                     shapes = ButtonDefaults.shapes()
@@ -134,9 +205,11 @@ fun ImportSourceDialog(
                     Text(stringResource(R.string.add))
                 }
             } else {
-                TextButton(onClick = { currentStep++ }, shapes = ButtonDefaults.shapes()) {
-                    Text(stringResource(R.string.next))
-                }
+                TextButton(
+                    enabled = inputsAreValid,
+                    onClick = { currentStep++ },
+                    shapes = ButtonDefaults.shapes()
+                ) { Text(stringResource(R.string.next)) }
             }
         },
         dismissButton = {
@@ -270,6 +343,137 @@ private fun ImportSourceStep(
                         },
                         colors = transparentListItemColors
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GithubReleaseStep(
+    owner: String,
+    repo: String,
+    selectedAssetUrl: String?,
+    onAssetSelected: (String) -> Unit
+) {
+    val httpService: HttpService = koinInject()
+    var releases by remember { mutableStateOf<List<GithubRelease>?>(null) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var showOlderReleases by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(owner, repo) {
+        val response =
+            httpService.request<List<GithubRelease>> {
+                url("https://api.github.com/repos/$owner/$repo/releases")
+            }
+        if (response is APIResponse.Success) {
+            releases = response.data
+        } else {
+            error = "Failed to fetch releases"
+        }
+    }
+
+    Column {
+        if (error != null) {
+            Text(
+                text = error!!,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(24.dp)
+            )
+        } else if (releases == null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            val latestRelease = releases!!.firstOrNull { !it.prerelease }
+            val latestPrerelease = releases!!.firstOrNull { it.prerelease }
+            val explicitReleases = listOfNotNull(latestRelease, latestPrerelease)
+                .distinctBy { it.tagName }
+                .sortedByDescending { it.publishedAt ?: it.createdAt ?: "" }
+
+            val filteredReleases = if (showOlderReleases) releases!! else explicitReleases
+
+            if (filteredReleases.isEmpty()) {
+                Text("No releases found", modifier = Modifier.padding(24.dp))
+            } else {
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    contentPadding = PaddingValues(bottom = 8.dp)
+                ) {
+                    filteredReleases.forEachIndexed { index, release ->
+                        val title = release.tagName.ifEmpty { release.name ?: "Unknown" }
+
+                        item(key = release.tagName) {
+                            Row(
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    top = if (index == 0) 0.dp else 16.dp,
+                                    bottom = 4.dp
+                                ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = title,
+                                    style = MaterialTheme.typography.titleSmall,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                SurfaceChip(
+                                    text = if (release.prerelease) "pre-release" else "latest",
+                                    color =
+                                        if (release.prerelease)
+                                            Color(0xFFF57F17).copy(alpha = 0.2f)
+                                        else Color(0xFF2E7D32).copy(alpha = 0.2f),
+                                    contentColor =
+                                        if (release.prerelease) Color(0xFFF57F17)
+                                        else Color(0xFF2E7D32)
+                                )
+                            }
+                        }
+
+                        items(release.assets, key = { it.browserDownloadUrl }) { asset ->
+                            val isSelectable = asset.name.endsWith(".rvp") || asset.name.endsWith(".apk")
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable(enabled = isSelectable) { onAssetSelected(asset.browserDownloadUrl) }
+                                    .padding(horizontal = 16.dp, vertical = 6.dp)
+                                    .alpha(if (isSelectable) 1f else 0.4f),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                HapticRadioButton(
+                                    selected = selectedAssetUrl == asset.browserDownloadUrl,
+                                    onClick = { }
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = asset.name,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+
+                    if (releases!!.size > explicitReleases.size) {
+                        item {
+                            TextButton(
+                                onClick = { showOlderReleases = !showOlderReleases },
+                                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                            ) {
+                                Text(
+                                    if (showOlderReleases) "Hide older releases"
+                                    else "Show older releases"
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
