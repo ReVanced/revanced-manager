@@ -1,5 +1,7 @@
 package app.revanced.manager.domain.sources
 
+import android.app.Application
+import app.revanced.manager.R
 import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
@@ -37,6 +39,7 @@ sealed class RemoteSource<T>(
     data class UpdateResult(val versionHash: String, val releasedAt: LocalDateTime)
 
     protected val http: HttpService by inject()
+    protected val app: Application by inject()
 
     protected abstract suspend fun getLatestInfo(): ReVancedAsset
     abstract fun copy(
@@ -106,7 +109,7 @@ class JsonSource<T>(
                     return@withContext ReVancedAsset(
                         downloadUrl = endpoint,
                         version = endpoint.substringAfterLast('/'),
-                        description = release.name ?: "External github asset",
+                        description = release.name ?: app.getString(R.string.github_external_asset),
                         createdAt = date ?: releasedAt ?: LocalDateTime(1970, 1, 1, 0, 0, 0)
                     )
                 } catch (_: Exception) {
@@ -117,7 +120,7 @@ class JsonSource<T>(
             return@withContext ReVancedAsset(
                 downloadUrl = endpoint,
                 version = endpoint.substringAfterLast('/'),
-                description = "External github asset",
+                description = app.getString(R.string.github_external_asset),
                 createdAt = releasedAt ?: LocalDateTime(1970, 1, 1, 0, 0, 0)
             )
         }

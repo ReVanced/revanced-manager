@@ -360,6 +360,8 @@ private fun GithubReleaseStep(
     var releases by remember { mutableStateOf<List<GithubRelease>?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     var showOlderReleases by rememberSaveable { mutableStateOf(false) }
+    val fetchFailedMessage = stringResource(R.string.github_releases_fetch_failed)
+    val unknownLabel = stringResource(R.string.github_release_unknown)
 
     LaunchedEffect(owner, repo) {
         val response =
@@ -369,7 +371,7 @@ private fun GithubReleaseStep(
         if (response is APIResponse.Success) {
             releases = response.data
         } else {
-            error = "Failed to fetch releases"
+            error = fetchFailedMessage
         }
     }
 
@@ -399,14 +401,14 @@ private fun GithubReleaseStep(
             val filteredReleases = if (showOlderReleases) releases!! else explicitReleases
 
             if (filteredReleases.isEmpty()) {
-                Text("No releases found", modifier = Modifier.padding(24.dp))
+                Text(stringResource(R.string.github_releases_none_found), modifier = Modifier.padding(24.dp))
             } else {
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     contentPadding = PaddingValues(bottom = 8.dp)
                 ) {
                     filteredReleases.forEachIndexed { index, release ->
-                        val title = release.tagName.ifEmpty { release.name ?: "Unknown" }
+                        val title = release.tagName.ifEmpty { release.name ?: unknownLabel }
 
                         item(key = release.tagName) {
                             Row(
@@ -424,7 +426,7 @@ private fun GithubReleaseStep(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 SurfaceChip(
-                                    text = if (release.prerelease) "pre-release" else "latest",
+                                    text = stringResource(if (release.prerelease) R.string.github_release_prerelease else R.string.github_release_latest),
                                     color =
                                         if (release.prerelease)
                                             Color(0xFFF57F17).copy(alpha = 0.2f)
@@ -468,8 +470,10 @@ private fun GithubReleaseStep(
                                 modifier = Modifier.padding(start = 8.dp, top = 4.dp)
                             ) {
                                 Text(
-                                    if (showOlderReleases) "Hide older releases"
-                                    else "Show older releases"
+                                    stringResource(
+                                        if (showOlderReleases) R.string.github_hide_older_releases
+                                        else R.string.github_show_older_releases
+                                    )
                                 )
                             }
                         }
