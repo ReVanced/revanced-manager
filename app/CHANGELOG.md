@@ -1,3 +1,10 @@
+# app [2.6.0-dev.10](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.9...v2.6.0-dev.10) (2026-04-06)
+
+
+### Bug Fixes
+
+* BusError when running 32b binary on armv8 with compatibility ([#3279](https://github.com/ReVanced/revanced-manager/issues/3279)) ([c1e1a82](https://github.com/ReVanced/revanced-manager/commit/c1e1a8243adb86fdf907b0b402c97c36c279567b))
+
 # app [2.6.0-dev.9](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.8...v2.6.0-dev.9) (2026-04-02)
 
 
