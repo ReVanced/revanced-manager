@@ -5,6 +5,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -26,11 +27,13 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Update
@@ -152,6 +155,10 @@ fun DashboardScreen(
         initialPage = DashboardPage.DASHBOARD.ordinal,
         initialPageOffsetFraction = 0f
     ) { DashboardPage.entries.size }
+
+    val appsLazyListState = rememberLazyListState()
+    val appsSearchLazyListState = rememberLazyListState()
+    var appsSearchExpanded by rememberSaveable { mutableStateOf(false) }
 
     val dashboardPatchesParams = remember {
         SelectedApplicationInfo.PatchesSelector.ViewModelParams(
@@ -389,12 +396,24 @@ fun DashboardScreen(
                 },
                 containerColor = Color.Transparent,
                 floatingActionButton = {
+                    val currentScrollState =
+                        if (appsSearchExpanded) appsSearchLazyListState else appsLazyListState
+                    val showBackToTop by remember(currentScrollState) {
+                        derivedStateOf { currentScrollState.firstVisibleItemIndex > 0 }
+                    }
+
                     DashboardFab(
                         pagerState = pagerState,
                         patchesSourceEditMode = patchesSourceEditMode,
                         onEnablePatchesSourceEditMode = { patchesSourceEditMode = true },
                         onAddBundleClick = {
                             showAddBundleDialog = true
+                        },
+                        showScrollToTop = showBackToTop,
+                        onScrollToTop = {
+                            composableScope.launch {
+                                currentScrollState.animateScrollToItem(0)
+                            }
                         }
                     )
                 }
@@ -474,7 +493,10 @@ fun DashboardScreen(
                                 AppsScreen(
                                     onAppClick = { onAppClick(it.currentPackageName) },
                                     onPatchableAppClick = ::onPatchableSelection,
-                                    onStorageSelect = { selectedApp -> onStorageSelection(selectedApp) }
+                                    onStorageSelect = { selectedApp -> onStorageSelection(selectedApp)},
+                                    lazyListState = appsLazyListState,
+                                    searchLazyListState = appsSearchLazyListState,
+                                    onSearchExpandedChange = { appsSearchExpanded = it }
                                 )
                             }
 
@@ -519,9 +541,15 @@ private fun DashboardFab(
     pagerState: PagerState,
     patchesSourceEditMode: Boolean,
     onEnablePatchesSourceEditMode: () -> Unit,
-    onAddBundleClick: () -> Unit
+    onAddBundleClick: () -> Unit,
+    showScrollToTop: Boolean,
+    onScrollToTop: () -> Unit
 ) {
     val fabState = when (pagerState.currentPage) {
+        DashboardPage.DASHBOARD.ordinal -> {
+            if (showScrollToTop) DashboardFabState.ScrollToTop else DashboardFabState.Hidden
+        }
+
         DashboardPage.BUNDLES.ordinal -> {
             if (patchesSourceEditMode) DashboardFabState.AddBundles else DashboardFabState.EditBundles
         }
@@ -529,46 +557,69 @@ private fun DashboardFab(
         else -> DashboardFabState.Hidden
     }
 
-    if (fabState == DashboardFabState.Hidden) return
-
-    HapticExtendedFloatingActionButton(
-        onClick = if (fabState == DashboardFabState.AddBundles) onAddBundleClick else onEnablePatchesSourceEditMode,
-        tooltip = stringResource(
-            if (fabState == DashboardFabState.AddBundles) R.string.fab_add_patches else R.string.edit
-        ),
-        expanded = fabState == DashboardFabState.AddBundles,
-        icon = {
-            AnimatedContent(
-                targetState = fabState,
-                transitionSpec = {
-                    (fadeIn(animationSpec = tween(durationMillis = 180, delayMillis = 60)) +
-                            scaleIn(animationSpec = tween(durationMillis = 180, delayMillis = 60), initialScale = 0.85f)) togetherWith
-                            (fadeOut(animationSpec = tween(durationMillis = 90)) +
-                                    scaleOut(animationSpec = tween(durationMillis = 90), targetScale = 0.85f))
-                },
-                label = "dashboard_fab_icon_transition"
-            ) { state ->
-                when (state) {
-                    DashboardFabState.EditBundles -> {
-                        Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.edit))
-                    }
-
-                    DashboardFabState.AddBundles -> {
-                        Icon(Icons.Default.Add, contentDescription = null)
-                    }
-
-                    DashboardFabState.Hidden -> Unit
+    AnimatedVisibility(
+        visible = fabState != DashboardFabState.Hidden, enter = fadeIn() + scaleIn(), exit = fadeOut() + scaleOut()
+    ) {
+        HapticExtendedFloatingActionButton(
+            onClick = {
+                when (fabState) {
+                    DashboardFabState.AddBundles -> onAddBundleClick()
+                    DashboardFabState.EditBundles -> onEnablePatchesSourceEditMode()
+                    DashboardFabState.ScrollToTop -> onScrollToTop()
+                    else -> {}
                 }
-            }
-        },
-        text = { Text(stringResource(R.string.fab_add_patches)) }
-    )
+            },
+            tooltip = stringResource(
+                if (fabState == DashboardFabState.AddBundles) R.string.fab_add_patches else R.string.edit
+            ),
+            expanded = fabState == DashboardFabState.AddBundles,
+            icon = {
+                AnimatedContent(
+                    targetState = fabState,
+                    transitionSpec = {
+                        (fadeIn(animationSpec = tween(durationMillis = 180, delayMillis = 60)) +
+                                scaleIn(
+                                    animationSpec = tween(durationMillis = 180, delayMillis = 60),
+                                    initialScale = 0.85f
+                                )) togetherWith
+                                (fadeOut(animationSpec = tween(durationMillis = 90)) +
+                                        scaleOut(
+                                            animationSpec = tween(durationMillis = 90),
+                                            targetScale = 0.85f
+                                        ))
+                    },
+                    label = "dashboard_fab_icon_transition"
+                ) { state ->
+                    when (state) {
+                        DashboardFabState.EditBundles -> {
+                            Icon(
+                                Icons.Outlined.Edit,
+                                contentDescription = stringResource(R.string.edit)
+                            )
+                        }
+
+                        DashboardFabState.AddBundles -> {
+                            Icon(Icons.Default.Add, contentDescription = null)
+                        }
+
+                        DashboardFabState.ScrollToTop -> {
+                            Icon(Icons.Filled.KeyboardArrowUp, contentDescription = null)
+                        }
+
+                        else -> {}
+                    }
+                }
+            },
+            text = { Text(stringResource(R.string.fab_add_patches)) }
+        )
+    }
 }
 
 private enum class DashboardFabState {
     Hidden,
     EditBundles,
     AddBundles,
+    ScrollToTop
 }
 
 @Composable

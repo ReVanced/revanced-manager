@@ -49,7 +49,8 @@ fun AnnouncementScreen(
             scrollState.canScrollBackward || scrollState.canScrollForward
         }
     )
-    val textColor = MaterialTheme.colorScheme.onSurface
+    val headerTextColor = MaterialTheme.colorScheme.onSurface
+    val textColor = MaterialTheme.colorScheme.onSurfaceVariant
     val linkColor = MaterialTheme.colorScheme.primary
 
     Scaffold(
@@ -120,12 +121,34 @@ fun AnnouncementScreen(
                     val webView = it.children.first() as WebView
                     @Language("HTML")
                     val style = """
-                    <html>
+                    <html lang="en">
                       <head>
                         <meta name="viewport" content="width=device-width, initial-scale=1" />
                         <style>
                           body {
+                            line-height: 150%;
                             color: ${textColor.toCss()};
+                          }
+                          ul, ol {
+                            padding-inline-start: 12px;
+                          }
+                          strong, b {
+                            font-weight: 600;
+                            color: ${headerTextColor.toCss()};
+                          }
+                          h1, h2, h3, h4, h5, h6 {
+                            font-weight: 475;
+                            line-height: 133%;
+                            color: ${headerTextColor.toCss()};
+                          }
+                          h1 {
+                            font-size: 2.25em;
+                          }
+                          h2 {
+                            font-size: 1.75em;
+                          }
+                          h3 {
+                            font-size: 1.5em;
                           }
                           a {
                             color: ${linkColor.toCss()};
