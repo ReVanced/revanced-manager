@@ -646,9 +646,14 @@ class PatcherViewModel(
                             ?: withContext(Dispatchers.IO) { inputFile?.let(pm::getPackageInfo)?.versionName }
                             ?: throw Exception("Failed to determine input APK version")
 
-                        rootInstaller.installAsMagiskModule(
-                            outputFile, packageName, inputVersion, label
-                        )
+                        try {
+                            rootInstaller.installAsMagiskModule(
+                                outputFile, packageName, inputVersion, label
+                            )
+                        } catch (e: Exception) {
+                            packageInstallerStatus = AndroidPackageInstaller.STATUS_FAILURE
+                            throw e
+                        }
 
                         val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
                         installedAppRepository.addOrUpdate(
@@ -661,8 +666,7 @@ class PatcherViewModel(
                         )
 
                         installedPackageName = packageName
-
-                        app.toast(app.getString(R.string.install_app_success))
+                        packageInstallerStatus = 1000 // SUCCESS_MAGISK
                         downloadedAppRepository.deleteFor(packageName)
                     }
                 }
@@ -682,7 +686,13 @@ class PatcherViewModel(
 
     override fun install() {
         // InstallType.MOUNT is never used here since this overload is for the package installer status dialog.
-        install(InstallType.DEFAULT)
+        install(if (packageInstallerStatus == AndroidPackageInstaller.STATUS_FAILURE) InstallType.MAGISK else InstallType.DEFAULT)
+    }
+
+    override fun reboot() {
+        viewModelScope.launch {
+            rootInstaller.execute("reboot")
+        }
     }
 
     override fun reinstall() {
