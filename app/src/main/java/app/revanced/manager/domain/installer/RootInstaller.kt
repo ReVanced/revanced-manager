@@ -135,16 +135,15 @@ class RootInstaller(
             "module.prop",
         ).forEach { file ->
             assets.open("root/$file").use { inputStream ->
-                remoteFS.getFile("$modulePath/$file").newOutputStream()
-                    .use { outputStream ->
-                        val content = String(inputStream.readBytes())
-                            .replace("__PKG_NAME__", packageName)
-                            .replace("__VERSION__", version)
-                            .replace("__LABEL__", label)
-                            .toByteArray()
+                remoteFS.getFile("$modulePath/$file").newOutputStream().use { outputStream ->
+                    val content = String(inputStream.readBytes())
+                        .replace("__PKG_NAME__", packageName)
+                        .replace("__VERSION__", version)
+                        .replace("__LABEL__", label)
+                        .toByteArray()
 
-                        outputStream.write(content)
-                    }
+                    outputStream.write(content)
+                }
             }
         }
 
@@ -175,13 +174,10 @@ class RootInstaller(
         val remoteFS = awaitRemoteFS()
         val sanitizedPackageName = packageName.replace('.', '_')
         val modulePath = "$modulesPath/revanced_$sanitizedPackageName"
+        val systemAppPath = "$modulePath/system/app/$sanitizedPackageName"
         val assets = app.assets
 
-        remoteFS.getFile(modulePath).apply {
-            if (!mkdirs() && !exists()) {
-                throw Exception("Failed to create Magisk module directory")
-            }
-        }
+        execute("mkdir -p \"$systemAppPath\"").assertSuccess("Failed to create system app directory")
 
         val moduleProp = buildString {
             appendLine("id=revanced_$sanitizedPackageName")
@@ -191,8 +187,9 @@ class RootInstaller(
             appendLine("author=ReVanced")
             append("description=Patched by ReVanced")
         }
-        remoteFS.getFile("$modulePath/module.prop").newOutputStream()
-            .use { it.write(moduleProp.toByteArray()) }
+        remoteFS.getFile("$modulePath/module.prop").newOutputStream().use { outputStream ->
+            outputStream.write(moduleProp.toByteArray())
+        }
 
         assets.open("root/service.sh").use { inputStream ->
             remoteFS.getFile("$modulePath/service.sh").newOutputStream()
@@ -207,7 +204,7 @@ class RootInstaller(
                 }
         }
 
-        val targetApkPath = "$modulePath/$packageName.apk"
+        val targetApkPath = "$systemAppPath/base.apk"
         remoteFS.getFile(patchedAPK.absolutePath)
             .also { if (!it.exists()) throw Exception("File doesn't exist") }
             .newInputStream().use { inputStream ->
@@ -217,10 +214,11 @@ class RootInstaller(
             }
 
         execute(
-            "chmod 644 $targetApkPath",
-            "chown system:system $targetApkPath",
-            "chcon u:object_r:apk_data_file:s0 $targetApkPath",
-            "chmod +x $modulePath/service.sh"
+            "chmod 644 \"$targetApkPath\"",
+            "chmod 755 \"$systemAppPath\"",
+            "chown -R system:system \"$modulePath/system\"",
+            "chcon -R u:object_r:system_file:s0 \"$modulePath/system\"",
+            "chmod +x \"$modulePath/service.sh\""
         ).assertSuccess("Failed to set file permissions")
     }
 
