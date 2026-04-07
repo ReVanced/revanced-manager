@@ -636,6 +636,35 @@ class PatcherViewModel(
                         needsRootUninstall = false
                         downloadedAppRepository.deleteFor(packageName)
                     }
+
+                    InstallType.MAGISK -> {
+                        val label = with(pm) {
+                            currentPackageInfo.label()
+                        }
+
+                        val inputVersion = input.selectedApp.version
+                            ?: withContext(Dispatchers.IO) { inputFile?.let(pm::getPackageInfo)?.versionName }
+                            ?: throw Exception("Failed to determine input APK version")
+
+                        rootInstaller.installAsMagiskModule(
+                            outputFile, packageName, inputVersion, label
+                        )
+
+                        val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
+                        installedAppRepository.addOrUpdate(
+                            currentPackageInfo.packageName,
+                            packageName,
+                            inputVersion,
+                            InstallType.MAGISK,
+                            input.selectedPatches,
+                            bundleInfo
+                        )
+
+                        installedPackageName = packageName
+
+                        app.toast(app.getString(R.string.install_app_success))
+                        downloadedAppRepository.deleteFor(packageName)
+                    }
                 }
             }
         } finally {

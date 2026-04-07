@@ -243,6 +243,7 @@ class SelectedAppInfoViewModel(
             val matchesVersion = requiredVersion == null || installed.version == requiredVersion
             val usable = when {
                 meta?.installType == InstallType.MOUNT && !hasRoot -> false
+                meta?.installType == InstallType.MAGISK && !hasRoot -> false
                 meta?.installType == InstallType.DEFAULT -> false
                 else -> true
             }

@@ -105,6 +105,13 @@ fun InstalledAppInfoScreen(
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
+
+                if (installedApp.installType == InstallType.MAGISK) {
+                    Text(
+                        text = stringResource(R.string.magisk_install),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
 
             Row(
@@ -142,6 +149,15 @@ fun InstalledAppInfoScreen(
                         )
                     }
 
+                    InstallType.MAGISK -> {
+                        SegmentedButton(
+                            icon = Icons.Outlined.SettingsBackupRestore,
+                            text = stringResource(R.string.unpatch),
+                            onClick = { showUninstallDialog = true },
+                            enabled = viewModel.rootInstaller.hasRootAccess()
+                        )
+                    }
+
                 }
 
                 SegmentedButton(
@@ -150,7 +166,7 @@ fun InstalledAppInfoScreen(
                     onClick = {
                         onPatchClick(installedApp.originalPackageName)
                     },
-                    enabled = installedApp.installType != InstallType.MOUNT || viewModel.rootInstaller.hasRootAccess()
+                    enabled = installedApp.installType == InstallType.DEFAULT || viewModel.rootInstaller.hasRootAccess()
                 )
             }
 

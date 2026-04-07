@@ -69,6 +69,9 @@ class RootInstaller(
     suspend fun isAppInstalled(packageName: String) =
         awaitRemoteFS().getFile("$modulesPath/$packageName-revanced").exists()
 
+    suspend fun isAppInstalledAsMagiskModule(packageName: String) =
+        awaitRemoteFS().getFile("$modulesPath/revanced_${packageName.replace('.', '_')}").exists()
+
     suspend fun isAppMounted(packageName: String) = withContext(Dispatchers.IO) {
         pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir?.let {
             execute("mount | grep \"$it\"").isSuccess
@@ -161,6 +164,64 @@ class RootInstaller(
                 "chmod +x $modulePath/service.sh"
             ).assertSuccess("Failed to set file permissions")
         }
+    }
+
+    suspend fun installAsMagiskModule(
+        patchedAPK: File,
+        packageName: String,
+        version: String,
+        label: String
+    ) = withContext(Dispatchers.IO) {
+        val remoteFS = awaitRemoteFS()
+        val sanitizedPackageName = packageName.replace('.', '_')
+        val modulePath = "$modulesPath/revanced_$sanitizedPackageName"
+
+        val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
+            ?: throw Exception("Failed to load application info")
+
+        // Derive the parent directory relative to root (e.g. "system/app/Example").
+        val stockApkParent = stockAPK.removePrefix("/").substringBeforeLast("/")
+        val moduleApkDir = "$modulePath/$stockApkParent"
+
+        remoteFS.getFile(moduleApkDir).apply {
+            if (!mkdirs() && !exists()) {
+                throw Exception("Failed to create Magisk module directory")
+            }
+        }
+
+        val moduleProp = buildString {
+            appendLine("id=revanced_$sanitizedPackageName")
+            appendLine("name=$label ReVanced")
+            appendLine("version=$version")
+            appendLine("versionCode=1")
+            appendLine("author=ReVanced")
+            append("description=Patched by ReVanced")
+        }
+        remoteFS.getFile("$modulePath/module.prop").newOutputStream()
+            .use { it.write(moduleProp.toByteArray()) }
+
+        val targetApkPath = "$moduleApkDir/base.apk"
+        remoteFS.getFile(patchedAPK.absolutePath)
+            .also { if (!it.exists()) throw Exception("File doesn't exist") }
+            .newInputStream().use { inputStream ->
+                remoteFS.getFile(targetApkPath).newOutputStream().use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+
+        execute(
+            "chmod 644 $targetApkPath",
+            "chown system:system $targetApkPath",
+            "chcon u:object_r:apk_data_file:s0 $targetApkPath"
+        ).assertSuccess("Failed to set file permissions")
+    }
+
+    suspend fun uninstallMagiskModule(packageName: String) {
+        val remoteFS = awaitRemoteFS()
+        val sanitizedPackageName = packageName.replace('.', '_')
+
+        remoteFS.getFile("$modulesPath/revanced_$sanitizedPackageName").deleteRecursively()
+            .also { if (!it) throw Exception("Failed to delete Magisk module files") }
     }
 
     suspend fun uninstall(packageName: String) {
