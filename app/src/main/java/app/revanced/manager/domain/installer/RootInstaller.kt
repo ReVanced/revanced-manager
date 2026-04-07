@@ -17,6 +17,7 @@ import kotlinx.coroutines.time.withTimeoutOrNull
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.time.Duration
+import java.util.zip.ZipFile
 
 class RootInstaller(
     private val app: Application,
@@ -157,11 +158,51 @@ class RootInstaller(
                 }
 
             execute(
-                "chmod 644 $apkPath",
-                "chown system:system $apkPath",
-                "chcon u:object_r:apk_data_file:s0 $apkPath",
-                "chmod +x $modulePath/service.sh"
+                "chmod 644 \"$apkPath\"",
+                "chown system:system \"$apkPath\"",
+                "chcon u:object_r:apk_data_file:s0 \"$apkPath\"",
+                "chmod +x \"$modulePath/service.sh\""
             ).assertSuccess("Failed to set file permissions")
+        }
+    }
+
+    private fun extractNativeLibraries(apkFile: File, systemAppPath: String, remoteFS: FileSystemManager) {
+        val libPath = "$systemAppPath/lib"
+
+        // Delete existing library directory to avoid remnants from different architectures
+        remoteFS.getFile(libPath).apply {
+            if (exists()) deleteRecursively()
+            mkdirs()
+        }
+
+        ZipFile(apkFile).use { zip ->
+            zip.entries().asSequence()
+                .filter { it.name.startsWith("lib/") && it.name.endsWith(".so") }
+                .forEach { entry ->
+                    val parts = entry.name.split("/")
+                    if (parts.size < 3) return@forEach
+
+                    val apkAbi = parts[1]
+                    val libName = parts.last()
+
+                    val systemAbi = when (apkAbi) {
+                        "arm64-v8a" -> "arm64"
+                        "armeabi-v7a" -> "arm"
+                        "x86_64" -> "x86_64"
+                        "x86" -> "x86"
+                        else -> apkAbi
+                    }
+
+                    val targetDir = "$libPath/$systemAbi"
+                    remoteFS.getFile(targetDir).apply { if (!exists()) mkdirs() }
+
+                    val targetFile = "$targetDir/$libName"
+                    zip.getInputStream(entry).use { inputStream ->
+                        remoteFS.getFile(targetFile).newOutputStream().use { outputStream ->
+                            inputStream.copyTo(outputStream)
+                        }
+                    }
+                }
         }
     }
 
@@ -213,9 +254,14 @@ class RootInstaller(
                 }
             }
 
+        // Extract native libraries if any exist in the APK
+        extractNativeLibraries(patchedAPK, systemAppPath, remoteFS)
+
         execute(
             "chmod 644 \"$targetApkPath\"",
             "chmod 755 \"$systemAppPath\"",
+            "chmod -R 755 \"$systemAppPath/lib\"",
+            "find \"$systemAppPath/lib\" -type f -name \"*.so\" -exec chmod 644 {} +",
             "chown -R system:system \"$modulePath/system\"",
             "chcon -R u:object_r:system_file:s0 \"$modulePath/system\"",
             "chmod +x \"$modulePath/service.sh\""
