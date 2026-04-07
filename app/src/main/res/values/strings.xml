@@ -612,6 +612,6 @@ Tap them for more details.</string>
         <item quantity="other">%d selected</item>
     </plurals>
     <string name="magisk_install_success_title">Magisk module installed</string>
-    <string name="magisk_install_success_description">A system restart is recommended to properly apply the changes.</string>
+    <string name="magisk_install_success_description">The patched app is now active. You can restart the device if you want to fully apply the changes.</string>
     <string name="restart_now">Restart now</string>
 </resources>
