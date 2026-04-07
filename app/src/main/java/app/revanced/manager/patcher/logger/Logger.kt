@@ -38,7 +38,10 @@ abstract class Logger {
 fun Logger.forStep(stepId: StepId, onEvent: (ProgressEvent) -> Unit) = object : Logger() {
     override fun log(level: LogLevel, message: String) {
         this@forStep.log(level, message)
-        onEvent(ProgressEvent.Log(stepId, level, message))
+        // Filter out TRACE logs to prevent IPC channel flooding and memory leaks (GC thrashing)
+        if (level != LogLevel.TRACE) {
+            onEvent(ProgressEvent.Log(stepId, level, message))
+        }
     }
 
     override fun log(level: LogLevel, message: String, loggerName: String?) {
@@ -46,7 +49,8 @@ fun Logger.forStep(stepId: StepId, onEvent: (ProgressEvent) -> Unit) = object : 
 
         // App loggers should use empty or "app.revanced" prefix;
         // filter out logs from libraries to avoid cluttering the step view.
-        if (loggerName.isNullOrEmpty() || loggerName.startsWith("app.revanced")) {
+        // Also filter out TRACE logs to prevent massive memory leaks and slow patching process.
+        if (level != LogLevel.TRACE && (loggerName.isNullOrEmpty() || loggerName.startsWith("app.revanced"))) {
             onEvent(ProgressEvent.Log(stepId, level, message))
         }
     }
@@ -54,8 +58,14 @@ fun Logger.forStep(stepId: StepId, onEvent: (ProgressEvent) -> Unit) = object : 
 
 inline fun <T> Logger.withJavaLogging(block: () -> T): T {
     val rootLogger = java.util.logging.Logger.getLogger("")
+    
+    // Save the previous level and force INFO to prevent the library from 
+    // eagerly allocating millions of string/LogRecord objects for TRACE logs.
+    val previousLevel = rootLogger.level
+    rootLogger.level = Level.INFO
 
-    rootLogger.handlers.forEach {
+    val oldHandlers = rootLogger.handlers.toList()
+    oldHandlers.forEach {
         it.close()
         rootLogger.removeHandler(it)
     }
@@ -66,6 +76,7 @@ inline fun <T> Logger.withJavaLogging(block: () -> T): T {
         block()
     } finally {
         rootLogger.removeHandler(handler)
+        rootLogger.level = previousLevel
     }
 }
 

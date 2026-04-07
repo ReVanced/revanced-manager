@@ -184,7 +184,8 @@ class PatcherWorker(
 
                 is SelectedApp.Search -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
-                        downloaderRepository.loadedDownloadersFlow.first()
+                        // wait until the list is actually populated before checking it
+                        downloaderRepository.loadedDownloadersFlow.first { it.isNotEmpty() }
                             .firstNotNullOfOrNull { downloader ->
                                 try {
                                     val getScope = object : GetScope, Scope by downloader.scopeImpl {
