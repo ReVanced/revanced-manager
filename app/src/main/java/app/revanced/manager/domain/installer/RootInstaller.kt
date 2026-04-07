@@ -175,15 +175,9 @@ class RootInstaller(
         val remoteFS = awaitRemoteFS()
         val sanitizedPackageName = packageName.replace('.', '_')
         val modulePath = "$modulesPath/revanced_$sanitizedPackageName"
+        val assets = app.assets
 
-        val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
-            ?: throw Exception("Failed to load application info")
-
-        // Derive the parent directory relative to root (e.g. "system/app/Example").
-        val stockApkParent = stockAPK.removePrefix("/").substringBeforeLast("/")
-        val moduleApkDir = "$modulePath/$stockApkParent"
-
-        remoteFS.getFile(moduleApkDir).apply {
+        remoteFS.getFile(modulePath).apply {
             if (!mkdirs() && !exists()) {
                 throw Exception("Failed to create Magisk module directory")
             }
@@ -200,7 +194,20 @@ class RootInstaller(
         remoteFS.getFile("$modulePath/module.prop").newOutputStream()
             .use { it.write(moduleProp.toByteArray()) }
 
-        val targetApkPath = "$moduleApkDir/base.apk"
+        assets.open("root/service.sh").use { inputStream ->
+            remoteFS.getFile("$modulePath/service.sh").newOutputStream()
+                .use { outputStream ->
+                    val content = String(inputStream.readBytes())
+                        .replace("__PKG_NAME__", packageName)
+                        .replace("__VERSION__", version)
+                        .replace("__LABEL__", label)
+                        .toByteArray()
+
+                    outputStream.write(content)
+                }
+        }
+
+        val targetApkPath = "$modulePath/$packageName.apk"
         remoteFS.getFile(patchedAPK.absolutePath)
             .also { if (!it.exists()) throw Exception("File doesn't exist") }
             .newInputStream().use { inputStream ->
@@ -212,7 +219,8 @@ class RootInstaller(
         execute(
             "chmod 644 $targetApkPath",
             "chown system:system $targetApkPath",
-            "chcon u:object_r:apk_data_file:s0 $targetApkPath"
+            "chcon u:object_r:apk_data_file:s0 $targetApkPath",
+            "chmod +x $modulePath/service.sh"
         ).assertSuccess("Failed to set file permissions")
     }
 
