@@ -108,7 +108,7 @@ fun InstalledAppInfoScreen(
 
                 if (installedApp.installType == InstallType.MAGISK) {
                     Text(
-                        text = stringResource(R.string.magisk_install),
+                        text = stringResource(if (viewModel.appInfo != null) R.string.generic_active else R.string.generic_inactive),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
