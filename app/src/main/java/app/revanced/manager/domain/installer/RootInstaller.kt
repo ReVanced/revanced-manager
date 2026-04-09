@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import app.revanced.library.MagiskUtils
+import app.revanced.library.installation.installer.Constants
+import app.revanced.library.installation.installer.Constants.invoke
 import app.revanced.manager.IRootSystemService
 import app.revanced.manager.service.ManagerRootService
 import app.revanced.manager.util.PM
@@ -141,7 +143,7 @@ class RootInstaller(
             uninstall(packageName)
         }
         MagiskUtils.provisionMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, version, label, patchedAPK)
-        runCatching { MagiskUtils.installApk("/data/adb/revanced/$packageName/base.apk") }
+        runCatching { MagiskUtils.installApk(Constants.MOUNTED_APK_PATH(packageName)) }
     }
 
     suspend fun uninstallMagiskModule(packageName: String, patchedPackageName: String) {
