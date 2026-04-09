@@ -612,6 +612,9 @@ Tap them for more details.</string>
         <item quantity="other">%d selected</item>
     </plurals>
     <string name="magisk_install_success_title">Magisk module installed</string>
-    <string name="magisk_install_success_description">The patched app is now active. You can restart the device if you want to fully apply the changes.</string>
+    <string name="magisk_install_success_description">The patched app has been installed and is immediately active. We recommended restarting your device to fully apply the changes.</string>
     <string name="restart_now">Restart now</string>
+    <string name="generic_active">Active</string>
+    <string name="generic_inactive">Inactive</string>
+    <string name="root_access_denied_warning">Root access denied. Installing without root.</string>
 </resources>
