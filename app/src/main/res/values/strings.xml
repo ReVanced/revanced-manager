@@ -617,4 +617,5 @@ Tap them for more details.</string>
     <string name="generic_active">Active</string>
     <string name="generic_inactive">Inactive</string>
     <string name="root_access_denied_warning">Root access denied. Installing without root.</string>
+    <string name="root_check_failed">Failed to check root access. Installing without root.</string>
 </resources>

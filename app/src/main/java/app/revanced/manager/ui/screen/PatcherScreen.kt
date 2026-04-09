@@ -258,6 +258,9 @@ fun PatcherScreen(
                                                 RootCheckResult.DENIED,
                                                 RootCheckResult.UNAVAILABLE -> viewModel.install(InstallType.DEFAULT)
                                             }
+                                        } catch (_: Exception) {
+                                            context.toast(R.string.root_check_failed)
+                                            viewModel.install(InstallType.DEFAULT)
                                         } finally {
                                             isCheckingRoot = false
                                         }
