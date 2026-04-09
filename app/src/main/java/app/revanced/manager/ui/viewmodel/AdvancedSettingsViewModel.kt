@@ -3,12 +3,17 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.ui.model.RootCheckResult
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import com.github.pgreze.process.Redirect
@@ -27,8 +32,20 @@ class AdvancedSettingsViewModel(
     val prefs: PreferencesManager,
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
-    private val downloaderRepository: DownloaderRepository
+    private val downloaderRepository: DownloaderRepository,
+    private val rootInstaller: RootInstaller
 ) : ViewModel() {
+    var rootStatus by mutableStateOf<RootCheckResult?>(null)
+        private set
+
+    init { refreshRootStatus() }
+
+    fun refreshRootStatus() {
+        viewModelScope.launch(Dispatchers.IO) {
+            rootStatus = rootInstaller.checkRootStatus()
+        }
+    }
+
     val debugLogFileName: String
         get() {
             val time = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now())

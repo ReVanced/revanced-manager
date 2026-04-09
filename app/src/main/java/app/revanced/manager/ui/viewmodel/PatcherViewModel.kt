@@ -50,6 +50,7 @@ import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.ui.model.InstallerModel
+import app.revanced.manager.ui.model.RootCheckResult
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
@@ -132,6 +133,11 @@ class PatcherViewModel(
 
     var isInstalling by mutableStateOf(false)
         private set
+
+    var isMagiskInstalled by mutableStateOf(false)
+        private set
+
+    private var lastInstallType = InstallType.DEFAULT
 
     private var currentActivityRequest: Pair<CompletableDeferred<Boolean>, String>? by mutableStateOf(
         null
@@ -271,6 +277,12 @@ class PatcherViewModel(
         viewModelScope.launch {
             installedApp = installedAppRepository.get(packageName)
         }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            if (rootInstaller.isDeviceRooted()) {
+                isMagiskInstalled = rootInstaller.isMagiskInstalled()
+            }
+        }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -338,6 +350,20 @@ class PatcherViewModel(
     }
 
     fun isDeviceRooted() = rootInstaller.isDeviceRooted()
+
+    suspend fun requestRootForInstall(): RootCheckResult {
+        if (!isDeviceRooted()) return RootCheckResult.UNAVAILABLE
+
+        val hasRoot = withContext(Dispatchers.IO) { rootInstaller.requestRoot() }
+        return if (hasRoot) {
+            isMagiskInstalled = true
+            RootCheckResult.GRANTED
+        } else {
+            logger.warn(app.getString(R.string.root_access_denied_warning))
+            withContext(Dispatchers.Main) { app.toast(R.string.root_access_denied_warning) }
+            RootCheckResult.DENIED
+        }
+    }
 
     fun rejectInteraction() {
         currentActivityRequest?.first?.complete(false)
@@ -419,7 +445,7 @@ class PatcherViewModel(
 
         val statFs = StatFs(Environment.getDataDirectory().path)
 
-        val hasRoot = rootInstaller.hasRootAccess()
+        val rootStatus = context.getString(rootInstaller.checkRootStatus().displayName)
         val suggestedVersion = patchBundleRepository.suggestedVersions.first()[packageName]
         val allowIncompatiblePatches = prefs.disablePatchVersionCompatCheck.get()
         val disableSelectionWarning = prefs.disableSelectionWarning.get()
@@ -494,7 +520,7 @@ class PatcherViewModel(
             addAll(managerConfiguration)
             addAll(patchingConfiguration)
             addAll(runtimeConfiguration)
-            add("Root permissions: ${if (hasRoot) "Yes" else "No"}")
+            add("Root permissions: $rootStatus")
             add("RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available")
             add("Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available")
             add("Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
@@ -567,6 +593,7 @@ class PatcherViewModel(
 
     fun install(installType: InstallType) = viewModelScope.launch {
         isInstalling = true
+        lastInstallType = installType
         var needsRootUninstall = false
         try {
             uiSafe(app, R.string.install_app_fail, "Failed to install") {
@@ -636,6 +663,39 @@ class PatcherViewModel(
                         needsRootUninstall = false
                         downloadedAppRepository.deleteFor(packageName)
                     }
+
+                    InstallType.MAGISK -> {
+                        val label = with(pm) {
+                            currentPackageInfo.label()
+                        }
+
+                        val inputVersion = input.selectedApp.version
+                            ?: withContext(Dispatchers.IO) { inputFile?.let(pm::getPackageInfo)?.versionName }
+                            ?: throw Exception("Failed to determine input APK version")
+
+                        try {
+                            rootInstaller.installAsMagiskModule(
+                                outputFile, packageName, currentPackageInfo.packageName, inputVersion, label
+                            )
+                        } catch (e: Exception) {
+                            packageInstallerStatus = AndroidPackageInstaller.STATUS_FAILURE
+                            throw e
+                        }
+
+                        val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
+                        installedAppRepository.addOrUpdate(
+                            currentPackageInfo.packageName,
+                            packageName,
+                            inputVersion,
+                            InstallType.MAGISK,
+                            input.selectedPatches,
+                            bundleInfo
+                        )
+
+                        installedPackageName = packageName
+                        packageInstallerStatus = 1000 // SUCCESS_MAGISK
+                        downloadedAppRepository.deleteFor(packageName)
+                    }
                 }
             }
         } finally {
@@ -651,9 +711,12 @@ class PatcherViewModel(
         }
     }
 
-    override fun install() {
-        // InstallType.MOUNT is never used here since this overload is for the package installer status dialog.
-        install(InstallType.DEFAULT)
+    override fun install() { install(lastInstallType) }
+
+    override fun reboot() {
+        viewModelScope.launch {
+            rootInstaller.execute("reboot")
+        }
     }
 
     override fun reinstall() {
