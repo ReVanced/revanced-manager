@@ -9,6 +9,7 @@ import app.revanced.library.MagiskUtils
 import app.revanced.library.installation.installer.Constants
 import app.revanced.library.installation.installer.Constants.invoke
 import app.revanced.manager.IRootSystemService
+import app.revanced.manager.ui.model.RootCheckResult
 import app.revanced.manager.service.ManagerRootService
 import app.revanced.manager.util.PM
 import com.topjohnwu.superuser.Shell
@@ -71,6 +72,11 @@ class RootInstaller(
 
     fun requestRoot() = MagiskUtils.requestRoot()
 
+    fun checkRootStatus(): RootCheckResult = when {
+        !isDeviceRooted() -> RootCheckResult.UNAVAILABLE
+        isMagiskInstalled() -> RootCheckResult.GRANTED
+        else -> RootCheckResult.DENIED
+    }
     suspend fun isAppInstalled(packageName: String) =
             MagiskUtils.isInstalled(packageName, awaitRemoteFS())
 

@@ -445,7 +445,7 @@ class PatcherViewModel(
 
         val statFs = StatFs(Environment.getDataDirectory().path)
 
-        val hasRoot = rootInstaller.hasRootAccess()
+        val rootStatus = context.getString(rootInstaller.checkRootStatus().displayName)
         val suggestedVersion = patchBundleRepository.suggestedVersions.first()[packageName]
         val allowIncompatiblePatches = prefs.disablePatchVersionCompatCheck.get()
         val disableSelectionWarning = prefs.disableSelectionWarning.get()
@@ -520,7 +520,7 @@ class PatcherViewModel(
             addAll(managerConfiguration)
             addAll(patchingConfiguration)
             addAll(runtimeConfiguration)
-            add("Root permissions: ${if (hasRoot) "Yes" else "No"}")
+            add("Root permissions: $rootStatus")
             add("RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available")
             add("Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available")
             add("Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
