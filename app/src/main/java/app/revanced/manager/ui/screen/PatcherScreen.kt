@@ -62,7 +62,7 @@ import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
-import app.revanced.manager.ui.viewmodel.RootCheckResult
+import app.revanced.manager.ui.model.RootCheckResult
 import kotlinx.coroutines.launch
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect

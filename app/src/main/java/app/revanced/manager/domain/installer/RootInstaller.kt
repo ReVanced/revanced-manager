@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import app.revanced.library.MagiskUtils
-import app.revanced.library.ShellCommandException
 import app.revanced.manager.IRootSystemService
 import app.revanced.manager.service.ManagerRootService
 import app.revanced.manager.util.PM
@@ -121,11 +120,8 @@ class RootInstaller(
         }
 
         stockAPK?.let { stockApp ->
-            execute("pm uninstall -k --user 0 $packageName")
-            val result = execute("pm install -r -d --user 0 \"${stockApp.absolutePath}\"")
-            if (!result.isSuccess) {
-                throw ShellCommandException("Failed to install stock app", result.code, result.out, result.err)
-            }
+            MagiskUtils.uninstallKeepData(packageName)
+            MagiskUtils.installApk(stockApp.absolutePath)
             stockApp.delete()
         }
 
@@ -145,7 +141,7 @@ class RootInstaller(
             uninstall(packageName)
         }
         MagiskUtils.provisionMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, version, label, patchedAPK)
-        runCatching { execute("pm install -r -d --user 0 \"/data/adb/revanced/$packageName/base.apk\"") }
+        runCatching { MagiskUtils.installApk("/data/adb/revanced/$packageName/base.apk") }
     }
 
     suspend fun uninstallMagiskModule(packageName: String, patchedPackageName: String) {
