@@ -50,6 +50,7 @@ class RootInstaller(
     }
 
     private suspend fun getShell() = with(CompletableDeferred<Shell>()) {
+        Shell.getCachedShell()?.takeIf { !it.isRoot }?.close()
         Shell.getShell(::complete)
 
         await()
@@ -64,6 +65,10 @@ class RootInstaller(
     fun hasRootAccess() = MagiskUtils.hasRootAccess()
 
     fun isDeviceRooted() = MagiskUtils.isDeviceRooted()
+
+    fun isMagiskInstalled() = MagiskUtils.isMagiskInstalled()
+
+    fun requestRoot() = MagiskUtils.requestRoot()
 
     suspend fun isAppInstalled(packageName: String) =
             MagiskUtils.isInstalled(packageName, awaitRemoteFS())
@@ -108,10 +113,11 @@ class RootInstaller(
         label: String
     ) = withContext(Dispatchers.IO) {
         val remoteFS = awaitRemoteFS()
+        val patchedPackageName = withContext(Dispatchers.IO) { pm.getPackageInfo(patchedAPK)?.packageName } ?: packageName
 
         unmount(packageName)
         if (isAppInstalledAsMagiskModule(packageName)) {
-            uninstallMagiskModule(packageName)
+            uninstallMagiskModule(packageName, patchedPackageName)
         }
 
         stockAPK?.let { stockApp ->
@@ -129,19 +135,21 @@ class RootInstaller(
     suspend fun installAsMagiskModule(
         patchedAPK: File,
         packageName: String,
+        patchedPackageName: String,
         version: String,
         label: String
     ) = withContext(Dispatchers.IO) {
-        if (isAppInstalled(packageName)) {
+        if (isAppInstalledAsMagiskModule(packageName)) {
+            uninstallMagiskModule(packageName, patchedPackageName)
+        } else if (isAppInstalled(packageName)) {
             uninstall(packageName)
         }
-        MagiskUtils.provisionMagiskModule(awaitRemoteFS(), packageName, version, label, patchedAPK)
-        runCatching { mount(packageName) }
+        MagiskUtils.provisionMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, version, label, patchedAPK)
+        runCatching { execute("pm install -r -d --user 0 \"/data/adb/revanced/$packageName/base.apk\"") }
     }
 
-    suspend fun uninstallMagiskModule(packageName: String) {
-        if (isAppMounted(packageName)) unmount(packageName)
-        MagiskUtils.uninstallMagiskModule(packageName, awaitRemoteFS())
+    suspend fun uninstallMagiskModule(packageName: String, patchedPackageName: String) {
+        MagiskUtils.uninstallMagiskModule(packageName, patchedPackageName, awaitRemoteFS())
     }
 
     suspend fun uninstall(packageName: String) {
