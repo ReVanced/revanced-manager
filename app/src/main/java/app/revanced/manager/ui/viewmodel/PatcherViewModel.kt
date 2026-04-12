@@ -632,10 +632,6 @@ class PatcherViewModel(
                     }
 
                     InstallType.MOUNT -> {
-                        val label = with(pm) {
-                            currentPackageInfo.label()
-                        }
-
                         val inputVersion = input.selectedApp.version
                             ?: withContext(Dispatchers.IO) { inputFile?.let(pm::getPackageInfo)?.versionName }
                             ?: throw Exception("Failed to determine input APK version")
@@ -643,7 +639,7 @@ class PatcherViewModel(
                         needsRootUninstall = true
                         // Install as root
                         rootInstaller.install(
-                            outputFile, inputFile, packageName, inputVersion, label
+                            outputFile, inputFile, packageName,
                         )
 
                         val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
@@ -665,17 +661,13 @@ class PatcherViewModel(
                     }
 
                     InstallType.MAGISK -> {
-                        val label = with(pm) {
-                            currentPackageInfo.label()
-                        }
-
                         val inputVersion = input.selectedApp.version
                             ?: withContext(Dispatchers.IO) { inputFile?.let(pm::getPackageInfo)?.versionName }
                             ?: throw Exception("Failed to determine input APK version")
 
                         try {
                             rootInstaller.installAsMagiskModule(
-                                outputFile, packageName, currentPackageInfo.packageName, inputVersion, label
+                                outputFile, packageName, currentPackageInfo.packageName,
                             )
                         } catch (e: Exception) {
                             packageInstallerStatus = AndroidPackageInstaller.STATUS_FAILURE

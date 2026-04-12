@@ -116,8 +116,6 @@ class RootInstaller(
         patchedAPK: File,
         stockAPK: File?,
         packageName: String,
-        version: String,
-        label: String
     ) = withContext(Dispatchers.IO) {
         val remoteFS = awaitRemoteFS()
         val patchedPackageName = withContext(Dispatchers.IO) { pm.getPackageInfo(patchedAPK)?.packageName } ?: packageName
@@ -133,22 +131,20 @@ class RootInstaller(
             stockApp.delete()
         }
 
-        MagiskUtils.provisionRootFolder(remoteFS, packageName, version, label, patchedAPK)
+        MagiskUtils.provisionRootFolder(remoteFS, packageName, patchedAPK)
     }
 
     suspend fun installAsMagiskModule(
         patchedAPK: File,
         packageName: String,
         patchedPackageName: String,
-        version: String,
-        label: String
     ) = withContext(Dispatchers.IO) {
         if (isAppInstalledAsMagiskModule(packageName)) {
             uninstallMagiskModule(packageName, patchedPackageName)
         } else if (isAppInstalled(packageName)) {
             uninstall(packageName)
         }
-        MagiskUtils.provisionMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, version, label, patchedAPK)
+        MagiskUtils.provisionMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, patchedAPK)
         runCatching { MagiskUtils.installApk(Constants.MOUNTED_APK_PATH(packageName)) }
     }
 
