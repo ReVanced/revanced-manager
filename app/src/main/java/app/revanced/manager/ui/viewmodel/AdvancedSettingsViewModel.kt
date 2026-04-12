@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import com.github.pgreze.process.Redirect
 import com.github.pgreze.process.process
+import kotlin.system.exitProcess
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -35,6 +37,14 @@ class AdvancedSettingsViewModel(
 
             return "revanced-manager_logcat_$time"
         }
+
+    fun restartApp() {
+        val intent = app.packageManager
+            .getLaunchIntentForPackage(app.packageName)!!
+            .apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) }
+        app.startActivity(intent)
+        exitProcess(0)
+    }
 
     fun exportDebugLogs(target: Uri) = viewModelScope.launch {
         val exitCode = try {

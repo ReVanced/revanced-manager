@@ -35,11 +35,10 @@ abstract class Logger {
     }
 }
 
-fun Logger.forStep(stepId: StepId, onEvent: (ProgressEvent) -> Unit) = object : Logger() {
+fun Logger.forStep(stepId: StepId, minLogLevel: LogLevel, onEvent: (ProgressEvent) -> Unit) = object : Logger() {
     override fun log(level: LogLevel, message: String) {
         this@forStep.log(level, message)
-        // Filter out TRACE logs to prevent IPC channel flooding and memory leaks (GC thrashing)
-        if (level != LogLevel.TRACE) {
+        if (level.ordinal >= minLogLevel.ordinal) {
             onEvent(ProgressEvent.Log(stepId, level, message))
         }
     }
@@ -49,8 +48,8 @@ fun Logger.forStep(stepId: StepId, onEvent: (ProgressEvent) -> Unit) = object : 
 
         // App loggers should use empty or "app.revanced" prefix;
         // filter out logs from libraries to avoid cluttering the step view.
-        // Also filter out TRACE logs to prevent massive memory leaks and slow patching process.
-        if (level != LogLevel.TRACE && (loggerName.isNullOrEmpty() || loggerName.startsWith("app.revanced"))) {
+        if (level.ordinal >= minLogLevel.ordinal &&
+            (loggerName.isNullOrEmpty() || loggerName.startsWith("app.revanced"))) {
             onEvent(ProgressEvent.Log(stepId, level, message))
         }
     }

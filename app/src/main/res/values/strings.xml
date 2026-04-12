@@ -267,6 +267,11 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="process_runtime_description">Faster, and allows Patcher to use more memory</string>
     <string name="process_runtime_memory_limit">Patcher process memory limit</string>
     <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use</string>
+    <string name="min_patcher_log_level">Minimum patcher log level</string>
+    <string name="restart_required">Restart required</string>
+    <string name="restart_required_description">The log level change will take effect after restarting the app.</string>
+    <string name="restart_now">Restart now</string>
+    <string name="later">Later</string>
     <string name="debug_logs_export">Export debug logs</string>
     <string name="debug_logs_export_read_failed">Failed to read logs (exit code %d)</string>
     <string name="debug_logs_export_failed">Failed to export logs</string>

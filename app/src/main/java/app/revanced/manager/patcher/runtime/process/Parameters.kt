@@ -14,6 +14,7 @@ data class Parameters(
     val inputFile: String,
     val outputFile: String,
     val configurations: List<PatchConfiguration>,
+    val minLogLevel: String,
 ) : Parcelable
 
 @Parcelize

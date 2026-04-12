@@ -7,26 +7,36 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MediumFlexibleTopAppBar
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -39,8 +49,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
+import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TooltipIconButton
@@ -50,8 +62,10 @@ import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.transparentListItemColors
 import app.revanced.manager.util.withHapticFeedback
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -192,6 +206,78 @@ fun AdvancedSettingsScreen(
                         unit = "MiB",
                     )
                 }
+
+                var showLogLevelDialog by rememberSaveable { mutableStateOf(false) }
+                var showRestartDialog by rememberSaveable { mutableStateOf(false) }
+                val minLogLevel by viewModel.prefs.minPatcherLogLevel.getAsState()
+
+                if (showLogLevelDialog) {
+                    var selected by rememberSaveable { mutableStateOf(minLogLevel) }
+                    AlertDialog(
+                        onDismissRequest = { showLogLevelDialog = false },
+                        title = { Text(stringResource(R.string.min_patcher_log_level)) },
+                        text = {
+                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                                LogLevel.entries.forEach { level ->
+                                    ListItem(
+                                        modifier = Modifier.clickable { selected = level },
+                                        leadingContent = {
+                                            HapticRadioButton(selected = selected == level, onClick = null)
+                                        },
+                                        headlineContent = {
+                                            Text(level.name.caps())
+                                        },
+                                        colors = transparentListItemColors,
+                                    )
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    viewModel.viewModelScope.launch {
+                                        viewModel.prefs.minPatcherLogLevel.update(selected)
+                                        showLogLevelDialog = false
+                                        showRestartDialog = true
+                                    }
+                                },
+                                shapes = ButtonDefaults.shapes()
+                            ) { Text(stringResource(R.string.confirm)) }
+                        },
+                        dismissButton = {
+                            TextButton(
+                                onClick = { showLogLevelDialog = false },
+                                shapes = ButtonDefaults.shapes()
+                            ) { Text(stringResource(R.string.cancel)) }
+                        }
+                    )
+                }
+
+                if (showRestartDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showRestartDialog = false },
+                        title = { Text(stringResource(R.string.restart_required)) },
+                        text = { Text(stringResource(R.string.restart_required_description)) },
+                        confirmButton = {
+                            TextButton(
+                                onClick = { viewModel.restartApp() },
+                                shapes = ButtonDefaults.shapes()
+                            ) { Text(stringResource(R.string.restart_now)) }
+                        },
+                        dismissButton = {
+                            TextButton(
+                                onClick = { showRestartDialog = false },
+                                shapes = ButtonDefaults.shapes()
+                            ) { Text(stringResource(R.string.later)) }
+                        }
+                    )
+                }
+
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.min_patcher_log_level),
+                    supportingContent = minLogLevel.name.caps(),
+                    onClick = { showLogLevelDialog = true }
+                )
             }
 
             ListSection(
@@ -238,4 +324,7 @@ fun AdvancedSettingsScreen(
             }
         }
     }
+}
+private fun String.caps(): String {
+    return this.lowercase().replaceFirstChar { it.uppercase() }
 }
