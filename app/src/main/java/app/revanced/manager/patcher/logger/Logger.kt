@@ -1,5 +1,7 @@
 package app.revanced.manager.patcher.logger
 
+import androidx.annotation.StringRes
+import app.revanced.manager.R
 import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.StepId
 import java.util.logging.Handler
@@ -84,4 +86,12 @@ enum class LogLevel {
     INFO,
     WARN,
     ERROR,
+}
+
+@get:StringRes
+internal val LogLevel.displayName: Int get() = when (this) {
+    LogLevel.TRACE -> R.string.log_level_trace
+    LogLevel.INFO  -> R.string.log_level_info
+    LogLevel.WARN  -> R.string.log_level_warn
+    LogLevel.ERROR -> R.string.log_level_error
 }

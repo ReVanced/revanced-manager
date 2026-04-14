@@ -64,6 +64,8 @@ import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import app.revanced.manager.util.withHapticFeedback
+import androidx.annotation.StringRes
+import app.revanced.manager.patcher.logger.displayName
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
@@ -224,7 +226,7 @@ fun AdvancedSettingsScreen(
                                             HapticRadioButton(selected = selected == level, onClick = null)
                                         },
                                         headlineContent = {
-                                            Text(level.name.caps())
+                                            Text(stringResource(level.displayName))
                                         },
                                         colors = transparentListItemColors,
                                     )
@@ -253,7 +255,7 @@ fun AdvancedSettingsScreen(
 
                 SettingsListItem(
                     headlineContent = stringResource(R.string.min_patcher_log_level),
-                    supportingContent = minLogLevel.name.caps(),
+                    supportingContent = stringResource(minLogLevel.displayName),
                     onClick = { showLogLevelDialog = true }
                 )
             }
@@ -302,7 +304,4 @@ fun AdvancedSettingsScreen(
             }
         }
     }
-}
-private fun String.caps(): String {
-    return this.lowercase().replaceFirstChar { it.uppercase() }
 }
