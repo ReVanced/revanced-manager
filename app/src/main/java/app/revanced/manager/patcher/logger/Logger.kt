@@ -81,17 +81,9 @@ inline fun <T> Logger.withJavaLogging(block: () -> T): T {
     }
 }
 
-enum class LogLevel {
-    TRACE,
-    INFO,
-    WARN,
-    ERROR,
-}
-
-@get:StringRes
-internal val LogLevel.displayName: Int get() = when (this) {
-    LogLevel.TRACE -> R.string.log_level_trace
-    LogLevel.INFO  -> R.string.log_level_info
-    LogLevel.WARN  -> R.string.log_level_warn
-    LogLevel.ERROR -> R.string.log_level_error
+enum class LogLevel(@get:StringRes val displayName: Int) {
+    TRACE(R.string.log_level_trace),
+    INFO(R.string.log_level_info),
+    WARN(R.string.log_level_warn),
+    ERROR(R.string.log_level_error),
 }
