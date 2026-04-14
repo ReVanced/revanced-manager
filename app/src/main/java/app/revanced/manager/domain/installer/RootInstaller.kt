@@ -131,7 +131,7 @@ class RootInstaller(
             stockApp.delete()
         }
 
-        MagiskUtils.provisionRootFolder(remoteFS, packageName, patchedAPK)
+        MagiskUtils.prepareRootFolder(remoteFS, packageName, patchedAPK)
     }
 
     suspend fun installAsMagiskModule(
@@ -144,7 +144,7 @@ class RootInstaller(
         } else if (isAppInstalled(packageName)) {
             uninstall(packageName)
         }
-        MagiskUtils.provisionMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, patchedAPK)
+        MagiskUtils.prepareMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, patchedAPK)
         runCatching { MagiskUtils.installApk(Constants.MOUNTED_APK_PATH(packageName)) }
     }
 
