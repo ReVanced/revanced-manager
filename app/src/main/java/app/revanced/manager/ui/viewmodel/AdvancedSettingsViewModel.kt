@@ -38,14 +38,6 @@ class AdvancedSettingsViewModel(
             return "revanced-manager_logcat_$time"
         }
 
-    fun restartApp() {
-        val intent = app.packageManager
-            .getLaunchIntentForPackage(app.packageName)!!
-            .apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) }
-        app.startActivity(intent)
-        exitProcess(0)
-    }
-
     fun exportDebugLogs(target: Uri) = viewModelScope.launch {
         val exitCode = try {
             withContext(Dispatchers.IO) {
