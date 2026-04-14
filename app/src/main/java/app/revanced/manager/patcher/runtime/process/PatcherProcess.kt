@@ -62,8 +62,7 @@ class PatcherProcess() : IPatcherProcess.Stub() {
 
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
-            val minLogLevel = enumValueOf<LogLevel>(parameters.minLogLevel)
-            val loadLogger = logger.forStep(StepId.LoadPatches, minLogLevel, ::onEvent)
+            val loadLogger = logger.forStep(StepId.LoadPatches, parameters.minLogLevel, ::onEvent)
             val patchList = runStep(StepId.LoadPatches, ::onEvent) {
                 loadLogger.withJavaLogging {
                     val allPatches = PatchBundle.Loader.patches(
@@ -97,7 +96,7 @@ class PatcherProcess() : IPatcherProcess.Stub() {
                 logger = logger,
                 input = File(parameters.inputFile),
                 onEvent = ::onEvent,
-                minLogLevel = minLogLevel,
+                minLogLevel = parameters.minLogLevel,
             )
 
             session.use {
