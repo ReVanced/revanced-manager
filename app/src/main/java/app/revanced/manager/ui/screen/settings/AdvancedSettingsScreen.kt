@@ -64,10 +64,7 @@ import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import app.revanced.manager.util.withHapticFeedback
-import androidx.annotation.StringRes
-import app.revanced.manager.patcher.logger.displayName
 import org.koin.androidx.compose.koinViewModel
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
