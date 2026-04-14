@@ -238,8 +238,8 @@ fun AdvancedSettingsScreen(
                                 onClick = {
                                     viewModel.viewModelScope.launch {
                                         viewModel.prefs.minPatcherLogLevel.update(selected)
-                                        showLogLevelDialog = false
                                     }
+                                    showLogLevelDialog = false
                                 },
                                 shapes = ButtonDefaults.shapes()
                             ) { Text(stringResource(R.string.confirm)) }
