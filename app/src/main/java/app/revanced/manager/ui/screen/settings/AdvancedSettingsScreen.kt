@@ -208,7 +208,6 @@ fun AdvancedSettingsScreen(
                 }
 
                 var showLogLevelDialog by rememberSaveable { mutableStateOf(false) }
-                var showRestartDialog by rememberSaveable { mutableStateOf(false) }
                 val minLogLevel by viewModel.prefs.minPatcherLogLevel.getAsState()
 
                 if (showLogLevelDialog) {
@@ -238,7 +237,6 @@ fun AdvancedSettingsScreen(
                                     viewModel.viewModelScope.launch {
                                         viewModel.prefs.minPatcherLogLevel.update(selected)
                                         showLogLevelDialog = false
-                                        showRestartDialog = true
                                     }
                                 },
                                 shapes = ButtonDefaults.shapes()
@@ -249,26 +247,6 @@ fun AdvancedSettingsScreen(
                                 onClick = { showLogLevelDialog = false },
                                 shapes = ButtonDefaults.shapes()
                             ) { Text(stringResource(R.string.cancel)) }
-                        }
-                    )
-                }
-
-                if (showRestartDialog) {
-                    AlertDialog(
-                        onDismissRequest = { showRestartDialog = false },
-                        title = { Text(stringResource(R.string.restart_required)) },
-                        text = { Text(stringResource(R.string.restart_required_description)) },
-                        confirmButton = {
-                            TextButton(
-                                onClick = { viewModel.restartApp() },
-                                shapes = ButtonDefaults.shapes()
-                            ) { Text(stringResource(R.string.restart_now)) }
-                        },
-                        dismissButton = {
-                            TextButton(
-                                onClick = { showRestartDialog = false },
-                                shapes = ButtonDefaults.shapes()
-                            ) { Text(stringResource(R.string.later)) }
                         }
                     )
                 }
