@@ -1,3 +1,10 @@
+# app [2.6.0-dev.11](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.10...v2.6.0-dev.11) (2026-04-16)
+
+
+### Features
+
+* enable Ackpine logging ([7cf28c0](https://github.com/ReVanced/revanced-manager/commit/7cf28c0840688898af2f7bc22ca60ef1caa96a3f))
+
 # app [2.6.0-dev.10](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.9...v2.6.0-dev.10) (2026-04-06)
 
 
