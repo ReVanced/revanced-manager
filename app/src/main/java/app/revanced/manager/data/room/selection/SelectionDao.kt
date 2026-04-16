@@ -3,8 +3,10 @@ package app.revanced.manager.data.room.selection
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.MapColumn
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import app.revanced.manager.data.room.AppDatabase
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -33,7 +35,7 @@ abstract class SelectionDao {
     abstract suspend fun getSelectionId(bundleUid: Int, packageName: String): Int?
 
     @Insert
-    abstract suspend fun createSelection(selection: PatchSelection)
+    protected abstract suspend fun createSelectionIfMissing(selection: PatchSelection)
 
     @Query("SELECT package_name FROM patch_selections")
     abstract fun getPackagesWithSelection(): Flow<List<String>>
@@ -65,4 +67,28 @@ abstract class SelectionDao {
             clearSelection(selectionUid)
             selectPatches(patches.map { SelectedPatch(selectionUid, it) })
         }
+
+    @Transaction
+    open suspend fun getOrCreateSelectionId(bundleUid: Int, packageName: String): Int {
+        getSelectionId(bundleUid, packageName)?.let { return it }
+        createSelectionIfMissing(
+            PatchSelection(
+                uid = AppDatabase.generateUid(),
+                patchBundle = bundleUid,
+                packageName = packageName
+            )
+        )
+        return getSelectionId(bundleUid, packageName)
+            ?: throw IllegalStateException("Failed to create selection for $packageName")
+    }
+
+    @Transaction
+    open suspend fun replaceForPatchBundle(bundleUid: Int, selections: Map<String, Set<String>>) {
+        resetForPatchBundle(bundleUid)
+        selections.forEach { (packageName, patches) ->
+            val selectionUid = getOrCreateSelectionId(bundleUid, packageName)
+            clearSelection(selectionUid)
+            selectPatches(patches.map { SelectedPatch(selectionUid, it) })
+        }
+    }
 }
