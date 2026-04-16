@@ -3,6 +3,7 @@ package app.revanced.manager.patcher
 import app.revanced.library.ApkUtils.applyTo
 import app.revanced.manager.patcher.Session.Companion.component1
 import app.revanced.manager.patcher.Session.Companion.component2
+import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.logger.forStep
 import app.revanced.manager.patcher.logger.withJavaLogging
@@ -29,6 +30,7 @@ class Session(
     private val logger: Logger,
     private val input: File,
     private val onEvent: (ProgressEvent) -> Unit,
+    private val minLogLevel: LogLevel,
 ) : Closeable {
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
 
@@ -72,9 +74,9 @@ class Session(
         val indices = HashMap<Patch, Int>(selectedPatches.size)
         selectedPatches.forEachIndexed { idx, patch -> indices[patch] = idx }
 
-        val prepareLogger = logger.forStep(StepId.ReadAPK, onEvent)
-        val patchingLogger = logger.forStep(StepId.ExecutePatches, onEvent)
-        val writingLogger = logger.forStep(StepId.WriteAPK, onEvent)
+        val prepareLogger = logger.forStep(StepId.ReadAPK, minLogLevel, onEvent)
+        val patchingLogger = logger.forStep(StepId.ExecutePatches, minLogLevel, onEvent)
+        val writingLogger = logger.forStep(StepId.WriteAPK, minLogLevel, onEvent)
 
         val patcher = runStep(StepId.ReadAPK, onEvent) {
             prepareLogger.withJavaLogging {
