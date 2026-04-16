@@ -1,5 +1,7 @@
 package app.revanced.manager.domain.sources
 
+import android.app.Application
+import app.revanced.manager.R
 import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
@@ -7,6 +9,7 @@ import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.APIResponse
 import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.patcher.patch.PatchBundle
+import app.revanced.manager.ui.component.sources.GithubRelease
 import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,6 +17,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 typealias RemotePatchBundle = RemoteSource<PatchBundle>
 typealias JsonPatchBundle = JsonSource<PatchBundle>
@@ -33,6 +39,7 @@ sealed class RemoteSource<T>(
     data class UpdateResult(val versionHash: String, val releasedAt: LocalDateTime)
 
     protected val http: HttpService by inject()
+    protected val app: Application by inject()
 
     protected abstract suspend fun getLatestInfo(): ReVancedAsset
     abstract fun copy(
@@ -84,9 +91,39 @@ class JsonSource<T>(
     loader: Loader<T>
 ) : RemoteSource<T>(name, uid, versionHash, releasedAt, error, file, endpoint, autoUpdate, loader) {
     override suspend fun getLatestInfo() = withContext(Dispatchers.IO) {
-        http.request<ReVancedAsset> {
-            url(endpoint)
-        }.getOrThrow()
+        if (!endpoint.endsWith(".json")) {
+            val githubMatch = Regex("^https://github\\.com/([^/]+)/([^/]+)/releases/download/([^/]+)/(.+)$").find(endpoint)
+            if (githubMatch != null) {
+                val owner = githubMatch.groupValues[1]
+                val repo = githubMatch.groupValues[2]
+                val tag = githubMatch.groupValues[3]
+                
+                try {
+                    val release = http.request<GithubRelease> {
+                        url("https://api.github.com/repos/$owner/$repo/releases/tags/$tag")
+                    }.getOrThrow()
+                    
+                    val date = release.createdAt?.let { Instant.parse(it).toLocalDateTime(TimeZone.UTC) }
+
+                    return@withContext ReVancedAsset(
+                        downloadUrl = endpoint,
+                        version = endpoint.substringAfterLast('/'),
+                        description = release.name ?: app.getString(R.string.github_external_asset),
+                        createdAt = date ?: releasedAt ?: LocalDateTime(1970, 1, 1, 0, 0, 0)
+                    )
+                } catch (_: Exception) {
+                    // Fallback to boilerplate
+                }
+            }
+
+            return@withContext ReVancedAsset(
+                downloadUrl = endpoint,
+                version = endpoint.substringAfterLast('/'),
+                description = app.getString(R.string.github_external_asset),
+                createdAt = releasedAt ?: LocalDateTime(1970, 1, 1, 0, 0, 0)
+            )
+        }
+        http.request<ReVancedAsset> { url(endpoint) }.getOrThrow()
     }
 
     override fun copy(
