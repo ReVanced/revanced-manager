@@ -233,6 +233,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="edit">Edit</string>
+    <string name="discard_changes">Discard changes</string>
+    <string name="discard_changes_dialog_title">Discard changes?</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
     <string name="share">Share</string>
@@ -309,6 +311,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="no_patched_apps_description">You don’t have any patched apps yet. Start by patching your first app!</string>
     <string name="patched_apps_section_title">Patched apps</string>
     <string name="patchable_apps_section_title">Apps that can be patched</string>
+    <string name="pinned_apps_section_title">Pinned apps</string>
+    <string name="available_apps_section_title">Available apps</string>
     <string name="no_patches_found">No patches found</string>
     <string name="no_patches_description">You don’t have any patches yet. Add patches by tapping the button below!</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
@@ -317,6 +321,22 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options have been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="patch_options_discard_invalid_description">Invalid options will reset to the last saved value.</string>
+    <string name="patch_options_set_default">Use default value</string>
+    <string name="patch_options_value_null">Not specified</string>
+    <string name="patch_options_value_invalid">Invalid value</string>
+    <string name="patch_options_value_boolean_true">Enabled</string>
+    <string name="patch_options_value_boolean_false">Disabled</string>
+    <string name="patch_options_value_required">This option is required</string>
+    <string name="patch_options_value_required_list_empty">This list is required, but you haven’t added any items.</string>
+    <string name="patch_options_using_default_value">Using default value</string>
+    <string name="patch_options_value_list_element">Value</string>
+    <string name="patch_options_value_list_invalid_dialog_title">Can’t save option</string>
+    <string name="patch_options_value_list_invalid_dialog_description">This list doesn’t follow the required format.</string>
+    <string name="patch_options_value_list_element_count">%d values</string>
+    <string name="patch_options_no_default_items">No default items for this option</string>
+    <string name="patch_options_value_required_list_empty_save_warning_title">Save without items?</string>
+    <string name="patch_options_value_required_list_empty_save_warning_description">This option is required, and usually needs at least one item for the patch to have an effect.</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you selected doesn’t match the suggested version: %s
 
@@ -511,7 +531,6 @@ It’s only compatible with these versions: %2$s</string>
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
-    <string name="option_required">This option is required</string>
     <string name="required_options_screen">Required options</string>
 
     <string name="failed_to_check_updates">Couldn’t check for updates: %s</string>
@@ -524,6 +543,7 @@ It’s only compatible with these versions: %2$s</string>
     <string name="download">Download</string>
     <string name="download_confirmation_metered">You are currently on a metered connection. Data charges from your service provider may apply.</string>
     <string name="download_update_confirmation">Download update?</string>
+    <string name="press_back_again_to_cancel_update">Press back again to cancel update</string>
     <string name="no_contributors_found">No contributors found</string>
     <string name="select">Select</string>
     <string name="select_deselect_all">Select or deselect all</string>

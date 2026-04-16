@@ -1,9 +1,10 @@
 package app.revanced.manager.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -26,8 +27,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -50,6 +53,17 @@ fun UpdateScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val changelogs = vm.changelogs.collectAsLazyPagingItems()
+
+    BackHandler(
+        enabled = vm.state == State.DOWNLOADING || vm.state == State.CAN_INSTALL
+    ) {
+        if (vm.backPressedOnce) {
+            vm.cancelUpdate()
+            onBackClick()
+        } else {
+            vm.onBackPressed()
+        }
+    }
 
     val buttonConfig = when (vm.state) {
         State.CAN_DOWNLOAD -> Triple(
@@ -113,10 +127,15 @@ fun UpdateScreen(
             modifier = Modifier.padding(paddingValues),
         ) {
             if (vm.state == State.DOWNLOADING) {
+                val updaterProgress by animateFloatAsState(
+                    targetValue = vm.downloadProgress,
+                    animationSpec = tween(),
+                    label = "updaterProgress"
+                )
+
                 LinearWavyProgressIndicator(
-                    progress = { vm.downloadProgress },
+                    progress = { updaterProgress },
                     modifier = Modifier
-                        .padding(top = paddingValues.calculateTopPadding())
                         .fillMaxWidth(),
                 )
             }

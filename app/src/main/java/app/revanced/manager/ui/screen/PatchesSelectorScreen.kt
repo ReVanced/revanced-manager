@@ -221,6 +221,7 @@ fun PatchesSelectorScreen(
                 patch = dialog.patch,
                 values = viewModel.getOptions(dialog.bundle, dialog.patch),
                 reset = { viewModel.resetOptions(dialog.bundle, dialog.patch) },
+                resetOption = { viewModel.resetOption(dialog.bundle, dialog.patch, it) },
                 set = { key, value ->
                     viewModel.setOption(
                         dialog.bundle,
@@ -230,7 +231,7 @@ fun PatchesSelectorScreen(
                     )
                 },
                 selectionWarningEnabled = viewModel.selectionWarningEnabled,
-                readOnly = readOnly
+                readOnly = readOnly,
             )
         }
 
@@ -357,12 +358,7 @@ fun PatchesSelectorScreen(
                     expanded = searchExpanded,
                     onExpandedChange = setSearchExpanded,
                     placeholder = { Text(stringResource(R.string.search_patches)) },
-                    windowInsets = if (readOnly) WindowInsets(
-                        0,
-                        0,
-                        0,
-                        0
-                    ) else WindowInsets.systemBars,
+                    windowInsets = if (readOnly) WindowInsets(top = 0, bottom = 0) else WindowInsets.systemBars,
                     leadingIcon = {
                         TooltipIconButton(
                             onClick = {
@@ -479,10 +475,16 @@ fun PatchesSelectorScreen(
     ) { paddingValues ->
         if (searchExpanded) return@Scaffold
 
+        val appliedPadding = if (!readOnly) {
+            paddingValues
+        } else {
+            PaddingValues(top = paddingValues.calculateTopPadding())
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(appliedPadding)
         ) {
             Spacer(
                 modifier = Modifier
