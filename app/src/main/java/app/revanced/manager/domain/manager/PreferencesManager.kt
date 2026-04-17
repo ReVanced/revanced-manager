@@ -39,4 +39,9 @@ class PreferencesManager(
     val allowMeteredNetworks = booleanPreference("allow_metered_networks", false)
 
     val pinnedApps = stringSetPreference("pinned_apps", emptySet())
+
+    val adbPort = intPreference("adb_port", 5555)
+    val adbPairingPort = stringPreference("adb_pairing_port", "")
+    val adbPairingCode = stringPreference("adb_pairing_code", "")
+    val shizukuAutoSetup = booleanPreference("shizuku_auto_setup", true)
 }

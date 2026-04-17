@@ -7,7 +7,9 @@ import app.revanced.manager.R
 
 enum class InstallType(val stringResource: Int) {
     DEFAULT(R.string.default_install),
-    MOUNT(R.string.mount_install)
+    MOUNT(R.string.mount_install),
+    SHIZUKU(R.string.shizuku_install),
+    ADB(R.string.adb_install)
 }
 
 @Entity(tableName = "installed_app")

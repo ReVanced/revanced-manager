@@ -35,6 +35,13 @@ import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
+import app.revanced.manager.domain.installer.ShizukuInstaller
+import app.revanced.library.installation.installer.AdbInstallerResult
+import app.revanced.library.installation.installer.Installer
+import app.revanced.library.installation.installer.ShizukuAdbInstaller
+import app.revanced.shizukulibrary.adb.AdbConnectionManager
+import app.revanced.shizukulibrary.adb.AdbStarter
+import app.revanced.manager.domain.installer.ShellCommandException
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
@@ -105,12 +112,16 @@ class PatcherViewModel(
     private val installedAppRepository: InstalledAppRepository by inject()
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val rootInstaller: RootInstaller by inject()
+    private val shizukuInstaller: ShizukuInstaller by inject()
+    private val adbInstaller: ShizukuAdbInstaller by inject()
+    private val adbConnectionManager: AdbConnectionManager by inject()
     private val prefs: PreferencesManager by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val savedStateHandle: SavedStateHandle = get()
     private val ackpineInstaller: PackageInstaller = get()
 
     private var installedApp: InstalledApp? = null
+    private var lastInstallType = InstallType.DEFAULT
     private val selectedApp = input.selectedApp
     val packageName = selectedApp.packageName
     val version = selectedApp.version
@@ -132,6 +143,59 @@ class PatcherViewModel(
 
     var isInstalling by mutableStateOf(false)
         private set
+
+    var adbPort by savedStateHandle.saveableVar { prefs.adbPort.getBlocking().toString() }
+    var adbPairingPort by savedStateHandle.saveableVar { "" }
+    var adbPairingCode by savedStateHandle.saveableVar { "" }
+    var isAdbConnected by mutableStateOf(false)
+        private set
+    var isPairing by mutableStateOf(false)
+        private set
+
+    fun refreshAdbState() {
+        isAdbConnected = adbConnectionManager.isConnected
+    }
+
+    fun bootstrapAdb() = viewModelScope.launch {
+        try {
+            val cert = adbConnectionManager.certificate.encoded
+            val pubKey = android.util.Base64.encodeToString(cert, android.util.Base64.NO_WRAP) + " revanced@manager\n"
+            
+            shizukuInstaller.bootstrapAdb(pubKey)
+            
+            AdbStarter.startAdb(app, adbPort.toIntOrNull() ?: 5555) { log ->
+                Log.d("PatcherViewModel", log)
+            }
+            
+            isAdbConnected = adbConnectionManager.isConnected
+        } catch (e: Exception) {
+            app.toast(app.getString(R.string.adb_bootstrap_fail) + ": ${e.message}")
+        }
+    }
+
+    fun connectAdb() = viewModelScope.launch {
+        try {
+            withContext(Dispatchers.IO) {
+                adbConnectionManager.connect("127.0.0.1", adbPort.toIntOrNull() ?: 5555)
+            }
+            isAdbConnected = adbConnectionManager.isConnected
+        } catch (_: Exception) {
+        }
+    }
+
+    fun pairAdb() = viewModelScope.launch {
+        isPairing = true
+        try {
+            val port = adbPairingPort.toIntOrNull() ?: return@launch
+            withContext(Dispatchers.IO) {
+                adbConnectionManager.connect("127.0.0.1", port)
+            }
+            isAdbConnected = adbConnectionManager.isConnected
+        } catch (_: Exception) {
+        } finally {
+            isPairing = false
+        }
+    }
 
     private var currentActivityRequest: Pair<CompletableDeferred<Boolean>, String>? by mutableStateOf(
         null
@@ -248,6 +312,7 @@ class PatcherViewModel(
         }
 
     init {
+        refreshAdbState()
         // TODO: detect system-initiated process death during the patching process.
 
         installerSessionId?.uuid?.let { id ->
@@ -338,6 +403,7 @@ class PatcherViewModel(
     }
 
     fun isDeviceRooted() = rootInstaller.isDeviceRooted()
+    fun isShizukuAvailable() = shizukuInstaller.isAvailable()
 
     fun rejectInteraction() {
         currentActivityRequest?.first?.complete(false)
@@ -420,6 +486,7 @@ class PatcherViewModel(
         val statFs = StatFs(Environment.getDataDirectory().path)
 
         val hasRoot = rootInstaller.hasRootAccess()
+        val hasShizuku = shizukuInstaller.hasPermission()
         val suggestedVersion = patchBundleRepository.suggestedVersions.first()[packageName]
         val allowIncompatiblePatches = prefs.disablePatchVersionCompatCheck.get()
         val disableSelectionWarning = prefs.disableSelectionWarning.get()
@@ -494,7 +561,9 @@ class PatcherViewModel(
             addAll(managerConfiguration)
             addAll(patchingConfiguration)
             addAll(runtimeConfiguration)
+            add("Current user: ${android.os.Process.myUid() / 100000}")
             add("Root permissions: ${if (hasRoot) "Yes" else "No"}")
+            add("Shizuku permissions: ${if (hasShizuku) "Yes" else "No"}")
             add("RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available")
             add("Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available")
             add("Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
@@ -566,76 +635,98 @@ class PatcherViewModel(
     }
 
     fun install(installType: InstallType) = viewModelScope.launch {
+        if (isInstalling) return@launch
+        lastInstallType = installType
+        performInstall(installType)
+    }
+
+    private suspend fun performInstall(installType: InstallType) {
         isInstalling = true
         var needsRootUninstall = false
         try {
             uiSafe(app, R.string.install_app_fail, "Failed to install") {
-                val currentPackageInfo =
-                    withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile) }
-                        ?: throw Exception("Failed to load application info")
+                val currentPackageInfo = withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile) }
+                if (currentPackageInfo == null) {
+                    app.toast(app.getString(R.string.failed_to_load_app_info))
+                    return@uiSafe
+                }
 
+
+                if (installType == InstallType.DEFAULT || installType == InstallType.SHIZUKU) {
+                    val existingPackageInfo = withContext(Dispatchers.IO) { pm.getPackageInfo(currentPackageInfo.packageName) }
+                    if (existingPackageInfo != null && pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
+                        packageInstallerStatus = AndroidPackageInstaller.STATUS_FAILURE_CONFLICT
+                        return
+                    }
+                    if (rootInstaller.hasRootAccess() && rootInstaller.isAppMounted(packageName)) {
+                        rootInstaller.unmount(packageName)
+                    }
+                }
+
+                val inputVersion = input.selectedApp.version ?: withContext(Dispatchers.IO) {
+                    inputFile?.let(pm::getPackageInfo)?.versionName ?: pm.getPackageInfo(outputFile)?.versionName!!
+                }
 
                 when (installType) {
                     InstallType.DEFAULT -> {
-                        // If the app is currently installed
-                        val existingPackageInfo =
-                            withContext(Dispatchers.IO) { pm.getPackageInfo(currentPackageInfo.packageName) }
-                        if (existingPackageInfo != null) {
-                            // Check if the app version is less than the installed version
-                            if (
-                                pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(
-                                    existingPackageInfo
-                                )
-                            ) {
-                                // Exit if the selected app version is less than the installed version
-                                packageInstallerStatus =
-                                    AndroidPackageInstaller.STATUS_FAILURE_CONFLICT
-                                return@launch
-                            }
-                        }
-
-                        // Check if the app is mounted as root
-                        // If it is, unmount it first, silently
-                        if (rootInstaller.hasRootAccess() && rootInstaller.isAppMounted(packageName)) {
-                            rootInstaller.unmount(packageName)
-                        }
-
-                        // Install regularly
                         startInstallation(outputFile, currentPackageInfo.packageName)
                     }
 
                     InstallType.MOUNT -> {
-                        val label = with(pm) {
-                            currentPackageInfo.label()
-                        }
-
-                        val inputVersion = input.selectedApp.version
-                            ?: withContext(Dispatchers.IO) { inputFile?.let(pm::getPackageInfo)?.versionName }
-                            ?: throw Exception("Failed to determine input APK version")
-
                         needsRootUninstall = true
                         // Install as root
                         rootInstaller.install(
-                            outputFile, inputFile, packageName, inputVersion, label
+                            outputFile, inputFile, packageName, inputVersion, with(pm) { currentPackageInfo.label() }
                         )
-
-                        val bundleInfo = patchBundleRepository.bundleInfoFlow.first()
-                        installedAppRepository.addOrUpdate(
-                            currentPackageInfo.packageName,
-                            packageName,
-                            inputVersion,
-                            InstallType.MOUNT,
-                            input.selectedPatches,
-                            bundleInfo
-                        )
-
                         rootInstaller.mount(packageName)
-                        installedPackageName = packageName
-
-                        app.toast(app.getString(R.string.install_app_success))
-                        needsRootUninstall = false
-                        downloadedAppRepository.deleteFor(packageName)
                     }
+
+                    InstallType.SHIZUKU -> {
+                        if (!shizukuInstaller.hasPermission()) {
+                            app.toast(app.getString(R.string.shizuku_not_authorized))
+                            return@uiSafe
+                        }
+                        try {
+                            shizukuInstaller.install(
+                                patchedAPK = outputFile,
+                                packageName = selectedApp.packageName
+                            )
+                        } catch (e: ShellCommandException) {
+                            packageInstallerStatus = shizukuInstaller.mapStatus(e.stdout.joinToString("\n") + "\n" + e.stderr.joinToString("\n"))
+                            return
+                        }
+                    }
+
+                    InstallType.ADB -> {
+                        if (!adbConnectionManager.isConnected) {
+                            app.toast(app.getString(R.string.adb_not_connected))
+                            return@uiSafe
+                        }
+                        val result = adbInstaller.install(
+                            Installer.Apk(outputFile, selectedApp.packageName)
+                        )
+                        if (result is AdbInstallerResult.Failure) {
+                            val output = (result.exception as? ShizukuAdbInstaller.AdbInstallationException)?.output ?: result.exception.message ?: ""
+                            packageInstallerStatus = shizukuInstaller.mapStatus(output)
+                            return
+                        }
+                    }
+                }
+
+                if (installType == InstallType.MOUNT || installType == InstallType.SHIZUKU || installType == InstallType.ADB) {
+                    installedAppRepository.addOrUpdate(
+                        currentPackageInfo.packageName,
+                        packageName,
+                        inputVersion,
+                        installType,
+                        input.selectedPatches,
+                        patchBundleRepository.bundleInfoFlow.first()
+                    )
+
+                    installedPackageName = if (installType == InstallType.MOUNT) packageName else currentPackageInfo.packageName
+                    app.toast(app.getString(R.string.install_app_success))
+                    if (installType == InstallType.MOUNT) needsRootUninstall = false
+                    downloadedAppRepository.deleteFor(installedPackageName!!)
                 }
             }
         } finally {
@@ -657,13 +748,50 @@ class PatcherViewModel(
     }
 
     override fun reinstall() {
+        if (isInstalling) return
+        if (lastInstallType == InstallType.SHIZUKU || lastInstallType == InstallType.ADB) {
+            viewModelScope.launch {
+                try {
+                    isInstalling = true
+                    uiSafe(app, R.string.reinstall_app_fail, "Failed to reinstall") {
+                        val pkgName = withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile)?.packageName }
+                        if (pkgName == null) {
+                            app.toast(app.getString(R.string.failed_to_load_app_info))
+                            return@uiSafe
+                        }
+                        if (lastInstallType == InstallType.SHIZUKU) {
+                            shizukuInstaller.uninstall(pkgName)
+                        } else {
+                            val result = adbInstaller.uninstall(pkgName)
+                            if (result is AdbInstallerResult.Failure) {
+                                throw result.exception
+                            }
+                        }
+                        // Wait for the app to be truly uninstalled before proceeding
+                        withContext(Dispatchers.IO) {
+                            var retry = 0
+                            while (pm.getPackageInfo(pkgName) != null && retry < 10) {
+                                kotlinx.coroutines.delay(500)
+                                retry++
+                            }
+                        }
+                        performInstall(lastInstallType)
+                    }
+                } finally {
+                    isInstalling = false
+                }
+            }
+            return
+        }
+
         viewModelScope.launch {
             try {
                 isInstalling = true
                 uiSafe(app, R.string.reinstall_app_fail, "Failed to reinstall") {
-                    val pkgName = withContext(Dispatchers.IO) {
-                        pm.getPackageInfo(outputFile)?.packageName
-                            ?: throw Exception("Failed to load application info")
+                    val pkgName = withContext(Dispatchers.IO) { pm.getPackageInfo(outputFile)?.packageName }
+                    if (pkgName == null) {
+                        app.toast(app.getString(R.string.failed_to_load_app_info))
+                        return@uiSafe
                     }
 
                     when (val result = pm.uninstallPackage(pkgName)) {

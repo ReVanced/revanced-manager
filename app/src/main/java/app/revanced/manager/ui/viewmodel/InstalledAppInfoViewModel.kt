@@ -90,7 +90,7 @@ class InstalledAppInfoViewModel(
         val app = installedApp ?: return
         viewModelScope.launch {
             when (app.installType) {
-                InstallType.DEFAULT -> {
+                InstallType.DEFAULT, InstallType.SHIZUKU, InstallType.ADB -> {
                     when (val result = pm.uninstallPackage(app.currentPackageName)) {
                         is Session.State.Failed<UninstallFailure> -> {
                             if (result.failure !is UninstallFailure.Aborted) {
