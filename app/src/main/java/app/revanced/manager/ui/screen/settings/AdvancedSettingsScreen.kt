@@ -48,6 +48,7 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.model.RootCheckResult
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.withHapticFeedback
@@ -61,6 +62,7 @@ fun AdvancedSettingsScreen(
 ) {
     val context = LocalContext.current
     val resources = LocalResources.current
+    LaunchedEffect(Unit) { viewModel.refreshRootStatus() }
     val memoryLimit = remember(resources) {
         val activityManager = context.getSystemService<ActivityManager>()!!
         resources.getString(
@@ -209,6 +211,7 @@ fun AdvancedSettingsScreen(
                         it?.let(viewModel::exportDebugLogs)
                     }
                 val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
+                val rootStatusText = viewModel.rootStatus?.let { stringResource(it.displayName) } ?: stringResource(R.string.generic_checking)
                 val deviceContent = """
                     Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
                     Build type: ${BuildConfig.BUILD_TYPE}
@@ -216,6 +219,7 @@ fun AdvancedSettingsScreen(
                     Android version: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
                     Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
                     Memory limit: $memoryLimit
+                    Root: $rootStatusText
                 """.trimIndent()
                 SettingsListItem(
                     headlineContent = stringResource(R.string.debug_logs_export),

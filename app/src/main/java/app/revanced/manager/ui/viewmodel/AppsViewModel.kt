@@ -130,9 +130,18 @@ class AppsViewModel(
                     } catch (_: RootServiceException) { }
                 }
 
+                if (app.installType == InstallType.MAGISK) {
+                    try {
+                        if (!rootInstaller.isAppInstalledAsMagiskModule(app.currentPackageName)) {
+                            installedAppsRepository.delete(app)
+                            return@withContext null
+                        }
+                    } catch (_: RootServiceException) { }
+                }
+
                 val packageInfo = pm.getPackageInfo(app.currentPackageName)
 
-                if (packageInfo == null && app.installType != InstallType.MOUNT) {
+                if (packageInfo == null && app.installType != InstallType.MOUNT && app.installType != InstallType.MAGISK) {
                     installedAppsRepository.delete(app)
                     return@withContext null
                 }

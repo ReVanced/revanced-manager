@@ -109,6 +109,8 @@ class InstalledAppInfoViewModel(
                 }
 
                 InstallType.MOUNT -> rootInstaller.uninstall(app.currentPackageName)
+
+                InstallType.MAGISK -> rootInstaller.uninstallMagiskModule(app.originalPackageName, app.currentPackageName)
             }
             installedAppRepository.delete(app)
             onBackClick()

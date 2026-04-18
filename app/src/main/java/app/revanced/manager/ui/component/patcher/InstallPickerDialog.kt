@@ -20,6 +20,7 @@ import app.revanced.manager.util.transparentListItemColors
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun InstallPickerDialog(
+    isMagiskInstalled: Boolean,
     onDismiss: () -> Unit,
     onConfirm: (InstallType) -> Unit
 ) {
@@ -47,6 +48,8 @@ fun InstallPickerDialog(
         text = {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 InstallType.entries.forEach {
+                    // Dont show magisk if its not installed
+                    if (it == InstallType.MAGISK && !isMagiskInstalled) return@forEach
                     ListItem(
                         modifier = Modifier.clickable { selectedInstallType = it },
                         leadingContent = {
