@@ -28,6 +28,9 @@ class RootInstaller(
 ) : ServiceConnection {
     private var remoteFS = CompletableDeferred<FileSystemManager>()
 
+    // Android user (0 for primary, 10+ for secondary/work profiles) via pure public API.
+    private val userId = android.os.Process.myUid() / 100000
+
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val ipc = IRootSystemService.Stub.asInterface(service)
         val binder = ipc.fileSystemService
@@ -127,7 +130,7 @@ class RootInstaller(
 
         stockAPK?.let { stockApp ->
             MagiskUtils.uninstallKeepData(packageName)
-            MagiskUtils.installApk(stockApp.absolutePath)
+            execute("pm install -r -d --user $userId \"${stockApp.absolutePath}\"")
             stockApp.delete()
         }
 
@@ -145,7 +148,7 @@ class RootInstaller(
             uninstall(packageName)
         }
         MagiskUtils.prepareMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, patchedAPK)
-        runCatching { MagiskUtils.installApk(Constants.MOUNTED_APK_PATH(packageName)) }
+        runCatching { execute("pm install -r -d --user $userId \"${Constants.MOUNTED_APK_PATH(packageName)}\"") }
     }
 
     suspend fun uninstallMagiskModule(packageName: String, patchedPackageName: String) {
