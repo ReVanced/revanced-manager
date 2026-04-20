@@ -1,0 +1,43 @@
+name: Pull strings
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+jobs:
+  pull:
+    name: Pull strings
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: dev
+          clean: true
+
+      - name: Pull strings
+        uses: crowdin/github-action@v2
+        with:
+          config: crowdin.yml
+          upload_sources: false
+          download_translations: true
+          skip_ref_checkout: true
+          localization_branch_name: feat/translations
+          create_pull_request: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      - name: Open pull request
+        if: github.event_name == 'workflow_dispatch'
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: feat/translations
+          destination_branch: dev
+          pr_title: "chore: Sync translations"
+          pr_body: "Sync translations from [crowdin.com/project/revanced](https://crowdin.com/project/revanced)"

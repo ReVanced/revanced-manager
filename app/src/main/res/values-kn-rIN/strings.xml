@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">ಪ್ಯಾಚರ್</string>
+  <string name="onboarding_welcome_to">ಸ್ವಾಗತ</string>
+  <string name="onboarding_welcome_back">ಹಾಯ್! ಇದು ಹೊಸ</string>
+  <string name="onboarding_apps_subtitle">ನೀವು ಈಗ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಪ್ಯಾಚ್ ಮಾಡಲು ಆಯ್ಕೆ ಮಾಡಬಹುದು ಅಥವಾ ಅದನ್ನು ನಂತರ ಮಾಡಬಹುದು</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager ಮತ್ತು ಪ್ಯಾಚ್‌ಗಳನ್ನು ನವೀಕೃತವಾಗಿಡಲು ಸ್ವಯಂಚಾಲಿತ ನವೀಕರಣಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ</string>
+  <string name="onboarding_updates_note">ನಿಮ್ಮ ಸಾಧನವು ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕಗೊಂಡಿದ್ದರೆ, ಆರಂಭಿಕ ಆವೃತ್ತಿಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ReVanced Manager %s ಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ.</string>
+  <string name="retry">ಮರುಪ್ರಯತ್ನಿಸಿ</string>
+  <string name="onboarding_skip">ಸದ್ಯಕ್ಕೆ ಬಿಟ್ಟುಬಿಡಿ</string>
+  <string name="onboarding_recommended_version">ಶಿಫಾರಸು ಮಾಡಲಾದ ಆವೃತ್ತಿ: %s</string>
+  <string name="onboarding_permissions_skip_title">ಅನುಮತಿಗಳನ್ನು ಬಿಟ್ಟುಬಿಡಬೇಕೆ?</string>
+  <string name="onboarding_permissions_skip_description">ಅಗತ್ಯವಿರುವ ಅನುಮತಿಗಳಿಲ್ಲದೆ, ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳು ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸದೇ ಇರಬಹುದು. ನೀವು ಅಪ್ಲಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಅವುಗಳನ್ನು ನಂತರ ನೀಡಬಹುದು.</string>
+  <string name="onboarding_permissions_skip_anyway">ಹೇಗಾದರೂ ಬಿಟ್ಟುಬಿಡಿ</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸಲು ಕೆಲವು ಅನುಮತಿಗಳ ಅಗತ್ಯವಿದೆ</string>
+  <string name="permission_install_apps">ಅಜ್ಞಾತ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ</string>
+  <string name="permission_install_apps_description">ಪ್ಯಾಚ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಲು ಅಗತ್ಯವಿದೆ</string>
+  <string name="permission_notifications">ಅಧಿಸೂಚನೆಗಳು</string>
+  <string name="permission_battery">ಬ್ಯಾಟರಿ ಆಪ್ಟಿಮೈಸೇಶನ್</string>
+  <string name="permission_battery_description">ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಪ್ಯಾಚಿಂಗ್‌ಗೆ ಅಡ್ಡಿಯಾಗುವುದನ್ನು ತಡೆಯುತ್ತದೆ</string>
+  <string name="permission_grant">ಅನುಮತಿ ನೀಡಿ</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ಡೌನ್‌ಲೋಡರ್ ಹೋಸ್ಟ್</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ಡೌನ್‌ಲೋಡರ್‌ಗಳಿಗೆ ಪ್ರವೇಶವನ್ನು ನಿಯಂತ್ರಿಸಲು ಬಳಸಲಾಗುತ್ತದೆ. ಕೇವಲ ReVanced Manager ಮಾತ್ರ ಇದನ್ನು ಹೊಂದಿದೆ.</string>
+  <string name="fab_patch_app">ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಪ್ಯಾಚ್ ಮಾಡಿ</string>
+  <string name="fab_add_patches">ಪ್ಯಾಚ್‌ಗಳನ್ನು ಸೇರಿಸಿ</string>
+  <string name="new_downloader_notification">ಹೊಸ ಡೌನ್‌ಲೋಡರ್(ಗಳು) ಲಭ್ಯವಿದೆ. ಅವುಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</string>
+  <string name="patches_not_downloaded">ಪ್ಯಾಚ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ.</string>
+  <string name="app_source_dialog_option_auto_description">ಸ್ಥಾಪಿಸಲಾದ ಅಪ್ಲಿಕೇಶನ್ ಬಳಸಿ, ನಂತರ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ APK, ನಂತರ ಲಭ್ಯವಿರುವ ಡೌನ್‌ಲೋಡರ್‌ಗಳು</string>
+  <string name="app_source_dialog_option_auto_unavailable">ಯಾವುದೇ ಹೊಂದಾಣಿಕೆಯ ಅಪ್ಲಿಕೇಶನ್ ಅಥವಾ ಡೌನ್‌ಲೋಡರ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ</string>
+  <string name="app_source_dialog_option_installed_no_root">ರೂಟ್ ಅನುಮತಿ ಇಲ್ಲದೆ ಆರೋಹಿಸಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಮತ್ತೆ ಪ್ಯಾಚ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ</string>
+  <string name="patch_selector_item">ಪ್ಯಾಚ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+  <string name="patch_selector_item_description">%d ಪ್ಯಾಚ್‌ಗಳು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</string>
+  <string name="patch_selection_changed_warning">ಪ್ಯಾಚ್‌ಗಳ ಆಯ್ಕೆಯನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ</string>
+  <string name="apk_source_selector_item">APK ಮೂಲವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+  <string name="apk_source_auto">ಸ್ವಯಂ</string>
+  <string name="apk_source_auto_installed">ಸ್ವಯಂ · ಸ್ಥಾಪಿಸಲಾದ APK ಬಳಸಲಾಗುತ್ತಿದೆ</string>
+  <string name="apk_source_auto_downloaded">ಸ್ವಯಂ · ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ APK ಬಳಸಲಾಗುತ್ತಿದೆ</string>
+  <string name="apk_source_auto_downloader">ಸ್ವಯಂ · ಲಭ್ಯವಿರುವ ಡೌನ್‌ಲೋಡರ್‌ಗಳನ್ನು ಬಳಸಿಕೊಂಡು</string>
+  <string name="apk_source_auto_storage">ಸ್ವಯಂ · ಸಂಗ್ರಹಣೆಯಿಂದ ಆಯ್ಕೆಮಾಡಿ</string>
+  <string name="apk_source_downloaded">ಈಗಾಗಲೇ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</string>
+  <string name="auto_updates_dialog_description">ReVanced Manager ಈ ಕೆಳಗಿನ ಘಟಕಗಳಿಗೆ ನವೀಕರಣಗಳನ್ನು ನಿಯತಕಾಲಿಕವಾಗಿ ಪರಿಶೀಲಿಸಬೇಕೆಂದು ನೀವು ಬಯಸುತ್ತೀರಾ?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced ಪ್ಯಾಚ್‌ಗಳು</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: ಡೌನ್‌ಲೋಡರ್‌ಗಳು</string>
+  <string name="auto_updates_dialog_note">ಈ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನಂತರ ಬದಲಾಯಿಸಬಹುದು.
+
+    ನಿಮ್ಮ ಸಾಧನವು ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕಗೊಂಡಿದ್ದರೆ, ಆರಂಭಿಕ ಆವೃತ್ತಿಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ReVanced Manager %s ಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ.</string>
+  <string name="announcements_filter_tag">ಟ್ಯಾಗ್ ಮೂಲಕ ಫಿಲ್ಟರ್ ಮಾಡಿ</string>
+  <string name="announcements_show_archived">ಆರ್ಕೈವ್ ಮಾಡಿದವುಗಳನ್ನು ತೋರಿಸಿ</string>
+  <string name="updates_description">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಬದಲಾವಣೆ ದಾಖಲೆಯನ್ನು ವೀಕ್ಷಿಸಿ</string>
+  <string name="downloads_description">ಡೌನ್‌ಲೋಡರ್‌ಗಳು ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</string>
+  <string name="safeguards_toggled_warning">ರಕ್ಷಣಾ ಕ್ರಮಗಳನ್ನು ಟಾಗಲ್ ಮಾಡಲಾಗಿದೆ</string>
+  <string name="about_app_name">%1$s ಕುರಿತು</string>
+  <string name="search_languages">ಭಾಷೆಗಳನ್ನು ಹುಡುಕಿ…</string>
+  <string name="keystore">ಕೀಸ್ಟೋರ್</string>
+  <string name="patches_selections">ಪ್ಯಾಚ್‌ಗಳ ಆಯ್ಕೆಗಳು</string>
+  <string name="select_bundle_for_import">ಆಮದು ಮಾಡಲು ಬಂಡಲ್ ಆಯ್ಕೆಮಾಡಿ</string>
+  <string name="select_bundle_for_export">ರಫ್ತು ಮಾಡಲು ಬಂಡಲ್ ಆಯ್ಕೆಮಾಡಿ</string>
+  <string name="patch_selection_packages">ಉಳಿಸಿದ ಆಯ್ಕೆಗಳೊಂದಿಗೆ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</string>
+  <string name="patch_selection_entries">ಒಟ್ಟು ಆಯ್ಕೆಮಾಡಿದ ಪ್ಯಾಚ್‌ಗಳು</string>
+  <string name="reset_configuration">ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿ</string>
+  <string name="reset_patch_selection">ಪ್ಯಾಚ್ ಆಯ್ಕೆಗಳು</string>
+  <string name="reset_patch_options">ಪ್ಯಾಚ್ ಆಯ್ಕೆಗಳು</string>
+  <string name="downloaders">ಡೌನ್‌ಲೋಡರ್‌ಗಳು</string>
+  <string name="downloader_prereleases">ಪೂರ್ವ-ಬಿಡುಗಡೆಗಳನ್ನು ಬಳಸಿ</string>
+  <string name="downloader_prereleases_description">ಮುಖ್ಯ ಡೌನ್‌ಲೋಡರ್‌ನ ಪೂರ್ವ-ಬಿಡುಗಡೆ ಆವೃತ್ತಿಗಳನ್ನು ಬಳಸಿ</string>
+  <string name="downloader_state_loaded">ಲೋಡ್ ಆಗಿದೆ</string>
+  <string name="downloader_state_failed">ಲೋಡ್ ಆಗುವಲ್ಲಿ ವಿಫಲವಾಗಿದೆ. ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
+  <string name="downloader_state_missing">ಕಾಣೆಯಾಗಿದೆ</string>
+  <string name="downloader_delete_apps_title">ಆಯ್ಕೆಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಅಳಿಸಿ</string>
+  <string name="downloader_delete_apps_description">ಆಯ್ಕೆಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ?</string>
+  <string name="downloader_delete_single_description">ನೀವು \"%s\" ಅನ್ನು ಅಳಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುತ್ತೀರಾ?</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager ಮೂಲಕ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.</string>
+  <string name="downloader_url">ಡೌನ್‌ಲೋಡರ್ URL</string>
+  <string name="downloader_add">ಡೌನ್‌ಲೋಡರ್ ಸೇರಿಸಿ</string>
+  <string name="select_downloader_type_dialog_description">URL ಅಥವಾ ಸ್ಥಳೀಯ ಫೈಲ್‌ಗಳಿಂದ ಹೊಸ ಡೌನ್‌ಲೋಡರ್‌ಗಳನ್ನು ಸೇರಿಸಿ</string>
+  <string name="local_downloaders_description">ಸ್ಥಳೀಯ ಸಂಗ್ರಹಣೆಯಿಂದ ಡೌನ್‌ಲೋಡರ್‌ಗಳನ್ನು ಸೇರಿಸಿ.</string>
+  <string name="remote_downloaders_description">URL ನಿಂದ ಡೌನ್‌ಲೋಡರ್‌ಗಳನ್ನು ಸೇರಿಸಿ. ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನವೀಕರಿಸಬಹುದು.</string>
+  <string name="install_revanced_downloaders">ReVanced Manager ಒಳಗೆ ನೇರವಾಗಿ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಪಡೆಯಲು ಡೌನ್‌ಲೋಡರ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ.</string>
+  <string name="install_revanced_downloader">ReVanced ಡೌನ್‌ಲೋಡರ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ</string>
+  <string name="cancel_downloader_install_title">ಡೌನ್‌ಲೋಡರ್‌ಗಳ ಸ್ಥಾಪನೆಯನ್ನು ರದ್ದುಗೊಳಿಸಬೇಕೆ?</string>
+  <string name="cancel_downloader_install_description">ಡೌನ್‌ಲೋಡರ್‌ಗಳ ಸ್ಥಾಪನೆಯು ಪ್ರಗತಿಯಲ್ಲಿದೆ. ನೀವು ಈಗ ಹೊರಟರೆ, ಡೌನ್‌ಲೋಡ್ ರದ್ದುಗೊಳ್ಳುತ್ತದೆ.</string>
+  <string name="downloader_sources_unavailable_title">ಈ ಡೌನ್‌ಲೋಡರ್‌ಗಳು ಕಾಣೆಯಾಗಿವೆ</string>
+  <string name="downloader_sources_unavailable_description">ಇದನ್ನು ಸರಿಪಡಿಸಲು ನವೀಕರಿಸು ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ.</string>
+  <string name="downloader_update_failed">ಡೌನ್‌ಲೋಡರ್ ನವೀಕರಿಸುವಲ್ಲಿ ವಿಫಲವಾಗಿದೆ: %s</string>
+  <string name="downloader_replace_fail">ಡೌನ್‌ಲೋಡರ್ ಆಮದು ಮಾಡುವಲ್ಲಿ ವಿಫಲವಾಗಿದೆ: %s</string>
+  <string name="select_from_storage_description">ಫೈಲ್ ಪಿಕ್ಕರ್ ಬಳಸಿ ಸಂಗ್ರಹಣೆಯಿಂದ APK ಫೈಲ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+  <string name="enable">ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
+  <string name="disable">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</string>
+  <string name="process_runtime_memory_limit_description">ಪ್ಯಾಚರ್ ಪ್ರಕ್ರಿಯೆಯು ಬಳಸಬಹುದಾದ ಗರಿಷ್ಠ ಪ್ರಮಾಣದ ಮೆಮೊರಿ</string>
+  <string name="reset_onboarding">ಆನ್‌ಬೋರ್ಡಿಂಗ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿ</string>
+  <string name="reset_onboarding_description">ಮುಂದಿನ ಅಪ್ಲಿಕೇಶನ್ ಪ್ರಾರಂಭದಲ್ಲಿ ಆನ್‌ಬೋರ್ಡಿಂಗ್ ಸ್ಕ್ರೀನ್ ತೋರಿಸಿ</string>
+  <string name="api_not_working_title">API ಸೇವೆ ಪ್ರಸ್ತುತ ಸ್ಥಗಿತಗೊಂಡಿದೆ</string>
+  <string name="api_not_working_description">ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳು ಪ್ರಭಾವಿತವಾಗಬಹುದು. ನಿಮ್ಮ ಸಂಪರ್ಕ ಅಥವಾ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿನ API URL ಅನ್ನು ಪರಿಶೀಲಿಸಿ.</string>
+  <string name="no_patched_apps_found">ಯಾವುದೇ ಪ್ಯಾಚ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
+  <string name="no_patched_apps_description">ಪ್ರಸ್ತುತ, ನಿಮಗೆ ತಿಳಿದಿರುವ ಯಾವುದೇ ಪ್ಯಾಚ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ನಿಮ್ಮ ಬಳಿ ಇಲ್ಲ. ನಿಮ್ಮ ಮೊದಲ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಪ್ಯಾಚ್ ಮಾಡುವ ಮೂಲಕ ಅದನ್ನು ಬದಲಾಯಿಸಿ!</string>
+  <string name="patched_apps_section_title">ಪ್ಯಾಚ್ ಮಾಡಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</string>
+  <string name="patchable_apps_section_title">ಪ್ಯಾಚ್ ಮಾಡಬಹುದಾದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</string>
+  <string name="no_patches_found">ಯಾವುದೇ ಪ್ಯಾಚ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
+  <string name="no_patches_description">ನಿಮ್ಮ ಬಳಿ ಇನ್ನೂ ಯಾವುದೇ ಪ್ಯಾಚ್‌ಗಳು ಇಲ್ಲ. ಕೆಳಗಿನ ಬಟನ್ ಅನ್ನು ಟ್ಯಾಪ್ ಮಾಡುವ ಮೂಲಕ ಪ್ಯಾಚ್‌ಗಳನ್ನು ಸೇರಿಸಿ!</string>
+  <string name="split_apk_not_supported">ಸ್ಪ್ಲಿಟ್ APK ಗಳನ್ನು ಪ್ಯಾಚ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ</string>
+  <string name="no_downloaders_installed">ಯಾವುದೇ ಅಪ್ಲಿಕೇಶನ್ ಡೌನ್‌ಲೋಡರ್‌ಗಳು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ!</string>
+  <string name="no_downloaders_trusted">ಯಾವುದೇ ಅಪ್ಲಿಕೇಶನ್ ಡೌನ್‌ಲೋಡರ್‌ಗಳನ್ನು ನಂಬಲಾಗಿಲ್ಲ! ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.</string>
+  <string name="patch_selector_sheet_filter_packages_title">ಪ್ಯಾಕೇಜ್‌ಗಳು</string>
+  <string name="patch_selector_sheet_actions_title">ಕ್ರಮಗಳು</string>
+  <string name="restore_default_selection">ಡೀಫಾಲ್ಟ್ ಆಯ್ಕೆಯನ್ನು ಮರುಸ್ಥಾಪಿಸಿ</string>
+  <string name="deselect_all">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ರದ್ದುಗೊಳಿಸಿ</string>
+  <string name="invert_selection">ಆಯ್ಕೆಯನ್ನು ವಿಲೋಮಗೊಳಿಸಿ</string>
+  <string name="deselect_all_except">%s ಹೊರತುಪಡಿಸಿ ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ರದ್ದುಮಾಡಿ</string>
+  <string name="scope_dialog_title">ಇದಕ್ಕೆ ಅನ್ವಯಿಸು</string>
+  <string name="scope_all_patches">ಎಲ್ಲಾ ಪ್ಯಾಚ್‌ಗಳು</string>
+  <string name="scope_bundle_patches">%s ಮಾತ್ರ</string>
+  <string name="save_as_file">ಫೈಲ್‌ಗಳಿಗೆ ಉಳಿಸಿ</string>
+  <string name="export_patcher_logs">ಪ್ಯಾಚರ್ ಲಾಗ್‌ಗಳನ್ನು ರಫ್ತು ಮಾಡಿ</string>
+  <string name="save_logs_success">ಲಾಗ್‌ಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ</string>
+  <string name="downloader_activity_dialog_body">ಈ ಡೌನ್‌ಲೋಡರ್‌ನೊಂದಿಗೆ ಮುಂದುವರಿಯಲು ಬಳಕೆದಾರರ ಸಂವಹನ ಅಗತ್ಯವಿದೆ.</string>
+  <string name="patcher_step_unpack">ಪ್ಯಾಚರ್ ಸಿದ್ಧಪಡಿಸಿ</string>
+  <string name="view_announcement">ಪ್ರಕಟಣೆಯನ್ನು ವೀಕ್ಷಿಸಿ</string>
+  <string name="license">ಪರವಾನಗಿ</string>
+  <string name="source">ಮೂಲ</string>
+  <string name="repository">ರೆಪೊಸಿಟರಿ</string>
+  <string name="bundle_information_by_author">%1$s ರಿಂದ</string>
+  <string name="version_compatibility_warning">ಆಯ್ಕೆಮಾಡಿದ ಆವೃತ್ತಿಯು ಆಯ್ಕೆಮಾಡಿದ ಪ್ಯಾಚ್‌ಗಳೊಂದಿಗೆ ಹೊಂದಿಕೆಯಾಗದಿರಬಹುದು</string>
+  <string name="announcements">ಪ್ರಕಟಣೆಗಳು</string>
+  <string name="archive">ಆರ್ಕೈವ್</string>
+  <string name="view_update">ನವೀಕರಣವನ್ನು ವೀಕ್ಷಿಸಿ</string>
+  <string name="update_checking_downloader">ಪ್ರಾರಂಭದಲ್ಲಿ ReVanced ಡೌನ್‌ಲೋಡರ್‌ಗಳ ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ</string>
+  <string name="update_checking_downloader_description">ಅಪ್ಲಿಕೇಶನ್ ಪ್ರಾರಂಭವಾದಾಗ ಸ್ಥಾಪಿಸಲಾದ ReVanced ಡೌನ್‌ಲೋಡರ್‌ಗಳಿಗೆ ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ</string>
+  <string name="prereleases_warning">ಪೂರ್ವ-ಬಿಡುಗಡೆ ಆವೃತ್ತಿಗಳು ಅಸ್ಥಿರವಾಗಿರಬಹುದು ಮತ್ತು ದೋಷಗಳನ್ನು ಒಳಗೊಂಡಿರಬಹುದು. ನಿಮಗೆ ಕ್ರ್ಯಾಶ್‌ಗಳು, ಡೇಟಾ ನಷ್ಟ, ಅಥವಾ ಇತರ ಅನಿರೀಕ್ಷಿತ ಸಮಸ್ಯೆಗಳು ಎದುರಾಗಬಹುದು. ಈ ಅಪಾಯಗಳ ಬಗ್ಗೆ ನಿಮಗೆ ಆರಾಮದಾಯಕವಾಗಿದ್ದರೆ ಮಾತ್ರ ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</string>
+  <string name="changelog">ಬದಲಾವಣೆ ದಾಖಲೆಯನ್ನು ವೀಕ್ಷಿಸಿ</string>
+  <string name="no_announcements_found">ಯಾವುದೇ ಪ್ರಕಟಣೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
+  <string name="new_announcement">ಹೊಸ ಪ್ರಕಟಣೆ:
+%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d ಪ್ಯಾಚ್</item>
+    <item quantity="other">%d ಪ್ಯಾಚ್‌ಗಳು</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">%d ಪ್ಯಾಚ್ ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಿ</item>
+    <item quantity="other">%d ಪ್ಯಾಚ್‌ಗಳನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಿ</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</item>
+    <item quantity="other">%d ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</item>
+  </plurals>
+</resources>

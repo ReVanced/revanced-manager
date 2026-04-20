@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">ဖာထေးသူ</string>
+  <string name="onboarding_welcome_to">ကြိုဆိုပါတယ်</string>
+  <string name="onboarding_welcome_back">မင်္ဂလာပါ! အသစ်ထွက်ရှိထားတာကတော့</string>
+  <string name="onboarding_apps_subtitle">အက်ပ်တစ်ခုကို အခုပဲပြင်ဆင်နိုင်ပါတယ် ဒါမှမဟုတ် နောက်မှလုပ်ဆောင်နိုင်ပါတယ်</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager နှင့် patch များကို နောက်ဆုံးပေါ်ဖြစ်အောင် အလိုအလျောက် အပ်ဒိတ်များကို စီစဉ်သတ်မှတ်ပါ</string>
+  <string name="onboarding_updates_note">အကယ်၍ သင့်စက်ပစ္စည်း အင်တာနက်နှင့် ချိတ်ဆက်ထားပါက ReVanced Manager သည် ကနဦးဗားရှင်းများကို ဒေါင်းလုဒ်လုပ်ရန် %s သို့ ချိတ်ဆက်ပါမည်။</string>
+  <string name="retry">ပြန်ကြိုးစားပါ။</string>
+  <string name="onboarding_skip">ခဏကျော်သွားပါ။</string>
+  <string name="onboarding_recommended_version">အကြံပြုထားသော ဗားရှင်း: %s</string>
+  <string name="onboarding_permissions_skip_title">ခွင့်ပြုချက်များ ကျော်သွားမလား။</string>
+  <string name="onboarding_permissions_skip_description">လိုအပ်သော ခွင့်ပြုချက်များမရှိပါက အချို့ လုပ်ဆောင်ချက်များသည် ကောင်းမွန်စွာ အလုပ်မလုပ်နိုင်ပါ။ အက်ပ် ဆက်တင်များတွင် နောက်မှ ခွင့်ပြုနိုင်ပါသည်။</string>
+  <string name="onboarding_permissions_skip_anyway">ဘာပဲဖြစ်ဖြစ် ကျော်သွားပါ။</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager သည် ကောင်းမွန်စွာ အလုပ်လုပ်ရန် ခွင့်ပြုချက်အချို့ လိုအပ်ပါသည်။</string>
+  <string name="permission_install_apps">မသိသော အက်ပ်များကို ထည့်သွင်းပါ။</string>
+  <string name="permission_install_apps_description">ပြင်ဆင်ထားသော အက်ပ်များ ထည့်သွင်းရန် လိုအပ်ပါသည်။</string>
+  <string name="permission_notifications">အကြောင်းကြားချက်များ</string>
+  <string name="permission_battery">ဘက်ထရီ အကောင်းဆုံး ဖြစ်အောင်လုပ်ခြင်း</string>
+  <string name="permission_battery_description">နောက်ခံ၌ ပြင်ဆင်ခြင်းကို အနှောင့်အယှက်မဖြစ်စေရန် ကာကွယ်ပေးသည်။</string>
+  <string name="permission_grant">ခွင့်ပြုပါ။</string>
+  <string name="downloader_host_permission_label">ReVanced Manager ဒေါင်းလုဒ်လုပ်သူ ဟိုစ့်</string>
+  <string name="downloader_host_permission_description">ReVanced Manager ဒေါင်းလုဒ်လုပ်သူများထံ ဝင်ရောက်ခွင့်ကို ထိန်းချုပ်ရန် အသုံးပြုသည်။ ReVanced Manager တွင်သာ ၎င်းရှိသည်။</string>
+  <string name="fab_patch_app">အက်ပ်တစ်ခုကို ပြင်ဆင်ပါ။</string>
+  <string name="fab_add_patches">ပြင်ဆင်ချက်များ ထည့်ပါ။</string>
+  <string name="new_downloader_notification">ဒေါင်းလုပ်လုပ်သူအသစ် (များ) ရရှိနိုင်ပါသည်။ ၎င်းတို့ကို စီစဉ်သတ်မှတ်ရန် ဤနေရာကို နှိပ်ပါ။</string>
+  <string name="patches_not_downloaded">ပတ်ခ်ျများ ဒေါင်းလုဒ်လုပ်ပြီးစီးခြင်းမရှိသေးပါ။</string>
+  <string name="app_source_dialog_option_auto_description">ထည့်သွင်းပြီးသား အက်ပ်ကို သုံးပါ၊ ထို့နောက် ဒေါင်းလုဒ်လုပ်ပြီးသား APK ကို သုံးပါ၊ ထို့နောက် ရရှိနိုင်သော ဒေါင်းလုဒ်လုပ်သူများကို သုံးပါ</string>
+  <string name="app_source_dialog_option_auto_unavailable">တွဲဖက်သုံးနိုင်သော အက်ပ် သို့မဟုတ် ဒေါင်းလုပ်လုပ်သူများ မရရှိနိုင်ပါ</string>
+  <string name="app_source_dialog_option_installed_no_root">root access မရှိဘဲ တပ်ဆင်ထားသော အက်ပ်များကို ထပ်မံပြင်ဆင်၍ မရပါ</string>
+  <string name="patch_selector_item">ပြင်ဆင်ချက်များ ရွေးပါ။</string>
+  <string name="patch_selector_item_description">ပြင်ဆင်ချက် %d ခု ရွေးချယ်ထားပါသည်။</string>
+  <string name="patch_selection_changed_warning">ပတ်ခ်ျများ ရွေးချယ်မှု ပြောင်းလဲသွားပါပြီ</string>
+  <string name="apk_source_selector_item">APK အရင်းအမြစ်ကို ရွေးချယ်ပါ။</string>
+  <string name="apk_source_auto">အလိုအလျောက်</string>
+  <string name="apk_source_auto_installed">အလိုအလျောက် · ထည့်သွင်းပြီးသား APK ကို အသုံးပြုနေသည်</string>
+  <string name="apk_source_auto_downloaded">အလိုအလျောက် · ဒေါင်းလုဒ်လုပ်ပြီးသား APK ကို အသုံးပြုနေသည်</string>
+  <string name="apk_source_auto_downloader">အလိုအလျောက် · ရနိုင်သော ဒေါင်းလုဒ်လုပ်သူများ အသုံးပြု၍</string>
+  <string name="apk_source_auto_storage">အလိုအလျောက် · သိုလှောင်မှုမှ ရွေးချယ်ခြင်း</string>
+  <string name="apk_source_downloaded">ဒေါင်းလုပ်လုပ်ပြီးသား</string>
+  <string name="auto_updates_dialog_description">ReVanced Manager ကို အောက်ပါ အစိတ်အပိုင်းများအတွက် အချိန်မှန် အပ်ဒိတ်များ စစ်ဆေးစေလိုပါသလား။</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced ပြင်ဆင်ချက်များ</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: ဒေါင်းလုဒ်ဆွဲသူများ</string>
+  <string name="auto_updates_dialog_note">ဤဆက်တင်များကို နောက်ပိုင်းတွင် ပြောင်းလဲနိုင်သည်။
+
+    အကယ်၍ သင့်စက်ပစ္စည်း အင်တာနက်နှင့် ချိတ်ဆက်ထားပါက ReVanced Manager သည် ကနဦးဗားရှင်းများကို ဒေါင်းလုဒ်လုပ်ရန် %s သို့ ချိတ်ဆက်ပါမည်။</string>
+  <string name="announcements_filter_tag">တက်ဂ်ဖြင့် စစ်ထုတ်ရန်</string>
+  <string name="announcements_show_archived">မှတ်တမ်းတင်ပြီးသားများကို ပြရန်</string>
+  <string name="updates_description">အပ်ဒိတ်များ စစ်ဆေးပြီး ပြောင်းလဲမှု မှတ်တမ်းကို ကြည့်ရှုပါ။</string>
+  <string name="downloads_description">ဒေါင်းလုဒ်လုပ်သူများနှင့် ဒေါင်းလုဒ်လုပ်ထားသည့် အက်ပ်များ</string>
+  <string name="safeguards_toggled_warning">အကာအကွယ်များ ခလုတ်ဖွင့်ပိတ်လုပ်လိုက်ပါပြီ</string>
+  <string name="about_app_name">%1$s အကြောင်း</string>
+  <string name="search_languages">ဘာသာစကားများ ရှာဖွေပါ...</string>
+  <string name="keystore">သော့သိုလှောင်ရာ</string>
+  <string name="patches_selections">ပြင်ဆင်ချက်များ ရွေးချယ်မှုများ</string>
+  <string name="select_bundle_for_import">ထည့်သွင်းရန် bundle ကို ရွေးချယ်ပါ။</string>
+  <string name="select_bundle_for_export">ထုတ်ယူရန် bundle ကို ရွေးချယ်ပါ။</string>
+  <string name="patch_selection_packages">သိမ်းဆည်းထားသော ရွေးချယ်မှုများပါရှိသော အက်ပ်များ</string>
+  <string name="patch_selection_entries">စုစုပေါင်း ရွေးချယ်ထားသော ပြင်ဆင်ချက်များ</string>
+  <string name="reset_configuration">စီစဉ်သတ်မှတ်မှု ပြန်လည်သတ်မှတ်ပါ။</string>
+  <string name="reset_patch_selection">ပြင်ဆင်ချက် ရွေးချယ်မှုများ</string>
+  <string name="reset_patch_options">ပြင်ဆင်ချက် ရွေးချယ်စရာများ</string>
+  <string name="downloaders">ဒေါင်းလုဒ်လုပ်သူများ</string>
+  <string name="downloader_prereleases">ထုတ်မပြန်မီ ဗားရှင်းများ အသုံးပြုပါ</string>
+  <string name="downloader_prereleases_description">အဓိက ဒေါင်းလုဒ်ဆွဲသူ၏ ထုတ်မပြန်မီ ဗားရှင်းများကို အသုံးပြုပါ</string>
+  <string name="downloader_state_loaded">တင်ပြီးပါပြီ</string>
+  <string name="downloader_state_failed">တင်မရပါ။ အသေးစိတ်သိရှိရန် နှိပ်ပါ။</string>
+  <string name="downloader_state_missing">ပျောက်ဆုံးနေသည်</string>
+  <string name="downloader_delete_apps_title">ရွေးချယ်ထားသော အက်ပ်များကို ဖျက်မည်</string>
+  <string name="downloader_delete_apps_description">ရွေးချယ်ထားသော အက်ပ်များကို ဖျက်လိုကြောင်း သေချာပါသလား။</string>
+  <string name="downloader_delete_single_description">\"%s\" ကို ဖျက်လိုကြောင်း သေချာပါသလား။</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager မှတစ်ဆင့် ဒေါင်းလုပ်လုပ်ထားသော အက်ပ်များသည် ဤနေရာတွင် ပေါ်လာမည်ဖြစ်သည်။</string>
+  <string name="downloader_url">ဒေါင်းလုပ်လုပ်သူ URL</string>
+  <string name="downloader_add">ဒေါင်းလုပ်လုပ်သူထည့်ပါ</string>
+  <string name="select_downloader_type_dialog_description">URL သို့မဟုတ် ဒေသတွင်းဖိုင်များမှ ဒေါင်းလုပ်လုပ်သူအသစ်များ ထည့်ပါ</string>
+  <string name="local_downloaders_description">ဒေသတွင်းသိုလှောင်မှုမှ ဒေါင်းလုပ်လုပ်သူများထည့်ပါ</string>
+  <string name="remote_downloaders_description">URL မှ ဒေါင်းလုပ်လုပ်သူများထည့်ပါ။ အလိုအလျောက် အပ်ဒိတ်လုပ်နိုင်ပါသည်။</string>
+  <string name="install_revanced_downloaders">ReVanced Manager အတွင်း၌ အက်ပ်များကို တိုက်ရိုက်ရယူရန် ဒေါင်းလုပ်လုပ်သူများကို ထည့်သွင်းပါ။</string>
+  <string name="install_revanced_downloader">ReVanced ဒေါင်းလုပ်လုပ်သူများကို ထည့်သွင်းပါ။</string>
+  <string name="cancel_downloader_install_title">ဒေါင်းလုပ်လုပ်သူ ထည့်သွင်းခြင်းကို ပယ်ဖျက်မလား။</string>
+  <string name="cancel_downloader_install_description">ဒေါင်းလုပ်လုပ်သူ ထည့်သွင်းမှု လုပ်ဆောင်နေပါသည်။ ယခု ထွက်ခွာပါက ဒေါင်းလုပ်လုပ်ခြင်းကို ပယ်ဖျက်သွားမည်ဖြစ်သည်။</string>
+  <string name="downloader_sources_unavailable_title">ဤဒေါင်းလုပ်လုပ်သူများ ပျောက်ဆုံးနေသည်</string>
+  <string name="downloader_sources_unavailable_description">၎င်းကိုပြင်ဆင်ရန် အပ်ဒိတ်ခလုတ်ကို နှိပ်ပါ။</string>
+  <string name="downloader_update_failed">ဒေါင်းလုပ်လုပ်သူ အပ်ဒိတ်လုပ်ရန် မအောင်မြင်ပါ- %s</string>
+  <string name="downloader_replace_fail">ဒေါင်းလုပ်လုပ်သူ ထည့်သွင်းရန် မအောင်မြင်ပါ- %s</string>
+  <string name="reset">ပြန်လည်စတင်ရန်</string>
+  <string name="select_from_storage_description">ဖိုင်ရွေးချယ်သူကို အသုံးပြု၍ သိုလှောင်မှုမှ APK ဖိုင်တစ်ခုကို ရွေးချယ်ပါ။</string>
+  <string name="add">ထည့်ပါ</string>
+  <string name="enable">ဖွင့်ပါ။</string>
+  <string name="disable">ပိတ်ပါ။</string>
+  <string name="process_runtime_memory_limit_description">Patcher လုပ်ငန်းစဉ်က အသုံးပြုနိုင်သော မှတ်ဉာဏ်ပမာဏ အများဆုံး</string>
+  <string name="reset_onboarding">onboarding ကို ပြန်လည်သတ်မှတ်ပါ။</string>
+  <string name="reset_onboarding_description">နောက်တစ်ကြိမ် အက်ပ်စတင်သောအခါ onboarding မျက်နှာပြင်ကို ပြသပါ။</string>
+  <string name="api_not_working_title">API ဝန်ဆောင်မှု လက်ရှိတွင် ရပ်ဆိုင်းနေပါသည်</string>
+  <string name="api_not_working_description">အချို့လုပ်ဆောင်ချက်များ ထိခိုက်မှုရှိနိုင်သည်။ သင့်ချိတ်ဆက်မှု သို့မဟုတ် ဆက်တင်များရှိ API URL ကို စစ်ဆေးပါ။</string>
+  <string name="no_patched_apps_found">ပြင်ဆင်ထားသော အက်ပ်များ မတွေ့ပါ။</string>
+  <string name="no_patched_apps_description">သင့်တွင် လက်ရှိ သိရှိထားသော ပြင်ဆင်ထားသော အက်ပ်များ မရှိသေးပါ။ သင့်၏ ပထမဆုံး အက်ပ်ကို ပြင်ဆင်ခြင်းဖြင့် ပြောင်းလဲလိုက်ပါ။</string>
+  <string name="patched_apps_section_title">ပြင်ဆင်ထားသော အက်ပ်များ</string>
+  <string name="patchable_apps_section_title">ပြင်ဆင်နိုင်သော အက်ပ်များ</string>
+  <string name="no_patches_found">ပြင်ဆင်ချက်များ မတွေ့ပါ။</string>
+  <string name="no_patches_description">သင့်တွင် ပြင်ဆင်ချက်များ မရှိသေးပါ။ အောက်ပါ ခလုတ်ကို နှိပ်၍ ပြင်ဆင်ချက်များ ထည့်သွင်းပါ။</string>
+  <string name="split_apk_not_supported">ခွဲထားသော APK များကို ပြင်ဆင်၍မရပါ</string>
+  <string name="no_downloaders_installed">အက်ပ် ဒေါင်းလုပ်လုပ်သူများ ထည့်သွင်းထားခြင်း မရှိပါ။</string>
+  <string name="no_downloaders_trusted">မည်သည့် အက်ပ် ဒေါင်းလုပ်လုပ်သူကိုမျှ ယုံကြည်စိတ်ချရအောင် မလုပ်ရသေးပါ။ သင့်ဆက်တင်များကို စစ်ဆေးပါ။</string>
+  <string name="patch_selector_sheet_filter_packages_title">ပက်ကေ့ချ်များ</string>
+  <string name="patch_selector_sheet_actions_title">လုပ်ဆောင်ချက်များ</string>
+  <string name="restore_default_selection">မူလရွေးချယ်မှုကို ပြန်လည်ရယူရန်</string>
+  <string name="deselect_all">အားလုံးရွေးချယ်မှုပယ်ဖျက်ရန်</string>
+  <string name="invert_selection">ရွေးချယ်မှုကို ပြောင်းပြန်လှန်ရန်</string>
+  <string name="deselect_all_except">%s မှလွဲ၍ အားလုံးကို ရွေးချယ်မှု ပယ်ဖျက်ပါ။</string>
+  <string name="scope_dialog_title">သက်ရောက်မည့်</string>
+  <string name="scope_all_patches">ပတ်ချ်များအားလုံး</string>
+  <string name="scope_bundle_patches">%s သာ</string>
+  <string name="save_as_file">ဖိုင်များသို့ သိမ်းဆည်းပါ။</string>
+  <string name="export_patcher_logs">patcher မှတ်တမ်းများကို ထုတ်ယူပါ။</string>
+  <string name="save_logs_success">မှတ်တမ်းများ သိမ်းဆည်းပြီးပါပြီ။</string>
+  <string name="downloader_activity_dialog_body">ဤဒေါင်းလုဒ်လုပ်သူနှင့် ဆက်လုပ်ရန်အတွက် အသုံးပြုသူ၏ လုပ်ဆောင်ချက် လိုအပ်ပါသည်။</string>
+  <string name="patcher_step_unpack">ပက်ချာ ပြင်ဆင်သည်</string>
+  <string name="view_announcement">ကြေညာချက်ကို ကြည့်ရန်</string>
+  <string name="license">လိုင်စင်</string>
+  <string name="source">အရင်းအမြစ်</string>
+  <string name="repository">သိုလှောင်ခန်း</string>
+  <string name="bundle_information_by_author">%1$s မှ</string>
+  <string name="version_compatibility_warning">ရွေးချယ်ထားသော ဗားရှင်းသည် ရွေးချယ်ထားသော patches များနှင့် သဟဇာတမဖြစ်နိုင်ပါ။</string>
+  <string name="announcements">ကြေညာချက်များ</string>
+  <string name="archive">မှတ်တမ်း</string>
+  <string name="view_update">အပ်ဒိတ်ကို ကြည့်ရှုပါ။</string>
+  <string name="update_checking_downloader">စတင်သောအခါ ReVanced ဒေါင်းလုပ်လုပ်သူများ အပ်ဒိတ်များကို စစ်ဆေးပါ။</string>
+  <string name="update_checking_downloader_description">အက်ပ်စတင်သောအခါ ထည့်သွင်းထားသော ReVanced ဒေါင်းလုပ်လုပ်သူများ၏ အပ်ဒိတ်များကို စစ်ဆေးပါ။</string>
+  <string name="prereleases_warning">မထုတ်ပြန်မီ ဗားရှင်းများသည် မတည်ငြိမ်နိုင်ပြီး bug များ ပါဝင်နိုင်သည်။ အက်ပ်ပိတ်ခြင်း၊ ဒေတာဆုံးရှုံးခြင်း သို့မဟုတ် အခြား မမျှော်လင့်ထားသော ပြဿနာများ ကြုံတွေ့ရနိုင်သည်။ ဤအန္တရာယ်များကို လက်ခံနိုင်မှသာ ဤအရာကို ဖွင့်ပါ။</string>
+  <string name="changelog">ပြောင်းလဲမှု မှတ်တမ်းကို ကြည့်ရှုပါ။</string>
+  <string name="no_announcements_found">ကြေညာချက်များ မတွေ့ရှိပါ</string>
+  <string name="new_announcement">ကြေညာချက်အသစ်:\n%s</string>
+  <plurals name="patch_count">
+    <item quantity="other">%d ပြင်ဆင်မှုများ</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="other">%d ပြင်ဆင်မှုများကို လုပ်ဆောင်ရန်</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="other">%d ခု ရွေးချယ်ထားသည်</item>
+  </plurals>
+</resources>

@@ -1,0 +1,126 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.binary.compatibility.validator)
+    `maven-publish`
+    signing
+}
+
+group = "app.revanced"
+
+dependencies {
+    implementation(libs.androidx.ktx)
+    implementation(libs.runtime.ktx)
+    implementation(libs.fragment.ktx)
+}
+
+kotlin {
+    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-Xexplicit-backing-fields",
+            "-Xcontext-parameters",
+        )
+    }
+}
+
+android {
+    namespace = "app.revanced.manager.downloader"
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
+
+    defaultConfig {
+        minSdk {
+            version = release(26)
+        }
+
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    publishing {
+        singleVariant("release") {}
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            // Note: There are actually no optimisation since we disable it in proguard, AGP does not allow you to remove -optimize from this for some reason.
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        aidl = true
+    }
+}
+
+apiValidation {
+    nonPublicMarkers += "app.revanced.manager.downloader.DownloaderHostApi"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "githubPackages"
+            url = uri("https://maven.pkg.github.com/revanced/revanced-manager")
+            credentials(PasswordCredentials::class)
+        }
+    }
+
+    publications {
+        create<MavenPublication>("Api") {
+            afterEvaluate {
+                from(components["release"])
+            }
+
+            groupId = "app.revanced"
+            artifactId = "revanced-manager-api"
+            version = project.version.toString()
+
+            pom {
+                name = "ReVanced Manager API"
+                description = "API for ReVanced Manager."
+                url = "https://revanced.app"
+
+                licenses {
+                    license {
+                        name = "GNU General Public License v3.0"
+                        url = "https://www.gnu.org/licenses/gpl-3.0.en.html"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "ReVanced"
+                        name = "ReVanced"
+                        email = "contact@revanced.app"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/revanced/revanced-manager.git"
+                    developerConnection = "scm:git:git@github.com:revanced/revanced-manager.git"
+                    url = "https://github.com/revanced/revanced-manager"
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications["Api"])
+}

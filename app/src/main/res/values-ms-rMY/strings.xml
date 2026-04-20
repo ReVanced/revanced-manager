@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Patcher</string>
+  <string name="onboarding_welcome_to">Selamat datang ke</string>
+  <string name="onboarding_welcome_back">Hai! Ini yang baharu</string>
+  <string name="onboarding_apps_subtitle">Anda boleh memilih aplikasi untuk ditampal sekarang atau lakukan kemudian</string>
+  <string name="onboarding_updates_subtitle">Konfigurasi kemas kini automatik untuk memastikan ReVanced Manager dan tampalan sentiasa terkini</string>
+  <string name="onboarding_updates_note">ReVanced Manager akan menyambung ke %s untuk memuat turun versi awal jika peranti anda disambungkan ke internet.</string>
+  <string name="retry">Cuba lagi</string>
+  <string name="onboarding_skip">Langkau buat masa ini</string>
+  <string name="onboarding_recommended_version">Versi disyorkan: %s</string>
+  <string name="onboarding_permissions_skip_title">Langkau kebenaran?</string>
+  <string name="onboarding_permissions_skip_description">Tanpa kebenaran yang diperlukan, beberapa ciri mungkin tidak berfungsi dengan betul. Anda boleh memberikannya kemudian dalam tetapan aplikasi.</string>
+  <string name="onboarding_permissions_skip_anyway">Langkau juga</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager memerlukan beberapa kebenaran untuk berfungsi dengan baik</string>
+  <string name="permission_install_apps">Pasang aplikasi tidak diketahui</string>
+  <string name="permission_install_apps_description">Diperlukan untuk memasang aplikasi yang ditampal</string>
+  <string name="permission_notifications">Pemberitahuan</string>
+  <string name="permission_battery">Pengoptimuman bateri</string>
+  <string name="permission_battery_description">Mencegah penampalan daripada terganggu di latar belakang</string>
+  <string name="permission_grant">Beri</string>
+  <string name="downloader_host_permission_label">Hos pemuat turun ReVanced Manager</string>
+  <string name="downloader_host_permission_description">Digunakan untuk mengawal akses kepada pemuat turun ReVanced Manager. Hanya ReVanced Manager yang memilikinya.</string>
+  <string name="fab_patch_app">Tampal aplikasi</string>
+  <string name="fab_add_patches">Tambah tampalan</string>
+  <string name="new_downloader_notification">Pemuat turun baharu tersedia. Klik di sini untuk mengkonfigurasinya.</string>
+  <string name="patches_not_downloaded">Tampalan belum dimuat turun.</string>
+  <string name="app_source_dialog_option_auto_description">Gunakan aplikasi yang dipasang, kemudian APK yang dimuat turun, kemudian pemuat turun yang tersedia</string>
+  <string name="app_source_dialog_option_auto_unavailable">Tiada apl atau pemuat turun serasi yang tersedia</string>
+  <string name="app_source_dialog_option_installed_no_root">Apl yang dipasang tidak boleh ditampal lagi tanpa akses root</string>
+  <string name="patch_selector_item">Pilih tampalan</string>
+  <string name="patch_selector_item_description">%d tampalan dipilih</string>
+  <string name="patch_selection_changed_warning">Pilihan tampalan telah diubah</string>
+  <string name="apk_source_selector_item">Pilih sumber APK</string>
+  <string name="apk_source_auto">Automatik</string>
+  <string name="apk_source_auto_installed">Automatik · Menggunakan APK yang dipasang</string>
+  <string name="apk_source_auto_downloaded">Automatik · Menggunakan APK yang dimuat turun</string>
+  <string name="apk_source_auto_downloader">Automatik · Menggunakan pengunduh yang tersedia</string>
+  <string name="apk_source_auto_storage">Automatik · Pilih dari storan</string>
+  <string name="apk_source_downloaded">Sudah dimuat turun</string>
+  <string name="auto_updates_dialog_description">Adakah anda mahu ReVanced Manager menyemak kemas kini secara berkala untuk komponen berikut?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">Tampalan ReVanced</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Pemuat turun</string>
+  <string name="auto_updates_dialog_note">Tetapan ini boleh diubah kemudian.
+
+    ReVanced Manager akan menyambung ke %s untuk memuat turun versi awal jika peranti anda disambungkan ke internet.</string>
+  <string name="announcements_filter_tag">Tapis mengikut tag</string>
+  <string name="announcements_show_archived">Tunjukkan yang diarkibkan</string>
+  <string name="updates_description">Semak kemas kini dan lihat log perubahan</string>
+  <string name="downloads_description">Pemuat turun dan aplikasi yang dimuat turun</string>
+  <string name="safeguards_toggled_warning">Pelindung telah dihidup/mati.</string>
+  <string name="about_app_name">Mengenai %1$s</string>
+  <string name="search_languages">Cari bahasa…</string>
+  <string name="keystore">Storan Kunci</string>
+  <string name="patches_selections">Pilihan tampalan</string>
+  <string name="select_bundle_for_import">Pilih himpunan untuk diimport ke dalam</string>
+  <string name="select_bundle_for_export">Pilih himpunan untuk dieksport daripada</string>
+  <string name="patch_selection_packages">Aplikasi dengan pilihan yang disimpan</string>
+  <string name="patch_selection_entries">Jumlah tampalan yang dipilih</string>
+  <string name="reset_configuration">Tetapkan semula konfigurasi</string>
+  <string name="reset_patch_selection">Pilihan tampalan</string>
+  <string name="reset_patch_options">Pilihan tampalan</string>
+  <string name="downloaders">Pemuat turun</string>
+  <string name="downloader_prereleases">Guna pra-keluaran</string>
+  <string name="downloader_prereleases_description">Guna versi pra-keluaran pemuat turun utama</string>
+  <string name="downloader_state_loaded">Dimuatkan</string>
+  <string name="downloader_state_failed">Gagal dimuat. Klik untuk butiran lanjut</string>
+  <string name="downloader_state_missing">Tiada</string>
+  <string name="downloader_delete_apps_title">Padam aplikasi yang dipilih</string>
+  <string name="downloader_delete_apps_description">Adakah anda pasti mahu memadam aplikasi yang dipilih?</string>
+  <string name="downloader_delete_single_description">Adakah anda pasti ingin memadam \"%s\"?</string>
+  <string name="downloader_settings_no_apps_description">Aplikasi yang dimuat turun melalui ReVanced Manager akan muncul di sini.</string>
+  <string name="downloader_url">URL Pemuat Turun</string>
+  <string name="downloader_add">Tambah Pemuat Turun</string>
+  <string name="select_downloader_type_dialog_description">Tambah pemuat turun baharu daripada URL atau fail setempat</string>
+  <string name="local_downloaders_description">Tambah pemuat turun daripada storan setempat.</string>
+  <string name="remote_downloaders_description">Tambah pemuat turun daripada URL. Boleh dikemas kini secara automatik.</string>
+  <string name="install_revanced_downloaders">Pasang pemuat turun untuk mendapatkan aplikasi terus dalam ReVanced Manager.</string>
+  <string name="install_revanced_downloader">Pasang Pemuat Turun ReVanced</string>
+  <string name="cancel_downloader_install_title">Batalkan pemasangan pemuat turun?</string>
+  <string name="cancel_downloader_install_description">Pemasangan pemuat turun sedang berjalan. Jika anda keluar sekarang, muat turun akan dibatalkan.</string>
+  <string name="downloader_sources_unavailable_title">Pemuat turun ini tiada</string>
+  <string name="downloader_sources_unavailable_description">Klik pada butang kemas kini untuk memperbaikinya.</string>
+  <string name="downloader_update_failed">Gagal mengemas kini pemuat turun: %s</string>
+  <string name="downloader_replace_fail">Gagal mengimport pemuat turun: %s</string>
+  <string name="select_from_storage_description">Pilih fail APK dari storan menggunakan pemilih fail</string>
+  <string name="enable">Dayakan</string>
+  <string name="disable">Lumpuhkan</string>
+  <string name="process_runtime_memory_limit_description">Jumlah memori maksimum yang boleh digunakan oleh proses Penampal</string>
+  <string name="reset_onboarding">Tetapkan semula orientasi</string>
+  <string name="reset_onboarding_description">Tunjukkan skrin orientasi pada pelancaran aplikasi seterusnya</string>
+  <string name="api_not_working_title">Perkhidmatan API tidak berfungsi pada masa ini</string>
+  <string name="api_not_working_description">Beberapa ciri mungkin terjejas. Semak sambungan atau URL API anda dalam tetapan.</string>
+  <string name="no_patched_apps_found">Tiada aplikasi yang ditampal ditemui</string>
+  <string name="no_patched_apps_description">Anda kini tiada aplikasi yang ditampal yang kami ketahui. Ubah itu dengan menampal aplikasi pertama anda!</string>
+  <string name="patched_apps_section_title">Aplikasi yang ditampal</string>
+  <string name="patchable_apps_section_title">Aplikasi yang boleh ditampal</string>
+  <string name="no_patches_found">Tiada tampalan ditemui</string>
+  <string name="no_patches_description">Anda belum mempunyai sebarang tampalan. Tambah tampalan dengan mengetik butang di bawah!</string>
+  <string name="split_apk_not_supported">APK terbahagi tidak boleh ditampal</string>
+  <string name="no_downloaders_installed">Tiada pemuat turun aplikasi dipasang!</string>
+  <string name="no_downloaders_trusted">Tiada pemuat turun aplikasi yang dipercayai! Sila semak tetapan anda.</string>
+  <string name="patch_selector_sheet_filter_packages_title">Pakej</string>
+  <string name="patch_selector_sheet_actions_title">Tindakan</string>
+  <string name="restore_default_selection">Pulihkan pilihan lalai</string>
+  <string name="deselect_all">Nyahpilih semua</string>
+  <string name="invert_selection">Songsangkan pilihan</string>
+  <string name="deselect_all_except">Nyahpilih semua kecuali %s</string>
+  <string name="scope_dialog_title">Guna pada</string>
+  <string name="scope_all_patches">Semua tampalan</string>
+  <string name="scope_bundle_patches">%s sahaja</string>
+  <string name="save_as_file">Simpan ke fail</string>
+  <string name="export_patcher_logs">Eksport log penampal</string>
+  <string name="save_logs_success">Log disimpan</string>
+  <string name="downloader_activity_dialog_body">Interaksi pengguna diperlukan untuk meneruskan dengan pemuat turun ini.</string>
+  <string name="patcher_step_unpack">Sediakan patcher</string>
+  <string name="view_announcement">Lihat pengumuman</string>
+  <string name="license">Lesen</string>
+  <string name="source">Sumber</string>
+  <string name="repository">Repositori</string>
+  <string name="bundle_information_by_author">Oleh %1$s</string>
+  <string name="version_compatibility_warning">Versi yang dipilih mungkin tidak serasi dengan tampalan yang dipilih</string>
+  <string name="announcements">Pengumuman</string>
+  <string name="archive">Arkib</string>
+  <string name="view_update">Lihat kemas kini</string>
+  <string name="update_checking_downloader">Semak kemas kini Pemuat Turun ReVanced semasa pelancaran</string>
+  <string name="update_checking_downloader_description">Semak kemas kini kepada Pemuat Turun ReVanced yang dipasang apabila aplikasi dimulakan</string>
+  <string name="prereleases_warning">Versi pra-keluaran mungkin tidak stabil dan mengandungi pepijat. Anda mungkin mengalami ranap sistem, kehilangan data, atau isu lain yang tidak dijangka. Hanya dayakan ini jika anda selesa dengan risiko ini.</string>
+  <string name="changelog">Lihat log perubahan</string>
+  <string name="no_announcements_found">Tiada pengumuman ditemui</string>
+  <string name="new_announcement">Pengumuman baharu:
+%s</string>
+  <plurals name="patch_count">
+    <item quantity="other">%d tampalan</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="other">Laksanakan %d tampalan</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="other">%d dipilih</item>
+  </plurals>
+</resources>

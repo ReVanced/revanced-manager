@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Zakrpač</string>
+  <string name="onboarding_welcome_to">Dobrodošli u</string>
+  <string name="onboarding_welcome_back">Zdravo! To je novi</string>
+  <string name="onboarding_apps_subtitle">Možete odabrati aplikaciju za zakrpu sada ili to učiniti kasnije</string>
+  <string name="onboarding_updates_subtitle">Konfigurišite automatska ažuriranja kako bi ReVanced Manager i zakrpe bili ažurni</string>
+  <string name="onboarding_updates_note">ReVanced Manager će se povezati na %s kako bi preuzeo početne verzije ako je vaš uređaj povezan na internet.</string>
+  <string name="retry">Pokušaj ponovo</string>
+  <string name="onboarding_skip">Preskoči za sada</string>
+  <string name="onboarding_recommended_version">Preporučena verzija: %s</string>
+  <string name="onboarding_permissions_skip_title">Preskočiti dozvole?</string>
+  <string name="onboarding_permissions_skip_description">Bez potrebnih dozvola, neke funkcije možda neće raditi ispravno. Možete ih dodijeliti kasnije u postavkama aplikacije.</string>
+  <string name="onboarding_permissions_skip_anyway">Preskoči u svakom slučaju</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager treba nekoliko dozvola za ispravan rad</string>
+  <string name="permission_install_apps">Instaliraj nepoznate aplikacije</string>
+  <string name="permission_install_apps_description">Potrebno za instalaciju patchovanih aplikacija</string>
+  <string name="permission_notifications">Obavještenja</string>
+  <string name="permission_battery">Optimizacija baterije</string>
+  <string name="permission_battery_description">Sprečava prekid patchovanja u pozadini</string>
+  <string name="permission_grant">Dodijeli</string>
+  <string name="downloader_host_permission_label">Host preuzimača ReVanced Managera</string>
+  <string name="downloader_host_permission_description">Koristi se za kontrolu pristupa preuzimačima ReVanced Managera. Samo ReVanced Manager ovo posjeduje.</string>
+  <string name="fab_patch_app">Patchuj aplikaciju</string>
+  <string name="fab_add_patches">Dodaj patcheve</string>
+  <string name="new_downloader_notification">Dostupan(ni) novi downloader(i). Kliknite ovdje da ih konfigurišete.</string>
+  <string name="patches_not_downloaded">Zakrpe nisu preuzete.</string>
+  <string name="app_source_dialog_option_auto_description">Koristite instaliranu aplikaciju, zatim preuzeti APK, zatim dostupne preuzimače</string>
+  <string name="app_source_dialog_option_auto_unavailable">Nema kompatibilne pronađene aplikacije ili dostupnih preuzimača</string>
+  <string name="app_source_dialog_option_installed_no_root">Montirane aplikacije ne mogu se ponovo zakrpati bez root pristupa</string>
+  <string name="patch_selector_item">Odaberite patcheve</string>
+  <string name="patch_selector_item_description">Odabrano je %d patcheva</string>
+  <string name="patch_selection_changed_warning">Odabir zakrpa je promijenjen.</string>
+  <string name="apk_source_selector_item">Odaberite APK izvor</string>
+  <string name="apk_source_auto">Automatski</string>
+  <string name="apk_source_auto_installed">Automatski · Korišćenjem instaliranog APK-a</string>
+  <string name="apk_source_auto_downloaded">Automatski · Korišćenjem preuzetog APK-a</string>
+  <string name="apk_source_auto_downloader">Automatski · Korištenje dostupnih preuzimača</string>
+  <string name="apk_source_auto_storage">Automatski · Odabir iz pohrane</string>
+  <string name="apk_source_downloaded">Već preuzeto</string>
+  <string name="auto_updates_dialog_description">Želite li da ReVanced Manager povremeno provjerava ažuriranja za sljedeće komponente?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced Patchevi</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Preuzimači</string>
+  <string name="auto_updates_dialog_note">Ove postavke se mogu promijeniti kasnije.
+
+    ReVanced Manager će se povezati na %s kako bi preuzeo početne verzije ako je vaš uređaj povezan na internet.</string>
+  <string name="announcements_filter_tag">Filtriraj po oznaci</string>
+  <string name="announcements_show_archived">Prikaži arhivirano</string>
+  <string name="updates_description">Provjeri ažuriranja i pogledaj historiju izmjena</string>
+  <string name="downloads_description">Preuzimači i preuzete aplikacije</string>
+  <string name="safeguards_toggled_warning">Sigurnosne mjere su preklopljene.</string>
+  <string name="about_app_name">O aplikaciji %1$s</string>
+  <string name="search_languages">Pretraži jezike…</string>
+  <string name="keystore">Spremište ključeva</string>
+  <string name="patches_selections">Odabiri patcheva</string>
+  <string name="select_bundle_for_import">Odaberite paket za uvoz</string>
+  <string name="select_bundle_for_export">Odaberite paket za izvoz</string>
+  <string name="patch_selection_packages">Aplikacije sa sačuvanim odabirima</string>
+  <string name="patch_selection_entries">Ukupno odabranih patcheva</string>
+  <string name="reset_configuration">Resetuj konfiguraciju</string>
+  <string name="reset_patch_selection">Odabiri patcheva</string>
+  <string name="reset_patch_options">Opcije patcheva</string>
+  <string name="downloaders">Preuzimači</string>
+  <string name="downloader_prereleases">Koristi pre-izdanja</string>
+  <string name="downloader_prereleases_description">Koristi pre-izdane verzije glavnog preuzimača</string>
+  <string name="downloader_state_loaded">Učitano</string>
+  <string name="downloader_state_failed">Nije uspjelo učitavanje. Kliknite za više detalja</string>
+  <string name="downloader_state_missing">Nedostaje</string>
+  <string name="downloader_delete_apps_title">Izbriši odabrane aplikacije</string>
+  <string name="downloader_delete_apps_description">Jeste li sigurni da želite izbrisati odabrane aplikacije?</string>
+  <string name="downloader_delete_single_description">Jeste li sigurni da želite obrisati \"%s\"?</string>
+  <string name="downloader_settings_no_apps_description">Aplikacije preuzete putem ReVanced Managera će se pojaviti ovdje.</string>
+  <string name="downloader_url">URL preuzimača</string>
+  <string name="downloader_add">Dodaj preuzimač</string>
+  <string name="select_downloader_type_dialog_description">Dodajte nove preuzimače sa URL-a ili lokalnih datoteka</string>
+  <string name="local_downloaders_description">Dodajte preuzimače iz lokalne pohrane.</string>
+  <string name="remote_downloaders_description">Dodajte preuzimače sa URL-a. Mogu se automatski ažurirati.</string>
+  <string name="install_revanced_downloaders">Instalirajte downloadere da biste dobili aplikacije direktno unutar ReVanced Managera.</string>
+  <string name="install_revanced_downloader">Instaliraj ReVanced Downloadere</string>
+  <string name="cancel_downloader_install_title">Otkaži instalaciju downloadera?</string>
+  <string name="cancel_downloader_install_description">Instalacija downloadera je u toku. Ako sada odete, preuzimanje će biti otkazano.</string>
+  <string name="downloader_sources_unavailable_title">Ovi preuzimači nedostaju</string>
+  <string name="downloader_sources_unavailable_description">Kliknite na dugme za ažuriranje da biste to popravili.</string>
+  <string name="downloader_update_failed">Nije uspjelo ažuriranje preuzimača: %s</string>
+  <string name="downloader_replace_fail">Nije uspjelo uvoz preuzimača: %s</string>
+  <string name="select_from_storage_description">Odaberite APK datoteku iz pohrane pomoću birača datoteka</string>
+  <string name="enable">Omogući</string>
+  <string name="disable">Onemogući</string>
+  <string name="process_runtime_memory_limit_description">Maksimalna količina memorije koju proces Patcher može koristiti</string>
+  <string name="reset_onboarding">Resetuj onboarding</string>
+  <string name="reset_onboarding_description">Prikaži ekran za onboarding pri sljedećem pokretanju aplikacije</string>
+  <string name="api_not_working_title">API servis je trenutno nedostupan</string>
+  <string name="api_not_working_description">Neke funkcije mogu biti pogođene. Provjerite svoju vezu ili URL API-ja u postavkama.</string>
+  <string name="no_patched_apps_found">Nema pronađenih patchovanih aplikacija</string>
+  <string name="no_patched_apps_description">Trenutno nemate nijednu patchovanu aplikaciju za koju znamo. Promijenite to patchovanjem svoje prve aplikacije!</string>
+  <string name="patched_apps_section_title">Zakrpljene aplikacije</string>
+  <string name="patchable_apps_section_title">Aplikacije koje se mogu zakrpiti</string>
+  <string name="no_patches_found">Nema pronađenih patcheva</string>
+  <string name="no_patches_description">Još uvijek nemate patcheva. Dodajte patcheve dodirom na dugme ispod!</string>
+  <string name="split_apk_not_supported">Podijeljeni APK-ovi se ne mogu zakrpiti</string>
+  <string name="no_downloaders_installed">Nijedan downloader aplikacija nije instaliran!</string>
+  <string name="no_downloaders_trusted">Nijedan downloader aplikacija nije povjerljiv! Provjerite svoje postavke.</string>
+  <string name="patch_selector_sheet_filter_packages_title">Paketi</string>
+  <string name="patch_selector_sheet_actions_title">Akcije</string>
+  <string name="restore_default_selection">Vrati zadani odabir</string>
+  <string name="deselect_all">Poništi sav odabir</string>
+  <string name="invert_selection">Invertiraj odabir</string>
+  <string name="deselect_all_except">Poništi odabir svih osim %s</string>
+  <string name="scope_dialog_title">Primijeni na</string>
+  <string name="scope_all_patches">Sve zakrpe</string>
+  <string name="scope_bundle_patches">Samo %s</string>
+  <string name="save_as_file">Sačuvaj u datoteke</string>
+  <string name="export_patcher_logs">Izvezi logove patchera</string>
+  <string name="save_logs_success">Logovi sačuvani</string>
+  <string name="downloader_activity_dialog_body">Potrebna je interakcija korisnika kako bi se nastavilo s ovim preuzimačem.</string>
+  <string name="patcher_step_unpack">Pripremi zakrpu</string>
+  <string name="view_announcement">Pogledaj obavještenje</string>
+  <string name="license">Licenca</string>
+  <string name="source">Izvor</string>
+  <string name="repository">Repozitorij</string>
+  <string name="bundle_information_by_author">Od %1$s</string>
+  <string name="version_compatibility_warning">Odabrana verzija može biti nekompatibilna sa odabranim zakrpama</string>
+  <string name="announcements">Obavještenja</string>
+  <string name="archive">Arhiva</string>
+  <string name="view_update">Pogledaj ažuriranje</string>
+  <string name="update_checking_downloader">Provjeri ažuriranja za ReVanced Downloadere pri pokretanju</string>
+  <string name="update_checking_downloader_description">Provjeri ažuriranja za instalirane ReVanced Downloadere kada se aplikacija pokrene</string>
+  <string name="prereleases_warning">Pred-izdanja verzije mogu biti nestabilne i sadržavati greške. Možete iskusiti rušenja, gubitak podataka ili druge neočekivane probleme. Omogućite ovo samo ako ste svjesni ovih rizika.</string>
+  <string name="changelog">Pogledaj historiju izmjena</string>
+  <string name="no_announcements_found">Nema pronađenih obavještenja</string>
+  <string name="new_announcement">Novo obavještenje:\n%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d zakrpa</item>
+    <item quantity="few">%d zakrpe</item>
+    <item quantity="other">%d zakrpa</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">Izvršite %d zakrpu</item>
+    <item quantity="few">Izvršite %d zakrpe</item>
+    <item quantity="other">Izvršite %d zakrpa</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d odabrana</item>
+    <item quantity="few">%d odabrane</item>
+    <item quantity="other">%d odabranih</item>
+  </plurals>
+</resources>

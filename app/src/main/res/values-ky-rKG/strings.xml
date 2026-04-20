@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Патчер</string>
+  <string name="onboarding_welcome_to">Кош келиңиз</string>
+  <string name="onboarding_welcome_back">Салам! Бул жаңы</string>
+  <string name="onboarding_apps_subtitle">Колдонмону азыр жамаачылоо үчүн тандасаңыз болот же кийинчерээк жасай аласыз</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager жана жамаачыларды жаңыртып туруу үчүн автоматтык жаңыртууларды конфигурациялаңыз</string>
+  <string name="onboarding_updates_note">ReVanced Manager түзмөгүңүз интернетке туташкан болсо, баштапкы версияларды жүктөп алуу үчүн %s менен байланышат.</string>
+  <string name="retry">Кайра аракет кылуу</string>
+  <string name="onboarding_skip">Азырынча өткөрүп жиберүү</string>
+  <string name="onboarding_recommended_version">Сунушталган версия: %s</string>
+  <string name="onboarding_permissions_skip_title">Уруксаттарды өткөрүп жибересизби?</string>
+  <string name="onboarding_permissions_skip_description">Талап кылынган уруксаттарсыз кээ бир функциялар туура иштебей калышы мүмкүн. Аларды кийинчерээк колдонмо жөндөөлөрүнөн бере аласыз.</string>
+  <string name="onboarding_permissions_skip_anyway">Баары бир өткөрүп жиберүү</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager туура иштеши үчүн бир нече уруксаттар керек.</string>
+  <string name="permission_install_apps">Белгисиз колдонмолорду орнотуу</string>
+  <string name="permission_install_apps_description">Оңдолгон колдонмолорду орнотуу үчүн талап кылынат</string>
+  <string name="permission_notifications">Эскертмелер</string>
+  <string name="permission_battery">Батареяны оптималдаштыруу</string>
+  <string name="permission_battery_description">Фондо оңдоонун үзгүлтүккө учурашына жол бербейт</string>
+  <string name="permission_grant">Уруксат берүү</string>
+  <string name="downloader_host_permission_label">ReVanced Manager жүктөп алуучу хосту</string>
+  <string name="downloader_host_permission_description">ReVanced Manager жүктөп алуучуларына кирүү мүмкүнчүлүгүн башкаруу үчүн колдонулат. Бул ReVanced Manager гана бар.</string>
+  <string name="fab_patch_app">Колдонмону оңдоо</string>
+  <string name="fab_add_patches">Оңдоолорду кошуу</string>
+  <string name="new_downloader_notification">Жаңы жүктөгүч(төр) жеткиликтүү. Аларды конфигурациялоо үчүн бул жерди басыңыз.</string>
+  <string name="patches_not_downloaded">Жамаачылар жүктөлгөн жок.</string>
+  <string name="app_source_dialog_option_auto_description">Орнотулган колдонмону колдонуу, андан кийин жүктөлүп алынган APK, андан кийин жеткиликтүү жүктөөчүлөр</string>
+  <string name="app_source_dialog_option_auto_unavailable">Шайкеш колдонмо же жүктөөчү табылган жок</string>
+  <string name="app_source_dialog_option_installed_no_root">Орнотулган колдонмолорду root мүмкүнчүлүгүсүз кайра оңдоого болбойт</string>
+  <string name="patch_selector_item">Оңдоолорду тандоо</string>
+  <string name="patch_selector_item_description">%d оңдоо тандалды</string>
+  <string name="patch_selection_changed_warning">Жамаачылардын тандоосу өзгөртүлдү.</string>
+  <string name="apk_source_selector_item">APK булагын тандоо</string>
+  <string name="apk_source_auto">Автоматтык</string>
+  <string name="apk_source_auto_installed">Автоматтык · Орнотулган APK колдонуу</string>
+  <string name="apk_source_auto_downloaded">Автоматтык · Жүктөлүп алынган APK колдонуу</string>
+  <string name="apk_source_auto_downloader">Авто · Жеткиликтүү жүктөөчүлөрдү колдонуу</string>
+  <string name="apk_source_auto_storage">Авто · Сактагычтан тандоо</string>
+  <string name="apk_source_downloaded">Буга чейин жүктөлгөн</string>
+  <string name="auto_updates_dialog_description">ReVanced Manager\'дын төмөнкү компоненттер үчүн жаңыртууларды мезгил-мезгили менен текшеришин каалайсызбы?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced Патчтары</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Жүктөөчүлөр</string>
+  <string name="auto_updates_dialog_note">Бул жөндөөлөрдү кийинчерээк өзгөртсө болот.
+
+    ReVanced Manager түзмөгүңүз интернетке туташкан болсо, баштапкы версияларды жүктөп алуу үчүн %s менен байланышат.</string>
+  <string name="announcements_filter_tag">Тег боюнча чыпкалоо</string>
+  <string name="announcements_show_archived">Архивделгендерди көрсөтүү</string>
+  <string name="updates_description">Жаңыртууларды текшерүү жана өзгөрүүлөр журналын көрүү</string>
+  <string name="downloads_description">Жүктөөчүлөр жана жүктөлүп алынган колдонмолор</string>
+  <string name="safeguards_toggled_warning">Коопсуздук чаралары которулду.</string>
+  <string name="about_app_name">%1$s жөнүндө</string>
+  <string name="search_languages">Тилдерди издөө…</string>
+  <string name="keystore">Ачкыч сактагыч</string>
+  <string name="patches_selections">Патчтарды тандоолор</string>
+  <string name="select_bundle_for_import">Импорттоо үчүн топтомду тандаңыз</string>
+  <string name="select_bundle_for_export">Экспорттоо үчүн топтомду тандаңыз</string>
+  <string name="patch_selection_packages">Сакталган тандоолору бар колдонмолор</string>
+  <string name="patch_selection_entries">Бардык тандалган патчтар</string>
+  <string name="reset_configuration">Конфигурацияны баштапкы абалга келтирүү</string>
+  <string name="reset_patch_selection">Патч тандоолору</string>
+  <string name="reset_patch_options">Патч параметрлери</string>
+  <string name="downloaders">Жүктөөчүлөр</string>
+  <string name="downloader_prereleases">Алдын ала чыгарылгандарды колдонуу</string>
+  <string name="downloader_prereleases_description">Негизги жүктөгүчтүн алдын ала чыгарылган версияларын колдонуу</string>
+  <string name="downloader_state_loaded">Жүктөлдү</string>
+  <string name="downloader_state_failed">Жүктөлбөй калды. Көбүрөөк маалымат алуу үчүн басыңыз</string>
+  <string name="downloader_state_missing">Жок</string>
+  <string name="downloader_delete_apps_title">Тандалган колдонмолорду жок кылуу</string>
+  <string name="downloader_delete_apps_description">Тандалган колдонмолорду жок кылгыңыз келеби?</string>
+  <string name="downloader_delete_single_description">\"%s\" файлын чындап эле жок кылгыңыз келеби?</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager аркылуу жүктөлгөн колдонмолор бул жерде пайда болот.</string>
+  <string name="downloader_url">Жүктөөчү URL</string>
+  <string name="downloader_add">Жүктөөчүнү кошуу</string>
+  <string name="select_downloader_type_dialog_description">Жаңы жүктөөчүлөрдү URL же жергиликтүү файлдардан кошуу</string>
+  <string name="local_downloaders_description">Жүктөөчүлөрдү жергиликтүү сактагычтан кошуу.</string>
+  <string name="remote_downloaders_description">Жүктөөчүлөрдү URL аркылуу кошуу. Автоматтык түрдө жаңыртылышы мүмкүн.</string>
+  <string name="install_revanced_downloaders">Колдонмолорду ReVanced Manager ичинен түз алуу үчүн жүктөгүчтөрдү орнотуңуз.</string>
+  <string name="install_revanced_downloader">ReVanced Жүктөгүчтөрүн орнотуу</string>
+  <string name="cancel_downloader_install_title">Жүктөгүчтөрдү орнотууну жокко чыгарасызбы?</string>
+  <string name="cancel_downloader_install_description">Жүктөгүчтөрдү орнотуу жүрүп жатат. Эгер азыр чыгып кетсеңиз, жүктөө жокко чыгарылат.</string>
+  <string name="downloader_sources_unavailable_title">Бул жүктөөчүлөр жок</string>
+  <string name="downloader_sources_unavailable_description">Оңдоо үчүн жаңыртуу баскычын басыңыз.</string>
+  <string name="downloader_update_failed">Жүктөөчүнү жаңыртуу ишке ашкан жок: %s</string>
+  <string name="downloader_replace_fail">Жүктөөчүнү импорттоо ишке ашкан жок: %s</string>
+  <string name="select_from_storage_description">Файл тандоочуну колдонуп, сактагычтан APK файлын тандаңыз</string>
+  <string name="enable">Иштетүү</string>
+  <string name="disable">Өчүрүү</string>
+  <string name="process_runtime_memory_limit_description">Патчер процесси колдоно ала турган максималдуу эс тутум</string>
+  <string name="reset_onboarding">Киришүүнү баштапкы абалга келтирүү</string>
+  <string name="reset_onboarding_description">Кийинки колдонмо ишке киргизилгенде киришүү экранын көрсөтүү</string>
+  <string name="api_not_working_title">API кызматы учурда иштебей турат</string>
+  <string name="api_not_working_description">Кээ бир функциялар иштебей калышы мүмкүн. Жөндөөлөрдөн байланышыңызды же API URL\'ин текшериңиз.</string>
+  <string name="no_patched_apps_found">Оңдолгон колдонмолор табылган жок</string>
+  <string name="no_patched_apps_description">Учурда сиздин оңдолгон колдонмолоруңуз жок. Биринчи колдонмоңузду оңдоо менен муну өзгөртүңүз!</string>
+  <string name="patched_apps_section_title">Оңдолгон колдонмолор</string>
+  <string name="patchable_apps_section_title">Оңдолсо боло турган колдонмолор</string>
+  <string name="no_patches_found">Патчтар табылган жок</string>
+  <string name="no_patches_description">Сизде азырынча патчтар жок. Төмөндөгү баскычты басып, патчтарды кошуңуз!</string>
+  <string name="split_apk_not_supported">Бөлүнгөн APK жамап болбойт</string>
+  <string name="no_downloaders_installed">Эч кандай колдонмо жүктөгүчтөр орнотулган эмес!</string>
+  <string name="no_downloaders_trusted">Эч кандай колдонмо жүктөгүчтөргө ишеним берилген эмес! Жөндөөлөрүңүздү текшериңиз.</string>
+  <string name="patch_selector_sheet_filter_packages_title">Пакеттер</string>
+  <string name="patch_selector_sheet_actions_title">Аракеттер</string>
+  <string name="restore_default_selection">Демейки тандоону калыбына келтирүү</string>
+  <string name="deselect_all">Баарын тандоодон алып салуу</string>
+  <string name="invert_selection">Тандоону инвертирлөө</string>
+  <string name="deselect_all_except">Баарын тандоодон алып салуу, %s\'дан башкасын</string>
+  <string name="scope_dialog_title">Колдонуу</string>
+  <string name="scope_all_patches">Бардык оңдоолор</string>
+  <string name="scope_bundle_patches">%s гана</string>
+  <string name="save_as_file">Файлдарды сактоо</string>
+  <string name="export_patcher_logs">Патчер журналдарын экспорттоо</string>
+  <string name="save_logs_success">Журналдар сакталды</string>
+  <string name="downloader_activity_dialog_body">Бул жүктөөчү менен улантуу үчүн колдонуучунун аракети талап кылынат.</string>
+  <string name="patcher_step_unpack">Патчерди даярдоо</string>
+  <string name="view_announcement">Жарыяны көрүү</string>
+  <string name="license">Лицензия</string>
+  <string name="source">Булак</string>
+  <string name="repository">Репозиторий</string>
+  <string name="bundle_information_by_author">%1$s тарабынан</string>
+  <string name="version_compatibility_warning">Тандалган версия тандалган патчтар менен шайкеш келбеши мүмкүн.</string>
+  <string name="announcements">Жарыялар</string>
+  <string name="archive">Архив</string>
+  <string name="view_update">Жаңыртууну көрүү</string>
+  <string name="update_checking_downloader">Ишке киргизүүдө ReVanced Жүктөгүчтөрүнүн жаңыртууларын текшерүү</string>
+  <string name="update_checking_downloader_description">Колдонмо башталганда орнотулган ReVanced Жүктөгүчтөрүнүн жаңыртууларын текшерүү</string>
+  <string name="prereleases_warning">Алдын ала чыгарылган версиялар туруксуз болуп, мүчүлүштүктөрдү камтышы мүмкүн. Сиз колдонмонун иштебей калышын, маалыматтардын жоголушун же башка күтүлбөгөн көйгөйлөрдү баштан кечиришиңиз мүмкүн. Бул тобокелдиктерге даяр болсоңуз гана муну иштетиңиз.</string>
+  <string name="changelog">Өзгөрүүлөр журналын көрүү</string>
+  <string name="no_announcements_found">Жарыялар табылган жок</string>
+  <string name="new_announcement">Жаңы жарыя:
+%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d патч</item>
+    <item quantity="other">%d патч</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">%d патч аткаруу</item>
+    <item quantity="other">%d патчты аткаруу</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d тандалган</item>
+    <item quantity="other">%d тандалган</item>
+  </plurals>
+</resources>

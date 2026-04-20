@@ -1,0 +1,151 @@
+public abstract interface class app/revanced/manager/downloader/BaseDownloadScope : app/revanced/manager/downloader/Scope {
+}
+
+public final class app/revanced/manager/downloader/DownloadUrl : android/os/Parcelable {
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/util/Map;)Lapp/revanced/manager/downloader/DownloadUrl;
+	public static synthetic fun copy$default (Lapp/revanced/manager/downloader/DownloadUrl;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lapp/revanced/manager/downloader/DownloadUrl;
+	public final fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun toDownloadResult ()Lkotlin/Pair;
+	public fun toString ()Ljava/lang/String;
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class app/revanced/manager/downloader/Downloader {
+}
+
+public final class app/revanced/manager/downloader/DownloaderBuilder {
+}
+
+public abstract interface annotation class app/revanced/manager/downloader/DownloaderHostApi : java/lang/annotation/Annotation {
+}
+
+public final class app/revanced/manager/downloader/DownloaderKt {
+	public static final fun Downloader (ILkotlin/jvm/functions/Function1;)Lapp/revanced/manager/downloader/DownloaderBuilder;
+}
+
+public final class app/revanced/manager/downloader/DownloaderScope : app/revanced/manager/downloader/Scope {
+	public final fun download (Lkotlin/jvm/functions/Function3;)V
+	public final fun get (Lkotlin/jvm/functions/Function4;)V
+	public fun getDataDir ()Ljava/io/File;
+	public fun getDownloaderPackageName ()Ljava/lang/String;
+	public fun getHostPackageName ()Ljava/lang/String;
+	public final fun useService (Landroid/content/Intent;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class app/revanced/manager/downloader/ExtensionsKt {
+	public static final fun download (Lapp/revanced/manager/downloader/DownloaderScope;Lkotlin/jvm/functions/Function4;)V
+}
+
+public abstract interface class app/revanced/manager/downloader/GetScope : app/revanced/manager/downloader/Scope {
+	public abstract fun requestStartActivity (Landroid/content/Intent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun requestStartFragment (Ljava/lang/Class;Landroid/os/Bundle;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class app/revanced/manager/downloader/GetScope$DefaultImpls {
+	public static fun requestStartFragment (Lapp/revanced/manager/downloader/GetScope;Ljava/lang/Class;Landroid/os/Bundle;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class app/revanced/manager/downloader/InputDownloadScope : app/revanced/manager/downloader/BaseDownloadScope {
+}
+
+public abstract interface class app/revanced/manager/downloader/OutputDownloadScope : app/revanced/manager/downloader/BaseDownloadScope {
+	public abstract fun reportSize (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class app/revanced/manager/downloader/Package : android/os/Parcelable {
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lapp/revanced/manager/downloader/Package;
+	public static synthetic fun copy$default (Lapp/revanced/manager/downloader/Package;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lapp/revanced/manager/downloader/Package;
+	public final fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public abstract interface class app/revanced/manager/downloader/Scope {
+	public abstract fun getDataDir ()Ljava/io/File;
+	public abstract fun getDownloaderPackageName ()Ljava/lang/String;
+	public abstract fun getHostPackageName ()Ljava/lang/String;
+}
+
+public abstract class app/revanced/manager/downloader/UserInteractionException : java/lang/Exception {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public abstract class app/revanced/manager/downloader/UserInteractionException$Activity : app/revanced/manager/downloader/UserInteractionException {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class app/revanced/manager/downloader/UserInteractionException$Activity$Cancelled : app/revanced/manager/downloader/UserInteractionException$Activity {
+}
+
+public final class app/revanced/manager/downloader/UserInteractionException$Activity$NotCompleted : app/revanced/manager/downloader/UserInteractionException$Activity {
+	public final fun getIntent ()Landroid/content/Intent;
+	public final fun getResultCode ()I
+}
+
+public final class app/revanced/manager/downloader/UserInteractionException$RequestDenied : app/revanced/manager/downloader/UserInteractionException {
+}
+
+public final class app/revanced/manager/downloader/webview/APIKt {
+	public static final fun WebViewDownloader (ILkotlin/jvm/functions/Function4;)Lapp/revanced/manager/downloader/DownloaderBuilder;
+	public static final fun runWebView (Lapp/revanced/manager/downloader/GetScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public class app/revanced/manager/downloader/webview/IWebView$Default : app/revanced/manager/downloader/webview/IWebView {
+	public fun <init> ()V
+	public fun asBinder ()Landroid/os/IBinder;
+	public fun finish ()V
+	public fun load (Ljava/lang/String;)V
+}
+
+public abstract class app/revanced/manager/downloader/webview/IWebView$Stub : android/os/Binder, app/revanced/manager/downloader/webview/IWebView {
+	public fun <init> ()V
+	public fun asBinder ()Landroid/os/IBinder;
+	public static fun asInterface (Landroid/os/IBinder;)Lapp/revanced/manager/downloader/webview/IWebView;
+	public fun onTransact (ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+}
+
+public class app/revanced/manager/downloader/webview/IWebViewEvents$Default : app/revanced/manager/downloader/webview/IWebViewEvents {
+	public fun <init> ()V
+	public fun asBinder ()Landroid/os/IBinder;
+	public fun download (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun pageLoad (Ljava/lang/String;)V
+	public fun ready (Lapp/revanced/manager/downloader/webview/IWebView;)V
+}
+
+public abstract class app/revanced/manager/downloader/webview/IWebViewEvents$Stub : android/os/Binder, app/revanced/manager/downloader/webview/IWebViewEvents {
+	public fun <init> ()V
+	public fun asBinder ()Landroid/os/IBinder;
+	public static fun asInterface (Landroid/os/IBinder;)Lapp/revanced/manager/downloader/webview/IWebViewEvents;
+	public fun onTransact (ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+}
+
+public abstract interface class app/revanced/manager/downloader/webview/WebViewCallbackScope : app/revanced/manager/downloader/Scope {
+	public abstract fun finish (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun load (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class app/revanced/manager/downloader/webview/WebViewScope : app/revanced/manager/downloader/Scope {
+	public final fun download (Lkotlin/jvm/functions/Function5;)V
+	public fun getDataDir ()Ljava/io/File;
+	public fun getDownloaderPackageName ()Ljava/lang/String;
+	public fun getHostPackageName ()Ljava/lang/String;
+	public final fun pageLoad (Lkotlin/jvm/functions/Function3;)V
+}
+

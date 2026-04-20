@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">பேட்சர்</string>
+  <string name="onboarding_welcome_to">வரவேற்கிறோம்</string>
+  <string name="onboarding_welcome_back">வணக்கம்! இது புதிய</string>
+  <string name="onboarding_apps_subtitle">நீங்கள் இப்போது பேட்ச் செய்ய ஒரு பயன்பாட்டைத் தேர்ந்தெடுக்கலாம் அல்லது பின்னர் செய்யலாம்</string>
+  <string name="onboarding_updates_subtitle">ReVanced Manager மற்றும் பேட்ச்களைப் புதுப்பித்த நிலையில் வைத்திருக்க தானியங்கி புதுப்பிப்புகளை உள்ளமைக்கவும்</string>
+  <string name="onboarding_updates_note">ReVanced Manager, உங்கள் சாதனம் இணையத்துடன் இணைக்கப்பட்டிருந்தால், ஆரம்பப் பதிப்புகளைப் பதிவிறக்க %s உடன் இணைக்கும்.</string>
+  <string name="retry">மீண்டும் முயற்சிக்கவும்</string>
+  <string name="onboarding_skip">இப்போதைக்கு தவிர்க்கவும்</string>
+  <string name="onboarding_recommended_version">பரிந்துரைக்கப்பட்ட பதிப்பு: %s</string>
+  <string name="onboarding_permissions_skip_title">அனுமதிகளைத் தவிர்க்கவா?</string>
+  <string name="onboarding_permissions_skip_description">தேவையான அனுமதிகள் இல்லாமல், சில அம்சங்கள் சரியாகச் செயல்படாமல் போகலாம். நீங்கள் பின்னர் பயன்பாட்டு அமைப்புகளில் அவற்றிற்கு அனுமதி வழங்கலாம்.</string>
+  <string name="onboarding_permissions_skip_anyway">எப்படியும் தவிர்க்கவும்</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager சரியாகச் செயல்பட சில அனுமதிகள் தேவை</string>
+  <string name="permission_install_apps">அறியப்படாத பயன்பாடுகளை நிறுவவும்</string>
+  <string name="permission_install_apps_description">பேட்ச் செய்யப்பட்ட பயன்பாடுகளை நிறுவத் தேவை</string>
+  <string name="permission_notifications">அறிவிப்புகள்</string>
+  <string name="permission_battery">பேட்டரி மேம்படுத்தல்</string>
+  <string name="permission_battery_description">பின்னணியில் பேட்சிங் தடைபடுவதைத் தடுக்கிறது</string>
+  <string name="permission_grant">அனுமதி</string>
+  <string name="downloader_host_permission_label">ReVanced Manager பதிவிறக்கப்பான் ஹோஸ்ட்</string>
+  <string name="downloader_host_permission_description">ReVanced Manager பதிவிறக்கப்பான்களுக்கான அணுகலைக் கட்டுப்படுத்தப் பயன்படுகிறது. இதை ReVanced Manager மட்டுமே கொண்டுள்ளது.</string>
+  <string name="fab_patch_app">ஒரு பயன்பாட்டை பேட்ச் செய்யவும்</string>
+  <string name="fab_add_patches">பேட்ச்களைச் சேர்க்கவும்</string>
+  <string name="new_downloader_notification">புதிய பதிவிறக்கி(கள்) கிடைக்கிறது(ன). அவற்றை உள்ளமைக்க இங்கே கிளிக் செய்யவும்.</string>
+  <string name="patches_not_downloaded">பேட்சுகள் பதிவிறக்கம் செய்யப்படவில்லை.</string>
+  <string name="app_source_dialog_option_auto_description">நிறுவப்பட்ட பயன்பாட்டைப் பயன்படுத்தவும், பிறகு பதிவிறக்கிய APK-ஐ பயன்படுத்தவும், பிறகு கிடைக்கக்கூடிய பதிவிறக்கிகளைப் பயன்படுத்தவும்</string>
+  <string name="app_source_dialog_option_auto_unavailable">இணக்கமான பயன்பாடு அல்லது பதிவிறக்குபவர்கள் இல்லை</string>
+  <string name="app_source_dialog_option_installed_no_root">ரூட் அணுகல் இல்லாமல் ஏற்றப்பட்ட பயன்பாடுகளை மீண்டும் பேட்ச் செய்ய முடியாது</string>
+  <string name="patch_selector_item">பேட்ச்களைத் தேர்ந்தெடுக்கவும்</string>
+  <string name="patch_selector_item_description">%d பேட்ச்கள் தேர்ந்தெடுக்கப்பட்டன</string>
+  <string name="patch_selection_changed_warning">பேட்சுகளின் தேர்வு மாற்றப்பட்டுள்ளது</string>
+  <string name="apk_source_selector_item">APK மூலத்தைத் தேர்ந்தெடுக்கவும்</string>
+  <string name="apk_source_auto">தானியங்கு</string>
+  <string name="apk_source_auto_installed">தானியங்கு · நிறுவப்பட்ட APK-ஐப் பயன்படுத்துதல்</string>
+  <string name="apk_source_auto_downloaded">தானியங்கு · பதிவிறக்கிய APK-ஐப் பயன்படுத்துதல்</string>
+  <string name="apk_source_auto_downloader">தானியங்கு · கிடைக்கும் பதிவிறக்கிகளைப் பயன்படுத்தி</string>
+  <string name="apk_source_auto_storage">தானியங்கு · சேமிப்பகத்திலிருந்து தேர்வுசெய்</string>
+  <string name="apk_source_downloaded">ஏற்கனவே பதிவிறக்கப்பட்டது</string>
+  <string name="auto_updates_dialog_description">ReVanced Manager பின்வரும் கூறுகளுக்கான புதுப்பிப்புகளை அவ்வப்போது சரிபார்க்க வேண்டுமா?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced பேட்ச்கள்</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: பதிவிறக்கிகள்</string>
+  <string name="auto_updates_dialog_note">இந்த அமைப்புகளைப் பின்னர் மாற்றலாம்.
+
+    ReVanced Manager, உங்கள் சாதனம் இணையத்துடன் இணைக்கப்பட்டிருந்தால், ஆரம்பப் பதிப்புகளைப் பதிவிறக்க %s உடன் இணைக்கும்.</string>
+  <string name="announcements_filter_tag">டேக் மூலம் வடிகட்டு</string>
+  <string name="announcements_show_archived">காப்பகப்படுத்தப்பட்டதைக் காட்டு</string>
+  <string name="updates_description">புதுப்பிப்புகளைச் சரிபார்த்து மாற்றப் பதிவைப் பார்க்கவும்</string>
+  <string name="downloads_description">பதிவிறக்குபவர்கள் மற்றும் பதிவிறக்கப்பட்ட பயன்பாடுகள்</string>
+  <string name="safeguards_toggled_warning">பாதுகாப்புகள் மாற்றப்பட்டுள்ளன</string>
+  <string name="about_app_name">%1$s பற்றி</string>
+  <string name="search_languages">மொழிகளைத் தேடு…</string>
+  <string name="keystore">கீஸ்டோர்</string>
+  <string name="patches_selections">பேட்ச் தேர்வுகள்</string>
+  <string name="select_bundle_for_import">இறக்குமதி செய்ய தொகுப்பைத் தேர்ந்தெடுக்கவும்</string>
+  <string name="select_bundle_for_export">ஏற்றுமதி செய்ய தொகுப்பைத் தேர்ந்தெடுக்கவும்</string>
+  <string name="patch_selection_packages">சேமிக்கப்பட்ட தேர்வுகள் கொண்ட பயன்பாடுகள்</string>
+  <string name="patch_selection_entries">மொத்தமாக தேர்ந்தெடுக்கப்பட்ட பேட்ச்கள்</string>
+  <string name="reset_configuration">உள்ளமைவை மீட்டமை</string>
+  <string name="reset_patch_selection">பேட்ச் தேர்வுகள்</string>
+  <string name="reset_patch_options">பேட்ச் விருப்பங்கள்</string>
+  <string name="downloaders">பதிவிறக்குபவர்கள்</string>
+  <string name="downloader_prereleases">முன்-வெளியீடுகளைப் பயன்படுத்துக</string>
+  <string name="downloader_prereleases_description">முக்கிய பதிவிறக்கியின் முன்-வெளியீட்டுப் பதிப்புகளைப் பயன்படுத்துக</string>
+  <string name="downloader_state_loaded">ஏற்றப்பட்டது</string>
+  <string name="downloader_state_failed">ஏற்றத் தவறிவிட்டது. மேலும் விவரங்களுக்கு கிளிக் செய்யவும்</string>
+  <string name="downloader_state_missing">காணவில்லை</string>
+  <string name="downloader_delete_apps_title">தேர்ந்தெடுக்கப்பட்ட பயன்பாடுகளை நீக்கு</string>
+  <string name="downloader_delete_apps_description">தேர்ந்தெடுக்கப்பட்ட பயன்பாடுகளை நீக்க நீங்கள் உறுதியாக இருக்கிறீர்களா?</string>
+  <string name="downloader_delete_single_description">\"%s\" என்பதை நீக்க விரும்புகிறீர்களா?</string>
+  <string name="downloader_settings_no_apps_description">ReVanced Manager மூலம் பதிவிறக்கப்பட்ட பயன்பாடுகள் இங்கே தோன்றும்.</string>
+  <string name="downloader_url">பதிவிறக்கி URL</string>
+  <string name="downloader_add">பதிவிறக்கியைச் சேர்</string>
+  <string name="select_downloader_type_dialog_description">URL அல்லது உள்ளூர் கோப்புகளிலிருந்து புதிய பதிவிறக்கிகளைச் சேர்க்கவும்</string>
+  <string name="local_downloaders_description">உள்ளூர் சேமிப்பகத்திலிருந்து பதிவிறக்கிகளைச் சேர்க்கவும்.</string>
+  <string name="remote_downloaders_description">URL இலிருந்து பதிவிறக்கிகளைச் சேர்க்கவும். தானாகவே புதுப்பிக்கப்படலாம்.</string>
+  <string name="install_revanced_downloaders">ReVanced Manager க்குள் நேரடியாக பயன்பாடுகளைப் பெற பதிவிறக்கிகளை நிறுவவும்.</string>
+  <string name="install_revanced_downloader">ReVanced பதிவிறக்கிகளை நிறுவவும்</string>
+  <string name="cancel_downloader_install_title">பதிவிறக்கிகளை நிறுவுவதை ரத்து செய்யவா?</string>
+  <string name="cancel_downloader_install_description">பதிவிறக்கிகளை நிறுவும் பணி நடைபெறுகிறது. நீங்கள் இப்போது வெளியேறினால், பதிவிறக்கம் ரத்து செய்யப்படும்.</string>
+  <string name="downloader_sources_unavailable_title">இந்த பதிவிறக்கிகள் காணவில்லை</string>
+  <string name="downloader_sources_unavailable_description">இதைச் சரிசெய்ய புதுப்பிப்பு பொத்தானைக் கிளிக் செய்யவும்.</string>
+  <string name="downloader_update_failed">பதிவிறக்கியைப் புதுப்பிக்கத் தவறிவிட்டது: %s</string>
+  <string name="downloader_replace_fail">பதிவிறக்கியை இறக்குமதி செய்யத் தவறிவிட்டது: %s</string>
+  <string name="select_from_storage_description">கோப்புத் தேர்ந்தெடுப்பான் பயன்படுத்தி சேமிப்பகத்திலிருந்து ஒரு APK கோப்பைத் தேர்ந்தெடுக்கவும்</string>
+  <string name="enable">இயக்கு</string>
+  <string name="disable">முடக்கு</string>
+  <string name="process_runtime_memory_limit_description">பேட்சர் செயல்முறை பயன்படுத்தக்கூடிய அதிகபட்ச நினைவக அளவு</string>
+  <string name="reset_onboarding">ஆன்போர்டிங்கை மீட்டமை</string>
+  <string name="reset_onboarding_description">அடுத்த பயன்பாடு தொடங்கும்போது ஆன்போர்டிங் திரையைக் காட்டு</string>
+  <string name="api_not_working_title">API சேவை தற்போது முடக்கப்பட்டுள்ளது.</string>
+  <string name="api_not_working_description">சில அம்சங்கள் பாதிக்கப்படலாம். உங்கள் இணைப்பு அல்லது API URL அமைப்புகளில் சரிபார்க்கவும்.</string>
+  <string name="no_patched_apps_found">பேட்ச் செய்யப்பட்ட பயன்பாடுகள் எதுவும் காணப்படவில்லை</string>
+  <string name="no_patched_apps_description">எங்களுக்குத் தெரிந்த எந்த பேட்ச் செய்யப்பட்ட பயன்பாடுகளும் உங்களிடம் தற்போது இல்லை. உங்கள் முதல் பயன்பாட்டை பேட்ச் செய்வதன் மூலம் அதை மாற்றவும்!</string>
+  <string name="patched_apps_section_title">பேட்ச் செய்யப்பட்ட பயன்பாடுகள்</string>
+  <string name="patchable_apps_section_title">பேட்ச் செய்யக்கூடிய பயன்பாடுகள்</string>
+  <string name="no_patches_found">பேட்ச்கள் எதுவும் காணப்படவில்லை</string>
+  <string name="no_patches_description">உங்களிடம் இன்னும் பேட்ச்கள் எதுவும் இல்லை. கீழே உள்ள பொத்தானைத் தட்டுவதன் மூலம் பேட்ச்களைச் சேர்க்கவும்!</string>
+  <string name="split_apk_not_supported">பிளவுபட்ட APKகளை பேட்ச் செய்ய முடியாது</string>
+  <string name="no_downloaders_installed">பயன்பாட்டு பதிவிறக்கிகள் எதுவும் நிறுவப்படவில்லை!</string>
+  <string name="no_downloaders_trusted">எந்த பயன்பாட்டு பதிவிறக்கிகளும் நம்பப்படவில்லை! உங்கள் அமைப்புகளைச் சரிபார்க்கவும்.</string>
+  <string name="patch_selector_sheet_filter_packages_title">தொகுப்புகள்</string>
+  <string name="patch_selector_sheet_actions_title">செயல்கள்</string>
+  <string name="restore_default_selection">இயல்புநிலைத் தேர்வை மீட்டமை</string>
+  <string name="deselect_all">அனைத்தையும் தேர்வுநீக்கு</string>
+  <string name="invert_selection">தேர்வைப் புரட்டு</string>
+  <string name="deselect_all_except">%s தவிர மற்ற அனைத்தையும் தேர்வு நீக்கவும்</string>
+  <string name="scope_dialog_title">இதற்குப் பயன்படுத்து</string>
+  <string name="scope_all_patches">அனைத்துப் பேட்ச்களும்</string>
+  <string name="scope_bundle_patches">%s மட்டும்</string>
+  <string name="save_as_file">கோப்புகளில் சேமி</string>
+  <string name="export_patcher_logs">பேட்சர் பதிவுகளை ஏற்றுமதி செய்</string>
+  <string name="save_logs_success">பதிவுகள் சேமிக்கப்பட்டன</string>
+  <string name="downloader_activity_dialog_body">இந்த பதிவிறக்குபவருடன் தொடர பயனர் தொடர்பு தேவை.</string>
+  <string name="patcher_step_unpack">பேட்சரைத் தயார் செய்யவும்</string>
+  <string name="view_announcement">அறிவிப்பைக் காண்க</string>
+  <string name="license">உரிமம்</string>
+  <string name="source">ஆதாரம்</string>
+  <string name="repository">களஞ்சியம்</string>
+  <string name="bundle_information_by_author">%1$s ஆல்</string>
+  <string name="version_compatibility_warning">தேர்ந்தெடுக்கப்பட்ட பதிப்பு தேர்ந்தெடுக்கப்பட்ட பேட்சுகளுடன் இணக்கமாக இல்லாமல் இருக்கலாம்.</string>
+  <string name="announcements">அறிவிப்புகள்</string>
+  <string name="archive">காப்பகம்</string>
+  <string name="view_update">புதுப்பிப்பைப் பார்க்கவும்</string>
+  <string name="update_checking_downloader">தொடங்கும்போது ReVanced பதிவிறக்கிகளின் புதுப்பிப்புகளைச் சரிபார்க்கவும்</string>
+  <string name="update_checking_downloader_description">பயன்பாடு தொடங்கும்போது நிறுவப்பட்ட ReVanced பதிவிறக்கிகளுக்கு புதுப்பிப்புகளைச் சரிபார்க்கவும்</string>
+  <string name="prereleases_warning">முன்கூட்டிய வெளியீட்டுப் பதிப்புகள் நிலையற்றதாகவும் பிழைகள் கொண்டதாகவும் இருக்கலாம். செயலிழப்புகள், தரவு இழப்பு அல்லது பிற எதிர்பாராத சிக்கல்களை நீங்கள் அனுபவிக்கலாம். இந்த அபாயங்களை நீங்கள் ஏற்றுக்கொண்டால் மட்டுமே இதை இயக்கவும்.</string>
+  <string name="changelog">மாற்றப் பதிவைப் பார்க்கவும்</string>
+  <string name="no_announcements_found">அறிவிப்புகள் எதுவும் கண்டறியப்படவில்லை</string>
+  <string name="new_announcement">புதிய அறிவிப்பு:
+%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d பேட்ச்</item>
+    <item quantity="other">%d பேட்ச்கள்</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">%d பேட்ச் செயல்படுத்து</item>
+    <item quantity="other">%d பேட்ச்களை செயல்படுத்து</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d தேர்ந்தெடுக்கப்பட்டது</item>
+    <item quantity="other">%d தேர்ந்தெடுக்கப்பட்டன</item>
+  </plurals>
+</resources>

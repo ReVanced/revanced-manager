@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings with new lines must be raw strings, where the string is wrapped in double quotes and new lines are regular line breaks and not \n
+    Raw strings still require escaping embedded double quotes, but single quote characters can be escaped or used as-is.
+
+    Raw strings are required because Crowdin AI translations regularly gets confused and
+    replace \n with an encoded new line character.
+
+    Bad:
+        <string name="summary_key">First \'item\' text\nSecond \"item\" text</string>
+    Good:
+        <string name="summary_key">"First 'item' text
+Second \"item\" text"</string>
+
+-->
+<resources>
+  <string name="patcher">Lappeverktøy</string>
+  <string name="onboarding_welcome_to">Velkommen til</string>
+  <string name="onboarding_welcome_back">Hei! Det er den nye</string>
+  <string name="onboarding_apps_subtitle">Du kan velge en app å patche nå eller gjøre det senere</string>
+  <string name="onboarding_updates_subtitle">Konfigurer automatiske oppdateringer for å holde ReVanced Manager og patcher oppdatert</string>
+  <string name="onboarding_updates_note">ReVanced Manager vil koble til %s for å laste ned innledende versjoner hvis enheten din er koblet til internett.</string>
+  <string name="retry">Prøv på nytt</string>
+  <string name="onboarding_skip">Hopp over for nå</string>
+  <string name="onboarding_recommended_version">Anbefalt versjon: %s</string>
+  <string name="onboarding_permissions_skip_title">Hopp over tillatelser?</string>
+  <string name="onboarding_permissions_skip_description">Uten de nødvendige tillatelsene kan enkelte funksjoner ikke fungere korrekt. Du kan gi dem senere i appinnstillingene.</string>
+  <string name="onboarding_permissions_skip_anyway">Hopp over likevel</string>
+  <string name="onboarding_permissions_subtitle">ReVanced Manager trenger noen tillatelser for å fungere skikkelig</string>
+  <string name="permission_install_apps">Installer ukjente apper</string>
+  <string name="permission_install_apps_description">Kreves for å installere lappede applikasjoner</string>
+  <string name="permission_notifications">Varsler</string>
+  <string name="permission_battery">Batterioptimalisering</string>
+  <string name="permission_battery_description">Forhindrer at lapping avbrytes i bakgrunnen</string>
+  <string name="permission_grant">Gi</string>
+  <string name="downloader_host_permission_label">ReVanced Manager nedlastervert</string>
+  <string name="downloader_host_permission_description">Brukes til å kontrollere tilgang til ReVanced Manager-nedlastere. Kun ReVanced Manager har dette.</string>
+  <string name="fab_patch_app">Lap en app</string>
+  <string name="fab_add_patches">Legg til lapper</string>
+  <string name="new_downloader_notification">Ny(e) nedlaster(e) tilgjengelig. Klikk her for å konfigurere dem.</string>
+  <string name="patches_not_downloaded">Oppdateringer er ikke lastet ned.</string>
+  <string name="app_source_dialog_option_auto_description">Bruk installert app, deretter nedlastet APK, deretter tilgjengelige nedlastere</string>
+  <string name="app_source_dialog_option_auto_unavailable">Ingen kompatibel app eller nedlastere tilgjengelig</string>
+  <string name="app_source_dialog_option_installed_no_root">Monterte apper kan ikke lappes igjen uten root-tilgang</string>
+  <string name="patch_selector_item">Velg lapper</string>
+  <string name="patch_selector_item_description">%d lapper valgt</string>
+  <string name="patch_selection_changed_warning">Utvalget av oppdateringer er endret</string>
+  <string name="apk_source_selector_item">Velg APK-kilde</string>
+  <string name="apk_source_auto">Automatisk</string>
+  <string name="apk_source_auto_installed">Automatisk · Bruker installert APK</string>
+  <string name="apk_source_auto_downloaded">Automatisk · Bruker nedlastet APK</string>
+  <string name="apk_source_auto_downloader">Automatisk · Bruker tilgjengelige nedlastere</string>
+  <string name="apk_source_auto_storage">Automatisk · Velg fra lagring</string>
+  <string name="apk_source_downloaded">Allerede nedlastet</string>
+  <string name="auto_updates_dialog_description">Vil du at ReVanced Manager periodisk skal sjekke etter oppdateringer for følgende komponenter?</string>
+  <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+  <string name="auto_updates_dialog_patches">ReVanced-lapper</string>
+  <string name="auto_updates_dialog_downloaders">ReVanced Manager: Nedlastere</string>
+  <string name="auto_updates_dialog_note">Disse innstillingene kan endres senere.
+
+    ReVanced Manager vil koble til %s for å laste ned innledende versjoner hvis enheten din er koblet til internett.</string>
+  <string name="announcements_filter_tag">Filtrer etter tagg</string>
+  <string name="announcements_show_archived">Vis arkiverte</string>
+  <string name="updates_description">Sjekk etter oppdateringer og se endringslogg</string>
+  <string name="downloads_description">Nedlastere og nedlastede apper</string>
+  <string name="safeguards_toggled_warning">Sikkerhetsmekanismer er vekslet</string>
+  <string name="about_app_name">Om %1$s</string>
+  <string name="search_languages">Søk språk …</string>
+  <string name="keystore">Nøkkelarkiv</string>
+  <string name="patches_selections">Valg av lapper</string>
+  <string name="select_bundle_for_import">Velg pakke å importere til</string>
+  <string name="select_bundle_for_export">Velg pakke å eksportere fra</string>
+  <string name="patch_selection_packages">Apper med lagrede valg</string>
+  <string name="patch_selection_entries">Totalt antall valgte lapper</string>
+  <string name="reset_configuration">Tilbakestill konfigurasjon</string>
+  <string name="reset_patch_selection">Valg av lapper</string>
+  <string name="reset_patch_options">Lappealternativer</string>
+  <string name="downloaders">Nedlastere</string>
+  <string name="downloader_prereleases">Bruk forhåndsutgivelser</string>
+  <string name="downloader_prereleases_description">Bruk forhåndsversjoner av hovednedlasteren</string>
+  <string name="downloader_state_loaded">Lastet</string>
+  <string name="downloader_state_failed">Kunne ikke lastes inn. Klikk for mer informasjon</string>
+  <string name="downloader_state_missing">Mangler</string>
+  <string name="downloader_delete_apps_title">Slett valgte apper</string>
+  <string name="downloader_delete_apps_description">Er du sikker på at du vil slette de valgte appene?</string>
+  <string name="downloader_delete_single_description">Er du sikker på at du vil slette \"%s\"?</string>
+  <string name="downloader_settings_no_apps_description">Apper lastet ned via ReVanced Manager vil vises her.</string>
+  <string name="downloader_url">Nedlaster-URL</string>
+  <string name="downloader_add">Legg til nedlaster</string>
+  <string name="select_downloader_type_dialog_description">Legg til nye nedlastere fra URL eller lokale filer</string>
+  <string name="local_downloaders_description">Legg til nedlastere fra lokal lagring.</string>
+  <string name="remote_downloaders_description">Legg til nedlastere fra URL. Kan oppdateres automatisk.</string>
+  <string name="install_revanced_downloaders">Installer nedlastere for å få apper direkte i ReVanced Manager.</string>
+  <string name="install_revanced_downloader">Installer ReVanced-nedlastere</string>
+  <string name="cancel_downloader_install_title">Avbryt nedlasterinstallasjon?</string>
+  <string name="cancel_downloader_install_description">En nedlasterinstallasjon pågår. Hvis du forlater nå, vil nedlastingen bli avbrutt.</string>
+  <string name="downloader_sources_unavailable_title">Disse nedlasterne mangler</string>
+  <string name="downloader_sources_unavailable_description">Klikk på oppdateringsknappen for å fikse det.</string>
+  <string name="downloader_update_failed">Kunne ikke oppdatere nedlaster: %s</string>
+  <string name="downloader_replace_fail">Kunne ikke importere nedlaster: %s</string>
+  <string name="select_from_storage_description">Velg en APK-fil fra lagring med filvelgeren</string>
+  <string name="enable">Aktiver</string>
+  <string name="disable">Deaktiver</string>
+  <string name="process_runtime_memory_limit_description">Maksimal mengde minne som lappeprosessen kan bruke</string>
+  <string name="reset_onboarding">Tilbakestill introduksjon</string>
+  <string name="reset_onboarding_description">Vis introduksjonsskjermen ved neste applansering</string>
+  <string name="api_not_working_title">API-tjenesten er for øyeblikket nede</string>
+  <string name="api_not_working_description">Noen funksjoner kan være påvirket. Sjekk tilkoblingen din eller API-URL i innstillingene.</string>
+  <string name="no_patched_apps_found">Ingen lappede apper funnet</string>
+  <string name="no_patched_apps_description">Du har for øyeblikket ingen lappede apper som vi kjenner til. Endre det ved å lappe din første app!</string>
+  <string name="patched_apps_section_title">Lappede apper</string>
+  <string name="patchable_apps_section_title">Apper som kan lappes</string>
+  <string name="no_patches_found">Ingen lapper funnet</string>
+  <string name="no_patches_description">Du har ingen lapper ennå. Legg til lapper ved å trykke på knappen nedenfor!</string>
+  <string name="split_apk_not_supported">Delte APK-er kan ikke lappes</string>
+  <string name="no_downloaders_installed">Ingen app-nedlastere er installert!</string>
+  <string name="no_downloaders_trusted">Ingen app-nedlastere er betrodd! Vennligst sjekk innstillingene dine.</string>
+  <string name="patch_selector_sheet_filter_packages_title">Pakker</string>
+  <string name="patch_selector_sheet_actions_title">Handlinger</string>
+  <string name="restore_default_selection">Gjenopprett standardvalg</string>
+  <string name="deselect_all">Avmarker alle</string>
+  <string name="invert_selection">Inverter valg</string>
+  <string name="deselect_all_except">Avmarker alle unntatt %s</string>
+  <string name="scope_dialog_title">Bruk på</string>
+  <string name="scope_all_patches">Alle oppdateringer</string>
+  <string name="scope_bundle_patches">Kun %s</string>
+  <string name="save_as_file">Lagre til filer</string>
+  <string name="export_patcher_logs">Eksporter lappelogger</string>
+  <string name="save_logs_success">Logger lagret</string>
+  <string name="downloader_activity_dialog_body">Brukerinteraksjon er påkrevd for å fortsette med denne nedlasteren.</string>
+  <string name="patcher_step_unpack">Forbered oppdateringsprogram</string>
+  <string name="view_announcement">Vis kunngjøring</string>
+  <string name="license">Lisens</string>
+  <string name="source">Kilde</string>
+  <string name="repository">Repositorium</string>
+  <string name="bundle_information_by_author">Av %1$s</string>
+  <string name="version_compatibility_warning">Valgt versjon kan være inkompatibel med valgte patcher</string>
+  <string name="announcements">Kunngjøringer</string>
+  <string name="archive">Arkiv</string>
+  <string name="view_update">Vis oppdatering</string>
+  <string name="update_checking_downloader">Sjekk etter ReVanced-nedlasteroppdateringer ved oppstart</string>
+  <string name="update_checking_downloader_description">Sjekk etter oppdateringer til installerte ReVanced-nedlastere når applikasjonen starter</string>
+  <string name="prereleases_warning">Forhåndsutgivelser kan være ustabile og inneholde feil. Du kan oppleve krasjer, tap av data eller andre uventede problemer. Aktiver dette kun hvis du er komfortabel med disse risikoene.</string>
+  <string name="changelog">Vis endringslogg</string>
+  <string name="no_announcements_found">Ingen kunngjøringer funnet</string>
+  <string name="new_announcement">Ny kunngjøring:
+%s</string>
+  <plurals name="patch_count">
+    <item quantity="one">%d oppdatering</item>
+    <item quantity="other">%d oppdateringer</item>
+  </plurals>
+  <plurals name="patches_executed">
+    <item quantity="one">Utfør %d oppdatering</item>
+    <item quantity="other">Utfør %d oppdateringer</item>
+  </plurals>
+  <plurals name="selected_count">
+    <item quantity="one">%d valgt</item>
+    <item quantity="other">%d valgt</item>
+  </plurals>
+</resources>
