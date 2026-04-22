@@ -1,3 +1,10 @@
+# app [2.6.0-dev.12](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.11...v2.6.0-dev.12) (2026-04-22)
+
+
+### Performance Improvements
+
+* **patcher:** Silence trace logs to fix GC thrashing and OOM ([#3287](https://github.com/ReVanced/revanced-manager/issues/3287)) ([ab4bdd3](https://github.com/ReVanced/revanced-manager/commit/ab4bdd34c5508ae3b03c7a293c91975c38ded22b))
+
 # app [2.6.0-dev.11](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.10...v2.6.0-dev.11) (2026-04-16)
 
 
