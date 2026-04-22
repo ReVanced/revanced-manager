@@ -60,7 +60,6 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
-import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog

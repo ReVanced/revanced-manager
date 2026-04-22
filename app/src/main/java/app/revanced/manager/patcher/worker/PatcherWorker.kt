@@ -184,7 +184,9 @@ class PatcherWorker(
 
                 is SelectedApp.Search -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
+                        // Downloaders are loaded at startup; if the list is empty here it indicates a load failure.
                         downloaderRepository.loadedDownloadersFlow.first()
+                            .ifEmpty { error("No downloaders are loaded") }
                             .firstNotNullOfOrNull { downloader ->
                                 try {
                                     val getScope = object : GetScope, Scope by downloader.scopeImpl {
