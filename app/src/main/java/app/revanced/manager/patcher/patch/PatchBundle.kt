@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.io.IOException
 import java.util.jar.JarFile
-import kotlin.collections.filter
 
 @Parcelize
 data class PatchBundle(val patchesJar: String) : Parcelable {

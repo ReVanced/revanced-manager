@@ -27,8 +27,6 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.util.transparentListItemColors
-import kotlin.collections.firstOrNull
-import kotlin.collections.map
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
