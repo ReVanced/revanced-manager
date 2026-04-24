@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -18,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import app.revanced.manager.R
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -47,6 +49,7 @@ private inline fun <T> NumberInputDialog(
             OutlinedTextField(
                 value = fieldValue,
                 onValueChange = { fieldValue = it },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 placeholder = {
                     Text(stringResource(R.string.dialog_input_placeholder))
                 },

@@ -1,6 +1,7 @@
 package app.revanced.manager.patcher.runtime.process
 
 import android.os.Parcelable
+import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.patch.PatchBundle
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -14,6 +15,7 @@ data class Parameters(
     val inputFile: String,
     val outputFile: String,
     val configurations: List<PatchConfiguration>,
+    val minLogLevel: LogLevel,
 ) : Parcelable
 
 @Parcelize

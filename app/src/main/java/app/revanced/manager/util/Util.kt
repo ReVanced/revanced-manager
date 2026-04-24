@@ -264,7 +264,13 @@ val ScrollState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().
 fun <R> (() -> R).withHapticFeedback(constant: Int): () -> R {
     val view = LocalView.current
     return {
-        view.performHapticFeedback(constant)
+        try {
+            view.performHapticFeedback(constant)
+        } catch (e: NullPointerException) {
+            // Note, some devices using RichTap hardware reported crashing, what??
+            // https://github.com/ReVanced/revanced-manager/issues/3224
+            Log.e("RVM-Util/Vibration", "Vibration failed with NPE, what?", e)
+        }
         this()
     }
 }
@@ -274,7 +280,13 @@ fun <R> (() -> R).withHapticFeedback(constant: Int): () -> R {
 fun <T, R> ((T) -> R).withHapticFeedback(constant: Int): (T) -> R {
     val view = LocalView.current
     return {
-        view.performHapticFeedback(constant)
+        try {
+            view.performHapticFeedback(constant)
+        } catch (e: NullPointerException) {
+            // Note, some devices using RichTap hardware reported crashing, what??
+            // https://github.com/ReVanced/revanced-manager/issues/3224
+            Log.e("RVM-Util/Vibration", "Vibration failed with NPE, what?", e)
+        }
         this(it)
     }
 }

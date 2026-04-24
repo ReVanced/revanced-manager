@@ -760,12 +760,7 @@ class PatcherViewModel(
             }
         }
 
-        fun formatLogLine(level: LogLevel, message: String) = when (level) {
-            LogLevel.INFO -> message
-            LogLevel.WARN -> "Warning: $message"
-            LogLevel.ERROR -> "Error: $message"
-            LogLevel.TRACE -> "Debug: $message"
-        }
+        fun formatLogLine(level: LogLevel, message: String) = "[${level.name}] $message"
 
         fun appendLog(current: String?, line: String): String =
             current?.takeIf { it.isNotBlank() }
