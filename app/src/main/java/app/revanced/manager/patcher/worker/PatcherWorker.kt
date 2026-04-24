@@ -49,7 +49,6 @@ import app.revanced.manager.util.tag
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -193,7 +192,7 @@ class PatcherWorker(
 
                 is SelectedApp.Search -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {
-                            downloaderRepository.loadedDownloadersFlow.first()
+                        downloaderRepository.loadedDownloadersFlow.first()
                             .firstNotNullOfOrNull { downloader ->
                                 try {
                                     val getScope = object : GetScope, Scope by downloader.scopeImpl {
@@ -223,7 +222,11 @@ class PatcherWorker(
                                     Log.i(tag, "User interaction cancelled downloader flow", e)
                                     throw e
                                 } catch (e: IOException) {
-                                    Log.w(tag, "Downloader ${downloader.name} failed with an IO error, trying next downloader", e)
+                                    Log.w(
+                                        tag,
+                                        "Downloader ${downloader.name} failed with an IO error, trying next downloader",
+                                        e
+                                    )
                                     null
                                 }?.let { (data, _) -> download(downloader, data) }
                             } ?: throw Exception("App is not available.")
@@ -232,8 +235,10 @@ class PatcherWorker(
 
                 is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
                 is SelectedApp.Installed -> {
-                    val pkgInfo = pm.getPackageInfo(selectedApp.packageName) ?: throw IllegalStateException("Package ${selectedApp.packageName} is not installed.")
-                    val appInfo = pkgInfo.applicationInfo ?: throw IllegalStateException("Failed to retrieve application info for ${selectedApp.packageName}.")
+                    val pkgInfo = pm.getPackageInfo(selectedApp.packageName)
+                        ?: throw IllegalStateException("Package ${selectedApp.packageName} is not installed.")
+                    val appInfo = pkgInfo.applicationInfo
+                        ?: throw IllegalStateException("Failed to retrieve application info for ${selectedApp.packageName}.")
                     File(appInfo.sourceDir)
                 }
             }

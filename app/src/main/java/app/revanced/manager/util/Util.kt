@@ -100,18 +100,10 @@ inline fun uiSafe(context: Context, @StringRes toastMsg: Int, logMsg: String, bl
     } catch (e: CancellationException) {
         throw e
     } catch (error: Exception) {
-        val showToast = {
-            context.toast(
-                context.getString(
-                    toastMsg,
-                    error.simpleMessage()
-                )
-            )
+        Handler(Looper.getMainLooper()).post {
+            context.toast(context.getString(toastMsg, error.simpleMessage()))
+            Log.e(tag, logMsg, error)
         }
-        if (Looper.myLooper() == Looper.getMainLooper()) showToast()
-        else Handler(Looper.getMainLooper()).post(showToast)
-
-        Log.e(tag, logMsg, error)
     }
 }
 

@@ -72,11 +72,9 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -143,10 +141,6 @@ class PatcherViewModel(
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
-    private val progressEventChannel = Channel<ProgressEvent>(
-        capacity = 100,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
 
     private val tempDir = savedStateHandle.saveable(key = "tempDir") {
         fs.uiTempDir.resolve("installer").also {
@@ -277,12 +271,6 @@ class PatcherViewModel(
         viewModelScope.launch {
             installedApp = installedAppRepository.get(packageName)
         }
-
-        viewModelScope.launch {
-            for (event in progressEventChannel) {
-                applyProgressEvent(event)
-            }
-        }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -296,18 +284,14 @@ class PatcherViewModel(
                     withTimeout(Duration.ofMinutes(1L)) {
                         rootInstaller.mount(packageName)
                     }
-                }   
+                }
             }
         }
     }
 
-    private fun handleProgressEvent(event: ProgressEvent) {
-        progressEventChannel.trySend(event)
-    }
-
-    private fun applyProgressEvent(event: ProgressEvent) {
+    private fun handleProgressEvent(event: ProgressEvent) = viewModelScope.launch {
         if (event is ProgressEvent.Failed && event.stepId == null && steps.any { it.state == State.FAILED }) {
-            return
+            return@launch
         }
 
         val stepIndex = steps.indexOfFirst {
@@ -511,8 +495,22 @@ class PatcherViewModel(
             addAll(patchingConfiguration)
             addAll(runtimeConfiguration)
             add("Root permissions: ${if (hasRoot) "Yes" else "No"}")
-            add("RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available")
-            add("Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available")
+            add(
+                "RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${
+                    Formatter.formatFileSize(
+                        context,
+                        memInfo.totalMem
+                    )
+                } available"
+            )
+            add(
+                "Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${
+                    Formatter.formatFileSize(
+                        context,
+                        statFs.totalBytes
+                    )
+                } available"
+            )
             add("Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
             add("Supported architectures: ${Build.SUPPORTED_ABIS.joinToString()}")
             add("Model: ${Build.MODEL}")

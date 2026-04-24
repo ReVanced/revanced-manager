@@ -120,13 +120,13 @@ class SelectedAppInfoViewModel(
             val downloadedAppsDeferred =
                 async(Dispatchers.IO) { downloadedAppRepository.getAllByPackage(packageName) }
 
-        installedAppData =
-            packageInfo.await()?.let {
+            installedAppData =
+                packageInfo.await()?.let {
                     // Split APKs cannot be used as a patch source.
                     if (it.isSplitApk()) return@let null
                     SelectedApp.Installed(
                         packageName,
-                        it.versionName ?: app.getString(R.string.apk_version_unknown)
+                        it.versionName ?: error("App version field not set")
                     ) to installedAppDeferred.await()
                 }
 
@@ -232,18 +232,29 @@ class SelectedAppInfoViewModel(
         val current = selectedApp
         selectedApp = when (current) {
             is SelectedApp.Search -> current.copy(version = version)
-            is SelectedApp.Download -> if (current.version == version) current else SelectedApp.Search(packageName, version)
-            is SelectedApp.Installed -> if (current.version == version) current else SelectedApp.Search(packageName, version)
-            is SelectedApp.Local -> if (current.version == version) current else SelectedApp.Search(packageName, version)
+            is SelectedApp.Download -> if (current.version == version) current else SelectedApp.Search(
+                packageName,
+                version
+            )
+
+            is SelectedApp.Installed -> if (current.version == version) current else SelectedApp.Search(
+                packageName,
+                version
+            )
+
+            is SelectedApp.Local -> if (current.version == version) current else SelectedApp.Search(
+                packageName,
+                version
+            )
         }
     }
 
     fun resolveAutoSource(requiredVersion: String?): SelectedApp {
         installedAppData?.let { (installed, meta) ->
             val matchesVersion = requiredVersion == null || installed.version == requiredVersion
-            val usable = when {
-                meta?.installType == InstallType.MOUNT && !hasRoot -> false
-                meta?.installType == InstallType.DEFAULT -> false
+            val usable = when (meta?.installType) {
+                InstallType.MOUNT if !hasRoot -> false
+                InstallType.DEFAULT -> false
                 else -> true
             }
             if (matchesVersion && usable) return installed
@@ -288,7 +299,7 @@ class SelectedAppInfoViewModel(
                         pm.getPackageInfo(this)?.let { info ->
                             SelectedApp.Local(
                                 packageName = info.packageName,
-                                version = info.versionName ?: app.getString(R.string.apk_version_unknown),
+                                version = info.versionName ?: error("APK version field not set"),
                                 file = this,
                                 temporary = true
                             )
