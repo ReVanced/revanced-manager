@@ -16,10 +16,10 @@ class LocalSource<T>(
     file: File,
     loader: Loader<T>
 ) : Source<T>(name, uid, error, file, loader) {
-    suspend fun ActionContext.replace(patches: InputStream) {
+    suspend fun ActionContext.replace(inputStream: InputStream) {
         withContext(Dispatchers.IO) {
             outputStream().use { outputStream ->
-                patches.copyTo(outputStream)
+                inputStream.copyTo(outputStream)
             }
         }
     }
