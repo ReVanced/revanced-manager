@@ -41,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -61,6 +62,8 @@ import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
+import app.revanced.manager.ui.model.RootCheckResult
+import kotlinx.coroutines.launch
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.toast
@@ -87,6 +90,8 @@ fun PatcherScreen(
         }
 
     val patcherSucceeded by viewModel.patcherSucceeded.observeAsState(null)
+    val coroutineScope = rememberCoroutineScope()
+    var isCheckingRoot by remember { mutableStateOf(false) }
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (viewModel.installedPackageName != null || !viewModel.isInstalling) } }
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
     var showDismissConfirmationDialog by rememberSaveable { mutableStateOf(false) }
@@ -117,6 +122,7 @@ fun PatcherScreen(
 
     if (showInstallPicker)
         InstallPickerDialog(
+            isMagiskInstalled = viewModel.isMagiskInstalled,
             onDismiss = { showInstallPicker = false },
             onConfirm = viewModel::install
         )
@@ -243,10 +249,25 @@ fun PatcherScreen(
                                 )
                             },
                             onClick = {
-                                if (viewModel.installedPackageName == null)
-                                    if (viewModel.isDeviceRooted()) showInstallPicker = true
-                                    else viewModel.install(InstallType.DEFAULT)
-                                else viewModel.open()
+                                if (viewModel.installedPackageName == null) {
+                                    isCheckingRoot = true
+                                    coroutineScope.launch {
+                                        try {
+                                            when (viewModel.requestRootForInstall()) {
+                                                RootCheckResult.GRANTED -> showInstallPicker = true
+                                                RootCheckResult.DENIED,
+                                                RootCheckResult.UNAVAILABLE -> viewModel.install(InstallType.DEFAULT)
+                                            }
+                                        } catch (_: Exception) {
+                                            context.toast(R.string.root_check_failed)
+                                            viewModel.install(InstallType.DEFAULT)
+                                        } finally {
+                                            isCheckingRoot = false
+                                        }
+                                    }
+                                } else {
+                                    viewModel.open()
+                                }
                             },
                             elevation = FloatingActionButtonDefaults.elevation(
                                 defaultElevation = 0.dp,

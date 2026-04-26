@@ -5,24 +5,31 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import app.revanced.library.MagiskUtils
+import app.revanced.library.installation.installer.Constants
+import app.revanced.library.installation.installer.Constants.invoke
 import app.revanced.manager.IRootSystemService
+import app.revanced.manager.ui.model.RootCheckResult
 import app.revanced.manager.service.ManagerRootService
 import app.revanced.manager.util.PM
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.ipc.RootService
 import com.topjohnwu.superuser.nio.FileSystemManager
+import java.io.File
+import java.time.Duration
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.time.withTimeoutOrNull
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.time.Duration
 
 class RootInstaller(
     private val app: Application,
     private val pm: PM
 ) : ServiceConnection {
     private var remoteFS = CompletableDeferred<FileSystemManager>()
+
+    // Android user (0 for primary, 10+ for secondary/work profiles) via pure public API.
+    private val userId = android.os.Process.myUid() / 100000
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val ipc = IRootSystemService.Stub.asInterface(service)
@@ -43,12 +50,12 @@ class RootInstaller(
             }
         }
 
-        return withTimeoutOrNull(Duration.ofSeconds(20L)) {
-            remoteFS.await()
-        } ?: throw RootServiceException()
+        return withTimeoutOrNull(Duration.ofSeconds(20L)) { remoteFS.await() }
+                ?: throw RootServiceException()
     }
 
     private suspend fun getShell() = with(CompletableDeferred<Shell>()) {
+        Shell.getCachedShell()?.takeIf { !it.isRoot }?.close()
         Shell.getShell(::complete)
 
         await()
@@ -60,14 +67,24 @@ class RootInstaller(
         return getShell().newJob().add(*commands).to(stdout, stderr).exec()
     }
 
-    fun hasRootAccess() = Shell.isAppGrantedRoot() ?: false
+    fun hasRootAccess() = MagiskUtils.hasRootAccess()
 
-    fun isDeviceRooted() = System.getenv("PATH")?.split(":")?.any { path ->
-        File(path, "su").canExecute()
-    } ?: false
+    fun isDeviceRooted() = MagiskUtils.isDeviceRooted()
 
+    fun isMagiskInstalled() = MagiskUtils.isMagiskInstalled()
+
+    fun requestRoot() = MagiskUtils.requestRoot()
+
+    fun checkRootStatus(): RootCheckResult = when {
+        !isDeviceRooted() -> RootCheckResult.UNAVAILABLE
+        isMagiskInstalled() -> RootCheckResult.GRANTED
+        else -> RootCheckResult.DENIED
+    }
     suspend fun isAppInstalled(packageName: String) =
-        awaitRemoteFS().getFile("$modulesPath/$packageName-revanced").exists()
+            MagiskUtils.isInstalled(packageName, awaitRemoteFS())
+
+    suspend fun isAppInstalledAsMagiskModule(packageName: String) =
+            MagiskUtils.isInstalledAsMagiskModule(packageName, awaitRemoteFS())
 
     suspend fun isAppMounted(packageName: String) = withContext(Dispatchers.IO) {
         pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir?.let {
@@ -79,11 +96,11 @@ class RootInstaller(
         if (isAppMounted(packageName)) return
 
         withContext(Dispatchers.IO) {
-            val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
-                ?: throw Exception("Failed to load application info")
-            val patchedAPK = "$modulesPath/$packageName-revanced/$packageName.apk"
-
-            execute("mount -o bind \"$patchedAPK\" \"$stockAPK\"").assertSuccess("Failed to mount APK")
+            val sourceDir =
+                    pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
+                            ?: throw Exception("Failed to load application info")
+            
+            MagiskUtils.mount(packageName, sourceDir)
         }
     }
 
@@ -91,10 +108,10 @@ class RootInstaller(
         if (!isAppMounted(packageName)) return
 
         withContext(Dispatchers.IO) {
-            val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
+            val sourceDir = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
                 ?: throw Exception("Failed to load application info")
 
-            execute("umount -l \"$stockAPK\"").assertSuccess("Failed to unmount APK")
+            MagiskUtils.unmount(sourceDir)
         }
     }
 
@@ -102,121 +119,45 @@ class RootInstaller(
         patchedAPK: File,
         stockAPK: File?,
         packageName: String,
-        version: String,
-        label: String
     ) = withContext(Dispatchers.IO) {
         val remoteFS = awaitRemoteFS()
-        val assets = app.assets
-        val modulePath = "$modulesPath/$packageName-revanced"
+        val patchedPackageName = withContext(Dispatchers.IO) { pm.getPackageInfo(patchedAPK)?.packageName } ?: packageName
 
         unmount(packageName)
+        if (isAppInstalledAsMagiskModule(packageName)) {
+            uninstallMagiskModule(packageName, patchedPackageName)
+        }
 
         stockAPK?.let { stockApp ->
-            // TODO: get user id programmatically
-            execute("pm uninstall -k --user 0 $packageName")
-
-            execute("pm install -r -d --user 0 \"${stockApp.absolutePath}\"")
-                .assertSuccess("Failed to install stock app")
-
+            MagiskUtils.uninstallKeepData(packageName)
+            execute("pm install -r -d --user $userId \"${stockApp.absolutePath}\"")
             stockApp.delete()
         }
 
-        remoteFS.getFile(modulePath).apply {
-            if (!mkdirs() && !exists()) {
-                throw Exception("Failed to create module directory")
-            }
+        MagiskUtils.prepareRootFolder(remoteFS, packageName, patchedAPK)
+    }
+
+    suspend fun installAsMagiskModule(
+        patchedAPK: File,
+        packageName: String,
+        patchedPackageName: String,
+    ) = withContext(Dispatchers.IO) {
+        if (isAppInstalledAsMagiskModule(packageName)) {
+            uninstallMagiskModule(packageName, patchedPackageName)
+        } else if (isAppInstalled(packageName)) {
+            uninstall(packageName)
         }
+        MagiskUtils.prepareMagiskModule(awaitRemoteFS(), packageName, patchedPackageName, patchedAPK)
+        runCatching { execute("pm install -r -d --user $userId \"${Constants.MOUNTED_APK_PATH(packageName)}\"") }
+    }
 
-        listOf(
-            "service.sh",
-            "module.prop",
-        ).forEach { file ->
-            assets.open("root/$file").use { inputStream ->
-                remoteFS.getFile("$modulePath/$file").newOutputStream()
-                    .use { outputStream ->
-                        val content = String(inputStream.readBytes())
-                            .replace("__PKG_NAME__", packageName)
-                            .replace("__VERSION__", version)
-                            .replace("__LABEL__", label)
-                            .toByteArray()
-
-                        outputStream.write(content)
-                    }
-            }
-        }
-
-        "$modulePath/$packageName.apk".let { apkPath ->
-            remoteFS.getFile(patchedAPK.absolutePath)
-                .also { if (!it.exists()) throw Exception("File doesn't exist") }
-                .newInputStream().use { inputStream ->
-                    remoteFS.getFile(apkPath).newOutputStream().use { outputStream ->
-                        inputStream.copyTo(outputStream)
-                    }
-                }
-
-            execute(
-                "chmod 644 $apkPath",
-                "chown system:system $apkPath",
-                "chcon u:object_r:apk_data_file:s0 $apkPath",
-                "chmod +x $modulePath/service.sh"
-            ).assertSuccess("Failed to set file permissions")
-        }
+    suspend fun uninstallMagiskModule(packageName: String, patchedPackageName: String) {
+        MagiskUtils.uninstallMagiskModule(packageName, patchedPackageName, awaitRemoteFS())
     }
 
     suspend fun uninstall(packageName: String) {
-        val remoteFS = awaitRemoteFS()
-        if (isAppMounted(packageName))
-            unmount(packageName)
-
-        remoteFS.getFile("$modulesPath/$packageName-revanced").deleteRecursively()
-            .also { if (!it) throw Exception("Failed to delete files") }
-    }
-
-    companion object {
-        const val modulesPath = "/data/adb/modules"
-
-        private fun Shell.Result.assertSuccess(errorMessage: String) {
-            if (!isSuccess) {
-                throw ShellCommandException(
-                    errorMessage,
-                    code,
-                    out,
-                    err
-                )
-            }
-        }
-    }
-}
-
-class ShellCommandException(
-    val userMessage: String,
-    val exitCode: Int,
-    val stdout: List<String>,
-    val stderr: List<String>
-) : Exception(format(userMessage, exitCode, stdout, stderr)) {
-    companion object {
-        private fun format(
-            message: String,
-            exitCode: Int,
-            stdout: List<String>,
-            stderr: List<String>
-        ): String =
-            buildString {
-                appendLine(message)
-                appendLine("Exit code: $exitCode")
-
-                val output = stdout.filter { it.isNotBlank() }
-                val errors = stderr.filter { it.isNotBlank() }
-
-                if (output.isNotEmpty()) {
-                    appendLine("stdout:")
-                    output.forEach(::appendLine)
-                }
-                if (errors.isNotEmpty()) {
-                    appendLine("stderr:")
-                    errors.forEach(::appendLine)
-                }
-            }
+        if (isAppMounted(packageName)) unmount(packageName)
+        MagiskUtils.uninstall(packageName, awaitRemoteFS())
     }
 }
 

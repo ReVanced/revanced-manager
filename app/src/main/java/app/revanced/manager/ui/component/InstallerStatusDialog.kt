@@ -116,6 +116,13 @@ enum class DialogKind(
         contentStringResId = R.string.installation_timeout_description,
         confirmButton = installerStatusDialogButton(R.string.try_again) { it.install() },
         dismissButton = installerStatusDialogButton(R.string.cancel),
+    ),
+    SUCCESS_MAGISK(
+        flag = 1000,
+        title = R.string.magisk_install_success_title,
+        contentStringResId = R.string.magisk_install_success_description,
+        confirmButton = installerStatusDialogButton(R.string.restart_now) { it.reboot() },
+        dismissButton = installerStatusDialogButton(R.string.close),
     );
 
     // Needed due to the @FromValue annotation.
