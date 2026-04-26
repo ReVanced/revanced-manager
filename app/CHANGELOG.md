@@ -1,3 +1,33 @@
+# app [2.6.0](https://github.com/ReVanced/revanced-manager/compare/v2.5.1...v2.6.0) (2026-04-26)
+
+
+### Bug Fixes
+
+* Adjust font size and fix letter spacing in announcements ([e1660a7](https://github.com/ReVanced/revanced-manager/commit/e1660a7f2f94f3f50ee8bb2479888af8b760e51e))
+* BusError when running 32b binary on armv8 with compatibility ([#3279](https://github.com/ReVanced/revanced-manager/issues/3279)) ([c1e1a82](https://github.com/ReVanced/revanced-manager/commit/c1e1a8243adb86fdf907b0b402c97c36c279567b))
+* Dashboard padding ([5f757b6](https://github.com/ReVanced/revanced-manager/commit/5f757b6ee1fd923afaeffeae6bde12934822c30f))
+* Don't hide PatchOptions behind keyboard ([dd3d474](https://github.com/ReVanced/revanced-manager/commit/dd3d474798e39a800fd5ecff129e1561f204e36b))
+* handle errors while loading sources ([b64dae2](https://github.com/ReVanced/revanced-manager/commit/b64dae26d4383a70abd781f54a2be84e10cfece1))
+* Ignore RichTap vibrator hardware crash ([7856652](https://github.com/ReVanced/revanced-manager/commit/7856652506896a804a57fc085e80c6cf5c1fcba0))
+* Missing database migration file [no ci] ([df9b44c](https://github.com/ReVanced/revanced-manager/commit/df9b44c9f4959c81e16a1665e8066bd01e97b1fe))
+* Paddings for AppScreen and PatchesScreen ([af3d0d7](https://github.com/ReVanced/revanced-manager/commit/af3d0d79c582f29b7f7acec2b5e59de3b06ea3e2))
+* Preserve applied patches on patched apps when source patches is deleted ([#3227](https://github.com/ReVanced/revanced-manager/issues/3227)) ([4884fdb](https://github.com/ReVanced/revanced-manager/commit/4884fdb5545134181a8a2176c7a21911aa22be9b))
+* **Updater:** Handle session death ([#3249](https://github.com/ReVanced/revanced-manager/issues/3249)) ([f1c56aa](https://github.com/ReVanced/revanced-manager/commit/f1c56aa0a9655fd93d1386ccca28c7ce7099d4d3))
+* UpdateScreen padding ([e3c6d57](https://github.com/ReVanced/revanced-manager/commit/e3c6d5740b7013446aaf450739b37e848389c2cb))
+
+
+### Features
+
+* Better styling for announcements ([4f88357](https://github.com/ReVanced/revanced-manager/commit/4f88357d9f2aa44bcab980e2719f3d28d169de85))
+* enable Ackpine logging ([7cf28c0](https://github.com/ReVanced/revanced-manager/commit/7cf28c0840688898af2f7bc22ca60ef1caa96a3f))
+* Improve AppsScreen design, add app pinning and jump to top ([#3240](https://github.com/ReVanced/revanced-manager/issues/3240)) ([46720a4](https://github.com/ReVanced/revanced-manager/commit/46720a4a885ad5aa321ab855439bb30c292cb17f))
+* Improve patch options ([#3213](https://github.com/ReVanced/revanced-manager/issues/3213)) ([90667c8](https://github.com/ReVanced/revanced-manager/commit/90667c8c141c743b11a189e7ab3061ee58c7bc87))
+
+
+### Performance Improvements
+
+* **patcher:** Silence trace logs to fix GC thrashing and OOM ([#3287](https://github.com/ReVanced/revanced-manager/issues/3287)) ([ab4bdd3](https://github.com/ReVanced/revanced-manager/commit/ab4bdd34c5508ae3b03c7a293c91975c38ded22b))
+
 # app [2.6.0-dev.13](https://github.com/ReVanced/revanced-manager/compare/v2.6.0-dev.12...v2.6.0-dev.13) (2026-04-26)
 
 
