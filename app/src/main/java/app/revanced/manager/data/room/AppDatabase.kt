@@ -52,6 +52,6 @@ abstract class AppDatabase : RoomDatabase() {
     class DeleteTrustedDownloaders : AutoMigrationSpec
 
     companion object {
-        fun generateUid() = Random.Default.nextInt()
+        fun generateUid() = Random.nextInt()
     }
 }

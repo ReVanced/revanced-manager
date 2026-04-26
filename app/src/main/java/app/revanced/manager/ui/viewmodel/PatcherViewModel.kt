@@ -495,8 +495,22 @@ class PatcherViewModel(
             addAll(patchingConfiguration)
             addAll(runtimeConfiguration)
             add("Root permissions: ${if (hasRoot) "Yes" else "No"}")
-            add("RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${Formatter.formatFileSize(context, memInfo.totalMem)} available")
-            add("Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${Formatter.formatFileSize(context, statFs.totalBytes)} available")
+            add(
+                "RAM: ${Formatter.formatFileSize(context, memInfo.availMem)} / ${
+                    Formatter.formatFileSize(
+                        context,
+                        memInfo.totalMem
+                    )
+                } available"
+            )
+            add(
+                "Storage: ${Formatter.formatFileSize(context, statFs.availableBytes)} / ${
+                    Formatter.formatFileSize(
+                        context,
+                        statFs.totalBytes
+                    )
+                } available"
+            )
             add("Android version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
             add("Supported architectures: ${Build.SUPPORTED_ABIS.joinToString()}")
             add("Model: ${Build.MODEL}")
@@ -554,7 +568,7 @@ class PatcherViewModel(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version ?: withContext(Dispatchers.IO) {
-                        pm.getPackageInfo(outputFile)?.versionName!!
+                        pm.getPackageInfo(outputFile)?.versionName ?: app.getString(R.string.apk_version_unknown)
                     },
                     InstallType.DEFAULT,
                     input.selectedPatches,
