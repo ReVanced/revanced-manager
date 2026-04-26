@@ -25,6 +25,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
+import ru.solrudev.ackpine.Ackpine
 
 class ManagerApplication : Application() {
     private val scope = MainScope()
@@ -67,6 +68,8 @@ class ManagerApplication : Application() {
 
         val shellBuilder = BuilderImpl.create().setFlags(Shell.FLAG_MOUNT_MASTER)
         Shell.setDefaultBuilder(shellBuilder)
+
+        Ackpine.enableLogcatLogger()
 
         scope.launch {
             prefs.preload()

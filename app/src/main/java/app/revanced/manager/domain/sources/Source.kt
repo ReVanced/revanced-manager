@@ -28,7 +28,11 @@ sealed class Source<T>(
     val state = when {
         error != null -> State.Failed(error)
         !hasInstalled() -> State.Missing
-        else -> State.Available(loader.load(file))
+        else -> try {
+            State.Available(loader.load(file))
+        } catch (t: Throwable) {
+            State.Failed(t)
+        }
     }
 
     val isDefault inline get() = uid == 0
