@@ -117,27 +117,31 @@ class PatcherWorker(
         }
 
         try {
-            // This does not always show up for some reason.
+            createNotificationChannel() // Safe to call multiple times
             setForeground(getForegroundInfo())
         } catch (e: Exception) {
-            Log.d(tag, "Failed to set foreground info:", e)
+            Log.e(tag, "Failed to set foreground info:", e)
+            // On Android 8, if this fails, the job is likely doomed
+            return Result.failure()
         }
-
-        val wakeLock: PowerManager.WakeLock =
-            (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
-                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "$tag::Patcher")
-                .apply {
-                    acquire(10 * 60 * 1000L)
-                    Log.d(tag, "Acquired wakelock.")
-                }
 
         val args = workerRepository.claimInput(this)
 
         return try {
-            runPatcher(args)
-        } finally {
-            wakeLock.release()
+            runPatcher(args) // WorkManager holds its own WakeLock internally
+        } catch (e: Exception) {
+            Log.e(tag, "Patcher encountered an error", e)
+            Result.failure()
         }
+    }
+
+    private fun createNotificationChannel() {
+        val channel = NotificationChannel(
+            "patcher_channel", "Patcher Service",
+            NotificationManager.IMPORTANCE_LOW
+        )
+        val manager = applicationContext.getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
     }
 
     private suspend fun runPatcher(args: Args): Result {
