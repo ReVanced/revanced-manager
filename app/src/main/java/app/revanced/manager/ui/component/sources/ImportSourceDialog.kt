@@ -390,34 +390,29 @@ private fun GithubReleaseStep(
                 CircularProgressIndicator()
             }
         } else {
-            val latestRelease = releases?.filter { !it.prerelease } ?: emptyList()
-            val release = latestRelease.firstOrNull()
-            val targetAsset = release?.let { r ->
+            val latestRelease = releases!!.filter { !it.prerelease }
+            val bundle = latestRelease.firstOrNull()?.let { release ->
                 when (strings) {
-                    ImportSourceDialogStrings.PATCHES -> r.assets.filter {
+                    ImportSourceDialogStrings.PATCHES -> release.assets.firstOrNull {
                         it.name.endsWith(".rvp") && it.contentType != PGP_MIMETYPE
                     }
-
-                    ImportSourceDialogStrings.DOWNLOADERS -> r.assets.filter {
+                    ImportSourceDialogStrings.DOWNLOADERS -> release.assets.firstOrNull {
                         it.name.endsWith(".apk") && it.contentType == APK_MIMETYPE
                     }
-                }.firstOrNull()
+                }?.let { asset -> release to asset }
             }
 
-            SideEffect { onAssetSelected(targetAsset?.browserDownloadUrl) }
+            SideEffect { bundle?.let { (_, asset) -> onAssetSelected(asset.browserDownloadUrl) } }
 
-            Column(
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp)
-            ) {
-                if (latestRelease.isEmpty()) {
-                    Text(stringResource(R.string.github_release_none_found))
-                } else if (targetAsset == null) {
-                    Text(stringResource(R.string.github_asset_none_found))
-                } else {
+            Column(Modifier.padding(horizontal = 24.dp)) { when {
+                latestRelease.isEmpty() -> Text(stringResource(R.string.github_release_none_found))
+                bundle == null -> Text(stringResource(R.string.github_asset_none_found))
+                else -> {
+                    val (release, asset) = bundle
                     TagValue(
                         icon = Icons.Outlined.AttachFile,
                         title = "File",
-                        value = targetAsset.name
+                        value = asset.name
                     )
                     TagValue(
                         icon = Icons.Outlined.Sell,
@@ -433,7 +428,7 @@ private fun GithubReleaseStep(
                         } ?: "Unknown"
                     )
                 }
-            }
+            } }
         }
     }
 }
