@@ -126,7 +126,7 @@ fun ImportSourceDialog(
         }
 
     fun launchFileActivity() {
-        when(strings) {
+        when (strings) {
             ImportSourceDialogStrings.PATCHES -> fileActivityLauncher.launch(BIN_MIMETYPE)
             ImportSourceDialogStrings.DOWNLOADERS -> fileActivityLauncher.launch(APK_MIMETYPE)
         }
@@ -354,7 +354,7 @@ private fun GithubReleaseStep(
     owner: String,
     repo: String,
     strings: ImportSourceDialogStrings,
-    onAssetSelected: (String) -> Unit
+    onAssetSelected: (String?) -> Unit
 ) {
     val httpService: HttpService = koinInject()
     var releases by remember { mutableStateOf<List<GithubRelease>?>(null) }
@@ -391,47 +391,45 @@ private fun GithubReleaseStep(
             }
         } else {
             val latestRelease = releases?.filter { !it.prerelease } ?: emptyList()
-
-            if (latestRelease.isEmpty()) {
-                Text(stringResource(R.string.github_releases_none_found), modifier = Modifier.padding(24.dp))
-            } else {
-                val release = latestRelease.first()
-
-                val targetAsset = when (strings) {
-                    ImportSourceDialogStrings.PATCHES -> {
-                        release.assets.filter { it.name.endsWith(".rvp") && it.contentType != PGP_MIMETYPE }
+            val release = latestRelease.firstOrNull()
+            val targetAsset = release?.let { r ->
+                when (strings) {
+                    ImportSourceDialogStrings.PATCHES -> r.assets.filter {
+                        it.name.endsWith(".rvp") && it.contentType != PGP_MIMETYPE
                     }
-                    ImportSourceDialogStrings.DOWNLOADERS -> {
-                        release.assets.filter { it.name.endsWith(".apk") && it.contentType == APK_MIMETYPE }
+
+                    ImportSourceDialogStrings.DOWNLOADERS -> r.assets.filter {
+                        it.name.endsWith(".apk") && it.contentType == APK_MIMETYPE
                     }
                 }.firstOrNull()
+            }
 
-                SideEffect { targetAsset?.let { onAssetSelected(it.browserDownloadUrl) } }
+            SideEffect { onAssetSelected(targetAsset?.browserDownloadUrl) }
 
-                Column(
-                    modifier = Modifier.padding(start = 24.dp, end = 24.dp)
-                ) {
-                    if (targetAsset == null) {
-                        Text(stringResource(R.string.github_releases_none_found))
-                    } else {
-                        TagValue(
-                            icon = Icons.Outlined.AttachFile,
-                            title = "File",
-                            value = targetAsset.name
-                        )
-                        TagValue(
-                            icon = Icons.Outlined.Sell,
-                            title = "Version",
-                            value = release.name ?: release.tagName
-                        )
-                        TagValue(
-                            icon = Icons.Outlined.Update,
-                            title = "Updated",
-                            value = release.createdAt?.let {
-                                Instant.parse(it).toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current)
-                            } ?: "Unknown"
-                        )
-                    }
+            Column(
+                modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+            ) {
+                if (latestRelease.isEmpty() || targetAsset == null) {
+                    Text(stringResource(R.string.github_releases_none_found))
+                } else {
+                    TagValue(
+                        icon = Icons.Outlined.AttachFile,
+                        title = "File",
+                        value = targetAsset.name
+                    )
+                    TagValue(
+                        icon = Icons.Outlined.Sell,
+                        title = "Version",
+                        value = release.name ?: release.tagName
+                    )
+                    TagValue(
+                        icon = Icons.Outlined.Update,
+                        title = "Updated",
+                        value = release.createdAt?.let {
+                            Instant.parse(it).toLocalDateTime(TimeZone.UTC)
+                                .relativeTime(LocalContext.current)
+                        } ?: "Unknown"
+                    )
                 }
             }
         }
