@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.component.sources
 
 import android.net.Uri
+import android.webkit.URLUtil
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -107,7 +108,8 @@ fun ImportSourceDialog(
     val inputsAreValid by remember {
         derivedStateOf {
             (sourceType == SourceType.Local && local != null) ||
-                    (sourceType == SourceType.Remote && remoteUrl.isNotEmpty())
+                    (sourceType == SourceType.Remote && remoteUrl.isNotEmpty() &&
+                            (URLUtil.isHttpUrl(remoteUrl) || URLUtil.isHttpsUrl(remoteUrl)))
         }
     }
 
@@ -126,7 +128,7 @@ fun ImportSourceDialog(
                     onClick = {
                         when (sourceType) {
                             SourceType.Local -> local?.let(onLocalSubmit)
-                            SourceType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
+                            SourceType.Remote -> onRemoteSubmit(remoteUrl.trim(), autoUpdate)
                         }
                     },
                     shapes = ButtonDefaults.shapes()
@@ -240,13 +242,26 @@ private fun ImportSourceStep(
             }
 
             SourceType.Remote -> {
+                val isUrl = remoteUrl.trim().let {
+                    URLUtil.isHttpUrl(it) || URLUtil.isHttpsUrl(it)
+                }
+                // We check if the value is empty to avoid showing an error state when the user
+                // hasn't entered anything yet to avoid bashing user with bad UX of blaming the
+                // user immediately when everything is intended.
+                val validator = remoteUrl.isNotEmpty() && !isUrl
                 Column(
                     modifier = Modifier.padding(TextHorizontalPadding)
                 ) {
                     OutlinedTextField(
                         value = remoteUrl,
                         onValueChange = onRemoteUrlChange,
-                        label = { Text(stringResource(strings.import_remote)) }
+                        label = { Text(stringResource(strings.import_remote)) },
+                        isError = validator,
+                        supportingText = {
+                            if (validator) {
+                                Text(stringResource(R.string.input_dialog_value_invalid))
+                            }
+                        },
                     )
                 }
                 Column(

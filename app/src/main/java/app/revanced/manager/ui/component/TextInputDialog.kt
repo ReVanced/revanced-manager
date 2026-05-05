@@ -1,8 +1,10 @@
 package app.revanced.manager.ui.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -10,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
@@ -55,7 +58,17 @@ fun TextInputDialog(
                 value = value,
                 onValueChange = setValue,
                 placeholder = placeholder?.let { { Text(placeholder) } },
-                trailingIcon = trailingIcon?.let { { it(value, setValue) } }
+                trailingIcon = trailingIcon?.let { { it(value, setValue) } },
+                isError = !valid,
+                supportingText = {
+                    if (!valid) {
+                        Text(
+                            text = stringResource(R.string.input_dialog_value_invalid),
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
         }
     )
