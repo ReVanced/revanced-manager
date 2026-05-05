@@ -38,4 +38,11 @@ class BundleInformationViewModel(uid: Int) : ViewModel(), KoinComponent {
         prefs.usePatchesPrereleases.update(value)
         refresh()
     }
+
+    fun setUsePrereleases(value: Boolean) = viewModelScope.launch {
+        bundle.first()?.asRemoteOrNull?.let {
+            patchBundleRepository.run { it.setUsePrereleases(value) }
+            refresh()
+        }
+    }
 }

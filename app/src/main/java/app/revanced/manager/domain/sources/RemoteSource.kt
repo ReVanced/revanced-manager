@@ -34,6 +34,7 @@ sealed class RemoteSource<T>(
     file: File,
     val endpoint: String,
     val autoUpdate: Boolean,
+    val usePrereleases: Boolean,
     loader: Loader<T>
 ) : Source<T>(name, uid, error, file, loader), KoinComponent {
     data class UpdateResult(val versionHash: String, val releasedAt: LocalDateTime)
@@ -46,12 +47,13 @@ sealed class RemoteSource<T>(
         error: Throwable? = this.error,
         name: String = this.name,
         autoUpdate: Boolean = this.autoUpdate,
+        usePrereleases: Boolean = this.usePrereleases,
         versionHash: String? = this.versionHash,
         releasedAt: LocalDateTime? = this.releasedAt
     ): RemoteSource<T>
 
     override fun copy(error: Throwable?, name: String): RemoteSource<T> =
-        copy(error, name, this.autoUpdate, this.versionHash, this.releasedAt)
+        copy(error, name, this.autoUpdate, this.usePrereleases, this.versionHash, this.releasedAt)
 
     private suspend fun download(info: ReVancedAsset) = withContext(Dispatchers.IO) {
         outputStream().use {
@@ -88,8 +90,9 @@ class JsonSource<T>(
     file: File,
     endpoint: String,
     autoUpdate: Boolean,
+    usePrereleases: Boolean,
     loader: Loader<T>
-) : RemoteSource<T>(name, uid, versionHash, releasedAt, error, file, endpoint, autoUpdate, loader) {
+) : RemoteSource<T>(name, uid, versionHash, releasedAt, error, file, endpoint, autoUpdate, usePrereleases, loader) {
     override suspend fun getLatestInfo() = withContext(Dispatchers.IO) {
         if (!endpoint.endsWith(".json")) {
             val githubMatch = Regex("^https://github\\.com/([^/]+)/([^/]+)/releases/download/([^/]+)/(.+)$").find(endpoint)
@@ -97,18 +100,27 @@ class JsonSource<T>(
                 val owner = githubMatch.groupValues[1]
                 val repo = githubMatch.groupValues[2]
                 val tag = githubMatch.groupValues[3]
+                val currentFilename = githubMatch.groupValues[4]
+                val extension = currentFilename.substringAfterLast('.', "")
                 
                 try {
-                    val release = http.request<GithubRelease> {
-                        url("https://api.github.com/repos/$owner/$repo/releases/tags/$tag")
+                    val releases = http.request<List<GithubRelease>> {
+                        url("https://api.github.com/repos/$owner/$repo/releases")
                     }.getOrThrow()
-                    
-                    val date = release.createdAt?.let { Instant.parse(it).toLocalDateTime(TimeZone.UTC) }
+
+                    val filteredReleases = if (usePrereleases) releases else releases.filter { !it.prerelease }
+                    val latestRelease = filteredReleases.firstOrNull()
+                        ?: error(app.getString(R.string.github_release_none_found))
+
+                    val targetAsset = latestRelease.assets.firstOrNull { it.name.endsWith(".$extension") }
+                        ?: error(app.getString(R.string.github_asset_none_found))
+
+                    val date = latestRelease.createdAt?.let { Instant.parse(it).toLocalDateTime(TimeZone.UTC) }
 
                     return@withContext ReVancedAsset(
-                        downloadUrl = endpoint,
-                        version = endpoint.substringAfterLast('/'),
-                        description = release.name ?: app.getString(R.string.github_external_asset),
+                        downloadUrl = targetAsset.browserDownloadUrl,
+                        version = targetAsset.name,
+                        description = latestRelease.name ?: app.getString(R.string.github_external_asset),
                         createdAt = date ?: releasedAt ?: LocalDateTime(1970, 1, 1, 0, 0, 0)
                     )
                 } catch (_: Exception) {
@@ -130,6 +142,7 @@ class JsonSource<T>(
         error: Throwable?,
         name: String,
         autoUpdate: Boolean,
+        usePrereleases: Boolean,
         versionHash: String?,
         releasedAt: LocalDateTime?
     ) = JsonSource(
@@ -141,6 +154,7 @@ class JsonSource<T>(
         file,
         endpoint,
         autoUpdate,
+        usePrereleases,
         loader
     )
 }
@@ -154,9 +168,10 @@ class APISource<T>(
     file: File,
     endpoint: String,
     autoUpdate: Boolean,
+    usePrereleases: Boolean = false,
     loader: Loader<T>,
     private val getUpdate: suspend ReVancedAPI.() -> APIResponse<ReVancedAsset>
-) : RemoteSource<T>(name, uid, versionHash, releasedAt, error, file, endpoint, autoUpdate, loader) {
+) : RemoteSource<T>(name, uid, versionHash, releasedAt, error, file, endpoint, autoUpdate, usePrereleases, loader) {
     private val api: ReVancedAPI by inject()
 
     override suspend fun getLatestInfo() = api.getUpdate().getOrThrow()
@@ -164,6 +179,7 @@ class APISource<T>(
         error: Throwable?,
         name: String,
         autoUpdate: Boolean,
+        usePrereleases: Boolean,
         versionHash: String?,
         releasedAt: LocalDateTime?
     ) = APISource(
@@ -175,6 +191,7 @@ class APISource<T>(
         file,
         endpoint,
         autoUpdate,
+        usePrereleases,
         loader,
         getUpdate
     )

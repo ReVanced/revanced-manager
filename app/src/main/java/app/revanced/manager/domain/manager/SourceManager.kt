@@ -182,6 +182,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                     source = new.source,
                     autoUpdate = new.autoUpdate,
                     releasedAt = new.releasedAt,
+                    usePrereleases = new.usePrereleases
                 )
             )
         )
@@ -258,6 +259,15 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         dispatchAction("Set auto update ($name, $value)") { state ->
             updateDb(uid) { it.copy(autoUpdate = value) }
             val newSrc = state.sources[uid]?.asRemoteOrNull?.copy(autoUpdate = value)
+                ?: return@dispatchAction state
+
+            state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })
+        }
+
+    suspend fun RemoteSource<LOADED>.setUsePrereleases(value: Boolean) =
+        dispatchAction("Set use prereleases ($name, $value)") { state ->
+            updateDb(uid) { it.copy(usePrereleases = value) }
+            val newSrc = state.sources[uid]?.asRemoteOrNull?.copy(usePrereleases = value)
                 ?: return@dispatchAction state
 
             state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })

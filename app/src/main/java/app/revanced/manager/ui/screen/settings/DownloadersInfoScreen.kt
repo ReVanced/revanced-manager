@@ -213,6 +213,18 @@ fun DownloaderInfoScreen(
                         confirmationText = R.string.prereleases_warning,
                         onValueChange = viewModel::updateUsePrereleases
                     )
+                } else if (remote != null) {
+                    SafeguardBooleanItem(
+                        value = remote.usePrereleases,
+                        headline = R.string.downloader_prereleases,
+                        description = stringResource(
+                            R.string.downloader_prereleases_description,
+                            source.name
+                        ),
+                        dialogTitle = R.string.prerelease_title,
+                        confirmationText = R.string.prereleases_warning,
+                        onValueChange = { viewModel.setExternalSourceUsePrereleases(remote, it) }
+                    )
                 }
 
                 remote?.endpoint?.takeUnless { source.isDefault }?.let { url ->

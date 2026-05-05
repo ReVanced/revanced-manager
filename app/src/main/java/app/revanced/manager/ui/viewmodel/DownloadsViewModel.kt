@@ -116,4 +116,11 @@ class DownloadsViewModel(
             src.setAutoUpdate(value)
         }
     }
+
+    fun setExternalSourceUsePrereleases(src: RemoteSource<DownloaderPackage>, value: Boolean) = viewModelScope.launch {
+        with(downloaderRepository) {
+            src.setUsePrereleases(value)
+        }
+        updateDownloader(src)
+    }
 }

@@ -49,17 +49,39 @@ fun SafeguardBooleanItem(
     onValueChange: ((Boolean) -> Unit)? = null
 ) {
     val value by preference.getAsState()
-    var showSafeguardWarning by rememberSaveable {
-        mutableStateOf(false)
-    }
 
     val update = onValueChange ?: { coroutineScope.launch { preference.update(it) } }
+
+    SafeguardBooleanItem(
+        modifier = modifier,
+        value = value,
+        default = preference.default,
+        headline = headline,
+        description = description,
+        dialogTitle = dialogTitle,
+        confirmationText = confirmationText,
+        onValueChange = { update(it) }
+    )
+}
+
+@Composable
+fun SafeguardBooleanItem(
+    modifier: Modifier = Modifier,
+    value: Boolean,
+    default: Boolean = false,
+    @StringRes headline: Int,
+    description: String,
+    @StringRes dialogTitle: Int,
+    @StringRes confirmationText: Int,
+    onValueChange: (Boolean) -> Unit
+) {
+    var showSafeguardWarning by rememberSaveable { mutableStateOf(false) }
 
     if (showSafeguardWarning) {
         ConfirmDialog(
             onDismiss = { showSafeguardWarning = false },
             onConfirm = {
-                update(!value)
+                onValueChange(!value)
                 showSafeguardWarning = false
             },
             title = stringResource(id = dialogTitle),
@@ -72,10 +94,10 @@ fun SafeguardBooleanItem(
         modifier = modifier,
         value = value,
         onValueChange = {
-            if (it != preference.default) {
+            if (it != default) {
                 showSafeguardWarning = true
             } else {
-                update(it)
+                onValueChange(it)
             }
         },
         headline = headline,

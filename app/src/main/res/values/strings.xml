@@ -581,7 +581,8 @@ It’s only compatible with these versions: %2$s</string>
     <string name="patches_prereleases_description">Use pre-release versions of %s</string>
     <string name="patches_url">Patches URL</string>
     <string name="github_releases_fetch_failed">Failed to fetch releases</string>
-    <string name="github_releases_none_found">No releases found</string>
+    <string name="github_release_none_found">No suitable release found</string>
+    <string name="github_asset_none_found">No suitable asset found in latest release</string>
     <string name="github_external_asset">External GitHub asset</string>
     <string name="source_update_failed">Failed to update</string>
     <string name="incompatible_patches_dialog">These patches aren’t compatible with the selected app version: %1$s

@@ -26,7 +26,7 @@ import kotlin.random.Random
 
 @Database(
     entities = [PatchBundleEntity::class, PatchSelection::class, SelectedPatch::class, DownloadedApp::class, InstalledApp::class, AppliedPatch::class, InstalledPatchBundle::class, OptionGroup::class, Option::class, DownloaderEntity::class],
-    version = 5,
+    version = 6,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -36,7 +36,8 @@ import kotlin.random.Random
             spec = AppDatabase.DeleteTrustedDownloaders::class
         ),
         AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 5, to = 6)
     ]
 )
 @TypeConverters(Converters::class)

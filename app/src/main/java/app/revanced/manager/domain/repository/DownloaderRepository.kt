@@ -81,6 +81,7 @@ class DownloaderRepository(
                 file,
                 SourceInfo.API.SENTINEL,
                 autoUpdate,
+                usePrereleases,
                 loader
             ) { getDownloaderUpdate() }
 
@@ -93,6 +94,7 @@ class DownloaderRepository(
                 file,
                 source.url.toString(),
                 autoUpdate,
+                usePrereleases,
                 loader
             )
         }
@@ -107,7 +109,8 @@ class DownloaderRepository(
         versionHash = props.versionHash,
         source = props.source,
         autoUpdate = props.autoUpdate,
-        releasedAt = props.releasedAt
+        releasedAt = props.releasedAt,
+        usePrereleases = props.usePrereleases
     )
 
     override fun realNameOf(loaded: DownloaderPackage) = loaded.name

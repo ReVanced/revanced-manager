@@ -409,8 +409,10 @@ private fun GithubReleaseStep(
             Column(
                 modifier = Modifier.padding(start = 24.dp, end = 24.dp)
             ) {
-                if (latestRelease.isEmpty() || targetAsset == null) {
-                    Text(stringResource(R.string.github_releases_none_found))
+                if (latestRelease.isEmpty()) {
+                    Text(stringResource(R.string.github_release_none_found))
+                } else if (targetAsset == null) {
+                    Text(stringResource(R.string.github_asset_none_found))
                 } else {
                     TagValue(
                         icon = Icons.Outlined.AttachFile,

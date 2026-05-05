@@ -285,6 +285,18 @@ fun BundleInformationScreen(
                         confirmationText = R.string.prereleases_warning,
                         onValueChange = viewModel::updateUsePrereleases
                     )
+                } else if (autoUpdate != null) {
+                    SafeguardBooleanItem(
+                        value = src.asRemoteOrNull?.usePrereleases ?: false,
+                        headline = R.string.patches_prereleases,
+                        description = stringResource(
+                            R.string.patches_prereleases_description,
+                            src.name
+                        ),
+                        dialogTitle = R.string.prerelease_title,
+                        confirmationText = R.string.prereleases_warning,
+                        onValueChange = viewModel::setUsePrereleases
+                    )
                 }
 
                 endpoint?.takeUnless { src.isDefault }?.let { url ->

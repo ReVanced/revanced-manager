@@ -79,6 +79,7 @@ class PatchBundleRepository(
                 file,
                 SourceInfo.API.SENTINEL,
                 autoUpdate,
+                usePrereleases,
                 PatchBundleLoader
             ) { getPatchesUpdate() }
 
@@ -91,6 +92,7 @@ class PatchBundleRepository(
                 file,
                 source.url.toString(),
                 autoUpdate,
+                usePrereleases,
                 PatchBundleLoader
             )
         }
@@ -105,7 +107,8 @@ class PatchBundleRepository(
         versionHash = props.versionHash,
         source = props.source,
         autoUpdate = props.autoUpdate,
-        releasedAt = props.releasedAt
+        releasedAt = props.releasedAt,
+        usePrereleases = props.usePrereleases
     )
 
     override fun realNameOf(loaded: PatchBundle) = loaded.manifestAttributes?.name

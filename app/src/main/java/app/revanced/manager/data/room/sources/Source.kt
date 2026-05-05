@@ -36,4 +36,5 @@ data class SourceProperties(
     @ColumnInfo(name = "source") val source: Source,
     @ColumnInfo(name = "auto_update") val autoUpdate: Boolean,
     @ColumnInfo(name = "released_at") val releasedAt: Long? = null,
+    @ColumnInfo(name = "use_prereleases") val usePrereleases: Boolean = false,
 )
