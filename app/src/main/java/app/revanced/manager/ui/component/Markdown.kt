@@ -2,19 +2,22 @@ package app.revanced.manager.ui.component
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
 import com.mikepenz.markdown.compose.Markdown
 import com.mikepenz.markdown.m3.markdownColor
 import com.mikepenz.markdown.m3.markdownTypography
+import com.mikepenz.markdown.model.rememberMarkdownState
 
 @Composable
 fun Markdown(
     text: String
 ) {
-    val markdown = text.trimIndent()
+    val markdown = remember(text) { text.trimIndent() }
+    val markdownState = rememberMarkdownState(markdown)
 
     Markdown(
-        content = markdown,
+        markdownState = markdownState,
         colors = markdownColor(
             text = MaterialTheme.colorScheme.onSurfaceVariant,
             codeBackground = MaterialTheme.colorScheme.secondaryContainer,
