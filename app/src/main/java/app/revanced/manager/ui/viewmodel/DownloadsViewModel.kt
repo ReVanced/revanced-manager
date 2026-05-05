@@ -116,4 +116,17 @@ class DownloadsViewModel(
             src.setAutoUpdate(value)
         }
     }
+
+    fun setEndpoint(src: RemoteSource<DownloaderPackage>, value: String) = viewModelScope.launch {
+        val endpoint = value.trim()
+        if (src.endpoint == endpoint) return@launch
+
+        with(downloaderRepository) {
+            src.setEndpoint(endpoint)
+        }
+
+        downloaderSources.first()[src.uid]?.asRemoteOrNull?.let { updated ->
+            updateDownloader(updated)
+        }
+    }
 }

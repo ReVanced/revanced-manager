@@ -225,11 +225,12 @@ fun DownloaderInfoScreen(
                             onDismissRequest = { showUrlInputDialog = false },
                             onConfirm = {
                                 showUrlInputDialog = false
-                                // TODO: Not implemented
+                                viewModel.setEndpoint(remote, it.trim())
                             },
                             validator = {
-                                if (it.isEmpty()) return@TextInputDialog false
-                                isValidUrl(it)
+                                val value = it.trim()
+                                if (value.isEmpty()) return@TextInputDialog false
+                                isValidUrl(value)
                             }
                         )
                     }
@@ -239,7 +240,7 @@ fun DownloaderInfoScreen(
                         supportingContent = url.ifEmpty {
                             stringResource(R.string.field_not_set)
                         },
-                        onClick = null
+                        onClick = { showUrlInputDialog = true }
                     )
                 }
             }

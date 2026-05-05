@@ -38,13 +38,14 @@ sealed class RemoteSource<T>(
     abstract fun copy(
         error: Throwable? = this.error,
         name: String = this.name,
+        endpoint: String = this.endpoint,
         autoUpdate: Boolean = this.autoUpdate,
         versionHash: String? = this.versionHash,
         releasedAt: LocalDateTime? = this.releasedAt
     ): RemoteSource<T>
 
     override fun copy(error: Throwable?, name: String): RemoteSource<T> =
-        copy(error, name, this.autoUpdate, this.versionHash, this.releasedAt)
+        copy(error, name, this.endpoint, this.autoUpdate, this.versionHash, this.releasedAt)
 
     private suspend fun download(info: ReVancedAsset) = withContext(Dispatchers.IO) {
         outputStream().use {
@@ -92,6 +93,7 @@ class JsonSource<T>(
     override fun copy(
         error: Throwable?,
         name: String,
+        endpoint: String,
         autoUpdate: Boolean,
         versionHash: String?,
         releasedAt: LocalDateTime?
@@ -126,6 +128,7 @@ class APISource<T>(
     override fun copy(
         error: Throwable?,
         name: String,
+        endpoint: String,
         autoUpdate: Boolean,
         versionHash: String?,
         releasedAt: LocalDateTime?

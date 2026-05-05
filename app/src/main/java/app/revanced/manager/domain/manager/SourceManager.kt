@@ -18,6 +18,7 @@ import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import io.ktor.http.Url
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -261,6 +262,37 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                 ?: return@dispatchAction state
 
             state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })
+        }
+
+    suspend fun RemoteSource<LOADED>.setEndpoint(value: String) =
+        dispatchAction("Set endpoint ($name, $value)") { state ->
+            val current = state.sources[uid]?.asRemoteOrNull ?: return@dispatchAction state
+            if (current.endpoint == value) return@dispatchAction state
+
+            updateDb(uid) { props ->
+                if (props.source !is SourceInfo.Remote) return@updateDb props
+                props.copy(
+                    source = SourceInfo.Remote(Url(value)),
+                    versionHash = null,
+                    releasedAt = null
+                )
+            }
+            with(current) { deleteLocalFile() }
+
+            val newSources = state.sources.toMutableMap()
+            newSources[uid] = current.copy(
+                error = null,
+                endpoint = value,
+                versionHash = null,
+                releasedAt = null
+            )
+
+            state.copy(
+                data = loadDataFromSources(newSources),
+                sources = newSources,
+                updateErrors = state.updateErrors - uid,
+                outdatedSources = state.outdatedSources - uid
+            )
         }
 
     suspend fun update(
