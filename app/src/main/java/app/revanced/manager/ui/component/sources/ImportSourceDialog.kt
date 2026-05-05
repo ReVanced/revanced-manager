@@ -7,26 +7,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Topic
+import androidx.compose.material.icons.outlined.AttachFile
+import androidx.compose.material.icons.outlined.Sell
+import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
@@ -35,18 +31,23 @@ import app.revanced.manager.R
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.APIResponse
 import app.revanced.manager.ui.component.AlertDialogExtended
-import app.revanced.manager.ui.component.SurfaceChip
 import app.revanced.manager.ui.component.TextHorizontalPadding
 import app.revanced.manager.ui.component.TooltipIconButton
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
+import app.revanced.manager.ui.screen.TagValue
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.BIN_MIMETYPE
+import app.revanced.manager.util.PGP_MIMETYPE
+import app.revanced.manager.util.relativeTime
 import app.revanced.manager.util.transparentListItemColors
 import io.ktor.client.request.url
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.compose.koinInject
+import kotlin.time.Instant
 
 private enum class SourceType {
     Local,
@@ -156,7 +157,6 @@ fun ImportSourceDialog(
                 owner = githubMatch!!.groupValues[1],
                 repo = githubMatch!!.groupValues[2],
                 strings = strings,
-                selectedAssetUrl = selectedGithubAssetUrl,
                 onAssetSelected = { selectedGithubAssetUrl = it }
             )
         }
@@ -354,15 +354,12 @@ private fun GithubReleaseStep(
     owner: String,
     repo: String,
     strings: ImportSourceDialogStrings,
-    selectedAssetUrl: String?,
     onAssetSelected: (String) -> Unit
 ) {
     val httpService: HttpService = koinInject()
     var releases by remember { mutableStateOf<List<GithubRelease>?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
-    var showOlderReleases by rememberSaveable { mutableStateOf(false) }
     val fetchFailedMessage = stringResource(R.string.github_releases_fetch_failed)
-    val unknownLabel = stringResource(R.string.github_release_unknown)
 
     LaunchedEffect(owner, repo) {
         val response =
@@ -393,94 +390,47 @@ private fun GithubReleaseStep(
                 CircularProgressIndicator()
             }
         } else {
-            val latestRelease = releases!!.firstOrNull { !it.prerelease }
-            val latestPrerelease = releases!!.firstOrNull { it.prerelease }
-            val explicitReleases = listOfNotNull(latestRelease, latestPrerelease)
-                .distinctBy { it.tagName }
+            val latestRelease = releases?.filter { !it.prerelease } ?: emptyList()
 
-            val filteredReleases = if (showOlderReleases) releases!! else explicitReleases
-
-            if (filteredReleases.isEmpty()) {
+            if (latestRelease.isEmpty()) {
                 Text(stringResource(R.string.github_releases_none_found), modifier = Modifier.padding(24.dp))
             } else {
-                LazyColumn(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    contentPadding = PaddingValues(bottom = 8.dp)
-                ) {
-                    filteredReleases.forEachIndexed { index, release ->
-                        val title = release.tagName.ifEmpty { release.name ?: unknownLabel }
+                val release = latestRelease.first()
 
-                        item(key = release.tagName) {
-                            Row(
-                                modifier = Modifier.padding(
-                                    start = 16.dp,
-                                    top = if (index == 0) 0.dp else 16.dp,
-                                    bottom = 4.dp
-                                ),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = title,
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                SurfaceChip(
-                                    text = stringResource(if (release.prerelease) R.string.github_release_prerelease else R.string.github_release_latest),
-                                    color =
-                                        if (release.prerelease)
-                                            Color(0xFFF57F17).copy(alpha = 0.2f)
-                                        else Color(0xFF2E7D32).copy(alpha = 0.2f),
-                                    contentColor =
-                                        if (release.prerelease) Color(0xFFF57F17)
-                                        else Color(0xFF2E7D32)
-                                )
-                            }
-                        }
-
-                        items(release.assets, key = { it.browserDownloadUrl }) { asset ->
-                            val isSelectable = when (strings) {
-                                ImportSourceDialogStrings.PATCHES -> true
-                                ImportSourceDialogStrings.DOWNLOADERS -> asset.contentType == APK_MIMETYPE
-                            }
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable(enabled = isSelectable) { onAssetSelected(asset.browserDownloadUrl) }
-                                    .padding(horizontal = 16.dp, vertical = 6.dp)
-                                    .alpha(if (isSelectable) 1f else 0.4f),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                HapticRadioButton(
-                                    selected = selectedAssetUrl == asset.browserDownloadUrl,
-                                    onClick = { },
-                                    enabled = isSelectable
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = asset.name,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
+                val targetAsset = when (strings) {
+                    ImportSourceDialogStrings.PATCHES -> {
+                        release.assets.filter { it.name.endsWith(".rvp") && it.contentType != PGP_MIMETYPE }
                     }
+                    ImportSourceDialogStrings.DOWNLOADERS -> {
+                        release.assets.filter { it.name.endsWith(".apk") && it.contentType == APK_MIMETYPE }
+                    }
+                }.firstOrNull()
 
-                    if (releases!!.size > explicitReleases.size) {
-                        item {
-                            TextButton(
-                                onClick = { showOlderReleases = !showOlderReleases },
-                                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
-                            ) {
-                                Text(
-                                    stringResource(
-                                        if (showOlderReleases) R.string.github_hide_older_releases
-                                        else R.string.github_show_older_releases
-                                    )
-                                )
-                            }
-                        }
+                SideEffect { targetAsset?.let { onAssetSelected(it.browserDownloadUrl) } }
+
+                Column(
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+                ) {
+                    if (targetAsset == null) {
+                        Text(stringResource(R.string.github_releases_none_found))
+                    } else {
+                        TagValue(
+                            icon = Icons.Outlined.AttachFile,
+                            title = "File",
+                            value = targetAsset.name
+                        )
+                        TagValue(
+                            icon = Icons.Outlined.Sell,
+                            title = "Version",
+                            value = release.name ?: release.tagName
+                        )
+                        TagValue(
+                            icon = Icons.Outlined.Update,
+                            title = "Updated",
+                            value = release.createdAt?.let {
+                                Instant.parse(it).toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current)
+                            } ?: "Unknown"
+                        )
                     }
                 }
             }

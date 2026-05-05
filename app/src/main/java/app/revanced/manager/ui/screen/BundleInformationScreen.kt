@@ -383,7 +383,7 @@ fun BundleInformationScreen(
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun TagValue(
+internal fun TagValue(
     icon: ImageVector,
     title: String,
     value: String,
