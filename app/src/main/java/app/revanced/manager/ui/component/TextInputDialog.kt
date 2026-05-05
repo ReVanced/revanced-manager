@@ -55,14 +55,17 @@ fun TextInputDialog(
             Text(title)
         },
         text = {
+            // We check if the value is empty to avoid showing an error state when the user
+            // hasn't entered anything yet to avoid bashing user with bad UX of blaming the
+            // user immediately when everything is intended.
             OutlinedTextField(
                 value = value,
                 onValueChange = setValue,
                 placeholder = placeholder?.let { { Text(placeholder) } },
                 trailingIcon = trailingIcon?.let { { it(value, setValue) } },
-                isError = !valid,
+                isError = !valid && value.isNotEmpty(),
                 supportingText = {
-                    if (!valid) {
+                    if (!valid && value.isNotEmpty()) {
                         Text(
                             text = stringResource(R.string.input_dialog_value_invalid),
                             modifier = Modifier.fillMaxWidth(),
