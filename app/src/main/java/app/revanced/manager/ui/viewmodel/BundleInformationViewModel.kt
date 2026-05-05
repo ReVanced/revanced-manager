@@ -46,6 +46,8 @@ class BundleInformationViewModel(uid: Int) : ViewModel(), KoinComponent {
         }
     }
 
+    suspend fun validateEndpoint(value: String) = patchBundleRepository.validateRemoteUrl(value.trim())
+
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         prefs.usePatchesPrereleases.update(value)
         refresh()

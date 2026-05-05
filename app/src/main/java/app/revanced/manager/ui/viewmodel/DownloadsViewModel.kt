@@ -70,6 +70,8 @@ class DownloadsViewModel(
         downloaderRepository.createRemote(apiUrl, autoUpdate)
     }
 
+    suspend fun validateRemoteSourceUrl(apiUrl: String) = downloaderRepository.validateRemoteUrl(apiUrl)
+
     fun toggleApp(downloadedApp: DownloadedApp) {
         if (appSelection.contains(downloadedApp))
             appSelection.remove(downloadedApp)

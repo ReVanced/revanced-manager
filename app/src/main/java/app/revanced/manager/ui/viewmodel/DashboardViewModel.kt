@@ -132,4 +132,6 @@ class DashboardViewModel(
     fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
         patchBundleRepository.createRemote(apiUrl, autoUpdate)
     }
+
+    suspend fun validateRemoteSourceUrl(apiUrl: String) = patchBundleRepository.validateRemoteUrl(apiUrl)
 }

@@ -200,6 +200,7 @@ fun DashboardScreen(
         ImportSourceDialog(
             strings = ImportSourceDialogStrings.PATCHES,
             onDismiss = { showAddBundleDialog = false },
+            validateRemote = vm::validateRemoteSourceUrl,
             onLocalSubmit = { patches ->
                 showAddBundleDialog = false
                 patchesSourceEditMode = false

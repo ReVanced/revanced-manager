@@ -9,16 +9,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import app.revanced.manager.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -29,11 +31,13 @@ fun TextInputDialog(
     onDismissRequest: () -> Unit,
     onConfirm: (String) -> Unit,
     validator: (String) -> Boolean = String::isNotEmpty,
+    confirmValidator: (suspend (String) -> String?)? = null,
     trailingIcon: @Composable ((value: String, onValueChange: (String) -> Unit) -> Unit)? = null,
 ) {
-    val (value, setValue) = rememberSaveable(initial) {
-        mutableStateOf(initial)
-    }
+    var value by rememberSaveable(initial) { mutableStateOf(initial) }
+    var submitError by rememberSaveable(initial) { mutableStateOf<String?>(null) }
+    var isSubmitting by rememberSaveable { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
     val valid = remember(value, validator) {
         validator(value)
     }
@@ -42,8 +46,25 @@ fun TextInputDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(
-                onClick = { onConfirm(value) },
-                enabled = valid,
+                onClick = {
+                    if (confirmValidator == null) {
+                        onConfirm(value)
+                        return@TextButton
+                    }
+
+                    coroutineScope.launch {
+                        isSubmitting = true
+                        val validationError = confirmValidator(value)
+                        isSubmitting = false
+
+                        if (validationError == null) {
+                            onConfirm(value)
+                        } else {
+                            submitError = validationError
+                        }
+                    }
+                },
+                enabled = valid && !isSubmitting,
                 shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.ok))
@@ -63,21 +84,34 @@ fun TextInputDialog(
             // user immediately when everything is intended.
             OutlinedTextField(
                 value = value,
-                onValueChange = setValue,
+                onValueChange = {
+                    value = it
+                    submitError = null
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Uri,
                     autoCorrectEnabled = false
                 ),
                 placeholder = placeholder?.let { { Text(placeholder) } },
-                trailingIcon = trailingIcon?.let { { it(value, setValue) } },
-                isError = !valid && value.isNotEmpty(),
+                trailingIcon = trailingIcon?.let { { it(value) { newValue ->
+                    value = newValue
+                    submitError = null
+                } } },
+                isError = submitError != null || (!valid && value.isNotEmpty()),
                 supportingText = {
-                    if (!valid && value.isNotEmpty()) {
+                    when {
+                        submitError != null -> Text(
+                            text = submitError!!,
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        !valid && value.isNotEmpty() -> {
                         Text(
                             text = stringResource(R.string.input_dialog_value_invalid),
                             modifier = Modifier.fillMaxWidth(),
                             color = MaterialTheme.colorScheme.error
                         )
+                        }
                     }
                 }
             )

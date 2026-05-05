@@ -294,6 +294,7 @@ fun BundleInformationScreen(
                             initial = url,
                             title = stringResource(R.string.patches_url),
                             onDismissRequest = { showUrlInputDialog = false },
+                            confirmValidator = viewModel::validateEndpoint,
                             onConfirm = {
                                 showUrlInputDialog = false
                                 viewModel.setEndpoint(it.trim())

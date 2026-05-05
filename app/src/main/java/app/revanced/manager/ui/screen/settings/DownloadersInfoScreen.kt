@@ -223,6 +223,7 @@ fun DownloaderInfoScreen(
                             initial = url,
                             title = stringResource(R.string.downloader_url),
                             onDismissRequest = { showUrlInputDialog = false },
+                            confirmValidator = viewModel::validateRemoteSourceUrl,
                             onConfirm = {
                                 showUrlInputDialog = false
                                 viewModel.setEndpoint(remote, it.trim())
