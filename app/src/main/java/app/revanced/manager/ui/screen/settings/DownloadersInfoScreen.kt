@@ -280,7 +280,7 @@ fun DownloaderInfoScreen(
                     EmptyState(
                         icon = Icons.Outlined.SignalWifiOff,
                         title = R.string.downloader_sources_unavailable_title,
-                        description = R.string.downloader_sources_unavailable_description
+                        description = if (remote != null) R.string.downloader_sources_unavailable_with_remote_description else R.string.downloader_sources_unavailable_without_remote_description
                     )
                 }
             }

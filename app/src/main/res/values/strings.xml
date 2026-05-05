@@ -219,8 +219,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="local_downloaders_description">Add downloader from local storage</string>
     <string name="remote_downloaders_description">Downloader can receive updates</string>
     <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
-    <string name="downloader_sources_unavailable_description">Tap <b>Update</b> to fix this issue</string>
-
+    <string name="downloader_sources_unavailable_with_remote_description">Tap <b>Update</b> to fix this issue</string>
+    <string name="downloader_sources_unavailable_without_remote_description">Make sure that you imported the correct downloader</string>
     <string name="downloader_update_failed">Failed to update downloader: %s</string>
     <string name="downloader_replace_fail">Failed to import downloader: %s</string>
 
