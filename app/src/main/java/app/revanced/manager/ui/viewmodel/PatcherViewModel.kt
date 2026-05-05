@@ -726,6 +726,7 @@ class PatcherViewModel(
         ): List<String> {
             val defaultSelection = bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
             val bundleNames = bundles.associate { it.uid to it.name }
+            val bundleVersions = bundles.associate { it.uid to it.version }
             val knownBundleIds = bundles.map(PatchBundleInfo.Scoped::uid)
             val orderedBundleIds = knownBundleIds + (selectedPatches.keys + defaultSelection.keys)
                 .filterNot(knownBundleIds::contains)
@@ -739,7 +740,9 @@ class PatcherViewModel(
                     val removed = (defaults - selected).sorted()
                     if (added.isEmpty() && removed.isEmpty()) return@forEach
 
-                    add("Source: ${bundleNames[uid] ?: "Source $uid"}")
+                    val sourceName = bundleNames[uid] ?: "Source $uid"
+                    val sourceVersion = bundleVersions[uid]?.let { " v$it" } ?: ""
+                    add("Source: $sourceName$sourceVersion")
                     if (added.isNotEmpty()) add("Added: ${added.joinToString()}")
                     if (removed.isNotEmpty()) add("Removed: ${removed.joinToString()}")
                 }
