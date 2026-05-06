@@ -1,5 +1,6 @@
 package app.revanced.manager
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.compose.setContent
@@ -66,6 +67,7 @@ import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.SupportedLocales
 import app.revanced.manager.util.deepLinkedComposable
 import app.revanced.manager.util.navigateSafe
 import app.revanced.manager.util.popBackStackSafe
@@ -73,6 +75,7 @@ import app.revanced.manager.util.resetListItemColorsCached
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import java.util.Locale
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -103,6 +106,14 @@ class MainActivity : AppCompatActivity() {
                 ReVancedManager(vm)
             }
         }
+    }
+
+    // fixes issue #2857 by preventing an empty locale
+    override fun applyOverrideConfiguration(overrideConfiguration: Configuration?) {
+        if (overrideConfiguration != null && overrideConfiguration.locales.isEmpty) {
+            overrideConfiguration.setLocale(SupportedLocales.getCurrentLocale() ?: Locale.getDefault())
+        }
+        super.applyOverrideConfiguration(overrideConfiguration)
     }
 }
 
