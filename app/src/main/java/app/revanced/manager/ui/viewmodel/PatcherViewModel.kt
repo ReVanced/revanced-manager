@@ -568,7 +568,7 @@ class PatcherViewModel(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version ?: withContext(Dispatchers.IO) {
-                        pm.getPackageInfo(outputFile)?.versionName ?: app.getString(R.string.apk_version_unknown)
+                        pm.getPackageInfo(outputFile)?.versionName ?: error("Downloaded APK has no version name")
                     },
                     InstallType.DEFAULT,
                     input.selectedPatches,

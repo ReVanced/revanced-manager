@@ -261,7 +261,7 @@ class PatcherWorker(
 
             runStep(StepId.SignAPK, args.onEvent) {
                 require(patchedApk.exists() && patchedApk.length() > 0L) {
-                    "Patched APK was not generated"
+                    "Patched APK was not created successfully."
                 }
                 keystoreManager.sign(patchedApk, File(args.output))
             }
