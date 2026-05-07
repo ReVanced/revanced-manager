@@ -38,7 +38,7 @@ kotlin-process = "1.5.1"
 hidden-api-stub = "4.4.0"
 binary-compatibility-validator = "0.18.1"
 semver-parser = "3.0.0"
-ackpine = "0.20.6"
+ackpine = "0.22.3"
 foundation-layout = "1.10.5"
 paging3 = "3.4.2"
 

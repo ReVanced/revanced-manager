@@ -2,6 +2,7 @@ package app.revanced.manager.domain.manager
 
 import android.content.Context
 import app.revanced.manager.domain.manager.base.BasePreferencesManager
+import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.isDebuggable
 
@@ -16,6 +17,7 @@ class PreferencesManager(
 
     val useProcessRuntime = booleanPreference("use_process_runtime", false)
     val patcherProcessMemoryLimit = intPreference("process_runtime_memory_limit", 700)
+    val minPatcherLogLevel = enumPreference("min_patcher_log_level", LogLevel.INFO)
 
     val keystoreAlias = stringPreference("keystore_alias", KeystoreManager.DEFAULT)
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)
@@ -37,4 +39,6 @@ class PreferencesManager(
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
 
     val allowMeteredNetworks = booleanPreference("allow_metered_networks", false)
+
+    val pinnedApps = stringSetPreference("pinned_apps", emptySet())
 }

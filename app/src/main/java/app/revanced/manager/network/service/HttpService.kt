@@ -14,8 +14,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
 import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.core.isNotEmpty
-import io.ktor.utils.io.core.readBytes
 import io.ktor.utils.io.exhausted
 import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.Dispatchers

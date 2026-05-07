@@ -59,7 +59,6 @@ import app.revanced.manager.ui.viewmodel.AboutViewModel
 import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.DEVELOPER_OPTIONS_TAPS
 import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
 import app.revanced.manager.util.openUrl
-import app.revanced.manager.util.toast
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import org.koin.androidx.compose.koinViewModel
 

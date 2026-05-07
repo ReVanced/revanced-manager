@@ -154,7 +154,8 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
                         selectedPatches[uid].orEmpty(),
                         options[uid].orEmpty()
                     )
-                }
+                },
+                minLogLevel = prefs.minPatcherLogLevel.get()
             )
 
             binder.start(parameters, eventHandler)

@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.SupportedLocales
-import app.revanced.manager.util.resetListItemColorsCached
 import kotlinx.coroutines.launch
 import java.util.Locale
 

@@ -70,7 +70,6 @@ import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import app.revanced.manager.util.relativeTime
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import java.util.Locale.getDefault
 
 private enum class DownloadsTab(
     val titleResId: Int,

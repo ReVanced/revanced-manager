@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import app.revanced.manager.BuildConfig
 import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.StepId
@@ -62,7 +61,7 @@ class PatcherProcess() : IPatcherProcess.Stub() {
 
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
-            val loadLogger = logger.forStep(StepId.LoadPatches, ::onEvent)
+            val loadLogger = logger.forStep(StepId.LoadPatches, parameters.minLogLevel, ::onEvent)
             val patchList = runStep(StepId.LoadPatches, ::onEvent) {
                 loadLogger.withJavaLogging {
                     val allPatches = PatchBundle.Loader.patches(
@@ -96,6 +95,7 @@ class PatcherProcess() : IPatcherProcess.Stub() {
                 logger = logger,
                 input = File(parameters.inputFile),
                 onEvent = ::onEvent,
+                minLogLevel = parameters.minLogLevel,
             )
 
             session.use {

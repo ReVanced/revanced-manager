@@ -1,7 +1,6 @@
 package app.revanced.manager.network.api
 
 import android.util.Log
-import app.revanced.manager.BuildConfig
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.manager.base.Preference
 import app.revanced.manager.network.dto.ReVancedAnnouncement
@@ -11,7 +10,6 @@ import app.revanced.manager.network.dto.ReVancedGitRepository
 import app.revanced.manager.network.dto.ReVancedInfo
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.APIResponse
-import app.revanced.manager.network.utils.getOrThrow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.url

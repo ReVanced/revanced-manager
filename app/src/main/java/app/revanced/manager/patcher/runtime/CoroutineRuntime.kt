@@ -26,7 +26,8 @@ class CoroutineRuntime(context: Context) : Runtime(context) {
         logger: Logger,
         onEvent: (ProgressEvent) -> Unit,
     ) {
-        val loadLogger = logger.forStep(StepId.LoadPatches, onEvent)
+        val minLogLevel = prefs.minPatcherLogLevel.get()
+        val loadLogger = logger.forStep(StepId.LoadPatches, minLogLevel, onEvent)
 
         val patchList = runStep(StepId.LoadPatches, onEvent) {
             loadLogger.withJavaLogging {
@@ -66,6 +67,7 @@ class CoroutineRuntime(context: Context) : Runtime(context) {
             logger,
             File(inputFile),
             onEvent,
+            minLogLevel,
         )
 
         session.use { s ->

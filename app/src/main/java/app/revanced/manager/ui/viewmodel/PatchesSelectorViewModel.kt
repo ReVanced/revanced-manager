@@ -20,6 +20,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.Extensions.version
+import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.patcher.patch.PatchInfo
@@ -234,6 +235,12 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     fun resetOptions(bundle: Int, patch: PatchInfo) {
         app.toast(app.getString(R.string.patch_options_reset_toast))
         patchOptions[bundle] = patchOptions[bundle]?.remove(patch.name) ?: return
+    }
+
+    fun resetOption(bundle: Int, patch: PatchInfo, option: Option<*>) {
+        val bundlesToPatches = patchOptions[bundle] ?: return
+        val patchesToOpts = bundlesToPatches[patch.name] ?: return
+        patchOptions[bundle] = bundlesToPatches.put(patch.name, patchesToOpts.remove(option.name))
     }
 
     fun dismissDialogs() {
