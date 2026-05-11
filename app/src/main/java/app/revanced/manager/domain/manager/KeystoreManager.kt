@@ -21,7 +21,7 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
          * Default alias and password for the keystore.
          */
         const val DEFAULT = "ReVanced"
-        private val eightYearsFromNow get() = Date(System.currentTimeMillis() + (365.days * 8).inWholeMilliseconds * 24)
+        private val eightYearsFromNow get() = Date(System.currentTimeMillis() + (365.days * 8).inWholeMilliseconds)
     }
 
     private val keystorePath =

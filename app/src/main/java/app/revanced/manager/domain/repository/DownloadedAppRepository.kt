@@ -39,11 +39,10 @@ class DownloadedAppRepository(
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
     suspend fun cleanUp() {
-        val threshold = 1000 * 60 * 60 * 6
         val now = System.currentTimeMillis()
 
         val targets = getAll().first().filter {
-            (now - it.lastUsed) > threshold
+            (now - it.lastUsed) > CACHE_TTL_MS
         }
         delete(targets)
     }
@@ -98,9 +97,7 @@ class DownloadedAppRepository(
 
                         override fun write(b: ByteArray?, off: Int, len: Int) =
                             out.write(b, off, len).also {
-                                emitProgress(
-                                    (len - off).toLong()
-                                )
+                                emitProgress(len.toLong())
                             }
                     }
                     downloader.impl.download(scope, data, stream)
@@ -114,15 +111,16 @@ class DownloadedAppRepository(
             val pkgInfo =
                 pm.getPackageInfo(targetFile.toFile()) ?: error("Downloaded APK file is invalid")
             if (pkgInfo.packageName != expectedPackageName) error("Downloaded APK has the wrong package name. Expected: $expectedPackageName, Actual: ${pkgInfo.packageName}")
+            val versionName = pkgInfo.versionName ?: error("Downloaded APK has no version name")
             expectedVersion?.let {
                 if (
-                    pkgInfo.versionName != expectedVersion &&
+                    versionName != expectedVersion &&
                     (appCompatibilityCheck || patchesCompatibilityCheck)
-                ) error("The selected app version ($pkgInfo.versionName) doesn't match the suggested version. Please use the suggested version ($expectedVersion), or adjust your settings by disabling \"Require suggested app version\" and enabling \"Disable version compatibility check\".")
+                ) error("The selected app version ($versionName) doesn't match the suggested version. Please use the suggested version ($expectedVersion), or adjust your settings by disabling \"Require suggested app version\" and enabling \"Disable version compatibility check\".")
             }
 
             // Delete the previous copy (if present).
-            dao.get(pkgInfo.packageName, pkgInfo.versionName!!)?.directory?.let {
+            dao.get(pkgInfo.packageName, versionName)?.directory?.let {
                 if (!dir.resolve(it)
                         .deleteRecursively()
                 ) throw Exception("Failed to delete existing directory")
@@ -130,7 +128,7 @@ class DownloadedAppRepository(
             dao.upsert(
                 DownloadedApp(
                     packageName = pkgInfo.packageName,
-                    version = pkgInfo.versionName!!,
+                    version = versionName,
                     directory = relativePath,
                 )
             )
@@ -161,5 +159,9 @@ class DownloadedAppRepository(
         }
 
         dao.delete(downloadedApps)
+    }
+
+    companion object {
+        private const val CACHE_TTL_MS = 6 * 60 * 60 * 1_000L
     }
 }
