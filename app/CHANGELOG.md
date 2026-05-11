@@ -1,3 +1,10 @@
+## app [2.6.1-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.6.0...v2.6.1-dev.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* comprehensive stability, memory, and installer improvements ([#3187](https://github.com/ReVanced/revanced-manager/issues/3187)) ([9740a31](https://github.com/ReVanced/revanced-manager/commit/9740a315541712d529c438a01c7c585ee206f47a))
+
 # app [2.6.0](https://github.com/ReVanced/revanced-manager/compare/v2.5.1...v2.6.0) (2026-04-26)
 
 
