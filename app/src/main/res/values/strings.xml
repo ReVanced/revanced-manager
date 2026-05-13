@@ -433,6 +433,7 @@ It’s only compatible with these versions: %2$s</string>
     <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
     <string name="save_as_file">Save to files</string>
+    <string name="share_apk">Share APK</string>
     <string name="export_patcher_logs">Export patcher logs</string>
     <string name="save_logs_success">Logs saved</string>
     <string name="downloader_activity_dialog_body">You need to interact with this downloader in order to continue</string>

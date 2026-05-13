@@ -361,6 +361,8 @@ class PatcherViewModel(
         }
     }
 
+    fun getOutputApkUri(): Uri = FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", outputFile)
+
     fun logFileName() = "revanced_patcher_${packageName}_${version}_${System.currentTimeMillis()}.txt"
 
     fun prepareLogExport() = viewModelScope.launch {

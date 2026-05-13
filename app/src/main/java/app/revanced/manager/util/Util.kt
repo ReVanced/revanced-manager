@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.renderscript.Allocation
@@ -75,6 +76,17 @@ fun Context.openUrl(url: String) {
     startActivity(Intent(Intent.ACTION_VIEW, url.toUri()).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
+}
+fun Context.shareApk(apkUri: Uri) {
+    startActivity(
+        Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+            type = APK_MIMETYPE
+            putExtra(Intent.EXTRA_STREAM, apkUri)
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }, null).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    )
 }
 
 fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
