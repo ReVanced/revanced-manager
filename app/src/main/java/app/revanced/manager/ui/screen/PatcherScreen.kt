@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -226,7 +227,7 @@ fun PatcherScreen(
                         tooltip = stringResource(id = R.string.share_apk),
                         enabled = patcherSucceeded == true,
                     ) { contentDescription ->
-                        Icon(Icons.Outlined.Share, contentDescription)
+                        Icon(Icons.Outlined.Share, contentDescription, Modifier.size(21.dp))
                     }
                 },
                 floatingActionButton = {
