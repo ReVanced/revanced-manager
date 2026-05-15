@@ -205,7 +205,7 @@ fun PatcherScreen(
             BottomAppBar(
                 actions = {
                     TooltipIconButton(
-                        onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
+                        onClick = { exportApkLauncher.launch(viewModel.patchedApkFileName) },
                         tooltip = stringResource(id = R.string.save_apk),
                         enabled = patcherSucceeded == true,
                     ) { contentDescription ->
