@@ -1,3 +1,10 @@
+# app [2.7.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.6.1-dev.3...v2.7.0-dev.1) (2026-05-17)
+
+
+### Features
+
+* Add share button for patched apk ([#3350](https://github.com/ReVanced/revanced-manager/issues/3350)) ([51c8d1f](https://github.com/ReVanced/revanced-manager/commit/51c8d1fda0eca8919ef3ddf1e3962bda28a550d9))
+
 ## app [2.6.1-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.6.1-dev.2...v2.6.1-dev.3) (2026-05-14)
 
 
