@@ -161,8 +161,9 @@ class PatcherViewModel(
     private var installerPkgName: String by savedStateHandle.saveableVar { "" }
     private var installerSessionId: ParcelUuid? by savedStateHandle.saveableVar()
 
+    val patchedApkFileName = "${packageName}${version?.let { "_$it" } ?: ""}_revanced_patched.apk"
     private var inputFile: File? by savedStateHandle.saveableVar()
-    private val outputFile = tempDir.resolve("output.apk")
+    private val outputFile = tempDir.resolve(patchedApkFileName)
     var preparedLogUri by mutableStateOf<Uri?>(null)
         private set
 
@@ -361,7 +362,9 @@ class PatcherViewModel(
         }
     }
 
-    fun logFileName() = "revanced_patcher_${packageName}_${version}_${System.currentTimeMillis()}.txt"
+    fun getOutputApkUri(): Uri = FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", outputFile)
+
+    fun logFileName() = "revanced_patcher_${packageName}${version?.let { "_$it" } ?: ""}_${System.currentTimeMillis()}.txt"
 
     fun prepareLogExport() = viewModelScope.launch {
         val logSnapshot = logs.toList()
