@@ -213,6 +213,13 @@ fun PatcherScreen(
                         Icon(Icons.Outlined.Save, contentDescription)
                     }
                     TooltipIconButton(
+                        onClick = { context.shareApk(viewModel.getOutputApkUri()) },
+                        tooltip = stringResource(id = R.string.share_apk),
+                        enabled = patcherSucceeded == true,
+                    ) { contentDescription ->
+                        Icon(Icons.Outlined.Share, contentDescription, Modifier.size(21.dp))
+                    }
+                    TooltipIconButton(
                         onClick = {
                             viewModel.prepareLogExport()
                             showLogExportSheet = true
@@ -221,13 +228,6 @@ fun PatcherScreen(
                         enabled = patcherSucceeded != null,
                     ) { contentDescription ->
                         Icon(Icons.Outlined.PostAdd, contentDescription)
-                    }
-                    TooltipIconButton(
-                        onClick = { context.shareApk(viewModel.getOutputApkUri()) },
-                        tooltip = stringResource(id = R.string.share_apk),
-                        enabled = patcherSucceeded == true,
-                    ) { contentDescription ->
-                        Icon(Icons.Outlined.Share, contentDescription, Modifier.size(21.dp))
                     }
                 },
                 floatingActionButton = {
