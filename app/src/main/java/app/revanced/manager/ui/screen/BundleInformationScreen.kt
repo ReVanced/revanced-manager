@@ -134,7 +134,7 @@ fun BundleInformationScreen(
                             src.asRemoteOrNull?.releasedAt?.let {
                                 val releaseDate = it.relativeTime(
                                     LocalContext.current
-                                ).lowercase(getDefault())
+                                )
 
                                 append("\u2002($releaseDate)")
                             }
