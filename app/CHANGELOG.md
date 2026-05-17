@@ -1,3 +1,10 @@
+# app [2.7.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.1...v2.7.0-dev.2) (2026-05-17)
+
+
+### Bug Fixes
+
+* Make release date casing consistent with other places ([#3360](https://github.com/ReVanced/revanced-manager/issues/3360)) ([a91247d](https://github.com/ReVanced/revanced-manager/commit/a91247d8da91e627b0a66d2912183bbf73cd16e3))
+
 # app [2.7.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.6.1-dev.3...v2.7.0-dev.1) (2026-05-17)
 
 
