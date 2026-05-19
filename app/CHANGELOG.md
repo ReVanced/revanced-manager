@@ -1,3 +1,10 @@
+# app [2.7.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.2...v2.7.0-dev.3) (2026-05-19)
+
+
+### Bug Fixes
+
+* Empty patch description padding ([5df0b46](https://github.com/ReVanced/revanced-manager/commit/5df0b46a84070d7f0ca8d4b751f3da950e02a1b8))
+
 # app [2.7.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.1...v2.7.0-dev.2) (2026-05-17)
 
 
