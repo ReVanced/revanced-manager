@@ -66,7 +66,7 @@ data class CompatiblePackage(
 @Immutable
 data class Option<T>(
     val name: String,
-    val description: String,
+    val description: String?,
     val required: Boolean,
     val type: KType,
     val default: T?,
@@ -75,7 +75,7 @@ data class Option<T>(
 ) {
     constructor(option: PatchOption<T>) : this(
         option.name,
-        option.description.orEmpty(),
+        option.description,
         option.required,
         option.type,
         option.default,

@@ -312,10 +312,12 @@ fun PatchItem(
                                         style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.primary
                                     )
-                                    Text(
-                                        text = option.description,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
+                                    option.description?.let {
+                                        Text(
+                                            text = it,
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                    }
                                 }
                             }
                         }
