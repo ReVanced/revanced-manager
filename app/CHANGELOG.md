@@ -1,3 +1,10 @@
+# app [2.7.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.3...v2.7.0-dev.4) (2026-05-28)
+
+
+### Bug Fixes
+
+* **Network:** Handle `SecurityException` ([#3376](https://github.com/ReVanced/revanced-manager/issues/3376)) ([46e0bb2](https://github.com/ReVanced/revanced-manager/commit/46e0bb2c5d333500a371e386cec4cb64e02fce0d))
+
 # app [2.7.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.2...v2.7.0-dev.3) (2026-05-19)
 
 
