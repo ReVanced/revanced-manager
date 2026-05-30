@@ -41,6 +41,8 @@ class ReVancedAPI(
     ): APIResponse<List<ReVancedAssetHistory>> {
         val route = "patches/history${prerelease.prereleaseString()}"
         val normalized = apiUrl.trimEnd('/')
+        // Only the official source (the configured primary endpoint) participates in the primary => fallback logic.
+        // A user-added custom remote source must query its own server directly and must never be redirected to ReVanced's backup endpoint.
         return if (normalized == endpointState.primaryUrl()) {
             request(route)
         } else {

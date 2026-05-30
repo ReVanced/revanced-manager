@@ -4,7 +4,6 @@ import android.content.Context
 import app.revanced.manager.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
-import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.cache.HttpCache
@@ -46,8 +45,6 @@ val httpModule = module {
             publicStorage(
                 FileStorage(context.cacheDir.resolve("api_cache").also { it.mkdirs() })
             )
-        }
-        install(HttpRequestRetry) {
         }
         install(HttpTimeout) {
             socketTimeoutMillis = 10000
