@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkManager
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.AnnouncementRepository
@@ -48,15 +47,7 @@ class DashboardViewModel(
     val hasUpdate = managerUpdateRepository.hasUpdate
     val updateVersion = managerUpdateRepository.version
 
-    private val patchingWorkActive =
-        WorkManager.getInstance(app)
-            .getWorkInfosForUniqueWorkFlow(PATCHING_WORK_NAME)
-            .map { infos -> infos.any { !it.state.isFinished } }
-
-    val primaryRecoveryAvailable = combine(
-        endpointState.primaryRecoveryAvailable,
-        patchingWorkActive,
-    ) { available, busy -> available && !busy }
+    val primaryRecoveryAvailable = endpointState.primaryRecoveryAvailable
 
     val sourcesNotDownloaded = patchBundleRepository.bundleInfoFlow.map { it.isEmpty() }
     val sourceUpdatesAvailable = combine(
@@ -155,9 +146,5 @@ class DashboardViewModel(
             ?: return
         app.startActivity(intent)
         Process.killProcess(Process.myPid())
-    }
-
-    private companion object {
-        const val PATCHING_WORK_NAME = "patching"
     }
 }

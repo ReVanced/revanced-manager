@@ -38,17 +38,8 @@ class ReVancedAPI(
     suspend fun getPatchesHistory(
         apiUrl: String,
         prerelease: Boolean,
-    ): APIResponse<List<ReVancedAssetHistory>> {
-        val route = "patches/history${prerelease.prereleaseString()}"
-        val normalized = apiUrl.trimEnd('/')
-        // Only the official source (the configured primary endpoint) participates in the primary => fallback logic.
-        // A user-added custom remote source must query its own server directly and must never be redirected to ReVanced's backup endpoint.
-        return if (normalized == endpointState.primaryUrl()) {
-            request(route)
-        } else {
-            directRequest(normalized, route)
-        }
-    }
+    ): APIResponse<List<ReVancedAssetHistory>> =
+        requestForSource(apiUrl, "patches/history${prerelease.prereleaseString()}")
 
     suspend fun getDownloaderUpdate(): APIResponse<ReVancedAsset> =
         request("manager/downloaders${prefs.useDownloaderPrerelease.prereleaseString()}")
@@ -73,6 +64,23 @@ class ReVancedAPI(
 
     private suspend inline fun <reified T> request(route: String): APIResponse<T> =
         requestTracked<T>(route).first
+
+    /**
+     * Routes a request for a patch-bundle source. Only the official source (the configured
+     * primary endpoint) participates in the primary -> fallback logic; a user-added custom
+     * remote source queries its own server directly and is never redirected to the backup.
+     */
+    private suspend inline fun <reified T> requestForSource(
+        apiUrl: String,
+        route: String,
+    ): APIResponse<T> {
+        val normalized = apiUrl.trimEnd('/')
+        return if (normalized == endpointState.primaryUrl()) {
+            request(route)
+        } else {
+            directRequest(normalized, route)
+        }
+    }
 
     private suspend inline fun <reified T> requestTracked(
         route: String,

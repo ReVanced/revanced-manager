@@ -227,10 +227,6 @@ android {
         buildConfig = true
     }
 
-    testOptions {
-        unitTests.isReturnDefaultValues = true
-    }
-
     androidResources {
         generateLocaleConfig = true
     }
