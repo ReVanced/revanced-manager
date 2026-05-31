@@ -6,10 +6,6 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -21,10 +17,7 @@ dependencyResolutionManagement {
             name = "githubPackages"
             // A repository must be specified for some reason. "registry" is a dummy.
             url = uri("https://maven.pkg.github.com/revanced/registry")
-            credentials {
-                username = providers.gradleProperty("githubPackagesUsername").orNull ?: ""
-                password = providers.gradleProperty("githubPackagesPassword").orNull ?: ""
-            }
+            credentials(PasswordCredentials::class)
         }
     }
 }
