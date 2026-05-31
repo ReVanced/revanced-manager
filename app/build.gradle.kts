@@ -265,10 +265,8 @@ android {
             excludes += "/prebuilt/**/*"
         }
         jniLibs {
-            // Exclude 32-bit x86 only for release builds to allow local x86 TV emulator testing
-            if (!gradle.startParameter.taskNames.any { it.contains("Debug", ignoreCase = true) }) {
-                excludes += "/lib/x86/*.so"
-            }
+            // 32-bit x86 is dead
+            excludes += "/lib/x86/*.so"
 
             // Equivalent of AndroidManifest's extractNativeLibs=true to ensure libs are compressed
             useLegacyPackaging = true

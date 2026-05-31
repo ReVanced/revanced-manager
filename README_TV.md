@@ -50,20 +50,32 @@ Upon a successful build, your deployable APK will be packaged at:
 
 ---
 
-## 🖥️ 4. Emulating & Testing on Android TV 9.0
+## 🖥️ 4. Emulating & Testing on Android TV
 
-We have pre-configured and registered a native **Android TV 9.0 (API 28)** virtual device on your machine to test Leanback launcher layouts and D-Pad focus traversal.
+To test the application locally without a physical TV, you must use a **64-bit x86_64** Android TV emulator. 
 
-### 🧩 TV Emulator x86 ABI Compatibility Note
-Standard TV emulators run on 32-bit `x86` architectures. The project's build file is configured to conditionally package `x86` native libraries **only for Debug builds** (`assembleDebug`). This ensures your release builds remain size-optimized while your local emulator testing installs seamlessly without crashing on `INSTALL_FAILED_NO_MATCHING_ABIS` errors!
+> [!WARNING]
+> **Why not 32-bit x86?**
+> ReVanced Manager excludes 32-bit `x86` native libraries (`/lib/x86/*.so`) in its build script to keep the package size optimized. Testing on a 32-bit `x86` emulator will fail with `INSTALL_FAILED_NO_MATCHING_ABIS`. Always use an **x86_64** image.
 
-### Step 1: Start the Android TV Emulator
-Execute this command in your PowerShell terminal to boot up the TV screen:
+### Step 1: Create an x86_64 Android TV Emulator (If needed)
+If you don't have a 64-bit TV emulator, download the system image and create one using the following command-line steps:
+
 ```powershell
-& G:\a1\emulator\emulator.exe -avd Android_TV_9
+# 1. Download the 64-bit Android TV system image (e.g., API 28)
+& G:\a1\cmdline-tools\latest\bin\sdkmanager.bat "system-images;android-28;android-tv;x86_64"
+
+# 2. Create the Virtual Device (AVD)
+& G:\a1\cmdline-tools\latest\bin\avdmanager.bat create avd -n Android_TV_9_x64 -k "system-images;android-28;android-tv;x86_64"
 ```
 
-### Step 2: Install Your Compiled TV APK
+### Step 2: Start the Android TV Emulator
+Execute this command in your PowerShell terminal to boot up the TV screen:
+```powershell
+& G:\a1\emulator\emulator.exe -avd Android_TV_9_x64
+```
+
+### Step 3: Install Your Compiled TV APK
 Install the freshly compiled package onto the running emulator:
 ```powershell
 & G:\a1\platform-tools\adb.exe install -r F:\Project\revanced-manager-for-tv\app\build\outputs\apk\debug\revanced-manager-2.6.1.apk
