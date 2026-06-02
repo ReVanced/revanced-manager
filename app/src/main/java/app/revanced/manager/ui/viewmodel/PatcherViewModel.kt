@@ -28,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.work.await
 import app.revanced.manager.BuildConfig
 import androidx.core.content.FileProvider
 import app.revanced.manager.R
@@ -72,6 +73,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -336,6 +338,50 @@ class PatcherViewModel(
         installerCoroutineScope.cancel()
         // tempDir cannot be deleted inside onCleared because it gets called on system-initiated process death.
         tempDir.deleteRecursively()
+        viewModelScope.launch(Dispatchers.IO) {
+            // Cancel patcher worker first so the external patcher process exits and releases file handles.
+            try {
+                patcherWorkerId.uuid.let { uuid ->
+                    workManager.cancelWorkById(uuid).await()
+                    logger.info("Killed patcher worker: $uuid")
+                }
+            } catch (e: Exception) {
+                logger.warn("Failed to kill patcher worker: $e")
+            }
+
+            // Nuke decompiled APK working dir and patched.apk
+            // Since it can be denied by InterruptedIOException.
+            val sizeBefore = fs.tempDir.walkTopDown().count { it.isFile }
+            var deleted = false
+            var remaining: List<File> = emptyList()
+            var attempt = 0
+            val maxAttempts = 5
+            while (attempt < maxAttempts) {
+                attempt++
+                val result = runCatching {
+                    val success = fs.tempDir.deleteRecursively()
+                    fs.tempDir.mkdirs()
+                    success to (fs.tempDir.listFiles()?.toList().orEmpty())
+                }
+                result.onSuccess { (success, rem) ->
+                    deleted = success
+                    remaining = rem
+                }.onFailure { e ->
+                    logger.warn("Failed purge attempt $attempt/${maxAttempts}: $e")
+                }
+                if (deleted && remaining.isEmpty()) break
+                delay(200)
+            }
+
+            val detailed = "absPath=\"${fs.tempDir.absolutePath}\" before=$sizeBefore deleteOk=$deleted attempts=$attempt afterCount=${remaining.size} survivors=${remaining.joinToString { it.name }}"
+            if (deleted && remaining.isEmpty()) {
+                logger.info("Successfully cleared patcher temp files")
+
+            } else {
+                logger.warn("Failed to clear temporary patcher files")
+            }
+            logger.trace(detailed)
+        }
     }
 
     fun isDeviceRooted() = rootInstaller.isDeviceRooted()
