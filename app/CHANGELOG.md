@@ -1,3 +1,10 @@
+# app [2.7.0-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.4...v2.7.0-dev.5) (2026-06-02)
+
+
+### Bug Fixes
+
+* **Patcher:** Purge temp dir on screen exit ([dd9a06d](https://github.com/ReVanced/revanced-manager/commit/dd9a06d4b452d9b78047d3ad331b118a2325caad))
+
 # app [2.7.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.3...v2.7.0-dev.4) (2026-05-28)
 
 
