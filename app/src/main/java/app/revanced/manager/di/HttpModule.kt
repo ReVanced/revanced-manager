@@ -43,7 +43,7 @@ val httpModule = module {
         }
         install(HttpCache) {
             publicStorage(
-                FileStorage(context.cacheDir.resolve("api_cache").apply { mkdirs() })
+                FileStorage(context.cacheDir.resolve("http_cache").apply { mkdirs() })
             )
         }
         install(HttpTimeout) {

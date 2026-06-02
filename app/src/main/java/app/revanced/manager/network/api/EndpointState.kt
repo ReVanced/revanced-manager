@@ -10,32 +10,53 @@ import kotlinx.coroutines.flow.asStateFlow
 class EndpointState(
     private val prefs: PreferencesManager,
 ) {
-    enum class ActiveEndpoint { PRIMARY, FALLBACK }
-
-    private val _active = MutableStateFlow(ActiveEndpoint.PRIMARY)
-    val active: StateFlow<ActiveEndpoint> = _active.asStateFlow()
-
-    val isUsingFallback: Boolean
-        get() = _active.value == ActiveEndpoint.FALLBACK
-
-    suspend fun primaryUrl(): String = prefs.api.get().trimEnd('/')
-    suspend fun fallbackUrl(): String = prefs.apiFallback.get().trimEnd('/')
-
-    suspend fun endpoints(): List<Pair<ActiveEndpoint, String>> {
-        val primary = ActiveEndpoint.PRIMARY to primaryUrl()
-        val fallback = ActiveEndpoint.FALLBACK to fallbackUrl()
-        return when (_active.value) {
-            ActiveEndpoint.PRIMARY -> listOf(primary, fallback)
-            ActiveEndpoint.FALLBACK -> listOf(fallback)
-        }
+    
+    // A node in the prioritised API endpoint chain. 
+    // [fallback] is the next lower-priority endpoint to try while this one is unreachable so the chain reads from the primary/head downward.
+    // Restoration to a higher-priority endpoint is derived by walking from the head (Ctrl + F("restoreCandidates")., the chain is single-direction because a doubly-linked immutable chain is not constructible.
+     
+    data class ApiEndpoint(
+        val url: String,
+        val fallback: ApiEndpoint?,
+    ) {
+        fun asSequence(): Sequence<ApiEndpoint> = generateSequence(this) { it.fallback }
     }
 
-    fun switchToFallback(): Boolean =
-        _active.compareAndSet(ActiveEndpoint.PRIMARY, ActiveEndpoint.FALLBACK)
+    // URL of the endpoint currently in use, null means the primary (chain head).
+    private val _activeUrl = MutableStateFlow<String?>(null)
+    val activeUrl: StateFlow<String?> = _activeUrl.asStateFlow()
 
-    // switches back to the primary endpoint in-process. subsequent requests resolve their URL from endpoints so the switch takes effect immdieately without restarting the app.
-    fun restoreToPrimary(): Boolean =
-        _active.compareAndSet(ActiveEndpoint.FALLBACK, ActiveEndpoint.PRIMARY)
+    suspend fun primaryUrl(): String = prefs.api.get().trimEnd('/')
+
+    // the persisted endpoints, ordered from primary downward. The API currently advertises a single backup but the chain is built from a list so additional tiers need no structural changes.
+
+    private suspend fun endpointUrls(): List<String> =
+        listOf(primaryUrl(), prefs.apiFallback.get().trimEnd('/')).distinct()
+
+    // The endpoint chain built from persisted configuration, head (primary) first.
+    suspend fun chain(): ApiEndpoint {
+        var node: ApiEndpoint? = null
+        endpointUrls().asReversed().forEach { url -> node = ApiEndpoint(url, node) }
+        return node!!
+    }
+
+    // The endpoint currently in use or the chain head when on the primary.
+    suspend fun activeEndpoint(): ApiEndpoint {
+        val chain = chain()
+        val active = _activeUrl.value ?: return chain
+        return chain.asSequence().firstOrNull { it.url == active } ?: chain
+    }
+
+    // Higher-priority endpoints to probe for restoration, ordered from the primary downward.
+    suspend fun restoreCandidates(): List<ApiEndpoint> {
+        val active = _activeUrl.value ?: return emptyList()
+        return chain().asSequence().takeWhile { it.url != active }.toList()
+    }
+
+    // Records [endpoint] as the active endpoint. Resets to the primary when the head is selected.
+    suspend fun setActive(endpoint: ApiEndpoint) {
+        _activeUrl.value = endpoint.url.takeIf { it != primaryUrl() }
+    }
 
     suspend fun updateFallbackFromAbout(advertised: String?) {
         val normalized = advertised?.trim()?.trimEnd('/').orEmpty()
@@ -44,7 +65,7 @@ class EndpointState(
             Log.w(tag, "EndpointState: ignoring non-HTTPS fallback URL from /about: $normalized")
             return
         }
-        if (normalized == fallbackUrl()) return
+        if (normalized == prefs.apiFallback.get().trimEnd('/')) return
         Log.i(tag, "EndpointState: updating persisted fallback endpoint to $normalized")
         prefs.apiFallback.update(normalized)
     }

@@ -20,7 +20,10 @@ import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.internal.BuilderImpl
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.minutes
 import me.zhanghai.android.appiconloader.coil.AppIconFetcher
 import me.zhanghai.android.appiconloader.coil.AppIconKeyer
 import org.koin.android.ext.android.inject
@@ -83,28 +86,36 @@ class ManagerApplication : Application() {
             downloaderRepository.reload()
         }
         scope.launch(Dispatchers.Default) {
-            arrayOf(patchBundleRepository, downloaderRepository).forEach {
-                with(it) {
-                    reload()
-                    updateCheck(force = false)
-                }
-            }
+            runUpdateChecks()
         }
         scope.launch(Dispatchers.Default) {
             downloadedAppsRepository.cleanUp()
         }
 
-        // While the session is on the backup endpoint, periodically probe the primary and switch back to it silently as soon as it is reachable again.
-        // Endpoint URLs are resolved so the switch takes effect without restarting the app.
-        scope.launch(Dispatchers.IO) { 
-            while (true) {
-                delay(PRIMARY_RECONNECT_INTERVAL_MS)
-                if (endpointState.isUsingFallback && reVancedAPI.probePrimary()) {
-                    if (endpointState.restoreToPrimary()) {
-                        Log.i(tag, "Primary API endpoint recovered, switched back from backup")
+        // Only while the session is on a backup endpoint, periodically probe the higher-priority
+        // endpoints and switch back to the earliest reachable one silently. Endpoint URLs are
+        // resolved per request, so the switch takes effect without restarting the app.
+        //
+        // collectLatest restarts this block whenever the active endpoint changes: after a partial
+        // restore (e.g. C -> B while the primary is still down) the active URL is still non-null, so
+        // probing resumes for the remaining higher-priority endpoints until the primary is reached,
+        // at which point activeUrl is null and the loop stays idle.
+        scope.launch(Dispatchers.IO) {
+            endpointState.activeUrl
+                .filterNotNull()
+                .collectLatest {
+                    while (true) {
+                        delay(PRIMARY_RECONNECT_INTERVAL)
+                        val restored = reVancedAPI.restoreHigherPriorityEndpoint()
+                        if (restored != null) {
+                            Log.i(tag, "Higher-priority API endpoint recovered, switched to ${restored.url}")
+                            // The startup update check may have run against a backup; re-run it now
+                            // that we are on a higher-priority endpoint so results reflect it.
+                            runUpdateChecks()
+                            break
+                        }
                     }
                 }
-            }
         }
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             private var firstActivityCreated = false
@@ -137,7 +148,16 @@ class ManagerApplication : Application() {
         }
     }
 
+    private suspend fun runUpdateChecks() {
+        arrayOf(patchBundleRepository, downloaderRepository).forEach {
+            with(it) {
+                reload()
+                updateCheck(force = false)
+            }
+        }
+    }
+
     private companion object {
-        const val PRIMARY_RECONNECT_INTERVAL_MS = 5 * 60 * 1000L
+        val PRIMARY_RECONNECT_INTERVAL = 5.minutes
     }
 }

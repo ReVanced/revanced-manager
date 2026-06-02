@@ -8,7 +8,6 @@ import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.dto.ReVancedGitRepository
 import app.revanced.manager.network.dto.ReVancedInfo
 import app.revanced.manager.network.service.HttpService
-import app.revanced.manager.network.utils.APIFailure
 import app.revanced.manager.network.utils.APIResponse
 import io.ktor.client.plugins.retry
 import io.ktor.client.request.url
@@ -49,18 +48,24 @@ class ReVancedAPI(
 
     suspend fun getInfo(): APIResponse<ReVancedInfo> {
         val (response, servedBy) = requestTracked<ReVancedInfo>("about")
-        if (response is APIResponse.Success && servedBy == EndpointState.ActiveEndpoint.PRIMARY) {
+        if (response is APIResponse.Success && servedBy == endpointState.primaryUrl()) {
             endpointState.updateFallbackFromAbout(response.data.api?.fallback)
         }
         return response
     }
 
-    suspend fun probePrimary(): Boolean = withContext(Dispatchers.IO) {
-        withTimeoutOrNull(PROBE_TIMEOUT_MS) {
-            val url = "${endpointState.primaryUrl()}/$defaultApiVersion/about"
-            http.request<ReVancedInfo> { url(url) } is APIResponse.Success
-        } ?: false
+    
+    // Probes the higher-priority endpoints above the active one and restores the earliest reachable one (the primary wins over any intermedieate backup). returns the restored endpoint or null if none higher than the active endpoint is currently reachable.
+    suspend fun restoreHigherPriorityEndpoint(): EndpointState.ApiEndpoint? = withContext(Dispatchers.IO) {
+        endpointState.restoreCandidates().firstOrNull { endpoint ->
+            probe(endpoint.url)
+        }?.also { endpointState.setActive(it) }
     }
+
+    private suspend fun probe(baseUrl: String): Boolean =
+        withTimeoutOrNull(PROBE_TIMEOUT_MS) {
+            http.request<ReVancedInfo> { url("$baseUrl/$defaultApiVersion/about") } is APIResponse.Success
+        } ?: false
 
     private suspend inline fun <reified T> request(route: String): APIResponse<T> =
         requestTracked<T>(route).first
@@ -73,30 +78,36 @@ class ReVancedAPI(
     private suspend inline fun <reified T> requestForSource(
         apiUrl: String,
         route: String,
-    ): APIResponse<T> {
-        val normalized = apiUrl.trimEnd('/')
-        return if (normalized == endpointState.primaryUrl()) {
+    ): APIResponse<T> =
+        if (apiUrl == endpointState.primaryUrl()) {
             request(route)
         } else {
-            directRequest(normalized, route)
+            directRequest(apiUrl, route)
         }
-    }
 
+    // Issue a request against the active endpoint and returns the first success with the URL that served it. 
+    // If the active endpoint is unreachable, the whole chain is walked from the primary downward so a higher-priority endpoint is preferred over a lower-priority one: i.e recovery up the chain is attempted before falling further down. The serving endpoint becomes active.
     private suspend inline fun <reified T> requestTracked(
         route: String,
-    ): Pair<APIResponse<T>, EndpointState.ActiveEndpoint?> = withContext(Dispatchers.IO) {
-        var lastFailure: APIResponse<T>? = null
-        for ((endpoint, baseUrl) in endpointState.endpoints()) {
-            val response = directRequest<T>(baseUrl, route)
-            if (response is APIResponse.Success) {
-                if (endpoint == EndpointState.ActiveEndpoint.FALLBACK) {
-                    endpointState.switchToFallback()
-                }
-                return@withContext response to endpoint
-            }
-            lastFailure = response
+    ): Pair<APIResponse<T>, String?> = withContext(Dispatchers.IO) {
+        val active = endpointState.activeEndpoint()
+        val activeResponse = directRequest<T>(active.url, route)
+        if (activeResponse is APIResponse.Success) {
+            return@withContext activeResponse to active.url
         }
-        (lastFailure ?: noAttemptsFailure<T>()) to null
+
+        var lastFailure: APIResponse<T> = activeResponse
+        endpointState.chain().asSequence()
+            .filter { it.url != active.url }
+            .forEach { endpoint ->
+                val response = directRequest<T>(endpoint.url, route)
+                if (response is APIResponse.Success) {
+                    endpointState.setActive(endpoint)
+                    return@withContext response to endpoint.url
+                }
+                lastFailure = response
+            }
+        lastFailure to null
     }
 
     private suspend inline fun <reified T> directRequest(
@@ -111,9 +122,6 @@ class ReVancedAPI(
             exponentialDelay(base = 2.0, baseDelayMs = BACKOFF_BASE_MS)
         }
     }
-
-    private fun <T> noAttemptsFailure(): APIResponse<T> =
-        APIResponse.Failure(APIFailure(IllegalStateException("No request attempts were made"), null))
 
     private companion object {
         const val MAX_RETRIES = 3
