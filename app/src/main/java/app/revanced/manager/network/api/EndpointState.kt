@@ -15,8 +15,8 @@ class EndpointState(
     private val _active = MutableStateFlow(ActiveEndpoint.PRIMARY)
     val active: StateFlow<ActiveEndpoint> = _active.asStateFlow()
 
-    private val _primaryRecoveryAvailable = MutableStateFlow(false)
-    val primaryRecoveryAvailable: StateFlow<Boolean> = _primaryRecoveryAvailable.asStateFlow()
+    val isUsingFallback: Boolean
+        get() = _active.value == ActiveEndpoint.FALLBACK
 
     suspend fun primaryUrl(): String = prefs.api.get().trimEnd('/')
     suspend fun fallbackUrl(): String = prefs.apiFallback.get().trimEnd('/')
@@ -33,12 +33,9 @@ class EndpointState(
     fun switchToFallback(): Boolean =
         _active.compareAndSet(ActiveEndpoint.PRIMARY, ActiveEndpoint.FALLBACK)
 
-    suspend fun markEndpointResponseSucceeded(endpoint: ActiveEndpoint) {
-        val usedFallback = endpoint == ActiveEndpoint.FALLBACK
-        if (prefs.lastSessionUsedFallback.get() != usedFallback) {
-            prefs.lastSessionUsedFallback.update(usedFallback)
-        }
-    }
+    // switches back to the primary endpoint in-process. subsequent requests resolve their URL from endpoints so the switch takes effect immdieately without restarting the app.
+    fun restoreToPrimary(): Boolean =
+        _active.compareAndSet(ActiveEndpoint.FALLBACK, ActiveEndpoint.PRIMARY)
 
     suspend fun updateFallbackFromAbout(advertised: String?) {
         val normalized = advertised?.trim()?.trimEnd('/').orEmpty()
@@ -51,16 +48,6 @@ class EndpointState(
         Log.i(tag, "EndpointState: updating persisted fallback endpoint to $normalized")
         prefs.apiFallback.update(normalized)
     }
-
-    fun signalPrimaryRecoveryDetected() {
-        _primaryRecoveryAvailable.value = true
-    }
-
-    fun dismissPrimaryRecoveryPrompt() {
-        _primaryRecoveryAvailable.value = false
-    }
-
-    suspend fun previousSessionUsedFallback(): Boolean = prefs.lastSessionUsedFallback.get()
 
     companion object {
         const val DEFAULT_PRIMARY_API_URL = "https://api.revanced.app"

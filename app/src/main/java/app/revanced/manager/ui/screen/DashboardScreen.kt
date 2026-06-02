@@ -39,7 +39,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.CloudDone
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Refresh
@@ -125,7 +124,6 @@ fun DashboardScreen(
     val bundleDownloadError by vm.bundleDownloadError.collectAsStateWithLifecycle(null)
     val sourcesNotDownloaded by vm.sourcesNotDownloaded.collectAsStateWithLifecycle(false)
     val sourceUpdatesAvailable by vm.sourceUpdatesAvailable.collectAsStateWithLifecycle(false)
-    val primaryRecoveryAvailable by vm.primaryRecoveryAvailable.collectAsStateWithLifecycle(false)
     val managerAutoUpdates by vm.prefs.managerAutoUpdates.getAsState()
     val showManagerUpdateDialogOnLaunch by vm.prefs.showManagerUpdateDialogOnLaunch.getAsState()
     val disablePatchVersionCompatCheck by vm.prefs.disablePatchVersionCompatCheck.getAsState()
@@ -247,7 +245,6 @@ fun DashboardScreen(
     }
 
     var showAndroid11Dialog by rememberSaveable { mutableStateOf(false) }
-    var showRestartDialog by rememberSaveable { mutableStateOf(false) }
     val installAppsPermissionLauncher =
         rememberLauncherForActivityResult(RequestInstallAppsContract) { granted ->
             showAndroid11Dialog = false
@@ -267,16 +264,6 @@ fun DashboardScreen(
             onContinue = {
                 installAppsPermissionLauncher.launch(androidContext.packageName)
             }
-        )
-    }
-
-    if (showRestartDialog) {
-        RestartPrimaryApiDialog(
-            onDismissRequest = { showRestartDialog = false },
-            onConfirm = {
-                showRestartDialog = false
-                vm.restartApp()
-            },
         )
     }
 
@@ -449,18 +436,6 @@ fun DashboardScreen(
                     }
 
                     Notifications(
-                        if (primaryRecoveryAvailable) {
-                            {
-                                NotificationCard(
-                                    type = NotificationCardType.NORMAL,
-                                    icon = Icons.Outlined.CloudDone,
-                                    title = stringResource(R.string.api_primary_recovered_title),
-                                    text = stringResource(R.string.api_primary_recovered_description),
-                                    onClick = { showRestartDialog = true },
-                                    onDismiss = vm::dismissPrimaryRecoveryPrompt,
-                                )
-                            }
-                        } else null,
                         if (bundleDownloadError != null) {
                             {
                                 NotificationCard(
@@ -683,33 +658,6 @@ fun Android11Dialog(onDismissRequest: () -> Unit, onContinue: () -> Unit) {
         },
         text = {
             Text(stringResource(R.string.android_11_bug_dialog_description))
-        }
-    )
-}
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-fun RestartPrimaryApiDialog(onDismissRequest: () -> Unit, onConfirm: () -> Unit) {
-    AlertDialogExtended(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onConfirm, shapes = ButtonDefaults.shapes()) {
-                Text(stringResource(R.string.api_primary_recovered_restart_confirm))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        title = {
-            Text(stringResource(R.string.api_primary_recovered_title))
-        },
-        icon = {
-            Icon(Icons.Outlined.CloudDone, null)
-        },
-        text = {
-            Text(stringResource(R.string.api_primary_recovered_restart_dialog_description))
         }
     )
 }

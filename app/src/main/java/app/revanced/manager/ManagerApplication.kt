@@ -19,6 +19,7 @@ import coil.ImageLoader
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.internal.BuilderImpl
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.zhanghai.android.appiconloader.coil.AppIconFetcher
 import me.zhanghai.android.appiconloader.coil.AppIconKeyer
@@ -92,6 +93,19 @@ class ManagerApplication : Application() {
         scope.launch(Dispatchers.Default) {
             downloadedAppsRepository.cleanUp()
         }
+
+        // While the session is on the backup endpoint, periodically probe the primary and switch back to it silently as soon as it is reachable again.
+        // Endpoint URLs are resolved so the switch takes effect without restarting the app.
+        scope.launch(Dispatchers.IO) { 
+            while (true) {
+                delay(PRIMARY_RECONNECT_INTERVAL_MS)
+                if (endpointState.isUsingFallback && reVancedAPI.probePrimary()) {
+                    if (endpointState.restoreToPrimary()) {
+                        Log.i(tag, "Primary API endpoint recovered, switched back from backup")
+                    }
+                }
+            }
+        }
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             private var firstActivityCreated = false
 
@@ -121,12 +135,9 @@ class ManagerApplication : Application() {
             deleteRecursively()
             mkdirs()
         }
-        
-        scope.launch(Dispatchers.IO) {
-            if (endpointState.previousSessionUsedFallback() && reVancedAPI.probePrimary()) {
-                Log.i(tag, "Primary API endpoint recovered since last session")
-                endpointState.signalPrimaryRecoveryDetected()
-            }
-        }
+    }
+
+    private companion object {
+        const val PRIMARY_RECONNECT_INTERVAL_MS = 5 * 60 * 1000L
     }
 }

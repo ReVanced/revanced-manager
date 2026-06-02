@@ -92,7 +92,6 @@ class ReVancedAPI(
                 if (endpoint == EndpointState.ActiveEndpoint.FALLBACK) {
                     endpointState.switchToFallback()
                 }
-                endpointState.markEndpointResponseSucceeded(endpoint)
                 return@withContext response to endpoint
             }
             lastFailure = response
