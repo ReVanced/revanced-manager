@@ -1,3 +1,10 @@
+# app [2.7.0-dev.6](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.5...v2.7.0-dev.6) (2026-06-04)
+
+
+### Bug Fixes
+
+* Show total count of patches instead of just the executed ones ([#3391](https://github.com/ReVanced/revanced-manager/issues/3391)) ([34736dd](https://github.com/ReVanced/revanced-manager/commit/34736ddfe0cff0d9568e51e5eebd00d7a2ebadd0))
+
 # app [2.7.0-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.4...v2.7.0-dev.5) (2026-06-02)
 
 
