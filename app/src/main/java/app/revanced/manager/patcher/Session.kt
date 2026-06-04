@@ -44,29 +44,39 @@ class Session(
             Dispatchers.Default
         ) {
             val context = currentCoroutineContext()
-            patcher { (patch, exception) ->
-                // Make the patching process cancelable.
-                context.ensureActive()
+            val heartbeat = Heartbeat(
+                scope = this,
+                onEvent = onEvent,
+                stepId = StepId.ExecutePatches,
+            ) { elapsed -> "Still decoding resources (${elapsed}s elapsed)" }
+            try {
+                patcher { (patch, exception) ->
+                    heartbeat.complete { elapsed -> "Decoded resources in ${elapsed}s" }
+                    // Make the patching process cancelable.
+                    context.ensureActive()
 
-                val index = indices[patch] ?: return@patcher
+                    val index = indices[patch] ?: return@patcher
 
-                if (exception != null) {
+                    if (exception != null) {
+                        onEvent(
+                            ProgressEvent.Failed(
+                                StepId.ExecutePatch(index),
+                                exception.toRemoteError(),
+                            )
+                        )
+                        phaseLogger.error("${patch.name} failed:")
+                        phaseLogger.error(exception.stackTraceToString())
+                        throw exception
+                    }
+
                     onEvent(
-                        ProgressEvent.Failed(
+                        ProgressEvent.Completed(
                             StepId.ExecutePatch(index),
-                            exception.toRemoteError(),
                         )
                     )
-                    phaseLogger.error("${patch.name} failed:")
-                    phaseLogger.error(exception.stackTraceToString())
-                    throw exception
                 }
-
-                onEvent(
-                    ProgressEvent.Completed(
-                        StepId.ExecutePatch(index),
-                    )
-                )
+            } finally {
+                heartbeat.stop()
             }
         }
 

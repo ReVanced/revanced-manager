@@ -23,6 +23,7 @@ data class Step(
     val category: StepCategory,
     val state: State = State.WAITING,
     val message: String? = null,
+    val index: Int? = null,
     val progress: Pair<Long, Long?>? = null,
     val hide: Boolean = false,
 ) : Parcelable
@@ -31,5 +32,16 @@ data class Step(
 fun Step.withState(
     state: State = this.state,
     message: String? = this.message,
-    progress: Pair<Long, Long?>? = this.progress
-) = copy(state = state, message = message, progress = progress)
+    progress: Pair<Long, Long?>? = this.progress,
+    index: Int? = this.index,
+) = copy(state = state, message = message, progress = progress, index = index)
+
+internal fun replaceLineAtIndex(current: String?, index: Int, replacement: String): String {
+    if (current.isNullOrEmpty()) return replacement
+    val lines = current.split("\n").toMutableList()
+    when (index) {
+        in lines.indices -> lines[index] = replacement
+        lines.size -> lines.add(replacement)
+    }
+    return lines.joinToString("\n")
+}

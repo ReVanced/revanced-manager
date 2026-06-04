@@ -56,6 +56,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.navigation.Patcher
+import app.revanced.manager.ui.model.replaceLineAtIndex
 import app.revanced.manager.ui.model.withState
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
@@ -312,9 +313,20 @@ class PatcherViewModel(
                     progress = event.current?.let { event.current to event.total } ?: currentStep.progress
                 )
 
-                is ProgressEvent.Log -> currentStep.withState(
-                    message = appendLog(currentStep.message, formatLogLine(event.level, event.message))
-                )
+                is ProgressEvent.Log -> {
+                    val line = formatLogLine(event.level, event.message)
+                    val message = currentStep.message
+                    when {
+                        !event.replaceLast -> currentStep.withState(message = appendLog(message, line))
+                        currentStep.index != null -> currentStep.withState(
+                            message = replaceLineAtIndex(message, currentStep.index, line)
+                        )
+                        else -> currentStep.withState(
+                            message = appendLog(message, line),
+                            index = if (message.isNullOrBlank()) 0 else message.count { it == '\n' } + 1,
+                        )
+                    }
+                }
 
                 is ProgressEvent.Completed -> currentStep.withState(State.COMPLETED, progress = null)
                     .let { step ->

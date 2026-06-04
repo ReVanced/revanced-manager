@@ -22,6 +22,7 @@ sealed class ProgressEvent : Parcelable {
         override val stepId: StepId,
         val level: LogLevel,
         val message: String,
+        val replaceLast: Boolean = false,
     ) : ProgressEvent()
 
     data class Completed(
