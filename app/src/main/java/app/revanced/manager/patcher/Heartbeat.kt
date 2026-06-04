@@ -1,7 +1,5 @@
 package app.revanced.manager.patcher
 
-import app.revanced.manager.patcher.logger.LogLevel
-import app.revanced.manager.patcher.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -10,12 +8,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class Heartbeat(
     scope: CoroutineScope,
-    private val onEvent: (ProgressEvent) -> Unit,
-    private val stepId: StepId,
-    private val logger: Logger,
     initialDelayMs: Long = 3_000L,
     private val intervalMs: Long = 1_000L,
-    private val tickMessage: (elapsedSeconds: Long) -> String,
+    private val onTick: (elapsedSeconds: Long) -> Unit,
 ) {
     private val startNs = System.nanoTime()
     private val finished = AtomicBoolean(false)
@@ -25,20 +20,14 @@ class Heartbeat(
     private val job: Job = scope.launch {
         delay(initialDelayMs)
         while (!finished.get()) {
-            emit(tickMessage(elapsedSeconds))
+            onTick(elapsedSeconds)
             delay(intervalMs)
         }
     }
 
-    private fun emit(message: String) = onEvent(
-        ProgressEvent.Log(stepId, LogLevel.INFO, message, replaceLast = true)
-    )
-
-    fun complete(finalMessage: (elapsedSeconds: Long) -> String) {
+    fun complete(onComplete: (elapsedSeconds: Long) -> Unit) {
         if (!finished.compareAndSet(false, true)) return
-        val message = finalMessage(elapsedSeconds)
-        logger.info(message)
-        emit(message)
+        onComplete(elapsedSeconds)
         job.cancel()
     }
 

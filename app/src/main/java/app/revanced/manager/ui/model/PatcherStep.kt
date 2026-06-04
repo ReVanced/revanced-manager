@@ -25,6 +25,7 @@ data class Step(
     val message: String? = null,
     val index: Int? = null,
     val progress: Pair<Long, Long?>? = null,
+    val trailingText: String? = null,
     val hide: Boolean = false,
 ) : Parcelable
 

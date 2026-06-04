@@ -44,15 +44,19 @@ class Session(
             Dispatchers.Default
         ) {
             val context = currentCoroutineContext()
-            val heartbeat = Heartbeat(
-                scope = this,
-                onEvent = onEvent,
-                stepId = StepId.ExecutePatches,
-                logger = logger,
-            ) { elapsed -> "Still decoding resources (${elapsed}s elapsed)" }
+            fun emitLog(message: String) = onEvent(
+                ProgressEvent.Log(StepId.ExecutePatches, LogLevel.INFO, message, replaceLast = true)
+            )
+            val heartbeat = Heartbeat(this) { elapsed ->
+                emitLog("Decoding resources\t${elapsed}s")
+            }
             try {
                 patcher { (patch, exception) ->
-                    heartbeat.complete { elapsed -> "Decoded resources in ${elapsed}s" }
+                    heartbeat.complete { elapsed ->
+                        val message = "Decoded resources in ${elapsed}s"
+                        logger.info(message)
+                        emitLog(message)
+                    }
                     // Make the patching process cancelable.
                     context.ensureActive()
 

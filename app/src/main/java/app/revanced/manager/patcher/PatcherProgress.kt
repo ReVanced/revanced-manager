@@ -16,6 +16,8 @@ sealed class ProgressEvent : Parcelable {
         val current: Long? = null,
         val total: Long? = null,
         val message: String? = null,
+        val title: String? = null,
+        val trailingText: String? = null,
     ) : ProgressEvent()
 
     data class Log(
