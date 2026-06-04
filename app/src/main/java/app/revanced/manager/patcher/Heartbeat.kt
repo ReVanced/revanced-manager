@@ -1,6 +1,7 @@
 package app.revanced.manager.patcher
 
 import app.revanced.manager.patcher.logger.LogLevel
+import app.revanced.manager.patcher.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -11,6 +12,7 @@ class Heartbeat(
     scope: CoroutineScope,
     private val onEvent: (ProgressEvent) -> Unit,
     private val stepId: StepId,
+    private val logger: Logger,
     initialDelayMs: Long = 3_000L,
     private val intervalMs: Long = 1_000L,
     private val tickMessage: (elapsedSeconds: Long) -> String,
@@ -34,7 +36,9 @@ class Heartbeat(
 
     fun complete(finalMessage: (elapsedSeconds: Long) -> String) {
         if (!finished.compareAndSet(false, true)) return
-        emit(finalMessage(elapsedSeconds))
+        val message = finalMessage(elapsedSeconds)
+        logger.info(message)
+        emit(message)
         job.cancel()
     }
 

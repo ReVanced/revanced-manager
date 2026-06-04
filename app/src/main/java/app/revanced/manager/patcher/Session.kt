@@ -48,6 +48,7 @@ class Session(
                 scope = this,
                 onEvent = onEvent,
                 stepId = StepId.ExecutePatches,
+                logger = logger,
             ) { elapsed -> "Still decoding resources (${elapsed}s elapsed)" }
             try {
                 patcher { (patch, exception) ->
