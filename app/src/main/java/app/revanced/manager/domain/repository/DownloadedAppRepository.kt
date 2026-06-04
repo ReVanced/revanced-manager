@@ -51,6 +51,8 @@ class DownloadedAppRepository(
         delete(getAll().first().filter { it.packageName == packageName })
     }
 
+    suspend fun deleteAll() = delete(getAll().first())
+
     @OptIn(DownloaderHostApi::class)
     suspend fun download(
         downloader: LoadedDownloader,

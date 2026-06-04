@@ -292,6 +292,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="patches_force_download">Force download all patches</string>
     <string name="patches_reset">Reset patches</string>
     <string name="downloaders_reset">Reset downloaders</string>
+    <string name="downloaded_apps_clear">Clear downloaded APK cache</string>
+    <string name="downloaded_apps_clear_done">Cleared downloaded APK cache</string>
     <string name="reset_onboarding">Reset onboarding</string>
     <string name="reset_onboarding_description">Show the onboarding screen on next app launch</string>
     <string name="reset_announcement">Reset announcement read</string>

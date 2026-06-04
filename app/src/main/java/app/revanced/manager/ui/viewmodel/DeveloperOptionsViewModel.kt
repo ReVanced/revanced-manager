@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.toast
@@ -17,7 +18,8 @@ class DeveloperOptionsViewModel(
     val prefs: PreferencesManager,
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
-    private val downloaderRepository: DownloaderRepository
+    private val downloaderRepository: DownloaderRepository,
+    private val downloadedAppRepository: DownloadedAppRepository,
 ) : ViewModel() {
     fun redownloadBundles() = viewModelScope.launch {
         uiSafe(app, R.string.patches_download_fail, RemotePatchBundle.updateFailMsg) {
@@ -42,6 +44,11 @@ class DeveloperOptionsViewModel(
 
     fun resetDownloaders() = viewModelScope.launch {
         downloaderRepository.reset()
+    }
+
+    fun clearDownloadedApps() = viewModelScope.launch {
+        downloadedAppRepository.deleteAll()
+        app.toast(app.getString(R.string.downloaded_apps_clear_done))
     }
 
     fun resetOnboarding() = viewModelScope.launch {
