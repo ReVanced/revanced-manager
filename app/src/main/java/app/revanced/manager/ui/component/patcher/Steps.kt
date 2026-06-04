@@ -114,15 +114,30 @@ fun Steps(
                     .padding(top = 10.dp)
             ) {
                 filteredSteps.forEachIndexed { index, step ->
-                    val (progress, progressText) = step.progress?.let { (current, total) ->
+                    val (progress, sizeText) = step.progress?.let { (current, total) ->
                         if (total != null) current.toFloat() / total.toFloat() to "${current.megaBytes}/${total.megaBytes} MB"
                         else null to "${current.megaBytes} MB"
+                    } ?: (null to null)
+
+                    val progressText = listOfNotNull(sizeText, step.trailingText?.takeIf { it.isNotEmpty() })
+                        .takeIf { it.isNotEmpty() }
+                        ?.joinToString(" - ")
+
+                    val (message, trailing) = step.message?.let { msg ->
+                        val tabIndex = msg.lastIndexOf('\t')
+                        val lastNewline = msg.lastIndexOf('\n')
+                        if (tabIndex > lastNewline) {
+                            msg.substring(0, tabIndex) to msg.substring(tabIndex + 1)
+                        } else {
+                            msg to null
+                        }
                     } ?: (null to null)
 
                     SubStep(
                         name = step.title,
                         state = step.state,
-                        message = step.message,
+                        message = message,
+                        trailing = trailing,
                         progress = progress,
                         progressText = progressText,
                         isFirst = index == 0,
@@ -139,6 +154,7 @@ fun SubStep(
     name: String,
     state: State,
     message: String? = null,
+    trailing: String? = null,
     progress: Float? = null,
     progressText: String? = null,
     isFirst: Boolean = false,
@@ -194,12 +210,38 @@ fun SubStep(
         }
 
         AnimatedVisibility(visible = messageExpanded && message != null) {
-            Text(
-                text = message.orEmpty(),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.secondary,
+            Column(
                 modifier = Modifier.padding(horizontal = 36.dp, vertical = 8.dp)
-            )
+            ) {
+                val lines = message.orEmpty().split('\n')
+                lines.forEachIndexed { i, line ->
+                    val isLastLine = i == lines.lastIndex
+                    if (isLastLine && trailing != null) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = line,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                                modifier = Modifier.weight(1f, fill = true),
+                            )
+                            Text(
+                                text = trailing,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = line,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.secondary,
+                        )
+                    }
+                }
+            }
         }
     }
 }

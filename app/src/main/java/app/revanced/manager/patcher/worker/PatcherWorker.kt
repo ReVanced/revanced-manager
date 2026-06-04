@@ -30,6 +30,7 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.network.downloader.LoadedDownloader
+import app.revanced.manager.patcher.Heartbeat
 import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.StepId
 import app.revanced.manager.patcher.logger.Logger
@@ -48,6 +49,7 @@ import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -160,24 +162,45 @@ class PatcherWorker(
                 }
             }
 
-            suspend fun download(downloader: LoadedDownloader, data: Parcelable) =
-                downloadedAppRepository.download(
-                    downloader,
-                    data,
-                    args.packageName,
-                    args.input.version,
-                    prefs.suggestedVersionSafeguard.get(),
-                    !prefs.disablePatchVersionCompatCheck.get(),
-                    onDownload = { progress ->
+            suspend fun download(downloader: LoadedDownloader, data: Parcelable): File = coroutineScope {
+                val heartbeat = Heartbeat(this, initialDelayMs = 1_000L) { elapsed ->
+                    args.onEvent(
+                        ProgressEvent.Progress(
+                            stepId = StepId.DownloadAPK,
+                            trailingText = "${elapsed}s",
+                        )
+                    )
+                }
+                try {
+                    downloadedAppRepository.download(
+                        downloader,
+                        data,
+                        args.packageName,
+                        args.input.version,
+                        prefs.suggestedVersionSafeguard.get(),
+                        !prefs.disablePatchVersionCompatCheck.get(),
+                        onDownload = { progress ->
+                            args.onEvent(
+                                ProgressEvent.Progress(
+                                    stepId = StepId.DownloadAPK,
+                                    current = progress.first,
+                                    total = progress.second,
+                                )
+                            )
+                        }
+                    ).also { args.setInputFile(it) }
+                } finally {
+                    heartbeat.complete { elapsed ->
                         args.onEvent(
                             ProgressEvent.Progress(
                                 stepId = StepId.DownloadAPK,
-                                current = progress.first,
-                                total = progress.second
+                                title = "Downloaded APK file in ${elapsed}s",
+                                trailingText = "",
                             )
                         )
                     }
-                ).also { args.setInputFile(it) }
+                }
+            }
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {

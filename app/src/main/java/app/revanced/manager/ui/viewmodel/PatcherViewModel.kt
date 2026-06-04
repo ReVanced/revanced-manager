@@ -311,7 +311,12 @@ class PatcherViewModel(
                 is ProgressEvent.Progress -> currentStep.withState(
                     message = event.message ?: currentStep.message,
                     progress = event.current?.let { event.current to event.total } ?: currentStep.progress
-                )
+                ).let { step ->
+                    step.copy(
+                        title = event.title ?: step.title,
+                        trailingText = event.trailingText ?: step.trailingText,
+                    )
+                }
 
                 is ProgressEvent.Log -> {
                     val line = formatLogLine(event.level, event.message)
@@ -321,14 +326,18 @@ class PatcherViewModel(
                         currentStep.index != null -> currentStep.withState(
                             message = replaceLineAtIndex(message, currentStep.index, line)
                         )
-                        else -> currentStep.withState(
-                            message = appendLog(message, line),
-                            index = if (message.isNullOrBlank()) 0 else message.count { it == '\n' } + 1,
-                        )
+                        message.isNullOrEmpty() -> currentStep.withState(message = line, index = 0)
+                        else -> {
+                            val lastLineIndex = message.count { it == '\n' }
+                            currentStep.withState(
+                                message = replaceLineAtIndex(message, lastLineIndex, line),
+                                index = lastLineIndex,
+                            )
+                        }
                     }
                 }
 
-                is ProgressEvent.Completed -> currentStep.withState(State.COMPLETED, progress = null)
+                is ProgressEvent.Completed -> currentStep.withState(State.COMPLETED)
                     .let { step ->
                         if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
                     }
