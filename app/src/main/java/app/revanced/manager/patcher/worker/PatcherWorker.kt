@@ -163,6 +163,7 @@ class PatcherWorker(
             }
 
             suspend fun download(downloader: LoadedDownloader, data: Parcelable): File = coroutineScope {
+                args.logger.info("Downloading APK file")
                 val heartbeat = Heartbeat(this) { elapsed ->
                     args.onEvent(
                         ProgressEvent.Progress(
@@ -190,10 +191,12 @@ class PatcherWorker(
                         }
                     ).also { args.setInputFile(it) }
                     heartbeat.complete { elapsed ->
+                        val title = "Downloaded APK file in ${elapsed}s"
+                        args.logger.info(title)
                         args.onEvent(
                             ProgressEvent.Progress(
                                 stepId = StepId.DownloadAPK,
-                                title = "Downloaded APK file in ${elapsed}s",
+                                title = title,
                                 trailingText = "",
                             )
                         )
