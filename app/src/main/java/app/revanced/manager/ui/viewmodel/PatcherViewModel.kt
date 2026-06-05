@@ -321,7 +321,7 @@ class PatcherViewModel(
                 }
 
                 is ProgressEvent.Log -> {
-                    val line = formatLogLine(event.level, event.message)
+                    val line = formatUiLogLine(event.level, event.message)
                     val message = currentStep.message
                     val updated = when {
                         !event.replaceLast -> currentStep.withState(message = appendLog(message, line))
@@ -848,6 +848,9 @@ class PatcherViewModel(
         }
 
         fun formatLogLine(level: LogLevel, message: String) = "[${level.name}] $message"
+
+        fun formatUiLogLine(level: LogLevel, message: String) =
+            if (level == LogLevel.INFO) message else formatLogLine(level, message)
 
         fun appendLog(current: String?, line: String): String =
             current?.takeIf { it.isNotBlank() }
