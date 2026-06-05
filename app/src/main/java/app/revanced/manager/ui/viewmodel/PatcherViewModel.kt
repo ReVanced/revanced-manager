@@ -50,6 +50,8 @@ import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.patcher.worker.PatcherWorker
+import app.revanced.manager.ui.component.INTERNAL_STATUS_PATCHER_CRASHED
+import app.revanced.manager.ui.component.INTERNAL_STATUS_PATCHER_KILLED
 import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
@@ -343,12 +345,20 @@ class PatcherViewModel(
                         if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
                     }
 
-                is ProgressEvent.Failed -> currentStep.withState(
-                    State.FAILED,
-                    message = event.error.stackTrace,
-                    progress = null
-                ).let { step ->
-                    if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
+                is ProgressEvent.Failed -> {
+                    when {
+                        event.error.type.endsWith("PatcherKilledException") ->
+                            packageInstallerStatus = INTERNAL_STATUS_PATCHER_KILLED
+                        event.error.type.endsWith("PatcherCrashedException") ->
+                            packageInstallerStatus = INTERNAL_STATUS_PATCHER_CRASHED
+                    }
+                    currentStep.withState(
+                        State.FAILED,
+                        message = event.error.stackTrace,
+                        progress = null
+                    ).let { step ->
+                        if (step.id is StepId.ExecutePatch) step.copy(hide = false) else step
+                    }
                 }
             }
 
@@ -739,6 +749,12 @@ class PatcherViewModel(
     override fun install() {
         // InstallType.MOUNT is never used here since this overload is for the package installer status dialog.
         install(InstallType.DEFAULT)
+    }
+
+    override fun retry() {
+        // Dismiss and exit to force a clean restart from the dashboard, as WorkManager state prevents in-place retries.
+        dismissPackageInstallerDialog()
+        onBack()
     }
 
     override fun reinstall() {

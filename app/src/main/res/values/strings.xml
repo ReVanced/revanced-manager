@@ -568,6 +568,10 @@ It’s only compatible with these versions: %2$s</string>
     <string name="installation_invalid_dialog_title">Install invalid</string>
     <string name="installation_storage_issue_dialog_title">Not enough storage</string>
     <string name="installation_timeout_dialog_title">Timed out</string>
+    <string name="installation_patcher_killed_dialog_title">Patcher killed</string>
+    <string name="installation_patcher_killed_description">The patcher subprocess was terminated by the system, usually due to low memory. Close other apps or reduce the number of selected patches and try again.</string>
+    <string name="installation_patcher_crashed_dialog_title">Patcher crashed</string>
+    <string name="installation_patcher_crashed_description">The patcher subprocess crashed. This is usually caused by a bug in a native dependency or by a malformed input APK. Try a different version of the app, fewer patches, or report the issue with the exported log.</string>
     <string name="installation_failed_description">There was a problem installing the app</string>
     <string name="installation_aborted_description">Installation was canceled</string>
     <string name="installation_blocked_description">Installation was blocked. Try adjusting the security settings of your device, and try again.</string>

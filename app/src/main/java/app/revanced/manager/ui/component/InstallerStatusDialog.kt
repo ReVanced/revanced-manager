@@ -19,6 +19,8 @@ import com.github.materiiapps.enumutil.FromValue
 
 private typealias InstallerStatusDialogButtonHandler = ((model: InstallerModel) -> Unit)
 private typealias InstallerStatusDialogButton = @Composable (model: InstallerModel, dismiss: () -> Unit) -> Unit
+const val INTERNAL_STATUS_PATCHER_KILLED = -1000
+const val INTERNAL_STATUS_PATCHER_CRASHED = -1001
 
 @Composable
 fun InstallerStatusDialog(installerStatus: Int, model: InstallerModel, onDismiss: () -> Unit) {
@@ -115,6 +117,20 @@ enum class DialogKind(
         title = R.string.installation_timeout_dialog_title,
         contentStringResId = R.string.installation_timeout_description,
         confirmButton = installerStatusDialogButton(R.string.try_again) { it.install() },
+        dismissButton = installerStatusDialogButton(R.string.cancel),
+    ),
+    PATCHER_KILLED(
+        flag = INTERNAL_STATUS_PATCHER_KILLED,
+        title = R.string.installation_patcher_killed_dialog_title,
+        contentStringResId = R.string.installation_patcher_killed_description,
+        confirmButton = installerStatusDialogButton(R.string.try_again) { it.retry() },
+        dismissButton = installerStatusDialogButton(R.string.cancel),
+    ),
+    PATCHER_CRASHED(
+        flag = INTERNAL_STATUS_PATCHER_CRASHED,
+        title = R.string.installation_patcher_crashed_dialog_title,
+        contentStringResId = R.string.installation_patcher_crashed_description,
+        confirmButton = installerStatusDialogButton(R.string.try_again) { it.retry() },
         dismissButton = installerStatusDialogButton(R.string.cancel),
     );
 

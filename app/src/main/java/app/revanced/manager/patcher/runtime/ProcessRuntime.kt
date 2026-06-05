@@ -106,9 +106,19 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
                 logger.warn("[STDIO]: $line")
             }
 
-            Log.d(tag, "Process finished with exit code ${result.resultCode}")
+            val code = result.resultCode
+            Log.d(tag, "Process finished with exit code $code")
 
-            if (result.resultCode != 0) throw Exception("Process exited with nonzero exit code ${result.resultCode}")
+            when (code) {
+                // :)
+                0 -> Unit
+                // Killed by system - almost always Android LowMemoryKiller targeting the patcher
+                in setOf(137, 143, 9, 15) -> throw PatcherKilledException(code)
+                // Native crash in the subprocess - ART, libaapt2, dexlib, etc
+                in setOf(134, 139, 135, 132, 136, 6, 11) -> throw PatcherCrashedException(code)
+                // :(
+                else -> throw Exception("Process exited with nonzero exit code $code")
+            }
         }
 
         val patching = CompletableDeferred<Unit>()
@@ -181,5 +191,35 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
      * @param originalStackTrace The stack trace of the original [Exception].
      */
     class RemoteFailureException(val originalStackTrace: String) : Exception()
+
+    /**
+     * The patcher subprocess was terminated by the system (typically SIGKILL
+     * from Android's LowMemoryKiller or SIGTERM from a service-revoke).
+     * Distinct from [RemoteFailureException]: no stack trace is available
+     * because the process was killed externally.
+     *
+     * @param exitCode The process exit code that signaled the crash.
+     * SIGKILL: 137 / 9
+     * SIGTERM: 143 / 15
+     */
+    class PatcherKilledException(exitCode: Int) :
+        Exception("Patcher subprocess killed by system (exit code $exitCode)")
+
+    /**
+     * The patcher subprocess crashed natively, the cause is usually a
+     * bug in a native dependency (ART, libaapt2, dexlib) or a malformed
+     * APK that tripped one of them.
+     * Distinct from [RemoteFailureException]: no stack trace is available
+     * because the process was killed externally.
+     *
+     * @param exitCode The process exit code that signaled the crash.
+     * SIGABRT: 134 / 6
+     * SIGSEGV: 139 / 11
+     * SIGBUS: 135
+     * SIGILL: 132
+     * SIGFPE: 136
+     */
+    class PatcherCrashedException(exitCode: Int) :
+        Exception("Patcher subprocess crashed natively (exit code $exitCode)")
 }
 
