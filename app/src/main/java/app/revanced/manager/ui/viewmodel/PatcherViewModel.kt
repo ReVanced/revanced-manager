@@ -321,7 +321,7 @@ class PatcherViewModel(
                 is ProgressEvent.Log -> {
                     val line = formatLogLine(event.level, event.message)
                     val message = currentStep.message
-                    when {
+                    val updated = when {
                         !event.replaceLast -> currentStep.withState(message = appendLog(message, line))
                         currentStep.index != null -> currentStep.withState(
                             message = replaceLineAtIndex(message, currentStep.index, line)
@@ -335,6 +335,7 @@ class PatcherViewModel(
                             )
                         }
                     }
+                    updated.copy(messageTrailing = event.trailing)
                 }
 
                 is ProgressEvent.Completed -> currentStep.withState(State.COMPLETED)

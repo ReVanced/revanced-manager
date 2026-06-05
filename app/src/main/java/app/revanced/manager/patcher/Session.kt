@@ -44,11 +44,14 @@ class Session(
             Dispatchers.Default
         ) {
             val context = currentCoroutineContext()
-            fun emitLog(message: String) = onEvent(
-                ProgressEvent.Log(StepId.ExecutePatches, LogLevel.INFO, message, replaceLast = true)
+            fun emitLog(message: String, trailing: String? = null) = onEvent(
+                ProgressEvent.Log(
+                    StepId.ExecutePatches, LogLevel.INFO, message,
+                    replaceLast = true, trailing = trailing,
+                )
             )
             val heartbeat = Heartbeat(this) { elapsed ->
-                emitLog("Decoding resources\t${elapsed}s")
+                emitLog("Decoding resources", "${elapsed}s")
             }
             try {
                 patcher { (patch, exception) ->

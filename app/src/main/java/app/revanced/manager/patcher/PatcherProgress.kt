@@ -25,6 +25,7 @@ sealed class ProgressEvent : Parcelable {
         val level: LogLevel,
         val message: String,
         val replaceLast: Boolean = false,
+        val trailing: String? = null,
     ) : ProgressEvent()
 
     data class Completed(

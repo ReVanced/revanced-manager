@@ -123,21 +123,11 @@ fun Steps(
                         .takeIf { it.isNotEmpty() }
                         ?.joinToString(" - ")
 
-                    val (message, trailing) = step.message?.let { msg ->
-                        val tabIndex = msg.lastIndexOf('\t')
-                        val lastNewline = msg.lastIndexOf('\n')
-                        if (tabIndex > lastNewline) {
-                            msg.substring(0, tabIndex) to msg.substring(tabIndex + 1)
-                        } else {
-                            msg to null
-                        }
-                    } ?: (null to null)
-
                     SubStep(
                         name = step.title,
                         state = step.state,
-                        message = message,
-                        trailing = trailing,
+                        message = step.message,
+                        trailing = step.messageTrailing,
                         progress = progress,
                         progressText = progressText,
                         isFirst = index == 0,
@@ -211,7 +201,9 @@ fun SubStep(
 
         AnimatedVisibility(visible = messageExpanded && message != null) {
             Column(
-                modifier = Modifier.padding(horizontal = 36.dp, vertical = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 36.dp, vertical = 8.dp)
             ) {
                 val lines = message.orEmpty().split('\n')
                 lines.forEachIndexed { i, line ->
