@@ -15,7 +15,7 @@ class Heartbeat(
     private val startNs = System.nanoTime()
     private val finished = AtomicBoolean(false)
 
-    private val elapsedSeconds get() = (System.nanoTime() - startNs) / 1_000_000_000L
+    val elapsedSeconds get() = (System.nanoTime() - startNs) / 1_000_000_000L
 
     private val job: Job = scope.launch {
         delay(initialDelayMs)
