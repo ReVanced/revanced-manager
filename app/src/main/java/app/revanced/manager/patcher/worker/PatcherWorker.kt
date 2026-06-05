@@ -163,7 +163,7 @@ class PatcherWorker(
             }
 
             suspend fun download(downloader: LoadedDownloader, data: Parcelable): File = coroutineScope {
-                val heartbeat = Heartbeat(this, initialDelayMs = 1_000L) { elapsed ->
+                val heartbeat = Heartbeat(this) { elapsed ->
                     args.onEvent(
                         ProgressEvent.Progress(
                             stepId = StepId.DownloadAPK,
@@ -172,7 +172,7 @@ class PatcherWorker(
                     )
                 }
                 try {
-                    downloadedAppRepository.download(
+                    val result = downloadedAppRepository.download(
                         downloader,
                         data,
                         args.packageName,
@@ -189,7 +189,6 @@ class PatcherWorker(
                             )
                         }
                     ).also { args.setInputFile(it) }
-                } finally {
                     heartbeat.complete { elapsed ->
                         args.onEvent(
                             ProgressEvent.Progress(
@@ -199,6 +198,9 @@ class PatcherWorker(
                             )
                         )
                     }
+                    result
+                } finally {
+                    heartbeat.stop()
                 }
             }
 
