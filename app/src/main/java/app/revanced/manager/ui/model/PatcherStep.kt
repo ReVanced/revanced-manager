@@ -40,6 +40,13 @@ fun Step.withState(
 
 internal fun replaceLineAtIndex(current: String?, index: Int, replacement: String): String {
     if (current.isNullOrEmpty()) return replacement
+    val lastNewline = current.lastIndexOf('\n')
+    val lastLineIndex = if (lastNewline == -1) 0 else current.count { it == '\n' }
+    if (index == lastLineIndex) {
+        return if (lastNewline == -1) replacement
+        else current.substring(0, lastNewline + 1) + replacement
+    }
+    if (index == lastLineIndex + 1) return current + "\n" + replacement
     val lines = current.split("\n").toMutableList()
     when (index) {
         in lines.indices -> lines[index] = replacement

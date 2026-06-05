@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -114,25 +115,29 @@ fun Steps(
                     .padding(top = 10.dp)
             ) {
                 filteredSteps.forEachIndexed { index, step ->
-                    val (progress, sizeText) = step.progress?.let { (current, total) ->
-                        if (total != null) current.toFloat() / total.toFloat() to "${current.megaBytes}/${total.megaBytes} MB"
-                        else null to "${current.megaBytes} MB"
-                    } ?: (null to null)
-
-                    val progressText = listOfNotNull(sizeText, step.trailingText?.takeIf { it.isNotEmpty() })
-                        .takeIf { it.isNotEmpty() }
-                        ?.joinToString(" - ")
-
-                    SubStep(
-                        name = step.title,
-                        state = step.state,
-                        message = step.message,
-                        trailing = step.messageTrailing,
-                        progress = progress,
-                        progressText = progressText,
-                        isFirst = index == 0,
-                        isLast = index == filteredSteps.lastIndex,
-                    )
+                    key(step.id) {
+                        val derived = remember(step.progress, step.trailingText) {
+                            val (progress, sizeText) = step.progress?.let { (current, total) ->
+                                if (total != null) current.toFloat() / total.toFloat() to "${current.megaBytes}/${total.megaBytes} MB"
+                                else null to "${current.megaBytes} MB"
+                            } ?: (null to null)
+                            val trailing = step.trailingText?.takeIf { it.isNotEmpty() }
+                            val progressText = listOfNotNull(sizeText, trailing)
+                                .takeIf { it.isNotEmpty() }
+                                ?.joinToString(" - ")
+                            progress to progressText
+                        }
+                        SubStep(
+                            name = step.title,
+                            state = step.state,
+                            message = step.message,
+                            trailing = step.messageTrailing,
+                            progress = derived.first,
+                            progressText = derived.second,
+                            isFirst = index == 0,
+                            isLast = index == filteredSteps.lastIndex,
+                        )
+                    }
                 }
             }
         }
@@ -205,7 +210,7 @@ fun SubStep(
                     .fillMaxWidth()
                     .padding(horizontal = 36.dp, vertical = 8.dp)
             ) {
-                val lines = message.orEmpty().split('\n')
+                val lines = remember(message) { message.orEmpty().split('\n') }
                 lines.forEachIndexed { i, line ->
                     val isLastLine = i == lines.lastIndex
                     if (isLastLine && trailing != null) {
