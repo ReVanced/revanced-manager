@@ -47,13 +47,13 @@ sealed class Source<T>(
 
     protected fun hasInstalled() = file.exists()
 
-    protected fun outputStream(): OutputStream = with(file) {
+    protected suspend fun writeFile(block: suspend (OutputStream) -> Unit) {
         // Android 14+ requires dex containers to be readonly.
+        file.setWritable(true, true)
         try {
-            setWritable(true, true)
-            outputStream()
+            file.outputStream().use { block(it) }
         } finally {
-            setReadOnly()
+            file.setReadOnly()
         }
     }
 

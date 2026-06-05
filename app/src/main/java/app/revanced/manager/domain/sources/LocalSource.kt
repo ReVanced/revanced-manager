@@ -18,7 +18,7 @@ class LocalSource<T>(
 ) : Source<T>(name, uid, error, file, loader) {
     suspend fun ActionContext.replace(inputStream: InputStream) {
         withContext(Dispatchers.IO) {
-            outputStream().use { outputStream ->
+            writeFile { outputStream ->
                 inputStream.copyTo(outputStream)
             }
         }

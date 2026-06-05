@@ -47,8 +47,8 @@ sealed class RemoteSource<T>(
         copy(error, name, this.autoUpdate, this.versionHash, this.releasedAt)
 
     private suspend fun download(info: ReVancedAsset) = withContext(Dispatchers.IO) {
-        outputStream().use {
-            http.streamTo(it) {
+        writeFile { stream ->
+            http.streamTo(stream) {
                 url(info.downloadUrl)
             }
         }
