@@ -72,6 +72,22 @@ class Session(
                                 exception.toRemoteError(),
                             )
                         )
+
+                        // PatchException: Soft-skip missing fingerprint
+                        // Causes can be unsupported version or code obfuscation,
+                        // so skip this one and keep applying the rest instead of aborting the run.
+                        val rootCause = generateSequence(exception as Throwable) { it.cause }.last()
+                        val isFingerprintMissing = (rootCause is IllegalArgumentException || rootCause is NullPointerException)
+                                && rootCause.stackTrace.any { it.className.contains("CompositeMatch") }
+
+                        if (isFingerprintMissing) {
+                            phaseLogger.warn(
+                                "${patch.name} skipped: fingerprint did not match in this app version " +
+                                "(${rootCause::class.java.simpleName}: ${rootCause.message})"
+                            )
+                            return@patcher
+                        }
+
                         phaseLogger.error("${patch.name} failed:")
                         phaseLogger.error(exception.stackTraceToString())
                         throw exception
