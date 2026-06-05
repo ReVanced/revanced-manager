@@ -165,7 +165,7 @@ fun SubStep(
                 else this
             }
             .padding(top = if (isFirst) 10.dp else 8.dp, bottom = if (isLast) 20.dp else 8.dp)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 23.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
