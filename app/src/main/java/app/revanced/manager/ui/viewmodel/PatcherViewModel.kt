@@ -193,7 +193,7 @@ class PatcherViewModel(
     val progress by derivedStateOf {
         val steps = steps.filter { it.id != StepId.ExecutePatches }
 
-        val current = steps.count { it.state == State.COMPLETED }
+        val current = steps.count { it.state == State.COMPLETED || it.state == State.FAILED }
         val total = steps.size
 
         current.toFloat() / total.toFloat()
