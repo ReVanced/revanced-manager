@@ -6,14 +6,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -79,12 +76,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.ui.component.AlertDialogExtended
+import app.revanced.manager.ui.component.AnimateVisibility
 import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.NotificationCard
@@ -628,16 +625,10 @@ private enum class DashboardFabState {
 fun Notifications(
     vararg notifications: Pair<Boolean, @Composable () -> Unit>
 ) {
-    val motionSpec: FiniteAnimationSpec<IntSize> = MaterialTheme.motionScheme.fastSpatialSpec()
-
     Column(Modifier.fillMaxWidth()) {
         notifications.forEachIndexed { index, (isVisible, notification) ->
             key(index) {
-                AnimatedVisibility(
-                    visible = isVisible,
-                    enter = expandVertically(motionSpec) + fadeIn(),
-                    exit = shrinkVertically(motionSpec) + fadeOut(),
-                ) {
+                AnimateVisibility(visible = isVisible) {
                     Box(Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
                         notification()
                     }
@@ -645,11 +636,7 @@ fun Notifications(
             }
         }
 
-        AnimatedVisibility(
-            visible = notifications.any { it.first },
-            enter = expandVertically(motionSpec) + fadeIn(),
-            exit = shrinkVertically(motionSpec) + fadeOut(),
-        ) {
+        AnimateVisibility(visible = notifications.any { it.first }) {
             Spacer(Modifier.height(16.dp))
         }
     }
