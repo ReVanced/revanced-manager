@@ -6,11 +6,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +21,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,6 +65,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -74,6 +79,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
@@ -107,6 +113,7 @@ enum class DashboardPage(
     BUNDLES(R.string.tab_patches, Icons.Outlined.Source),
 }
 
+@Suppress("AssignedValueIsNeverRead")
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -436,38 +443,33 @@ fun DashboardScreen(
                     }
 
                     Notifications(
-                        if (bundleDownloadError != null) {
-                            {
-                                NotificationCard(
-                                    type = NotificationCardType.ERROR,
-                                    icon = Icons.Outlined.WarningAmber,
-                                    title = stringResource(R.string.api_not_working_title),
-                                    text = stringResource(R.string.api_not_working_description),
-                                    onClick = onSettingsClick
-                                )
-                            }
-                        } else null,
-                        if (sourceUpdatesAvailable) {
-                            {
-                                NotificationCard(
-                                    type = NotificationCardType.WARNING,
-                                    icon = Icons.Outlined.Refresh,
-                                    text = stringResource(R.string.banner_sources_not_updated_description),
-                                    onClick = vm::downloadSources
-                                )
-                            }
-                        } else if (sourcesNotDownloaded && bundleDownloadError == null) {
-                            {
-                                NotificationCard(
-                                    type = NotificationCardType.WARNING,
-                                    icon = Icons.Outlined.Refresh,
-                                    text = stringResource(R.string.banner_sources_not_downloaded_description),
-                                    onClick = vm::downloadSources
-                                )
-                            }
-                        } else null,
-                        vm.unreadAnnouncement?.let { announcement ->
-                            {
+                        (bundleDownloadError != null) to {
+                            NotificationCard(
+                                type = NotificationCardType.ERROR,
+                                icon = Icons.Outlined.WarningAmber,
+                                title = stringResource(R.string.api_not_working_title),
+                                text = stringResource(R.string.api_not_working_description),
+                                onClick = onSettingsClick
+                            )
+                        },
+                        (sourceUpdatesAvailable) to {
+                            NotificationCard(
+                                type = NotificationCardType.WARNING,
+                                icon = Icons.Outlined.Refresh,
+                                text = stringResource(R.string.banner_sources_not_updated_description),
+                                onClick = vm::downloadSources
+                            )
+                        },
+                        (!sourceUpdatesAvailable && sourcesNotDownloaded && bundleDownloadError == null) to {
+                            NotificationCard(
+                                type = NotificationCardType.WARNING,
+                                icon = Icons.Outlined.Refresh,
+                                text = stringResource(R.string.banner_sources_not_downloaded_description),
+                                onClick = vm::downloadSources
+                            )
+                        },
+                        (vm.unreadAnnouncement != null) to {
+                            vm.unreadAnnouncement?.let { announcement ->
                                 NotificationCard(
                                     title = stringResource(R.string.new_announcement),
                                     text = announcement.title,
@@ -624,18 +626,31 @@ private enum class DashboardFabState {
 
 @Composable
 fun Notifications(
-    vararg notifications: (@Composable () -> Unit)?,
+    vararg notifications: Pair<Boolean, @Composable () -> Unit>
 ) {
-    val activeNotifications = notifications.filterNotNull()
+    val motionSpec: FiniteAnimationSpec<IntSize> = MaterialTheme.motionScheme.fastSpatialSpec()
 
-    if (activeNotifications.isNotEmpty()) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            activeNotifications.forEach { notification ->
-                notification()
+    Column(Modifier.fillMaxWidth()) {
+        notifications.forEachIndexed { index, (isVisible, notification) ->
+            key(index) {
+                AnimatedVisibility(
+                    visible = isVisible,
+                    enter = expandVertically(motionSpec) + fadeIn(),
+                    exit = shrinkVertically(motionSpec) + fadeOut(),
+                ) {
+                    Box(Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
+                        notification()
+                    }
+                }
             }
+        }
+
+        AnimatedVisibility(
+            visible = notifications.any { it.first },
+            enter = expandVertically(motionSpec) + fadeIn(),
+            exit = shrinkVertically(motionSpec) + fadeOut(),
+        ) {
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
