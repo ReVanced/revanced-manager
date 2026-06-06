@@ -51,6 +51,7 @@ import androidx.core.content.getSystemService
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.ui.component.AnimateVisibility
 import app.revanced.manager.ui.component.BottomContentBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
@@ -215,7 +216,7 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
             state = scrollState
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                if (showBatteryOptimizationsWarning) {
+                AnimateVisibility(visible = showBatteryOptimizationsWarning) {
                     NotificationCard(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         type = NotificationCardType.WARNING,
