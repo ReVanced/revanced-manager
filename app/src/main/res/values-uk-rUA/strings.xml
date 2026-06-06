@@ -477,7 +477,7 @@ Second \"item\" text"</string>
   <string name="save_with_count">Зберегти (%1$s)</string>
   <string name="update">Оновити</string>
   <string name="empty">Пусто</string>
-  <string name="installing_message">Натисніть <b>Оновити</b>, коли з\'явиться запит.\nReVanced Manager закриється під час оновлення.</string>
+  <string name="installing_message"><![CDATA[Натисніть <b>Оновити</b>, коли з\'явиться запит.\nReVanced Manager закриється під час оновлення.]]></string>
   <string name="no_changelogs_found">Список змін не знайдено</string>
   <string name="just_now">Щойно</string>
   <string name="minutes_ago">%s хв тому</string>

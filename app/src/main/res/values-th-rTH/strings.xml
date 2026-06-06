@@ -477,7 +477,7 @@ Second \"item\" text"</string>
   <string name="save_with_count">บันทึก (%1$s)</string>
   <string name="update">อัปเดต</string>
   <string name="empty">ว่างเปล่า</string>
-  <string name="installing_message">แตะที่ <b>อัปเดต</b> เมื่อมีข้อความแจ้ง\nReVanced Manager จะปิดตัวลงเมื่อมีการอัปเดต</string>
+  <string name="installing_message"><![CDATA[แตะที่ <b>อัปเดต</b> เมื่อมีข้อความแจ้ง\nReVanced Manager จะปิดตัวลงเมื่อมีการอัปเดต]]></string>
   <string name="no_changelogs_found">ไม่พบบันทึกการเปลี่ยนแปลง</string>
   <string name="just_now">เมื่อสักครู่นี้</string>
   <string name="minutes_ago">%s นาทีที่แล้ว</string>

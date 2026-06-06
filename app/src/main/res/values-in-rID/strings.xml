@@ -467,7 +467,7 @@ Second \"item\" text"</string>
   <string name="save_with_count">Simpan (%1$s)</string>
   <string name="update">Perbarui</string>
   <string name="empty">Kosong</string>
-  <string name="installing_message">Ketuk <b>Perbarui</b> saat diminta. ReVanced Manager akan menutup saat memperbarui.</string>
+  <string name="installing_message"><![CDATA[Ketuk <b>Perbarui</b> saat diminta. ReVanced Manager akan menutup saat memperbarui.]]></string>
   <string name="no_changelogs_found">Tidak ada daftar perubahan ditemukan</string>
   <string name="just_now">Baru saja</string>
   <string name="minutes_ago">%s mnt lalu</string>

@@ -480,7 +480,7 @@ U zult de eerder geïnstalleerde apps niet meer kunnen bijwerken via deze bron.<
   <string name="save_with_count">Opslaan (%1$s)</string>
   <string name="update">Update</string>
   <string name="empty">Leeg</string>
-  <string name="installing_message">Tik op <b>Updaten</b> wanneer daarom wordt gevraagd.\nReVanced Manager wordt gesloten tijdens het updaten.</string>
+  <string name="installing_message"><![CDATA[Tik op <b>Updaten</b> wanneer daarom wordt gevraagd.\nReVanced Manager wordt gesloten tijdens het updaten.]]></string>
   <string name="no_changelogs_found">Geen wijzigingslogs gevonden</string>
   <string name="just_now">Zojuist</string>
   <string name="minutes_ago">%sm geleden</string>

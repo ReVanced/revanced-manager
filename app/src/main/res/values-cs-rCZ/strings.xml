@@ -480,7 +480,7 @@ Nebudete moci aktualizovat dříve nainstalované aplikace z tohoto zdroje.</str
   <string name="save_with_count">Uložit (%1$s)</string>
   <string name="update">Aktualizovat</string>
   <string name="empty">Prázdné</string>
-  <string name="installing_message">Klepněte na <b>Aktualizovat</b>, když budete vyzváni.\nReVanced Manager se při aktualizaci zavře.</string>
+  <string name="installing_message"><![CDATA[Klepněte na <b>Aktualizovat</b>, když budete vyzváni.\nReVanced Manager se při aktualizaci zavře.]]></string>
   <string name="no_changelogs_found">Nebyly nalezeny žádné protokoly změn</string>
   <string name="just_now">Právě teď</string>
   <string name="minutes_ago">před %s min</string>

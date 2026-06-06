@@ -468,7 +468,7 @@ Second \"item\" text"</string>
   <string name="save_with_count">Ruaj (%1$s)</string>
   <string name="update">Përditëso</string>
   <string name="empty">Bosh</string>
-  <string name="installing_message">Prekni <b>Përditëso</b> kur të kërkohet.\nReVanced Manager do të mbyllet gjatë përditësimit.</string>
+  <string name="installing_message"><![CDATA[Prekni <b>Përditëso</b> kur të kërkohet.\nReVanced Manager do të mbyllet gjatë përditësimit.]]></string>
   <string name="no_changelogs_found">Asnjë ndryshim nuk u gjet</string>
   <string name="just_now">Tani</string>
   <string name="minutes_ago">%s min më parë</string>

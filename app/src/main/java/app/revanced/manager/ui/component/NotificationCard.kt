@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.util.formatStyled
 
 enum class NotificationCardType {
     NORMAL, WARNING, ERROR
@@ -84,7 +85,7 @@ fun NotificationCard(
                             )
                         }
                         Text(
-                            text = text,
+                            text = formatStyled(text),
                             style = MaterialTheme.typography.bodyMedium,
                             color = LocalContentColor.current,
                         )

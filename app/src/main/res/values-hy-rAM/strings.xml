@@ -480,7 +480,7 @@ Second \"item\" text"</string>
   <string name="save_with_count">Պահպանել (%1$s)</string>
   <string name="update">Թարմացնել</string>
   <string name="empty">Դատարկ</string>
-  <string name="installing_message">Հպեք <b>Թարմացնել</b>, երբ հուշում հայտնվի:\nReVanced Manager-ը կփակվի թարմացնելիս:</string>
+  <string name="installing_message"><![CDATA[Հպեք <b>Թարմացնել</b>, երբ հուշում հայտնվի:\nReVanced Manager-ը կփակվի թարմացնելիս:]]></string>
   <string name="no_changelogs_found">Փոփոխությունների մատյաններ չեն գտնվել</string>
   <string name="just_now">Հենց հիմա</string>
   <string name="minutes_ago">%s րոպե առաջ</string>

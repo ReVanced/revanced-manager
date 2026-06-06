@@ -487,7 +487,7 @@ Den är endast kompatibel med följande version(er): %2$s</string>
   <string name="save_with_count">Spara (%1$s)</string>
   <string name="update">Uppdatera</string>
   <string name="empty">Tom</string>
-  <string name="installing_message">Tryck på <b>Uppdatera</b> när du blir ombedd.\nReVanced Manager stängs när den uppdateras.</string>
+  <string name="installing_message"><![CDATA[Tryck på <b>Uppdatera</b> när du blir ombedd.\nReVanced Manager stängs när den uppdateras.]]></string>
   <string name="no_changelogs_found">Inga ändringsloggar hittades</string>
   <string name="just_now">Just nu</string>
   <string name="minutes_ago">för %s min. sedan</string>

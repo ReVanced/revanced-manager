@@ -480,7 +480,7 @@ Du vil ikke kunne opdatere tidligere installerede apps fra denne kilde.</string>
   <string name="save_with_count">Gem (%1$s)</string>
   <string name="update">Opdater</string>
   <string name="empty">Tom</string>
-  <string name="installing_message">Tryk på <b>Opdater</b>, når du bliver bedt om det.\nReVanced Manager vil lukke under opdatering.</string>
+  <string name="installing_message"><![CDATA[Tryk på <b>Opdater</b>, når du bliver bedt om det.\nReVanced Manager vil lukke under opdatering.]]></string>
   <string name="no_changelogs_found">Ingen ændringslogger fundet</string>
   <string name="just_now">Lige nu</string>
   <string name="minutes_ago">for %s min siden</string>

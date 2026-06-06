@@ -25,8 +25,8 @@ Second \"item\" text"</string>
     <string name="onboarding_apps_network_error">Patches can’t be downloaded. Check your internet connection and try again.</string>
     <string name="onboarding_updates_subtitle">Configure automatic updates to keep ReVanced Manager and patches up to date</string>
 
-    <string name="banner_sources_not_downloaded_description">Patches and downloaders couldn’t be downloaded during setup. Tap <b>Update</b> to download them.</string>
-    <string name="banner_sources_not_updated_description">Patches and downloaders can’t be updated on a metered network. Tap <b>Update</b> to download them.</string>
+    <string name="banner_sources_not_downloaded_description"><![CDATA[Patches and downloaders couldn’t be downloaded during setup. Tap <b>Update</b> to download them.]]></string>
+    <string name="banner_sources_not_updated_description"><![CDATA[Patches and downloaders can’t be updated on a metered network. Tap <b>Update</b> to download them.]]></string>
     <string name="onboarding_updates_note">ReVanced Manager will connect to %s in order to download initial versions if your device is connected to the internet</string>
 
     <string name="retry">Retry</string>
@@ -219,7 +219,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="local_downloaders_description">Add downloader from local storage</string>
     <string name="remote_downloaders_description">Downloader can receive updates</string>
     <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
-    <string name="downloader_sources_unavailable_description">Tap <b>Update</b> to fix this issue</string>
+    <string name="downloader_sources_unavailable_description"><![CDATA[Tap <b>Update</b> to fix this issue]]></string>
 
     <string name="downloader_update_failed">Failed to update downloader: %s</string>
     <string name="downloader_replace_fail">Failed to import downloader: %s</string>

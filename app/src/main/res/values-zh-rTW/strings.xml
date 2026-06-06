@@ -487,7 +487,7 @@ Second \"item\" text"</string>
   <string name="save_with_count">儲存 (%1$s)</string>
   <string name="update">更新</string>
   <string name="empty">空白</string>
-  <string name="installing_message">出現提示時輕觸<b>更新</b>。\n更新時 ReVanced Manager 將關閉。</string>
+  <string name="installing_message"><![CDATA[出現提示時輕觸<b>更新</b>。\n更新時 ReVanced Manager 將關閉。]]></string>
   <string name="no_changelogs_found">未找到變更日誌</string>
   <string name="just_now">剛才</string>
   <string name="minutes_ago">%s 分鐘前</string>

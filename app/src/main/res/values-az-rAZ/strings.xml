@@ -477,7 +477,7 @@ Bu mənbədən əvvəlcədən quraşdırılmış tətbiqləri yeniləyə bilməy
   <string name="save_with_count">Saxla (%1$s)</string>
   <string name="update">Yenilə</string>
   <string name="empty">Boş</string>
-  <string name="installing_message">Xahiş edildikdə <b>Yenilə</b> düyməsinə toxunun.\nReVanced Manager yenilənərkən bağlanacaq.</string>
+  <string name="installing_message"><![CDATA[Xahiş edildikdə <b>Yenilə</b> düyməsinə toxunun.\nReVanced Manager yenilənərkən bağlanacaq.]]></string>
   <string name="no_changelogs_found">Dəyişiklik qeydləri tapılmadı</string>
   <string name="just_now">İndi</string>
   <string name="minutes_ago">%s dəq əvvəl</string>

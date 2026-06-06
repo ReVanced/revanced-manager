@@ -33,6 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.core.graphics.scale
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
@@ -77,6 +82,7 @@ fun Context.openUrl(url: String) {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
 }
+
 fun Context.shareApk(apkUri: Uri) {
     startActivity(
         Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
@@ -388,4 +394,20 @@ fun blurBackground(
     rs.destroy()
 
     return workingBitmap
+}
+
+private val boldRegex = Regex("</?b>")
+
+internal fun formatStyled(text: String): AnnotatedString = buildAnnotatedString {
+    text.split(boldRegex).forEachIndexed { index, part ->
+        if (part.isEmpty()) return@forEachIndexed
+
+        if (index % 2 == 0) {
+            append(part)
+        } else {
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                append(part)
+            }
+        }
+    }
 }

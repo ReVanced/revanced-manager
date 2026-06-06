@@ -481,7 +481,7 @@ Nó chỉ tương thích với các phiên bản sau: %2$s</string>
   <string name="save_with_count">Lưu (%1$s)</string>
   <string name="update">Cập nhật</string>
   <string name="empty">Trống</string>
-  <string name="installing_message">Nhấn vào <b>Cập nhật</b> khi được nhắc.\nReVanced Manager sẽ đóng khi cập nhật.</string>
+  <string name="installing_message"><![CDATA[Nhấn vào <b>Cập nhật</b> khi được nhắc.\nReVanced Manager sẽ đóng khi cập nhật.]]></string>
   <string name="no_changelogs_found">Không tìm thấy nhật ký thay đổi</string>
   <string name="just_now">Vừa xong</string>
   <string name="minutes_ago">%s phút trước</string>

@@ -470,7 +470,7 @@ Second \"item\" text"</string>
   <string name="save_with_count">Сохранить (%1$s)</string>
   <string name="update">Обновить</string>
   <string name="empty">Пусто</string>
-  <string name="installing_message">Нажмите <b>Обновить</b> по запросу.\nReVanced Manager закроется при обновлении.</string>
+  <string name="installing_message"><![CDATA[Нажмите <b>Обновить</b> по запросу.\nReVanced Manager закроется при обновлении.]]></string>
   <string name="no_changelogs_found">Список изменений не найден</string>
   <string name="just_now">Только что</string>
   <string name="minutes_ago">%sm назад</string>
