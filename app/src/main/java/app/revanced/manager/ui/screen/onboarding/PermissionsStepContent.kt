@@ -1,9 +1,16 @@
 package app.revanced.manager.ui.screen.onboarding
 
 import android.os.Build
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -18,14 +25,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -39,12 +51,23 @@ fun PermissionsStepContent(
     onRequestNotifications: () -> Unit,
     onRequestBatteryOptimization: () -> Unit
 ) {
+    val textMeasurer = rememberTextMeasurer()
+    val buttonText = stringResource(R.string.permission_grant)
+    val textStyle = MaterialTheme.typography.labelMedium
+    val density = LocalDensity.current
+
+    val minButtonWidth = remember(buttonText, textStyle, density) {
+        val textWidthPx = textMeasurer.measure(buttonText, textStyle).size.width
+        max(64.dp, with(density) { textWidthPx.toDp() } + 24.dp)
+    }
+
     ListSection(contentPadding = PaddingValues(0.dp)) {
         PermissionItem(
             icon = Icons.Outlined.Security,
             title = stringResource(R.string.permission_install_apps),
             description = stringResource(R.string.permission_install_apps_description),
             isGranted = canInstallUnknownApps,
+            minTrailingWidth = minButtonWidth,
             onRequest = onRequestInstallApps
         )
 
@@ -54,6 +77,7 @@ fun PermissionsStepContent(
                 title = stringResource(R.string.permission_notifications),
                 description = stringResource(R.string.permission_notifications_description),
                 isGranted = isNotificationsEnabled,
+                minTrailingWidth = minButtonWidth,
                 onRequest = onRequestNotifications
             )
         }
@@ -63,6 +87,7 @@ fun PermissionsStepContent(
             title = stringResource(R.string.permission_battery),
             description = stringResource(R.string.permission_battery_description),
             isGranted = isBatteryOptimizationExempt,
+            minTrailingWidth = minButtonWidth,
             onRequest = onRequestBatteryOptimization
         )
     }
@@ -75,6 +100,7 @@ private fun PermissionItem(
     title: String,
     description: String,
     isGranted: Boolean,
+    minTrailingWidth: Dp,
     onRequest: () -> Unit
 ) {
     SettingsListItem(
@@ -97,24 +123,36 @@ private fun PermissionItem(
             )
         },
         trailingContent = {
-            if (isGranted) {
-                OnboardingLeadingIcon(
-                    icon = Icons.Default.Check,
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    size = 32.dp,
-                    iconSize = 16.dp
-                )
-            } else {
-                FilledTonalButton(
-                    onClick = onRequest,
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-                    shapes = ButtonDefaults.shapes()
-                ) {
-                    Text(
-                        text = stringResource(R.string.permission_grant),
-                        style = MaterialTheme.typography.labelMedium
-                    )
+            Box(
+                modifier = Modifier.defaultMinSize(minWidth = minTrailingWidth),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                AnimatedContent(
+                    targetState = isGranted,
+                    transitionSpec = { fadeIn() togetherWith fadeOut() },
+                    contentAlignment = Alignment.Center,
+                    label = "onboarding_trailing_button"
+                ) { isGranted ->
+                    if (isGranted) {
+                        OnboardingLeadingIcon(
+                            icon = Icons.Default.Check,
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            size = 32.dp,
+                            iconSize = 16.dp
+                        )
+                    } else {
+                        FilledTonalButton(
+                            onClick = onRequest,
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                            shapes = ButtonDefaults.shapes()
+                        ) {
+                            Text(
+                                text = stringResource(R.string.permission_grant),
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -129,18 +167,29 @@ internal fun OnboardingLeadingIcon(
     size: Dp = 40.dp,
     iconSize: Dp = 22.dp
 ) {
+    val animatedContainerColor by animateColorAsState(
+        containerColor,
+        tween(),
+        "containerColor",
+    )
+    val animatedIconColor by animateColorAsState(
+        iconColor,
+        tween(),
+        "iconColor",
+    )
+
     Box(
         modifier = Modifier
             .size(size)
             .clip(CircleShape)
-            .background(containerColor),
+            .background(animatedContainerColor),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(iconSize),
-            tint = iconColor
+            tint = animatedIconColor
         )
     }
 }
