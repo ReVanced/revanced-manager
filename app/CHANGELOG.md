@@ -1,3 +1,10 @@
+# app [2.7.0-dev.7](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.6...v2.7.0-dev.7) (2026-06-12)
+
+
+### Features
+
+* Add Android TV support ([#3389](https://github.com/ReVanced/revanced-manager/issues/3389)) ([3a23a30](https://github.com/ReVanced/revanced-manager/commit/3a23a307fb714503ecd121c13ffb1dbad1ba7b6a))
+
 # app [2.7.0-dev.6](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.5...v2.7.0-dev.6) (2026-06-04)
 
 
