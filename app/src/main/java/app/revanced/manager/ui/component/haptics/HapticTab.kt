@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.component.haptics
 
-import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Tab
@@ -8,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.core.view.HapticFeedbackConstantsCompat
 import app.revanced.manager.util.withHapticFeedback
 
 @Composable

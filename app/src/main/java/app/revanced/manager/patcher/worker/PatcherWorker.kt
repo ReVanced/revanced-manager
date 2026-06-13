@@ -29,6 +29,10 @@ import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.GetScope
+import app.revanced.manager.downloader.Scope
+import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.patcher.Heartbeat
 import app.revanced.manager.patcher.ProgressEvent
@@ -38,10 +42,6 @@ import app.revanced.manager.patcher.runStep
 import app.revanced.manager.patcher.runtime.CoroutineRuntime
 import app.revanced.manager.patcher.runtime.ProcessRuntime
 import app.revanced.manager.patcher.toRemoteError
-import app.revanced.manager.downloader.GetScope
-import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.downloader.Scope
-import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM

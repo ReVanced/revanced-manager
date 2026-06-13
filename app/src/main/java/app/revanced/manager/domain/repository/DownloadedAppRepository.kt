@@ -7,9 +7,9 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.downloader.OutputDownloadScope
 import app.revanced.manager.downloader.Scope
+import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.channelFlow

@@ -2,7 +2,7 @@
 
 package app.revanced.manager.network.utils
 
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 
 /**
  * @author Aliucord Authors, DiamondMiner88

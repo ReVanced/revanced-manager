@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.component.settings
 
-import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -35,6 +34,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.core.view.HapticFeedbackConstantsCompat
 import app.revanced.manager.R
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.withHapticFeedback

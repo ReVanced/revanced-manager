@@ -1,7 +1,12 @@
 package app.revanced.manager.util.saver
 
 import androidx.compose.runtime.saveable.Saver
-import kotlinx.collections.immutable.*
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentMap
+import kotlinx.collections.immutable.toPersistentSet
 
 /**
  * Create a [Saver] for [PersistentList]s.

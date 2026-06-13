@@ -2,12 +2,12 @@ package app.revanced.manager.di
 
 import android.content.Context
 import app.revanced.manager.BuildConfig
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.Dns

@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.component.haptics
 
-import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
@@ -9,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
+import androidx.core.view.HapticFeedbackConstantsCompat
 
 @Composable
 fun HapticRadioButton(

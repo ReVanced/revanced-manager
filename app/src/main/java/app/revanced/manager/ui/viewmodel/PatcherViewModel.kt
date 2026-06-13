@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.autoSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
+import androidx.core.content.FileProvider
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
@@ -30,7 +31,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.await
 import app.revanced.manager.BuildConfig
-import androidx.core.content.FileProvider
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType

@@ -10,9 +10,9 @@ import app.revanced.manager.network.dto.ReVancedGitRepository
 import app.revanced.manager.network.dto.ReVancedInfo
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.APIResponse
+import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import io.ktor.client.request.url
 
 class ReVancedAPI(
     private val client: HttpService,

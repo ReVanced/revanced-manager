@@ -2,7 +2,15 @@ package app.revanced.manager.di
 
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
-import app.revanced.manager.domain.repository.*
+import app.revanced.manager.domain.repository.AnnouncementRepository
+import app.revanced.manager.domain.repository.ChangelogsRepository
+import app.revanced.manager.domain.repository.DownloadedAppRepository
+import app.revanced.manager.domain.repository.DownloaderRepository
+import app.revanced.manager.domain.repository.InstalledAppRepository
+import app.revanced.manager.domain.repository.ManagerUpdateRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.repository.PatchOptionsRepository
+import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import org.koin.core.module.dsl.createdAtStart

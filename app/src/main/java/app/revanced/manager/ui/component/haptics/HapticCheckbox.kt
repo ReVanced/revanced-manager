@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.component.haptics
 
-import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
@@ -8,6 +7,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.core.view.HapticFeedbackConstantsCompat
 import app.revanced.manager.util.withHapticFeedback
 
 @Composable

@@ -1,9 +1,9 @@
 package app.revanced.manager.patcher.patch
 
-import kotlinx.parcelize.IgnoredOnParcel
 import android.os.Parcelable
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.loadPatches
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.io.IOException

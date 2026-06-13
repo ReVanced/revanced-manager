@@ -31,15 +31,15 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
+import app.revanced.manager.downloader.DownloaderHostApi
+import app.revanced.manager.downloader.GetScope
+import app.revanced.manager.downloader.Scope
+import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.requiredOptionsSet
 import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
-import app.revanced.manager.downloader.GetScope
-import app.revanced.manager.downloader.DownloaderHostApi
-import app.revanced.manager.downloader.Scope
-import app.revanced.manager.downloader.UserInteractionException
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.navigation.Patcher
 import app.revanced.manager.ui.model.navigation.SelectedApplicationInfo
@@ -51,7 +51,6 @@ import app.revanced.manager.util.isSplitApk
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import java.nio.file.Files
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -66,6 +65,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import java.nio.file.Files
 
 @OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
 class SelectedAppInfoViewModel(

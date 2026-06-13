@@ -8,20 +8,21 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.data.room.sources.SourceProperties
-import app.revanced.manager.data.room.sources.Source as SourceInfo
+import app.revanced.manager.domain.manager.SourceManager
 import app.revanced.manager.domain.sources.APIPatchBundle
 import app.revanced.manager.domain.sources.JsonPatchBundle
+import app.revanced.manager.domain.sources.Loader
 import app.revanced.manager.domain.sources.LocalPatchBundle
 import app.revanced.manager.domain.sources.PatchBundleSource
-import app.revanced.manager.domain.manager.SourceManager
-import app.revanced.manager.domain.sources.Loader
 import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.sources.Source
-import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.tag
-import kotlinx.collections.immutable.*
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -31,9 +32,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.io.File
-import kotlin.collections.map
-import kotlin.text.ifEmpty
 import kotlin.time.Instant
+import app.revanced.manager.data.room.sources.Source as SourceInfo
 
 private typealias Info = PersistentMap<Int, PatchBundleInfo.Global>
 

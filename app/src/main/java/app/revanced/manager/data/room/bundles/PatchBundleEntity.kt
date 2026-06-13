@@ -1,6 +1,8 @@
 package app.revanced.manager.data.room.bundles
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import app.revanced.manager.data.room.sources.Source
 import app.revanced.manager.domain.manager.SourceManager
 

@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.sources.RemotePatchBundle
-import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.mutableStateSetOf
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

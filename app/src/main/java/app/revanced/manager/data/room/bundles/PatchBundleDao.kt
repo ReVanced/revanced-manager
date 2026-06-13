@@ -1,6 +1,9 @@
 package app.revanced.manager.data.room.bundles
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Upsert
 import app.revanced.manager.data.room.sources.SourceProperties
 
 @Dao

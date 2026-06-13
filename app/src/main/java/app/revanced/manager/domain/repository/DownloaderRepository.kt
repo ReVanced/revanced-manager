@@ -21,12 +21,12 @@ import app.revanced.manager.domain.sources.JsonSource
 import app.revanced.manager.domain.sources.Loader
 import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.Source
-import app.revanced.manager.network.downloader.LoadedDownloader
-import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.downloader.DownloaderBuilder
 import app.revanced.manager.downloader.DownloaderHostApi
 import app.revanced.manager.downloader.Scope
 import app.revanced.manager.network.downloader.DownloaderPackage
+import app.revanced.manager.network.downloader.LoadedDownloader
+import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.util.PM
 import dalvik.system.PathClassLoader
 import kotlinx.coroutines.flow.map

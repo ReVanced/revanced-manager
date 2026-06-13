@@ -72,7 +72,6 @@ import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.BundleInformationViewModel
 import app.revanced.manager.util.relativeTime
-import java.util.Locale.getDefault
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable

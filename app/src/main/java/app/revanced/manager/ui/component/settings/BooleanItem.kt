@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.component.settings
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -11,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.foundation.layout.size
 import app.revanced.manager.domain.manager.base.Preference
 import app.revanced.manager.ui.component.haptics.HapticSwitch
 import kotlinx.coroutines.CoroutineScope

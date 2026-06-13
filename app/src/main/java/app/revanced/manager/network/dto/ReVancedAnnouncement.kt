@@ -1,11 +1,11 @@
 package app.revanced.manager.network.dto
 
 import android.os.Parcelable
-import kotlin.time.Clock
-import kotlin.time.Instant
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Parcelize
 @Serializable

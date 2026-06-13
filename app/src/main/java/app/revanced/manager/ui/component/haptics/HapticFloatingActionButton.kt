@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.component.haptics
 
-import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -11,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.core.view.HapticFeedbackConstantsCompat
 import app.revanced.manager.ui.component.TooltipHost
 import app.revanced.manager.util.withHapticFeedback
 

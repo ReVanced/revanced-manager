@@ -15,9 +15,9 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.installer.RootServiceException
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast

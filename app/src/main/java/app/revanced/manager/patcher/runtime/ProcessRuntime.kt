@@ -8,12 +8,12 @@ import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import app.revanced.manager.BuildConfig
-import app.revanced.manager.patcher.runtime.process.IPatcherEvents
-import app.revanced.manager.patcher.runtime.process.IPatcherProcess
 import app.revanced.manager.patcher.LibraryResolver
 import app.revanced.manager.patcher.ProgressEvent
 import app.revanced.manager.patcher.ProgressEventParcel
 import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.patcher.runtime.process.IPatcherEvents
+import app.revanced.manager.patcher.runtime.process.IPatcherProcess
 import app.revanced.manager.patcher.runtime.process.Parameters
 import app.revanced.manager.patcher.runtime.process.PatchConfiguration
 import app.revanced.manager.patcher.runtime.process.PatcherProcess

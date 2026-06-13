@@ -8,7 +8,6 @@ import app.revanced.manager.data.redux.Action
 import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.data.redux.Store
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
-import app.revanced.manager.data.room.sources.Source as SourceInfo
 import app.revanced.manager.data.room.sources.SourceProperties
 import app.revanced.manager.domain.sources.APISource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
@@ -33,9 +32,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 import java.io.InputStream
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.set
+import app.revanced.manager.data.room.sources.Source as SourceInfo
 
 /**
  * Abstraction for managing a source system. Used by [app.revanced.manager.domain.repository.PatchBundleRepository] and [app.revanced.manager.domain.repository.DownloaderRepository].

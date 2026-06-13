@@ -41,8 +41,8 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.model.State
-import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.model.Step
+import app.revanced.manager.ui.model.StepCategory
 import java.util.Locale
 import kotlin.math.floor
 

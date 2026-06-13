@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.component
 
-import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -48,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.view.HapticFeedbackConstantsCompat
 import kotlin.math.roundToInt
 
 @Composable

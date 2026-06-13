@@ -12,9 +12,6 @@ import app.revanced.manager.data.room.apps.installed.AppliedPatch
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.data.room.apps.installed.InstalledAppDao
 import app.revanced.manager.data.room.apps.installed.InstalledPatchBundle
-import app.revanced.manager.data.room.selection.PatchSelection
-import app.revanced.manager.data.room.selection.SelectedPatch
-import app.revanced.manager.data.room.selection.SelectionDao
 import app.revanced.manager.data.room.bundles.PatchBundleDao
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.data.room.downloader.DownloaderDao
@@ -22,6 +19,9 @@ import app.revanced.manager.data.room.downloader.DownloaderEntity
 import app.revanced.manager.data.room.options.Option
 import app.revanced.manager.data.room.options.OptionDao
 import app.revanced.manager.data.room.options.OptionGroup
+import app.revanced.manager.data.room.selection.PatchSelection
+import app.revanced.manager.data.room.selection.SelectedPatch
+import app.revanced.manager.data.room.selection.SelectionDao
 import kotlin.random.Random
 
 @Database(

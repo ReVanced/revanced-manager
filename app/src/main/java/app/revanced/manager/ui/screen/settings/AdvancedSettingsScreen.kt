@@ -27,7 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MediumFlexibleTopAppBar
-import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -49,13 +48,13 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import androidx.core.view.HapticFeedbackConstantsCompat
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ListSection
 import app.revanced.manager.ui.component.TooltipIconButton
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SafeguardBooleanItem
@@ -64,6 +63,7 @@ import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import app.revanced.manager.util.withHapticFeedback
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)

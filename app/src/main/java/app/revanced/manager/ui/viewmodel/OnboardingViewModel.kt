@@ -9,10 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.util.PM
 import kotlinx.coroutines.flow.combine
