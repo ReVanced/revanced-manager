@@ -141,6 +141,7 @@ fun ReVancedManagerTheme(
 
     val view = LocalView.current
     if (!view.isInEditMode) {
+        @Suppress("DEPRECATION")
         SideEffect {
             val activity = view.context as Activity
 
@@ -162,6 +163,7 @@ fun ReVancedManagerTheme(
     )
 }
 
+@Suppress("UNUSED")
 enum class Theme(val displayName: Int) {
     SYSTEM(R.string.system),
     LIGHT(R.string.light),

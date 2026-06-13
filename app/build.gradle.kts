@@ -2,7 +2,6 @@ import com.mikepenz.aboutlibraries.plugin.DuplicateMode
 import com.mikepenz.aboutlibraries.plugin.DuplicateRule
 import io.github.z4kn4fein.semver.toVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import kotlin.random.Random
 
 plugins {
     alias(libs.plugins.android.application)
@@ -182,6 +181,7 @@ android {
         release {
             // Causes patching to not work properly, if enabled.
             isMinifyEnabled = false
+            //noinspection NotShrinkingResources
             isShrinkResources = false
 
             val keystoreFile = file("keystore.jks")
@@ -228,6 +228,7 @@ android {
     }
 
     androidResources {
+        @Suppress("UnstableApiUsage")
         generateLocaleConfig = true
     }
 
@@ -318,6 +319,7 @@ aboutLibraries {
 tasks {
     // Needed by gradle-semantic-release-plugin.
     // Tracking: https://github.com/KengoTODA/gradle-semantic-release-plugin/issues/435.
+    @Suppress("UNUSED")
     val publish by registering {
         group = "publishing"
         description = "Build the release APK"

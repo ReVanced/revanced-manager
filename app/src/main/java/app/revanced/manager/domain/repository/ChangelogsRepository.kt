@@ -7,6 +7,7 @@ import androidx.paging.PagingState
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.utils.getOrThrow
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -15,6 +16,7 @@ import kotlinx.serialization.Serializable
 sealed interface ChangelogSource : Parcelable {
     data object Manager : ChangelogSource
     data class Patches(val url: String, val prerelease: Boolean) : ChangelogSource {
+        @IgnoredOnParcel
         val baseUrl by lazy { url.toUri().let { "${it.scheme}://${it.host}" } }
     }
 }

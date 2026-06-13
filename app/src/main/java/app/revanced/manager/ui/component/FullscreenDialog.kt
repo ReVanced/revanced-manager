@@ -33,7 +33,8 @@ fun FullscreenDialog(onDismissRequest: () -> Unit, content: @Composable () -> Un
         properties = properties
     ) {
         val view = LocalView.current
-        
+
+        @Suppress("DEPRECATION")
         SideEffect {
             val window = (view.parent as DialogWindowProvider).window
             WindowCompat.setDecorFitsSystemWindows(window, false)
