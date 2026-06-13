@@ -5,6 +5,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.time.Duration.Companion.milliseconds
 
 class Heartbeat(
     scope: CoroutineScope,
@@ -18,10 +19,10 @@ class Heartbeat(
     val elapsedSeconds get() = (System.nanoTime() - startNs) / 1_000_000_000L
 
     private val job: Job = scope.launch {
-        delay(initialDelayMs)
+        delay(initialDelayMs.milliseconds)
         while (!finished.get()) {
             onTick(elapsedSeconds)
-            delay(intervalMs)
+            delay(intervalMs.milliseconds)
         }
     }
 

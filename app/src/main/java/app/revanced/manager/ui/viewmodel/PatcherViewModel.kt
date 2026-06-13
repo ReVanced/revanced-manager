@@ -97,6 +97,7 @@ import ru.solrudev.ackpine.uninstaller.UninstallFailure
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import android.content.pm.PackageInstaller as AndroidPackageInstaller
 
 @OptIn(SavedStateHandleSaveableApi::class, DownloaderHostApi::class)
@@ -402,7 +403,7 @@ class PatcherViewModel(
                     logger.warn("Failed purge attempt $attempt/${maxAttempts}: $e")
                 }
                 if (deleted && remaining.isEmpty()) break
-                delay(200)
+                delay(200.milliseconds)
             }
 
             val detailed = "absPath=\"${fs.tempDir.absolutePath}\" before=$sizeBefore deleteOk=$deleted attempts=$attempt afterCount=${remaining.size} survivors=${remaining.joinToString { it.name }}"
