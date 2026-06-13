@@ -21,7 +21,11 @@ class ReVancedAPI(
     private suspend fun apiUrl() = prefs.api.get()
     private val defaultApiVersion = "v5"
 
-    private suspend inline fun <reified T> request(api: String, apiVersion: String, route: String): APIResponse<T> =
+    private suspend inline fun <reified T> request(
+        api: String,
+        apiVersion: String,
+        route: String
+    ): APIResponse<T> =
         withContext(Dispatchers.IO) {
             val fullUrl = "$api/$apiVersion/$route"
             try {
@@ -37,21 +41,31 @@ class ReVancedAPI(
             }
         }
 
-    private suspend inline fun <reified T> request(route: String, apiVersion: String = defaultApiVersion) = request<T>(apiUrl(), apiVersion, route)
+    private suspend inline fun <reified T> request(
+        route: String,
+        apiVersion: String = defaultApiVersion
+    ) = request<T>(apiUrl(), apiVersion, route)
 
     suspend fun getAnnouncements() = request<List<ReVancedAnnouncement>>("announcements")
 
     suspend fun getLatestAppInfo() =
         request<ReVancedAsset>("manager${prefs.useManagerPrereleases.prereleaseString()}")
 
-    suspend fun getAppHistory() = request<List<ReVancedAssetHistory>>("manager/history${prefs.useManagerPrereleases.prereleaseString()}")
+    suspend fun getAppHistory() =
+        request<List<ReVancedAssetHistory>>("manager/history${prefs.useManagerPrereleases.prereleaseString()}")
 
-    suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
+    suspend fun getPatchesUpdate() =
+        request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
 
     suspend fun getPatchesHistory(apiUrl: String, prerelease: Boolean) =
-        request<List<ReVancedAssetHistory>>(apiUrl, defaultApiVersion, "patches/history${prerelease.prereleaseString()}")
+        request<List<ReVancedAssetHistory>>(
+            apiUrl,
+            defaultApiVersion,
+            "patches/history${prerelease.prereleaseString()}"
+        )
 
-    suspend fun getDownloaderUpdate() = request<ReVancedAsset>("manager/downloaders${prefs.useDownloaderPrerelease.prereleaseString()}")
+    suspend fun getDownloaderUpdate() =
+        request<ReVancedAsset>("manager/downloaders${prefs.useDownloaderPrerelease.prereleaseString()}")
 
     suspend fun getContributors() = request<List<ReVancedGitRepository>>("contributors")
 

@@ -44,7 +44,8 @@ fun PathSelectorDialog(root: Path, onSelect: (Path?) -> Unit) {
         currentDirectory != root
     }
     val (directories, files) = remember(currentDirectory) {
-        currentDirectory.listDirectoryEntries().filter(Path::isReadable).partition(Path::isDirectory)
+        currentDirectory.listDirectoryEntries().filter(Path::isReadable)
+            .partition(Path::isDirectory)
     }
 
     FullscreenDialog(
@@ -56,7 +57,10 @@ fun PathSelectorDialog(root: Path, onSelect: (Path?) -> Unit) {
                     title = stringResource(R.string.path_selector),
                     onBackClick = { onSelect(null) },
                     backIcon = {
-                        Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.close))
+                        Icon(
+                            Icons.Filled.Close,
+                            contentDescription = stringResource(R.string.close)
+                        )
                     }
                 )
             },

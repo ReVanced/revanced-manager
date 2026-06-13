@@ -133,7 +133,11 @@ class MainViewModel(
         applyLegacySettings(settings, patches, keystore)
     }
 
-    private fun applyLegacySettings(settings: LegacySettings, patches: SerializedSelection?, keystore: ByteArray?) = viewModelScope.launch {
+    private fun applyLegacySettings(
+        settings: LegacySettings,
+        patches: SerializedSelection?,
+        keystore: ByteArray?
+    ) = viewModelScope.launch {
         settings.themeMode?.let { theme ->
             val themeMap = mapOf(
                 0 to Theme.SYSTEM,
@@ -169,16 +173,17 @@ class MainViewModel(
             patchSelectionRepository.import(0, selection)
         }
         settings.patchedApps?.let { apps ->
-            json.decodeFromString<List<String>>(apps.removePrefix(LEGACY_LIST_PREFIX)).forEach { appJson ->
-                val patchedApp = json.decodeFromString<LegacyPatchedApp>(appJson)
-                installedAppRepository.addOrUpdate(
-                    patchedApp.packageName,
-                    patchedApp.packageName,
-                    patchedApp.version,
-                    if (patchedApp.isRooted) InstallType.MOUNT else InstallType.DEFAULT,
-                    mapOf(0 to patchedApp.appliedPatches.toSet())
-                )
-            }
+            json.decodeFromString<List<String>>(apps.removePrefix(LEGACY_LIST_PREFIX))
+                .forEach { appJson ->
+                    val patchedApp = json.decodeFromString<LegacyPatchedApp>(appJson)
+                    installedAppRepository.addOrUpdate(
+                        patchedApp.packageName,
+                        patchedApp.packageName,
+                        patchedApp.version,
+                        if (patchedApp.isRooted) InstallType.MOUNT else InstallType.DEFAULT,
+                        mapOf(0 to patchedApp.appliedPatches.toSet())
+                    )
+                }
         }
         Log.d(tag, "Imported legacy settings")
     }

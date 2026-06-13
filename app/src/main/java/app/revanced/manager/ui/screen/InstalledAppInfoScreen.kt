@@ -92,8 +92,12 @@ fun InstalledAppInfoScreen(
         ) {
             val installedApp = viewModel.installedApp ?: return@ColumnWithScrollbar
 
-            AppInfo(viewModel.appInfo)  {
-                Text(installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
+            AppInfo(viewModel.appInfo) {
+                Text(
+                    installedApp.version,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium
+                )
 
                 if (installedApp.installType == InstallType.MOUNT) {
                     Text(
@@ -136,7 +140,9 @@ fun InstalledAppInfoScreen(
 
                         SegmentedButton(
                             icon = Icons.Outlined.Circle,
-                            text = if (viewModel.isMounted) stringResource(R.string.unmount) else stringResource(R.string.mount),
+                            text = if (viewModel.isMounted) stringResource(R.string.unmount) else stringResource(
+                                R.string.mount
+                            ),
                             onClick = viewModel::mountOrUnmount,
                             enabled = viewModel.rootInstaller.hasRootAccess()
                         )
@@ -159,17 +165,22 @@ fun InstalledAppInfoScreen(
             ) {
                 SettingsListItem(
                     headlineContent = stringResource(R.string.applied_patches),
-                    supportingContent = 
-                            (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {
-                                pluralStringResource(
-                                    id = R.plurals.patch_count,
-                                    it,
-                                    it
-                                )
-                            },
-                    trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) },
+                    supportingContent =
+                        (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {
+                            pluralStringResource(
+                                id = R.plurals.patch_count,
+                                it,
+                                it
+                            )
+                        },
+                    trailingContent = {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = stringResource(R.string.view_applied_patches)
+                        )
+                    },
                     onClick = { showAppliedPatchesDialog = true },
-                    )
+                )
 
                 SettingsListItem(
                     headlineContent = stringResource(R.string.package_name),

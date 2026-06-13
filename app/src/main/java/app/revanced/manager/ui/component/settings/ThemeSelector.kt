@@ -49,7 +49,11 @@ fun ThemeSelector(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(4.dp),
-        color = animateColorAsState(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.motionScheme.defaultEffectsSpec(), "surfaceContainerLow").value,
+        color = animateColorAsState(
+            MaterialTheme.colorScheme.surfaceContainerLow,
+            MaterialTheme.motionScheme.defaultEffectsSpec(),
+            "surfaceContainerLow"
+        ).value,
     ) {
         Row(
             modifier = Modifier

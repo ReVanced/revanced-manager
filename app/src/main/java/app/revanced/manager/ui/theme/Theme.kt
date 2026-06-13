@@ -156,8 +156,12 @@ fun ReVancedManagerTheme(
             activity.window.statusBarColor = Color.Transparent.toArgb()
             activity.window.navigationBarColor = Color.Transparent.toArgb()
 
-            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = !darkTheme
-            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightNavigationBars = !darkTheme
+            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars =
+                !darkTheme
+            WindowCompat.getInsetsController(
+                activity.window,
+                view
+            ).isAppearanceLightNavigationBars = !darkTheme
         }
     }
 

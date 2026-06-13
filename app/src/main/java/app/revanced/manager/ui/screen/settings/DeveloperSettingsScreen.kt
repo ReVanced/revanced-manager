@@ -89,7 +89,13 @@ fun DeveloperSettingsScreen(
         ) {
             ListSection(
                 title = stringResource(R.string.manager),
-                leadingContent = { Icon(Icons.Outlined.WorkOutline, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.WorkOutline,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 val apiUrl by vm.prefs.api.getAsState()
                 var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
@@ -129,7 +135,13 @@ fun DeveloperSettingsScreen(
 
             ListSection(
                 title = stringResource(R.string.patches),
-                leadingContent = { Icon(Icons.Outlined.PostAdd, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.PostAdd,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 SettingsListItem(
                     headlineContent = stringResource(R.string.patches_force_download),
@@ -143,7 +155,13 @@ fun DeveloperSettingsScreen(
 
             ListSection(
                 title = stringResource(R.string.downloaders),
-                leadingContent = { Icon(Icons.Outlined.Download, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.Download,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 SettingsListItem(
                     headlineContent = stringResource(R.string.downloaders_reset),
@@ -210,7 +228,10 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                             onClick = { url = defaultUrl },
                             tooltip = stringResource(R.string.api_url_dialog_reset)
                         ) {
-                            Icon(Icons.Outlined.Restore, stringResource(R.string.api_url_dialog_reset))
+                            Icon(
+                                Icons.Outlined.Restore,
+                                stringResource(R.string.api_url_dialog_reset)
+                            )
                         }
                     }
                 )

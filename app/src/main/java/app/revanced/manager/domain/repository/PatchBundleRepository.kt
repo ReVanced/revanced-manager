@@ -108,7 +108,8 @@ class PatchBundleRepository(
     )
 
     override fun realNameOf(loaded: PatchBundle) = loaded.manifestAttributes?.name
-    override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<PatchBundle>>) = loadMetadata(sources).toPersistentMap()
+    override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<PatchBundle>>) =
+        loadMetadata(sources).toPersistentMap()
 
     val sources = store.state.map { it.sources.values.toList() }
     val bundles = store.state.map {

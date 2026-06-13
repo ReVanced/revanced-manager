@@ -62,7 +62,8 @@ import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
     ExperimentalMaterial3ExpressiveApi::class
 )
 @Composable
@@ -82,36 +83,37 @@ fun AboutSettingsScreen(
         viewModel.socials.partition(ReVancedSocial::preferred)
     }
 
-    val preferredSocialButtons = remember(resources, preferredSocials, viewModel.donate, viewModel.contact) {
-        preferredSocials.map {
-            Triple(
-                getSocialIcon(it.name),
-                it.name,
-                third = {
-                    context.openUrl(it.url)
+    val preferredSocialButtons =
+        remember(resources, preferredSocials, viewModel.donate, viewModel.contact) {
+            preferredSocials.map {
+                Triple(
+                    getSocialIcon(it.name),
+                    it.name,
+                    third = {
+                        context.openUrl(it.url)
+                    }
+                )
+            } + listOfNotNull(
+                viewModel.donate?.let {
+                    Triple(
+                        Icons.Outlined.FavoriteBorder,
+                        resources.getString(R.string.donate),
+                        third = {
+                            context.openUrl(it)
+                        }
+                    )
+                },
+                viewModel.contact?.let {
+                    Triple(
+                        Icons.Outlined.MailOutline,
+                        resources.getString(R.string.contact),
+                        third = {
+                            context.openUrl("mailto:$it")
+                        }
+                    )
                 }
             )
-        } + listOfNotNull(
-            viewModel.donate?.let {
-                Triple(
-                    Icons.Outlined.FavoriteBorder,
-                    resources.getString(R.string.donate),
-                    third = {
-                        context.openUrl(it)
-                    }
-                )
-            },
-            viewModel.contact?.let {
-                Triple(
-                    Icons.Outlined.MailOutline,
-                    resources.getString(R.string.contact),
-                    third = {
-                        context.openUrl("mailto:$it")
-                    }
-                )
-            }
-        )
-    }
+        }
 
     val socialButtons = remember(socials) {
         socials.map {

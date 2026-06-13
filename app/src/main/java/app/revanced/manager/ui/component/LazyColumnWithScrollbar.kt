@@ -38,5 +38,8 @@ fun LazyColumnWithScrollbar(
         userScrollEnabled = userScrollEnabled,
         content = content
     )
-    Scrollbar(state, Modifier.then(modifier.padding())) // Get the modifier's padding to maintain scrollbar within the screen, e.g. paddingValues
+    Scrollbar(
+        state,
+        Modifier.then(modifier.padding())
+    ) // Get the modifier's padding to maintain scrollbar within the screen, e.g. paddingValues
 }

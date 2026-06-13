@@ -173,10 +173,13 @@ fun DashboardScreen(
             browseAllBundles = true
         )
     }
-    val dashboardPatchesViewModel = koinViewModel<PatchesSelectorViewModel>(key = "dashboard-patches") {
-        parametersOf(dashboardPatchesParams)
-    }
-    val dashboardPatchesBundles by dashboardPatchesViewModel.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val dashboardPatchesViewModel =
+        koinViewModel<PatchesSelectorViewModel>(key = "dashboard-patches") {
+            parametersOf(dashboardPatchesParams)
+        }
+    val dashboardPatchesBundles by dashboardPatchesViewModel.bundlesFlow.collectAsStateWithLifecycle(
+        initialValue = emptyList()
+    )
 
     var patchesSourceEditMode by rememberSaveable { mutableStateOf(false) }
     var sourceDeleteUid by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -194,7 +197,10 @@ fun DashboardScreen(
             onDismiss = { sourceDeleteUid = null },
             onConfirm = { vm.deleteSource(uid) },
             title = stringResource(R.string.delete),
-            description = stringResource(R.string.patches_delete_single_dialog_description, sourceName),
+            description = stringResource(
+                R.string.patches_delete_single_dialog_description,
+                sourceName
+            ),
             icon = Icons.Outlined.Delete
         )
     }
@@ -313,7 +319,8 @@ fun DashboardScreen(
                     )
             )
 
-            val navBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            val navBarHeight =
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
             if (navBarHeight > 0.dp) {
                 Box(
                     modifier = Modifier
@@ -432,7 +439,13 @@ fun DashboardScreen(
                         DashboardPage.entries.forEachIndexed { index, page ->
                             PillTab(
                                 index = index,
-                                onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
+                                onClick = {
+                                    composableScope.launch {
+                                        pagerState.animateScrollToPage(
+                                            index
+                                        )
+                                    }
+                                },
                                 text = { Text(stringResource(page.titleResId)) },
                                 icon = { Icon(page.icon, null) }
                             )
@@ -492,7 +505,11 @@ fun DashboardScreen(
                                 AppsScreen(
                                     onAppClick = { onAppClick(it.currentPackageName) },
                                     onPatchableAppClick = ::onPatchableSelection,
-                                    onStorageSelect = { selectedApp -> onStorageSelection(selectedApp)},
+                                    onStorageSelect = { selectedApp ->
+                                        onStorageSelection(
+                                            selectedApp
+                                        )
+                                    },
                                     lazyListState = appsLazyListState,
                                     searchLazyListState = appsSearchLazyListState,
                                     onSearchExpandedChange = { appsSearchExpanded = it }
@@ -557,7 +574,9 @@ private fun DashboardFab(
     }
 
     AnimatedVisibility(
-        visible = fabState != DashboardFabState.Hidden, enter = fadeIn() + scaleIn(), exit = fadeOut() + scaleOut()
+        visible = fabState != DashboardFabState.Hidden,
+        enter = fadeIn() + scaleIn(),
+        exit = fadeOut() + scaleOut()
     ) {
         HapticExtendedFloatingActionButton(
             onClick = {

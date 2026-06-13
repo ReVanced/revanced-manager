@@ -19,13 +19,14 @@ class UninstallService : Service() {
 
         when (extraStatus) {
             PackageInstaller.STATUS_PENDING_USER_ACTION -> {
-                startActivity(if (Build.VERSION.SDK_INT >= 33) {
-                    intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
-                } else {
-                    intent.getParcelableExtra(Intent.EXTRA_INTENT)
-                }.apply {
-                    this?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                })
+                startActivity(
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
+                    } else {
+                        intent.getParcelableExtra(Intent.EXTRA_INTENT)
+                    }.apply {
+                        this?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
             }
 
             else -> {

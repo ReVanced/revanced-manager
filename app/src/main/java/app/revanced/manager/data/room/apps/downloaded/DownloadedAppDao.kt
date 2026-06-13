@@ -24,7 +24,11 @@ interface DownloadedAppDao {
     suspend fun upsert(downloadedApp: DownloadedApp)
 
     @Query("UPDATE downloaded_app SET last_used = :newValue WHERE package_name = :packageName AND version = :version")
-    suspend fun markUsed(packageName: String, version: String, newValue: Long = System.currentTimeMillis())
+    suspend fun markUsed(
+        packageName: String,
+        version: String,
+        newValue: Long = System.currentTimeMillis()
+    )
 
     @Delete
     suspend fun delete(downloadedApps: Collection<DownloadedApp>)

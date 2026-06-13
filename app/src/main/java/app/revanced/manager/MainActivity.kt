@@ -111,7 +111,9 @@ class MainActivity : AppCompatActivity() {
     // fixes issue #2857 by preventing an empty locale
     override fun applyOverrideConfiguration(overrideConfiguration: Configuration?) {
         if (overrideConfiguration != null && overrideConfiguration.locales.isEmpty) {
-            overrideConfiguration.setLocale(SupportedLocales.getCurrentLocale() ?: Locale.getDefault())
+            overrideConfiguration.setLocale(
+                SupportedLocales.getCurrentLocale() ?: Locale.getDefault()
+            )
         }
         super.applyOverrideConfiguration(overrideConfiguration)
     }
@@ -363,7 +365,12 @@ private fun ReVancedManager(vm: MainViewModel) {
             deepLinkedComposable<Settings.Updates>("settings/updates") {
                 UpdatesSettingsScreen(
                     onBackClick = navController::popBackStackSafe,
-                    onChangelogClick = { navController.navigateComplex(Settings.Changelogs, ChangelogSource.Manager) },
+                    onChangelogClick = {
+                        navController.navigateComplex(
+                            Settings.Changelogs,
+                            ChangelogSource.Manager
+                        )
+                    },
                     onUpdateClick = { navController.navigateSafe(Update()) }
                 )
             }
@@ -398,7 +405,10 @@ private fun ReVancedManager(vm: MainViewModel) {
 
             composable<Settings.Changelogs> {
                 val source = it.getComplexArg<ChangelogSource>()
-                ChangelogsSettingsScreen(source = source, onBackClick = navController::popBackStackSafe)
+                ChangelogsSettingsScreen(
+                    source = source,
+                    onBackClick = navController::popBackStackSafe
+                )
             }
 
             composable<Settings.Contributors> {

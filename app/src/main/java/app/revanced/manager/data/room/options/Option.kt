@@ -82,7 +82,8 @@ data class Option(
             }
 
             fun fromJsonString(value: String) = SerializedValue(json.decodeFromString(value))
-            fun fromValue(value: Any?) = SerializedValue(when (value) {
+            fun fromValue(value: Any?) = SerializedValue(
+                when (value) {
                 null -> JsonNull
                 is Number -> JsonPrimitive(value)
                 is Boolean -> JsonPrimitive(value)

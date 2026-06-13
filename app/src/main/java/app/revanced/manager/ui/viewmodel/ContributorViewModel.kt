@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class ContributorViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
     var repositories: List<ReVancedGitRepository>? by mutableStateOf(null)
-    	private set
+        private set
 
     init {
         viewModelScope.launch {

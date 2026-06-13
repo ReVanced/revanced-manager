@@ -94,7 +94,7 @@ fun ImportSourceDialog(
         }
 
     fun launchFileActivity() {
-        when(strings) {
+        when (strings) {
             ImportSourceDialogStrings.PATCHES -> fileActivityLauncher.launch(BIN_MIMETYPE)
             ImportSourceDialogStrings.DOWNLOADERS -> fileActivityLauncher.launch(APK_MIMETYPE)
         }

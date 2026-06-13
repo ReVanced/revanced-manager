@@ -69,7 +69,8 @@ fun PillTabBar(
             .padding(PillTabBarDefaults.ContainerPadding)
     ) {
         val indicatorWidthPx = with(LocalDensity.current) { maxWidth.toPx() } / tabCount
-        val offsetX = (pagerState.currentPage + pagerState.currentPageOffsetFraction) * indicatorWidthPx
+        val offsetX =
+            (pagerState.currentPage + pagerState.currentPageOffsetFraction) * indicatorWidthPx
 
         PillTabIndicator(
             offsetX = offsetX,
@@ -185,7 +186,8 @@ private fun PillTabContent(
     icon: (@Composable () -> Unit)?,
     text: @Composable () -> Unit
 ) {
-    val contentColor = if (isSelected) colors.selectedContentColor else colors.unselectedContentColor
+    val contentColor =
+        if (isSelected) colors.selectedContentColor else colors.unselectedContentColor
     val fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
 
     CompositionLocalProvider(LocalContentColor provides contentColor) {

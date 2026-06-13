@@ -27,7 +27,7 @@ fun FullscreenDialog(onDismissRequest: () -> Unit, content: @Composable () -> Un
     val prefs: PreferencesManager = koinInject()
     val theme by prefs.theme.getAsState()
     val isDarkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK
-    
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties

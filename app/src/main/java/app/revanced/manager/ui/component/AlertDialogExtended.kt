@@ -55,7 +55,9 @@ fun AlertDialogExtended(
         ) {
             Column(modifier = Modifier.padding(vertical = 24.dp)) {
                 Column(
-                    modifier = Modifier.padding(horizontal = 24.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .fillMaxWidth()
                 ) {
                     icon?.let {
                         ContentStyle(color = iconContentColor) {

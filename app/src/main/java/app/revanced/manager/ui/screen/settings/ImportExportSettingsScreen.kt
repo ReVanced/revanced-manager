@@ -153,7 +153,11 @@ fun ImportExportSettingsScreen(
             onDismissRequest = vm::cancelKeystoreImport,
             onSubmit = { alias, pass ->
                 vm.viewModelScope.launch {
-                    uiSafe(context, R.string.failed_to_import_keystore, "Failed to import keystore") {
+                    uiSafe(
+                        context,
+                        R.string.failed_to_import_keystore,
+                        "Failed to import keystore"
+                    ) {
                         val result = vm.tryKeystoreImport(alias, pass)
                         if (!result) context.toast(resources.getString(R.string.import_keystore_wrong_credentials))
                     }
@@ -202,7 +206,13 @@ fun ImportExportSettingsScreen(
         ) {
             ListSection(
                 title = stringResource(R.string.keystore),
-                leadingContent = { Icon(Icons.Outlined.Key, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.Key,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 Surface(
                     modifier = Modifier
@@ -214,77 +224,96 @@ fun ImportExportSettingsScreen(
                         "surfaceContainerLow"
                     ).value,
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 8.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                            ImpoxportDetailColumn(
-                                title = stringResource(R.string.import_keystore_dialog_alias_field),
-                                value = keystoreAlias,
-                                leadingContent = {
-                                    TooltipIconButton(
-                                        onClick = {
-                                            clipboard.setPrimaryClip(
-                                                ClipData.newPlainText(
-                                                    resources.getString(R.string.import_keystore_dialog_alias_field),
-                                                    keystoreAlias
-                                                )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        ImpoxportDetailColumn(
+                            title = stringResource(R.string.import_keystore_dialog_alias_field),
+                            value = keystoreAlias,
+                            leadingContent = {
+                                TooltipIconButton(
+                                    onClick = {
+                                        clipboard.setPrimaryClip(
+                                            ClipData.newPlainText(
+                                                resources.getString(R.string.import_keystore_dialog_alias_field),
+                                                keystoreAlias
                                             )
-                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
-                                        },
-                                        tooltip = stringResource(R.string.copy_to_clipboard)
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Outlined.ContentCopy,
-                                            contentDescription = stringResource(R.string.copy_to_clipboard)
                                         )
-                                    }
+                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(
+                                            resources.getString(R.string.toast_copied_to_clipboard)
+                                        )
+                                    },
+                                    tooltip = stringResource(R.string.copy_to_clipboard)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.ContentCopy,
+                                        contentDescription = stringResource(R.string.copy_to_clipboard)
+                                    )
                                 }
-                            )
-                            ImpoxportDetailColumn(
-                                title = stringResource(R.string.import_keystore_dialog_password_field),
-                                value = if (showKeystorePassword) keystorePass else "•".repeat(keystorePass.length),
-                                leadingContent = {
-                                    val hidePassword = showKeystorePassword
-                                    TooltipIconButton(
-                                        onClick = { showKeystorePassword = !showKeystorePassword },
-                                        tooltip = if (hidePassword) {
+                            }
+                        )
+                        ImpoxportDetailColumn(
+                            title = stringResource(R.string.import_keystore_dialog_password_field),
+                            value = if (showKeystorePassword) keystorePass else "•".repeat(
+                                keystorePass.length
+                            ),
+                            leadingContent = {
+                                val hidePassword = showKeystorePassword
+                                TooltipIconButton(
+                                    onClick = { showKeystorePassword = !showKeystorePassword },
+                                    tooltip = if (hidePassword) {
+                                        stringResource(R.string.hide_password_field)
+                                    } else {
+                                        stringResource(R.string.show_password_field)
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = if (hidePassword) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
+                                        contentDescription = if (hidePassword) {
                                             stringResource(R.string.hide_password_field)
                                         } else {
                                             stringResource(R.string.show_password_field)
                                         }
-                                    ) {
-                                        Icon(
-                                            imageVector = if (hidePassword) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
-                                            contentDescription = if (hidePassword) {
-                                                stringResource(R.string.hide_password_field)
-                                            } else {
-                                                stringResource(R.string.show_password_field)
+                                    )
+                                }
+                                TooltipIconButton(
+                                    onClick = {
+                                        clipboard.setPrimaryClip(
+                                            ClipData.newPlainText(
+                                                resources.getString(R.string.import_keystore_dialog_password_field),
+                                                keystorePass
+                                            ).apply {
+                                                description.extras = PersistableBundle().apply {
+                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                                        putBoolean(
+                                                            ClipDescription.EXTRA_IS_SENSITIVE,
+                                                            true
+                                                        )
+                                                    } else {
+                                                        putBoolean(
+                                                            "android.content.extra.IS_SENSITIVE",
+                                                            true
+                                                        )
+                                                    }
+                                                }
                                             }
                                         )
-                                    }
-                                    TooltipIconButton(
-                                        onClick = {
-                                            clipboard.setPrimaryClip(
-                                                ClipData.newPlainText(
-                                                    resources.getString(R.string.import_keystore_dialog_password_field),
-                                                    keystorePass
-                                                ).apply { description.extras = PersistableBundle().apply {
-                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                                        putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
-                                                    } else {
-                                                        putBoolean("android.content.extra.IS_SENSITIVE", true)
-                                                    }
-                                                } }
-                                            )
-                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
-                                        },
-                                        tooltip = stringResource(R.string.copy_to_clipboard)
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Outlined.ContentCopy,
-                                            contentDescription = stringResource(R.string.copy_to_clipboard)
+                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(
+                                            resources.getString(R.string.toast_copied_to_clipboard)
                                         )
-                                    }
+                                    },
+                                    tooltip = stringResource(R.string.copy_to_clipboard)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.ContentCopy,
+                                        contentDescription = stringResource(R.string.copy_to_clipboard)
+                                    )
                                 }
-                            )
+                            }
+                        )
                     }
                 }
                 Surface(
@@ -338,7 +367,13 @@ fun ImportExportSettingsScreen(
 
             ListSection(
                 title = stringResource(R.string.patches_selections),
-                leadingContent = { Icon(Icons.Outlined.Source, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.Source,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
@@ -409,7 +444,13 @@ fun ImportExportSettingsScreen(
             }
             ListSection(
                 title = stringResource(R.string.reset),
-                leadingContent = { Icon(Icons.Outlined.Restore, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.Restore,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 SettingsListItem(
                     onClick = {
@@ -420,31 +461,31 @@ fun ImportExportSettingsScreen(
                     headlineContent = stringResource(R.string.regenerate_keystore),
                     supportingContent = stringResource(R.string.regenerate_keystore_description)
                 )
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(4.dp),
-                color = animateColorAsState(
-                    MaterialTheme.colorScheme.surfaceContainerLow,
-                    MaterialTheme.motionScheme.defaultEffectsSpec(),
-                    "surfaceContainerLow"
-                ).value,
-            ) {
-                FilledTonalButton(
-                    onClick = { showResetSheet = true },
+                Surface(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    shapes = ButtonDefaults.shapes()
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(4.dp),
+                    color = animateColorAsState(
+                        MaterialTheme.colorScheme.surfaceContainerLow,
+                        MaterialTheme.motionScheme.defaultEffectsSpec(),
+                        "surfaceContainerLow"
+                    ).value,
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Restore,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-                    Text(stringResource(R.string.reset))
+                    FilledTonalButton(
+                        onClick = { showResetSheet = true },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        shapes = ButtonDefaults.shapes()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Restore,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.size(8.dp))
+                        Text(stringResource(R.string.reset))
+                    }
                 }
-            }
             }
 
             if (showResetSheet) {

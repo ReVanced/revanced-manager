@@ -89,9 +89,9 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
     ) {
         derivedStateOf {
             disablePatchVersionCompatCheck ||
-                disableSelectionWarning ||
-                disableUniversalPatchCheck ||
-                !suggestedVersionSafeguard
+                    disableSelectionWarning ||
+                    disableUniversalPatchCheck ||
+                    !suggestedVersionSafeguard
         }
     }
     val scrollState = rememberScrollState()
@@ -102,16 +102,17 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
     )
     val context = LocalContext.current
     val powerManager = remember(context) { context.getSystemService<PowerManager>()!! }
-    
+
     var showBatteryOptimizationsWarning by remember {
         mutableStateOf(!powerManager.isIgnoringBatteryOptimizations(context.packageName))
     }
-    
+
     val batteryOptimizationsLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            showBatteryOptimizationsWarning = !powerManager.isIgnoringBatteryOptimizations(context.packageName)
+            showBatteryOptimizationsWarning =
+                !powerManager.isIgnoringBatteryOptimizations(context.packageName)
         }
-    
+
     val appIcon = rememberDrawablePainter(
         drawable = remember(context) {
             AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
@@ -232,7 +233,7 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
                         }
                     )
                 }
-                
+
                 ListSection {
                     generalSections.forEach { (name, description, icon, destination) ->
                         SettingsListItem(
@@ -246,7 +247,8 @@ fun SettingsScreen(onBackClick: () -> Unit, navigate: (Settings.Destination) -> 
 
                 ListSection {
                     advancedSections.forEach { (name, description, icon, destination) ->
-                        val hasSafeguardWarning = destination == Settings.Advanced && safeguardsToggled
+                        val hasSafeguardWarning =
+                            destination == Settings.Advanced && safeguardsToggled
                         val supportingText = if (hasSafeguardWarning) {
                             "Safeguards have been toggled"
                         } else {

@@ -42,28 +42,30 @@ fun PatchItem(
     val anyVersionLabel = stringResource(R.string.patches_view_any_version)
     val anyAppLabel = stringResource(R.string.universal)
 
-    val chipLabels = remember(patch.compatiblePackages, scopedPackageName, anyVersionLabel, anyAppLabel) {
-        val pkgs = patch.compatiblePackages
-        when {
-            pkgs == null -> if (scopedPackageName == null) listOf(anyAppLabel) else emptyList()
-            scopedPackageName != null -> {
-                val pkg = pkgs.firstOrNull { it.packageName == scopedPackageName }
-                    ?: return@remember emptyList()
-                val versions = pkg.versions
-                if (versions.isNullOrEmpty()) listOf(anyVersionLabel) else versions.toList()
-            }
-            else -> {
-                pkgs.map { pkg ->
+    val chipLabels =
+        remember(patch.compatiblePackages, scopedPackageName, anyVersionLabel, anyAppLabel) {
+            val pkgs = patch.compatiblePackages
+            when {
+                pkgs == null -> if (scopedPackageName == null) listOf(anyAppLabel) else emptyList()
+                scopedPackageName != null -> {
+                    val pkg = pkgs.firstOrNull { it.packageName == scopedPackageName }
+                        ?: return@remember emptyList()
                     val versions = pkg.versions
-                    if (versions.isNullOrEmpty()) {
-                        "${pkg.packageName} ($anyVersionLabel)"
-                    } else {
-                        "${pkg.packageName} (${versions.joinToString(", ")})"
+                    if (versions.isNullOrEmpty()) listOf(anyVersionLabel) else versions.toList()
+                }
+
+                else -> {
+                    pkgs.map { pkg ->
+                        val versions = pkg.versions
+                        if (versions.isNullOrEmpty()) {
+                            "${pkg.packageName} ($anyVersionLabel)"
+                        } else {
+                            "${pkg.packageName} (${versions.joinToString(", ")})"
+                        }
                     }
                 }
             }
         }
-    }
 
     ListItem(
         modifier = Modifier

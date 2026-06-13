@@ -121,7 +121,8 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
                 patchSequence(allowIncompatiblePatches).any { it.include }
 
             // Don't show the warning if there are no default patches.
-            selectionWarningEnabled = bundlesFlow.first().any(PatchBundleInfo.Scoped::hasDefaultPatches)
+            selectionWarningEnabled =
+                bundlesFlow.first().any(PatchBundleInfo.Scoped::hasDefaultPatches)
         }
     }
 
@@ -176,11 +177,12 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
     }
     val requiredOptsPatches = flow { emit(requiredOptsPatchesDeferred.await()) }
 
-    fun selectionIsValid(bundles: List<PatchBundleInfo.Scoped>) = !readOnly && bundles.any { bundle ->
-        bundle.patchSequence(allowIncompatiblePatches).any { patch ->
-            isSelected(bundle.uid, patch)
+    fun selectionIsValid(bundles: List<PatchBundleInfo.Scoped>) =
+        !readOnly && bundles.any { bundle ->
+            bundle.patchSequence(allowIncompatiblePatches).any { patch ->
+                isSelected(bundle.uid, patch)
+            }
         }
-    }
 
     fun isSelected(bundle: Int, patch: PatchInfo) = customPatchSelection?.let { selection ->
         selection[bundle]?.contains(patch.name) == true
@@ -295,29 +297,31 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         customPatchSelection = update(currentSelection())
     }
 
-    fun deselectAll(bundles: List<PatchBundleInfo.Scoped>, bundleUid: Int?) = viewModelScope.launch {
-        updateSelection { selection ->
-            bundles.fold(selection) { acc, bundle ->
-                if (bundleUid != null && bundle.uid != bundleUid) return@fold acc
-                acc.put(bundle.uid, persistentSetOf())
+    fun deselectAll(bundles: List<PatchBundleInfo.Scoped>, bundleUid: Int?) =
+        viewModelScope.launch {
+            updateSelection { selection ->
+                bundles.fold(selection) { acc, bundle ->
+                    if (bundleUid != null && bundle.uid != bundleUid) return@fold acc
+                    acc.put(bundle.uid, persistentSetOf())
+                }
             }
         }
-    }
 
-    fun invertSelection(bundles: List<PatchBundleInfo.Scoped>, bundleUid: Int?) = viewModelScope.launch {
-        updateSelection { selection ->
-            bundles.fold(selection) { acc, bundle ->
-                if (bundleUid != null && bundle.uid != bundleUid) return@fold acc
+    fun invertSelection(bundles: List<PatchBundleInfo.Scoped>, bundleUid: Int?) =
+        viewModelScope.launch {
+            updateSelection { selection ->
+                bundles.fold(selection) { acc, bundle ->
+                    if (bundleUid != null && bundle.uid != bundleUid) return@fold acc
 
-                val currentSelected = acc[bundle.uid] ?: persistentSetOf()
-                val inverted = bundle.patchSequence(allowIncompatiblePatches)
-                    .filter { it.name !in currentSelected }
-                    .map { it.name }
-                    .toPersistentSet()
-                acc.put(bundle.uid, inverted)
+                    val currentSelected = acc[bundle.uid] ?: persistentSetOf()
+                    val inverted = bundle.patchSequence(allowIncompatiblePatches)
+                        .filter { it.name !in currentSelected }
+                        .map { it.name }
+                        .toPersistentSet()
+                    acc.put(bundle.uid, inverted)
+                }
             }
         }
-    }
 
     fun restoreDefaults(bundleUid: Int?) = viewModelScope.launch {
         if (bundleUid == null) {
@@ -332,14 +336,15 @@ class PatchesSelectorViewModel(input: SelectedApplicationInfo.PatchesSelector.Vi
         }
     }
 
-    fun deselectAllExcept(bundles: List<PatchBundleInfo.Scoped>, keepBundleUid: Int) = viewModelScope.launch {
-        updateSelection { selection ->
-            bundles.fold(selection) { acc, bundle ->
-                if (bundle.uid == keepBundleUid) return@fold acc
-                acc.put(bundle.uid, persistentSetOf())
+    fun deselectAllExcept(bundles: List<PatchBundleInfo.Scoped>, keepBundleUid: Int) =
+        viewModelScope.launch {
+            updateSelection { selection ->
+                bundles.fold(selection) { acc, bundle ->
+                    if (bundle.uid == keepBundleUid) return@fold acc
+                    acc.put(bundle.uid, persistentSetOf())
+                }
             }
         }
-    }
 
     companion object {
         const val SHOW_INCOMPATIBLE = 1 // 2^0

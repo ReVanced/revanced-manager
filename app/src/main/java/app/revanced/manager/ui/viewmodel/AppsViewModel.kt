@@ -127,7 +127,8 @@ class AppsViewModel(
                             installedAppsRepository.delete(app)
                             return@withContext null
                         }
-                    } catch (_: RootServiceException) { }
+                    } catch (_: RootServiceException) {
+                    }
                 }
 
                 val packageInfo = pm.getPackageInfo(app.currentPackageName)

@@ -130,16 +130,18 @@ class PM(
     }
 
     fun PackageInfo.label() = this.applicationInfo!!.loadLabel(app.packageManager).toString()
-    fun getResources(packageInfo: PackageInfo) = app.packageManager.getResourcesForApplication(packageInfo.applicationInfo!!)
+    fun getResources(packageInfo: PackageInfo) =
+        app.packageManager.getResourcesForApplication(packageInfo.applicationInfo!!)
 
     fun getVersionCode(packageInfo: PackageInfo) = PackageInfoCompat.getLongVersionCode(packageInfo)
 
-    suspend fun uninstallPackage(pkg: String, config: UninstallParametersDsl.() -> Unit = {}) = withContext(Dispatchers.IO) {
-        uninstaller.createSession(pkg) {
-            confirmation = Confirmation.IMMEDIATE
-            config()
-        }.await()
-    }
+    suspend fun uninstallPackage(pkg: String, config: UninstallParametersDsl.() -> Unit = {}) =
+        withContext(Dispatchers.IO) {
+            uninstaller.createSession(pkg) {
+                confirmation = Confirmation.IMMEDIATE
+                config()
+            }.await()
+        }
 
     fun launch(pkg: String) = app.packageManager.getLaunchIntentForPackage(pkg)?.let {
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

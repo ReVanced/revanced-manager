@@ -50,6 +50,7 @@ class Session(
                     replaceLast = true, trailing = trailing,
                 )
             )
+
             val heartbeat = Heartbeat(this) { elapsed ->
                 emitLog("Decoding resources", "${elapsed}s")
             }
@@ -77,13 +78,14 @@ class Session(
                         // Causes can be unsupported version or code obfuscation,
                         // so skip this one and keep applying the rest instead of aborting the run.
                         val rootCause = generateSequence(exception as Throwable) { it.cause }.last()
-                        val isFingerprintMissing = (rootCause is IllegalArgumentException || rootCause is NullPointerException)
-                                && rootCause.stackTrace.any { it.className.contains("CompositeMatch") }
+                        val isFingerprintMissing =
+                            (rootCause is IllegalArgumentException || rootCause is NullPointerException)
+                                    && rootCause.stackTrace.any { it.className.contains("CompositeMatch") }
 
                         if (isFingerprintMissing) {
                             phaseLogger.warn(
                                 "${patch.name} skipped: fingerprint did not match in this app version " +
-                                "(${rootCause::class.java.simpleName}: ${rootCause.message})"
+                                        "(${rootCause::class.java.simpleName}: ${rootCause.message})"
                             )
                             return@patcher
                         }
@@ -138,14 +140,22 @@ class Session(
 
                 val patched = tempDir.resolve("result.apk")
                 withContext(Dispatchers.IO) {
-                    Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                    Files.copy(
+                        input.toPath(),
+                        patched.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING
+                    )
                 }
                 result.applyTo(patched)
 
                 writingLogger.info("Patched apk saved to $patched")
 
                 withContext(Dispatchers.IO) {
-                    Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                    Files.move(
+                        patched.toPath(),
+                        output.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING
+                    )
                 }
             }
         }

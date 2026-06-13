@@ -15,7 +15,7 @@ import app.revanced.manager.ui.component.TooltipHost
 import app.revanced.manager.util.withHapticFeedback
 
 @Composable
-fun HapticFloatingActionButton (
+fun HapticFloatingActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     tooltip: String? = null,

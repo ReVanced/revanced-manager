@@ -13,6 +13,7 @@
 #define GET_PROPERTY_MANGLED_NAME "_ZN7android4base11GetPropertyERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES9_"
 
 extern "C" typedef int (*property_get_ptr)(const char *, char *, const char *);
+
 typedef std::string (*GetProperty_ptr)(const std::string &, const std::string &);
 
 char *GetPropOverride(const std::string &key) {

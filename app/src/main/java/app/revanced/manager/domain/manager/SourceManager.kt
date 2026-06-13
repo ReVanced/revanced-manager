@@ -318,7 +318,13 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                         val updateResult = it.runCatching {
                             when {
                                 redownload -> downloadLatest()
-                                checkOnly -> getUpdateInfo()?.let { info -> RemoteSource.UpdateResult(info.version, info.createdAt) }
+                                checkOnly -> getUpdateInfo()?.let { info ->
+                                    RemoteSource.UpdateResult(
+                                        info.version,
+                                        info.createdAt
+                                    )
+                                }
+
                                 else -> update()
                             } ?: return@update null
                         }

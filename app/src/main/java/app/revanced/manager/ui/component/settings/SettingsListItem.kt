@@ -51,7 +51,8 @@ fun SettingsListItem(
     )
 
     SegmentedListItem(
-        onClick = onClick?.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK) ?: { }.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK),
+        onClick = onClick?.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK)
+            ?: { }.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK),
         onLongClick = onLongClick,
         onLongClickLabel = onLongClickLabel,
         shapes = shapes,
@@ -100,7 +101,8 @@ fun SettingsListItem(
     )
 
     SegmentedListItem(
-        onClick = onClick?.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK) ?: { }.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK),
+        onClick = onClick?.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK)
+            ?: { }.withHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK),
         onLongClick = onLongClick,
         onLongClickLabel = onLongClickLabel,
         shapes = shapes,

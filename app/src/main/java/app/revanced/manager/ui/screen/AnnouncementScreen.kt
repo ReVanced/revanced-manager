@@ -63,7 +63,8 @@ fun AnnouncementScreen(
                     )
                 },
                 subtitle = {
-                    val createDate = announcement.createdAt.toLocalDateTime(TimeZone.UTC).relativeTime(LocalContext.current)
+                    val createDate = announcement.createdAt.toLocalDateTime(TimeZone.UTC)
+                        .relativeTime(LocalContext.current)
                     Text("$createDate\u2002\u2022\u2002${announcement.author}")
                 },
                 navigationIcon = {
@@ -119,6 +120,7 @@ fun AnnouncementScreen(
                 },
                 update = {
                     val webView = it.children.first() as WebView
+
                     @Language("HTML")
                     val style = """
                     <html lang="en">

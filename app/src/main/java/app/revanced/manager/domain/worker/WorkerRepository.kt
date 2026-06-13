@@ -19,7 +19,8 @@ class WorkerRepository(app: Application) {
 
     @Suppress("UNCHECKED_CAST")
     fun <A : Any, W : Worker<A>> claimInput(worker: W): A {
-        val data = workerInputs[worker.id] ?: throw IllegalStateException("Worker was not launched via WorkerRepository")
+        val data = workerInputs[worker.id]
+            ?: throw IllegalStateException("Worker was not launched via WorkerRepository")
         workerInputs.remove(worker.id)
 
         return data as A

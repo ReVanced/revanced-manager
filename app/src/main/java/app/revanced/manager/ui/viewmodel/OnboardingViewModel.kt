@@ -82,7 +82,11 @@ class OnboardingViewModel(
         currentStep = previousStep(currentStep)
     }
 
-    suspend fun applyAutoUpdatePrefs(managerEnabled: Boolean, patchesEnabled: Boolean, downloadersEnabled: Boolean) {
+    suspend fun applyAutoUpdatePrefs(
+        managerEnabled: Boolean,
+        patchesEnabled: Boolean,
+        downloadersEnabled: Boolean
+    ) {
         prefs.managerAutoUpdates.update(managerEnabled)
 
         with(patchBundleRepository) {

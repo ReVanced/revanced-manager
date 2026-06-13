@@ -185,7 +185,8 @@ class PatcherViewModel(
         }
     }
     val logPreviewText
-        get() = logs.takeLast(30).joinToString("\n") { (level, msg) -> formatLogLine(app, level, msg) }
+        get() = logs.takeLast(30)
+            .joinToString("\n") { (level, msg) -> formatLogLine(app, level, msg) }
 
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
         generateSteps(app, input.selectedApp, input.selectedPatches).toMutableStateList()
@@ -313,7 +314,8 @@ class PatcherViewModel(
 
                 is ProgressEvent.Progress -> currentStep.withState(
                     message = event.message ?: currentStep.message,
-                    progress = event.current?.let { event.current to event.total } ?: currentStep.progress
+                    progress = event.current?.let { event.current to event.total }
+                        ?: currentStep.progress
                 ).let { step ->
                     step.copy(
                         title = event.title ?: step.title,
@@ -325,10 +327,17 @@ class PatcherViewModel(
                     val line = formatUiLogLine(app, event.level, event.message)
                     val message = currentStep.message
                     val updated = when {
-                        !event.replaceLast -> currentStep.withState(message = appendLog(message, line))
+                        !event.replaceLast -> currentStep.withState(
+                            message = appendLog(
+                                message,
+                                line
+                            )
+                        )
+
                         currentStep.index != null -> currentStep.withState(
                             message = replaceLineAtIndex(message, currentStep.index, line)
                         )
+
                         message.isNullOrEmpty() -> currentStep.withState(message = line, index = 0)
                         else -> {
                             val lastLineIndex = message.count { it == '\n' }
@@ -350,6 +359,7 @@ class PatcherViewModel(
                     when {
                         event.error.type.endsWith("PatcherKilledException") ->
                             packageInstallerStatus = INTERNAL_STATUS_PATCHER_KILLED
+
                         event.error.type.endsWith("PatcherCrashedException") ->
                             packageInstallerStatus = INTERNAL_STATUS_PATCHER_CRASHED
                     }
@@ -406,7 +416,8 @@ class PatcherViewModel(
                 delay(200.milliseconds)
             }
 
-            val detailed = "absPath=\"${fs.tempDir.absolutePath}\" before=$sizeBefore deleteOk=$deleted attempts=$attempt afterCount=${remaining.size} survivors=${remaining.joinToString { it.name }}"
+            val detailed =
+                "absPath=\"${fs.tempDir.absolutePath}\" before=$sizeBefore deleteOk=$deleted attempts=$attempt afterCount=${remaining.size} survivors=${remaining.joinToString { it.name }}"
             if (deleted && remaining.isEmpty()) {
                 logger.info("Successfully cleared patcher temp files")
 
@@ -441,9 +452,11 @@ class PatcherViewModel(
         }
     }
 
-    fun getOutputApkUri(): Uri = FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", outputFile)
+    fun getOutputApkUri(): Uri =
+        FileProvider.getUriForFile(app, "${app.packageName}.fileprovider", outputFile)
 
-    fun logFileName() = "revanced_patcher_${packageName}${version?.let { "_$it" } ?: ""}_${System.currentTimeMillis()}.txt"
+    fun logFileName() =
+        "revanced_patcher_${packageName}${version?.let { "_$it" } ?: ""}_${System.currentTimeMillis()}.txt"
 
     fun prepareLogExport() = viewModelScope.launch {
         val logSnapshot = logs.toList()
@@ -462,7 +475,8 @@ class PatcherViewModel(
     fun copyLogs(context: Context) = viewModelScope.launch {
         val logSnapshot = logs.toList()
         withContext(Dispatchers.Main) {
-            val clipboardManager = app.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboardManager =
+                app.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val content = buildLogExportText(app, logSnapshot)
             val clip = ClipData.newPlainText("Logs", content)
             clipboardManager.setPrimaryClip(clip)
@@ -650,7 +664,8 @@ class PatcherViewModel(
                     installerPkgName,
                     packageName,
                     input.selectedApp.version ?: withContext(Dispatchers.IO) {
-                        pm.getPackageInfo(outputFile)?.versionName ?: error("Downloaded APK has no version name")
+                        pm.getPackageInfo(outputFile)?.versionName
+                            ?: error("Downloaded APK has no version name")
                     },
                     InstallType.DEFAULT,
                     input.selectedPatches,
@@ -799,7 +814,11 @@ class PatcherViewModel(
             LogLevel.ERROR -> Log.e(TAG, msg)
         }
 
-        fun formatAppLine(packageName: String, selectedVersion: String?, suggestedVersion: String?): String {
+        fun formatAppLine(
+            packageName: String,
+            selectedVersion: String?,
+            suggestedVersion: String?
+        ): String {
             val versionDetails = buildList {
                 selectedVersion?.let { add("Selected: $it") }
                 suggestedVersion?.let { add("Suggested: $it") }
@@ -826,7 +845,8 @@ class PatcherViewModel(
             selectedPatches: PatchSelection,
             allowIncompatible: Boolean
         ): List<String> {
-            val defaultSelection = bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
+            val defaultSelection =
+                bundles.toPatchSelection(allowIncompatible) { _, patch -> patch.include }
             val bundleNames = bundles.associate { it.uid to it.name }
             val knownBundleIds = bundles.map(PatchBundleInfo.Scoped::uid)
             val orderedBundleIds = knownBundleIds + (selectedPatches.keys + defaultSelection.keys)

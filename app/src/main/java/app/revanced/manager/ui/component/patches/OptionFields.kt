@@ -193,7 +193,9 @@ fun <T : Any> OptionItem(
         Box {
             content()
             if (safeguardActive) {
-                Box(modifier = Modifier.matchParentSize().clickable { showWarningDialog = true })
+                Box(modifier = Modifier
+                    .matchParentSize()
+                    .clickable { showWarningDialog = true })
             }
         }
     }
@@ -362,7 +364,8 @@ private fun <T : Any> OptionDropdownSection(
         },
     ) {
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .menuAnchor(
                     if (!readOnly) ExposedDropdownMenuAnchorType.PrimaryEditable
                     else ExposedDropdownMenuAnchorType.PrimaryNotEditable

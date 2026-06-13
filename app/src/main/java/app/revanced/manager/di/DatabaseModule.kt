@@ -7,7 +7,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val databaseModule = module {
-    fun provideAppDatabase(context: Context) = Room.databaseBuilder(context, AppDatabase::class.java, "manager").build()
+    fun provideAppDatabase(context: Context) =
+        Room.databaseBuilder(context, AppDatabase::class.java, "manager").build()
 
     single {
         provideAppDatabase(androidContext())

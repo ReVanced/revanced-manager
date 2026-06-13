@@ -65,7 +65,10 @@ fun BundleSelector(
                         colors = ListItemDefaults.colors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainer
                         ),
-                        shapes = ListItemDefaults.segmentedShapes(index = index, count = sources.size)
+                        shapes = ListItemDefaults.segmentedShapes(
+                            index = index,
+                            count = sources.size
+                        )
                     ) {
                         Text(
                             "${source.name} ${source.version}",

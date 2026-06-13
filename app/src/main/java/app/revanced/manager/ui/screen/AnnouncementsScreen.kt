@@ -298,7 +298,7 @@ private fun AnnouncementListItem(
     author: String,
     tags: List<String>,
     unread: Boolean,
-    archived: Boolean
+    @Suppress("unused") archived: Boolean
 ) {
     SettingsListItem(
         onClick = onClick,
@@ -324,7 +324,8 @@ private fun AnnouncementListItem(
                     val dot = "\u2022"          // •
                     val emSpace = "\u2002"      // en space, roughly half character width
                     val separator = "$emSpace$dot$emSpace"
-                    Text("$date$separator$author",
+                    Text(
+                        text = "$date$separator$author",
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = if (unread) FontWeight.Bold else FontWeight.Normal
                         )

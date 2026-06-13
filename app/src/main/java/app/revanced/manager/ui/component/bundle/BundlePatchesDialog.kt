@@ -74,13 +74,13 @@ fun BundlePatchesDialog(
         } else {
             patches.filter { patch ->
                 patch.name.contains(query, ignoreCase = true) ||
-                patch.description?.contains(query, ignoreCase = true) == true ||
-                patch.compatiblePackages?.any { compatiblePackage ->
-                    compatiblePackage.packageName.contains(query, ignoreCase = true) ||
-                    compatiblePackage.versions?.any { version ->
-                        version.contains(query, ignoreCase = true)
-                    } == true
-                } == true
+                        patch.description?.contains(query, ignoreCase = true) == true ||
+                        patch.compatiblePackages?.any { compatiblePackage ->
+                            compatiblePackage.packageName.contains(query, ignoreCase = true) ||
+                                    compatiblePackage.versions?.any { version ->
+                                        version.contains(query, ignoreCase = true)
+                                    } == true
+                        } == true
             }
         }
     }

@@ -77,7 +77,10 @@ data class PatchBundle(val patchesJar: String) : Parcelable {
                 }
             }
 
-        fun patches(bundles: Iterable<PatchBundle>, packageName: String): Map<PatchBundle, Set<Patch>> =
+        fun patches(
+            bundles: Iterable<PatchBundle>,
+            packageName: String
+        ): Map<PatchBundle, Set<Patch>> =
             patches(bundles).mapValues { (_, result) ->
                 val patches = result.getOrDefault(emptySet())
 

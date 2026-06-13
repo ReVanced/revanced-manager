@@ -12,7 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AppInfo(appInfo: PackageInfo?, placeholderLabel: String? = null, extraContent: @Composable () -> Unit = {}) {
+fun AppInfo(
+    appInfo: PackageInfo?,
+    placeholderLabel: String? = null,
+    extraContent: @Composable () -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

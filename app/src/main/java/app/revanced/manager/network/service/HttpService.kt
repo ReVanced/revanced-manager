@@ -77,8 +77,8 @@ class HttpService(
                 val channel: ByteReadChannel = httpResponse.body()
                 outputStream.asSink().buffered().use { sink ->
                     while (!channel.exhausted()) {
-                        channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong()).use {
-                            packet -> packet.transferTo(sink)
+                        channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong()).use { packet ->
+                            packet.transferTo(sink)
                         }
                     }
                 }

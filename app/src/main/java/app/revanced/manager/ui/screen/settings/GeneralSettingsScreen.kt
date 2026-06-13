@@ -126,14 +126,20 @@ fun GeneralSettingsScreen(
         ) {
             ListSection(
                 title = stringResource(R.string.appearance),
-                leadingContent = { Icon(Icons.Outlined.Palette, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.Palette,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 val currentLocale = viewModel.getCurrentLocale()
                 val currentLanguageDisplay = remember(currentLocale) {
                     currentLocale?.let { viewModel.getLocaleDisplayName(it) }
                 }
                 val theme by prefs.theme.getAsState()
-                
+
                 ThemeSelector(
                     currentTheme = theme,
                     onThemeSelected = { viewModel.setTheme(it) }
@@ -183,7 +189,13 @@ fun GeneralSettingsScreen(
 
             ListSection(
                 title = stringResource(R.string.networking),
-                leadingContent = { Icon(Icons.Outlined.Public, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                leadingContent = {
+                    Icon(
+                        Icons.Outlined.Public,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             ) {
                 BooleanItem(
                     preference = prefs.allowMeteredNetworks,
@@ -224,7 +236,7 @@ private fun LanguagePicker(
                 val nativeName = locale.getDisplayName(locale)
 
                 localizedName.contains(searchQuery, ignoreCase = true) ||
-                nativeName.contains(searchQuery, ignoreCase = true)
+                        nativeName.contains(searchQuery, ignoreCase = true)
             }
         }
     }

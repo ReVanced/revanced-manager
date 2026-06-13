@@ -19,6 +19,7 @@ import com.github.materiiapps.enumutil.FromValue
 
 private typealias InstallerStatusDialogButtonHandler = ((model: InstallerModel) -> Unit)
 private typealias InstallerStatusDialogButton = @Composable (model: InstallerModel, dismiss: () -> Unit) -> Unit
+
 const val INTERNAL_STATUS_PATCHER_KILLED = -1000
 const val INTERNAL_STATUS_PATCHER_CRASHED = -1001
 

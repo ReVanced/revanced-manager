@@ -80,7 +80,9 @@ fun NotificationCard(
                         title?.let {
                             Text(
                                 text = it,
-                                style = MaterialTheme.typography.bodyMediumEmphasized.merge(fontWeight = FontWeight.SemiBold),
+                                style = MaterialTheme.typography.bodyMediumEmphasized.merge(
+                                    fontWeight = FontWeight.SemiBold
+                                ),
                                 color = LocalContentColor.current,
                             )
                         }

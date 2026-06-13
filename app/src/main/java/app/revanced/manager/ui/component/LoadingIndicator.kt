@@ -26,12 +26,11 @@ fun LoadingIndicator(
             trackColor = trackColor,
             strokeCap = strokeCap
         )
-    } ?:
-        CircularProgressIndicator(
-            modifier = modifier,
-            color = color,
-            strokeWidth = strokeWidth,
-            trackColor = trackColor,
-            strokeCap = strokeCap
-        )
+    } ?: CircularProgressIndicator(
+        modifier = modifier,
+        color = color,
+        strokeWidth = strokeWidth,
+        trackColor = trackColor,
+        strokeCap = strokeCap
+    )
 }

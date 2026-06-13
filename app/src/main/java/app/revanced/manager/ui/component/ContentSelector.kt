@@ -11,9 +11,10 @@ import androidx.compose.runtime.Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ContentSelector(mime: String, onSelect: (Uri) -> Unit, content: @Composable () -> Unit) {
-    val activityLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let(onSelect)
-    }
+    val activityLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let(onSelect)
+        }
     Button(
         onClick = {
             activityLauncher.launch(mime)

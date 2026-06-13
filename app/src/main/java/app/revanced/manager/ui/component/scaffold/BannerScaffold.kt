@@ -182,7 +182,7 @@ fun rememberBannerScrollBehavior(
             state = state,
             canCollapse = {
                 canCollapse() &&
-                    (sheetLazyListState.canScrollForward || sheetLazyListState.canScrollBackward)
+                        (sheetLazyListState.canScrollForward || sheetLazyListState.canScrollBackward)
             },
             dispatchSheetRawDelta = sheetLazyListState::dispatchRawDelta,
         )
@@ -236,13 +236,15 @@ fun BannerScaffold(
         val totalMainAxisPx = with(density) {
             if (isLandscape) maxWidth.roundToPx() else maxHeight.roundToPx()
         }
-        val availableMainAxisPx = (totalMainAxisPx - if (isLandscape) 0 else topBarPx).coerceAtLeast(0)
+        val availableMainAxisPx =
+            (totalMainAxisPx - if (isLandscape) 0 else topBarPx).coerceAtLeast(0)
         val expandedBannerPx = (availableMainAxisPx * axisFraction).roundToInt()
         val collapsedBannerPx = (availableMainAxisPx * collapsedAxisFraction)
             .roundToInt()
             .coerceAtMost(expandedBannerPx)
 
-        val collapseFraction = if (isLandscape) 0f else scrollBehavior?.state?.collapsedFraction ?: 0f
+        val collapseFraction =
+            if (isLandscape) 0f else scrollBehavior?.state?.collapsedFraction ?: 0f
 
         SideEffect {
             scrollBehavior?.state?.offsetLimitPx =
@@ -250,7 +252,11 @@ fun BannerScaffold(
         }
 
         val bannerPx = if (isLandscape) expandedBannerPx else {
-            lerp(expandedBannerPx.toFloat(), collapsedBannerPx.toFloat(), collapseFraction).roundToInt()
+            lerp(
+                expandedBannerPx.toFloat(),
+                collapsedBannerPx.toFloat(),
+                collapseFraction
+            ).roundToInt()
         }
 
         val bannerSize = with(density) {
@@ -280,14 +286,22 @@ fun BannerScaffold(
             Modifier
         }
 
-        Box(Modifier.fillMaxSize().then(scaffoldScrollModifier)) {
-            val bannerBackgroundModifier = Modifier.align(Alignment.TopStart).then(
-                if (isLandscape) {
-                    Modifier.width(backgroundExtent).fillMaxHeight()
-                } else {
-                    Modifier.fillMaxWidth().height(backgroundExtent)
-                }
-            )
+        Box(Modifier
+            .fillMaxSize()
+            .then(scaffoldScrollModifier)) {
+            val bannerBackgroundModifier = Modifier
+                .align(Alignment.TopStart)
+                .then(
+                    if (isLandscape) {
+                        Modifier
+                            .width(backgroundExtent)
+                            .fillMaxHeight()
+                    } else {
+                        Modifier
+                            .fillMaxWidth()
+                            .height(backgroundExtent)
+                    }
+                )
 
             CompositionLocalProvider(LocalContentColor provides colors.bannerContentColor) {
                 Box(modifier = bannerBackgroundModifier) {
@@ -295,13 +309,20 @@ fun BannerScaffold(
                 }
             }
 
-            val bannerContentModifier = Modifier.align(Alignment.TopStart).then(
-                if (isLandscape) {
-                    Modifier.width(bannerSize).fillMaxHeight()
-                } else {
-                    Modifier.padding(top = topBarHeight).fillMaxWidth().height(bannerSize)
-                }
-            )
+            val bannerContentModifier = Modifier
+                .align(Alignment.TopStart)
+                .then(
+                    if (isLandscape) {
+                        Modifier
+                            .width(bannerSize)
+                            .fillMaxHeight()
+                    } else {
+                        Modifier
+                            .padding(top = topBarHeight)
+                            .fillMaxWidth()
+                            .height(bannerSize)
+                    }
+                )
 
             CompositionLocalProvider(LocalContentColor provides colors.bannerContentColor) {
                 Box(modifier = bannerContentModifier.clipToBounds()) {

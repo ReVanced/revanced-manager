@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.ReVancedManager" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash_screen</item>
         <item name="postSplashScreenTheme">@style/Theme.AppCompat.NoActionBar</item>

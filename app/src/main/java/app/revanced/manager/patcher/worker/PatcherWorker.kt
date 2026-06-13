@@ -162,50 +162,51 @@ class PatcherWorker(
                 }
             }
 
-            suspend fun download(downloader: LoadedDownloader, data: Parcelable): File = coroutineScope {
-                args.logger.info("Downloading APK file")
-                val heartbeat = Heartbeat(this) { elapsed ->
-                    args.onEvent(
-                        ProgressEvent.Progress(
-                            stepId = StepId.DownloadAPK,
-                            trailingText = "${elapsed}s",
-                        )
-                    )
-                }
-                try {
-                    val result = downloadedAppRepository.download(
-                        downloader,
-                        data,
-                        args.packageName,
-                        args.input.version,
-                        prefs.suggestedVersionSafeguard.get(),
-                        !prefs.disablePatchVersionCompatCheck.get(),
-                        onDownload = { progress ->
-                            args.onEvent(
-                                ProgressEvent.Progress(
-                                    stepId = StepId.DownloadAPK,
-                                    current = progress.first,
-                                    total = progress.second,
-                                )
-                            )
-                        }
-                    ).also { args.setInputFile(it) }
-                    heartbeat.complete { elapsed ->
-                        val title = "Downloaded APK file in ${elapsed}s"
-                        args.logger.info(title)
+            suspend fun download(downloader: LoadedDownloader, data: Parcelable): File =
+                coroutineScope {
+                    args.logger.info("Downloading APK file")
+                    val heartbeat = Heartbeat(this) { elapsed ->
                         args.onEvent(
                             ProgressEvent.Progress(
                                 stepId = StepId.DownloadAPK,
-                                title = title,
-                                trailingText = "",
+                                trailingText = "${elapsed}s",
                             )
                         )
                     }
-                    result
-                } finally {
-                    heartbeat.stop()
+                    try {
+                        val result = downloadedAppRepository.download(
+                            downloader,
+                            data,
+                            args.packageName,
+                            args.input.version,
+                            prefs.suggestedVersionSafeguard.get(),
+                            !prefs.disablePatchVersionCompatCheck.get(),
+                            onDownload = { progress ->
+                                args.onEvent(
+                                    ProgressEvent.Progress(
+                                        stepId = StepId.DownloadAPK,
+                                        current = progress.first,
+                                        total = progress.second,
+                                    )
+                                )
+                            }
+                        ).also { args.setInputFile(it) }
+                        heartbeat.complete { elapsed ->
+                            val title = "Downloaded APK file in ${elapsed}s"
+                            args.logger.info(title)
+                            args.onEvent(
+                                ProgressEvent.Progress(
+                                    stepId = StepId.DownloadAPK,
+                                    title = title,
+                                    trailingText = "",
+                                )
+                            )
+                        }
+                        result
+                    } finally {
+                        heartbeat.stop()
+                    }
                 }
-            }
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
@@ -225,20 +226,24 @@ class PatcherWorker(
                             .ifEmpty { error("No downloaders are loaded") }
                             .firstNotNullOfOrNull { downloader ->
                                 try {
-                                    val getScope = object : GetScope, Scope by downloader.scopeImpl {
-                                        override suspend fun requestStartActivity(intent: Intent): Intent? {
-                                            val result =
-                                                args.handleStartActivityRequest(downloader, intent)
-                                            return when (result.resultCode) {
-                                                Activity.RESULT_OK -> result.data
-                                                Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
-                                                else -> throw UserInteractionException.Activity.NotCompleted(
-                                                    result.resultCode,
-                                                    result.data
-                                                )
+                                    val getScope =
+                                        object : GetScope, Scope by downloader.scopeImpl {
+                                            override suspend fun requestStartActivity(intent: Intent): Intent? {
+                                                val result =
+                                                    args.handleStartActivityRequest(
+                                                        downloader,
+                                                        intent
+                                                    )
+                                                return when (result.resultCode) {
+                                                    Activity.RESULT_OK -> result.data
+                                                    Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
+                                                    else -> throw UserInteractionException.Activity.NotCompleted(
+                                                        result.resultCode,
+                                                        result.data
+                                                    )
+                                                }
                                             }
                                         }
-                                    }
                                     withContext(Dispatchers.IO) {
                                         downloader.impl.get(
                                             getScope,

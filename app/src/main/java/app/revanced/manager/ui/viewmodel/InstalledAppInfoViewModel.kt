@@ -104,6 +104,7 @@ class InstalledAppInfoViewModel(
                             }
                             return@launch
                         }
+
                         Session.State.Succeeded -> {}
                     }
                 }

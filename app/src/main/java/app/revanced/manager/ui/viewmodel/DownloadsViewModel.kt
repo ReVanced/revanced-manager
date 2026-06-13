@@ -57,7 +57,8 @@ class DownloadsViewModel(
 
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         usePrereleases.update(value)
-        val apiSource = downloaderRepository.downloaderSources.first()[0]?.asRemoteOrNull ?: return@launch
+        val apiSource =
+            downloaderRepository.downloaderSources.first()[0]?.asRemoteOrNull ?: return@launch
         updateDownloader(apiSource)
     }
 
@@ -111,9 +112,10 @@ class DownloadsViewModel(
         }
     }
 
-    fun setAutoUpdate(src: RemoteSource<DownloaderPackage>, value: Boolean) = viewModelScope.launch {
-        with(downloaderRepository) {
-            src.setAutoUpdate(value)
+    fun setAutoUpdate(src: RemoteSource<DownloaderPackage>, value: Boolean) =
+        viewModelScope.launch {
+            with(downloaderRepository) {
+                src.setAutoUpdate(value)
+            }
         }
-    }
 }

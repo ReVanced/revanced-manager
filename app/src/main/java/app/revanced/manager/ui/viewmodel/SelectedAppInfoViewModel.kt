@@ -290,7 +290,8 @@ class SelectedAppInfoViewModel(
     }
 
     private fun loadSelectedStorageFile(uri: Uri) =
-        app.contentResolver.getType(uri)?.takeIf { it == APK_MIMETYPE || it.startsWith("application/") }
+        app.contentResolver.getType(uri)
+            ?.takeIf { it == APK_MIMETYPE || it.startsWith("application/") }
             ?.let {
                 app.contentResolver.openInputStream(uri)?.use { stream ->
                     with(sourceInputFile) {
@@ -464,7 +465,8 @@ class SelectedAppInfoViewModel(
                         bundleOptions.forEach patch@{ (patchName, values) ->
                             // Get all valid option keys for the patch.
                             val validOptionKeys =
-                                patches[patchName]?.options?.map { it.name }?.toSet() ?: return@patch
+                                patches[patchName]?.options?.map { it.name }?.toSet()
+                                    ?: return@patch
 
                             this@bundleOptions[patchName] = values.filterKeys { key ->
                                 key in validOptionKeys

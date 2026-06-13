@@ -67,14 +67,15 @@ private fun resolveShareTargets(context: Context, uri: Uri): List<ResolvedShareT
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
 
-    val resolvedActivities: List<ResolveInfo> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        packageManager.queryIntentActivities(
-            sendIntent,
-            PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
-        )
-    } else {
-        packageManager.queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY)
-    }
+    val resolvedActivities: List<ResolveInfo> =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packageManager.queryIntentActivities(
+                sendIntent,
+                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+            )
+        } else {
+            packageManager.queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY)
+        }
 
     return resolvedActivities.mapNotNull { resolved ->
         val info = resolved.activityInfo ?: return@mapNotNull null

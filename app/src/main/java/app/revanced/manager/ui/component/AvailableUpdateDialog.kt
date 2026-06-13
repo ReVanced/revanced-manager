@@ -89,7 +89,9 @@ fun AvailableUpdateDialog(
                     },
                     leadingContent = {
                         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
-                            HapticCheckbox(checked = dontShowAgain, onCheckedChange = { dontShowAgain = it })
+                            HapticCheckbox(
+                                checked = dontShowAgain,
+                                onCheckedChange = { dontShowAgain = it })
                         }
                     },
                     colors = transparentListItemColors

@@ -82,12 +82,13 @@ fun PatcherScreen(
     val context = LocalContext.current
     val resources = LocalResources.current
     var showLogExportSheet by rememberSaveable { mutableStateOf(false) }
-    val exportApkLauncher = rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
+    val exportApkLauncher =
+        rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), viewModel::export)
     val saveLogsLauncher = rememberLauncherForActivityResult(CreateDocument("text/plain")) { uri ->
-            viewModel.saveLogs(uri)
-            showLogExportSheet = false
-            viewModel.clearPreparedLogExport()
-        }
+        viewModel.saveLogs(uri)
+        showLogExportSheet = false
+        viewModel.clearPreparedLogExport()
+    }
 
     val patcherSucceeded by viewModel.patcherSucceeded.observeAsState(null)
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (viewModel.installedPackageName != null || !viewModel.isInstalling) } }

@@ -11,7 +11,7 @@ import androidx.core.view.HapticFeedbackConstantsCompat
 import app.revanced.manager.util.withHapticFeedback
 
 @Composable
-fun HapticTab (
+fun HapticTab(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,

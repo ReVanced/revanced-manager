@@ -31,7 +31,12 @@ val httpModule = module {
                         }
                     }
                 })
-                cache(Cache(context.cacheDir.resolve("cache").also { it.mkdirs() }, 1024 * 1024 * 100))
+                cache(
+                    Cache(
+                        context.cacheDir.resolve("cache").also { it.mkdirs() },
+                        1024 * 1024 * 100
+                    )
+                )
                 followRedirects(true)
                 followSslRedirects(true)
             }

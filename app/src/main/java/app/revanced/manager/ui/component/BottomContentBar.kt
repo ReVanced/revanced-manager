@@ -13,7 +13,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun BottomContentBar(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp),
+    contentPadding: PaddingValues = PaddingValues(
+        start = 16.dp,
+        end = 16.dp,
+        top = 8.dp,
+        bottom = 16.dp
+    ),
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(

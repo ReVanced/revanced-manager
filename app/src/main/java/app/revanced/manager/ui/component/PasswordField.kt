@@ -22,7 +22,13 @@ import app.revanced.manager.R
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun PasswordField(modifier: Modifier = Modifier, value: String, onValueChange: (String) -> Unit, label: @Composable (() -> Unit)? = null, placeholder: @Composable (() -> Unit)? = null) {
+fun PasswordField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null
+) {
     var visible by rememberSaveable {
         mutableStateOf(false)
     }

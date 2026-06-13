@@ -358,7 +358,10 @@ fun PatchesSelectorScreen(
                     expanded = searchExpanded,
                     onExpandedChange = setSearchExpanded,
                     placeholder = { Text(stringResource(R.string.search_patches)) },
-                    windowInsets = if (readOnly) WindowInsets(top = 0, bottom = 0) else WindowInsets.systemBars,
+                    windowInsets = if (readOnly) WindowInsets(
+                        top = 0,
+                        bottom = 0
+                    ) else WindowInsets.systemBars,
                     leadingIcon = {
                         TooltipIconButton(
                             onClick = {
