@@ -184,7 +184,7 @@ class PatcherViewModel(
         }
     }
     val logPreviewText
-        get() = logs.takeLast(30).joinToString("\n") { (level, msg) -> "[${level.name}]: $msg" }
+        get() = logs.takeLast(30).joinToString("\n") { (level, msg) -> formatLogLine(app, level, msg) }
 
     val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
         generateSteps(app, input.selectedApp, input.selectedPatches).toMutableStateList()
@@ -321,7 +321,7 @@ class PatcherViewModel(
                 }
 
                 is ProgressEvent.Log -> {
-                    val line = formatUiLogLine(event.level, event.message)
+                    val line = formatUiLogLine(app, event.level, event.message)
                     val message = currentStep.message
                     val updated = when {
                         !event.replaceLast -> currentStep.withState(message = appendLog(message, line))
@@ -598,7 +598,7 @@ class PatcherViewModel(
         }.joinToString("\n")
 
         val logsContent = logSnapshot.joinToString("\n") { (level, msg) ->
-            formatLogLine(level, msg)
+            formatLogLine(app, level, msg)
         }
 
         return buildList {
@@ -847,10 +847,11 @@ class PatcherViewModel(
             }
         }
 
-        fun formatLogLine(level: LogLevel, message: String) = "[${level.name}] $message"
+        fun formatLogLine(context: Context, level: LogLevel, message: String): String =
+            "${context.getString(level.displayName)}: $message"
 
-        fun formatUiLogLine(level: LogLevel, message: String) =
-            if (level == LogLevel.INFO) message else formatLogLine(level, message)
+        fun formatUiLogLine(context: Context, level: LogLevel, message: String): String =
+            if (level == LogLevel.INFO) message else formatLogLine(context, level, message)
 
         fun appendLog(current: String?, line: String): String =
             current?.takeIf { it.isNotBlank() }
