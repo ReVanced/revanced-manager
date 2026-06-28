@@ -425,7 +425,7 @@ It’s only compatible with these versions: %2$s</string>
 
         This warning will only be shown once.</string>
     <string name="copy_password_warning_title">Copy password?</string>
-    <string name="copy_password_warning_description">Other apps may be able to access it until you clear your clipboard. Do not show your keystore password to anyone else.
+    <string name="copy_password_warning_description">Don't show your keystore password to anyone else.
 
         This warning will only be shown once.</string>
 
