@@ -112,7 +112,7 @@ fun ImportExportSettingsScreen(
     var pendingSensitiveAction by remember { mutableStateOf<SensitiveAction?>(null) }
     val keystoreAlias by prefs.keystoreAlias.getAsState()
     val keystorePass by prefs.keystorePass.getAsState()
-    val hasAcknowledgeKeystoreOpsecWarning by prefs.hasAcknowledgeKeystoreOpsecWarning.getAsState()
+    val hasAcknowledgedKeystoreSensitiveWarning by prefs.hasAcknowledgedKeystoreSensitiveWarning.getAsState()
 
     val copyKeystorePasswordToClipboard = {
         clipboard.setPrimaryClip(
@@ -138,14 +138,14 @@ fun ImportExportSettingsScreen(
         when (action) {
             SensitiveAction.RevealPassword -> {
                 scope.launch {
-                    prefs.hasAcknowledgeKeystoreOpsecWarning.update(true)
+                    prefs.hasAcknowledgedKeystoreSensitiveWarning.update(true)
                 }
                 showKeystorePassword = true
             }
 
             SensitiveAction.CopyPassword -> {
                 scope.launch {
-                    prefs.hasAcknowledgeKeystoreOpsecWarning.update(true)
+                    prefs.hasAcknowledgedKeystoreSensitiveWarning.update(true)
                 }
                 copyKeystorePasswordToClipboard()
             }
@@ -300,7 +300,7 @@ fun ImportExportSettingsScreen(
                                         onClick = {
                                             if (hidePassword) {
                                                 showKeystorePassword = false
-                                            } else if (hasAcknowledgeKeystoreOpsecWarning) {
+                                            } else if (hasAcknowledgedKeystoreSensitiveWarning) {
                                                 showKeystorePassword = true
                                             } else {
                                                 pendingSensitiveAction = SensitiveAction.RevealPassword
@@ -323,7 +323,7 @@ fun ImportExportSettingsScreen(
                                     }
                                     TooltipIconButton(
                                         onClick = {
-                                            if (hasAcknowledgeKeystoreOpsecWarning) {
+                                            if (hasAcknowledgedKeystoreSensitiveWarning) {
                                                 copyKeystorePasswordToClipboard()
                                             } else {
                                                 pendingSensitiveAction = SensitiveAction.CopyPassword
