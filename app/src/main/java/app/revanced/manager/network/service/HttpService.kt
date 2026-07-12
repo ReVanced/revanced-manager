@@ -16,12 +16,22 @@ import io.ktor.http.isSuccess
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.exhausted
 import io.ktor.utils.io.readRemaining
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.io.asSink
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.io.FilterInputStream
+import java.io.IOException
+import java.io.InputStream
 import java.io.OutputStream
+import java.io.PipedInputStream
+import java.io.PipedOutputStream
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * @author Aliucord Authors, DiamondMiner88
@@ -30,6 +40,8 @@ class HttpService(
     val json: Json,
     val http: HttpClient,
 ) {
+    private val writerScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
     suspend inline fun <reified T> request(builder: HttpRequestBuilder.() -> Unit = {}): APIResponse<T> {
         var body: String? = null
 
@@ -81,6 +93,49 @@ class HttpService(
 
             } else {
                 throw HttpException(httpResponse.status)
+            }
+        }
+    }
+
+    // Make a GET request and returns the response body as a stream.
+    // Caller is responsible for closing the returned stream.
+    // Failures happening while streaming are thrown from the stream's read methods.
+    fun getStream(builder: HttpRequestBuilder.() -> Unit): InputStream {
+        val failure = AtomicReference<Throwable?>(null)
+        val stream = PipedInputStream(DEFAULT_BUFFER_SIZE)
+        val output = PipedOutputStream(stream)
+
+        val writer = writerScope.launch {
+            try {
+                streamTo(output, builder)
+            } catch (c: CancellationException) {
+                throw c
+            } catch (t: Throwable) {
+                failure.set(t)
+            } finally {
+                runCatching { output.close() } // Unblocks the reader, failure must be recorded before this happens.
+            }
+        }
+
+        return object : FilterInputStream(stream) {
+            override fun read() = rethrowingFailure { super.read() }
+            override fun read(b: ByteArray, off: Int, len: Int) =
+                rethrowingFailure { super.read(b, off, len) }
+
+            private inline fun rethrowingFailure(read: () -> Int): Int {
+                val result = try {
+                    read()
+                } catch (e: IOException) {
+                    throw failure.get() ?: e
+                }
+                // failure closes the pipe early which then looks like a normal end of stream.
+                if (result == -1) failure.get()?.let { throw it }
+                return result
+            }
+
+            override fun close() {
+                writer.cancel()
+                super.close()
             }
         }
     }
