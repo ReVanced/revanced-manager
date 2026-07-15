@@ -1,3 +1,10 @@
+# app [2.7.0-dev.8](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.7...v2.7.0-dev.8) (2026-07-15)
+
+
+### Bug Fixes
+
+* Remove duplicate button in dialog ([#3419](https://github.com/ReVanced/revanced-manager/issues/3419)) ([21d55d1](https://github.com/ReVanced/revanced-manager/commit/21d55d1747c78fb00f83832c9fd2e40747c365f9))
+
 # app [2.7.0-dev.7](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.6...v2.7.0-dev.7) (2026-06-12)
 
 
