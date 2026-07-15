@@ -95,7 +95,6 @@ enum class DialogKind(
         flag = PackageInstaller.STATUS_FAILURE_INCOMPATIBLE,
         title = R.string.installation_incompatible_dialog_title,
         contentStringResId = R.string.installation_incompatible_description,
-        dismissButton = installerStatusDialogButton(R.string.ok),
     ),
     FAILURE_INVALID(
         flag = PackageInstaller.STATUS_FAILURE_INVALID,
