@@ -3,10 +3,8 @@ package app.revanced.manager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.EaseOutQuart
@@ -17,9 +15,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
@@ -31,7 +27,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import app.revanced.manager.domain.protocol.FilePickRequest
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.ui.model.navigation.Announcement
 import app.revanced.manager.ui.model.navigation.Announcements
@@ -76,18 +71,15 @@ import app.revanced.manager.util.SupportedLocales
 import app.revanced.manager.util.deepLinkedComposable
 import app.revanced.manager.util.navigateSafe
 import app.revanced.manager.util.popBackStackSafe
+import app.revanced.manager.ui.component.UiRequestHost
 import app.revanced.manager.util.resetListItemColorsCached
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.util.Locale
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
 class MainActivity : AppCompatActivity() {
-    private val filePickRequests: Channel<FilePickRequest> by inject()
-
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                 dynamicColor = dynamicColor,
                 pureBlackTheme = pureBlackTheme
             ) {
-                FilePickerHost(filePickRequests)
+                UiRequestHost()
                 ReVancedManager(vm)
             }
         }
@@ -124,26 +116,6 @@ class MainActivity : AppCompatActivity() {
             overrideConfiguration.setLocale(SupportedLocales.getCurrentLocale() ?: Locale.getDefault())
         }
         super.applyOverrideConfiguration(overrideConfiguration)
-    }
-}
-
-// Answers file pick requests from the file protocol handler by launching the system file picker.
-@Composable
-private fun FilePickerHost(requests: Channel<FilePickRequest>) {
-    var current by remember { mutableStateOf<FilePickRequest?>(null) }
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        current?.result?.complete(uri)
-        current = null
-    }
-
-    LaunchedEffect(Unit) {
-        for (request in requests) {
-            current = request
-            picker.launch("*/*")
-
-            // One pick at a time.
-            request.result.await()
-        }
     }
 }
 

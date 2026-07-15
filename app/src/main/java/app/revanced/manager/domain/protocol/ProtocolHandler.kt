@@ -1,12 +1,11 @@
 package app.revanced.manager.domain.protocol
 
-import android.app.Application
+import android.content.ContentResolver
 import android.net.Uri
 import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.util.FilePicker
 import io.ktor.client.request.url
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.io.InputStream
@@ -20,37 +19,29 @@ interface ProtocolHandler {
 
 class HttpProtocolHandler(private val http: HttpService) : ProtocolHandler {
     override suspend fun <T> getStream(uri: Uri, block: suspend (InputStream) -> T) =
-        http.getStream({ url(uri.toString()) }, block)
+        http.getStream(block) { url(uri.toString()) }
 }
 
 // Opens content:// URIs, which the platform grants the app access to.
-class ContentProtocolHandler(private val app: Application) : ProtocolHandler {
+class ContentProtocolHandler(private val contentResolver: ContentResolver) : ProtocolHandler {
     override suspend fun <T> getStream(uri: Uri, block: suspend (InputStream) -> T): T {
         val stream = withContext(Dispatchers.IO) {
-            app.contentResolver.openInputStream(uri) ?: throw IOException("Cannot open $uri")
+            contentResolver.openInputStream(uri) ?: throw IOException("Cannot open $uri")
         }
 
         return stream.use { block(it) }
     }
 }
 
-// A request for the UI to let the user pick a file, answered with a content:// URI.
-class FilePickRequest {
-    val result = CompletableDeferred<Uri?>()
-}
-
 // Reading file:// URIs directly requires storage permissions, which the app avoids.
 // The user instead picks the file through the system file picker, which yields
 // a content:// URI the app is allowed to open.
 class FileProtocolHandler(
-    private val pickRequests: Channel<FilePickRequest>,
-    private val content: ContentProtocolHandler
+    private val filePicker: FilePicker,
+    private val contentProtocolHandler: ContentProtocolHandler
 ) : ProtocolHandler {
     override suspend fun <T> getStream(uri: Uri, block: suspend (InputStream) -> T): T {
-        val request = FilePickRequest()
-        pickRequests.send(request)
-
-        val picked = request.result.await() ?: throw IOException("No file was selected")
-        return content.getStream(picked, block)
+        val picked = filePicker.pickFile() ?: throw IOException("No file was selected")
+        return contentProtocolHandler.getStream(picked, block)
     }
 }
