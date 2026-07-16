@@ -71,7 +71,7 @@ import app.revanced.manager.util.SupportedLocales
 import app.revanced.manager.util.deepLinkedComposable
 import app.revanced.manager.util.navigateSafe
 import app.revanced.manager.util.popBackStackSafe
-import app.revanced.manager.ui.component.UiRequestHost
+import app.revanced.manager.ui.component.FilePickerRequestHost
 import app.revanced.manager.util.resetListItemColorsCached
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                 dynamicColor = dynamicColor,
                 pureBlackTheme = pureBlackTheme
             ) {
-                UiRequestHost()
+                FilePickerRequestHost()
                 ReVancedManager(vm)
             }
         }
