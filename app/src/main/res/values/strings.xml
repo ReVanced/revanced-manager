@@ -219,8 +219,8 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="local_downloaders_description">Add downloader from local storage</string>
     <string name="remote_downloaders_description">Downloader can receive updates</string>
     <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
-    <string name="downloader_sources_unavailable_description">Tap <b>Update</b> to fix this issue</string>
-
+    <string name="downloader_sources_unavailable_with_remote_description">Tap <b>Update</b> to fix this issue</string>
+    <string name="downloader_sources_unavailable_without_remote_description">Make sure that you imported the correct downloader</string>
     <string name="downloader_update_failed">Failed to update downloader: %s</string>
     <string name="downloader_replace_fail">Failed to import downloader: %s</string>
 
@@ -420,6 +420,14 @@ It’s only compatible with these versions: %2$s</string>
 
     <string name="show_password_field">Show password</string>
     <string name="hide_password_field">Hide password</string>
+    <string name="show_password_warning_title">Show password?</string>
+    <string name="show_password_warning_description">Do not show your keystore password to anyone else.
+
+        This warning will only be shown once.</string>
+    <string name="copy_password_warning_title">Copy password?</string>
+    <string name="copy_password_warning_description">Don't show your keystore password to anyone else.
+
+        This warning will only be shown once.</string>
 
     <string name="installer">Installer</string>
     <string name="install_app">Install</string>
@@ -537,6 +545,8 @@ It’s only compatible with these versions: %2$s</string>
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
+    <string name="remote_source_url_unsupported">This URL is pointing to an unsupported source.</string>
+    <string name="remote_source_url_validation_failed">Couldn’t verify this URL. Make sure it’s correct and try again.</string>
     <string name="required_options_screen">Required options</string>
 
     <string name="failed_to_check_updates">Couldn’t check for updates: %s</string>
@@ -604,6 +614,8 @@ Tap them for more details.</string>
 
     <string name="sideeffect_restart">Restart the app to see changes</string>
     <string name="sideeffect_no_network">You’re offline. Check your internet connection.</string>
+
+    <string name="sideeffect_scroll_to_top">Scroll to top</string>
 
     <plurals name="patch_count">
         <item quantity="one">%d patch</item>

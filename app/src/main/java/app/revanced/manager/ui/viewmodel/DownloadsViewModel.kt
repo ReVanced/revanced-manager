@@ -70,6 +70,8 @@ class DownloadsViewModel(
         downloaderRepository.createRemote(apiUrl, autoUpdate)
     }
 
+    suspend fun validateRemoteSourceUrl(apiUrl: String) = downloaderRepository.validateRemoteUrl(apiUrl)
+
     fun toggleApp(downloadedApp: DownloadedApp) {
         if (appSelection.contains(downloadedApp))
             appSelection.remove(downloadedApp)
@@ -114,6 +116,19 @@ class DownloadsViewModel(
     fun setAutoUpdate(src: RemoteSource<DownloaderPackage>, value: Boolean) = viewModelScope.launch {
         with(downloaderRepository) {
             src.setAutoUpdate(value)
+        }
+    }
+
+    fun setEndpoint(src: RemoteSource<DownloaderPackage>, value: String) = viewModelScope.launch {
+        val endpoint = value.trim()
+        if (src.endpoint == endpoint) return@launch
+
+        with(downloaderRepository) {
+            src.setEndpoint(endpoint)
+        }
+
+        downloaderSources.first()[src.uid]?.asRemoteOrNull?.let { updated ->
+            updateDownloader(updated)
         }
     }
 }

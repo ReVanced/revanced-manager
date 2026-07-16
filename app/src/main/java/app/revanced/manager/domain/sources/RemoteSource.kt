@@ -4,6 +4,7 @@ import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.network.utils.APIFailure
 import app.revanced.manager.network.utils.APIResponse
 import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.patcher.patch.PatchBundle
@@ -14,10 +15,26 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.SerializationException
 
 typealias RemotePatchBundle = RemoteSource<PatchBundle>
 typealias JsonPatchBundle = JsonSource<PatchBundle>
 typealias APIPatchBundle = APISource<PatchBundle>
+
+class UnsupportedRemoteSourceException(cause: Throwable? = null) : Exception(cause)
+
+internal fun Throwable.asRemoteSourceException(): Throwable {
+    if (this is UnsupportedRemoteSourceException) return this
+
+    val hasSerializationFailure = generateSequence(this) { it.cause }
+        .any { it is SerializationException }
+    if (!hasSerializationFailure) return this
+
+    return when (this) {
+        is APIFailure -> UnsupportedRemoteSourceException(this)
+        else -> UnsupportedRemoteSourceException(this)
+    }
+}
 
 sealed class RemoteSource<T>(
     name: String,
@@ -38,13 +55,14 @@ sealed class RemoteSource<T>(
     abstract fun copy(
         error: Throwable? = this.error,
         name: String = this.name,
+        endpoint: String = this.endpoint,
         autoUpdate: Boolean = this.autoUpdate,
         versionHash: String? = this.versionHash,
         releasedAt: LocalDateTime? = this.releasedAt
     ): RemoteSource<T>
 
     override fun copy(error: Throwable?, name: String): RemoteSource<T> =
-        copy(error, name, this.autoUpdate, this.versionHash, this.releasedAt)
+        copy(error, name, this.endpoint, this.autoUpdate, this.versionHash, this.releasedAt)
 
     private suspend fun download(info: ReVancedAsset) = withContext(Dispatchers.IO) {
         outputStream().use {
@@ -84,14 +102,17 @@ class JsonSource<T>(
     loader: Loader<T>
 ) : RemoteSource<T>(name, uid, versionHash, releasedAt, error, file, endpoint, autoUpdate, loader) {
     override suspend fun getLatestInfo() = withContext(Dispatchers.IO) {
-        http.request<ReVancedAsset> {
-            url(endpoint)
-        }.getOrThrow()
+        runCatching {
+            http.request<ReVancedAsset> {
+                url(endpoint)
+            }.getOrThrow()
+        }.getOrElse { throw it.asRemoteSourceException() }
     }
 
     override fun copy(
         error: Throwable?,
         name: String,
+        endpoint: String,
         autoUpdate: Boolean,
         versionHash: String?,
         releasedAt: LocalDateTime?
@@ -126,6 +147,7 @@ class APISource<T>(
     override fun copy(
         error: Throwable?,
         name: String,
+        endpoint: String,
         autoUpdate: Boolean,
         versionHash: String?,
         releasedAt: LocalDateTime?

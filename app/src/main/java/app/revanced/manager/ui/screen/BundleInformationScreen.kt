@@ -294,13 +294,15 @@ fun BundleInformationScreen(
                             initial = url,
                             title = stringResource(R.string.patches_url),
                             onDismissRequest = { showUrlInputDialog = false },
+                            confirmValidator = viewModel::validateEndpoint,
                             onConfirm = {
                                 showUrlInputDialog = false
-                                // TODO: Not implemented
+                                viewModel.setEndpoint(it.trim())
                             },
                             validator = {
-                                if (it.isEmpty()) return@TextInputDialog false
-                                isValidUrl(it)
+                                val value = it.trim()
+                                if (value.isEmpty()) return@TextInputDialog false
+                                isValidUrl(value)
                             }
                         )
                     }
@@ -310,7 +312,7 @@ fun BundleInformationScreen(
                         supportingContent = url.ifEmpty {
                             stringResource(R.string.field_not_set)
                         },
-                        onClick = null
+                        onClick = { showUrlInputDialog = true }
                     )
                 }
 

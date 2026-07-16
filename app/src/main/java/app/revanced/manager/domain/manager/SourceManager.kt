@@ -3,6 +3,7 @@ package app.revanced.manager.domain.manager
 import android.app.Application
 import android.util.Log
 import androidx.annotation.StringRes
+import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.redux.Action
 import app.revanced.manager.data.redux.ActionContext
@@ -15,9 +16,16 @@ import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.RemoteSource
 import app.revanced.manager.domain.sources.Source
+import app.revanced.manager.domain.sources.UnsupportedRemoteSourceException
+import app.revanced.manager.domain.sources.asRemoteSourceException
+import app.revanced.manager.network.dto.ReVancedAsset
+import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import io.ktor.client.request.url
+import io.ktor.http.Url
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +55,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     protected val app: Application by inject()
     protected val prefs: PreferencesManager by inject()
     protected val networkInfo: NetworkInfo by inject()
+    protected val http: HttpService by inject()
 
     protected abstract suspend fun dbGetAll(): List<DB>
     protected abstract suspend fun dbGetProps(uid: Int): SourceProperties?
@@ -263,6 +272,37 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })
         }
 
+    suspend fun RemoteSource<LOADED>.setEndpoint(value: String) =
+        dispatchAction("Set endpoint ($name, $value)") { state ->
+            val current = state.sources[uid]?.asRemoteOrNull ?: return@dispatchAction state
+            if (current.endpoint == value) return@dispatchAction state
+
+            updateDb(uid) { props ->
+                if (props.source !is SourceInfo.Remote) return@updateDb props
+                props.copy(
+                    source = SourceInfo.Remote(Url(value)),
+                    versionHash = null,
+                    releasedAt = null
+                )
+            }
+            with(current) { deleteLocalFile() }
+
+            val newSources = state.sources.toMutableMap()
+            newSources[uid] = current.copy(
+                error = null,
+                endpoint = value,
+                versionHash = null,
+                releasedAt = null
+            )
+
+            state.copy(
+                data = loadDataFromSources(newSources),
+                sources = newSources,
+                updateErrors = state.updateErrors - uid,
+                outdatedSources = state.outdatedSources - uid
+            )
+        }
+
     suspend fun update(
         vararg sources: RemoteSource<LOADED>,
         showToast: Boolean = false,
@@ -284,6 +324,28 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             force = force || prefs.allowMeteredNetworks.get()
         ) { it.autoUpdate }
     )
+
+    suspend fun validateRemoteUrl(url: String): String? = withContext(Dispatchers.IO) {
+        runCatching {
+            http.request<ReVancedAsset> {
+                url(url)
+            }.getOrThrow()
+        }.exceptionOrNull()?.toRemoteValidationMessage()
+    }
+
+    private fun Throwable.toRemoteValidationMessage() = when (asRemoteSourceException()) {
+        // wtf is this? this data is not a bundle, at least something!
+        is UnsupportedRemoteSourceException -> app.getString(R.string.remote_source_url_unsupported)
+
+        // wtf is this? this is not a data at all and more like a webpage or something else!
+        else -> app.getString(R.string.remote_source_url_validation_failed)
+    }
+
+    private fun Throwable.toRemoteUpdateMessage() = when (asRemoteSourceException()) {
+        // wtf is this? this data is not a bundle, at least something!
+        is UnsupportedRemoteSourceException -> app.getString(R.string.remote_source_url_unsupported)
+        else -> simpleMessage()
+    }
 
     private inner class Update(
         private val force: Boolean = false,
@@ -367,7 +429,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             when {
                 !showToast -> {}
                 hasErrors -> {
-                    val error = errors.values.first()
+                    val error = errors.values.first().toRemoteUpdateMessage()
                     toast(updateFailed, error)
                 }
 

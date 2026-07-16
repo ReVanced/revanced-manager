@@ -5,6 +5,7 @@ import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.os.Build
 import android.os.PersistableBundle
+import androidx.annotation.StringRes
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -105,10 +106,52 @@ fun ImportExportSettingsScreen(
         }
     )
     val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
+    val scope = rememberCoroutineScope()
     var showResetSheet by rememberSaveable { mutableStateOf(false) }
     var showKeystorePassword by rememberSaveable { mutableStateOf(false) }
+    var pendingSensitiveAction by remember { mutableStateOf<SensitiveAction?>(null) }
     val keystoreAlias by prefs.keystoreAlias.getAsState()
     val keystorePass by prefs.keystorePass.getAsState()
+    val hasAcknowledgedKeystoreSensitiveWarning by prefs.hasAcknowledgedKeystoreSensitiveWarning.getAsState()
+
+    val copyKeystorePasswordToClipboard = {
+        clipboard.setPrimaryClip(
+            ClipData.newPlainText(
+                resources.getString(R.string.import_keystore_dialog_password_field),
+                keystorePass
+            ).apply {
+                description.extras = PersistableBundle().apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
+                    } else {
+                        putBoolean("android.content.extra.IS_SENSITIVE", true)
+                    }
+                }
+            }
+        )
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            context.toast(resources.getString(R.string.toast_copied_to_clipboard))
+        }
+    }
+
+    val confirmSensitiveAction: (SensitiveAction) -> Unit = { action ->
+        when (action) {
+            SensitiveAction.RevealPassword -> {
+                scope.launch {
+                    prefs.hasAcknowledgedKeystoreSensitiveWarning.update(true)
+                }
+                showKeystorePassword = true
+            }
+
+            SensitiveAction.CopyPassword -> {
+                scope.launch {
+                    prefs.hasAcknowledgedKeystoreSensitiveWarning.update(true)
+                }
+                copyKeystorePasswordToClipboard()
+            }
+        }
+        pendingSensitiveAction = null
+    }
 
     val importKeystoreLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
@@ -170,6 +213,16 @@ fun ImportExportSettingsScreen(
             description = dialogState.dialogOptionName?.let {
                 stringResource(dialogState.descriptionResId, it)
             } ?: stringResource(dialogState.descriptionResId),
+            icon = Icons.Outlined.WarningAmber
+        )
+    }
+
+    pendingSensitiveAction?.let { action ->
+        ConfirmDialog(
+            onDismiss = { pendingSensitiveAction = null },
+            onConfirm = { confirmSensitiveAction(action) },
+            title = stringResource(action.titleResId),
+            description = stringResource(action.descriptionResId),
             icon = Icons.Outlined.WarningAmber
         )
     }
@@ -244,7 +297,15 @@ fun ImportExportSettingsScreen(
                                 leadingContent = {
                                     val hidePassword = showKeystorePassword
                                     TooltipIconButton(
-                                        onClick = { showKeystorePassword = !showKeystorePassword },
+                                        onClick = {
+                                            if (hidePassword) {
+                                                showKeystorePassword = false
+                                            } else if (hasAcknowledgedKeystoreSensitiveWarning) {
+                                                showKeystorePassword = true
+                                            } else {
+                                                pendingSensitiveAction = SensitiveAction.RevealPassword
+                                            }
+                                        },
                                         tooltip = if (hidePassword) {
                                             stringResource(R.string.hide_password_field)
                                         } else {
@@ -262,19 +323,11 @@ fun ImportExportSettingsScreen(
                                     }
                                     TooltipIconButton(
                                         onClick = {
-                                            clipboard.setPrimaryClip(
-                                                ClipData.newPlainText(
-                                                    resources.getString(R.string.import_keystore_dialog_password_field),
-                                                    keystorePass
-                                                ).apply { description.extras = PersistableBundle().apply {
-                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                                        putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
-                                                    } else {
-                                                        putBoolean("android.content.extra.IS_SENSITIVE", true)
-                                                    }
-                                                } }
-                                            )
-                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) context.toast(resources.getString(R.string.toast_copied_to_clipboard))
+                                            if (hasAcknowledgedKeystoreSensitiveWarning) {
+                                                copyKeystorePasswordToClipboard()
+                                            } else {
+                                                pendingSensitiveAction = SensitiveAction.CopyPassword
+                                            }
                                         },
                                         tooltip = stringResource(R.string.copy_to_clipboard)
                                     ) {
@@ -458,6 +511,17 @@ fun ImportExportSettingsScreen(
             }
         }
     }
+}
+
+private enum class SensitiveAction(@StringRes val titleResId: Int, @StringRes val descriptionResId: Int) {
+    RevealPassword(
+        R.string.show_password_warning_title,
+        R.string.show_password_warning_description
+    ),
+    CopyPassword(
+        R.string.show_password_warning_title,
+        R.string.copy_password_warning_description
+    )
 }
 
 @Composable
@@ -659,3 +723,4 @@ fun KeystoreCredentialsDialog(
         }
     )
 }
+

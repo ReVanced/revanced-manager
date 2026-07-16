@@ -34,6 +34,20 @@ class BundleInformationViewModel(uid: Int) : ViewModel(), KoinComponent {
         }
     }
 
+    fun setEndpoint(value: String) = viewModelScope.launch {
+        val endpoint = value.trim()
+        bundle.first()?.asRemoteOrNull?.let { current ->
+            if (current.endpoint == endpoint) return@launch
+
+            patchBundleRepository.run { current.setEndpoint(endpoint) }
+            bundle.first()?.asRemoteOrNull?.let { updated ->
+                patchBundleRepository.update(updated, showToast = true)
+            }
+        }
+    }
+
+    suspend fun validateEndpoint(value: String) = patchBundleRepository.validateRemoteUrl(value.trim())
+
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         prefs.usePatchesPrereleases.update(value)
         refresh()
