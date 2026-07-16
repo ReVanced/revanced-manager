@@ -16,7 +16,6 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.downloader.DownloaderEntity
 import app.revanced.manager.data.room.sources.SourceProperties
 import app.revanced.manager.domain.manager.SourceManager
-import app.revanced.manager.domain.sources.APISource
 import app.revanced.manager.domain.sources.JsonSource
 import app.revanced.manager.domain.sources.Loader
 import app.revanced.manager.domain.sources.LocalSource
@@ -72,18 +71,19 @@ class DownloaderRepository(
 
         return when (source) {
             is SourceInfo.Local -> LocalSource(actualName, uid, null, file, loader)
-            is SourceInfo.API -> APISource(
+            is SourceInfo.API -> JsonSource(
                 actualName,
                 uid,
                 versionHash,
                 releasedAt,
                 null,
                 file,
-                SourceInfo.API.SENTINEL,
+                defaultSourceUrl(),
                 autoUpdate,
                 loader,
-                protocolHandlers
-            ) { getDownloaderUpdate() }
+                protocolHandlers,
+                json
+            )
 
             is SourceInfo.Remote -> JsonSource(
                 actualName,
@@ -112,6 +112,12 @@ class DownloaderRepository(
         autoUpdate = props.autoUpdate,
         releasedAt = props.releasedAt
     )
+
+    // The default source is a plain URL to the ReVanced API, built from preferences
+    // so URL and prerelease changes take effect on the next reload.
+    private fun defaultSourceUrl() =
+        "${prefs.api.getBlocking()}/v5/manager/downloaders" +
+                if (prefs.useDownloaderPrerelease.getBlocking()) "/prerelease" else ""
 
     override fun realNameOf(loaded: DownloaderPackage) = loaded.name
 

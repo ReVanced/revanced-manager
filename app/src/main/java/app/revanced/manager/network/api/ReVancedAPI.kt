@@ -46,12 +46,8 @@ class ReVancedAPI(
 
     suspend fun getAppHistory() = request<List<ReVancedAssetHistory>>("manager/history${prefs.useManagerPrereleases.prereleaseString()}")
 
-    suspend fun getPatchesUpdate() = request<ReVancedAsset>("patches${prefs.usePatchesPrereleases.prereleaseString()}")
-
     suspend fun getPatchesHistory(apiUrl: String, prerelease: Boolean) =
         request<List<ReVancedAssetHistory>>(apiUrl, defaultApiVersion, "patches/history${prerelease.prereleaseString()}")
-
-    suspend fun getDownloaderUpdate() = request<ReVancedAsset>("manager/downloaders${prefs.useDownloaderPrerelease.prereleaseString()}")
 
     suspend fun getContributors() = request<List<ReVancedGitRepository>>("contributors")
 

@@ -15,7 +15,6 @@ import app.revanced.manager.domain.protocol.ContentProtocolHandler
 import app.revanced.manager.domain.protocol.FileProtocolHandler
 import app.revanced.manager.domain.protocol.HttpProtocolHandler
 import app.revanced.manager.domain.protocol.ProtocolHandler
-import app.revanced.manager.domain.sources.APISource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.RemoteSource
@@ -268,7 +267,9 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         }
 
     suspend fun reloadApiSources() = dispatchAction("Reload API sources") { state ->
-        this@SourceManager.store.state.value.sources.values.filterIsInstance<APISource<LOADED>>()
+        this@SourceManager.store.state.value.sources.values
+            .filterIsInstance<RemoteSource<LOADED>>()
+            .filter { it.isDefault }
             .forEach { src ->
                 with(src) { deleteLocalFile() }
                 updateDb(src.uid) { it.copy(versionHash = null, releasedAt = null) }

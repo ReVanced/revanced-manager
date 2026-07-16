@@ -9,7 +9,6 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.data.room.sources.SourceProperties
 import app.revanced.manager.data.room.sources.Source as SourceInfo
-import app.revanced.manager.domain.sources.APIPatchBundle
 import app.revanced.manager.domain.sources.JsonPatchBundle
 import app.revanced.manager.domain.sources.LocalPatchBundle
 import app.revanced.manager.domain.sources.PatchBundleSource
@@ -69,18 +68,19 @@ class PatchBundleRepository(
 
         return when (source) {
             is SourceInfo.Local -> LocalPatchBundle(actualName, uid, null, file, PatchBundleLoader)
-            is SourceInfo.API -> APIPatchBundle(
+            is SourceInfo.API -> JsonPatchBundle(
                 actualName,
                 uid,
                 versionHash,
                 releasedAt,
                 null,
                 file,
-                SourceInfo.API.SENTINEL,
+                defaultSourceUrl(),
                 autoUpdate,
                 PatchBundleLoader,
-                protocolHandlers
-            ) { getPatchesUpdate() }
+                protocolHandlers,
+                json
+            )
 
             is SourceInfo.Remote -> JsonPatchBundle(
                 actualName,
@@ -109,6 +109,12 @@ class PatchBundleRepository(
         autoUpdate = props.autoUpdate,
         releasedAt = props.releasedAt
     )
+
+    // The default source is a plain URL to the ReVanced API, built from preferences
+    // so URL and prerelease changes take effect on the next reload.
+    private fun defaultSourceUrl() =
+        "${prefs.api.getBlocking()}/v5/patches" +
+                if (prefs.usePatchesPrereleases.getBlocking()) "/prerelease" else ""
 
     override fun realNameOf(loaded: PatchBundle) = loaded.manifestAttributes?.name
     override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<PatchBundle>>) = loadMetadata(sources).toPersistentMap()

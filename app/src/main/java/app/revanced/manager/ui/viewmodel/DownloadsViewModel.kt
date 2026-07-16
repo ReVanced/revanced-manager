@@ -57,6 +57,9 @@ class DownloadsViewModel(
 
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         usePrereleases.update(value)
+
+        // Rebuilds the default source with the URL of the new release channel.
+        downloaderRepository.reload()
         val apiSource = downloaderRepository.downloaderSources.first()[0]?.asRemoteOrNull ?: return@launch
         updateDownloader(apiSource)
     }

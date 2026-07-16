@@ -50,6 +50,9 @@ class BundleInformationViewModel(uid: Int) : ViewModel(), KoinComponent {
 
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         prefs.usePatchesPrereleases.update(value)
+
+        // Rebuilds the default source with the URL of the new release channel.
+        patchBundleRepository.reload()
         refresh()
     }
 }

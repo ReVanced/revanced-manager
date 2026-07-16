@@ -4,24 +4,18 @@ import android.net.Uri
 import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.domain.protocol.ProtocolHandler
 import app.revanced.manager.domain.protocol.getStream
-import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.utils.APIFailure
-import app.revanced.manager.network.utils.APIResponse
-import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.patcher.patch.PatchBundle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.Json
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.File
 import kotlinx.serialization.SerializationException
 
 typealias RemotePatchBundle = RemoteSource<PatchBundle>
 typealias JsonPatchBundle = JsonSource<PatchBundle>
-typealias APIPatchBundle = APISource<PatchBundle>
 
 class UnsupportedRemoteSourceException(cause: Throwable? = null) : Exception(cause)
 
@@ -131,45 +125,5 @@ class JsonSource<T>(
         loader,
         handlers,
         json
-    )
-}
-
-class APISource<T>(
-    name: String,
-    uid: Int,
-    versionHash: String?,
-    releasedAt: LocalDateTime?,
-    error: Throwable?,
-    file: File,
-    endpoint: String,
-    autoUpdate: Boolean,
-    loader: Loader<T>,
-    handlers: Map<String, ProtocolHandler>,
-    private val getUpdate: suspend ReVancedAPI.() -> APIResponse<ReVancedAsset>
-) : RemoteSource<T>(
-    name, uid, versionHash, releasedAt, error, file, endpoint, autoUpdate, loader, handlers
-), KoinComponent {
-    private val api: ReVancedAPI by inject()
-
-    override suspend fun getLatestInfo() = api.getUpdate().getOrThrow()
-    override fun copy(
-        error: Throwable?,
-        name: String,
-        endpoint: String,
-        autoUpdate: Boolean,
-        versionHash: String?,
-        releasedAt: LocalDateTime?
-    ) = APISource(
-        name,
-        uid,
-        versionHash,
-        releasedAt,
-        error,
-        file,
-        endpoint,
-        autoUpdate,
-        loader,
-        handlers,
-        getUpdate
     )
 }
