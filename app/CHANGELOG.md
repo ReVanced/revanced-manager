@@ -1,3 +1,15 @@
+# app [2.7.0-dev.9](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.8...v2.7.0-dev.9) (2026-07-16)
+
+
+### Bug Fixes
+
+* Use correct unicode quote in new strings ([f3fe950](https://github.com/ReVanced/revanced-manager/commit/f3fe950405f4e4a0ab444e37150fee15ca0c2917))
+
+
+### Features
+
+* QoL improvements ([#3335](https://github.com/ReVanced/revanced-manager/issues/3335)) ([398a5c1](https://github.com/ReVanced/revanced-manager/commit/398a5c13c67ec0bf57e10f8f308b52b9ebafa087))
+
 # app [2.7.0-dev.8](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.7...v2.7.0-dev.8) (2026-07-15)
 
 
