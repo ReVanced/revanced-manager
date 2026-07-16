@@ -215,7 +215,7 @@ fun DownloaderInfoScreen(
                     )
                 }
 
-                remote?.endpoint?.takeUnless { source.isDefault }?.let { url ->
+                remote?.uri?.toString()?.takeUnless { source.isDefault }?.let { url ->
                     var showUrlInputDialog by rememberSaveable { mutableStateOf(false) }
 
                     if (showUrlInputDialog) {

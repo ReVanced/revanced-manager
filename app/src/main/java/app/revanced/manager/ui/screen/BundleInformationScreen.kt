@@ -59,7 +59,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
@@ -86,9 +85,9 @@ fun BundleInformationScreen(
     val patchCount by viewModel.patchCount.collectAsStateWithLifecycle(0)
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    val isLocal = src is LocalSource<*>
+    val isLocal = !src.isUpdatable
     val bundleManifestAttributes = src.loaded?.manifestAttributes
-    val (autoUpdate, endpoint) = src.asRemoteOrNull?.let { it.autoUpdate to it.endpoint }
+    val (autoUpdate, endpoint) = src.asRemoteOrNull?.let { it.autoUpdate to it.uri.toString() }
         ?: (null to null)
 
     val subtitleAuthor = bundleManifestAttributes?.author?.let {

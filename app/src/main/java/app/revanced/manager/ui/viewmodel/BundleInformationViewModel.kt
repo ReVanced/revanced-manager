@@ -37,7 +37,7 @@ class BundleInformationViewModel(uid: Int) : ViewModel(), KoinComponent {
     fun setEndpoint(value: String) = viewModelScope.launch {
         val endpoint = value.trim()
         bundle.first()?.asRemoteOrNull?.let { current ->
-            if (current.endpoint == endpoint) return@launch
+            if (current.uri.toString() == endpoint) return@launch
 
             patchBundleRepository.run { current.setEndpoint(endpoint) }
             bundle.first()?.asRemoteOrNull?.let { updated ->

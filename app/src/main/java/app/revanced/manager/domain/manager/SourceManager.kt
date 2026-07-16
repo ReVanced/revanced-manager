@@ -17,8 +17,6 @@ import app.revanced.manager.domain.protocol.FileProtocolHandler
 import app.revanced.manager.domain.protocol.HttpProtocolHandler
 import app.revanced.manager.domain.protocol.ProtocolHandler
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.sources.LocalSource
-import app.revanced.manager.domain.sources.RemoteSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.UnsupportedRemoteSourceException
 import app.revanced.manager.domain.sources.asRemoteSourceException
@@ -142,7 +140,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             updateDb(uid) {
                 it.copy(
                     name = newName,
-                    releasedAt = (src as? RemoteSource)?.releasedAt?.toEpochMillis()
+                    releasedAt = src.releasedAt?.toEpochMillis()
                 )
             }
             sources[uid] = src.copy(name = newName)
@@ -241,7 +239,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     suspend fun createLocal(uri: Uri) =
         dispatchAction("Add local") { state ->
             val entity = createEntity("", SourceInfo.Local)
-            with(loadEntity(entity) as LocalSource<LOADED>) {
+            with(loadEntity(entity)) {
                 try {
                     replace(uri)
                 } catch (e: Exception) {
@@ -261,14 +259,13 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     suspend fun createRemote(url: String, autoUpdate: Boolean) =
         dispatchAction("Add remote ($url)") { state ->
             val entity = createEntity("", SourceInfo.from(url), autoUpdate)
-            val src = loadEntity(entity) as RemoteSource<LOADED>
+            val src = loadEntity(entity)
             update(src)
             state.copy(sources = state.sources.toMutableMap().also { it[src.uid] = src })
         }
 
     suspend fun reloadApiSources() = dispatchAction("Reload API sources") { state ->
         this@SourceManager.store.state.value.sources.values
-            .filterIsInstance<RemoteSource<LOADED>>()
             .filter { it.isDefault }
             .forEach { src ->
                 with(src) { deleteLocalFile() }
@@ -278,19 +275,19 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         doReload(state)
     }
 
-    suspend fun RemoteSource<LOADED>.setAutoUpdate(value: Boolean) =
+    suspend fun Source<LOADED>.setAutoUpdate(value: Boolean) =
         dispatchAction("Set auto update ($name, $value)") { state ->
             updateDb(uid) { it.copy(autoUpdate = value) }
-            val newSrc = state.sources[uid]?.asRemoteOrNull?.copy(autoUpdate = value)
+            val newSrc = state.sources[uid]?.copy(autoUpdate = value)
                 ?: return@dispatchAction state
 
             state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })
         }
 
-    suspend fun RemoteSource<LOADED>.setEndpoint(value: String) =
+    suspend fun Source<LOADED>.setEndpoint(value: String) =
         dispatchAction("Set endpoint ($name, $value)") { state ->
             val current = state.sources[uid]?.asRemoteOrNull ?: return@dispatchAction state
-            if (current.endpoint == value) return@dispatchAction state
+            if (current.uri.toString() == value) return@dispatchAction state
 
             updateDb(uid) { props ->
                 if (props.source !is SourceInfo.Remote) return@updateDb props
@@ -305,7 +302,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             val newSources = state.sources.toMutableMap()
             newSources[uid] = current.copy(
                 error = null,
-                endpoint = value,
+                uri = Uri.parse(value),
                 versionHash = null,
                 releasedAt = null
             )
@@ -319,7 +316,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         }
 
     suspend fun update(
-        vararg sources: RemoteSource<LOADED>,
+        vararg sources: Source<LOADED>,
         showToast: Boolean = false,
         force: Boolean = true
     ) {
@@ -366,7 +363,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         private val force: Boolean = false,
         private val redownload: Boolean = false,
         private val showToast: Boolean = false,
-        private val predicate: (source: RemoteSource<LOADED>) -> Boolean = { true },
+        private val predicate: (source: Source<LOADED>) -> Boolean = { true },
     ) : Action<State<LOADED, OUTPUT>> {
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
@@ -382,8 +379,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             val outdated = current.outdatedSources.toMutableSet()
 
             val results = current.sources.values
-                .filterIsInstance<RemoteSource<LOADED>>()
-                .filter { predicate(it) }
+                .filter { it.isUpdatable && predicate(it) }
                 .also { targets ->
                     // Clear errors for sources we are updating.
                     targets.forEach { src ->
@@ -398,7 +394,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                         val updateResult = it.runCatching {
                             when {
                                 redownload -> downloadLatest()
-                                checkOnly -> getUpdateInfo()?.let { info -> RemoteSource.UpdateResult(info.version, info.createdAt) }
+                                checkOnly -> getUpdateInfo()?.let { info -> Source.UpdateResult(info.version, info.createdAt) }
                                 else -> update()
                             } ?: return@update null
                         }

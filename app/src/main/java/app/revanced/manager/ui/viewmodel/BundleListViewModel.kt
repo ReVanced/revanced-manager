@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.sources.PatchBundleSource
-import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.mutableStateSetOf
 import kotlinx.coroutines.flow.combine
@@ -52,7 +51,7 @@ class BundleListViewModel : ViewModel(), KoinComponent {
 
             Event.UPDATE_SELECTED -> viewModelScope.launch {
                 patchBundleRepository.update(
-                    *getSelectedSources().filterIsInstance<RemotePatchBundle>().toTypedArray(),
+                    *getSelectedSources().filter { it.isUpdatable }.toTypedArray(),
                     showToast = true
                 )
             }
@@ -63,7 +62,7 @@ class BundleListViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch { patchBundleRepository.remove(src) }
 
     fun update(src: PatchBundleSource) = viewModelScope.launch {
-        if (src !is RemotePatchBundle) return@launch
+        if (!src.isUpdatable) return@launch
 
         patchBundleRepository.update(src, showToast = true)
     }

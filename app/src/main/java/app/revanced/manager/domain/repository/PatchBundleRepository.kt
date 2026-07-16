@@ -9,12 +9,10 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.data.room.sources.SourceProperties
 import app.revanced.manager.data.room.sources.Source as SourceInfo
-import app.revanced.manager.domain.sources.JsonPatchBundle
-import app.revanced.manager.domain.sources.LocalPatchBundle
+import android.net.Uri
 import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.manager.SourceManager
 import app.revanced.manager.domain.sources.Loader
-import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.patcher.patch.PatchBundle
@@ -66,43 +64,26 @@ class PatchBundleRepository(
                 .toLocalDateTime(TimeZone.UTC)
         }
 
-        return when (source) {
-            is SourceInfo.Local -> LocalPatchBundle(
-                actualName,
-                uid,
-                null,
-                file,
-                PatchBundleLoader,
-                protocolHandlers
-            )
-            is SourceInfo.API -> JsonPatchBundle(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                defaultSourceUrl(),
-                autoUpdate,
-                PatchBundleLoader,
-                protocolHandlers,
-                json
-            )
-
-            is SourceInfo.Remote -> JsonPatchBundle(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                source.url.toString(),
-                autoUpdate,
-                PatchBundleLoader,
-                protocolHandlers,
-                json
-            )
+        val uri = when (source) {
+            // Imported files are copied into app storage and their origin is not recorded.
+            is SourceInfo.Local -> Uri.parse("rvp:${file.absolutePath}")
+            is SourceInfo.API -> Uri.parse(defaultSourceUrl())
+            is SourceInfo.Remote -> Uri.parse(source.url.toString())
         }
+
+        return Source(
+            actualName,
+            uid,
+            uri,
+            versionHash,
+            releasedAt,
+            autoUpdate,
+            null,
+            file,
+            PatchBundleLoader,
+            protocolHandlers,
+            json
+        )
     }
 
     override fun entityFromProps(
@@ -201,7 +182,7 @@ class PatchBundleRepository(
                 this[src.uid] = PatchBundleInfo.Global(
                     src.name,
                     bundle.manifestAttributes?.version,
-                    (src as? RemotePatchBundle)?.releasedAt,
+                    src.releasedAt,
                     src.uid,
                     result.getOrThrow().toList()
                 )

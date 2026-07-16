@@ -12,7 +12,6 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.sources.RemoteSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.network.downloader.DownloaderPackage
 import app.revanced.manager.util.PM
@@ -102,7 +101,7 @@ class DownloadsViewModel(
         }
     }
 
-    fun updateDownloader(src: RemoteSource<DownloaderPackage>) = viewModelScope.launch {
+    fun updateDownloader(src: Source<DownloaderPackage>) = viewModelScope.launch {
         try {
             isUpdatingDownloader = true
             downloaderRepository.update(src, showToast = true)
@@ -111,15 +110,15 @@ class DownloadsViewModel(
         }
     }
 
-    fun setAutoUpdate(src: RemoteSource<DownloaderPackage>, value: Boolean) = viewModelScope.launch {
+    fun setAutoUpdate(src: Source<DownloaderPackage>, value: Boolean) = viewModelScope.launch {
         with(downloaderRepository) {
             src.setAutoUpdate(value)
         }
     }
 
-    fun setEndpoint(src: RemoteSource<DownloaderPackage>, value: String) = viewModelScope.launch {
+    fun setEndpoint(src: Source<DownloaderPackage>, value: String) = viewModelScope.launch {
         val endpoint = value.trim()
-        if (src.endpoint == endpoint) return@launch
+        if (src.uri.toString() == endpoint) return@launch
 
         with(downloaderRepository) {
             src.setEndpoint(endpoint)

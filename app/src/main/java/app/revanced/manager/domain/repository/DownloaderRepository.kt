@@ -15,10 +15,9 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.downloader.DownloaderEntity
 import app.revanced.manager.data.room.sources.SourceProperties
+import android.net.Uri
 import app.revanced.manager.domain.manager.SourceManager
-import app.revanced.manager.domain.sources.JsonSource
 import app.revanced.manager.domain.sources.Loader
-import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
@@ -69,43 +68,26 @@ class DownloaderRepository(
                 .toLocalDateTime(kotlinx.datetime.TimeZone.UTC)
         }
 
-        return when (source) {
-            is SourceInfo.Local -> LocalSource(
-                actualName,
-                uid,
-                null,
-                file,
-                loader,
-                protocolHandlers
-            )
-            is SourceInfo.API -> JsonSource(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                defaultSourceUrl(),
-                autoUpdate,
-                loader,
-                protocolHandlers,
-                json
-            )
-
-            is SourceInfo.Remote -> JsonSource(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                source.url.toString(),
-                autoUpdate,
-                loader,
-                protocolHandlers,
-                json
-            )
+        val uri = when (source) {
+            // Imported files are copied into app storage and their origin is not recorded.
+            is SourceInfo.Local -> Uri.parse("rvp:${file.absolutePath}")
+            is SourceInfo.API -> Uri.parse(defaultSourceUrl())
+            is SourceInfo.Remote -> Uri.parse(source.url.toString())
         }
+
+        return Source(
+            actualName,
+            uid,
+            uri,
+            versionHash,
+            releasedAt,
+            autoUpdate,
+            null,
+            file,
+            loader,
+            protocolHandlers,
+            json
+        )
     }
 
     override fun entityFromProps(
