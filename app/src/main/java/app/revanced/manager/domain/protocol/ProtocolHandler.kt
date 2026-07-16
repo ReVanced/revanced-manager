@@ -45,3 +45,12 @@ class FileProtocolHandler(
         return contentProtocolHandler.getStream(picked, block)
     }
 }
+
+// Opens a stream to [uri] with the handler registered for its scheme.
+suspend fun <T> Map<String, ProtocolHandler>.getStream(
+    uri: Uri,
+    block: suspend (InputStream) -> T
+): T {
+    val handler = this[uri.scheme] ?: throw IOException("No handler for $uri")
+    return handler.getStream(uri, block)
+}

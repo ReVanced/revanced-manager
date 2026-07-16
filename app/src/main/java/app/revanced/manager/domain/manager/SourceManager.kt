@@ -11,6 +11,10 @@ import app.revanced.manager.data.redux.Store
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.sources.Source as SourceInfo
 import app.revanced.manager.data.room.sources.SourceProperties
+import app.revanced.manager.domain.protocol.ContentProtocolHandler
+import app.revanced.manager.domain.protocol.FileProtocolHandler
+import app.revanced.manager.domain.protocol.HttpProtocolHandler
+import app.revanced.manager.domain.protocol.ProtocolHandler
 import app.revanced.manager.domain.sources.APISource
 import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.LocalSource
@@ -37,7 +41,9 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import java.io.File
 import java.io.InputStream
@@ -56,6 +62,14 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     protected val prefs: PreferencesManager by inject()
     protected val networkInfo: NetworkInfo by inject()
     protected val http: HttpService by inject()
+    protected val json: Json by inject()
+
+    protected val protocolHandlers: Map<String, ProtocolHandler> = mapOf(
+        "http" to get<HttpProtocolHandler>(),
+        "https" to get<HttpProtocolHandler>(),
+        "content" to get<ContentProtocolHandler>(),
+        "file" to get<FileProtocolHandler>(),
+    )
 
     protected abstract suspend fun dbGetAll(): List<DB>
     protected abstract suspend fun dbGetProps(uid: Int): SourceProperties?

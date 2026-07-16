@@ -78,7 +78,8 @@ class PatchBundleRepository(
                 file,
                 SourceInfo.API.SENTINEL,
                 autoUpdate,
-                PatchBundleLoader
+                PatchBundleLoader,
+                protocolHandlers
             ) { getPatchesUpdate() }
 
             is SourceInfo.Remote -> JsonPatchBundle(
@@ -90,7 +91,9 @@ class PatchBundleRepository(
                 file,
                 source.url.toString(),
                 autoUpdate,
-                PatchBundleLoader
+                PatchBundleLoader,
+                protocolHandlers,
+                json
             )
         }
     }

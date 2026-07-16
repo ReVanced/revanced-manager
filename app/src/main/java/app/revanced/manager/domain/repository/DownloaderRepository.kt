@@ -81,7 +81,8 @@ class DownloaderRepository(
                 file,
                 SourceInfo.API.SENTINEL,
                 autoUpdate,
-                loader
+                loader,
+                protocolHandlers
             ) { getDownloaderUpdate() }
 
             is SourceInfo.Remote -> JsonSource(
@@ -93,7 +94,9 @@ class DownloaderRepository(
                 file,
                 source.url.toString(),
                 autoUpdate,
-                loader
+                loader,
+                protocolHandlers,
+                json
             )
         }
     }

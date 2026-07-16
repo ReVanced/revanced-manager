@@ -1,5 +1,6 @@
 package app.revanced.manager.data.room.sources
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import io.ktor.http.Url
 
@@ -22,10 +23,15 @@ sealed class Source {
     }
 
     companion object {
-        fun from(value: String) = when (value) {
-            Local.SENTINEL -> Local
-            API.SENTINEL -> API
-            else -> Remote(Url(value))
+        fun from(value: String): Source {
+            val uri = Uri.parse(value)
+
+            return when (uri.scheme) {
+                // Rows written before sources were stored as URIs are plain
+                // "local" and "api" values without a scheme.
+                null -> if (value == API.SENTINEL) API else Local
+                else -> Remote(Url(value))
+            }
         }
     }
 }
