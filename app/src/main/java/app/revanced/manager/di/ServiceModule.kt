@@ -14,7 +14,8 @@ import org.koin.dsl.module
 val serviceModule = module {
     singleOf(::HttpService)
     singleOf(::UiFilePicker) { bind<FilePicker>() }
+    single { androidContext().contentResolver }
     singleOf(::HttpProtocolHandler)
-    single { ContentProtocolHandler(androidContext().contentResolver) }
+    singleOf(::ContentProtocolHandler)
     singleOf(::FileProtocolHandler)
 }
