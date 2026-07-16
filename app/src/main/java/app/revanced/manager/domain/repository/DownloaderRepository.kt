@@ -70,7 +70,14 @@ class DownloaderRepository(
         }
 
         return when (source) {
-            is SourceInfo.Local -> LocalSource(actualName, uid, null, file, loader)
+            is SourceInfo.Local -> LocalSource(
+                actualName,
+                uid,
+                null,
+                file,
+                loader,
+                protocolHandlers
+            )
             is SourceInfo.API -> JsonSource(
                 actualName,
                 uid,

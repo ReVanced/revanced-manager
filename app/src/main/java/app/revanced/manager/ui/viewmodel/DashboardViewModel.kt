@@ -1,8 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.ContentResolver
 import android.net.Uri
 import android.os.Build
 import androidx.compose.runtime.getValue
@@ -38,7 +36,6 @@ class DashboardViewModel(
     val availablePatches =
         patchBundleRepository.bundleInfoFlow.map { it.values.sumOf { bundle -> bundle.patches.size } }
     val bundleDownloadError = patchBundleRepository.apiOutageError
-    private val contentResolver: ContentResolver = app.contentResolver
 
     val hasUpdate = managerUpdateRepository.hasUpdate
     val updateVersion = managerUpdateRepository.version
@@ -124,9 +121,8 @@ class DashboardViewModel(
         patchBundleRepository.remove(source)
     }
 
-    @SuppressLint("Recycle")
     fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
-        patchBundleRepository.createLocal { contentResolver.openInputStream(patchBundle)!! }
+        patchBundleRepository.createLocal(patchBundle)
     }
 
     fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {

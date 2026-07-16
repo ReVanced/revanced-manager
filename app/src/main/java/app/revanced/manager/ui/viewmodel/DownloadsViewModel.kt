@@ -1,7 +1,5 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.annotation.SuppressLint
-import android.app.Application
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,14 +25,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DownloadsViewModel(
-    app: Application,
     private val downloadedAppRepository: DownloadedAppRepository,
     private val downloaderRepository: DownloaderRepository,
     prefs: PreferencesManager,
     val pm: PM,
     val networkInfo: NetworkInfo,
 ) : ViewModel() {
-    private val contentResolver = app.contentResolver
     val usePrereleases = prefs.useDownloaderPrerelease
     val downloaderSources = downloaderRepository.downloaderSources
     val downloadedApps = downloadedAppRepository.getAll().map { downloadedApps ->
@@ -64,9 +60,8 @@ class DownloadsViewModel(
         updateDownloader(apiSource)
     }
 
-    @SuppressLint("Recycle")
     fun createLocalSource(downloaderUri: Uri) = viewModelScope.launch {
-        downloaderRepository.createLocal { contentResolver.openInputStream(downloaderUri)!! }
+        downloaderRepository.createLocal(downloaderUri)
     }
 
     fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {

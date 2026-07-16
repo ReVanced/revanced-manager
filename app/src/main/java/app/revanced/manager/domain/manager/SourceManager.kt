@@ -1,6 +1,7 @@
 package app.revanced.manager.domain.manager
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import androidx.annotation.StringRes
 import app.revanced.manager.R
@@ -45,7 +46,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import java.io.File
-import java.io.InputStream
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -238,12 +238,12 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             )
         }
 
-    suspend fun createLocal(createStream: suspend () -> InputStream) =
+    suspend fun createLocal(uri: Uri) =
         dispatchAction("Add local") { state ->
             val entity = createEntity("", SourceInfo.Local)
             with(loadEntity(entity) as LocalSource<LOADED>) {
                 try {
-                    createStream().use { patches -> replace(patches) }
+                    replace(uri)
                 } catch (e: Exception) {
                     if (e is CancellationException) throw e
                     Log.e(tag, "Got exception while creating local source", e)

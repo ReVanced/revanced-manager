@@ -1,11 +1,13 @@
 package app.revanced.manager.domain.sources
 
+import android.net.Uri
 import app.revanced.manager.data.redux.ActionContext
+import app.revanced.manager.domain.protocol.ProtocolHandler
+import app.revanced.manager.domain.protocol.getStream
 import app.revanced.manager.patcher.patch.PatchBundle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.InputStream
 
 typealias LocalPatchBundle = LocalSource<PatchBundle>
 
@@ -14,12 +16,13 @@ class LocalSource<T>(
     uid: Int,
     error: Throwable?,
     file: File,
-    loader: Loader<T>
+    loader: Loader<T>,
+    private val handlers: Map<String, ProtocolHandler>
 ) : Source<T>(name, uid, error, file, loader) {
-    suspend fun ActionContext.replace(inputStream: InputStream) {
+    suspend fun ActionContext.replace(uri: Uri) {
         withContext(Dispatchers.IO) {
-            outputStream().use { outputStream ->
-                inputStream.copyTo(outputStream)
+            handlers.getStream(uri) { stream ->
+                outputStream().use { stream.copyTo(it) }
             }
         }
     }
@@ -29,6 +32,7 @@ class LocalSource<T>(
         uid,
         error,
         file,
-        loader
+        loader,
+        handlers
     )
 }

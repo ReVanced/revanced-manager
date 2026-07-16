@@ -67,7 +67,14 @@ class PatchBundleRepository(
         }
 
         return when (source) {
-            is SourceInfo.Local -> LocalPatchBundle(actualName, uid, null, file, PatchBundleLoader)
+            is SourceInfo.Local -> LocalPatchBundle(
+                actualName,
+                uid,
+                null,
+                file,
+                PatchBundleLoader,
+                protocolHandlers
+            )
             is SourceInfo.API -> JsonPatchBundle(
                 actualName,
                 uid,
