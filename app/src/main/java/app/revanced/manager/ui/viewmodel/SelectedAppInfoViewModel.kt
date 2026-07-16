@@ -60,6 +60,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -83,7 +84,9 @@ class SelectedAppInfoViewModel(
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
-    val downloaders = downloaderRepository.loadedDownloadersFlow
+    val downloaders = downloaderRepository.loadedDownloadersFlow.map { list ->
+            list.groupBy { it.packageLabel }
+        }
     val allDownloaders = downloaderRepository.downloaderSources
     val packageName = input.app.packageName
 

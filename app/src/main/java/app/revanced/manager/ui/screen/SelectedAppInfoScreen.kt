@@ -6,7 +6,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,15 +14,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material.icons.outlined.WarningAmber
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -46,10 +44,10 @@ import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.patcher.patch.PatchBundleInfo
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.FullscreenDialog
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.NotificationCardType
@@ -165,7 +163,7 @@ fun SelectedAppInfoScreen(
     }
 
     val error by vm.errorFlow.collectAsStateWithLifecycle(null)
-    val downloaders by vm.downloaders.collectAsStateWithLifecycle(emptyList())
+    val downloaders by vm.downloaders.collectAsStateWithLifecycle(emptyMap())
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -298,17 +296,18 @@ fun SelectedAppInfoScreen(
                     )
                 }
             )
-            PageItem(
-                R.string.version,
-                selectedVersionLabel,
-                warningDescription = if (showVersionCompatibilityWarning) {
-                    stringResource(R.string.version_compatibility_warning)
-                } else {
-                    null
-                },
-                enabled = versionOptions.unrestricted || versionOptions.versions.isNotEmpty(),
-                onClick = { showVersionSelector = true }
-            )
+            if (versionOptions.versions.isNotEmpty()) {
+                PageItem(
+                    R.string.version,
+                    selectedVersionLabel,
+                    warningDescription = if (showVersionCompatibilityWarning) {
+                        stringResource(R.string.version_compatibility_warning)
+                    } else {
+                        null
+                    },
+                    onClick = { showVersionSelector = true }
+                )
+            }
             val autoSourceSubtitle = run {
                 val resolved = vm.resolveAutoSource(vm.selectedApp.version)
                 when {
@@ -325,8 +324,10 @@ fun SelectedAppInfoScreen(
                     is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
                     is SelectedApp.Download -> stringResource(
                         R.string.apk_source_downloader,
-                        downloaders.find { it.packageName == app.data.downloaderPackageName && it.name == app.data.downloaderClassName }?.name
-                            ?: app.data.downloaderPackageName
+                        downloaders.values
+                            .flatten()
+                            .find { it.className == app.data.downloaderClassName }
+                            ?.packageLabel ?: app.data.downloaderPackageName
                     )
 
                     is SelectedApp.Local -> stringResource(R.string.apk_source_local)
@@ -373,15 +374,13 @@ fun SelectedAppInfoScreen(
 private fun PageItem(
     @StringRes title: Int,
     description: String,
-    enabled: Boolean = true,
     warningDescription: String? = null,
     warningColor: Color = Color.Unspecified,
     onClick: () -> Unit
 ) {
     ListItem(
         modifier = Modifier
-            .clickable(enabled = enabled, onClick = onClick)
-            .enabled(enabled)
+            .clickable(onClick = onClick)
             .padding(start = 8.dp),
         headlineContent = {
             Text(
@@ -463,7 +462,7 @@ private fun PatchInfo.versionConstraintFor(packageName: String): Set<String>? {
     return pkg.versions?.toSet()?.takeIf { it.isNotEmpty() }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun VersionSelectorDialog(
     selectedVersion: String?,
@@ -472,17 +471,16 @@ private fun VersionSelectorDialog(
     onDismissRequest: () -> Unit,
     onSelect: (String?) -> Unit
 ) {
-    AlertDialogExtended(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
-                Text(stringResource(R.string.cancel))
+    FullscreenDialog(onDismissRequest) {
+        Scaffold(
+            topBar = {
+                AppTopBar(
+                    title = stringResource(R.string.version),
+                    onBackClick = onDismissRequest
+                )
             }
-        },
-        title = { Text(stringResource(R.string.version)) },
-        textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-        text = {
-            LazyColumn {
+        ) { paddingValues ->
+            LazyColumn(modifier = Modifier.padding(paddingValues)) {
                 if (allowAnyVersion) {
                     item(key = "any") {
                         ListItem(
@@ -515,13 +513,13 @@ private fun VersionSelectorDialog(
                 }
             }
         }
-    )
+    }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun AppSourceSelectorDialog(
-    downloaders: List<LoadedDownloader>,
+    downloaders: Map<String, List<LoadedDownloader>>,
     downloadedApps: List<SelectedApp.Local>,
     activeSearchJob: LoadedDownloader?,
     requiredVersion: String?,
@@ -534,77 +532,106 @@ private fun AppSourceSelectorDialog(
 ) {
     val canSelect = activeSearchJob == null
 
-    AlertDialogExtended(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onDismissRequest, shapes = ButtonDefaults.shapes()) {
-                Text(stringResource(R.string.cancel))
+    val hasDownloaded = downloadedApps.any {
+        requiredVersion == null || it.version == requiredVersion
+    }
+    val hasAutoSource =
+        downloaders.isNotEmpty() ||
+                hasDownloaded ||
+                autoSelection is SelectedApp.Installed
+
+    FullscreenDialog(onDismissRequest) {
+        Scaffold(
+            topBar = {
+                AppTopBar(
+                    title = stringResource(R.string.app_source_dialog_title),
+                    onBackClick = onDismissRequest
+                )
             }
-        },
-        title = { Text(stringResource(R.string.app_source_dialog_title)) },
-        textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-        text = {
-            LazyColumn {
-                item(key = "auto") {
-                    val hasDownloader = downloaders.isNotEmpty()
-                    val hasDownloaded =
-                        downloadedApps.any { app -> requiredVersion == null || app.version == requiredVersion }
-                    val hasAutoSource =
-                        hasDownloader || hasDownloaded || autoSelection is SelectedApp.Installed
+        ) { paddingValues ->
+            LazyColumn(Modifier.padding(paddingValues)) {
+                item("auto") {
                     ListItem(
                         modifier = Modifier
-                            .clickable(enabled = canSelect && hasAutoSource) { onSelectAuto() }
+                            .clickable(
+                                enabled = canSelect && hasAutoSource,
+                                onClick = onSelectAuto
+                            )
                             .enabled(hasAutoSource),
-                        headlineContent = { Text(stringResource(R.string.app_source_dialog_option_auto)) },
+                        headlineContent = {
+                            Text(stringResource(R.string.app_source_dialog_option_auto))
+                        },
                         supportingContent = {
                             Text(
-                                if (hasAutoSource)
-                                    stringResource(R.string.app_source_dialog_option_auto_description)
-                                else
-                                    stringResource(R.string.app_source_dialog_option_auto_unavailable)
+                                stringResource(
+                                    if (hasAutoSource)
+                                        R.string.app_source_dialog_option_auto_description
+                                    else
+                                        R.string.app_source_dialog_option_auto_unavailable
+                                )
                             )
                         },
                         colors = transparentListItemColors
                     )
                 }
 
-                items(
-                    downloadedApps,
-                    key = { "downloaded_${it.version}" }
-                ) { app ->
-                    val usable = requiredVersion == null || app.version == requiredVersion
+                item("storage") {
                     ListItem(
-                        modifier = Modifier
-                            .clickable(enabled = canSelect && usable) { onSelect(app) }
-                            .enabled(usable),
-                        headlineContent = { Text(stringResource(R.string.apk_source_downloaded)) },
-                        supportingContent = { Text(app.version) },
-                        colors = transparentListItemColors
-                    )
-                }
-
-                items(downloaders) { downloader ->
-                    ListItem(
-                        modifier = Modifier.clickable(enabled = canSelect) {
-                            onSelectDownloader(
-                                downloader
-                            )
-                        },
-                        headlineContent = { Text(downloader.name) },
-                        trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == downloader },
-                        colors = transparentListItemColors
-                    )
-                }
-
-                item(key = "storage") {
-                    ListItem(
-                        modifier = Modifier.clickable { onSelectFromStorage() },
+                        modifier = Modifier.clickable(onClick = onSelectFromStorage),
                         headlineContent = { Text(stringResource(R.string.select_from_storage)) },
                         supportingContent = { Text(stringResource(R.string.select_from_storage_description)) },
                         colors = transparentListItemColors
                     )
                 }
+
+                if (downloadedApps.isNotEmpty()) {
+                    item { HorizontalDivider() }
+
+                    items(downloadedApps, key = { it.version }) { app ->
+                        val usable =
+                            requiredVersion == null || app.version == requiredVersion
+
+                        ListItem(
+                            modifier = Modifier
+                                .clickable(enabled = canSelect && usable) { onSelect(app) }
+                                .enabled(usable),
+                            headlineContent = { Text(app.packageName) },
+                            supportingContent = { Text(app.version) },
+                            overlineContent = {
+                                Text(stringResource(R.string.source_selector_category_downloaded))
+                            },
+                            colors = transparentListItemColors
+                        )
+                    }
+                }
+
+                if (downloaders.isNotEmpty()) {
+                    item { HorizontalDivider() }
+
+                    downloaders.forEach { (name, list) ->
+                        items(list) { downloader ->
+                            ListItem(
+                                modifier = Modifier.clickable(enabled = canSelect) {
+                                    onSelectDownloader(downloader)
+                                },
+                                headlineContent = { Text(downloader.name) },
+                                trailingContent = {
+                                    if (activeSearchJob == downloader) {
+                                        LoadingIndicator()
+                                    }
+                                },
+                                overlineContent = {
+                                    Text(name)
+                                },
+                                supportingContent = {
+                                    if (!requiredVersion.isNullOrEmpty()) Text("${autoSelection.packageName} ${autoSelection.version}")
+                                },
+                                colors = transparentListItemColors
+                            )
+                        }
+                    }
+                }
             }
         }
-    )
+    }
 }

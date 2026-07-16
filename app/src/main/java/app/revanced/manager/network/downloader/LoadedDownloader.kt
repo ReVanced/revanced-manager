@@ -6,6 +6,7 @@ import app.revanced.manager.downloader.Scope
 
 class LoadedDownloader(
     val packageName: String,
+    val packageLabel: String,
     val className: String,
     val name: String,
     val scopeImpl: Scope,
