@@ -421,11 +421,11 @@ It’s only compatible with these versions: %2$s</string>
     <string name="show_password_field">Show password</string>
     <string name="hide_password_field">Hide password</string>
     <string name="show_password_warning_title">Show password?</string>
-    <string name="show_password_warning_description">Do not show your keystore password to anyone else.
+    <string name="show_password_warning_description">Don’t show your keystore password to anyone else.
 
         This warning will only be shown once.</string>
     <string name="copy_password_warning_title">Copy password?</string>
-    <string name="copy_password_warning_description">Don't show your keystore password to anyone else.
+    <string name="copy_password_warning_description">Don’t show your keystore password to anyone else.
 
         This warning will only be shown once.</string>
 
