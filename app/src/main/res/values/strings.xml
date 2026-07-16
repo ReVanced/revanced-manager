@@ -76,6 +76,7 @@ Second \"item\" text"</string>
     <string name="patches_error">Error</string>
     <string name="patches_error_description">Couldn’t load patches, tap for details</string>
     <string name="patches_not_downloaded">Couldn’t download patches</string>
+    <string name="patches_invalid_file_extension">Only .rvp patch bundles can be imported.</string>
     <string name="patches_name_default">Patches</string>
     <string name="source_name_fallback">Unnamed</string>
 

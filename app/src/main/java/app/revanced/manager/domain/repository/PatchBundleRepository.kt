@@ -2,7 +2,6 @@ package app.revanced.manager.domain.repository
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import app.revanced.library.mostCommonCompatibleVersions
 import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
@@ -20,9 +19,7 @@ import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.patcher.patch.PatchBundleInfo
-import app.revanced.manager.util.tag
 import kotlinx.collections.immutable.*
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -158,19 +155,8 @@ class PatchBundleRepository(
             (src.loaded ?: return@mapNotNull null) to src
         }.toMap()
 
-        val metadata = try {
-            runInterruptible(Dispatchers.Default) {
-                PatchBundle.Loader.metadata(map.keys)
-            }
-        } catch (e: CancellationException) {
-            throw e
-        } catch (error: Throwable) {
-            sources.entries.forEach { entry ->
-                entry.setValue(entry.value.copy(error = error))
-            }
-
-            Log.e(tag, "Failed to load bundles", error)
-            emptyMap()
+        val metadata = runInterruptible(Dispatchers.Default) {
+            PatchBundle.Loader.metadata(map.keys)
         }
 
         val output = buildMap {

@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
 import android.os.Build
+import android.provider.OpenableColumns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -18,6 +19,7 @@ import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.dto.ReVancedAnnouncement
 import app.revanced.manager.util.PM
+import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
@@ -126,7 +128,27 @@ class DashboardViewModel(
 
     @SuppressLint("Recycle")
     fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
+        if (!patchBundle.hasPatchBundleExtension()) {
+            app.toast(app.getString(R.string.patches_invalid_file_extension))
+            return@launch
+        }
+
         patchBundleRepository.createLocal { contentResolver.openInputStream(patchBundle)!! }
+    }
+
+    private fun Uri.hasPatchBundleExtension() = displayName()?.endsWith(".rvp", ignoreCase = true) ?: true
+
+    private fun Uri.displayName(): String? {
+        if (scheme == ContentResolver.SCHEME_CONTENT) {
+            contentResolver.query(this, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+                val displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (displayNameIndex >= 0 && cursor.moveToFirst()) return cursor.getString(displayNameIndex)
+            }
+
+            return null
+        }
+
+        return path?.substringAfterLast('/')
     }
 
     fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
