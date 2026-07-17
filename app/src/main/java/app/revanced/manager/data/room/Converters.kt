@@ -1,16 +1,16 @@
 package app.revanced.manager.data.room
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import app.revanced.manager.data.room.options.Option.SerializedValue
-import app.revanced.manager.data.room.sources.Source
 import java.io.File
 
 class Converters {
     @TypeConverter
-    fun sourceFromString(value: String) = Source.from(value)
+    fun uriFromString(value: String): Uri = Uri.parse(value)
 
     @TypeConverter
-    fun sourceToString(value: Source) = value.toString()
+    fun uriToString(value: Uri) = value.toString()
 
     @TypeConverter
     fun fileFromString(value: String) = File(value)

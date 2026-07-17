@@ -31,7 +31,7 @@ class DeveloperOptionsViewModel(
         prefs.api.update(value)
 
         arrayOf(patchBundleRepository, downloaderRepository).forEach {
-            it.reloadApiSources()
+            it.resetDefaultSource()
             it.updateCheck()
         }
     }

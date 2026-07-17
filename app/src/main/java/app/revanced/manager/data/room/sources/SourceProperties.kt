@@ -1,15 +1,12 @@
-package app.revanced.manager.data.room.bundles
+package app.revanced.manager.data.room.sources
 
 import android.net.Uri
-import androidx.room.*
-import app.revanced.manager.domain.manager.SourceManager
+import androidx.room.ColumnInfo
 
-@Entity(tableName = "patch_bundles")
-data class PatchBundleEntity(
-    @PrimaryKey override val uid: Int,
+data class SourceProperties(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "version") val versionHash: String? = null,
     @ColumnInfo(name = "source") val source: Uri,
     @ColumnInfo(name = "auto_update") val autoUpdate: Boolean,
     @ColumnInfo(name = "released_at") val releasedAt: Long? = null,
-) : SourceManager.DatabaseEntity
+)

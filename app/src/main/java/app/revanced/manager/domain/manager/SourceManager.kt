@@ -10,7 +10,6 @@ import app.revanced.manager.data.redux.Action
 import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.data.redux.Store
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
-import app.revanced.manager.data.room.sources.Source as SourceInfo
 import app.revanced.manager.data.room.sources.SourceProperties
 import app.revanced.manager.domain.protocol.ContentProtocolHandler
 import app.revanced.manager.domain.protocol.FileProtocolHandler
@@ -26,7 +25,6 @@ import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import io.ktor.client.request.url
-import io.ktor.http.Url
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,6 +74,12 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     protected abstract fun loadEntity(entity: DB): Source<LOADED>
     protected abstract fun entityFromProps(uid: Int, props: SourceProperties): DB
 
+    // The file the downloaded copy of a source lives in.
+    protected abstract fun fileOf(uid: Int): File
+
+    // The URL of the default source, built from preferences.
+    protected abstract suspend fun defaultSourceUri(): Uri
+
     protected abstract fun realNameOf(loaded: LOADED): String?
 
     @get:StringRes
@@ -91,15 +95,6 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     protected abstract val replaceFail: Int
 
     protected abstract suspend fun loadDataFromSources(sources: MutableMap<Int, Source<LOADED>>): OUTPUT
-
-    protected val defaultSource = entityFromProps(
-        0, SourceProperties(
-            name = "",
-            versionHash = null,
-            source = SourceInfo.API,
-            autoUpdate = false
-        )
-    )
 
     protected val store = Store(
         CoroutineScope(Dispatchers.Default),
@@ -154,24 +149,34 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     }
 
     private suspend fun loadFromDb(): List<DB> {
-        val all = dbGetAll().toMutableList()
-        val default = defaultSource
-
-        if (all.none { it.uid == default.uid }) {
-            dbUpsert(default)
-            all += default
+        if (dbGetAll().none { it.uid == 0 }) {
+            createEntity(0, "", defaultSourceUri())
         }
 
-        return all
+        // Migrates rows from before sources were stored as URLs and keeps the
+        // default source pointed at the API configured in settings.
+        dbGetAll().forEach { entity ->
+            val props = dbGetProps(entity.uid) ?: return@forEach
+            val migrated = when {
+                entity.uid == 0 -> defaultSourceUri().takeIf { it != props.source }
+                props.source.scheme == null -> Uri.fromFile(fileOf(entity.uid))
+                else -> null
+            } ?: return@forEach
+
+            updateDb(entity.uid) { it.copy(source = migrated) }
+        }
+
+        return dbGetAll()
     }
 
     private suspend fun createEntity(
+        uid: Int,
         name: String,
-        source: SourceInfo,
+        source: Uri,
         autoUpdate: Boolean = false,
     ) =
         entityFromProps(
-            uid = generateUid(),
+            uid = uid,
             SourceProperties(
                 name = name,
                 versionHash = null,
@@ -237,7 +242,8 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     suspend fun importFrom(uri: Uri) =
         dispatchAction("Import ($uri)") { state ->
-            val entity = createEntity("", SourceInfo.Local)
+            val uid = generateUid()
+            val entity = createEntity(uid, "", Uri.fromFile(fileOf(uid)))
             with(loadEntity(entity)) {
                 try {
                     replace(uri)
@@ -257,13 +263,13 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     suspend fun create(url: String, autoUpdate: Boolean) =
         dispatchAction("Add ($url)") { state ->
-            val entity = createEntity("", SourceInfo.from(url), autoUpdate)
+            val entity = createEntity(generateUid(), "", Uri.parse(url), autoUpdate)
             val src = loadEntity(entity)
             update(src)
             state.copy(sources = state.sources.toMutableMap().also { it[src.uid] = src })
         }
 
-    suspend fun reloadApiSources() = dispatchAction("Reload API sources") { state ->
+    suspend fun resetDefaultSource() = dispatchAction("Reset default source") { state ->
         this@SourceManager.store.state.value.sources.values
             .filter { it.isDefault }
             .forEach { src ->
@@ -289,9 +295,8 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             if (current.uri.toString() == value) return@dispatchAction state
 
             updateDb(uid) { props ->
-                if (props.source !is SourceInfo.Remote) return@updateDb props
                 props.copy(
-                    source = SourceInfo.Remote(Url(value)),
+                    source = Uri.parse(value),
                     versionHash = null,
                     releasedAt = null
                 )

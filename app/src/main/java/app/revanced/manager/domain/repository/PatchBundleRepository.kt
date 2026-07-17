@@ -8,7 +8,6 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.data.room.sources.SourceProperties
-import app.revanced.manager.data.room.sources.Source as SourceInfo
 import android.net.Uri
 import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.manager.SourceManager
@@ -54,8 +53,9 @@ class PatchBundleRepository(
     override suspend fun dbRemove(uid: Int) = dao.remove(uid)
     override suspend fun dbReset() = dao.reset()
 
+    override fun fileOf(uid: Int): File = directoryOf(uid).resolve("patches.jar")
+
     override fun loadEntity(entity: PatchBundleEntity): PatchBundleSource = with(entity) {
-        val file = directoryOf(uid).resolve("patches.jar")
         val actualName =
             entity.name.ifEmpty { app.getString(if (uid == 0) R.string.patches_name_default else R.string.source_name_fallback) }
 
@@ -64,22 +64,15 @@ class PatchBundleRepository(
                 .toLocalDateTime(TimeZone.UTC)
         }
 
-        val uri = when (source) {
-            // Imported files are copied into app storage, the source points at that copy.
-            is SourceInfo.Local -> Uri.fromFile(file)
-            is SourceInfo.API -> Uri.parse(defaultSourceUrl())
-            is SourceInfo.Remote -> Uri.parse(source.url.toString())
-        }
-
         return Source(
             actualName,
             uid,
-            uri,
+            source,
             versionHash,
             releasedAt,
             autoUpdate,
             null,
-            file,
+            fileOf(uid),
             PatchBundleLoader,
             protocolHandlers,
             json
@@ -98,11 +91,10 @@ class PatchBundleRepository(
         releasedAt = props.releasedAt
     )
 
-    // The default source is a plain URL to the ReVanced API, built from preferences
-    // so URL and prerelease changes take effect on the next reload.
-    private fun defaultSourceUrl() =
-        "${prefs.api.getBlocking()}/v5/patches" +
-                if (prefs.usePatchesPrereleases.getBlocking()) "/prerelease" else ""
+    override suspend fun defaultSourceUri(): Uri = Uri.parse(
+        "${prefs.api.get()}/v5/patches" +
+                if (prefs.usePatchesPrereleases.get()) "/prerelease" else ""
+    )
 
     override fun realNameOf(loaded: PatchBundle) = loaded.manifestAttributes?.name
     override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<PatchBundle>>) = loadMetadata(sources).toPersistentMap()

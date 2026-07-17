@@ -33,7 +33,6 @@ import java.io.File
 import java.lang.ref.WeakReference
 import java.lang.reflect.Modifier
 import kotlin.time.Instant
-import app.revanced.manager.data.room.sources.Source as SourceInfo
 
 @OptIn(DownloaderHostApi::class)
 class DownloaderRepository(
@@ -58,8 +57,9 @@ class DownloaderRepository(
         loadPackage(pkgInfo, dataDir)
     }
 
+    override fun fileOf(uid: Int): File = directoryOf(uid).resolve("downloader.jar")
+
     override fun loadEntity(entity: DownloaderEntity): Source<DownloaderPackage> = with(entity) {
-        val file = directoryOf(uid).resolve("downloader.jar")
         val actualName =
             name.ifEmpty { app.getString(if (uid == 0) R.string.auto_updates_dialog_downloaders else R.string.source_name_fallback) }
 
@@ -68,22 +68,15 @@ class DownloaderRepository(
                 .toLocalDateTime(kotlinx.datetime.TimeZone.UTC)
         }
 
-        val uri = when (source) {
-            // Imported files are copied into app storage; the source points at that copy.
-            is SourceInfo.Local -> Uri.fromFile(file)
-            is SourceInfo.API -> Uri.parse(defaultSourceUrl())
-            is SourceInfo.Remote -> Uri.parse(source.url.toString())
-        }
-
         return Source(
             actualName,
             uid,
-            uri,
+            source,
             versionHash,
             releasedAt,
             autoUpdate,
             null,
-            file,
+            fileOf(uid),
             loader,
             protocolHandlers,
             json
@@ -102,11 +95,10 @@ class DownloaderRepository(
         releasedAt = props.releasedAt
     )
 
-    // The default source is a plain URL to the ReVanced API, built from preferences
-    // so URL and prerelease changes take effect on the next reload.
-    private fun defaultSourceUrl() =
-        "${prefs.api.getBlocking()}/v5/manager/downloaders" +
-                if (prefs.useDownloaderPrerelease.getBlocking()) "/prerelease" else ""
+    override suspend fun defaultSourceUri(): Uri = Uri.parse(
+        "${prefs.api.get()}/v5/manager/downloaders" +
+                if (prefs.useDownloaderPrerelease.get()) "/prerelease" else ""
+    )
 
     override fun realNameOf(loaded: DownloaderPackage) = loaded.name
 
