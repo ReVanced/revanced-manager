@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -88,8 +87,7 @@ class OnboardingViewModel(
         with(patchBundleRepository) {
             val src = sources
                 .first()
-                .find { it.isDefault }
-                ?.asRemoteOrNull ?: return@with
+                .find { it.isDefault } ?: return@with
 
             src.setAutoUpdate(patchesEnabled)
             update(src)
@@ -97,8 +95,7 @@ class OnboardingViewModel(
 
         with(downloaderRepository) {
             val src = downloaderSources
-                .first()[0]
-                ?.asRemoteOrNull ?: return@with
+                .first()[0] ?: return@with
 
             src.setAutoUpdate(downloadersEnabled)
             update(src)

@@ -16,10 +16,9 @@ import app.revanced.manager.domain.protocol.ContentProtocolHandler
 import app.revanced.manager.domain.protocol.FileProtocolHandler
 import app.revanced.manager.domain.protocol.HttpProtocolHandler
 import app.revanced.manager.domain.protocol.ProtocolHandler
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.Source
-import app.revanced.manager.domain.sources.UnsupportedRemoteSourceException
-import app.revanced.manager.domain.sources.asRemoteSourceException
+import app.revanced.manager.domain.sources.UnsupportedSourceException
+import app.revanced.manager.domain.sources.asSourceException
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.getOrThrow
@@ -236,28 +235,28 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             )
         }
 
-    suspend fun createLocal(uri: Uri) =
-        dispatchAction("Add local") { state ->
+    suspend fun importFrom(uri: Uri) =
+        dispatchAction("Import ($uri)") { state ->
             val entity = createEntity("", SourceInfo.Local)
             with(loadEntity(entity)) {
                 try {
                     replace(uri)
                 } catch (e: Exception) {
                     if (e is CancellationException) throw e
-                    Log.e(tag, "Got exception while creating local source", e)
+                    Log.e(tag, "Got exception while importing source", e)
                     withContext(Dispatchers.Main) {
                         app.toast(app.getString(replaceFail, e.simpleMessage()))
                     }
 
-                    deleteLocalFile()
+                    deleteFile()
                 }
             }
 
             doReload(state)
         }
 
-    suspend fun createRemote(url: String, autoUpdate: Boolean) =
-        dispatchAction("Add remote ($url)") { state ->
+    suspend fun create(url: String, autoUpdate: Boolean) =
+        dispatchAction("Add ($url)") { state ->
             val entity = createEntity("", SourceInfo.from(url), autoUpdate)
             val src = loadEntity(entity)
             update(src)
@@ -268,7 +267,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         this@SourceManager.store.state.value.sources.values
             .filter { it.isDefault }
             .forEach { src ->
-                with(src) { deleteLocalFile() }
+                with(src) { deleteFile() }
                 updateDb(src.uid) { it.copy(versionHash = null, releasedAt = null) }
             }
 
@@ -286,7 +285,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     suspend fun Source<LOADED>.setEndpoint(value: String) =
         dispatchAction("Set endpoint ($name, $value)") { state ->
-            val current = state.sources[uid]?.asRemoteOrNull ?: return@dispatchAction state
+            val current = state.sources[uid] ?: return@dispatchAction state
             if (current.uri.toString() == value) return@dispatchAction state
 
             updateDb(uid) { props ->
@@ -297,7 +296,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                     releasedAt = null
                 )
             }
-            with(current) { deleteLocalFile() }
+            with(current) { deleteFile() }
 
             val newSources = state.sources.toMutableMap()
             newSources[uid] = current.copy(
@@ -324,7 +323,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         store.dispatch(Update(showToast = showToast, force = force) { it.uid in uids })
     }
 
-    suspend fun redownloadRemote() =
+    suspend fun redownload() =
         store.dispatch(Update(force = true, redownload = true))
 
     /**
@@ -337,25 +336,25 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         ) { it.autoUpdate }
     )
 
-    suspend fun validateRemoteUrl(url: String): String? = withContext(Dispatchers.IO) {
+    suspend fun validateUrl(url: String): String? = withContext(Dispatchers.IO) {
         runCatching {
             http.request<ReVancedAsset> {
                 url(url)
             }.getOrThrow()
-        }.exceptionOrNull()?.toRemoteValidationMessage()
+        }.exceptionOrNull()?.toValidationMessage()
     }
 
-    private fun Throwable.toRemoteValidationMessage() = when (asRemoteSourceException()) {
+    private fun Throwable.toValidationMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedRemoteSourceException -> app.getString(R.string.remote_source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(R.string.remote_source_url_unsupported)
 
         // wtf is this? this is not a data at all and more like a webpage or something else!
         else -> app.getString(R.string.remote_source_url_validation_failed)
     }
 
-    private fun Throwable.toRemoteUpdateMessage() = when (asRemoteSourceException()) {
+    private fun Throwable.toUpdateMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedRemoteSourceException -> app.getString(R.string.remote_source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(R.string.remote_source_url_unsupported)
         else -> simpleMessage()
     }
 
@@ -379,7 +378,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             val outdated = current.outdatedSources.toMutableSet()
 
             val results = current.sources.values
-                .filter { it.isUpdatable && predicate(it) }
+                .filter { predicate(it) }
                 .also { targets ->
                     // Clear errors for sources we are updating.
                     targets.forEach { src ->
@@ -440,7 +439,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             when {
                 !showToast -> {}
                 hasErrors -> {
-                    val error = errors.values.first().toRemoteUpdateMessage()
+                    val error = errors.values.first().toUpdateMessage()
                     toast(updateFailed, error)
                 }
 

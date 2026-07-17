@@ -51,7 +51,7 @@ class BundleListViewModel : ViewModel(), KoinComponent {
 
             Event.UPDATE_SELECTED -> viewModelScope.launch {
                 patchBundleRepository.update(
-                    *getSelectedSources().filter { it.isUpdatable }.toTypedArray(),
+                    *getSelectedSources().toTypedArray(),
                     showToast = true
                 )
             }
@@ -62,8 +62,6 @@ class BundleListViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch { patchBundleRepository.remove(src) }
 
     fun update(src: PatchBundleSource) = viewModelScope.launch {
-        if (!src.isUpdatable) return@launch
-
         patchBundleRepository.update(src, showToast = true)
     }
 

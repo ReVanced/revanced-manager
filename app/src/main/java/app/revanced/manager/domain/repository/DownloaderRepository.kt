@@ -69,8 +69,8 @@ class DownloaderRepository(
         }
 
         val uri = when (source) {
-            // Imported files are copied into app storage and their origin is not recorded.
-            is SourceInfo.Local -> Uri.parse("rvp:${file.absolutePath}")
+            // Imported files are copied into app storage; the source points at that copy.
+            is SourceInfo.Local -> Uri.fromFile(file)
             is SourceInfo.API -> Uri.parse(defaultSourceUrl())
             is SourceInfo.Remote -> Uri.parse(source.url.toString())
         }

@@ -121,13 +121,13 @@ class DashboardViewModel(
         patchBundleRepository.remove(source)
     }
 
-    fun createLocalSource(patchBundle: Uri) = viewModelScope.launch {
-        patchBundleRepository.createLocal(patchBundle)
+    fun importSource(patchBundle: Uri) = viewModelScope.launch {
+        patchBundleRepository.importFrom(patchBundle)
     }
 
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
-        patchBundleRepository.createRemote(apiUrl, autoUpdate)
+    fun createSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
+        patchBundleRepository.create(apiUrl, autoUpdate)
     }
 
-    suspend fun validateRemoteSourceUrl(apiUrl: String) = patchBundleRepository.validateRemoteUrl(apiUrl)
+    suspend fun validateSourceUrl(apiUrl: String) = patchBundleRepository.validateUrl(apiUrl)
 }

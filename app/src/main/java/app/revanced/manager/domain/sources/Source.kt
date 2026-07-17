@@ -22,24 +22,22 @@ fun interface Loader<T> {
 
 typealias PatchBundleSource = Source<PatchBundle>
 
-class UnsupportedRemoteSourceException(cause: Throwable? = null) : Exception(cause)
+class UnsupportedSourceException(cause: Throwable? = null) : Exception(cause)
 
-internal fun Throwable.asRemoteSourceException(): Throwable {
-    if (this is UnsupportedRemoteSourceException) return this
+internal fun Throwable.asSourceException(): Throwable {
+    if (this is UnsupportedSourceException) return this
 
     val hasSerializationFailure = generateSequence(this) { it.cause }
         .any { it is SerializationException }
     if (!hasSerializationFailure) return this
 
     return when (this) {
-        is APIFailure -> UnsupportedRemoteSourceException(this)
-        else -> UnsupportedRemoteSourceException(this)
+        is APIFailure -> UnsupportedSourceException(this)
+        else -> UnsupportedSourceException(this)
     }
 }
 
-/**
- * A [PatchBundle] or [app.revanced.manager.downloader.Downloader] source.
- */
+// A resource and the URL it is retrieved from.
 @Stable
 class Source<T>(
     val name: String,
@@ -66,15 +64,12 @@ class Source<T>(
 
     val isDefault inline get() = uid == 0
 
-    // A source can update itself when a handler knows how to reach its origin.
-    val isUpdatable get() = uri.scheme in handlers
-
     val loaded get() = @Suppress("UNCHECKED_CAST") (state as? State.Available<T>)?.obj
     val error get() = (state as? State.Failed)?.throwable
 
     data class UpdateResult(val versionHash: String, val releasedAt: LocalDateTime)
 
-    suspend fun ActionContext.deleteLocalFile() = withContext(Dispatchers.IO) {
+    suspend fun ActionContext.deleteFile() = withContext(Dispatchers.IO) {
         file.delete()
     }
 
@@ -116,7 +111,7 @@ class Source<T>(
             handlers.getStream(uri) { stream ->
                 json.decodeFromString<ReVancedAsset>(stream.reader().readText())
             }
-        }.getOrElse { throw it.asRemoteSourceException() }
+        }.getOrElse { throw it.asSourceException() }
     }
 
     private suspend fun download(info: ReVancedAsset) = withContext(Dispatchers.IO) {
@@ -159,6 +154,5 @@ class Source<T>(
 }
 
 object Extensions {
-    val <T> Source<T>.asRemoteOrNull inline get() = takeIf { it.isUpdatable }
     val PatchBundleSource.version get() = loaded?.manifestAttributes?.version
 }

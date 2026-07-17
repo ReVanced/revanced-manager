@@ -11,7 +11,6 @@ import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.network.downloader.DownloaderPackage
 import app.revanced.manager.util.PM
@@ -55,19 +54,19 @@ class DownloadsViewModel(
 
         // Rebuilds the default source with the URL of the new release channel.
         downloaderRepository.reload()
-        val apiSource = downloaderRepository.downloaderSources.first()[0]?.asRemoteOrNull ?: return@launch
+        val apiSource = downloaderRepository.downloaderSources.first()[0] ?: return@launch
         updateDownloader(apiSource)
     }
 
-    fun createLocalSource(downloaderUri: Uri) = viewModelScope.launch {
-        downloaderRepository.createLocal(downloaderUri)
+    fun importSource(downloaderUri: Uri) = viewModelScope.launch {
+        downloaderRepository.importFrom(downloaderUri)
     }
 
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
-        downloaderRepository.createRemote(apiUrl, autoUpdate)
+    fun createSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
+        downloaderRepository.create(apiUrl, autoUpdate)
     }
 
-    suspend fun validateRemoteSourceUrl(apiUrl: String) = downloaderRepository.validateRemoteUrl(apiUrl)
+    suspend fun validateSourceUrl(apiUrl: String) = downloaderRepository.validateUrl(apiUrl)
 
     fun toggleApp(downloadedApp: DownloadedApp) {
         if (appSelection.contains(downloadedApp))
@@ -124,7 +123,7 @@ class DownloadsViewModel(
             src.setEndpoint(endpoint)
         }
 
-        downloaderSources.first()[src.uid]?.asRemoteOrNull?.let { updated ->
+        downloaderSources.first()[src.uid]?.let { updated ->
             updateDownloader(updated)
         }
     }
