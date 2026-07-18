@@ -500,7 +500,7 @@ class PatcherViewModel(
                 "Show universal patches",
                 disableUniversalPatchCheck,
                 prefs.disableUniversalPatchCheck.default
-            ) { (!it).toString() }
+            )
             addPreferenceChange(
                 "Use patches pre-releases",
                 usePatchesPrereleases,
