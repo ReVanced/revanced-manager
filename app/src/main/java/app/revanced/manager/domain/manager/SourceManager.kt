@@ -147,7 +147,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     private suspend fun loadFromDb(): List<DB> {
         if (dbGetAll().none { it.uid == 0 }) {
-            createEntity(0, "", defaultSourceUri())
+            createEntity(0, "", defaultSourceUri(), autoUpdate = true)
         }
 
         // Migrates rows from before sources were stored as URLs and keeps the

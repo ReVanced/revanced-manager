@@ -147,10 +147,6 @@ class Source<T>(
         data class Failed(val throwable: Throwable) : State
         data class Available<T>(val obj: T) : State
     }
-
-    companion object {
-        const val updateFailMsg = "Failed to update"
-    }
 }
 
 object Extensions {
