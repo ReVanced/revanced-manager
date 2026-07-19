@@ -67,9 +67,9 @@ enum class ImportSourceDialogStrings(
 fun ImportSourceDialog(
     strings: ImportSourceDialogStrings,
     onDismiss: () -> Unit,
-    validateRemote: suspend (String) -> String?,
-    onRemoteSubmit: (String, Boolean) -> Unit,
-    onLocalSubmit: (Uri) -> Unit
+    validateUrl: suspend (String) -> String?,
+    onUrlSubmit: (String, Boolean) -> Unit,
+    onFileSubmit: (Uri) -> Unit
 ) {
     var currentStep by rememberSaveable { mutableIntStateOf(0) }
     var sourceType by rememberSaveable { mutableStateOf(SourceType.Remote) }
@@ -138,16 +138,16 @@ fun ImportSourceDialog(
                     enabled = inputsAreValid && !isSubmittingRemote,
                     onClick = {
                         when (sourceType) {
-                            SourceType.Local -> local?.let(onLocalSubmit)
+                            SourceType.Local -> local?.let(onFileSubmit)
                             SourceType.Remote -> {
                                 val trimmedUrl = remoteUrl.trim()
                                 coroutineScope.launch {
                                     isSubmittingRemote = true
-                                    val validationError = validateRemote(trimmedUrl)
+                                    val validationError = validateUrl(trimmedUrl)
                                     isSubmittingRemote = false
 
                                     if (validationError == null) {
-                                        onRemoteSubmit(trimmedUrl, autoUpdate)
+                                        onUrlSubmit(trimmedUrl, autoUpdate)
                                     } else {
                                         remoteValidationError = validationError
                                     }

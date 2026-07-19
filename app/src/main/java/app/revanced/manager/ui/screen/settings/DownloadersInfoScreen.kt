@@ -219,7 +219,7 @@ fun DownloaderInfoScreen(
                             confirmValidator = viewModel::validateSourceUrl,
                             onConfirm = {
                                 showUrlInputDialog = false
-                                viewModel.setEndpoint(source, it.trim())
+                                viewModel.setUrl(source, it.trim())
                             },
                             validator = {
                                 val value = it.trim()
@@ -274,7 +274,7 @@ fun DownloaderInfoScreen(
                     EmptyState(
                         icon = Icons.Outlined.SignalWifiOff,
                         title = R.string.downloader_sources_unavailable_title,
-                        description = R.string.downloader_sources_unavailable_with_remote_description
+                        description = R.string.downloader_sources_unavailable_description
                     )
                 }
             }

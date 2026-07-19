@@ -86,7 +86,7 @@ fun BundleInformationScreen(
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val bundleManifestAttributes = src.loaded?.manifestAttributes
     val autoUpdate = src.autoUpdate
-    val endpoint = src.uri.toString()
+    val sourceUrl = src.uri.toString()
 
     val subtitleAuthor = bundleManifestAttributes?.author?.let {
         stringResource(R.string.bundle_information_by_author, it)
@@ -281,7 +281,7 @@ fun BundleInformationScreen(
                     )
                 }
 
-                endpoint.takeUnless { src.isDefault }?.let { url ->
+                sourceUrl.takeUnless { src.isDefault }?.let { url ->
                     var showUrlInputDialog by rememberSaveable { mutableStateOf(false) }
 
                     if (showUrlInputDialog) {
@@ -289,10 +289,10 @@ fun BundleInformationScreen(
                             initial = url,
                             title = stringResource(R.string.patches_url),
                             onDismissRequest = { showUrlInputDialog = false },
-                            confirmValidator = viewModel::validateEndpoint,
+                            confirmValidator = viewModel::validateUrl,
                             onConfirm = {
                                 showUrlInputDialog = false
-                                viewModel.setEndpoint(it.trim())
+                                viewModel.setUrl(it.trim())
                             },
                             validator = {
                                 val value = it.trim()
@@ -332,7 +332,7 @@ fun BundleInformationScreen(
                             )
                         } else {
                             ChangelogSource.Patches(
-                                url = endpoint,
+                                url = sourceUrl,
                                 prerelease = false
                             )
                         }

@@ -115,12 +115,12 @@ class DownloadsViewModel(
         }
     }
 
-    fun setEndpoint(src: Source<DownloaderPackage>, value: String) = viewModelScope.launch {
-        val endpoint = value.trim()
-        if (src.uri.toString() == endpoint) return@launch
+    fun setUrl(src: Source<DownloaderPackage>, value: String) = viewModelScope.launch {
+        val url = value.trim()
+        if (src.uri.toString() == url) return@launch
 
         with(downloaderRepository) {
-            src.setEndpoint(endpoint)
+            src.setUrl(url)
         }
 
         downloaderSources.first()[src.uid]?.let { updated ->

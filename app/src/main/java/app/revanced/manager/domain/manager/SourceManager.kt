@@ -15,16 +15,14 @@ import app.revanced.manager.domain.protocol.ContentProtocolHandler
 import app.revanced.manager.domain.protocol.FileProtocolHandler
 import app.revanced.manager.domain.protocol.HttpProtocolHandler
 import app.revanced.manager.domain.protocol.ProtocolHandler
+import app.revanced.manager.domain.protocol.getStream
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.UnsupportedSourceException
 import app.revanced.manager.domain.sources.asSourceException
 import app.revanced.manager.network.dto.ReVancedAsset
-import app.revanced.manager.network.service.HttpService
-import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import io.ktor.client.request.url
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +53,6 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     protected val app: Application by inject()
     protected val prefs: PreferencesManager by inject()
     protected val networkInfo: NetworkInfo by inject()
-    protected val http: HttpService by inject()
     protected val json: Json by inject()
 
     protected val protocolHandlers: Map<String, ProtocolHandler> = mapOf(
@@ -289,8 +286,8 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })
         }
 
-    suspend fun Source<LOADED>.setEndpoint(value: String) =
-        dispatchAction("Set endpoint ($name, $value)") { state ->
+    suspend fun Source<LOADED>.setUrl(value: String) =
+        dispatchAction("Set URL ($name, $value)") { state ->
             val current = state.sources[uid] ?: return@dispatchAction state
             if (current.uri.toString() == value) return@dispatchAction state
 
@@ -343,23 +340,23 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     suspend fun validateUrl(url: String): String? = withContext(Dispatchers.IO) {
         runCatching {
-            http.request<ReVancedAsset> {
-                url(url)
-            }.getOrThrow()
+            protocolHandlers.getStream(Uri.parse(url)) { stream ->
+                json.decodeFromString<ReVancedAsset>(stream.reader().readText())
+            }
         }.exceptionOrNull()?.toValidationMessage()
     }
 
     private fun Throwable.toValidationMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedSourceException -> app.getString(R.string.remote_source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(R.string.source_url_unsupported)
 
         // wtf is this? this is not a data at all and more like a webpage or something else!
-        else -> app.getString(R.string.remote_source_url_validation_failed)
+        else -> app.getString(R.string.source_url_validation_failed)
     }
 
     private fun Throwable.toUpdateMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedSourceException -> app.getString(R.string.remote_source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(R.string.source_url_unsupported)
         else -> simpleMessage()
     }
 
@@ -372,7 +369,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
 
-        override fun toString() = if (redownload) "Redownload remote sources" else "Update check"
+        override fun toString() = if (redownload) "Redownload sources" else "Update check"
 
         override suspend fun ActionContext.execute(
             current: State<LOADED, OUTPUT>

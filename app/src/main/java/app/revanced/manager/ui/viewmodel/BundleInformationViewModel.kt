@@ -33,19 +33,19 @@ class BundleInformationViewModel(uid: Int) : ViewModel(), KoinComponent {
         }
     }
 
-    fun setEndpoint(value: String) = viewModelScope.launch {
-        val endpoint = value.trim()
+    fun setUrl(value: String) = viewModelScope.launch {
+        val url = value.trim()
         bundle.first()?.let { current ->
-            if (current.uri.toString() == endpoint) return@launch
+            if (current.uri.toString() == url) return@launch
 
-            patchBundleRepository.run { current.setEndpoint(endpoint) }
+            patchBundleRepository.run { current.setUrl(url) }
             bundle.first()?.let { updated ->
                 patchBundleRepository.update(updated, showToast = true)
             }
         }
     }
 
-    suspend fun validateEndpoint(value: String) = patchBundleRepository.validateUrl(value.trim())
+    suspend fun validateUrl(value: String) = patchBundleRepository.validateUrl(value.trim())
 
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         prefs.usePatchesPrereleases.update(value)

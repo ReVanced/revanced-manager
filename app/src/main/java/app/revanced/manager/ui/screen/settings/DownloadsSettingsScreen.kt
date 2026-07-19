@@ -127,12 +127,12 @@ fun DownloadsSettingsScreen(
         ImportSourceDialog(
             strings = ImportSourceDialogStrings.DOWNLOADERS,
             onDismiss = { showImportDialog = false },
-            validateRemote = viewModel::validateSourceUrl,
-            onLocalSubmit = { uri ->
+            validateUrl = viewModel::validateSourceUrl,
+            onFileSubmit = { uri ->
                 showImportDialog = false
                 viewModel.importSource(uri)
             },
-            onRemoteSubmit = { url, autoUpdate ->
+            onUrlSubmit = { url, autoUpdate ->
                 showImportDialog = false
                 viewModel.createSource(url, autoUpdate)
             }
