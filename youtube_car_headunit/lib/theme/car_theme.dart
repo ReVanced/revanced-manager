@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+/// Dark car-headunit theme tuned for mid-range Android devices.
+///
+/// Uses system fonts (no Google Fonts runtime fetch) to avoid startup lag
+/// and extra network/CPU on devices like Galaxy A6+ (Android 10).
 class CarTheme {
   static const Color bgPrimary = Color(0xFF07090E);
   static const Color bgSurface = Color(0xFF10141E);
@@ -21,15 +24,16 @@ class CarTheme {
         primary: accentRed,
         surface: bgSurface,
       ),
-      textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).apply(
-        bodyColor: textMain,
-        displayColor: textMain,
-      ),
+      fontFamily: 'sans-serif',
+      textTheme: ThemeData.dark().textTheme.apply(
+            bodyColor: textMain,
+            displayColor: textMain,
+          ),
       cardTheme: CardThemeData(
         color: bgCard,
-        elevation: 4,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           side: const BorderSide(color: Colors.white10),
         ),
       ),

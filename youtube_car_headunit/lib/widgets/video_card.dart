@@ -24,116 +24,119 @@ class VideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: CarTheme.bgSurface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? CarTheme.accentRed : Colors.white12,
-            width: isSelected ? 2 : 1,
+    return Material(
+      color: CarTheme.bgSurface,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isSelected ? CarTheme.accentRed : Colors.white12,
+              width: isSelected ? 2 : 1,
+            ),
           ),
-          boxShadow: isSelected
-              ? [
-                  const BoxShadow(
-                    color: CarTheme.accentRedGlow,
-                    blurRadius: 12,
-                    spreadRadius: 1,
-                  )
-                ]
-              : [],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Thumbnail
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Stack(
-                children: [
-                  Image.network(
-                    video.thumbnail,
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: CarTheme.bgCard,
-                      child: const Center(
-                        child: Icon(LucideIcons.video, color: CarTheme.textMuted, size: 28),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 6,
-                    right: 6,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.85),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        _formatDuration(video.duration),
-                        style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(11),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.network(
+                        video.thumbnail,
+                        fit: BoxFit.cover,
+                        // Decode at display size — huge win on A6+ RAM/CPU
+                        cacheWidth: 320,
+                        cacheHeight: 180,
+                        filterQuality: FilterQuality.low,
+                        errorBuilder: (_, __, ___) => const ColoredBox(
+                          color: CarTheme.bgCard,
+                          child: Center(
+                            child: Icon(
+                              LucideIcons.video,
+                              color: CarTheme.textMuted,
+                              size: 28,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Container(
-                      color: Colors.black.withValues(alpha: 0.2),
-                      child: const Center(
-                        child: CircleAvatar(
-                          backgroundColor: CarTheme.accentRed,
-                          radius: 18,
-                          child: Icon(LucideIcons.play, color: Colors.white, size: 18),
+                      Positioned(
+                        bottom: 6,
+                        right: 6,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            _formatDuration(video.duration),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            // Metadata
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      video.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        height: 1.15,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      video.uploader,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: CarTheme.textMuted,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
+                      if (isSelected)
+                        const Positioned(
+                          top: 6,
+                          left: 6,
+                          child: Icon(
+                            LucideIcons.playCircle,
+                            color: CarTheme.accentRed,
+                            size: 22,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          video.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            height: 1.15,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          video.uploader,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: CarTheme.textMuted,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

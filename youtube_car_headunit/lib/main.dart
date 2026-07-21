@@ -17,7 +17,7 @@ void main() async {
   try {
     await WakelockPlus.enable();
   } catch (e) {
-    print('Wakelock error: $e');
+    debugPrint('Wakelock error: $e');
   }
 
   runApp(const YouTubeCarApp());

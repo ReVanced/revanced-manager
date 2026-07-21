@@ -32,6 +32,8 @@ class FullscreenPlayer extends StatefulWidget {
 class _FullscreenPlayerState extends State<FullscreenPlayer> {
   bool _showControls = true;
   Timer? _hideControlsTimer;
+  int _lastUiSecond = -1;
+  bool? _lastPlaying;
 
   @override
   void initState() {
@@ -47,29 +49,37 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
     if (oldWidget.controller != widget.controller) {
       oldWidget.controller?.removeListener(_onControllerUpdate);
       widget.controller?.addListener(_onControllerUpdate);
+      _lastUiSecond = -1;
+      _lastPlaying = null;
       _startHideTimer();
     }
   }
 
   void _onControllerUpdate() {
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    final controller = widget.controller;
+    if (controller == null || !controller.value.isInitialized) return;
+
+    final second = controller.value.position.inSeconds;
+    final playing = controller.value.isPlaying;
+    if (second == _lastUiSecond && playing == _lastPlaying) return;
+
+    _lastUiSecond = second;
+    _lastPlaying = playing;
+    setState(() {});
   }
 
   void _startHideTimer() {
     _hideControlsTimer?.cancel();
     _hideControlsTimer = Timer(const Duration(seconds: 3), () {
       if (mounted && (widget.controller?.value.isPlaying ?? false)) {
-        setState(() {
-          _showControls = false;
-        });
+        setState(() => _showControls = false);
       }
     });
   }
 
   void _toggleControls() {
-    setState(() {
-      _showControls = !_showControls;
-    });
+    setState(() => _showControls = !_showControls);
     if (_showControls) {
       _startHideTimer();
     } else {
@@ -107,12 +117,13 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // 100% Fullscreen Video Render
             if (isInitialized && !widget.isVideoLoading)
               Center(
-                child: AspectRatio(
-                  aspectRatio: controller.value.aspectRatio,
-                  child: VideoPlayer(controller),
+                child: RepaintBoundary(
+                  child: AspectRatio(
+                    aspectRatio: controller.value.aspectRatio,
+                    child: VideoPlayer(controller),
+                  ),
                 ),
               )
             else
@@ -121,147 +132,175 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,
-                cacheWidth: 800,
+                cacheWidth: 640,
+                filterQuality: FilterQuality.low,
               ),
-
-            // Loading Overlay when switching videos in Fullscreen
             if (widget.isVideoLoading || !isInitialized)
-              Container(
-                color: Colors.black.withValues(alpha: 0.8),
-                child: const Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SpinKitPulse(color: CarTheme.accentRed, size: 56),
-                      SizedBox(height: 12),
-                      Text(
-                        'Memuat Stream Ad-Free...',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white70,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+              const ColoredBox(
+                color: Colors.black54,
+                child: Center(
+                  child: SpinKitPulse(color: CarTheme.accentRed, size: 48),
                 ),
               ),
-
-            // Controls Overlay (Smooth Animated Fade & Auto-Hide)
             AnimatedOpacity(
               opacity: _showControls ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 200),
               child: IgnorePointer(
                 ignoring: !_showControls,
-                child: Container(
-                  color: Colors.black54,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Top Header Bar
-                      Row(
+                child: ColoredBox(
+                  color: Colors.black45,
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Text(
-                              widget.video.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  widget.video.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
+                              IconButton(
+                                iconSize: 28,
+                                constraints: const BoxConstraints(
+                                  minWidth: 48,
+                                  minHeight: 48,
+                                ),
+                                icon: const Icon(
+                                  LucideIcons.minimize,
+                                  color: Colors.white,
+                                ),
+                                onPressed: widget.onCloseFullscreen,
+                              ),
+                            ],
                           ),
-                          IconButton(
-                            iconSize: 28,
-                            icon: const Icon(LucideIcons.minimize, color: Colors.white),
-                            onPressed: widget.onCloseFullscreen,
-                          ),
-                        ],
-                      ),
-
-                      // Middle Controls
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            iconSize: 44,
-                            icon: const Icon(LucideIcons.skipBack, color: Colors.white),
-                            onPressed: () {
-                              _startHideTimer();
-                              widget.onPrevious();
-                            },
-                          ),
-                          const SizedBox(width: 32),
-                          CircleAvatar(
-                            radius: 34,
-                            backgroundColor: CarTheme.accentRed,
-                            child: IconButton(
-                              iconSize: 36,
-                              icon: widget.isVideoLoading
-                                  ? const SpinKitThreeBounce(color: Colors.white, size: 20)
-                                  : Icon(isPlaying ? LucideIcons.pause : LucideIcons.play, color: Colors.white),
-                              onPressed: () {
-                                _startHideTimer();
-                                setState(() {
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                iconSize: 44,
+                                constraints: const BoxConstraints(
+                                  minWidth: 64,
+                                  minHeight: 64,
+                                ),
+                                icon: const Icon(
+                                  LucideIcons.skipBack,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  _startHideTimer();
+                                  widget.onPrevious();
+                                },
+                              ),
+                              const SizedBox(width: 24),
+                              IconButton.filled(
+                                style: IconButton.styleFrom(
+                                  backgroundColor: CarTheme.accentRed,
+                                  minimumSize: const Size(68, 68),
+                                ),
+                                icon: Icon(
+                                  isPlaying
+                                      ? LucideIcons.pause
+                                      : LucideIcons.play,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                                onPressed: () {
+                                  _startHideTimer();
                                   if (isPlaying) {
                                     controller?.pause();
                                   } else {
                                     controller?.play();
                                   }
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 32),
-                          IconButton(
-                            iconSize: 44,
-                            icon: const Icon(LucideIcons.skipForward, color: Colors.white),
-                            onPressed: () {
-                              _startHideTimer();
-                              widget.onNext();
-                            },
-                          ),
-                        ],
-                      ),
-
-                      // Bottom Progress Slider
-                      Row(
-                        children: [
-                          Text(
-                            _formatTime(position),
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          Expanded(
-                            child: SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                activeTrackColor: CarTheme.accentRed,
-                                thumbColor: CarTheme.accentRed,
-                                trackHeight: 5,
-                                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
-                                overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
-                              ),
-                              child: Slider(
-                                value: position.inSeconds.toDouble().clamp(0.0, duration.inSeconds.toDouble() > 0 ? duration.inSeconds.toDouble() : 1.0),
-                                max: duration.inSeconds.toDouble() > 0 ? duration.inSeconds.toDouble() : 1.0,
-                                onChangeStart: (_) => _hideControlsTimer?.cancel(),
-                                onChangeEnd: (_) => _startHideTimer(),
-                                onChanged: (val) {
-                                  controller?.seekTo(Duration(seconds: val.toInt()));
                                 },
                               ),
-                            ),
+                              const SizedBox(width: 24),
+                              IconButton(
+                                iconSize: 44,
+                                constraints: const BoxConstraints(
+                                  minWidth: 64,
+                                  minHeight: 64,
+                                ),
+                                icon: const Icon(
+                                  LucideIcons.skipForward,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  _startHideTimer();
+                                  widget.onNext();
+                                },
+                              ),
+                            ],
                           ),
-                          Text(
-                            _formatTime(duration),
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                          Row(
+                            children: [
+                              Text(
+                                _formatTime(position),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Expanded(
+                                child: SliderTheme(
+                                  data: SliderTheme.of(context).copyWith(
+                                    activeTrackColor: CarTheme.accentRed,
+                                    thumbColor: CarTheme.accentRed,
+                                    trackHeight: 4,
+                                    thumbShape: const RoundSliderThumbShape(
+                                      enabledThumbRadius: 8,
+                                    ),
+                                    overlayShape: const RoundSliderOverlayShape(
+                                      overlayRadius: 16,
+                                    ),
+                                  ),
+                                  child: Slider(
+                                    value: position.inSeconds.toDouble().clamp(
+                                          0.0,
+                                          duration.inSeconds > 0
+                                              ? duration.inSeconds.toDouble()
+                                              : 1.0,
+                                        ),
+                                    max: duration.inSeconds > 0
+                                        ? duration.inSeconds.toDouble()
+                                        : 1.0,
+                                    onChangeStart: (_) =>
+                                        _hideControlsTimer?.cancel(),
+                                    onChangeEnd: (_) => _startHideTimer(),
+                                    onChanged: (val) {
+                                      controller?.seekTo(
+                                        Duration(seconds: val.toInt()),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                _formatTime(duration),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),

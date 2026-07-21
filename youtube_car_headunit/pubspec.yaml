@@ -17,10 +17,8 @@ dependencies:
   audio_service: ^0.18.15
   wakelock_plus: ^1.2.10
   http: ^1.2.2
-
   # UI Components & Icons
   lucide_icons: ^0.257.0
-  google_fonts: ^6.2.1
   flutter_spinkit: ^5.2.1
 
 dev_dependencies:

@@ -9,6 +9,7 @@ class PlayerWidget extends StatefulWidget {
   final CarVideo video;
   final VideoPlayerController? controller;
   final bool isVideoLoading;
+  final bool isAudioOnly;
   final String selectedQuality;
   final ValueChanged<String> onQualityChanged;
   final bool isAutoplayEnabled;
@@ -17,6 +18,8 @@ class PlayerWidget extends StatefulWidget {
   final VoidCallback onPrevious;
   final VoidCallback onToggleDrivingMode;
   final VoidCallback onToggleFullscreen;
+  final VoidCallback? onTogglePlay;
+  final bool isAudioPlaying;
   final List<SponsorSegment> sponsorSegments;
 
   const PlayerWidget({
@@ -32,6 +35,9 @@ class PlayerWidget extends StatefulWidget {
     required this.onPrevious,
     required this.onToggleDrivingMode,
     required this.onToggleFullscreen,
+    this.isAudioOnly = false,
+    this.onTogglePlay,
+    this.isAudioPlaying = false,
     this.sponsorSegments = const [],
   });
 
@@ -41,6 +47,9 @@ class PlayerWidget extends StatefulWidget {
 
 class _PlayerWidgetState extends State<PlayerWidget> {
   String? _sponsorNotice;
+  int _lastUiSecond = -1;
+  bool? _lastPlaying;
+  String? _lastSkippedCategory;
 
   @override
   void initState() {
@@ -54,13 +63,27 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     if (oldWidget.controller != widget.controller) {
       oldWidget.controller?.removeListener(_onControllerTick);
       widget.controller?.addListener(_onControllerTick);
+      _lastUiSecond = -1;
+      _lastPlaying = null;
+      _lastSkippedCategory = null;
     }
   }
 
+  /// Rebuild at most once per second (or on play/pause) — critical on A6+.
   void _onControllerTick() {
     if (!mounted) return;
+    final controller = widget.controller;
+    if (controller == null || !controller.value.isInitialized) return;
+
     _checkSponsorSegments();
-    setState(() {}); // Real-time per-second playback position & slider update!
+
+    final second = controller.value.position.inSeconds;
+    final playing = controller.value.isPlaying;
+    if (second == _lastUiSecond && playing == _lastPlaying) return;
+
+    _lastUiSecond = second;
+    _lastPlaying = playing;
+    setState(() {});
   }
 
   void _checkSponsorSegments() {
@@ -68,19 +91,17 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     if (controller == null || !controller.value.isInitialized) return;
     final currentPos = controller.value.position.inSeconds.toDouble();
 
-    for (var seg in widget.sponsorSegments) {
+    for (final seg in widget.sponsorSegments) {
       if (currentPos >= seg.start && currentPos < seg.end) {
+        if (_lastSkippedCategory == '${seg.category}_${seg.start}') return;
+        _lastSkippedCategory = '${seg.category}_${seg.start}';
         controller.seekTo(Duration(seconds: seg.end.toInt()));
         if (mounted) {
           setState(() {
-            _sponsorNotice = 'Auto-Skip Sponsor (${seg.category})';
+            _sponsorNotice = 'Skip Sponsor (${seg.category})';
           });
-          Future.delayed(const Duration(seconds: 3), () {
-            if (mounted) {
-              setState(() {
-                _sponsorNotice = null;
-              });
-            }
+          Future.delayed(const Duration(seconds: 2), () {
+            if (mounted) setState(() => _sponsorNotice = null);
           });
         }
         break;
@@ -109,25 +130,49 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       ),
       builder: (context) {
         final qualities = [
-          {'label': '360p (Default - Hemat Kuota & Anti Lag)', 'value': '360p', 'icon': LucideIcons.zap},
-          {'label': '480p (Standard Car Display)', 'value': '480p', 'icon': LucideIcons.tv},
-          {'label': '720p (HD Quality)', 'value': '720p', 'icon': LucideIcons.sparkles},
-          {'label': '1080p (Full HD)', 'value': '1080p', 'icon': LucideIcons.film},
-          {'label': '🎵 Audio Only (Hemat Kuota 95%)', 'value': 'Audio Only', 'icon': LucideIcons.music},
+          {
+            'label': '360p — Hemat & Anti Lag (disarankan A6+)',
+            'value': '360p',
+            'icon': LucideIcons.zap,
+          },
+          {
+            'label': '480p — Standard',
+            'value': '480p',
+            'icon': LucideIcons.tv,
+          },
+          {
+            'label': '720p — HD (lebih berat)',
+            'value': '720p',
+            'icon': LucideIcons.sparkles,
+          },
+          {
+            'label': 'Audio Only — Hemat kuota ~95%',
+            'value': 'Audio Only',
+            'icon': LucideIcons.music,
+          },
         ];
 
-        return Container(
-          padding: const EdgeInsets.all(20),
+        return Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const Icon(LucideIcons.sliders, color: CarTheme.accentRed, size: 20),
+                  const Icon(LucideIcons.sliders,
+                      color: CarTheme.accentRed, size: 20),
                   const SizedBox(width: 8),
-                  const Text('Pilih Kualitas Video', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                  const Spacer(),
+                  const Expanded(
+                    child: Text(
+                      'Kualitas Video',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   IconButton(
                     icon: const Icon(LucideIcons.x, color: CarTheme.textMuted),
                     onPressed: () => Navigator.pop(context),
@@ -138,16 +183,23 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               ...qualities.map((q) {
                 final isSelected = widget.selectedQuality == q['value'];
                 return ListTile(
-                  leading: Icon(q['icon'] as IconData, color: isSelected ? CarTheme.accentRed : CarTheme.textMuted),
+                  dense: true,
+                  leading: Icon(
+                    q['icon'] as IconData,
+                    color: isSelected ? CarTheme.accentRed : CarTheme.textMuted,
+                  ),
                   title: Text(
                     q['label'] as String,
                     style: TextStyle(
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
                       color: isSelected ? CarTheme.accentRed : Colors.white,
                       fontSize: 13,
                     ),
                   ),
-                  trailing: isSelected ? const Icon(LucideIcons.check, color: CarTheme.accentRed) : null,
+                  trailing: isSelected
+                      ? const Icon(LucideIcons.check, color: CarTheme.accentRed)
+                      : null,
                   onTap: () {
                     Navigator.pop(context);
                     widget.onQualityChanged(q['value'] as String);
@@ -161,32 +213,73 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     );
   }
 
+  void _togglePlay() {
+    if (widget.isAudioOnly) {
+      widget.onTogglePlay?.call();
+      return;
+    }
+    final controller = widget.controller;
+    if (controller == null) return;
+    if (controller.value.isPlaying) {
+      controller.pause();
+    } else {
+      controller.play();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = widget.controller;
     final isInitialized = controller != null && controller.value.isInitialized;
-    final isPlaying = controller?.value.isPlaying ?? false;
+    final isPlaying = widget.isAudioOnly
+        ? widget.isAudioPlaying
+        : (controller?.value.isPlaying ?? false);
     final position = controller?.value.position ?? Duration.zero;
-    final duration = controller?.value.duration ?? Duration.zero;
+    final duration = controller?.value.duration ??
+        (widget.isAudioOnly ? widget.video.duration : Duration.zero);
 
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Responsive Video Container
-          AspectRatio(
-            aspectRatio: 16 / 9,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AspectRatio(
+          aspectRatio: 16 / 9,
+          child: RepaintBoundary(
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.black,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.white12),
               ),
               clipBehavior: Clip.antiAlias,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  if (isInitialized && !widget.isVideoLoading)
+                  if (widget.isAudioOnly)
+                    ColoredBox(
+                      color: CarTheme.bgCard,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              LucideIcons.music,
+                              size: 40,
+                              color: CarTheme.accentRed.withValues(alpha: 0.8),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Mode Audio Only',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (isInitialized && !widget.isVideoLoading)
                     AspectRatio(
                       aspectRatio: controller.value.aspectRatio,
                       child: VideoPlayer(controller),
@@ -198,20 +291,19 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                       width: double.infinity,
                       height: double.infinity,
                       cacheWidth: 480,
+                      filterQuality: FilterQuality.low,
                     ),
-
-                  // Loading Overlay when switching videos
-                  if (widget.isVideoLoading || !isInitialized)
+                  if (widget.isVideoLoading && !widget.isAudioOnly)
                     Container(
-                      color: Colors.black.withValues(alpha: 0.75),
+                      color: Colors.black54,
                       child: const Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SpinKitPulse(color: CarTheme.accentRed, size: 36),
+                            SpinKitPulse(color: CarTheme.accentRed, size: 32),
                             SizedBox(height: 6),
                             Text(
-                              'Memuat Stream Ad-Free...',
+                              'Memuat...',
                               style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.white70,
@@ -222,50 +314,45 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                         ),
                       ),
                     ),
-
-                  // Fullscreen Button Overlay
-                  if (isInitialized && !widget.isVideoLoading)
+                  if (isInitialized &&
+                      !widget.isVideoLoading &&
+                      !widget.isAudioOnly)
                     Positioned(
                       bottom: 8,
                       right: 8,
-                      child: GestureDetector(
-                        onTap: widget.onToggleFullscreen,
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.75),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(LucideIcons.maximize, color: Colors.white, size: 18),
+                      child: IconButton(
+                        onPressed: widget.onToggleFullscreen,
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.black54,
+                          minimumSize: const Size(40, 40),
+                        ),
+                        icon: const Icon(
+                          LucideIcons.maximize,
+                          color: Colors.white,
+                          size: 18,
                         ),
                       ),
                     ),
-
-                  // Toast Notification for SponsorBlock
                   if (_sponsorNotice != null)
                     Positioned(
                       top: 8,
                       right: 8,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
                         decoration: BoxDecoration(
                           color: CarTheme.accentGreen,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(LucideIcons.zap, color: Colors.black, size: 14),
-                            const SizedBox(width: 4),
-                            Text(
-                              _sponsorNotice!,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          _sponsorNotice!,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     ),
@@ -273,134 +360,110 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               ),
             ),
           ),
-          const SizedBox(height: 6),
-
-          // Controls Panel
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: CarTheme.bgCard,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white12),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Title & Badges
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                // Quality Selector Badge (Clickable)
-                                InkWell(
-                                  onTap: () => _showQualityModal(context),
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white12,
-                                      borderRadius: BorderRadius.circular(4),
-                                      border: Border.all(color: Colors.white24),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Icon(LucideIcons.sliders, size: 10, color: Colors.white70),
-                                        const SizedBox(width: 3),
-                                        Text(
-                                          widget.selectedQuality,
-                                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 6),
-                                // Autoplay Toggle Badge
-                                InkWell(
-                                  onTap: widget.onToggleAutoplay,
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: widget.isAutoplayEnabled ? CarTheme.accentRed.withValues(alpha: 0.2) : Colors.white12,
-                                      borderRadius: BorderRadius.circular(4),
-                                      border: Border.all(color: widget.isAutoplayEnabled ? CarTheme.accentRed : Colors.white24),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(LucideIcons.repeat, size: 10, color: widget.isAutoplayEnabled ? CarTheme.accentRed : Colors.white70),
-                                        const SizedBox(width: 3),
-                                        Text(
-                                          widget.isAutoplayEnabled ? 'AUTOPLAY ON' : 'AUTOPLAY OFF',
-                                          style: TextStyle(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.bold,
-                                            color: widget.isAutoplayEnabled ? CarTheme.accentRed : Colors.white70,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            widget.video.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: CarTheme.textMain),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    InkWell(
-                      onTap: widget.onToggleDrivingMode,
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: CarTheme.accentRed,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [BoxShadow(color: CarTheme.accentRedGlow, blurRadius: 8)],
-                        ),
-                        child: const Row(
+        ),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: CarTheme.bgCard,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white12),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            Icon(LucideIcons.tv, size: 14, color: Colors.white),
-                            SizedBox(width: 4),
-                            Text('Setir', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: Colors.white)),
+                            _Badge(
+                              icon: LucideIcons.sliders,
+                              label: widget.selectedQuality,
+                              onTap: () => _showQualityModal(context),
+                            ),
+                            const SizedBox(width: 6),
+                            _Badge(
+                              icon: LucideIcons.repeat,
+                              label: widget.isAutoplayEnabled
+                                  ? 'AUTO ON'
+                                  : 'AUTO OFF',
+                              active: widget.isAutoplayEnabled,
+                              onTap: widget.onToggleAutoplay,
+                            ),
                           ],
                         ),
+                        const SizedBox(height: 4),
+                        Text(
+                          widget.video.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: CarTheme.textMain,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  FilledButton.icon(
+                    onPressed: widget.onToggleDrivingMode,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: CarTheme.accentRed,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                      minimumSize: const Size(48, 44),
+                    ),
+                    icon: const Icon(LucideIcons.tv, size: 16),
+                    label: const Text(
+                      'Setir',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-
-                // Responsive Progress Bar (Enlarged Touch Target)
+                  ),
+                ],
+              ),
+              if (!widget.isAudioOnly)
                 Row(
                   children: [
-                    Text(_formatTime(position), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: CarTheme.textMuted)),
+                    Text(
+                      _formatTime(position),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: CarTheme.textMuted,
+                      ),
+                    ),
                     Expanded(
                       child: SliderTheme(
                         data: SliderTheme.of(context).copyWith(
-                          trackHeight: 5,
-                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
-                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
+                          trackHeight: 4,
+                          thumbShape: const RoundSliderThumbShape(
+                            enabledThumbRadius: 8,
+                          ),
+                          overlayShape: const RoundSliderOverlayShape(
+                            overlayRadius: 16,
+                          ),
                         ),
                         child: Slider(
-                          value: position.inSeconds.toDouble().clamp(0.0, (duration.inSeconds.toDouble() > 0 ? duration.inSeconds.toDouble() : 1.0)),
-                          max: duration.inSeconds.toDouble() > 0 ? duration.inSeconds.toDouble() : 1.0,
+                          value: position.inSeconds.toDouble().clamp(
+                                0.0,
+                                duration.inSeconds > 0
+                                    ? duration.inSeconds.toDouble()
+                                    : 1.0,
+                              ),
+                          max: duration.inSeconds > 0
+                              ? duration.inSeconds.toDouble()
+                              : 1.0,
                           activeColor: CarTheme.accentRed,
                           inactiveColor: Colors.white24,
                           onChanged: (val) {
@@ -409,85 +472,149 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                         ),
                       ),
                     ),
-                    Text(_formatTime(duration), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: CarTheme.textMuted)),
-                  ],
-                ),
-
-                // Ergonomic Controls Buttons Row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      iconSize: 24,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                      icon: const Icon(LucideIcons.skipBack, color: Colors.white),
-                      onPressed: widget.onPrevious,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        final current = controller?.value.position ?? Duration.zero;
-                        controller?.seekTo(current - const Duration(seconds: 10));
-                      },
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Text('-10s', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white)),
+                    Text(
+                      _formatTime(duration),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: CarTheme.textMuted,
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 20,
+                  ],
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    iconSize: 26,
+                    constraints:
+                        const BoxConstraints(minWidth: 44, minHeight: 44),
+                    icon: const Icon(LucideIcons.skipBack, color: Colors.white),
+                    onPressed: widget.onPrevious,
+                  ),
+                  if (!widget.isAudioOnly)
+                    TextButton(
+                      onPressed: () {
+                        final current =
+                            controller?.value.position ?? Duration.zero;
+                        controller?.seekTo(
+                          current - const Duration(seconds: 10),
+                        );
+                      },
+                      child: const Text(
+                        '-10s',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  IconButton.filled(
+                    style: IconButton.styleFrom(
                       backgroundColor: CarTheme.accentRed,
-                      child: IconButton(
-                        iconSize: 22,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-                        icon: widget.isVideoLoading
-                            ? const SpinKitThreeBounce(color: Colors.white, size: 14)
-                            : Icon(isPlaying ? LucideIcons.pause : LucideIcons.play, color: Colors.white),
-                        onPressed: () {
-                          setState(() {
-                            if (isPlaying) {
-                              controller?.pause();
-                            } else {
-                              controller?.play();
-                            }
-                          });
-                        },
-                      ),
+                      minimumSize: const Size(48, 48),
                     ),
-                    InkWell(
-                      onTap: () {
-                        final current = controller?.value.position ?? Duration.zero;
-                        controller?.seekTo(current + const Duration(seconds: 10));
+                    icon: widget.isVideoLoading
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Icon(
+                            isPlaying ? LucideIcons.pause : LucideIcons.play,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                    onPressed: _togglePlay,
+                  ),
+                  if (!widget.isAudioOnly)
+                    TextButton(
+                      onPressed: () {
+                        final current =
+                            controller?.value.position ?? Duration.zero;
+                        controller?.seekTo(
+                          current + const Duration(seconds: 10),
+                        );
                       },
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(10),
+                      child: const Text(
+                        '+10s',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.white,
                         ),
-                        child: const Text('+10s', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white)),
                       ),
                     ),
-                    IconButton(
-                      iconSize: 24,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                      icon: const Icon(LucideIcons.skipForward, color: Colors.white),
-                      onPressed: widget.onNext,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  IconButton(
+                    iconSize: 26,
+                    constraints:
+                        const BoxConstraints(minWidth: 44, minHeight: 44),
+                    icon: const Icon(LucideIcons.skipForward,
+                        color: Colors.white),
+                    onPressed: widget.onNext,
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
+      ],
+    );
+  }
+}
+
+class _Badge extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final bool active;
+
+  const _Badge({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.active = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(4),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        decoration: BoxDecoration(
+          color: active
+              ? CarTheme.accentRed.withValues(alpha: 0.2)
+              : Colors.white12,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: active ? CarTheme.accentRed : Colors.white24,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 10,
+              color: active ? CarTheme.accentRed : Colors.white70,
+            ),
+            const SizedBox(width: 3),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 9,
+                fontWeight: FontWeight.bold,
+                color: active ? CarTheme.accentRed : Colors.white70,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

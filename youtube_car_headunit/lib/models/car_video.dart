@@ -24,6 +24,7 @@ class CarVideo {
   CarVideo copyWith({
     String? videoStreamUrl,
     String? audioStreamUrl,
+    bool clearVideoStream = false,
   }) {
     return CarVideo(
       id: id,
@@ -31,7 +32,8 @@ class CarVideo {
       uploader: uploader,
       thumbnail: thumbnail,
       duration: duration,
-      videoStreamUrl: videoStreamUrl ?? this.videoStreamUrl,
+      videoStreamUrl:
+          clearVideoStream ? null : (videoStreamUrl ?? this.videoStreamUrl),
       audioStreamUrl: audioStreamUrl ?? this.audioStreamUrl,
       views: views,
       uploadDate: uploadDate,
