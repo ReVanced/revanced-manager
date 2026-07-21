@@ -1,0 +1,32 @@
+name: youtube_car_headunit
+description: "A YouTube Clone Car Headunit application for smartphones with Adblocker, Premium features, Background Audio, and Steering Wheel button support."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # YouTube & Media Engine
+  youtube_explode_dart: ^2.3.0
+  video_player: ^2.9.2
+  just_audio: ^0.9.46
+  audio_service: ^0.18.15
+  wakelock_plus: ^1.2.10
+  http: ^1.2.2
+
+  # UI Components & Icons
+  lucide_icons: ^0.257.0
+  google_fonts: ^6.2.1
+  flutter_spinkit: ^5.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
