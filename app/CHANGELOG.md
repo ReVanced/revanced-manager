@@ -1,3 +1,10 @@
+# app [2.7.0-dev.10](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.9...v2.7.0-dev.10) (2026-07-23)
+
+
+### Bug Fixes
+
+* Change SELinux context to match stock APK before mounting ([#3433](https://github.com/ReVanced/revanced-manager/issues/3433)) ([d2eba2f](https://github.com/ReVanced/revanced-manager/commit/d2eba2f9bb750ebfabbdadf2514a6a43da7b05b8))
+
 # app [2.7.0-dev.9](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.8...v2.7.0-dev.9) (2026-07-16)
 
 
