@@ -14,11 +14,15 @@ sleep 5
 base_path="$DIR/$package_name.apk"
 stock_path="$(pm path "$package_name" | grep base | sed 's/package://g')"
 stock_version="$(dumpsys package "$package_name" | grep versionName | cut -d "=" -f2)"
+stock_selinux_label="$(ls -Z "$stock_path" | cut -d " " -f1)"
 
 echo "base_path: $base_path"
 echo "stock_path: $stock_path"
 echo "base_version: $version"
 echo "stock_version: $stock_version"
+echo "stock_selinux_label: $stock_selinux_label"
+
+chcon "$stock_selinux_label" "$base_path"
 
 if mount | grep -q "$stock_path" ; then
   echo "Not mounting as stock path is already mounted"
