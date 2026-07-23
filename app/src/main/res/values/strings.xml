@@ -67,6 +67,12 @@ Second \"item\" text"</string>
 
     <string name="import_">Import</string>
     <string name="import_patches">Import patches</string>
+    <string name="import_source_method">Method</string>
+    <string name="import_source_method_auto">Auto</string>
+    <string name="import_source_method_http">HTTP</string>
+    <string name="import_source_method_file">File</string>
+    <string name="import_source_input">Input</string>
+    <string name="import_source_press_to_select">Press to import</string>
     <string name="file_field_set">Selected</string>
     <string name="file_field_not_set">Not selected</string>
 
