@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -78,7 +79,11 @@ fun ImportSourceDialog(
 
     val fileActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { picked ->
-            picked?.let { file = it }
+            picked?.let {
+                file = it
+                // Picking a file continues in the file flow no matter which method started it.
+                method = ImportMethod.File
+            }
         }
 
     fun launchFileActivity() = fileActivityLauncher.launch(
@@ -174,6 +179,20 @@ fun ImportSourceDialog(
                                 },
                                 placeholder = if (method == ImportMethod.Http) {
                                     { Text("https://") }
+                                } else null,
+                                // Auto accepts a file too so offer the picker without making the user switch methods first.
+                                trailingIcon = if (method == ImportMethod.Auto) {
+                                    {
+                                        TooltipIconButton(
+                                            onClick = ::launchFileActivity,
+                                            tooltip = stringResource(R.string.select_from_storage)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Outlined.Folder,
+                                                contentDescription = null
+                                            )
+                                        }
+                                    }
                                 } else null,
                                 isError = showValidator || urlValidationError != null,
                                 supportingText = {
