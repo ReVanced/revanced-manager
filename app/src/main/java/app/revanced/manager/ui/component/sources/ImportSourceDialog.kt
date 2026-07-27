@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.component.sources
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -81,8 +82,8 @@ fun ImportSourceDialog(
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { picked ->
             picked?.let {
                 file = it
-                // Picking a file continues in the file flow no matter which method started it.
-                method = ImportMethod.File
+                // Selecting a file is an action of the input field, so show what was picked.
+                url = it.toString()
             }
         }
 
@@ -168,7 +169,6 @@ fun ImportSourceDialog(
                                     keyboardType = KeyboardType.Uri,
                                     autoCorrectEnabled = false
                                 ),
-                                singleLine = true,
                                 label = {
                                     Text(
                                         stringResource(
@@ -238,6 +238,11 @@ fun ImportSourceDialog(
                         ImportMethod.File -> file?.let(onFileSubmit)
                         ImportMethod.Auto, ImportMethod.Http -> {
                             val trimmedUrl = url.trim()
+                            val picked = Uri.parse(trimmedUrl)
+                                .takeIf { it.scheme == ContentResolver.SCHEME_CONTENT }
+                                
+                            if (picked != null) return@TextButton onFileSubmit(picked)
+
                             coroutineScope.launch {
                                 isSubmitting = true
                                 val validationError = validateUrl(trimmedUrl)
