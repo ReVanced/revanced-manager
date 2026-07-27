@@ -75,7 +75,8 @@ class PatchBundleRepository(
             fileOf(uid),
             PatchBundleLoader,
             protocolHandlers,
-            json
+            json,
+            ::versionUriOf
         )
     }
 

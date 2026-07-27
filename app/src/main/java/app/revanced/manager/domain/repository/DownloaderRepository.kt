@@ -79,7 +79,8 @@ class DownloaderRepository(
             fileOf(uid),
             loader,
             protocolHandlers,
-            json
+            json,
+            ::versionUriOf
         )
     }
 

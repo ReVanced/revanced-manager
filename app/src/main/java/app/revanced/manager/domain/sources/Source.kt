@@ -6,8 +6,10 @@ import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.domain.protocol.ProtocolHandler
 import app.revanced.manager.domain.protocol.getStream
 import app.revanced.manager.network.dto.ReVancedAsset
+import app.revanced.manager.network.dto.ReVancedAssetVersion
 import app.revanced.manager.network.utils.APIFailure
 import app.revanced.manager.patcher.patch.PatchBundle
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
@@ -50,7 +52,9 @@ class Source<T>(
     private val file: File,
     private val loader: Loader<T>,
     private val handlers: Map<String, ProtocolHandler>,
-    private val json: Json
+    private val json: Json,
+    // Where to read the version of this source, derived from its URL.
+    private val versionUriOf: (Uri) -> Uri
 ) {
     val state = when {
         error != null -> State.Failed(error)
@@ -91,7 +95,8 @@ class Source<T>(
         file,
         loader,
         handlers,
-        json
+        json,
+        versionUriOf
     )
 
     private fun hasInstalled() = file.exists()
@@ -122,12 +127,30 @@ class Source<T>(
         UpdateResult(info.version, info.createdAt)
     }
 
+    // The version resource of the source, returns null when the source does not serve one, which is not an error.
+    private suspend fun getLatestVersion(): String? = withContext(Dispatchers.IO) {
+        try {
+            handlers.getStream(versionUriOf(uri)) { stream ->
+                json.decodeFromString<ReVancedAssetVersion>(stream.reader().readText()).version
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     /**
      * Downloads the latest version regardless if there is a new update available.
      */
     suspend fun ActionContext.downloadLatest() = download(getLatestInfo())
-    suspend fun ActionContext.getUpdateInfo() =
-        getLatestInfo().takeUnless { hasInstalled() && it.version == versionHash }
+
+    suspend fun ActionContext.getUpdateInfo(): ReVancedAsset? {
+        // Reading the version alone is cheaper than the whole descriptor so use it to rule out an update first. Sources without a version resource fall through to the descriptor.
+        if (hasInstalled() && versionHash != null && getLatestVersion() == versionHash) return null
+
+        return getLatestInfo().takeUnless { hasInstalled() && it.version == versionHash }
+    }
 
     suspend fun ActionContext.update(): UpdateResult? = withContext(Dispatchers.IO) {
         getUpdateInfo()?.let { download(it) }

@@ -77,6 +77,19 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     // The URL of the default source, built from preferences.
     protected abstract suspend fun defaultSourceUri(): Uri
 
+    // The version resource is nested under the source, with the prerelease variant staying
+    // last: /v5/patches/prerelease has its version at /v5/patches/version/prerelease.
+    protected fun versionUriOf(uri: Uri): Uri {
+        val segments = uri.pathSegments
+        val isPrerelease = segments.lastOrNull() == PRERELEASE_PATH
+
+        return uri.buildUpon().path(null).apply {
+            segments.dropLast(if (isPrerelease) 1 else 0).forEach(::appendPath)
+            appendPath(VERSION_PATH)
+            if (isPrerelease) appendPath(PRERELEASE_PATH)
+        }.build()
+    }
+
     protected abstract fun realNameOf(loaded: LOADED): String?
 
     @get:StringRes
@@ -467,5 +480,8 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         val uid: Int
     }
 }
+
+private const val VERSION_PATH = "version"
+private const val PRERELEASE_PATH = "prerelease"
 
 private fun LocalDateTime.toEpochMillis() = toInstant(TimeZone.UTC).toEpochMilliseconds()
