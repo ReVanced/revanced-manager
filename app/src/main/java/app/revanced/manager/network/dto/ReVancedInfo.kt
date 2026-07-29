@@ -13,6 +13,12 @@ data class ReVancedInfo(
     val contact: ReVancedContact,
     val socials: List<ReVancedSocial>,
     val donations: ReVancedDonation,
+    val api: ReVancedApiInfo? = null,
+)
+
+@Serializable
+data class ReVancedApiInfo(
+    val fallback: String? = null,
 )
 
 @Serializable

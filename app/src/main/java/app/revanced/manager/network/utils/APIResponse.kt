@@ -14,7 +14,7 @@ sealed interface APIResponse<T> {
     data class Failure<T>(val error: APIFailure) : APIResponse<T>
 }
 
-class APIError(code: HttpStatusCode, body: String?) : Exception("HTTP Code $code, Body: $body")
+class APIError(val code: HttpStatusCode, body: String?) : Exception("HTTP Code $code, Body: $body")
 
 class APIFailure(error: Throwable, body: String?) : Exception(body ?: error.message, error)
 
