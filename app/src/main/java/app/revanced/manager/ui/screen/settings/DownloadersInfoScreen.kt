@@ -115,7 +115,7 @@ fun DownloaderInfoScreen(
                                 if (remote?.releasedAt != null) {
                                     val releaseDate = remote.releasedAt.relativeTime(
                                         LocalContext.current
-                                    ).lowercase(getDefault())
+                                    )
 
                                     append("\u2002($releaseDate)")
                                 }
