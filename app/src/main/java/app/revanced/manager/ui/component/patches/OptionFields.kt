@@ -279,7 +279,7 @@ fun <T : Any> OptionItem(
             } else null,
             supportingContent = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(option.description)
+                    option.description?.let { Text(it) }
 
                     OptionDropdownSection(
                         option = option,
@@ -507,7 +507,7 @@ private fun ListOptionItem(
         } else null,
         supportingContent = {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                Text(option.description)
+                option.description?.let { Text(it) }
                 if (option.required && value == null) {
                     Text(
                         style = MaterialTheme.typography.labelLargeEmphasized,
@@ -562,7 +562,7 @@ private fun InvalidListWarningDialog(
                 Text(stringResource(R.string.patch_options_value_list_invalid_dialog_description))
                 ListItem(
                     headlineContent = { OptionItemHeadline(option) },
-                    supportingContent = { Text(option.description) },
+                    supportingContent = { option.description?.let { Text(it) } },
                     colors = transparentListItemColors,
                 )
             }

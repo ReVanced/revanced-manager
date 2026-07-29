@@ -98,7 +98,8 @@ fun Steps(
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = "${filteredSteps.count { it.state == State.COMPLETED }}/${filteredSteps.size}",
+                // Use all steps instead of visible steps so the total remains stable and matches the progress bar
+                text = "${steps.count { it.state == State.COMPLETED }}/${steps.size}",
                 style = MaterialTheme.typography.labelSmall
             )
 

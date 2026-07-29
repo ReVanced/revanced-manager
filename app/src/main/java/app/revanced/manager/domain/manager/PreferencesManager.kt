@@ -21,7 +21,7 @@ class PreferencesManager(
 
     val keystoreAlias = stringPreference("keystore_alias", KeystoreManager.DEFAULT)
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)
-
+    val hasAcknowledgedKeystoreSensitiveWarning = booleanPreference("has_acknowledge_keystore_sensitive_warning", false)
     val completedOnboarding = booleanPreference("completed_onboarding", false)
     val readAnnouncements = longSetPreference("read_announcements", emptySet())
     val selectedAnnouncementTags = stringSetPreference("selected_announcement_tags", setOf("revanced", "manager"))

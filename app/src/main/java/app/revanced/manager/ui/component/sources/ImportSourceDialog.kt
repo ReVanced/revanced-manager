@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.component.sources
 
 import android.net.Uri
+import android.webkit.URLUtil
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Topic
@@ -18,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
@@ -29,6 +32,7 @@ import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.BIN_MIMETYPE
 import app.revanced.manager.util.transparentListItemColors
+import kotlinx.coroutines.launch
 
 private enum class SourceType {
     Local,
@@ -63,6 +67,7 @@ enum class ImportSourceDialogStrings(
 fun ImportSourceDialog(
     strings: ImportSourceDialogStrings,
     onDismiss: () -> Unit,
+    validateRemote: suspend (String) -> String?,
     onRemoteSubmit: (String, Boolean) -> Unit,
     onLocalSubmit: (Uri) -> Unit
 ) {
@@ -71,6 +76,9 @@ fun ImportSourceDialog(
     var local by rememberSaveable { mutableStateOf<Uri?>(null) }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(true) }
+    var remoteValidationError by rememberSaveable { mutableStateOf<String?>(null) }
+    var isSubmittingRemote by rememberSaveable { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     val fileActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -97,8 +105,12 @@ fun ImportSourceDialog(
                 local,
                 remoteUrl,
                 autoUpdate,
+                remoteValidationError,
                 ::launchFileActivity,
-                { remoteUrl = it },
+                {
+                    remoteUrl = it
+                    remoteValidationError = null
+                },
                 { autoUpdate = it }
             )
         }
@@ -107,7 +119,8 @@ fun ImportSourceDialog(
     val inputsAreValid by remember {
         derivedStateOf {
             (sourceType == SourceType.Local && local != null) ||
-                    (sourceType == SourceType.Remote && remoteUrl.isNotEmpty())
+                    (sourceType == SourceType.Remote && remoteUrl.isNotEmpty() &&
+                            (URLUtil.isHttpUrl(remoteUrl) || URLUtil.isHttpsUrl(remoteUrl)))
         }
     }
 
@@ -122,11 +135,24 @@ fun ImportSourceDialog(
         confirmButton = {
             if (currentStep == steps.lastIndex) {
                 TextButton(
-                    enabled = inputsAreValid,
+                    enabled = inputsAreValid && !isSubmittingRemote,
                     onClick = {
                         when (sourceType) {
                             SourceType.Local -> local?.let(onLocalSubmit)
-                            SourceType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
+                            SourceType.Remote -> {
+                                val trimmedUrl = remoteUrl.trim()
+                                coroutineScope.launch {
+                                    isSubmittingRemote = true
+                                    val validationError = validateRemote(trimmedUrl)
+                                    isSubmittingRemote = false
+
+                                    if (validationError == null) {
+                                        onRemoteSubmit(trimmedUrl, autoUpdate)
+                                    } else {
+                                        remoteValidationError = validationError
+                                    }
+                                }
+                            }
                         }
                     },
                     shapes = ButtonDefaults.shapes()
@@ -210,6 +236,7 @@ private fun ImportSourceStep(
     local: Uri?,
     remoteUrl: String,
     autoUpdate: Boolean,
+    remoteValidationError: String?,
     launchFileActivity: () -> Unit,
     onRemoteUrlChange: (String) -> Unit,
     onAutoUpdateChange: (Boolean) -> Unit
@@ -240,13 +267,31 @@ private fun ImportSourceStep(
             }
 
             SourceType.Remote -> {
+                val isUrl = remoteUrl.trim().let {
+                    URLUtil.isHttpUrl(it) || URLUtil.isHttpsUrl(it)
+                }
+                // We check if the value is empty to avoid showing an error state when the user
+                // hasn't entered anything yet to avoid bashing user with bad UX of blaming the
+                // user immediately when everything is intended.
+                val validator = remoteUrl.isNotEmpty() && !isUrl
                 Column(
                     modifier = Modifier.padding(TextHorizontalPadding)
                 ) {
                     OutlinedTextField(
                         value = remoteUrl,
                         onValueChange = onRemoteUrlChange,
-                        label = { Text(stringResource(strings.import_remote)) }
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Uri,
+                            autoCorrectEnabled = false
+                        ),
+                        label = { Text(stringResource(strings.import_remote)) },
+                        isError = validator || remoteValidationError != null,
+                        supportingText = {
+                            when {
+                                remoteValidationError != null -> Text(remoteValidationError)
+                                validator -> Text(stringResource(R.string.input_dialog_value_invalid))
+                            }
+                        },
                     )
                 }
                 Column(

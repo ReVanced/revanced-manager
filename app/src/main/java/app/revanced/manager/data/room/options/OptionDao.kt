@@ -3,8 +3,10 @@ package app.revanced.manager.data.room.options
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.MapColumn
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import app.revanced.manager.data.room.AppDatabase
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,8 +25,8 @@ abstract class OptionDao {
     @Query("SELECT package_name FROM option_groups")
     abstract fun getPackagesWithOptions(): Flow<List<String>>
 
-    @Insert
-    abstract suspend fun createOptionGroup(group: OptionGroup)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    protected abstract suspend fun createOptionGroupIfMissing(group: OptionGroup)
 
     @Query("DELETE FROM option_groups WHERE patch_bundle = :uid")
     abstract suspend fun resetOptionsForPatchBundle(uid: Int)
@@ -47,4 +49,18 @@ abstract class OptionDao {
             clearGroup(groupId)
             insertOptions(options)
         }
+
+    @Transaction
+    open suspend fun getOrCreateGroupId(bundleUid: Int, packageName: String): Int {
+        getGroupId(bundleUid, packageName)?.let { return it }
+        createOptionGroupIfMissing(
+            OptionGroup(
+                uid = AppDatabase.generateUid(),
+                patchBundle = bundleUid,
+                packageName = packageName
+            )
+        )
+        return getGroupId(bundleUid, packageName)
+            ?: throw IllegalStateException("Failed to create options group for $packageName")
+    }
 }

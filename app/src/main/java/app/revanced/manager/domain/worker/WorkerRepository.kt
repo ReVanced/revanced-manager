@@ -6,6 +6,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 class WorkerRepository(app: Application) {
     val workManager = WorkManager.getInstance(app)
@@ -14,7 +15,7 @@ class WorkerRepository(app: Application) {
      * The standard WorkManager communication APIs use [androidx.work.Data], which has too many limitations.
      * We can get around those limits by passing inputs using global variables instead.
      */
-    val workerInputs = mutableMapOf<UUID, Any>()
+    val workerInputs = ConcurrentHashMap<UUID, Any>()
 
     @Suppress("UNCHECKED_CAST")
     fun <A : Any, W : Worker<A>> claimInput(worker: W): A {
@@ -30,7 +31,7 @@ class WorkerRepository(app: Application) {
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .build()
         workerInputs[request.id] = input
-        workManager.enqueueUniqueWork(name, ExistingWorkPolicy.REPLACE, request)
+        workManager.enqueueUniqueWork(name, ExistingWorkPolicy.KEEP, request)
         return request.id
     }
 }

@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.os.Process
 import app.revanced.manager.IRootSystemService
 import app.revanced.manager.service.ManagerRootService
 import app.revanced.manager.util.PM
@@ -71,7 +72,8 @@ class RootInstaller(
 
     suspend fun isAppMounted(packageName: String) = withContext(Dispatchers.IO) {
         pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir?.let {
-            execute("mount | grep \"$it\"").isSuccess
+            // Use -F to ensure the path isn't treated like a regex
+            execute("mount | grep -F \"$it\"").isSuccess
         } ?: false
     }
 
@@ -112,10 +114,11 @@ class RootInstaller(
         unmount(packageName)
 
         stockAPK?.let { stockApp ->
-            // TODO: get user id programmatically
-            execute("pm uninstall -k --user 0 $packageName")
+            // Android assigns 100000 UIDs per user (https://android.googlesource.com/platform/frameworks/base/+/HEAD/core/java/android/os/UserHandle.java#47)
+            val userId = Process.myUid() / 100000
+            execute("pm uninstall -k --user ${userId} \"$packageName\"")
 
-            execute("pm install -r -d --user 0 \"${stockApp.absolutePath}\"")
+            execute("pm install -r -d --user ${userId} \"${stockApp.absolutePath}\"")
                 .assertSuccess("Failed to install stock app")
 
             stockApp.delete()

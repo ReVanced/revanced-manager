@@ -200,6 +200,7 @@ fun DashboardScreen(
         ImportSourceDialog(
             strings = ImportSourceDialogStrings.PATCHES,
             onDismiss = { showAddBundleDialog = false },
+            validateRemote = vm::validateRemoteSourceUrl,
             onLocalSubmit = { patches ->
                 showAddBundleDialog = false
                 patchesSourceEditMode = false
@@ -570,7 +571,17 @@ private fun DashboardFab(
                 }
             },
             tooltip = stringResource(
-                if (fabState == DashboardFabState.AddBundles) R.string.fab_add_patches else R.string.edit
+                when (fabState) {
+                    DashboardFabState.AddBundles -> {
+                        R.string.fab_add_patches
+                    }
+                    DashboardFabState.EditBundles -> {
+                        R.string.edit
+                    }
+                    else -> {
+                        R.string.sideeffect_scroll_to_top
+                    }
+                }
             ),
             expanded = fabState == DashboardFabState.AddBundles,
             icon = {
@@ -592,10 +603,7 @@ private fun DashboardFab(
                 ) { state ->
                     when (state) {
                         DashboardFabState.EditBundles -> {
-                            Icon(
-                                Icons.Outlined.Edit,
-                                contentDescription = stringResource(R.string.edit)
-                            )
+                            Icon(Icons.Outlined.Edit, contentDescription = null)
                         }
 
                         DashboardFabState.AddBundles -> {

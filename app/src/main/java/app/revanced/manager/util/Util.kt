@@ -6,6 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
@@ -46,10 +49,7 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -77,6 +77,17 @@ fun Context.openUrl(url: String) {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
 }
+fun Context.shareApk(apkUri: Uri) {
+    startActivity(
+        Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+            type = APK_MIMETYPE
+            putExtra(Intent.EXTRA_STREAM, apkUri)
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }, null).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    )
+}
 
 fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, duration).show()
@@ -95,24 +106,16 @@ fun Context.toast(@StringRes stringRes: Int, duration: Int = Toast.LENGTH_SHORT)
  * @param logMsg The log message.
  * @param block The code to execute.
  */
-@OptIn(DelicateCoroutinesApi::class)
 inline fun uiSafe(context: Context, @StringRes toastMsg: Int, logMsg: String, block: () -> Unit) {
     try {
         block()
     } catch (e: CancellationException) {
         throw e
     } catch (error: Exception) {
-        // You can only toast on the main thread.
-        GlobalScope.launch(Dispatchers.Main) {
-            context.toast(
-                context.getString(
-                    toastMsg,
-                    error.simpleMessage()
-                )
-            )
+        Handler(Looper.getMainLooper()).post {
+            context.toast(context.getString(toastMsg, error.simpleMessage()))
+            Log.e(tag, logMsg, error)
         }
-
-        Log.e(tag, logMsg, error)
     }
 }
 

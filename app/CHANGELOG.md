@@ -1,8 +1,98 @@
+# app [2.7.0-dev.11](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.10...v2.7.0-dev.11) (2026-07-29)
+
+
+### Bug Fixes
+
+* Show correct value of `universal patches` pref in logs ([#3457](https://github.com/ReVanced/revanced-manager/issues/3457)) ([2d3f29e](https://github.com/ReVanced/revanced-manager/commit/2d3f29e2d5b099909a8455faf0fbc39837734c89))
+
+# app [2.7.0-dev.10](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.9...v2.7.0-dev.10) (2026-07-23)
+
+
+### Bug Fixes
+
+* Change SELinux context to match stock APK before mounting ([#3433](https://github.com/ReVanced/revanced-manager/issues/3433)) ([d2eba2f](https://github.com/ReVanced/revanced-manager/commit/d2eba2f9bb750ebfabbdadf2514a6a43da7b05b8))
+
+# app [2.7.0-dev.9](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.8...v2.7.0-dev.9) (2026-07-16)
+
+
+### Bug Fixes
+
+* Use correct unicode quote in new strings ([f3fe950](https://github.com/ReVanced/revanced-manager/commit/f3fe950405f4e4a0ab444e37150fee15ca0c2917))
+
+
+### Features
+
+* QoL improvements ([#3335](https://github.com/ReVanced/revanced-manager/issues/3335)) ([398a5c1](https://github.com/ReVanced/revanced-manager/commit/398a5c13c67ec0bf57e10f8f308b52b9ebafa087))
+
+# app [2.7.0-dev.8](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.7...v2.7.0-dev.8) (2026-07-15)
+
+
+### Bug Fixes
+
+* Remove duplicate button in dialog ([#3419](https://github.com/ReVanced/revanced-manager/issues/3419)) ([21d55d1](https://github.com/ReVanced/revanced-manager/commit/21d55d1747c78fb00f83832c9fd2e40747c365f9))
+
+# app [2.7.0-dev.7](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.6...v2.7.0-dev.7) (2026-06-12)
+
+
+### Features
+
+* Add Android TV support ([#3389](https://github.com/ReVanced/revanced-manager/issues/3389)) ([3a23a30](https://github.com/ReVanced/revanced-manager/commit/3a23a307fb714503ecd121c13ffb1dbad1ba7b6a))
+
+# app [2.7.0-dev.6](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.5...v2.7.0-dev.6) (2026-06-04)
+
+
+### Bug Fixes
+
+* Show total count of patches instead of just the executed ones ([#3391](https://github.com/ReVanced/revanced-manager/issues/3391)) ([34736dd](https://github.com/ReVanced/revanced-manager/commit/34736ddfe0cff0d9568e51e5eebd00d7a2ebadd0))
+
+# app [2.7.0-dev.5](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.4...v2.7.0-dev.5) (2026-06-02)
+
+
+### Bug Fixes
+
+* **Patcher:** Purge temp dir on screen exit ([dd9a06d](https://github.com/ReVanced/revanced-manager/commit/dd9a06d4b452d9b78047d3ad331b118a2325caad))
+
+# app [2.7.0-dev.4](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.3...v2.7.0-dev.4) (2026-05-28)
+
+
+### Bug Fixes
+
+* **Network:** Handle `SecurityException` ([#3376](https://github.com/ReVanced/revanced-manager/issues/3376)) ([46e0bb2](https://github.com/ReVanced/revanced-manager/commit/46e0bb2c5d333500a371e386cec4cb64e02fce0d))
+
+# app [2.7.0-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.2...v2.7.0-dev.3) (2026-05-19)
+
+
+### Bug Fixes
+
+* Empty patch description padding ([5df0b46](https://github.com/ReVanced/revanced-manager/commit/5df0b46a84070d7f0ca8d4b751f3da950e02a1b8))
+
+# app [2.7.0-dev.2](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.1...v2.7.0-dev.2) (2026-05-17)
+
+
+### Bug Fixes
+
+* Make release date casing consistent with other places ([#3360](https://github.com/ReVanced/revanced-manager/issues/3360)) ([a91247d](https://github.com/ReVanced/revanced-manager/commit/a91247d8da91e627b0a66d2912183bbf73cd16e3))
+
+# app [2.7.0-dev.1](https://github.com/ReVanced/revanced-manager/compare/v2.6.1-dev.3...v2.7.0-dev.1) (2026-05-17)
+
+
+### Features
+
+* Add share button for patched apk ([#3350](https://github.com/ReVanced/revanced-manager/issues/3350)) ([51c8d1f](https://github.com/ReVanced/revanced-manager/commit/51c8d1fda0eca8919ef3ddf1e3962bda28a550d9))
+
+## app [2.6.1-dev.3](https://github.com/ReVanced/revanced-manager/compare/v2.6.1-dev.2...v2.6.1-dev.3) (2026-05-14)
+
+
+### Bug Fixes
+
+* **MainActivity:** Prevent empty locale crash ([#2857](https://github.com/ReVanced/revanced-manager/issues/2857)) ([#3337](https://github.com/ReVanced/revanced-manager/issues/3337)) ([cd8a19e](https://github.com/ReVanced/revanced-manager/commit/cd8a19ebde4bbd70fd14eea6cdc36cbb562e8aa1))
+
 ## app [2.6.1](https://github.com/ReVanced/revanced-manager/compare/v2.6.0...v2.6.1) (2026-05-11)
 
 
 ### Bug Fixes
 
+* comprehensive stability, memory, and installer improvements ([#3187](https://github.com/ReVanced/revanced-manager/issues/3187)) ([9740a31](https://github.com/ReVanced/revanced-manager/commit/9740a315541712d529c438a01c7c585ee206f47a))
 * **MainActivity:** Prevent empty locale crash ([#2857](https://github.com/ReVanced/revanced-manager/issues/2857)) ([#3337](https://github.com/ReVanced/revanced-manager/issues/3337)) ([cd8a19e](https://github.com/ReVanced/revanced-manager/commit/cd8a19ebde4bbd70fd14eea6cdc36cbb562e8aa1))
 
 # app [2.6.0](https://github.com/ReVanced/revanced-manager/compare/v2.5.1...v2.6.0) (2026-04-26)

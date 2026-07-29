@@ -1,9 +1,8 @@
 package app.revanced.manager.ui.component.onboarding
 
 import android.content.pm.PackageInfo
-import androidx.compose.animation.Crossfade
+import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MarqueeSpacing
@@ -20,10 +19,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,11 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
@@ -48,7 +43,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.AppIcon
+import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.util.blurBackground
+import coil.imageLoader
+import coil.request.ImageRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun OnboardingAppCard(
@@ -56,8 +57,6 @@ fun OnboardingAppCard(
     patchCount: Int,
     packageInfo: PackageInfo?,
     suggestedVersion: String?,
-    loadAppLabel: () -> String?,
-    loadAppIcon: () -> ImageBitmap?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -66,15 +65,25 @@ fun OnboardingAppCard(
     val isInstalled = packageInfo != null
     val versionName = remember(packageName) { packageInfo?.versionName }
 
-    // Extra app data is loaded async
-    var appLabel by remember(packageName) { mutableStateOf<String?>(null) }
-    var appIcon by remember { mutableStateOf<ImageBitmap?>(null) }
-    var appIconBlur by remember { mutableStateOf<ImageBitmap?>(null) }
+    var appIconBlur by remember(packageName) { mutableStateOf<ImageBitmap?>(null) }
     LaunchedEffect(packageName) {
-        appLabel = loadAppLabel()
-        appIcon = loadAppIcon()
-        appIconBlur = appIcon?.let {
-            blurBackground(context, it.asAndroidBitmap(), 18f).asImageBitmap()
+        appIconBlur = null
+        if (packageInfo != null) {
+            val result = withContext(Dispatchers.IO) {
+                context.imageLoader.execute(
+                    ImageRequest.Builder(context)
+                        .data(packageInfo)
+                        .size(128, 128)
+                        .allowHardware(false) // software bitmap!?
+                        .build()
+                )
+            }
+            val bitmap = (result.drawable as? BitmapDrawable)?.bitmap
+            bitmap?.let {
+                appIconBlur = withContext(Dispatchers.Default) {
+                    blurBackground(context, it, 18f).asImageBitmap()
+                }
+            }
         }
     }
 
@@ -105,8 +114,7 @@ fun OnboardingAppCard(
                         bitmap = appIconBlur!!,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
+                        modifier = Modifier.fillMaxSize()
                     )
                     Box(
                         Modifier
@@ -123,37 +131,24 @@ fun OnboardingAppCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Crossfade(
-                    targetState = appIcon,
-                    animationSpec = tween(durationMillis = 100),
-                ) { appIcon ->
-                    Box(
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surfaceVariant),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (appIcon != null) {
-                            Image(
-                                bitmap = appIcon,
-                                contentDescription = null,
-                                modifier = Modifier.size(48.dp)
-                            )
-                        } else {
-                            Image(
-                                painter = rememberVectorPainter(Icons.Default.Android),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant)
-                            )
-                        }
-                    }
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AppIcon(
+                        packageInfo = packageInfo,
+                        contentDescription = null,
+                        modifier = Modifier.size(48.dp)
+                    )
                 }
 
                 Column(Modifier.weight(1f)) {
-                    Text(
-                        text = appLabel ?: packageName,
+                    AppLabel(
+                        packageInfo = packageInfo,
+                        defaultText = packageName,
                         modifier = Modifier.basicMarquee(
                             iterations = Int.MAX_VALUE,
                             repeatDelayMillis = 1500,
@@ -161,17 +156,20 @@ fun OnboardingAppCard(
                             spacing = MarqueeSpacing.fractionOfContainer(1f / 5f),
                             velocity = 55.dp,
                         ),
-                        fontWeight = FontWeight.SemiBold,
-                        style = if (isInstalled) {
-                            MaterialTheme.typography.titleMedium
-                        } else {
-                            MaterialTheme.typography.titleSmall
-                        },
-                        color = if (isInstalled) {
-                            MaterialTheme.colorScheme.onSurface
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        }
+                        style = LocalTextStyle.current.merge(
+                            if (isInstalled) {
+                                MaterialTheme.typography.titleMedium
+                            } else {
+                                MaterialTheme.typography.titleSmall
+                            }
+                        ).copy(
+                            fontWeight = FontWeight.SemiBold,
+                            color = if (isInstalled) {
+                                MaterialTheme.colorScheme.onSurface
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            }
+                        )
                     )
                     Text(
                         text = versionName

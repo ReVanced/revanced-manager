@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ButtonDefaults
@@ -63,6 +65,7 @@ import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.shareApk
 import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -203,11 +206,18 @@ fun PatcherScreen(
             BottomAppBar(
                 actions = {
                     TooltipIconButton(
-                        onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
+                        onClick = { exportApkLauncher.launch(viewModel.patchedApkFileName) },
                         tooltip = stringResource(id = R.string.save_apk),
                         enabled = patcherSucceeded == true,
                     ) { contentDescription ->
                         Icon(Icons.Outlined.Save, contentDescription)
+                    }
+                    TooltipIconButton(
+                        onClick = { context.shareApk(viewModel.getOutputApkUri()) },
+                        tooltip = stringResource(id = R.string.share_apk),
+                        enabled = patcherSucceeded == true,
+                    ) { contentDescription ->
+                        Icon(Icons.Outlined.Share, contentDescription, Modifier.size(21.dp))
                     }
                     TooltipIconButton(
                         onClick = {
