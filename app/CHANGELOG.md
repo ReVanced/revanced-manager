@@ -1,3 +1,10 @@
+# app [2.7.0-dev.11](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.10...v2.7.0-dev.11) (2026-07-29)
+
+
+### Bug Fixes
+
+* Show correct value of `universal patches` pref in logs ([#3457](https://github.com/ReVanced/revanced-manager/issues/3457)) ([2d3f29e](https://github.com/ReVanced/revanced-manager/commit/2d3f29e2d5b099909a8455faf0fbc39837734c89))
+
 # app [2.7.0-dev.10](https://github.com/ReVanced/revanced-manager/compare/v2.7.0-dev.9...v2.7.0-dev.10) (2026-07-23)
 
 
