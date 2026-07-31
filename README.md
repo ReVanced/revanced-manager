@@ -5,7 +5,7 @@
       media="(prefers-color-scheme: dark)"
       srcset="assets/revanced-headline/revanced-headline-vertical-dark.svg"
     >
-    <img 
+    <img
       width="256px"
       src="assets/revanced-headline/revanced-headline-vertical-light.svg"
     >
@@ -55,50 +55,73 @@
    </a>
    <br>
    <br>
-   Continuing the legacy of Vanced
+   <em>Continuing the legacy of Vanced</em>
 </p>
 
-# 💊 ReVanced Manager
+<h1 align="center">ReVanced Manager</h1>
 
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/ReVanced/revanced-manager/release.yml)
-![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)
+<p align="center">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/ReVanced/revanced-manager/release.yml">
+  <img alt="License" src="https://img.shields.io/badge/License-GPLv3-yellow.svg">
+</p>
 
-Application to use ReVanced on Android
+<p align="center">
+  The official companion application for patching Android apps with <a href="https://github.com/revanced/revanced-patcher">ReVanced Patcher</a>.
+</p>
 
-## ❓ About
+---
 
-ReVanced Manager is an application that uses [ReVanced Patcher](https://github.com/revanced/revanced-patcher) to patch Android apps.
+## Table of Contents
 
-## 💪 Features
+- [About](#about)
+- [Features](#features)
+- [Installation](#installation)
+- [Documentation](#documentation)
+- [Building from Source](#building-from-source)
+- [Contributing](#contributing)
+- [License](#license)
 
-Some of the features ReVanced Manager provides are:
+## About
 
-- ⬇️ **Download**: Automatically download apps using the ReVanced Manager downloader system
-- 💉 **Patch**: Select and apply patches to any Android app
-- 🛠️ **Customize**: Manage patches, apps, signing, themes, updates, and many more settings
+ReVanced Manager is the official application for applying [ReVanced](https://revanced.app) patches to Android apps. It provides a streamlined, user-friendly interface for downloading, patching, and managing modified applications, built on top of [ReVanced Patcher](https://github.com/revanced/revanced-patcher).
 
-## 🔽 Download
+## Features
 
-You can download the most recent version of ReVanced Manager at [revanced.app/download](https://revanced.app/download) or from [GitHub releases](https://github.com/ReVanced/revanced-manager/releases/latest).  
-Learn how to use ReVanced Manager by following the [documentation](/docs).
+| Feature | Description |
+| --- | --- |
+| ⬇️ **Download** | Automatically fetch supported apps through the built-in downloader system. |
+| 💉 **Patch** | Browse, select, and apply patches to any supported Android app. |
+| 🛠️ **Customize** | Configure patch options, manage installed apps, handle signing, switch themes, and control update behavior. |
 
-## 📚 Everything else
+## Installation
 
-### 📙 Contributing
+The latest release is available from:
 
-Thank you for considering contributing to ReVanced Manager.
-You can find the contribution guidelines [here](CONTRIBUTING.md).
+- [revanced.app/download](https://revanced.app/download)
+- [GitHub Releases](https://github.com/ReVanced/revanced-manager/releases/latest)
 
-### 🛠️ Building
+For setup instructions and usage guidance, see the [documentation](/docs).
 
-To build a ReVanced Manager, you can follow the [documentation](/docs).
+## Documentation
 
-### 📄 Documentation
+Full documentation, including setup guides, patch usage, and troubleshooting, is available in the [`/docs`](/docs) directory.
 
-You can find the documentation for ReVanced Manager [here](/docs).
+## Building from Source
 
-## ⚖️ License
+Instructions for building ReVanced Manager from source are available in the [documentation](/docs).
 
-ReVanced Manager is licensed under the GPLv3 license. Please see the [license file](LICENSE) for more information.
-[tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3) you may copy, distribute and modify ReVanced Manager as long as you track changes/dates in source files.
-Any modifications to ReVanced Manager must also be made available under the GPL, along with build & install instructions.
+## Contributing
+
+Contributions are welcome. Please read the [Contributing Guidelines](CONTRIBUTING.md) before submitting issues or pull requests.
+
+## License
+
+ReVanced Manager is licensed under the [GNU General Public License v3.0](LICENSE).
+
+You are free to copy, distribute, and modify ReVanced Manager, provided that changes and their dates are tracked in the source files. Any modifications must also be released under the GPLv3, along with corresponding build and installation instructions. See the [tl;dr summary](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3) for a plain-language overview.
+
+---
+
+<p align="center">
+  <sub>Built and maintained by the ReVanced team and community contributors.</sub>
+</p>
