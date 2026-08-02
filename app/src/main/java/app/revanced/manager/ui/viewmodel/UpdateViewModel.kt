@@ -21,6 +21,7 @@ import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.repository.ChangelogSource
 import app.revanced.manager.domain.repository.ChangelogsRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.ManagerUpdateRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
@@ -45,6 +46,7 @@ import ru.solrudev.ackpine.session.parameters.Confirmation
 
 class UpdateViewModel(
     private val api: ReVancedAPI,
+    private val patchBundleRepository: PatchBundleRepository,
     private val source: ChangelogSource,
     private val downloadOnScreenEntry: Boolean,
     private val app: Application,
@@ -83,7 +85,7 @@ class UpdateViewModel(
             pageSize = 10,
             enablePlaceholders = false
         ),
-        pagingSourceFactory = { ChangelogsRepository(api, source) }
+        pagingSourceFactory = { ChangelogsRepository(api, patchBundleRepository, source) }
     ).flow.cachedIn(viewModelScope)
 
     private val location = fs.uiTempDir.resolve("updater.apk")

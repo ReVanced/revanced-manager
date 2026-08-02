@@ -22,6 +22,7 @@ import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.UnsupportedSourceException
 import app.revanced.manager.domain.sources.asSourceException
 import app.revanced.manager.network.dto.ReVancedAsset
+import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -81,17 +82,26 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     // The URL of the default source, built from preferences.
     protected abstract suspend fun defaultUrl(): Url
 
-    // The version resource is nested under the source, with the prerelease variant staying
-    // last: /v5/patches/prerelease has its version at /v5/patches/version/prerelease.
-    protected fun versionUriOf(uri: Uri): Uri {
+    // Resources of a source are nested under it, with the prerelease variant staying last:
+    // /v5/patches/prerelease has its version at /v5/patches/version/prerelease.
+    private fun resourceUriOf(uri: Uri, name: String): Uri {
         val segments = uri.pathSegments
         val isPrerelease = segments.lastOrNull() == PRERELEASE_PATH
 
         return uri.buildUpon().path(null).apply {
             segments.dropLast(if (isPrerelease) 1 else 0).forEach(::appendPath)
-            appendPath(VERSION_PATH)
+            appendPath(name)
             if (isPrerelease) appendPath(PRERELEASE_PATH)
         }.build()
+    }
+
+    protected fun versionUriOf(uri: Uri) = resourceUriOf(uri, VERSION_PATH)
+
+    // The releases a source has published.
+    suspend fun getHistory(uri: Uri): List<ReVancedAssetHistory> = withContext(Dispatchers.IO) {
+        protocolHandlers.getStream(resourceUriOf(uri, HISTORY_PATH)) { stream ->
+            json.decodeFromString(stream.reader().readText())
+        }
     }
 
     protected abstract fun realNameOf(loaded: LOADED): String?
@@ -503,6 +513,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 private const val LEGACY_LOCAL = "local"
 private const val LEGACY_API = "api"
 private const val VERSION_PATH = "version"
+private const val HISTORY_PATH = "history"
 private const val PRERELEASE_PATH = "prerelease"
 
 private fun LocalDateTime.toEpochMillis() = toInstant(TimeZone.UTC).toEpochMilliseconds()
