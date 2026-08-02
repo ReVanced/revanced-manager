@@ -1,16 +1,16 @@
 package app.revanced.manager.data.room
 
-import android.net.Uri
 import androidx.room.TypeConverter
 import app.revanced.manager.data.room.options.Option.SerializedValue
+import io.ktor.http.Url
 import java.io.File
 
 class Converters {
     @TypeConverter
-    fun uriFromString(value: String): Uri = Uri.parse(value)
+    fun urlFromString(value: String) = Url(value)
 
     @TypeConverter
-    fun uriToString(value: Uri) = value.toString()
+    fun urlToString(value: Url) = value.toString()
 
     @TypeConverter
     fun fileFromString(value: String) = File(value)

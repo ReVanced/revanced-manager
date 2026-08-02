@@ -2,6 +2,7 @@ package app.revanced.manager.domain.manager
 
 import android.app.Application
 import android.net.Uri
+import io.ktor.http.Url
 import android.util.Log
 import androidx.annotation.StringRes
 import app.revanced.manager.R
@@ -11,6 +12,7 @@ import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.data.redux.Store
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.sources.SourceProperties
+import app.revanced.manager.data.room.sources.SourceUrl
 import app.revanced.manager.domain.protocol.ContentProtocolHandler
 import app.revanced.manager.domain.protocol.FileProtocolHandler
 import app.revanced.manager.domain.protocol.HttpProtocolHandler
@@ -64,6 +66,8 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     protected abstract suspend fun dbGetAll(): List<DB>
     protected abstract suspend fun dbGetProps(uid: Int): SourceProperties?
+    protected abstract suspend fun dbGetUrls(): List<SourceUrl>
+    protected abstract suspend fun dbSetUrl(uid: Int, url: String)
     protected abstract suspend fun dbUpsert(entity: DB)
     protected abstract suspend fun dbRemove(uid: Int)
     protected abstract suspend fun dbReset()
@@ -75,7 +79,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     protected abstract fun fileOf(uid: Int): File
 
     // The URL of the default source, built from preferences.
-    protected abstract suspend fun defaultSourceUri(): Uri
+    protected abstract suspend fun defaultUrl(): Url
 
     // The version resource is nested under the source, with the prerelease variant staying
     // last: /v5/patches/prerelease has its version at /v5/patches/version/prerelease.
@@ -159,21 +163,16 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     }
 
     private suspend fun loadFromDb(): List<DB> {
+        migrateLegacyUrls()
+
         if (dbGetAll().none { it.uid == 0 }) {
-            createEntity(0, "", defaultSourceUri(), autoUpdate = true)
+            createEntity(0, "", defaultUrl(), autoUpdate = true)
         }
 
-        // Migrates rows from before sources were stored as URLs and keeps the
-        // default source pointed at the API configured in settings.
-        dbGetAll().forEach { entity ->
-            val props = dbGetProps(entity.uid) ?: return@forEach
-            val migrated = when {
-                entity.uid == 0 -> defaultSourceUri().takeIf { it != props.source }
-                props.source.scheme == null -> Uri.fromFile(fileOf(entity.uid))
-                else -> null
-            } ?: return@forEach
-
-            updateDb(entity.uid) { it.copy(source = migrated) }
+        // Keeps the default source pointed at the API configured in settings.
+        dbGetProps(0)?.let { props ->
+            val url = defaultUrl()
+            if (url != props.url) updateDb(0) { it.copy(url = url) }
         }
 
         return dbGetAll()
@@ -182,7 +181,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     private suspend fun createEntity(
         uid: Int,
         name: String,
-        source: Uri,
+        url: Url,
         autoUpdate: Boolean = false,
     ) =
         entityFromProps(
@@ -190,7 +189,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             SourceProperties(
                 name = name,
                 versionHash = null,
-                source = source,
+                url = url,
                 autoUpdate = autoUpdate,
                 releasedAt = null,
             )
@@ -213,7 +212,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                 SourceProperties(
                     name = new.name,
                     versionHash = new.versionHash,
-                    source = new.source,
+                    url = new.url,
                     autoUpdate = new.autoUpdate,
                     releasedAt = new.releasedAt,
                 )
@@ -222,6 +221,22 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     }
 
     protected fun directoryOf(uid: Int) = sourceDir.resolve(uid.toString()).also { it.mkdirs() }
+
+    // The URL of the copy an imported source was stored in.
+    private fun fileUrlOf(uid: Int) = Url(Uri.fromFile(fileOf(uid)).toString())
+
+    // Rows written before sources were URLs hold a sentinel instead of one.
+    // They have to be rewritten before anything reads them because
+    // parsing a sentinel silently yields a valid but meaningless URL rather than failing.
+    private suspend fun migrateLegacyUrls() = dbGetUrls().forEach { (uid, url) ->
+        val migrated = when (url) {
+            LEGACY_LOCAL -> fileUrlOf(uid)
+            LEGACY_API -> defaultUrl()
+            else -> return@forEach
+        }
+
+        dbSetUrl(uid, migrated.toString())
+    }
 
     suspend fun reset() = dispatchAction("Reset") { state ->
         dbReset()
@@ -253,7 +268,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     suspend fun importFrom(uri: Uri) =
         dispatchAction("Import ($uri)") { state ->
             val uid = generateUid()
-            val entity = createEntity(uid, "", Uri.fromFile(fileOf(uid)))
+            val entity = createEntity(uid, "", fileUrlOf(uid))
             with(loadEntity(entity)) {
                 try {
                     replace(uri)
@@ -273,7 +288,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     suspend fun create(url: String, autoUpdate: Boolean) =
         dispatchAction("Add ($url)") { state ->
-            val entity = createEntity(generateUid(), "", Uri.parse(url), autoUpdate)
+            val entity = createEntity(generateUid(), "", Url(url), autoUpdate)
             val src = loadEntity(entity)
             update(src)
             state.copy(sources = state.sources.toMutableMap().also { it[src.uid] = src })
@@ -306,7 +321,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
             updateDb(uid) { props ->
                 props.copy(
-                    source = Uri.parse(value),
+                    url = Url(value),
                     versionHash = null,
                     releasedAt = null
                 )
@@ -481,6 +496,8 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     }
 }
 
+private const val LEGACY_LOCAL = "local"
+private const val LEGACY_API = "api"
 private const val VERSION_PATH = "version"
 private const val PRERELEASE_PATH = "prerelease"
 

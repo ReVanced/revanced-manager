@@ -16,6 +16,7 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.downloader.DownloaderEntity
 import app.revanced.manager.data.room.sources.SourceProperties
 import android.net.Uri
+import io.ktor.http.Url
 import app.revanced.manager.domain.manager.SourceManager
 import app.revanced.manager.domain.sources.Loader
 import app.revanced.manager.domain.sources.Source
@@ -47,6 +48,8 @@ class DownloaderRepository(
 
     override suspend fun dbGetAll() = dao.all()
     override suspend fun dbGetProps(uid: Int) = dao.getProps(uid)
+    override suspend fun dbGetUrls() = dao.allUrls()
+    override suspend fun dbSetUrl(uid: Int, url: String) = dao.setUrl(uid, url)
     override suspend fun dbUpsert(entity: DownloaderEntity) = dao.upsert(entity)
     override suspend fun dbRemove(uid: Int) = dao.remove(uid)
     override suspend fun dbReset() = dao.reset()
@@ -71,7 +74,7 @@ class DownloaderRepository(
         return Source(
             actualName,
             uid,
-            source,
+            Uri.parse(url.toString()),
             versionHash,
             releasedAt,
             autoUpdate,
@@ -91,12 +94,12 @@ class DownloaderRepository(
         uid,
         name = props.name,
         versionHash = props.versionHash,
-        source = props.source,
+        url = props.url,
         autoUpdate = props.autoUpdate,
         releasedAt = props.releasedAt
     )
 
-    override suspend fun defaultSourceUri(): Uri = Uri.parse(
+    override suspend fun defaultUrl() = Url(
         "${prefs.api.get()}/v5/manager/downloaders" +
                 if (prefs.useDownloaderPrerelease.get()) "/prerelease" else ""
     )
