@@ -97,14 +97,10 @@ fun ImportSourceDialog(
     // Auto accepts any text and defers the scheme to the handlers, URL expects a
     // well-formed web address before the network is even touched.
     val isValidUrl = url.trim().let { URLUtil.isHttpUrl(it) || URLUtil.isHttpsUrl(it) }
-    val inputsAreValid by remember {
-        derivedStateOf {
-            when (method) {
-                ImportMethod.Auto -> url.isNotBlank()
-                ImportMethod.Http -> isValidUrl
-                ImportMethod.File -> file != null
-            }
-        }
+    val inputsAreValid = when (method) {
+        ImportMethod.Auto -> url.isNotBlank()
+        ImportMethod.Http -> isValidUrl
+        ImportMethod.File -> file != null
     }
 
     AlertDialogExtended(
