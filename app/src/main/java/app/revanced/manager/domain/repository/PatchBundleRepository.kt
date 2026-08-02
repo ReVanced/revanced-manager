@@ -46,6 +46,7 @@ class PatchBundleRepository(
     override val updateFailed = R.string.patches_download_fail
     override val updateSuccess = R.string.patches_update_success
     override val updateUnavailable = R.string.patches_update_unavailable
+    override val urlUnsupported = R.string.patches_url_unsupported
     override val replaceFail = R.string.patches_replace_fail
 
     override suspend fun dbGetAll() = dao.all()

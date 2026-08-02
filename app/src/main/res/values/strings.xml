@@ -550,7 +550,8 @@ It’s only compatible with these versions: %2$s</string>
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
-    <string name="source_url_unsupported">This URL is pointing to an unsupported source.</string>
+    <string name="patches_url_unsupported">This URL does not point to valid patches.</string>
+    <string name="downloader_url_unsupported">This URL does not point to a valid downloader.</string>
     <string name="source_url_validation_failed">Couldn’t verify this URL. Make sure it’s correct and try again.</string>
     <string name="required_options_screen">Required options</string>
 

@@ -109,6 +109,7 @@ class DownloaderRepository(
     override val updateFailed = R.string.downloader_update_failed
     override val updateSuccess = R.string.patches_update_success
     override val updateUnavailable = R.string.patches_update_unavailable
+    override val urlUnsupported = R.string.downloader_url_unsupported
     override val replaceFail = R.string.downloader_replace_fail
 
     override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<DownloaderPackage>>) =

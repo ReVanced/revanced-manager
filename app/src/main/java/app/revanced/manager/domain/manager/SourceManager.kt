@@ -108,6 +108,10 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     @get:StringRes
     protected abstract val replaceFail: Int
 
+    // Shown when a URL does not lead to what this manager expects, e.g. patches.
+    @get:StringRes
+    protected abstract val urlUnsupported: Int
+
     protected abstract suspend fun loadDataFromSources(sources: MutableMap<Int, Source<LOADED>>): OUTPUT
 
     protected val store = Store(
@@ -376,7 +380,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     private fun Throwable.toValidationMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedSourceException -> app.getString(R.string.source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(urlUnsupported)
 
         // wtf is this? this is not a data at all and more like a webpage or something else!
         else -> app.getString(R.string.source_url_validation_failed)
@@ -384,7 +388,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
 
     private fun Throwable.toUpdateMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedSourceException -> app.getString(R.string.source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(urlUnsupported)
         else -> simpleMessage()
     }
 
