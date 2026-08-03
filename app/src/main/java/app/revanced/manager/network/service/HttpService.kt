@@ -16,16 +16,16 @@ import io.ktor.http.isSuccess
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.exhausted
 import io.ktor.utils.io.readRemaining
+import io.ktor.utils.io.jvm.javaio.toInputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.io.asSink
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.io.InputStream
 import java.io.OutputStream
 
-/**
- * @author Aliucord Authors, DiamondMiner88
- */
+// Additional authors: Aliucord Authors, DiamondMiner88
 class HttpService(
     val json: Json,
     val http: HttpClient,
@@ -83,6 +83,18 @@ class HttpService(
                 throw HttpException(httpResponse.status)
             }
         }
+    }
+
+    // Makes a GET request and passes the response body to [block] as a stream.
+    // The stream is only valid inside [block] and is closed automatically afterwards.
+    suspend fun <T> getStream(
+        block: suspend (InputStream) -> T,
+        builder: HttpRequestBuilder.() -> Unit
+    ): T = http.prepareGet(builder).execute { response ->
+        if (!response.status.isSuccess()) throw HttpException(response.status)
+
+        val channel: ByteReadChannel = response.body()
+        block(channel.toInputStream())
     }
 
     suspend fun download(

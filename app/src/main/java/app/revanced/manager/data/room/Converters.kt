@@ -2,15 +2,15 @@ package app.revanced.manager.data.room
 
 import androidx.room.TypeConverter
 import app.revanced.manager.data.room.options.Option.SerializedValue
-import app.revanced.manager.data.room.sources.Source
+import io.ktor.http.Url
 import java.io.File
 
 class Converters {
     @TypeConverter
-    fun sourceFromString(value: String) = Source.from(value)
+    fun urlFromString(value: String) = Url(value)
 
     @TypeConverter
-    fun sourceToString(value: Source) = value.toString()
+    fun urlToString(value: Url) = value.toString()
 
     @TypeConverter
     fun fileFromString(value: String) = File(value)

@@ -8,14 +8,11 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.data.room.sources.SourceProperties
-import app.revanced.manager.data.room.sources.Source as SourceInfo
-import app.revanced.manager.domain.sources.APIPatchBundle
-import app.revanced.manager.domain.sources.JsonPatchBundle
-import app.revanced.manager.domain.sources.LocalPatchBundle
+import android.net.Uri
+import io.ktor.http.Url
 import app.revanced.manager.domain.sources.PatchBundleSource
 import app.revanced.manager.domain.manager.SourceManager
 import app.revanced.manager.domain.sources.Loader
-import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.patcher.patch.PatchBundle
@@ -49,16 +46,20 @@ class PatchBundleRepository(
     override val updateFailed = R.string.patches_download_fail
     override val updateSuccess = R.string.patches_update_success
     override val updateUnavailable = R.string.patches_update_unavailable
+    override val urlUnsupported = R.string.patches_url_unsupported
     override val replaceFail = R.string.patches_replace_fail
 
     override suspend fun dbGetAll() = dao.all()
     override suspend fun dbGetProps(uid: Int) = dao.getProps(uid)
+    override suspend fun dbGetUrls() = dao.allUrls()
+    override suspend fun dbSetUrl(uid: Int, url: String) = dao.setUrl(uid, url)
     override suspend fun dbUpsert(entity: PatchBundleEntity) = dao.upsert(entity)
     override suspend fun dbRemove(uid: Int) = dao.remove(uid)
     override suspend fun dbReset() = dao.reset()
 
+    override fun fileOf(uid: Int): File = directoryOf(uid).resolve("patches.jar")
+
     override fun loadEntity(entity: PatchBundleEntity): PatchBundleSource = with(entity) {
-        val file = directoryOf(uid).resolve("patches.jar")
         val actualName =
             entity.name.ifEmpty { app.getString(if (uid == 0) R.string.patches_name_default else R.string.source_name_fallback) }
 
@@ -67,32 +68,20 @@ class PatchBundleRepository(
                 .toLocalDateTime(TimeZone.UTC)
         }
 
-        return when (source) {
-            is SourceInfo.Local -> LocalPatchBundle(actualName, uid, null, file, PatchBundleLoader)
-            is SourceInfo.API -> APIPatchBundle(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                SourceInfo.API.SENTINEL,
-                autoUpdate,
-                PatchBundleLoader
-            ) { getPatchesUpdate() }
-
-            is SourceInfo.Remote -> JsonPatchBundle(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                source.url.toString(),
-                autoUpdate,
-                PatchBundleLoader
-            )
-        }
+        return Source(
+            actualName,
+            uid,
+            Uri.parse(url.toString()),
+            versionHash,
+            releasedAt,
+            autoUpdate,
+            null,
+            fileOf(uid),
+            PatchBundleLoader,
+            protocolHandlers,
+            json,
+            ::versionUriOf
+        )
     }
 
     override fun entityFromProps(
@@ -102,9 +91,14 @@ class PatchBundleRepository(
         uid,
         name = props.name,
         versionHash = props.versionHash,
-        source = props.source,
+        url = props.url,
         autoUpdate = props.autoUpdate,
         releasedAt = props.releasedAt
+    )
+
+    override suspend fun defaultUrl() = Url(
+        "${prefs.api.get()}/v5/patches" +
+                if (prefs.usePatchesPrereleases.get()) "/prerelease" else ""
     )
 
     override fun realNameOf(loaded: PatchBundle) = loaded.manifestAttributes?.name
@@ -185,7 +179,7 @@ class PatchBundleRepository(
                 this[src.uid] = PatchBundleInfo.Global(
                     src.name,
                     bundle.manifestAttributes?.version,
-                    (src as? RemotePatchBundle)?.releasedAt,
+                    src.releasedAt,
                     src.uid,
                     result.getOrThrow().toList()
                 )

@@ -1,6 +1,8 @@
 package app.revanced.manager.domain.manager
 
 import android.app.Application
+import android.net.Uri
+import io.ktor.http.Url
 import android.util.Log
 import androidx.annotation.StringRes
 import app.revanced.manager.R
@@ -9,23 +11,21 @@ import app.revanced.manager.data.redux.Action
 import app.revanced.manager.data.redux.ActionContext
 import app.revanced.manager.data.redux.Store
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
-import app.revanced.manager.data.room.sources.Source as SourceInfo
 import app.revanced.manager.data.room.sources.SourceProperties
-import app.revanced.manager.domain.sources.APISource
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.sources.LocalSource
-import app.revanced.manager.domain.sources.RemoteSource
+import app.revanced.manager.data.room.sources.SourceUrl
+import app.revanced.manager.domain.protocol.ContentProtocolHandler
+import app.revanced.manager.domain.protocol.FileProtocolHandler
+import app.revanced.manager.domain.protocol.HttpProtocolHandler
+import app.revanced.manager.domain.protocol.ProtocolHandler
+import app.revanced.manager.domain.protocol.getStream
 import app.revanced.manager.domain.sources.Source
-import app.revanced.manager.domain.sources.UnsupportedRemoteSourceException
-import app.revanced.manager.domain.sources.asRemoteSourceException
+import app.revanced.manager.domain.sources.UnsupportedSourceException
+import app.revanced.manager.domain.sources.asSourceException
 import app.revanced.manager.network.dto.ReVancedAsset
-import app.revanced.manager.network.service.HttpService
-import app.revanced.manager.network.utils.getOrThrow
+import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import io.ktor.client.request.url
-import io.ktor.http.Url
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,10 +37,11 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import java.io.File
-import java.io.InputStream
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -55,16 +56,53 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     protected val app: Application by inject()
     protected val prefs: PreferencesManager by inject()
     protected val networkInfo: NetworkInfo by inject()
-    protected val http: HttpService by inject()
+    protected val json: Json by inject()
+
+    protected val protocolHandlers: Map<String, ProtocolHandler> = mapOf(
+        "http" to get<HttpProtocolHandler>(),
+        "https" to get<HttpProtocolHandler>(),
+        "content" to get<ContentProtocolHandler>(),
+        "file" to get<FileProtocolHandler>(),
+    )
 
     protected abstract suspend fun dbGetAll(): List<DB>
     protected abstract suspend fun dbGetProps(uid: Int): SourceProperties?
+    protected abstract suspend fun dbGetUrls(): List<SourceUrl>
+    protected abstract suspend fun dbSetUrl(uid: Int, url: String)
     protected abstract suspend fun dbUpsert(entity: DB)
     protected abstract suspend fun dbRemove(uid: Int)
     protected abstract suspend fun dbReset()
 
     protected abstract fun loadEntity(entity: DB): Source<LOADED>
     protected abstract fun entityFromProps(uid: Int, props: SourceProperties): DB
+
+    // The file the downloaded copy of a source lives in.
+    protected abstract fun fileOf(uid: Int): File
+
+    // The URL of the default source, built from preferences.
+    protected abstract suspend fun defaultUrl(): Url
+
+    // Resources of a source are nested under it, with the prerelease variant staying last:
+    // /v5/patches/prerelease has its version at /v5/patches/version/prerelease.
+    private fun resourceUriOf(uri: Uri, name: String): Uri {
+        val segments = uri.pathSegments
+        val isPrerelease = segments.lastOrNull() == PRERELEASE_PATH
+
+        return uri.buildUpon().path(null).apply {
+            segments.dropLast(if (isPrerelease) 1 else 0).forEach(::appendPath)
+            appendPath(name)
+            if (isPrerelease) appendPath(PRERELEASE_PATH)
+        }.build()
+    }
+
+    protected fun versionUriOf(uri: Uri) = resourceUriOf(uri, VERSION_PATH)
+
+    // The releases a source has published.
+    suspend fun getHistory(uri: Uri): List<ReVancedAssetHistory> = withContext(Dispatchers.IO) {
+        protocolHandlers.getStream(resourceUriOf(uri, HISTORY_PATH)) { stream ->
+            json.decodeFromString(stream.reader().readText())
+        }
+    }
 
     protected abstract fun realNameOf(loaded: LOADED): String?
 
@@ -80,16 +118,11 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     @get:StringRes
     protected abstract val replaceFail: Int
 
-    protected abstract suspend fun loadDataFromSources(sources: MutableMap<Int, Source<LOADED>>): OUTPUT
+    // Shown when a URL does not lead to what this manager expects, e.g. patches.
+    @get:StringRes
+    protected abstract val urlUnsupported: Int
 
-    protected val defaultSource = entityFromProps(
-        0, SourceProperties(
-            name = "",
-            versionHash = null,
-            source = SourceInfo.API,
-            autoUpdate = false
-        )
-    )
+    protected abstract suspend fun loadDataFromSources(sources: MutableMap<Int, Source<LOADED>>): OUTPUT
 
     protected val store = Store(
         CoroutineScope(Dispatchers.Default),
@@ -129,7 +162,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             updateDb(uid) {
                 it.copy(
                     name = newName,
-                    releasedAt = (src as? RemoteSource)?.releasedAt?.toEpochMillis()
+                    releasedAt = src.releasedAt?.toEpochMillis()
                 )
             }
             sources[uid] = src.copy(name = newName)
@@ -144,28 +177,33 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     }
 
     private suspend fun loadFromDb(): List<DB> {
-        val all = dbGetAll().toMutableList()
-        val default = defaultSource
+        migrateLegacyUrls()
 
-        if (all.none { it.uid == default.uid }) {
-            dbUpsert(default)
-            all += default
+        if (dbGetAll().none { it.uid == 0 }) {
+            createEntity(0, "", defaultUrl(), autoUpdate = true)
         }
 
-        return all
+        // Keeps the default source pointed at the API configured in settings.
+        dbGetProps(0)?.let { props ->
+            val url = defaultUrl()
+            if (url != props.url) updateDb(0) { it.copy(url = url) }
+        }
+
+        return dbGetAll()
     }
 
     private suspend fun createEntity(
+        uid: Int,
         name: String,
-        source: SourceInfo,
+        url: Url,
         autoUpdate: Boolean = false,
     ) =
         entityFromProps(
-            uid = generateUid(),
+            uid = uid,
             SourceProperties(
                 name = name,
                 versionHash = null,
-                source = source,
+                url = url,
                 autoUpdate = autoUpdate,
                 releasedAt = null,
             )
@@ -188,7 +226,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                 SourceProperties(
                     name = new.name,
                     versionHash = new.versionHash,
-                    source = new.source,
+                    url = new.url,
                     autoUpdate = new.autoUpdate,
                     releasedAt = new.releasedAt,
                 )
@@ -197,6 +235,22 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
     }
 
     protected fun directoryOf(uid: Int) = sourceDir.resolve(uid.toString()).also { it.mkdirs() }
+
+    // The URL of the copy an imported source was stored in.
+    private fun fileUrlOf(uid: Int) = Url(Uri.fromFile(fileOf(uid)).toString())
+
+    // Rows written before sources were URLs hold a sentinel instead of one.
+    // They have to be rewritten before anything reads them because
+    // parsing a sentinel silently yields a valid but meaningless URL rather than failing.
+    private suspend fun migrateLegacyUrls() = dbGetUrls().forEach { (uid, url) ->
+        val migrated = when (url) {
+            LEGACY_LOCAL -> fileUrlOf(uid)
+            LEGACY_API -> defaultUrl()
+            else -> return@forEach
+        }
+
+        dbSetUrl(uid, migrated.toString())
+    }
 
     suspend fun reset() = dispatchAction("Reset") { state ->
         dbReset()
@@ -225,72 +279,73 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             )
         }
 
-    suspend fun createLocal(createStream: suspend () -> InputStream) =
-        dispatchAction("Add local") { state ->
-            val entity = createEntity("", SourceInfo.Local)
-            with(loadEntity(entity) as LocalSource<LOADED>) {
+    suspend fun importFrom(uri: Uri) =
+        dispatchAction("Import ($uri)") { state ->
+            val uid = generateUid()
+            val entity = createEntity(uid, "", fileUrlOf(uid))
+            with(loadEntity(entity)) {
                 try {
-                    createStream().use { patches -> replace(patches) }
+                    replace(uri)
                 } catch (e: Exception) {
                     if (e is CancellationException) throw e
-                    Log.e(tag, "Got exception while creating local source", e)
+                    Log.e(tag, "Got exception while importing source", e)
                     withContext(Dispatchers.Main) {
                         app.toast(app.getString(replaceFail, e.simpleMessage()))
                     }
 
-                    deleteLocalFile()
+                    deleteFile()
                 }
             }
 
             doReload(state)
         }
 
-    suspend fun createRemote(url: String, autoUpdate: Boolean) =
-        dispatchAction("Add remote ($url)") { state ->
-            val entity = createEntity("", SourceInfo.from(url), autoUpdate)
-            val src = loadEntity(entity) as RemoteSource<LOADED>
+    suspend fun create(url: String, autoUpdate: Boolean) =
+        dispatchAction("Add ($url)") { state ->
+            val entity = createEntity(generateUid(), "", Url(url), autoUpdate)
+            val src = loadEntity(entity)
             update(src)
             state.copy(sources = state.sources.toMutableMap().also { it[src.uid] = src })
         }
 
-    suspend fun reloadApiSources() = dispatchAction("Reload API sources") { state ->
-        this@SourceManager.store.state.value.sources.values.filterIsInstance<APISource<LOADED>>()
+    suspend fun resetDefaultSource() = dispatchAction("Reset default source") { state ->
+        this@SourceManager.store.state.value.sources.values
+            .filter { it.isDefault }
             .forEach { src ->
-                with(src) { deleteLocalFile() }
+                with(src) { deleteFile() }
                 updateDb(src.uid) { it.copy(versionHash = null, releasedAt = null) }
             }
 
         doReload(state)
     }
 
-    suspend fun RemoteSource<LOADED>.setAutoUpdate(value: Boolean) =
+    suspend fun Source<LOADED>.setAutoUpdate(value: Boolean) =
         dispatchAction("Set auto update ($name, $value)") { state ->
             updateDb(uid) { it.copy(autoUpdate = value) }
-            val newSrc = state.sources[uid]?.asRemoteOrNull?.copy(autoUpdate = value)
+            val newSrc = state.sources[uid]?.copy(autoUpdate = value)
                 ?: return@dispatchAction state
 
             state.copy(sources = state.sources.toMutableMap().also { it[uid] = newSrc })
         }
 
-    suspend fun RemoteSource<LOADED>.setEndpoint(value: String) =
-        dispatchAction("Set endpoint ($name, $value)") { state ->
-            val current = state.sources[uid]?.asRemoteOrNull ?: return@dispatchAction state
-            if (current.endpoint == value) return@dispatchAction state
+    suspend fun Source<LOADED>.setUrl(value: String) =
+        dispatchAction("Set URL ($name, $value)") { state ->
+            val current = state.sources[uid] ?: return@dispatchAction state
+            if (current.uri.toString() == value) return@dispatchAction state
 
             updateDb(uid) { props ->
-                if (props.source !is SourceInfo.Remote) return@updateDb props
                 props.copy(
-                    source = SourceInfo.Remote(Url(value)),
+                    url = Url(value),
                     versionHash = null,
                     releasedAt = null
                 )
             }
-            with(current) { deleteLocalFile() }
+            with(current) { deleteFile() }
 
             val newSources = state.sources.toMutableMap()
             newSources[uid] = current.copy(
                 error = null,
-                endpoint = value,
+                uri = Uri.parse(value),
                 versionHash = null,
                 releasedAt = null
             )
@@ -304,7 +359,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         }
 
     suspend fun update(
-        vararg sources: RemoteSource<LOADED>,
+        vararg sources: Source<LOADED>,
         showToast: Boolean = false,
         force: Boolean = true
     ) {
@@ -312,7 +367,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         store.dispatch(Update(showToast = showToast, force = force) { it.uid in uids })
     }
 
-    suspend fun redownloadRemote() =
+    suspend fun redownload() =
         store.dispatch(Update(force = true, redownload = true))
 
     /**
@@ -325,25 +380,25 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         ) { it.autoUpdate }
     )
 
-    suspend fun validateRemoteUrl(url: String): String? = withContext(Dispatchers.IO) {
+    suspend fun validateUrl(url: String): String? = withContext(Dispatchers.IO) {
         runCatching {
-            http.request<ReVancedAsset> {
-                url(url)
-            }.getOrThrow()
-        }.exceptionOrNull()?.toRemoteValidationMessage()
+            protocolHandlers.getStream(Uri.parse(url)) { stream ->
+                json.decodeFromString<ReVancedAsset>(stream.reader().readText())
+            }
+        }.exceptionOrNull()?.toValidationMessage()
     }
 
-    private fun Throwable.toRemoteValidationMessage() = when (asRemoteSourceException()) {
+    private fun Throwable.toValidationMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedRemoteSourceException -> app.getString(R.string.remote_source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(urlUnsupported)
 
         // wtf is this? this is not a data at all and more like a webpage or something else!
-        else -> app.getString(R.string.remote_source_url_validation_failed)
+        else -> app.getString(R.string.source_url_validation_failed)
     }
 
-    private fun Throwable.toRemoteUpdateMessage() = when (asRemoteSourceException()) {
+    private fun Throwable.toUpdateMessage() = when (asSourceException()) {
         // wtf is this? this data is not a bundle, at least something!
-        is UnsupportedRemoteSourceException -> app.getString(R.string.remote_source_url_unsupported)
+        is UnsupportedSourceException -> app.getString(urlUnsupported)
         else -> simpleMessage()
     }
 
@@ -351,12 +406,12 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         private val force: Boolean = false,
         private val redownload: Boolean = false,
         private val showToast: Boolean = false,
-        private val predicate: (source: RemoteSource<LOADED>) -> Boolean = { true },
+        private val predicate: (source: Source<LOADED>) -> Boolean = { true },
     ) : Action<State<LOADED, OUTPUT>> {
         private suspend fun toast(@StringRes id: Int, vararg args: Any?) =
             withContext(Dispatchers.Main) { app.toast(app.getString(id, *args)) }
 
-        override fun toString() = if (redownload) "Redownload remote sources" else "Update check"
+        override fun toString() = if (redownload) "Redownload sources" else "Update check"
 
         override suspend fun ActionContext.execute(
             current: State<LOADED, OUTPUT>
@@ -367,7 +422,6 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             val outdated = current.outdatedSources.toMutableSet()
 
             val results = current.sources.values
-                .filterIsInstance<RemoteSource<LOADED>>()
                 .filter { predicate(it) }
                 .also { targets ->
                     // Clear errors for sources we are updating.
@@ -383,7 +437,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
                         val updateResult = it.runCatching {
                             when {
                                 redownload -> downloadLatest()
-                                checkOnly -> getUpdateInfo()?.let { info -> RemoteSource.UpdateResult(info.version, info.createdAt) }
+                                checkOnly -> getUpdateInfo()?.let { info -> Source.UpdateResult(info.version, info.createdAt) }
                                 else -> update()
                             } ?: return@update null
                         }
@@ -429,7 +483,7 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
             when {
                 !showToast -> {}
                 hasErrors -> {
-                    val error = errors.values.first().toRemoteUpdateMessage()
+                    val error = errors.values.first().toUpdateMessage()
                     toast(updateFailed, error)
                 }
 
@@ -455,5 +509,11 @@ abstract class SourceManager<DB : SourceManager.DatabaseEntity, LOADED, OUTPUT>(
         val uid: Int
     }
 }
+
+private const val LEGACY_LOCAL = "local"
+private const val LEGACY_API = "api"
+private const val VERSION_PATH = "version"
+private const val HISTORY_PATH = "history"
+private const val PRERELEASE_PATH = "prerelease"
 
 private fun LocalDateTime.toEpochMillis() = toInstant(TimeZone.UTC).toEpochMilliseconds()

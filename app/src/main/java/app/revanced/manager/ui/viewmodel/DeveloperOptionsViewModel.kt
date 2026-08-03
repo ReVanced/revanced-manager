@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.domain.sources.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloaderRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -20,8 +19,8 @@ class DeveloperOptionsViewModel(
     private val downloaderRepository: DownloaderRepository
 ) : ViewModel() {
     fun redownloadBundles() = viewModelScope.launch {
-        uiSafe(app, R.string.patches_download_fail, RemotePatchBundle.updateFailMsg) {
-            patchBundleRepository.redownloadRemote()
+        uiSafe(app, R.string.patches_download_fail, "Failed to update") {
+            patchBundleRepository.redownload()
         }
     }
 
@@ -31,7 +30,7 @@ class DeveloperOptionsViewModel(
         prefs.api.update(value)
 
         arrayOf(patchBundleRepository, downloaderRepository).forEach {
-            it.reloadApiSources()
+            it.resetDefaultSource()
             it.updateCheck()
         }
     }

@@ -15,11 +15,10 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.downloader.DownloaderEntity
 import app.revanced.manager.data.room.sources.SourceProperties
+import android.net.Uri
+import io.ktor.http.Url
 import app.revanced.manager.domain.manager.SourceManager
-import app.revanced.manager.domain.sources.APISource
-import app.revanced.manager.domain.sources.JsonSource
 import app.revanced.manager.domain.sources.Loader
-import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.network.downloader.LoadedDownloader
 import app.revanced.manager.network.downloader.ParceledDownloaderData
@@ -35,7 +34,6 @@ import java.io.File
 import java.lang.ref.WeakReference
 import java.lang.reflect.Modifier
 import kotlin.time.Instant
-import app.revanced.manager.data.room.sources.Source as SourceInfo
 
 @OptIn(DownloaderHostApi::class)
 class DownloaderRepository(
@@ -50,6 +48,8 @@ class DownloaderRepository(
 
     override suspend fun dbGetAll() = dao.all()
     override suspend fun dbGetProps(uid: Int) = dao.getProps(uid)
+    override suspend fun dbGetUrls() = dao.allUrls()
+    override suspend fun dbSetUrl(uid: Int, url: String) = dao.setUrl(uid, url)
     override suspend fun dbUpsert(entity: DownloaderEntity) = dao.upsert(entity)
     override suspend fun dbRemove(uid: Int) = dao.remove(uid)
     override suspend fun dbReset() = dao.reset()
@@ -60,8 +60,9 @@ class DownloaderRepository(
         loadPackage(pkgInfo, dataDir)
     }
 
+    override fun fileOf(uid: Int): File = directoryOf(uid).resolve("downloader.jar")
+
     override fun loadEntity(entity: DownloaderEntity): Source<DownloaderPackage> = with(entity) {
-        val file = directoryOf(uid).resolve("downloader.jar")
         val actualName =
             name.ifEmpty { app.getString(if (uid == 0) R.string.auto_updates_dialog_downloaders else R.string.source_name_fallback) }
 
@@ -70,32 +71,20 @@ class DownloaderRepository(
                 .toLocalDateTime(kotlinx.datetime.TimeZone.UTC)
         }
 
-        return when (source) {
-            is SourceInfo.Local -> LocalSource(actualName, uid, null, file, loader)
-            is SourceInfo.API -> APISource(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                SourceInfo.API.SENTINEL,
-                autoUpdate,
-                loader
-            ) { getDownloaderUpdate() }
-
-            is SourceInfo.Remote -> JsonSource(
-                actualName,
-                uid,
-                versionHash,
-                releasedAt,
-                null,
-                file,
-                source.url.toString(),
-                autoUpdate,
-                loader
-            )
-        }
+        return Source(
+            actualName,
+            uid,
+            Uri.parse(url.toString()),
+            versionHash,
+            releasedAt,
+            autoUpdate,
+            null,
+            fileOf(uid),
+            loader,
+            protocolHandlers,
+            json,
+            ::versionUriOf
+        )
     }
 
     override fun entityFromProps(
@@ -105,9 +94,14 @@ class DownloaderRepository(
         uid,
         name = props.name,
         versionHash = props.versionHash,
-        source = props.source,
+        url = props.url,
         autoUpdate = props.autoUpdate,
         releasedAt = props.releasedAt
+    )
+
+    override suspend fun defaultUrl() = Url(
+        "${prefs.api.get()}/v5/manager/downloaders" +
+                if (prefs.useDownloaderPrerelease.get()) "/prerelease" else ""
     )
 
     override fun realNameOf(loaded: DownloaderPackage) = loaded.name
@@ -115,6 +109,7 @@ class DownloaderRepository(
     override val updateFailed = R.string.downloader_update_failed
     override val updateSuccess = R.string.patches_update_success
     override val updateUnavailable = R.string.patches_update_unavailable
+    override val urlUnsupported = R.string.downloader_url_unsupported
     override val replaceFail = R.string.downloader_replace_fail
 
     override suspend fun loadDataFromSources(sources: MutableMap<Int, Source<DownloaderPackage>>) =
