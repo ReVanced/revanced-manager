@@ -431,6 +431,7 @@ It’s only compatible with these versions: %2$s</string>
 
     <string name="installer">Installer</string>
     <string name="install_app">Install</string>
+    <string name="install_with_external_installer">Install with another app</string>
     <string name="install_app_success">App installed</string>
     <string name="install_app_fail">Failed to install app: %s</string>
     <string name="reinstall_app_fail">Failed to reinstall app: %s</string>

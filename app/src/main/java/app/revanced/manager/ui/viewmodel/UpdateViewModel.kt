@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import android.net.Uri
 import android.os.ParcelUuid
 import androidx.annotation.StringRes
@@ -9,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.FileProvider
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,6 +28,7 @@ import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedAsset
 import app.revanced.manager.network.dto.ReVancedAssetHistory
 import app.revanced.manager.network.service.HttpService
+import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.saveableVar
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
@@ -88,6 +91,7 @@ class UpdateViewModel(
 
     private val location = fs.uiTempDir.resolve("updater.apk")
     private var installerSessionId: ParcelUuid? by savedStateHandle.saveableVar()
+    private var externalInstallLaunched = false
 
     init {
         installerSessionId?.uuid?.let { id ->
@@ -179,6 +183,35 @@ class UpdateViewModel(
         }
     }
 
+    fun installUpdateExternally() {
+        try {
+            val uri = FileProvider.getUriForFile(
+                app,
+                "${app.packageName}.fileprovider",
+                location
+            )
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, APK_MIMETYPE)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            val chooser = Intent.createChooser(
+                intent,
+                app.getString(R.string.install_with_external_installer)
+            ).apply {
+                addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
+
+            externalInstallLaunched = true
+            app.startActivity(chooser)
+        } catch (e: Exception) {
+            externalInstallLaunched = false
+            app.toast(app.getString(R.string.install_app_fail, e.message.orEmpty()))
+        }
+    }
+
     private fun handleInstallResult(result: Session.State<InstallFailure>) {
         when (result) {
             is Session.State.Failed<InstallFailure> -> {
@@ -217,7 +250,7 @@ class UpdateViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        if (installerSessionId == null) {
+        if (installerSessionId == null && !externalInstallLaunched) {
             cancelUpdate()
         }
     }
