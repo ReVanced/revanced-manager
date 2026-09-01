@@ -161,6 +161,11 @@ Second \"item\" text"</string>
     <string name="suggested_version_safeguard_description">Enforces selection of the suggested app version</string>
     <string name="suggested_version_safeguard_title">Stop requiring suggested app version?</string>
     <string name="suggested_version_safeguard_confirmation">Selecting an app that isn’t the suggested version may cause unexpected issues</string>
+    <string name="apk_architecture_safeguard">Require compatible APK architecture</string>
+    <string name="apk_architecture_safeguard_description">Prevents patching APKs whose native libraries do not support this device</string>
+    <string name="apk_architecture_safeguard_title">Allow incompatible APK architecture?</string>
+    <string name="apk_architecture_safeguard_confirmation">An APK built only for another CPU architecture may fail to install or run. Continue anyway?</string>
+    <string name="incompatible_apk_architecture">APK architecture is incompatible with this device. Device: %1$s. APK: %2$s.</string>
     <string name="patch_selection_safeguard">Allow changing patch selection and options</string>
     <string name="patch_selection_safeguard_description">Allows selecting or deselecting patches, and changing patch options</string>
     <string name="patch_selection_safeguard_title">Allow changing patch selection and options?</string>

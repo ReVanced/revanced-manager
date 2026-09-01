@@ -159,6 +159,14 @@ fun AdvancedSettingsScreen(
                     confirmationText = R.string.suggested_version_safeguard_confirmation
                 )
                 SafeguardBooleanItem(
+                    preference = viewModel.prefs.apkArchitectureSafeguard,
+                    coroutineScope = viewModel.viewModelScope,
+                    headline = R.string.apk_architecture_safeguard,
+                    description = R.string.apk_architecture_safeguard_description,
+                    dialogTitle = R.string.apk_architecture_safeguard_title,
+                    confirmationText = R.string.apk_architecture_safeguard_confirmation
+                )
+                SafeguardBooleanItem(
                     preference = viewModel.prefs.disableSelectionWarning,
                     coroutineScope = viewModel.viewModelScope,
                     headline = R.string.patch_selection_safeguard,
