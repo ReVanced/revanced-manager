@@ -45,6 +45,7 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.apkNativeAbis
 import app.revanced.manager.util.tag
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
@@ -242,6 +243,19 @@ class PatcherWorker(
                     val appInfo = pkgInfo.applicationInfo
                         ?: throw IllegalStateException("Failed to retrieve application info for ${selectedApp.packageName}.")
                     File(appInfo.sourceDir)
+                }
+            }
+
+            if (prefs.apkArchitectureSafeguard.get()) {
+                val apkAbis = inputFile.apkNativeAbis()
+                if (apkAbis.isNotEmpty() && Build.SUPPORTED_ABIS.none(apkAbis::contains)) {
+                    throw IllegalArgumentException(
+                        applicationContext.getString(
+                            R.string.incompatible_apk_architecture,
+                            Build.SUPPORTED_ABIS.joinToString(", "),
+                            apkAbis.sorted().joinToString(", ")
+                        )
+                    )
                 }
             }
 

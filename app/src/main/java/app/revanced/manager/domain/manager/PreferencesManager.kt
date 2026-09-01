@@ -35,6 +35,7 @@ class PreferencesManager(
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
     val disableUniversalPatchCheck = booleanPreference("disable_patch_universal_check", false)
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
+    val apkArchitectureSafeguard = booleanPreference("apk_architecture_safeguard", true)
 
     val showDeveloperSettings = booleanPreference("show_developer_settings", context.isDebuggable)
 
