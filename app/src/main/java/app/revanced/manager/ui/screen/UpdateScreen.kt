@@ -118,6 +118,16 @@ fun UpdateScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = stringResource(textRes))
                     }
+
+                    if (vm.state == State.CAN_INSTALL) {
+                        TextButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = vm::installUpdateExternally,
+                            shapes = ButtonDefaults.shapes()
+                        ) {
+                            Text(stringResource(R.string.install_with_external_installer))
+                        }
+                    }
                 }
             }
         },
