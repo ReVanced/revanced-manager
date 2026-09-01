@@ -51,6 +51,7 @@ import app.revanced.manager.util.isSplitApk
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import java.io.File
 import java.nio.file.Files
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
@@ -353,10 +354,28 @@ class SelectedAppInfoViewModel(
                         app.toast(app.getString(R.string.downloader_invalid_version))
                         return@launch
                     }
+
+                    // Download the resolved APK once so its real package metadata can be
+                    // displayed on the app info screen. The cached file is reused by the
+                    // patcher, avoiding a second network download.
+                    val file = downloadedAppRepository.download(
+                        downloader = downloader,
+                        data = data,
+                        expectedPackageName = packageName,
+                        expectedVersion = version,
+                        appCompatibilityCheck = true,
+                        patchesCompatibilityCheck = false,
+                        onDownload = {}
+                    )
+                    val parsedVersion = withContext(Dispatchers.IO) {
+                        pm.getPackageInfo(file)?.versionName
+                    } ?: version
+
                     selectedApp = SelectedApp.Download(
                         packageName,
-                        version,
-                        ParceledDownloaderData(downloader, data)
+                        parsedVersion,
+                        ParceledDownloaderData(downloader, data),
+                        file
                     )
                 } ?: app.toast(app.getString(R.string.downloader_app_not_found))
             } catch (e: UserInteractionException.Activity) {
@@ -378,9 +397,15 @@ class SelectedAppInfoViewModel(
     }
 
     private fun invalidateSelectedAppInfo() = viewModelScope.launch {
-        val info = when (val app = selectedApp) {
-            is SelectedApp.Local -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.file) }
-            else -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.packageName) }
+        val info = withContext(Dispatchers.IO) {
+            when (val app = selectedApp) {
+                is SelectedApp.Local -> pm.getPackageInfo(app.file)
+                is SelectedApp.Download -> app.file
+                    ?.takeIf(File::exists)
+                    ?.let { pm.getPackageInfo(it) }
+                    ?: pm.getPackageInfo(app.packageName)
+                else -> pm.getPackageInfo(app.packageName)
+            }
         }
 
         selectedAppInfo = info

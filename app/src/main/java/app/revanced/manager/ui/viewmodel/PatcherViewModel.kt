@@ -822,7 +822,10 @@ class PatcherViewModel(
         fun generateSteps(
             context: Context, selectedApp: SelectedApp, selectedPatches: PatchSelection
         ): List<Step> = buildList {
-            if (selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search) add(
+            if (
+                selectedApp is SelectedApp.Search ||
+                selectedApp is SelectedApp.Download && selectedApp.file?.exists() != true
+            ) add(
                 Step(
                     StepId.DownloadAPK,
                     context.getString(R.string.download_apk),

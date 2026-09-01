@@ -180,15 +180,16 @@ class PatcherWorker(
                 ).also { args.setInputFile(it) }
 
             val inputFile = when (val selectedApp = args.input) {
-                is SelectedApp.Download -> {
-                    runStep(StepId.DownloadAPK, args.onEvent) {
+                is SelectedApp.Download -> selectedApp.file
+                    ?.takeIf(File::exists)
+                    ?.also { args.setInputFile(it) }
+                    ?: runStep(StepId.DownloadAPK, args.onEvent) {
                         val (downloader, data) = downloaderRepository.unwrapParceledData(
                             selectedApp.data
                         )
 
                         download(downloader, data)
                     }
-                }
 
                 is SelectedApp.Search -> {
                     runStep(StepId.DownloadAPK, args.onEvent) {

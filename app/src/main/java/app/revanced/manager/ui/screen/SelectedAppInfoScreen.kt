@@ -355,8 +355,10 @@ fun SelectedAppInfoScreen(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val needsInternet =
-                    vm.selectedApp.let { it is SelectedApp.Search || it is SelectedApp.Download }
+                val needsInternet = vm.selectedApp.let {
+                    it is SelectedApp.Search ||
+                            it is SelectedApp.Download && it.file?.exists() != true
+                }
 
                 if (needsInternet && networkMetered) NotificationCard(
                     type = NotificationCardType.WARNING,
