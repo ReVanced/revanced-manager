@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.domain.sources.Source.State
 import app.revanced.manager.network.downloader.DownloaderPackage
@@ -128,14 +127,14 @@ fun DownloadsSettingsScreen(
         ImportSourceDialog(
             strings = ImportSourceDialogStrings.DOWNLOADERS,
             onDismiss = { showImportDialog = false },
-            validateRemote = viewModel::validateRemoteSourceUrl,
-            onLocalSubmit = { uri ->
+            validateUrl = viewModel::validateSourceUrl,
+            onFileSubmit = { uri ->
                 showImportDialog = false
-                viewModel.createLocalSource(uri)
+                viewModel.importSource(uri)
             },
-            onRemoteSubmit = { url, autoUpdate ->
+            onUrlSubmit = { url, autoUpdate ->
                 showImportDialog = false
-                viewModel.createRemoteSource(url, autoUpdate)
+                viewModel.createSource(url, autoUpdate)
             }
         )
     }
@@ -333,7 +332,7 @@ private fun DownloaderItem(
 
             val version = source.loaded?.version
             val relativeTime =
-                (source.asRemoteOrNull)?.releasedAt?.relativeTime(LocalContext.current)
+                source.releasedAt?.relativeTime(LocalContext.current)
 
             Text(
                 text = buildAnnotatedString {

@@ -1,7 +1,5 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.annotation.SuppressLint
-import android.app.Application
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,8 +11,6 @@ import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderRepository
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.sources.RemoteSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.network.downloader.DownloaderPackage
 import app.revanced.manager.util.PM
@@ -27,14 +23,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DownloadsViewModel(
-    app: Application,
     private val downloadedAppRepository: DownloadedAppRepository,
     private val downloaderRepository: DownloaderRepository,
     prefs: PreferencesManager,
     val pm: PM,
     val networkInfo: NetworkInfo,
 ) : ViewModel() {
-    private val contentResolver = app.contentResolver
     val usePrereleases = prefs.useDownloaderPrerelease
     val downloaderSources = downloaderRepository.downloaderSources
     val downloadedApps = downloadedAppRepository.getAll().map { downloadedApps ->
@@ -57,20 +51,22 @@ class DownloadsViewModel(
 
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         usePrereleases.update(value)
-        val apiSource = downloaderRepository.downloaderSources.first()[0]?.asRemoteOrNull ?: return@launch
+
+        // Rebuilds the default source with the URL of the new release channel.
+        downloaderRepository.reload()
+        val apiSource = downloaderRepository.downloaderSources.first()[0] ?: return@launch
         updateDownloader(apiSource)
     }
 
-    @SuppressLint("Recycle")
-    fun createLocalSource(downloaderUri: Uri) = viewModelScope.launch {
-        downloaderRepository.createLocal { contentResolver.openInputStream(downloaderUri)!! }
+    fun importSource(downloaderUri: Uri) = viewModelScope.launch {
+        downloaderRepository.importFrom(downloaderUri)
     }
 
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
-        downloaderRepository.createRemote(apiUrl, autoUpdate)
+    fun createSource(apiUrl: String, autoUpdate: Boolean) = viewModelScope.launch {
+        downloaderRepository.create(apiUrl, autoUpdate)
     }
 
-    suspend fun validateRemoteSourceUrl(apiUrl: String) = downloaderRepository.validateRemoteUrl(apiUrl)
+    suspend fun validateSourceUrl(apiUrl: String) = downloaderRepository.validateUrl(apiUrl)
 
     fun toggleApp(downloadedApp: DownloadedApp) {
         if (appSelection.contains(downloadedApp))
@@ -104,7 +100,7 @@ class DownloadsViewModel(
         }
     }
 
-    fun updateDownloader(src: RemoteSource<DownloaderPackage>) = viewModelScope.launch {
+    fun updateDownloader(src: Source<DownloaderPackage>) = viewModelScope.launch {
         try {
             isUpdatingDownloader = true
             downloaderRepository.update(src, showToast = true)
@@ -113,21 +109,21 @@ class DownloadsViewModel(
         }
     }
 
-    fun setAutoUpdate(src: RemoteSource<DownloaderPackage>, value: Boolean) = viewModelScope.launch {
+    fun setAutoUpdate(src: Source<DownloaderPackage>, value: Boolean) = viewModelScope.launch {
         with(downloaderRepository) {
             src.setAutoUpdate(value)
         }
     }
 
-    fun setEndpoint(src: RemoteSource<DownloaderPackage>, value: String) = viewModelScope.launch {
-        val endpoint = value.trim()
-        if (src.endpoint == endpoint) return@launch
+    fun setUrl(src: Source<DownloaderPackage>, value: String) = viewModelScope.launch {
+        val url = value.trim()
+        if (src.uri.toString() == url) return@launch
 
         with(downloaderRepository) {
-            src.setEndpoint(endpoint)
+            src.setUrl(url)
         }
 
-        downloaderSources.first()[src.uid]?.asRemoteOrNull?.let { updated ->
+        downloaderSources.first()[src.uid]?.let { updated ->
             updateDownloader(updated)
         }
     }

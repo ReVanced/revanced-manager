@@ -58,8 +58,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.repository.ChangelogSource
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
-import app.revanced.manager.domain.sources.LocalSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
@@ -86,10 +84,9 @@ fun BundleInformationScreen(
     val patchCount by viewModel.patchCount.collectAsStateWithLifecycle(0)
 
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    val isLocal = src is LocalSource<*>
     val bundleManifestAttributes = src.loaded?.manifestAttributes
-    val (autoUpdate, endpoint) = src.asRemoteOrNull?.let { it.autoUpdate to it.endpoint }
-        ?: (null to null)
+    val autoUpdate = src.autoUpdate
+    val sourceUrl = src.uri.toString()
 
     val subtitleAuthor = bundleManifestAttributes?.author?.let {
         stringResource(R.string.bundle_information_by_author, it)
@@ -131,7 +128,7 @@ fun BundleInformationScreen(
                         val separator = "$emSpace$dot$emSpace"
                         Text(text = buildAnnotatedString {
                             append("$subtitleAuthor$separator$subtitleVersion")
-                            src.asRemoteOrNull?.releasedAt?.let {
+                            src.releasedAt?.let {
                                 val releaseDate = it.relativeTime(
                                     LocalContext.current
                                 )
@@ -165,7 +162,7 @@ fun BundleInformationScreen(
                             contentDescription
                         )
                     }
-                    if (!isLocal) TooltipIconButton(
+                    TooltipIconButton(
                         onClick = viewModel::refresh,
                         tooltip = stringResource(R.string.refresh),
                     ) { contentDescription ->
@@ -241,36 +238,34 @@ fun BundleInformationScreen(
             }
 
             ListSection {
-                if (autoUpdate != null) {
-                    SettingsListItem(
-                        headlineContent = stringResource(R.string.auto_update),
-                        supportingContent = stringResource(R.string.auto_update_description),
-                        trailingContent = {
-                            HapticSwitch(
-                                checked = autoUpdate,
-                                onCheckedChange = viewModel::setAutoUpdate,
-                                thumbContent = if (autoUpdate) {
-                                    {
-                                        Icon(
-                                            imageVector = Icons.Filled.Check,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(SwitchDefaults.IconSize)
-                                        )
-                                    }
-                                } else {
-                                    {
-                                        Icon(
-                                            imageVector = Icons.Filled.Close,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(SwitchDefaults.IconSize)
-                                        )
-                                    }
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.auto_update),
+                    supportingContent = stringResource(R.string.auto_update_description),
+                    trailingContent = {
+                        HapticSwitch(
+                            checked = autoUpdate,
+                            onCheckedChange = viewModel::setAutoUpdate,
+                            thumbContent = if (autoUpdate) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Check,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(SwitchDefaults.IconSize)
+                                    )
                                 }
-                            )
-                        },
-                        onClick = { viewModel.setAutoUpdate(!autoUpdate) }
-                    )
-                }
+                            } else {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(SwitchDefaults.IconSize)
+                                    )
+                                }
+                            }
+                        )
+                    },
+                    onClick = { viewModel.setAutoUpdate(!autoUpdate) }
+                )
 
                 if (src.isDefault) {
                     SafeguardBooleanItem(
@@ -286,7 +281,7 @@ fun BundleInformationScreen(
                     )
                 }
 
-                endpoint?.takeUnless { src.isDefault }?.let { url ->
+                sourceUrl.takeUnless { src.isDefault }?.let { url ->
                     var showUrlInputDialog by rememberSaveable { mutableStateOf(false) }
 
                     if (showUrlInputDialog) {
@@ -294,10 +289,10 @@ fun BundleInformationScreen(
                             initial = url,
                             title = stringResource(R.string.patches_url),
                             onDismissRequest = { showUrlInputDialog = false },
-                            confirmValidator = viewModel::validateEndpoint,
+                            confirmValidator = viewModel::validateUrl,
                             onConfirm = {
                                 showUrlInputDialog = false
-                                viewModel.setEndpoint(it.trim())
+                                viewModel.setUrl(it.trim())
                             },
                             validator = {
                                 val value = it.trim()
@@ -327,25 +322,10 @@ fun BundleInformationScreen(
                     trailingContent = null
                 )
 
-                endpoint?.let {
-                    SettingsListItem(
-                        headlineContent = stringResource(R.string.changelog),
-                        onClick = {
-                            val source = if (src.isDefault) {
-                                ChangelogSource.Patches(
-                                    url = viewModel.prefs.api.getBlocking(),
-                                    prerelease = viewModel.prefs.usePatchesPrereleases.getBlocking()
-                                )
-                            } else {
-                                ChangelogSource.Patches(
-                                    url = endpoint,
-                                    prerelease = false
-                                )
-                            }
-                            onChangelogClick(source)
-                        },
-                    )
-                }
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.changelog),
+                    onClick = { onChangelogClick(ChangelogSource.Patches(sourceUrl)) },
+                )
 
                 src.error?.let {
                     var showDialog by rememberSaveable { mutableStateOf(false) }
@@ -370,7 +350,7 @@ fun BundleInformationScreen(
                     )
                 }
 
-                if (src.state is Source.State.Missing && !isLocal) {
+                if (src.state is Source.State.Missing) {
                     SettingsListItem(
                         headlineContent = stringResource(R.string.patches_error),
                         supportingContent = stringResource(R.string.patches_not_downloaded),

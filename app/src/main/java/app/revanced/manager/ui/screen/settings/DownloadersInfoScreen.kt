@@ -40,7 +40,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.ConfirmDialog
 import app.revanced.manager.ui.component.EmptyState
@@ -69,8 +68,6 @@ fun DownloaderInfoScreen(
 ) {
     val downloaderStates by viewModel.downloaderSources.collectAsStateWithLifecycle(emptyMap())
     val source = downloaderStates[uid] ?: return
-    val remote = source.asRemoteOrNull
-
 
     val appName = source.name
     val displayNames = remember(source) {
@@ -112,8 +109,8 @@ fun DownloaderInfoScreen(
                         Text(
                             text = buildAnnotatedString {
                                 append("v$it")
-                                if (remote?.releasedAt != null) {
-                                    val releaseDate = remote.releasedAt.relativeTime(
+                                source.releasedAt?.let { releasedAt ->
+                                    val releaseDate = releasedAt.relativeTime(
                                         LocalContext.current
                                     )
 
@@ -143,14 +140,12 @@ fun DownloaderInfoScreen(
                         Icon(Icons.Filled.Delete, stringResource(R.string.delete))
                     }
 
-                    remote?.let {
-                        TooltipIconButton(
-                            onClick = { viewModel.updateDownloader(it) },
-                            enabled = !isDeleting,
-                            tooltip = stringResource(R.string.update)
-                        ) {
-                            Icon(Icons.Filled.Refresh, stringResource(R.string.update))
-                        }
+                    TooltipIconButton(
+                        onClick = { viewModel.updateDownloader(source) },
+                        enabled = !isDeleting,
+                        tooltip = stringResource(R.string.update)
+                    ) {
+                        Icon(Icons.Filled.Refresh, stringResource(R.string.update))
                     }
                 },
                 scrollBehavior = scrollBehavior
@@ -169,37 +164,35 @@ fun DownloaderInfoScreen(
             ListSection(
                 modifier = Modifier.padding(top = 16.dp)
             ) {
-                remote?.let { remoteSource ->
-                    val autoUpdate = remoteSource.autoUpdate
-                    SettingsListItem(
-                        headlineContent = stringResource(R.string.auto_update),
-                        supportingContent = stringResource(R.string.auto_update_description),
-                        trailingContent = {
-                            HapticSwitch(
-                                checked = autoUpdate,
-                                onCheckedChange = { viewModel.setAutoUpdate(remoteSource, it) },
-                                thumbContent = if (autoUpdate) {
-                                    {
-                                        Icon(
-                                            imageVector = Icons.Filled.Check,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(SwitchDefaults.IconSize)
-                                        )
-                                    }
-                                } else {
-                                    {
-                                        Icon(
-                                            imageVector = Icons.Filled.Close,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(SwitchDefaults.IconSize)
-                                        )
-                                    }
+                val autoUpdate = source.autoUpdate
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.auto_update),
+                    supportingContent = stringResource(R.string.auto_update_description),
+                    trailingContent = {
+                        HapticSwitch(
+                            checked = autoUpdate,
+                            onCheckedChange = { viewModel.setAutoUpdate(source, it) },
+                            thumbContent = if (autoUpdate) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Check,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(SwitchDefaults.IconSize)
+                                    )
                                 }
-                            )
-                        },
-                        onClick = { viewModel.setAutoUpdate(remoteSource, !autoUpdate) }
-                    )
-                }
+                            } else {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(SwitchDefaults.IconSize)
+                                    )
+                                }
+                            }
+                        )
+                    },
+                    onClick = { viewModel.setAutoUpdate(source, !autoUpdate) }
+                )
 
                 if (source.isDefault) {
                     SafeguardBooleanItem(
@@ -215,7 +208,7 @@ fun DownloaderInfoScreen(
                     )
                 }
 
-                remote?.endpoint?.takeUnless { source.isDefault }?.let { url ->
+                source.uri.toString().takeUnless { source.isDefault }?.let { url ->
                     var showUrlInputDialog by rememberSaveable { mutableStateOf(false) }
 
                     if (showUrlInputDialog) {
@@ -223,10 +216,10 @@ fun DownloaderInfoScreen(
                             initial = url,
                             title = stringResource(R.string.downloader_url),
                             onDismissRequest = { showUrlInputDialog = false },
-                            confirmValidator = viewModel::validateRemoteSourceUrl,
+                            confirmValidator = viewModel::validateSourceUrl,
                             onConfirm = {
                                 showUrlInputDialog = false
-                                viewModel.setEndpoint(remote, it.trim())
+                                viewModel.setUrl(source, it.trim())
                             },
                             validator = {
                                 val value = it.trim()
@@ -281,7 +274,7 @@ fun DownloaderInfoScreen(
                     EmptyState(
                         icon = Icons.Outlined.SignalWifiOff,
                         title = R.string.downloader_sources_unavailable_title,
-                        description = if (remote != null) R.string.downloader_sources_unavailable_with_remote_description else R.string.downloader_sources_unavailable_without_remote_description
+                        description = R.string.downloader_sources_unavailable_description
                     )
                 }
             }

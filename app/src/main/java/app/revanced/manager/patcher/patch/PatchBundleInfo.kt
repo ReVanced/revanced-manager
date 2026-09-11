@@ -18,7 +18,7 @@ sealed class PatchBundleInfo {
     abstract val version: String?
 
     /**
-     * When this bundle was released. Only applicable for remote bundles.
+     * When this bundle was released, if known.
      */
     abstract val releasedAt: LocalDateTime?
 

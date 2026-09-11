@@ -67,6 +67,12 @@ Second \"item\" text"</string>
 
     <string name="import_">Import</string>
     <string name="import_patches">Import patches</string>
+    <string name="import_source_method">Method</string>
+    <string name="import_source_method_auto">Auto</string>
+    <string name="import_source_method_http">HTTP</string>
+    <string name="import_source_method_file">File</string>
+    <string name="import_source_input">Input</string>
+    <string name="import_source_press_to_select">Press to import</string>
     <string name="file_field_set">Selected</string>
     <string name="file_field_not_set">Not selected</string>
 
@@ -219,8 +225,7 @@ You won’t be able to update apps that were signed with the previous keystore.<
     <string name="local_downloaders_description">Add downloader from local storage</string>
     <string name="remote_downloaders_description">Downloader can receive updates</string>
     <string name="downloader_sources_unavailable_title">These downloaders are missing</string>
-    <string name="downloader_sources_unavailable_with_remote_description">Tap <b>Update</b> to fix this issue</string>
-    <string name="downloader_sources_unavailable_without_remote_description">Make sure that you imported the correct downloader</string>
+    <string name="downloader_sources_unavailable_description">Tap <b>Update</b> to fix this issue</string>
     <string name="downloader_update_failed">Failed to update downloader: %s</string>
     <string name="downloader_replace_fail">Failed to import downloader: %s</string>
 
@@ -545,8 +550,9 @@ It’s only compatible with these versions: %2$s</string>
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="input_dialog_value_invalid">Invalid value</string>
-    <string name="remote_source_url_unsupported">This URL is pointing to an unsupported source.</string>
-    <string name="remote_source_url_validation_failed">Couldn’t verify this URL. Make sure it’s correct and try again.</string>
+    <string name="patches_url_unsupported">This URL does not point to valid patches.</string>
+    <string name="downloader_url_unsupported">This URL does not point to a valid downloader.</string>
+    <string name="source_url_validation_failed">Couldn’t verify this URL. Make sure it’s correct and try again.</string>
     <string name="required_options_screen">Required options</string>
 
     <string name="failed_to_check_updates">Couldn’t check for updates: %s</string>

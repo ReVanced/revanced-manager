@@ -14,13 +14,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface ChangelogSource : Parcelable {
     data object Manager : ChangelogSource
-    data class Patches(val url: String, val prerelease: Boolean) : ChangelogSource {
-        val baseUrl by lazy { url.toUri().let { "${it.scheme}://${it.host}" } }
-    }
+
+    // The URL of the source itself, the changelog is a resource of it.
+    data class Patches(val url: String) : ChangelogSource
 }
 
 class ChangelogsRepository(
     private val api: ReVancedAPI,
+    private val patchBundleRepository: PatchBundleRepository,
     private val source: ChangelogSource,
 ) : PagingSource<Int, ReVancedAssetHistory>() {
 
@@ -31,7 +32,7 @@ class ChangelogsRepository(
                     api.getAppHistory().getOrThrow()
 
                 is ChangelogSource.Patches ->
-                    api.getPatchesHistory(source.baseUrl, source.prerelease).getOrThrow()
+                    patchBundleRepository.getHistory(source.url.toUri())
             }
 
             LoadResult.Page(

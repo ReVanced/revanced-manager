@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.domain.sources.Extensions.asRemoteOrNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -23,33 +22,36 @@ class BundleInformationViewModel(uid: Int) : ViewModel(), KoinComponent {
     }
 
     fun refresh() = viewModelScope.launch {
-        bundle.first()?.asRemoteOrNull?.let {
+        bundle.first()?.let {
             patchBundleRepository.update(it, showToast = true)
         }
     }
 
     fun setAutoUpdate(value: Boolean) = viewModelScope.launch {
-        bundle.first()?.asRemoteOrNull?.let {
+        bundle.first()?.let {
             patchBundleRepository.run { it.setAutoUpdate(value) }
         }
     }
 
-    fun setEndpoint(value: String) = viewModelScope.launch {
-        val endpoint = value.trim()
-        bundle.first()?.asRemoteOrNull?.let { current ->
-            if (current.endpoint == endpoint) return@launch
+    fun setUrl(value: String) = viewModelScope.launch {
+        val url = value.trim()
+        bundle.first()?.let { current ->
+            if (current.uri.toString() == url) return@launch
 
-            patchBundleRepository.run { current.setEndpoint(endpoint) }
-            bundle.first()?.asRemoteOrNull?.let { updated ->
+            patchBundleRepository.run { current.setUrl(url) }
+            bundle.first()?.let { updated ->
                 patchBundleRepository.update(updated, showToast = true)
             }
         }
     }
 
-    suspend fun validateEndpoint(value: String) = patchBundleRepository.validateRemoteUrl(value.trim())
+    suspend fun validateUrl(value: String) = patchBundleRepository.validateUrl(value.trim())
 
     fun updateUsePrereleases(value: Boolean) = viewModelScope.launch {
         prefs.usePatchesPrereleases.update(value)
+
+        // Rebuilds the default source with the URL of the new release channel.
+        patchBundleRepository.reload()
         refresh()
     }
 }

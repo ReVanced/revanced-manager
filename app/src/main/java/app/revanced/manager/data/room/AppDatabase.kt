@@ -3,6 +3,7 @@ package app.revanced.manager.data.room
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.DeleteTable
+import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
@@ -26,7 +27,7 @@ import kotlin.random.Random
 
 @Database(
     entities = [PatchBundleEntity::class, PatchSelection::class, SelectedPatch::class, DownloadedApp::class, InstalledApp::class, AppliedPatch::class, InstalledPatchBundle::class, OptionGroup::class, Option::class, DownloaderEntity::class],
-    version = 5,
+    version = 6,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -36,7 +37,12 @@ import kotlin.random.Random
             spec = AppDatabase.DeleteTrustedDownloaders::class
         ),
         AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 4, to = 5),
+        AutoMigration(
+            from = 5,
+            to = 6,
+            spec = AppDatabase.RenameSourceToUrl::class
+        )
     ]
 )
 @TypeConverters(Converters::class)
@@ -50,6 +56,19 @@ abstract class AppDatabase : RoomDatabase() {
 
     @DeleteTable(tableName = "trusted_downloaders")
     class DeleteTrustedDownloaders : AutoMigrationSpec
+
+    // Sources are stored as the URL they are retrieved from.
+    @RenameColumn(
+        tableName = "patch_bundles",
+        fromColumnName = "source",
+        toColumnName = "url"
+    )
+    @RenameColumn(
+        tableName = "downloaders",
+        fromColumnName = "source",
+        toColumnName = "url"
+    )
+    class RenameSourceToUrl : AutoMigrationSpec
 
     companion object {
         fun generateUid() = Random.nextInt()
