@@ -1,103 +1,104 @@
 <p align="center">
   <picture>
-    <source
-      width="256px"
-      media="(prefers-color-scheme: dark)"
+    <fonte
+      larghezza="256px"
+      media="(preferisce lo schema dei colori: scuro)"
       srcset="assets/revanced-headline/revanced-headline-vertical-dark.svg"
     >
     <img 
-      width="256px"
+      larghezza="256px"
       src="assets/revanced-headline/revanced-headline-vertical-light.svg"
     >
-  </picture>
+  </immagine>
   <br>
   <a href="https://revanced.app/">
-       <picture>
-           <source height="24px" media="(prefers-color-scheme: dark)" srcset="assets/revanced-logo/revanced-logo.svg" />
-           <img height="24px" src="assets/revanced-logo/revanced-logo.svg" />
-       </picture>
+       <immagine>
+           <fonte altezza="24px" media="(preferisce lo schema dei colori: scuro)" srcset="assets/revanced-logo/revanced-logo.svg" />
+           <img altezza="24px" src="assets/revanced-logo/revanced-logo.svg" />
+       </immagine>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="https://github.com/ReVanced">
-       <picture>
-           <source height="24px" media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/dMMmCrW/Git-Hub-Mark.png" />
-           <img height="24px" src="https://i.ibb.co/9wV3HGF/Git-Hub-Mark-Light.png" />
-       </picture>
+       <immagine>
+           <fonte altezza="24px" media="(preferisce lo schema dei colori: scuro)" srcset="https://i.ibb.co/dMMmCrW/Git-Hub-Mark.png" />
+           <img altezza="24px" src="https://i.ibb.co/9wV3HGF/Git-Hub-Mark-Light.png" />
+       </immagine>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="http://revanced.app/discord">
-       <picture>
-           <source height="24px" media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/13122796/178032563-d4e084b7-244e-4358-af50-26bde6dd4996.png" />
-           <img height="24px" src="https://user-images.githubusercontent.com/13122796/178032563-d4e084b7-244e-4358-af50-26bde6dd4996.png" />
-       </picture>
+       <immagine>
+           <fonte altezza="24px" media="(preferisce lo schema dei colori: scudo)" srcset="https://user-images.githubusercontent.com/13122796/178032563-d4e084b7-244e-4358-af50-26bde6dd4996.png" />
+           <img altezza="24px" src="https://user-images.githubusercontent.com/13122796/178032563-d4e084b7-244e-4358-af50-26bde6dd4996.png" />
+       </immaginare>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="https://reddit.com/r/revancedapp">
-       <picture>
-           <source height="24px" media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/13122796/178032351-9d9d5619-8ef7-470a-9eec-2744ece54553.png" />
-           <img height="24px" src="https://user-images.githubusercontent.com/13122796/178032351-9d9d5619-8ef7-470a-9eec-2744ece54553.png" />
-       </picture>
+       <immaginare>
+           <fonte altezza="24px" media="(preferisce lo schema dei colori: scudo)" srcset="https://user-images.githubusercontent.com/13122796/178032351-9d9d5619-8ef7-470a-9eec-2744ece54553.png" />
+           <img altezza="24px" src="https://user-images.githubusercontent.com/13122796/178032351-9d9d5619-8ef7-470a-9eec-2744ece54553.png" />
+       </immaginare>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="https://t.me/app_revanced">
-      <picture>
-         <source height="24px" media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/13122796/178032213-faf25ab8-0bc3-4a94-a730-b524c96df124.png" />
-         <img height="24px" src="https://user-images.githubusercontent.com/13122796/178032213-faf25ab8-0bc3-4a94-a730-b524c96df124.png" />
-      </picture>
+      <immaginare>
+         <fonte altezza="24px" media="(preferisce lo schema dei colori: scudo)" srcset="https://user-images.githubusercontent.com/13122796/178032213-faf25ab8-0bc3-4a94-a730-b524c96df124.png" />
+         <img altezza="24px" src="https://user-images.githubusercontent.com/13122796/178032213-faf25ab8-0bc3-4a94-a730-b524c96df124.png" />
+      </immaginare>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="https://x.com/revancedapp">
-      <picture>
-         <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/93124920/270180600-7c1b38bf-889b-4d68-bd5e-b9d86f91421a.png">
-         <img height="24px" src="https://user-images.githubusercontent.com/93124920/270108715-d80743fa-b330-4809-b1e6-79fbdc60d09c.png" />
-      </picture>
+      <immaginare>
+         <fonte media="(preferisce lo schema dei colori: scudo)" srcset="https://user-images.githubusercontent.com/93124920/270180600-7c1b38bf-889b-4d68-bd5e-b9d86f91421a.png">
+         <img altezza="24px" src="https://user-images.githubusercontent.com/93124920/270108715-d80743fa-b330-4809-b1e6-79fbdc60d09c.png" />
+      </immaginare>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="https://www.youtube.com/@ReVanced">
-      <picture>
-         <source height="24px" media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/13122796/178032714-c51c7492-0666-44ac-99c2-f003a695ab50.png" />
-         <img height="24px" src="https://user-images.githubusercontent.com/13122796/178032714-c51c7492-0666-44ac-99c2-f003a695ab50.png" />
-     </picture>
+      <immaginare>
+         <fonte altezza="24px" media="(preferisce lo schema dei colori: scudo)" srcset="https://user-images.githubusercontent.com/13122796/178032714-c51c7492-0666-44ac-99c2-f003a695ab50.png" />
+         <img altezza="24px" src="https://user-images.githubusercontent.com/13122796/178032714-c51c7492-0666-44ac-99c2-f003a695ab50.png" />
+     </immaginare>
    </a>
    <br>
    <br>
-   Continuing the legacy of Vanced
+   Continua l'eredità di Vanced
 </p>
 
-# 👋 Contribution guidelines
+# 👋 Linea guida sui contributi
 
-This document describes how to contribute to ReVanced Manager.
+Questo documento descrive come contribuire a un ReVanced Manager.
 
-## 📖 Resources to help you get started
+## 📖 Risorso per aiutarti a iniziare
 
-* The [documentation](/docs/README.md) provides steps to build ReVanced Manager from source
-* Our [backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
-* [Issues](https://github.com/ReVanced/revanced-manager/issues) are where we keep track of bugs and feature requests
+* Il [documentazione](/documentari/README.md) fornisce passaggi per creare ReVanced Manager dalla fonte
+* Nostro [arretrato](https://github.com/orgs/ReVanced/projects/12) è colomba teniamo traccia di ciò su cui stiamo lavorando
+* [Problemi](https://github.com/ReVanced/revanced-manager/issues) sono colomba teniamo traccia dei bug e delle ricerche di funzionalità
 
-## 🙏 Submitting a feature request
+## 🙏 Invio di una ricchezza di funzionalità
 
-Features can be requested by opening an issue using the
-[Feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=Feature+request&projects=&template=feature_request.yml&title=feat%3A+).
+Le funzioni possono esse ricche aprendo un problema utilizzando il
+[Modello di problema della ricchezza di funzionalità](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=Feature+request&projects=&template=feature_request.yml&title=feat%3A+).
 
-> **Note**
-> Requests can be accepted or rejected at the discretion of maintainers of ReVanced Manager.
-> Good motivation has to be provided for a request to be accepted.
+> **Nota**
+> Il più ricco possibile accetta o rifiuta una discriminazione dei manutentori di ReVanced Manager.
+> È necessario fornire una buona motivazione affinché una ricca venga accettata.
 
-## 🐞 Submitting a bug report
+## 🐞 Invio di una firma di bug
 
-If you encounter a bug while using ReVanced Manager, open an issue using the
-[Bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=Bug+report&projects=&template=bug_report.yml&title=bug%3A+).
+Se riscontri un bug durante l'utilizzo di ReVanced Manager, apri un problema utilizzando
+[Modello di problema di firma bug](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=Bug+report&projects=&template=bug_report.yml&title=bug%3A+).
 
-## 📝 How to contribute
+## 📝 Vieni a contribuire
 
-1. Before contributing, it is recommended to open an issue to discuss your change
-   with the maintainers of ReVanced Manager. This will help you determine whether your change is acceptable
-   and whether it is worth your time to implement it
-2. Development happens on the `dev` branch. Fork the repository and create your branch from `dev`
-3. Commit your changes
-4. Submit a pull request to the `dev` branch of the repository and reference issues
-   that your pull request closes in the description of your pull request
-5. Our team will review your pull request and provide feedback. Once your pull request is approved,
-   it will be merged into the `dev` branch and will be included in the next release of ReVanced Manager
+1. Prima di contribuire, si consigli di aprile un problema per discutere la modifica
+   con i manutentori di ReVanced Manager. Questo ti aiuterà a determinare se il tuo cambiamento è accettabile
+   e se vale la pena dedicare del tempo alla sua implementazione
+2. Lo sviluppo ave sul `scultore` ramo. Segui il fork del repository e crea il tuo ramo da `scultore`
+3. Impegna le tue modifica
+4. Invia una ricca tira al `scultore` ramo del repository e problemi di riferimento
+   che la tua richiesta pull si chiuda nella descrizione della tua richiesta pull
+5. Il nostro team esaminerà la tua ricchezza tira e ti fornirà un feedback. Una volta approvata la tua ricca attrazione,
+   verrà scorpato al `scultore` ramo e sarà incluso nella prossima versione di ReVanced Manager
 
-## 🤚 I want to contribute but don't know how to code
+## 🤚 Voglio contribuire ma non così come programmare
 
-Even if you don't know how to code, you can still contribute by
-translating ReVanced Manager on [Crowdin](https://translate.revanced.app/).
+Anche se non sai programmare, puoi comuni contributi
+traduzione di ReVanced Manager su [Crowdin](https://translate.revanced.app/).
 
-❤️ Thank you for considering contributing to ReVanced Manager,  
-ReVanced
+❤️ Grazie per aver preso in considerazione l'idea di contribuire come ReVanced Manager,  
+RiVantificatoHal
+ah ah
