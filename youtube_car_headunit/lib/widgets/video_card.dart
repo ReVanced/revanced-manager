@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+
 import '../models/car_video.dart';
 import '../theme/car_theme.dart';
+import '../utils/format.dart';
+import 'now_playing.dart';
 
+/// One video in the grid: thumbnail with duration or LIVE, title and channel.
 class VideoCard extends StatelessWidget {
   final CarVideo video;
   final VoidCallback onTap;
@@ -15,128 +18,67 @@ class VideoCard extends StatelessWidget {
     this.isSelected = false,
   });
 
-  String _formatDuration(Duration d) {
-    if (d == Duration.zero) return 'LIVE';
-    final minutes = d.inMinutes;
-    final seconds = d.inSeconds.remainder(60);
-    return '$minutes:${seconds < 10 ? '0' : ''}$seconds';
-  }
+  /// Search results carry no duration for streams that are live right now.
+  bool get _isLive => video.isLive || video.duration == Duration.zero;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: CarTheme.bgSurface,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isSelected ? CarTheme.accentRed : Colors.white12,
-              width: isSelected ? 2 : 1,
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(11),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.network(
-                        video.thumbnail,
-                        fit: BoxFit.cover,
-                        // Decode at display size — huge win on A6+ RAM/CPU
-                        cacheWidth: 320,
-                        cacheHeight: 180,
-                        filterQuality: FilterQuality.low,
-                        errorBuilder: (_, __, ___) => const ColoredBox(
-                          color: CarTheme.bgCard,
-                          child: Center(
-                            child: Icon(
-                              LucideIcons.video,
-                              color: CarTheme.textMuted,
-                              size: 28,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 6,
-                        right: 6,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.black87,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            _formatDuration(video.duration),
-                            style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (isSelected)
-                        const Positioned(
-                          top: 6,
-                          left: 6,
-                          child: Icon(
-                            LucideIcons.playCircle,
-                            color: CarTheme.accentRed,
-                            size: 22,
-                          ),
-                        ),
-                    ],
-                  ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(CarTheme.radius),
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: DecoratedBox(
+                position: DecorationPosition.foreground,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(CarTheme.radius),
+                  border: isSelected
+                      ? Border.all(color: CarTheme.accent, width: 3)
+                      : null,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          video.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            height: 1.15,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          video.uploader,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: CarTheme.textMuted,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Decode at display size: a large win in RAM and CPU on the A6+.
+                    Artwork(url: video.thumbnail, cacheWidth: 360),
+                    Positioned(
+                      right: 6,
+                      bottom: 6,
+                      child: _isLive
+                          ? const Tag('LIVE', color: CarTheme.live)
+                          : Tag(
+                              formatDuration(video.duration),
+                              color: const Color(0xCC000000),
+                            ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            const SizedBox(height: 8),
+            Text(
+              video.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: CarTheme.body.copyWith(
+                fontSize: 14,
+                height: 1.25,
+                color: isSelected ? CarTheme.accent : CarTheme.text,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              video.uploader,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: CarTheme.caption.copyWith(fontSize: 12),
+            ),
+          ],
         ),
       ),
     );

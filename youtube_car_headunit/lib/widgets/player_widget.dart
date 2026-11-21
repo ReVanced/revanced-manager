@@ -2,617 +2,383 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:video_player/video_player.dart';
-import '../models/car_video.dart';
+
+import '../controllers/playback_controller.dart';
+import '../services/youtube_service.dart';
 import '../theme/car_theme.dart';
+import 'now_playing.dart';
+import 'seek_bar.dart';
 
-class PlayerWidget extends StatefulWidget {
-  final CarVideo video;
-  final VideoPlayerController? controller;
-  final bool isVideoLoading;
-  final bool isAudioOnly;
-  final String selectedQuality;
-  final ValueChanged<String> onQualityChanged;
-  final bool isAutoplayEnabled;
-  final VoidCallback onToggleAutoplay;
-  final VoidCallback onNext;
-  final VoidCallback onPrevious;
-  final VoidCallback onToggleDrivingMode;
-  final VoidCallback onToggleFullscreen;
-  final VoidCallback? onTogglePlay;
-  final bool isAudioPlaying;
-  final List<SponsorSegment> sponsorSegments;
-
+/// Inline player of the YouTube menu: picture, title, seek bar and controls.
+class PlayerWidget extends StatelessWidget {
   const PlayerWidget({
     super.key,
-    required this.video,
-    required this.controller,
-    required this.isVideoLoading,
-    required this.selectedQuality,
-    required this.onQualityChanged,
-    required this.isAutoplayEnabled,
-    required this.onToggleAutoplay,
-    required this.onNext,
-    required this.onPrevious,
-    required this.onToggleDrivingMode,
-    required this.onToggleFullscreen,
-    this.isAudioOnly = false,
-    this.onTogglePlay,
-    this.isAudioPlaying = false,
-    this.sponsorSegments = const [],
+    required this.playback,
+    required this.onOpenMusic,
+    required this.onOpenFullscreen,
   });
 
-  @override
-  State<PlayerWidget> createState() => _PlayerWidgetState();
-}
-
-class _PlayerWidgetState extends State<PlayerWidget> {
-  String? _sponsorNotice;
-  int _lastUiSecond = -1;
-  bool? _lastPlaying;
-  String? _lastSkippedCategory;
+  final PlaybackController playback;
+  final VoidCallback onOpenMusic;
+  final VoidCallback onOpenFullscreen;
 
   @override
-  void initState() {
-    super.initState();
-    widget.controller?.addListener(_onControllerTick);
-  }
-
-  @override
-  void didUpdateWidget(PlayerWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      oldWidget.controller?.removeListener(_onControllerTick);
-      widget.controller?.addListener(_onControllerTick);
-      _lastUiSecond = -1;
-      _lastPlaying = null;
-      _lastSkippedCategory = null;
-    }
-  }
-
-  /// Rebuild at most once per second (or on play/pause) — critical on A6+.
-  void _onControllerTick() {
-    if (!mounted) return;
-    final controller = widget.controller;
-    if (controller == null || !controller.value.isInitialized) return;
-
-    _checkSponsorSegments();
-
-    final second = controller.value.position.inSeconds;
-    final playing = controller.value.isPlaying;
-    if (second == _lastUiSecond && playing == _lastPlaying) return;
-
-    _lastUiSecond = second;
-    _lastPlaying = playing;
-    setState(() {});
-  }
-
-  void _checkSponsorSegments() {
-    final controller = widget.controller;
-    if (controller == null || !controller.value.isInitialized) return;
-    final currentPos = controller.value.position.inSeconds.toDouble();
-
-    for (final seg in widget.sponsorSegments) {
-      if (currentPos >= seg.start && currentPos < seg.end) {
-        if (_lastSkippedCategory == '${seg.category}_${seg.start}') return;
-        _lastSkippedCategory = '${seg.category}_${seg.start}';
-        controller.seekTo(Duration(seconds: seg.end.toInt()));
-        if (mounted) {
-          setState(() {
-            _sponsorNotice = 'Skip Sponsor (${seg.category})';
-          });
-          Future.delayed(const Duration(seconds: 2), () {
-            if (mounted) setState(() => _sponsorNotice = null);
-          });
-        }
-        break;
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.controller?.removeListener(_onControllerTick);
-    super.dispose();
-  }
-
-  String _formatTime(Duration d) {
-    final m = d.inMinutes;
-    final s = d.inSeconds.remainder(60);
-    return '$m:${s < 10 ? '0' : ''}$s';
-  }
-
-  void _showQualityModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: CarTheme.bgSurface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        final qualities = [
-          {
-            'label': '360p — Hemat & Anti Lag (disarankan A6+)',
-            'value': '360p',
-            'icon': LucideIcons.zap,
-          },
-          {
-            'label': '480p — Standard',
-            'value': '480p',
-            'icon': LucideIcons.tv,
-          },
-          {
-            'label': '720p — HD (lebih berat)',
-            'value': '720p',
-            'icon': LucideIcons.sparkles,
-          },
-          {
-            'label': 'Audio Only — Hemat kuota ~95%',
-            'value': 'Audio Only',
-            'icon': LucideIcons.music,
-          },
-        ];
-
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(LucideIcons.sliders,
-                      color: CarTheme.accentRed, size: 20),
-                  const SizedBox(width: 8),
-                  const Expanded(
-                    child: Text(
-                      'Kualitas Video',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(LucideIcons.x, color: CarTheme.textMuted),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: playback,
+      builder: (context, _) {
+        final video = playback.current;
+        if (video == null) return const SizedBox.shrink();
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: RepaintBoundary(
+                child: _Picture(
+                  playback: playback,
+                  onOpenFullscreen: onOpenFullscreen,
+                ),
               ),
-              const Divider(color: Colors.white12),
-              ...qualities.map((q) {
-                final isSelected = widget.selectedQuality == q['value'];
-                return ListTile(
-                  dense: true,
-                  leading: Icon(
-                    q['icon'] as IconData,
-                    color: isSelected ? CarTheme.accentRed : CarTheme.textMuted,
-                  ),
-                  title: Text(
-                    q['label'] as String,
-                    style: TextStyle(
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
-                      color: isSelected ? CarTheme.accentRed : Colors.white,
-                      fontSize: 13,
-                    ),
-                  ),
-                  trailing: isSelected
-                      ? const Icon(LucideIcons.check, color: CarTheme.accentRed)
-                      : null,
-                  onTap: () {
-                    Navigator.pop(context);
-                    widget.onQualityChanged(q['value'] as String);
-                  },
-                );
-              }),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              video.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: CarTheme.body.copyWith(fontWeight: FontWeight.w600),
+            ),
+            SeekBar(
+              progress: playback.progress,
+              onSeek: playback.seek,
+              enabled: playback.canSeek,
+              isLive: playback.isLive,
+            ),
+            // One row so the controls stay on screen in the ~300 dp tall column.
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _SmallButton(
+                  label: playback.servedLabel,
+                  tooltip: 'Kualitas video',
+                  onTap: () => _showQualitySheet(context),
+                ),
+                ControlButton(
+                  icon: LucideIcons.skipBack,
+                  size: 48,
+                  onPressed: playback.previous,
+                  tooltip: 'Sebelumnya',
+                ),
+                ControlButton(
+                  icon: playback.isPlaying ? LucideIcons.pause : LucideIcons.play,
+                  size: 56,
+                  primary: true,
+                  loading: playback.isLoading,
+                  onPressed: playback.togglePlay,
+                  tooltip: playback.isPlaying ? 'Jeda' : 'Putar',
+                ),
+                ControlButton(
+                  icon: LucideIcons.skipForward,
+                  size: 48,
+                  onPressed: playback.next,
+                  tooltip: 'Berikutnya',
+                ),
+                _SmallButton(
+                  icon: LucideIcons.music2,
+                  tooltip: 'Layar Musik',
+                  onTap: onOpenMusic,
+                ),
+              ],
+            ),
+          ],
         );
       },
     );
   }
 
-  void _togglePlay() {
-    if (widget.isAudioOnly) {
-      widget.onTogglePlay?.call();
-      return;
-    }
-    final controller = widget.controller;
-    if (controller == null) return;
-    if (controller.value.isPlaying) {
-      controller.pause();
-    } else {
-      controller.play();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = widget.controller;
-    final isInitialized = controller != null && controller.value.isInitialized;
-    final isPlaying = widget.isAudioOnly
-        ? widget.isAudioPlaying
-        : (controller?.value.isPlaying ?? false);
-    final position = controller?.value.position ?? Duration.zero;
-    final duration = controller?.value.duration ??
-        (widget.isAudioOnly ? widget.video.duration : Duration.zero);
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AspectRatio(
-          aspectRatio: 16 / 9,
-          child: RepaintBoundary(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white12),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (widget.isAudioOnly)
-                    ColoredBox(
-                      color: CarTheme.bgCard,
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              LucideIcons.music,
-                              size: 40,
-                              color: CarTheme.accentRed.withValues(alpha: 0.8),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Mode Audio Only',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  else if (isInitialized && !widget.isVideoLoading)
-                    AspectRatio(
-                      aspectRatio: controller.value.aspectRatio,
-                      child: VideoPlayer(controller),
-                    )
-                  else
-                    Image.network(
-                      widget.video.thumbnail,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                      cacheWidth: 480,
-                      filterQuality: FilterQuality.low,
-                    ),
-                  if (widget.isVideoLoading && !widget.isAudioOnly)
-                    Container(
-                      color: Colors.black54,
-                      child: const Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SpinKitPulse(color: CarTheme.accentRed, size: 32),
-                            SizedBox(height: 6),
-                            Text(
-                              'Memuat...',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.white70,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  if (isInitialized &&
-                      !widget.isVideoLoading &&
-                      !widget.isAudioOnly)
-                    Positioned(
-                      bottom: 8,
-                      right: 8,
-                      child: IconButton(
-                        onPressed: widget.onToggleFullscreen,
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.black54,
-                          minimumSize: const Size(40, 40),
-                        ),
-                        icon: const Icon(
-                          LucideIcons.maximize,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-                    ),
-                  if (_sponsorNotice != null)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: CarTheme.accentGreen,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          _sponsorNotice!,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
+  void _showQualitySheet(BuildContext context) {
+    const options = [
+      (StreamQuality.p360, '360p', 'Hemat & anti lag', LucideIcons.zap),
+      (StreamQuality.p480, '480p', 'Standar', LucideIcons.tv),
+      (StreamQuality.p720, '720p', 'HD, lebih berat', LucideIcons.sparkles),
+      (StreamQuality.audioOnly, 'Audio', 'Hemat kuota', LucideIcons.headphones),
+    ];
+    // Options sit side by side: a landscape head unit has far more width than height, and
+    // a vertical list overflowed the sheet on a 6" phone.
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      constraints: const BoxConstraints(maxWidth: 720),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(CarTheme.radiusLarge),
         ),
-        const SizedBox(height: 6),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          decoration: BoxDecoration(
-            color: CarTheme.bgCard,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white12),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            _Badge(
-                              icon: LucideIcons.sliders,
-                              label: widget.selectedQuality,
-                              onTap: () => _showQualityModal(context),
-                            ),
-                            const SizedBox(width: 6),
-                            _Badge(
-                              icon: LucideIcons.repeat,
-                              label: widget.isAutoplayEnabled
-                                  ? 'AUTO ON'
-                                  : 'AUTO OFF',
-                              active: widget.isAutoplayEnabled,
-                              onTap: widget.onToggleAutoplay,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          widget.video.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: CarTheme.textMain,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  FilledButton.icon(
-                    onPressed: widget.onToggleDrivingMode,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: CarTheme.accentRed,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
-                      minimumSize: const Size(48, 44),
-                    ),
-                    icon: const Icon(LucideIcons.tv, size: 16),
-                    label: const Text(
-                      'Setir',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              if (!widget.isAudioOnly)
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 Row(
                   children: [
-                    Text(
-                      _formatTime(position),
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: CarTheme.textMuted,
-                      ),
+                    const Expanded(
+                      child: Text('Kualitas video', style: CarTheme.heading),
                     ),
-                    Expanded(
-                      child: SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          trackHeight: 4,
-                          thumbShape: const RoundSliderThumbShape(
-                            enabledThumbRadius: 8,
-                          ),
-                          overlayShape: const RoundSliderOverlayShape(
-                            overlayRadius: 16,
-                          ),
-                        ),
-                        child: Slider(
-                          value: position.inSeconds.toDouble().clamp(
-                                0.0,
-                                duration.inSeconds > 0
-                                    ? duration.inSeconds.toDouble()
-                                    : 1.0,
-                              ),
-                          max: duration.inSeconds > 0
-                              ? duration.inSeconds.toDouble()
-                              : 1.0,
-                          activeColor: CarTheme.accentRed,
-                          inactiveColor: Colors.white24,
-                          onChanged: (val) {
-                            controller?.seekTo(Duration(seconds: val.toInt()));
-                          },
-                        ),
-                      ),
-                    ),
-                    Text(
-                      _formatTime(duration),
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: CarTheme.textMuted,
-                      ),
+                    IconButton(
+                      icon: const Icon(LucideIcons.x),
+                      color: CarTheme.textMuted,
+                      onPressed: () => Navigator.pop(sheetContext),
                     ),
                   ],
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    iconSize: 26,
-                    constraints:
-                        const BoxConstraints(minWidth: 44, minHeight: 44),
-                    icon: const Icon(LucideIcons.skipBack, color: Colors.white),
-                    onPressed: widget.onPrevious,
-                  ),
-                  if (!widget.isAudioOnly)
-                    TextButton(
-                      onPressed: () {
-                        final current =
-                            controller?.value.position ?? Duration.zero;
-                        controller?.seekTo(
-                          current - const Duration(seconds: 10),
-                        );
-                      },
-                      child: const Text(
-                        '-10s',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  IconButton.filled(
-                    style: IconButton.styleFrom(
-                      backgroundColor: CarTheme.accentRed,
-                      minimumSize: const Size(48, 48),
-                    ),
-                    icon: widget.isVideoLoading
-                        ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Icon(
-                            isPlaying ? LucideIcons.pause : LucideIcons.play,
-                            color: Colors.white,
-                            size: 22,
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    for (final (quality, title, subtitle, icon) in options)
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: _QualityTile(
+                            title: title,
+                            subtitle: subtitle,
+                            icon: icon,
+                            selected: playback.quality == quality,
+                            onTap: () {
+                              Navigator.pop(sheetContext);
+                              playback.setQuality(quality);
+                            },
                           ),
-                    onPressed: _togglePlay,
-                  ),
-                  if (!widget.isAudioOnly)
-                    TextButton(
-                      onPressed: () {
-                        final current =
-                            controller?.value.position ?? Duration.zero;
-                        controller?.seekTo(
-                          current + const Duration(seconds: 10),
-                        );
-                      },
-                      child: const Text(
-                        '+10s',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: Colors.white,
                         ),
                       ),
-                    ),
-                  IconButton(
-                    iconSize: 26,
-                    constraints:
-                        const BoxConstraints(minWidth: 44, minHeight: 44),
-                    icon: const Icon(LucideIcons.skipForward,
-                        color: Colors.white),
-                    onPressed: widget.onNext,
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
 
-class _Badge extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  final bool active;
-
-  const _Badge({
+class _QualityTile extends StatelessWidget {
+  const _QualityTile({
+    required this.title,
+    required this.subtitle,
     required this.icon,
-    required this.label,
+    required this.selected,
     required this.onTap,
-    this.active = false,
   });
+
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(4),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-        decoration: BoxDecoration(
-          color: active
-              ? CarTheme.accentRed.withValues(alpha: 0.2)
-              : Colors.white12,
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(
-            color: active ? CarTheme.accentRed : Colors.white24,
+    final color = selected ? CarTheme.accent : CarTheme.text;
+    return Material(
+      color: selected ? CarTheme.accentSoft : CarTheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(CarTheme.radius),
+        side: BorderSide(
+          color: selected ? CarTheme.accent : CarTheme.border,
+          width: selected ? 2 : 1,
+        ),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        customBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(CarTheme.radius),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          child: Column(
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(height: 8),
+              Text(title, style: CarTheme.heading.copyWith(color: color)),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: CarTheme.caption.copyWith(fontSize: 12),
+              ),
+            ],
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 10,
-              color: active ? CarTheme.accentRed : Colors.white70,
+      ),
+    );
+  }
+}
+
+class _SmallButton extends StatelessWidget {
+  const _SmallButton({
+    required this.tooltip,
+    required this.onTap,
+    this.icon,
+    this.label,
+  });
+
+  final String tooltip;
+  final VoidCallback onTap;
+  final IconData? icon;
+  final String? label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: CarTheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(CarTheme.radiusSmall),
+          side: const BorderSide(color: CarTheme.border),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          customBorder: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(CarTheme.radiusSmall),
+          ),
+          child: SizedBox(
+            width: 52,
+            height: 44,
+            child: Center(
+              child: icon != null
+                  ? Icon(icon, size: 20, color: CarTheme.textMuted)
+                  : FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        label ?? '',
+                        style: CarTheme.label.copyWith(color: CarTheme.text),
+                      ),
+                    ),
             ),
-            const SizedBox(width: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 9,
-                fontWeight: FontWeight.bold,
-                color: active ? CarTheme.accentRed : Colors.white70,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Picture extends StatelessWidget {
+  const _Picture({required this.playback, required this.onOpenFullscreen});
+
+  final PlaybackController playback;
+  final VoidCallback onOpenFullscreen;
+
+  @override
+  Widget build(BuildContext context) {
+    final video = playback.current!;
+    final controller = playback.videoController;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(CarTheme.radiusLarge),
+      child: ColoredBox(
+        color: Colors.black,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (playback.hasVideo && controller != null)
+              Center(
+                child: AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: VideoPlayer(controller),
+                ),
+              )
+            else
+              Artwork(url: video.thumbnail, radius: 0, cacheWidth: 480),
+            if (playback.isAudioOnly && !playback.isLoading)
+              const ColoredBox(
+                color: Color(0x99000000),
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(LucideIcons.headphones, color: CarTheme.text),
+                      SizedBox(width: 8),
+                      Text('Audio saja', style: CarTheme.body),
+                    ],
+                  ),
+                ),
+              ),
+            if (playback.isLoading)
+              const ColoredBox(
+                color: Color(0x99000000),
+                child: Center(
+                  child: SpinKitThreeBounce(color: CarTheme.accent, size: 20),
+                ),
+              ),
+            if (playback.error != null && !playback.isLoading)
+              ColoredBox(
+                color: const Color(0xE6000000),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        playback.error!,
+                        textAlign: TextAlign.center,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: CarTheme.body,
+                      ),
+                      const SizedBox(height: 10),
+                      FilledButton.icon(
+                        onPressed: playback.retry,
+                        icon: const Icon(LucideIcons.rotateCcw, size: 18),
+                        label: const Text('Ulangi'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            if (playback.isLive)
+              const Positioned(
+                top: 10,
+                left: 10,
+                child: Tag('LIVE', color: CarTheme.live),
+              ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: ValueListenableBuilder<String?>(
+                valueListenable: playback.sponsorNotice,
+                builder: (context, notice, _) {
+                  if (notice == null) return const SizedBox.shrink();
+                  return Tag(
+                    notice,
+                    color: CarTheme.positive,
+                    textColor: CarTheme.bg,
+                  );
+                },
               ),
             ),
+            if (playback.hasVideo && !playback.isLoading)
+              Positioned(
+                right: 6,
+                bottom: 6,
+                child: Material(
+                  color: const Color(0x99000000),
+                  shape: const CircleBorder(),
+                  child: IconButton(
+                    onPressed: onOpenFullscreen,
+                    tooltip: 'Layar penuh',
+                    icon: const Icon(
+                      LucideIcons.maximize,
+                      color: CarTheme.text,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -1,104 +1,115 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
+
 import '../models/car_video.dart';
+import 'youtube_service.dart';
 
-/// Handles background / audio-only playback and media notification state.
+/// Commands arriving from the media session: notification, lockscreen, steering-wheel and
+/// Bluetooth buttons. PlaybackController implements them, because it owns the players.
+abstract interface class MediaCommands {
+  Future<void> play();
+
+  Future<void> pause();
+
+  Future<void> stop();
+
+  Future<void> next();
+
+  Future<void> previous();
+
+  Future<void> seek(Duration position);
+
+  Future<void> seekRelative(Duration offset);
+}
+
+/// Bridge between Android's media session (audio_service) and [MediaCommands].
 ///
-/// Important for mid-range devices (e.g. Galaxy A6+): when video is playing
-/// via [VideoPlayerController], do **not** also decode audio here — that
-/// doubles CPU, RAM, and network use. Use [updateMetadataOnly] for video mode
-/// and [playAudioOnly] when quality is "Audio Only".
-class CarAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
-  final AudioPlayer _player = AudioPlayer();
+/// It owns the just_audio player used for Audio Only because audio_service keeps this
+/// object alive for the whole session. Video plays through video_player, so the
+/// controller pushes state here with [publish]; the session always mirrors whichever
+/// player is active. Only one decoder runs at a time (important on a Galaxy A6+).
+class CarAudioHandler extends BaseAudioHandler {
+  /// Headers are applied natively by ExoPlayer on Android; just_audio's default Dart proxy
+  /// would add a localhost hop and would not cover HLS segment requests anyway.
+  final AudioPlayer player = AudioPlayer(
+    userAgent: kStreamUserAgent,
+    useProxyForRequestHeaders: false,
+  );
 
-  static const Map<String, String> defaultHeaders = {
-    'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-            '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  };
+  MediaCommands? commands;
 
-  CarAudioHandler() {
-    _player.playerStateStream.listen((state) {
-      final playing = state.playing;
-      final processingState = state.processingState;
+  @override
+  Future<void> play() async => commands?.play();
 
-      playbackState.add(
-        playbackState.value.copyWith(
-          controls: [
-            MediaControl.skipToPrevious,
-            if (playing) MediaControl.pause else MediaControl.play,
-            MediaControl.skipToNext,
-            MediaControl.stop,
-          ],
-          systemActions: const {
-            MediaAction.seek,
-            MediaAction.seekForward,
-            MediaAction.seekBackward,
-          },
-          androidCompactActionIndices: const [0, 1, 2],
-          processingState: const {
-            ProcessingState.idle: AudioProcessingState.idle,
-            ProcessingState.loading: AudioProcessingState.loading,
-            ProcessingState.buffering: AudioProcessingState.buffering,
-            ProcessingState.ready: AudioProcessingState.ready,
-            ProcessingState.completed: AudioProcessingState.completed,
-          }[processingState]!,
-          playing: playing,
-          updatePosition: _player.position,
-          bufferedPosition: _player.bufferedPosition,
-          speed: _player.speed,
-        ),
-      );
-    });
-  }
+  @override
+  Future<void> pause() async => commands?.pause();
 
-  AudioPlayer get player => _player;
+  @override
+  Future<void> stop() async => commands?.stop();
 
-  MediaItem _toMediaItem(CarVideo video) {
-    return MediaItem(
-      id: video.id,
-      title: video.title,
-      artist: video.uploader,
-      album: 'YouTube Car Edition',
-      artUri: Uri.tryParse(video.thumbnail),
-      duration: video.duration,
+  @override
+  Future<void> skipToNext() async => commands?.next();
+
+  @override
+  Future<void> skipToPrevious() async => commands?.previous();
+
+  @override
+  Future<void> seek(Duration position) async => commands?.seek(position);
+
+  @override
+  Future<void> fastForward() async =>
+      commands?.seekRelative(const Duration(seconds: 10));
+
+  @override
+  Future<void> rewind() async =>
+      commands?.seekRelative(const Duration(seconds: -10));
+
+  /// Shows [video] in the notification and lockscreen.
+  void setNowPlaying(CarVideo video, {Duration? duration}) {
+    final length = duration ?? video.duration;
+    mediaItem.add(
+      MediaItem(
+        id: video.id,
+        title: video.title,
+        artist: video.uploader,
+        album: 'YouTube Car',
+        artUri: Uri.tryParse(video.thumbnail),
+        duration: video.isLive || length <= Duration.zero ? null : length,
+      ),
     );
   }
 
-  /// Updates lock-screen / notification metadata without starting a second decoder.
-  void updateMetadataOnly(CarVideo video) {
-    mediaItem.add(_toMediaItem(video));
-  }
-
-  /// Plays audio-only stream (no VideoPlayer). Used for "Audio Only" quality.
-  Future<void> playAudioOnly(CarVideo video) async {
-    mediaItem.add(_toMediaItem(video));
-
-    final url = video.audioStreamUrl;
-    if (url == null) return;
-
-    try {
-      await _player.stop();
-      await _player.setUrl(url, headers: defaultHeaders);
-      await _player.play();
-    } catch (_) {
-      // Fallback gracefully on stream errors
-    }
-  }
-
-  @override
-  Future<void> play() => _player.play();
-
-  @override
-  Future<void> pause() => _player.pause();
-
-  @override
-  Future<void> seek(Duration position) => _player.seek(position);
-
-  @override
-  Future<void> stop() => _player.stop();
-
-  Future<void> dispose() async {
-    await _player.dispose();
+  /// Publishes playback state. audio_service extrapolates the position while playing, so
+  /// this is only needed on state changes and seeks, not every tick.
+  void publish({
+    required bool playing,
+    required AudioProcessingState processing,
+    required Duration position,
+    Duration buffered = Duration.zero,
+    bool canSeek = true,
+  }) {
+    playbackState.add(
+      playbackState.value.copyWith(
+        controls: [
+          MediaControl.skipToPrevious,
+          if (playing) MediaControl.pause else MediaControl.play,
+          MediaControl.skipToNext,
+          MediaControl.stop,
+        ],
+        systemActions: {
+          if (canSeek) ...const {
+            MediaAction.seek,
+            MediaAction.fastForward,
+            MediaAction.rewind,
+          },
+        },
+        androidCompactActionIndices: const [0, 1, 2],
+        processingState: processing,
+        playing: playing,
+        updatePosition: position,
+        bufferedPosition: buffered,
+        speed: 1.0,
+      ),
+    );
   }
 }

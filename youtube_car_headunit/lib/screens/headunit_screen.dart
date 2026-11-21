@@ -1,801 +1,495 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:just_audio/just_audio.dart' show ProcessingState;
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
+
+import '../controllers/feed_controller.dart';
+import '../controllers/location_controller.dart';
+import '../controllers/navigation_controller.dart';
+import '../controllers/playback_controller.dart';
 import '../models/car_video.dart';
-import '../services/car_audio_handler.dart';
-import '../services/pip_service.dart';
-import '../services/youtube_service.dart';
+import '../models/navigation.dart';
+import '../services/platform_bridge.dart';
+import '../services/settings_store.dart';
+import '../services/voice_guidance.dart';
 import '../theme/car_theme.dart';
 import '../widgets/fullscreen_player.dart';
-import '../widgets/player_widget.dart';
-import '../widgets/video_card.dart';
-import 'driving_mode_screen.dart';
+import '../widgets/navigation/maneuver_banner.dart';
+import '../widgets/nav_rail.dart';
+import '../widgets/now_playing.dart';
+import 'home_section.dart';
+import 'maps_section.dart';
+import 'music_section.dart';
+import 'youtube_section.dart';
 
+/// The head-unit shell: menu rail, the four sections, Fullscreen and PiP.
+///
+/// Sections stay mounted after their first visit, so switching keeps their state (grid
+/// scroll, search, map camera) and is instant. Back closes Fullscreen, the destination
+/// search or the route preview, then returns to Home, and on Home sends the app to the
+/// background with playback (and guidance) running.
 class HeadunitScreen extends StatefulWidget {
-  const HeadunitScreen({super.key});
+  const HeadunitScreen({
+    super.key,
+    required this.playback,
+    required this.feed,
+    required this.settings,
+    required this.location,
+    required this.navigation,
+    this.tilesEnabled = true,
+    this.speech,
+    PlatformBridge? bridge,
+  }) : _bridge = bridge;
+
+  final PlaybackController playback;
+  final FeedController feed;
+  final SettingsStore settings;
+  final LocationController location;
+  final NavigationController navigation;
+
+  /// False in widget tests, which have no network for map tiles.
+  final bool tilesEnabled;
+
+  /// Speaks the voice prompts; the device's engine when null.
+  final SpeechEngine? speech;
+  final PlatformBridge? _bridge;
 
   @override
   State<HeadunitScreen> createState() => _HeadunitScreenState();
 }
 
-class _HeadunitScreenState extends State<HeadunitScreen> {
-  final YouTubeService _ytService = YouTubeService();
-  final CarAudioHandler _audioHandler = CarAudioHandler();
-  final PipService _pipService = PipService();
+class _HeadunitScreenState extends State<HeadunitScreen>
+    with WidgetsBindingObserver {
+  late final PlatformBridge _bridge = widget._bridge ?? PlatformBridge();
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocus = FocusNode();
+  final Set<HeadunitSection> _visited = {HeadunitSection.home};
+  final ValueNotifier<bool> _navSearchOpen = ValueNotifier(false);
+  late final VoiceGuidance _voice;
+  StreamSubscription<String>? _messagesSub;
+  StreamSubscription<NavEvent>? _navEventsSub;
+  Timer? _prebuildTimer;
+  Timer? _systemUiTimer;
+  bool _keyboardVisible = false;
+  HeadunitSection _section = HeadunitSection.home;
+  CarVideo? _resumeVideo;
+  bool _fullscreen = false;
 
-  List<CarVideo> _videos = [];
-  CarVideo? _currentVideo;
-  List<SponsorSegment> _sponsorSegments = [];
-  VideoPlayerController? _videoController;
-  StreamSubscription? _audioStateSub;
+  PlaybackController get _playback => widget.playback;
 
-  bool _isLoading = true;
-  bool _isVideoLoading = false;
-  bool _isDrivingMode = false;
-  bool _isFullscreen = false;
-  bool _isAudioPlaying = false;
-  bool _forceAudioOnly = false;
-  bool _didAdvanceOnComplete = false;
-  bool _searchHasText = false;
-  String? _loadError;
-  String _selectedQuality = '360p';
-  bool _isAutoplayEnabled = true;
-  int _selectGeneration = 0;
+  FeedController get _feed => widget.feed;
 
-  bool get _isAudioOnly => _selectedQuality == 'Audio Only' || _forceAudioOnly;
-
-  static const Map<String, String> defaultHeaders = {
-    'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-            '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  };
+  NavigationController get _navigation => widget.navigation;
 
   @override
   void initState() {
     super.initState();
-    _audioStateSub = _audioHandler.player.playerStateStream.listen((state) {
+    _resumeVideo = widget.settings.lastVideo;
+    _messagesSub = _playback.messages.listen(_showMessage);
+    _navEventsSub = _navigation.events.listen((event) => _showNotice(event.message));
+    _voice = VoiceGuidance(
+      cues: _navigation.cues,
+      engine: widget.speech ?? createSpeechEngine(),
+    );
+    _playback.addListener(_onPlayback);
+    _feed.addListener(_syncQueue);
+    _feed.loadTrending();
+    widget.location.init();
+    WidgetsBinding.instance.addObserver(this);
+    // Build Maps, then YouTube, offstage shortly after startup so their first visits are
+    // instant instead of waiting for the map to initialise and the grid to build (a
+    // ~60 ms stall on the A6+).
+    _prebuildTimer = Timer(const Duration(seconds: 2), () {
       if (!mounted) return;
-      final playing = state.playing;
-      if (playing != _isAudioPlaying) {
-        setState(() => _isAudioPlaying = playing);
-      }
-      // Autoplay for audio-only mode (one-shot per track)
-      if (_isAudioOnly &&
-          state.processingState == ProcessingState.completed &&
-          _isAutoplayEnabled &&
-          !_isVideoLoading &&
-          !_didAdvanceOnComplete) {
-        _didAdvanceOnComplete = true;
-        _nextTrack();
-      }
-    });
-    _loadTrending();
-  }
-
-  Future<void> _loadTrending({bool force = false}) async {
-    if (!force && _videos.isNotEmpty && !_isLoading) {
-      setState(() {
-        _isFullscreen = false;
-        _isDrivingMode = false;
+      setState(() => _visited.add(HeadunitSection.maps));
+      _prebuildTimer = Timer(const Duration(milliseconds: 1500), () {
+        if (mounted) setState(() => _visited.add(HeadunitSection.youtube));
       });
-      return;
-    }
-    setState(() => _isLoading = true);
-    final list = await _ytService.getCarTrendingVideos();
-    if (!mounted) return;
-    setState(() {
-      _videos = list;
-      _isLoading = false;
-    });
-    // Do not auto-start first video — saves battery/CPU on cold start (A6+)
-  }
-
-  Future<void> _search(String query) async {
-    if (query.trim().isEmpty) return _loadTrending(force: true);
-    setState(() => _isLoading = true);
-    final list = await _ytService.searchVideos(query);
-    if (!mounted) return;
-    setState(() {
-      _videos = list;
-      _isLoading = false;
     });
   }
 
-  Future<void> _selectVideo(CarVideo video, {Duration? seekToPosition}) async {
-    final generation = ++_selectGeneration;
-    await _audioHandler.stop();
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // The engine is cached by audio_service, so main() does not run again when Android
+    // recreates the activity; reapply the head-unit system bars on every return.
+    if (state == AppLifecycleState.resumed) applyCarSystemUi();
+  }
 
-    final oldController = _videoController;
-    _videoController = null;
-
-    setState(() {
-      _currentVideo = video;
-      _isVideoLoading = true;
-      _sponsorSegments = [];
-      _isAudioPlaying = false;
-      _forceAudioOnly = false;
-      _didAdvanceOnComplete = false;
-      _loadError = null;
-    });
-
-    // Await dispose so A6+ never runs two video decoders at once
-    if (oldController != null) {
-      await oldController.dispose();
-    }
-
-    try {
-      // Parallel fetch — cuts perceived load time ~30-50%
-      final results = await Future.wait([
-        _ytService.getAdFreeStreams(video, preferredQuality: _selectedQuality),
-        _ytService.getSponsorSegments(video.id),
-      ]);
-
-      if (!mounted || generation != _selectGeneration) return;
-
-      final videoWithStreams = results[0] as CarVideo;
-      final segments = results[1] as List<SponsorSegment>;
-
-      // --- Audio Only path (single decoder: just_audio) ---
-      final useAudioOnly = _selectedQuality == 'Audio Only' ||
-          videoWithStreams.videoStreamUrl == null;
-
-      if (useAudioOnly) {
-        if (videoWithStreams.audioStreamUrl == null) {
-          setState(() {
-            _isVideoLoading = false;
-            _loadError = 'Stream tidak tersedia. Coba video lain.';
-          });
-          _showError(_loadError!);
-          return;
-        }
-        setState(() {
-          _currentVideo = videoWithStreams;
-          _sponsorSegments = segments;
-          _isVideoLoading = false;
-          _forceAudioOnly = _selectedQuality != 'Audio Only';
-        });
-        if (_forceAudioOnly) {
-          _showError('Video stream gagal — putar Audio Only');
-        }
-        await _audioHandler.playAudioOnly(videoWithStreams);
-        if (seekToPosition != null) {
-          await _audioHandler.seek(seekToPosition);
-        }
-        _pipService.setAutoPip(false);
-        return;
-      }
-
-      // --- Video path (single decoder: VideoPlayer — muxed A/V) ---
-      final newController = VideoPlayerController.networkUrl(
-        Uri.parse(videoWithStreams.videoStreamUrl!),
-        httpHeaders: defaultHeaders,
-        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: false),
-      );
-
-      await newController.initialize();
-
-      if (!mounted || generation != _selectGeneration) {
-        await newController.dispose();
-        return;
-      }
-
-      newController.addListener(() {
-        if (!mounted || _currentVideo?.id != video.id) return;
-        final val = newController.value;
-        if (val.isInitialized &&
-            !val.isPlaying &&
-            val.position >= val.duration &&
-            val.duration > Duration.zero &&
-            !_isVideoLoading &&
-            _isAutoplayEnabled &&
-            !_isAudioOnly &&
-            !_didAdvanceOnComplete) {
-          _didAdvanceOnComplete = true;
-          _nextTrack();
-        }
+  /// Android brings the phone status bar back on its own: when the keyboard opens, and
+  /// sometimes on a window-focus or notification change. It is hidden again when the
+  /// keyboard closes, and otherwise after a pause, so a driver pulling down the shade
+  /// is not fought instantly.
+  @override
+  void didChangeMetrics() {
+    final view = WidgetsBinding.instance.platformDispatcher.implicitView;
+    if (view == null) return;
+    final keyboard = view.viewInsets.bottom > 0;
+    final closed = _keyboardVisible && !keyboard;
+    _keyboardVisible = keyboard;
+    final ownBars = !_fullscreen && !_bridge.isInPip.value;
+    if (closed && ownBars) applyCarSystemUi();
+    if (view.padding.top > 0 && !keyboard && ownBars) {
+      _systemUiTimer ??= Timer(const Duration(seconds: 2), () {
+        _systemUiTimer = null;
+        final view = WidgetsBinding.instance.platformDispatcher.implicitView;
+        if (!mounted || view == null || view.padding.top == 0) return;
+        if (_fullscreen || _bridge.isInPip.value || view.viewInsets.bottom > 0) return;
+        applyCarSystemUi();
       });
-
-      if (seekToPosition != null) {
-        await newController.seekTo(seekToPosition);
-      }
-      await newController.play();
-
-      if (!mounted || generation != _selectGeneration) {
-        await newController.dispose();
-        return;
-      }
-
-      setState(() {
-        _videoController = newController;
-        _currentVideo = videoWithStreams;
-        _sponsorSegments = segments;
-        _isVideoLoading = false;
-      });
-      // Metadata only — do NOT start a second audio decoder
-      _audioHandler.updateMetadataOnly(videoWithStreams);
-      _pipService.setAutoPip(true);
-    } catch (e) {
-      if (mounted && generation == _selectGeneration) {
-        setState(() {
-          _isVideoLoading = false;
-          _loadError = 'Gagal memuat video. Coba lagi.';
-        });
-        _showError(_loadError!);
-      }
+    } else if (view.padding.top == 0) {
+      _systemUiTimer?.cancel();
+      _systemUiTimer = null;
     }
   }
 
-  void _showError(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 3),
-        action: _currentVideo != null
-            ? SnackBarAction(
-                label: 'Ulangi',
-                onPressed: () => _selectVideo(_currentVideo!),
-              )
-            : null,
-      ),
-    );
+  /// Lets autoplay run into pages loaded after the video was picked.
+  void _syncQueue() => _playback.updateQueue(_feed.videos);
+
+  void _onPlayback() {
+    // Fullscreen only makes sense while there is a picture.
+    if (_fullscreen && !_playback.hasVideo && !_playback.isLoading) {
+      setState(() => _fullscreen = false);
+    }
   }
 
-  void _togglePlay() {
-    if (_isAudioOnly) {
-      if (_isAudioPlaying) {
-        _audioHandler.pause();
-      } else {
-        _audioHandler.play();
-      }
-      return;
+  void _go(HeadunitSection section) {
+    if (section != HeadunitSection.youtube) _searchFocus.unfocus();
+    // The destination search stays open in Maps, but its keyboard must not follow the
+    // driver into another menu.
+    if (section != HeadunitSection.maps && _navSearchOpen.value) {
+      FocusManager.instance.primaryFocus?.unfocus();
     }
-    final c = _videoController;
-    if (c == null) return;
-    if (c.value.isPlaying) {
-      c.pause();
+    setState(() {
+      _section = section;
+      _visited.add(section);
+    });
+  }
+
+  void _handleBack() {
+    final onMaps = _section == HeadunitSection.maps;
+    if (_fullscreen) {
+      setState(() => _fullscreen = false);
+    } else if (onMaps && _navSearchOpen.value) {
+      _navSearchOpen.value = false;
+    } else if (onMaps && _navigation.state == NavState.preview) {
+      _navigation.stop();
+    } else if (_section != HeadunitSection.home) {
+      _go(HeadunitSection.home);
     } else {
-      c.play();
-    }
-    setState(() {});
-  }
-
-  bool get _isPlayingNow {
-    if (_isAudioOnly) return _isAudioPlaying;
-    return _videoController?.value.isPlaying ?? false;
-  }
-
-  void _onQualityChanged(String newQuality) {
-    if (_selectedQuality == newQuality || _currentVideo == null) return;
-    final currentPos = _isAudioOnly
-        ? _audioHandler.player.position
-        : _videoController?.value.position;
-    setState(() => _selectedQuality = newQuality);
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Kualitas → $newQuality'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-    _selectVideo(_currentVideo!, seekToPosition: currentPos);
-  }
-
-  void _nextTrack() {
-    if (_videos.isEmpty || _currentVideo == null) return;
-    final index = _videos.indexWhere((v) => v.id == _currentVideo!.id);
-    final nextIndex = index < 0 ? 0 : (index + 1) % _videos.length;
-    _selectVideo(_videos[nextIndex]);
-  }
-
-  void _prevTrack() {
-    if (_videos.isEmpty || _currentVideo == null) return;
-    final index = _videos.indexWhere((v) => v.id == _currentVideo!.id);
-    final prevIndex =
-        index < 0 ? 0 : (index - 1 + _videos.length) % _videos.length;
-    _selectVideo(_videos[prevIndex]);
-  }
-
-  void _seek(Duration position) {
-    if (_isAudioOnly) {
-      _audioHandler.seek(position);
-    } else {
-      _videoController?.seekTo(position);
+      _bridge.minimize();
     }
   }
 
-  Widget _buildSidebarButton({
-    required IconData icon,
-    required bool isActive,
-    required Color color,
-    required VoidCallback onTap,
-    VoidCallback? onLongPress,
-    String? tooltip,
-  }) {
-    return Tooltip(
-      message: tooltip ?? '',
-      child: Container(
-        decoration: BoxDecoration(
-          color: isActive ? color.withValues(alpha: 0.2) : Colors.transparent,
-          borderRadius: BorderRadius.circular(14),
-          border: isActive
-              ? Border.all(color: color.withValues(alpha: 0.6), width: 1.5)
+  void _showMessage(String message) {
+    if (!mounted) return;
+    final canRetry = _playback.error != null;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: const Duration(seconds: 3),
+          action: canRetry
+              ? SnackBarAction(label: 'Ulangi', onPressed: _playback.retry)
               : null,
         ),
-        child: IconButton(
-          iconSize: 26,
-          padding: const EdgeInsets.all(12),
-          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-          icon: Icon(icon, color: isActive ? color : CarTheme.textMuted),
-          onPressed: onTap,
-          onLongPress: onLongPress,
-        ),
-      ),
-    );
+      );
   }
 
-  Widget _buildCategoryChip(String label, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ActionChip(
-        label: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: CarTheme.textMain,
-          ),
-        ),
-        onPressed: onTap,
-        backgroundColor: CarTheme.bgCard,
-        side: const BorderSide(color: Colors.white12),
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-        visualDensity: VisualDensity.compact,
-      ),
-    );
+  /// Short notice without a retry action (navigation events).
+  void _showNotice(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
+      );
   }
 
-  Widget _buildPlayer() {
-    if (_currentVideo == null) {
-      return const Center(
-        child: Text(
-          'Pilih video dari daftar',
-          style: TextStyle(color: CarTheme.textMuted),
-        ),
+  void _select(CarVideo video, {Duration? startAt}) {
+    setState(() => _resumeVideo = null);
+    _playback.select(video, queue: _feed.videos, startAt: startAt);
+  }
+
+  void _resume() {
+    final video = _resumeVideo;
+    if (video == null) return;
+    _select(video, startAt: widget.settings.lastPosition);
+    _go(HeadunitSection.music);
+  }
+
+  void _openFeed(String? query) {
+    _searchController.clear();
+    if (query == null) {
+      _feed.loadTrending();
+    } else {
+      _feed.search(query);
+    }
+    _go(HeadunitSection.youtube);
+  }
+
+  void _openSearch() {
+    _go(HeadunitSection.youtube);
+    _searchFocus.requestFocus();
+  }
+
+  /// Home's Navigasi: the Maps menu with the destination search open, or the guidance
+  /// already under way.
+  void _openNavigation() {
+    _go(HeadunitSection.maps);
+    if (_navigation.state == NavState.idle) _navSearchOpen.value = true;
+  }
+
+  /// Hands navigation to Google Maps, to [destination] when set. Video goes to PiP
+  /// first, because launching another app does not trigger the automatic PiP (that only
+  /// follows Home or Recents).
+  Future<void> _openGoogleMaps(Place? destination) async {
+    final messenger = ScaffoldMessenger.of(context);
+    if (_playback.hasVideo && await _bridge.enterPip()) {
+      await Future<void>.delayed(const Duration(milliseconds: 400));
+    }
+    final target = destination?.location;
+    final opened = await launchUrl(
+      Uri.https('www.google.com', '/maps/dir/', {
+        'api': '1',
+        'travelmode': 'driving',
+        if (target != null)
+          'destination': '${target.latitude},${target.longitude}',
+      }),
+      mode: LaunchMode.externalApplication,
+    ).catchError((Object _) => false);
+    if (!opened) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Google Maps tidak bisa dibuka.')),
       );
     }
-    return PlayerWidget(
-      video: _currentVideo!,
-      controller: _videoController,
-      isVideoLoading: _isVideoLoading,
-      isAudioOnly: _isAudioOnly,
-      selectedQuality: _selectedQuality,
-      onQualityChanged: _onQualityChanged,
-      isAutoplayEnabled: _isAutoplayEnabled,
-      onToggleAutoplay: () =>
-          setState(() => _isAutoplayEnabled = !_isAutoplayEnabled),
-      sponsorSegments: _sponsorSegments,
-      onNext: _nextTrack,
-      onPrevious: _prevTrack,
-      onTogglePlay: _togglePlay,
-      isAudioPlaying: _isAudioPlaying,
-      onToggleDrivingMode: () => setState(() => _isDrivingMode = true),
-      onToggleFullscreen: () {
-        if (!_isAudioOnly) setState(() => _isFullscreen = true);
-      },
-    );
   }
 
   @override
   void dispose() {
-    _audioStateSub?.cancel();
-    _videoController?.dispose();
-    _ytService.dispose();
-    _audioHandler.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    _prebuildTimer?.cancel();
+    _systemUiTimer?.cancel();
+    _messagesSub?.cancel();
+    _navEventsSub?.cancel();
+    _voice.dispose();
+    _navSearchOpen.dispose();
+    _playback.removeListener(_onPlayback);
+    _feed.removeListener(_syncQueue);
     _searchController.dispose();
+    _searchFocus.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-      valueListenable: _pipService.isInPip,
-      builder: (context, isInPip, child) {
-        if (isInPip) {
-          return Scaffold(
-            backgroundColor: Colors.black,
-            body: Center(
-              child: _videoController != null &&
-                      _videoController!.value.isInitialized
-                  ? AspectRatio(
-                      aspectRatio: _videoController!.value.aspectRatio > 0
-                          ? _videoController!.value.aspectRatio
-                          : 16 / 9,
-                      child: VideoPlayer(_videoController!),
-                    )
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          LucideIcons.music,
-                          color: Colors.white70,
-                          size: 40,
+      valueListenable: _bridge.isInPip,
+      builder: (context, isInPip, _) {
+        if (isInPip) return _PipView(playback: _playback);
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) _handleBack();
+          },
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Row(
+                    children: [
+                      ListenableBuilder(
+                        listenable: Listenable.merge([_playback, _navigation]),
+                        builder: (context, _) => NavRail(
+                          section: _section,
+                          onSelect: _go,
+                          isPlaying: _playback.isPlaying,
+                          turnIndicator: _guiding
+                              ? NextTurnTile(
+                                  navigation: _navigation,
+                                  onTap: () => _go(HeadunitSection.maps),
+                                )
+                              : null,
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          _currentVideo?.title ?? 'Audio',
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
+                      ),
+                      Expanded(child: _sections()),
+                    ],
+                  ),
+                  if (_fullscreen)
+                    Positioned.fill(
+                      child: FullscreenPlayer(
+                        playback: _playback,
+                        onClose: () => setState(() => _fullscreen = false),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  bool get _guiding =>
+      _navigation.state == NavState.navigating ||
+      _navigation.state == NavState.arrived;
+
+  Widget _sections() {
+    return Stack(
+      children: [
+        for (final section in HeadunitSection.values)
+          if (_visited.contains(section)) _slot(section, _build(section)),
+      ],
+    );
+  }
+
+  Widget _slot(HeadunitSection section, Widget child) =>
+      _SectionSlot(active: section == _section, child: child);
+
+  Widget _build(HeadunitSection section) {
+    final active = section == _section;
+    return switch (section) {
+      HeadunitSection.home => HomeSection(
+          playback: _playback,
+          location: widget.location,
+          navigation: _navigation,
+          active: active,
+          tilesEnabled: widget.tilesEnabled,
+          resumeVideo: _resumeVideo,
+          onResume: _resume,
+          onOpenMaps: () => _go(HeadunitSection.maps),
+          onOpenMusic: () => _go(HeadunitSection.music),
+          onOpenYouTube: () => _go(HeadunitSection.youtube),
+          onTrending: () => _openFeed(null),
+          onLive: () => _openFeed(YouTubeSection.categories[1].query),
+          onSearch: _openSearch,
+          onNavigate: _openNavigation,
+        ),
+      HeadunitSection.maps => MapsSection(
+          playback: _playback,
+          location: widget.location,
+          navigation: _navigation,
+          searchOpen: _navSearchOpen,
+          active: active,
+          tilesEnabled: widget.tilesEnabled,
+          voice: _voice,
+          onOpenMusic: () => _go(HeadunitSection.music),
+          onGoogleMaps: _openGoogleMaps,
+        ),
+      HeadunitSection.youtube => YouTubeSection(
+          playback: _playback,
+          feed: _feed,
+          searchController: _searchController,
+          searchFocus: _searchFocus,
+          onSelect: _select,
+          onOpenMusic: () => _go(HeadunitSection.music),
+          onOpenFullscreen: () => setState(() => _fullscreen = true),
+        ),
+      HeadunitSection.music => MusicSection(
+          playback: _playback,
+          onOpenYouTube: () => _go(HeadunitSection.youtube),
+        ),
+    };
+  }
+}
+
+/// Keeps a visited section mounted (state survives switching) while only the active one
+/// is laid out on screen, painted, hit-tested and animated; it fades in on activation.
+class _SectionSlot extends StatefulWidget {
+  const _SectionSlot({required this.active, required this.child});
+
+  final bool active;
+  final Widget child;
+
+  @override
+  State<_SectionSlot> createState() => _SectionSlotState();
+}
+
+class _SectionSlotState extends State<_SectionSlot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _fade = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 160),
+    value: widget.active ? 1 : 0,
+  );
+
+  @override
+  void didUpdateWidget(_SectionSlot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.active && !oldWidget.active) _fade.forward(from: 0);
+  }
+
+  @override
+  void dispose() {
+    _fade.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Offstage(
+        offstage: !widget.active,
+        child: TickerMode(
+          enabled: widget.active,
+          child: FadeTransition(opacity: _fade, child: widget.child),
+        ),
+      ),
+    );
+  }
+}
+
+class _PipView extends StatelessWidget {
+  const _PipView({required this.playback});
+
+  final PlaybackController playback;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: playback,
+      builder: (context, _) {
+        final controller = playback.videoController;
+        final video = playback.current;
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: Center(
+            child: playback.hasVideo && controller != null
+                ? AspectRatio(
+                    aspectRatio: controller.value.aspectRatio > 0
+                        ? controller.value.aspectRatio
+                        : 16 / 9,
+                    child: VideoPlayer(controller),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        if (video != null)
+                          SizedBox.square(
+                            dimension: 56,
+                            child: Artwork(url: video.thumbnail, radius: 8),
+                          )
+                        else
+                          const Icon(LucideIcons.music2, color: CarTheme.text),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            video?.title ?? 'Audio',
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: CarTheme.caption.copyWith(
+                              color: CarTheme.text,
+                            ),
                           ),
                         ),
                       ],
                     ),
-            ),
-          );
-        }
-
-        if (_isDrivingMode && _currentVideo != null) {
-          return DrivingModeScreen(
-            video: _currentVideo!,
-            isPlaying: _isPlayingNow,
-            isAudioOnly: _isAudioOnly,
-            videoController: _videoController,
-            audioPlayer: _audioHandler.player,
-            onNext: _nextTrack,
-            onPrevious: _prevTrack,
-            onTogglePlay: _togglePlay,
-            onSeek: _seek,
-            onClose: () => setState(() => _isDrivingMode = false),
-          );
-        }
-
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: CarTheme.bgPrimary,
-          body: SafeArea(
-            child: Stack(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 72,
-                      color: CarTheme.bgSurface,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 44,
-                            height: 44,
-                            decoration: BoxDecoration(
-                              color: CarTheme.accentRed,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              LucideIcons.car,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                          const Spacer(),
-                          _buildSidebarButton(
-                            icon: LucideIcons.home,
-                            isActive: !_isDrivingMode && !_isFullscreen,
-                            color: CarTheme.accentRed,
-                            tooltip: 'Beranda',
-                            onTap: () => _loadTrending(),
-                            onLongPress: () => _loadTrending(force: true),
-                          ),
-                          const SizedBox(height: 8),
-                          _buildSidebarButton(
-                            icon: LucideIcons.tv,
-                            isActive: _isDrivingMode,
-                            color: Colors.orangeAccent,
-                            tooltip: 'Mode Setir',
-                            onTap: () {
-                              if (_currentVideo != null) {
-                                setState(() => _isDrivingMode = true);
-                              }
-                            },
-                          ),
-                          const SizedBox(height: 8),
-                          _buildSidebarButton(
-                            icon: LucideIcons.maximize,
-                            isActive: _isFullscreen,
-                            color: Colors.lightBlueAccent,
-                            tooltip: 'Fullscreen',
-                            onTap: () {
-                              if (_currentVideo != null && !_isAudioOnly) {
-                                setState(() => _isFullscreen = true);
-                              }
-                            },
-                          ),
-                          const SizedBox(height: 8),
-                          _buildSidebarButton(
-                            icon: LucideIcons.minimize2,
-                            isActive: false,
-                            color: Colors.purpleAccent,
-                            tooltip: 'Picture-in-Picture',
-                            onTap: () async {
-                              final messenger = ScaffoldMessenger.of(context);
-                              if (_videoController == null ||
-                                  !(_videoController!.value.isInitialized)) {
-                                messenger.showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'PiP butuh video aktif (bukan Audio Only)',
-                                    ),
-                                  ),
-                                );
-                                return;
-                              }
-                              final success = await _pipService.enterPip();
-                              if (!success) {
-                                messenger.showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'PiP didukung di Android 8.0+',
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            color: CarTheme.bgSurface,
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'YOUTUBE CAR',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: CarTheme.accentRed,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Text(
-                                        _selectedQuality,
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: SizedBox(
-                                        height: 42,
-                                        child: TextField(
-                                          controller: _searchController,
-                                          style: const TextStyle(fontSize: 13),
-                                          onSubmitted: _search,
-                                          textInputAction:
-                                              TextInputAction.search,
-                                          decoration: InputDecoration(
-                                            hintText:
-                                                'Cari musik, lagu anak, kajian...',
-                                            prefixIcon: const Icon(
-                                              LucideIcons.search,
-                                              size: 18,
-                                              color: CarTheme.textMuted,
-                                            ),
-                                            suffixIcon: _searchHasText
-                                                ? IconButton(
-                                                    icon: const Icon(
-                                                      LucideIcons.x,
-                                                      size: 16,
-                                                    ),
-                                                    onPressed: () {
-                                                      _searchController.clear();
-                                                      setState(() =>
-                                                          _searchHasText =
-                                                              false);
-                                                      _loadTrending(
-                                                        force: true,
-                                                      );
-                                                    },
-                                                  )
-                                                : null,
-                                            filled: true,
-                                            fillColor: CarTheme.bgPrimary,
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                              vertical: 8,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                          ),
-                                          onChanged: (v) {
-                                            final has = v.isNotEmpty;
-                                            if (has != _searchHasText) {
-                                              setState(
-                                                  () => _searchHasText = has);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 6),
-                                SizedBox(
-                                  height: 36,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    children: [
-                                      _buildCategoryChip(
-                                        'Trending',
-                                        () => _loadTrending(force: true),
-                                      ),
-                                      _buildCategoryChip(
-                                        'Live',
-                                        () => _search('Live Stream Indonesia'),
-                                      ),
-                                      _buildCategoryChip(
-                                        'Musik',
-                                        () => _search('Musik Indonesia'),
-                                      ),
-                                      _buildCategoryChip(
-                                        'Lagu Anak',
-                                        () => _search('Lagu Anak Indonesia'),
-                                      ),
-                                      _buildCategoryChip(
-                                        'Islami',
-                                        () => _search('Lagu Anak Islami'),
-                                      ),
-                                      _buildCategoryChip(
-                                        'Kajian',
-                                        () => _search('Kajian Islam Ceramah'),
-                                      ),
-                                      _buildCategoryChip(
-                                        'Berita',
-                                        () => _search('Berita Hari Ini'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (_currentVideo != null)
-                                  Expanded(
-                                    flex: 4,
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        10,
-                                        6,
-                                        4,
-                                        6,
-                                      ),
-                                      child: _buildPlayer(),
-                                    ),
-                                  ),
-                                Expanded(
-                                  flex: 6,
-                                  child: _isLoading
-                                      ? const Center(
-                                          child: SpinKitPulse(
-                                            color: CarTheme.accentRed,
-                                            size: 40,
-                                          ),
-                                        )
-                                      : _videos.isEmpty
-                                          ? Center(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  const Icon(
-                                                    LucideIcons.searchX,
-                                                    color: CarTheme.textMuted,
-                                                    size: 36,
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  const Text(
-                                                    'Tidak ada hasil',
-                                                    style: TextStyle(
-                                                      color: CarTheme.textMuted,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 8),
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        _loadTrending(
-                                                      force: true,
-                                                    ),
-                                                    child: const Text(
-                                                      'Muat Trending',
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          : GridView.builder(
-                                              padding: const EdgeInsets.all(8),
-                                              cacheExtent: 200,
-                                              addAutomaticKeepAlives: false,
-                                              addRepaintBoundaries: true,
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                                                maxCrossAxisExtent: 175,
-                                                childAspectRatio: 0.92,
-                                                crossAxisSpacing: 8,
-                                                mainAxisSpacing: 8,
-                                              ),
-                                              itemCount: _videos.length,
-                                              itemBuilder: (context, index) {
-                                                final video = _videos[index];
-                                                return VideoCard(
-                                                  key: ValueKey(video.id),
-                                                  video: video,
-                                                  isSelected:
-                                                      _currentVideo?.id ==
-                                                          video.id,
-                                                  onTap: () =>
-                                                      _selectVideo(video),
-                                                );
-                                              },
-                                            ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                if (_isFullscreen && _currentVideo != null && !_isAudioOnly)
-                  Positioned.fill(
-                    child: FullscreenPlayer(
-                      video: _currentVideo!,
-                      controller: _videoController,
-                      isVideoLoading: _isVideoLoading,
-                      onNext: _nextTrack,
-                      onPrevious: _prevTrack,
-                      onCloseFullscreen: () =>
-                          setState(() => _isFullscreen = false),
-                    ),
                   ),
-              ],
-            ),
           ),
         );
       },

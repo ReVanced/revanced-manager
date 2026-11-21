@@ -130,3 +130,5 @@ node_modules/
 local.properties
 
 .cxx
+# AI-collaboration workspace (bibliothek), personal, not shipped
+biblio/

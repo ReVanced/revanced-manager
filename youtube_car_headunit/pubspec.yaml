@@ -20,6 +20,13 @@ dependencies:
   # UI Components & Icons
   lucide_icons: ^0.257.0
   flutter_spinkit: ^5.2.1
+  audio_session: ^0.1.25
+  shared_preferences: ^2.5.5
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  geolocator: ^14.0.2
+  url_launcher: ^6.3.2
+  flutter_tts: ^4.2.5
 
 dev_dependencies:
   flutter_test:

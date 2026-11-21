@@ -5,53 +5,58 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.util.Rational
-import androidx.annotation.NonNull
-import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.carheadunit.youtube_car_headunit/pip"
+// AudioServiceActivity shares audio_service's cached FlutterEngine, so the media session
+// (steering-wheel buttons, notification) keeps running after this activity is destroyed.
+class MainActivity : AudioServiceActivity() {
+    private val channelName = "com.carheadunit.youtube_car_headunit/pip"
     private var methodChannel: MethodChannel? = null
     private var isAutoPipEnabled = false
 
-    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
+        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName)
         methodChannel?.setMethodCallHandler { call, result ->
             when (call.method) {
-                "enterPip" -> {
-                    val success = enterPipMode()
-                    result.success(success)
-                }
-                "isPipSupported" -> {
-                    val supported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                            packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
-                    result.success(supported)
-                }
+                "enterPip" -> result.success(enterPipMode())
+                "isPipSupported" -> result.success(isPipSupported())
                 "setAutoPip" -> {
                     isAutoPipEnabled = call.argument<Boolean>("enabled") ?: false
                     result.success(true)
                 }
+                // Back on the dashboard: behave like Home and keep the activity alive.
+                "minimize" -> result.success(moveTaskToBack(true))
                 else -> result.notImplemented()
             }
         }
     }
 
-    private fun enterPipMode(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+    // The engine outlives this activity; drop the handler so it does not keep a destroyed
+    // activity alive. A recreated activity registers a fresh one.
+    override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
+        methodChannel?.setMethodCallHandler(null)
+        methodChannel = null
+        super.cleanUpFlutterEngine(flutterEngine)
+    }
+
+    private fun isPipSupported(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
             packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
-        ) {
-            try {
-                val params = PictureInPictureParams.Builder()
-                    .setAspectRatio(Rational(16, 9))
-                    .build()
-                return enterPictureInPictureMode(params)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+
+    private fun enterPipMode(): Boolean {
+        if (!isPipSupported()) return false
+        return try {
+            val params = PictureInPictureParams.Builder()
+                .setAspectRatio(Rational(16, 9))
+                .build()
+            enterPictureInPictureMode(params)
+        } catch (e: RuntimeException) {
+            // IllegalStateException when not resumed, IllegalArgumentException on bad params.
+            false
         }
-        return false
     }
 
     override fun onUserLeaveHint() {

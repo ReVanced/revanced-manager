@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local build secrets: Mapbox token passed with --dart-define-from-file (never commit).
+mapbox.local.json
