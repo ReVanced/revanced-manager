@@ -80,6 +80,12 @@ data class Option<T>(
         option.type,
         option.default,
         option.values,
-        { option.validator(option, it) },
+        {
+            try {
+                option.validator(option, it)
+            } catch (_: Exception) {
+                false
+            }
+        },
     )
 }
