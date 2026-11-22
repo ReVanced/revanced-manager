@@ -116,6 +116,16 @@ private fun <T : Any> parseValue(str: String, type: KType): T? {
     }
 }
 
+internal fun <T : Any> isOptionInputInvalid(
+    checked: Boolean,
+    localText: String,
+    option: Option<T>,
+): Boolean {
+    if (!checked || option.type == typeOf<Boolean>()) return false
+    val parsed = parseValue<T>(localText, option.type) ?: return true
+    return !option.validator(parsed)
+}
+
 private fun isSafeguardActive(
     readOnly: Boolean,
     isRequired: Boolean,
@@ -216,7 +226,7 @@ fun <T : Any> OptionItem(
     var localValue: T? by rememberSaveable(value) { mutableStateOf(value) }
     // The text that the user is actually typing (can we invalid, we won't snap it back to a valid value right away)
     var localText by rememberSaveable(value) { mutableStateOf(value?.toString() ?: "") }
-    val isInvalid = checked && !isBoolean && !option.validator(parseValue(localText, option.type))
+    val isInvalid = isOptionInputInvalid(checked, localText, option)
     val displayText = when {
         !checked -> formatValue(null)
         isBoolean -> formatValue(localValue)
